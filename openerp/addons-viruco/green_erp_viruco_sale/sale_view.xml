@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    	<record id="view_sales_order_filter_inherit" model="ir.ui.view">
+            <field name="name">sale.order.list.select.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+            <field name="arch" type="xml">
+            	<field name="user_id" position="after">
+            		<field name="nguoi_gioithieu_id"/>
+            		<field name="hop_dong_id"/>
+            	</field>
+            	<filter string='Order Date' position="after">
+            		<filter string="Người giới thiệu" icon="terp-go-month" domain="[]" context="{'group_by':'nguoi_gioithieu_id'}"/>
+            		<filter string="Hợp đồng" icon="terp-go-month" domain="[]" context="{'group_by':'hop_dong_ids'}"/>
+            	</filter>
+            </field>
+        </record>
+        
+        <record id="view_order_form_inherit" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+            	<field name="date_order" position="after">
+            		<field name="thoigian_giaohang"/>
+            	</field>
+            	<field name="client_order_ref" position="after">
+            		<field name="nguoi_gioithieu_id"/>
+            	</field>
+            	<field name="project_id" position="after">
+            		<field name="dieukien_giaohang_id"/>
+            		<field name="hop_dong_id"/>
+            	</field>
+            	<field name="origin" position="after">
+            		<group>
+	            		<field name="thanhtoan"/>
+	            		<field name="ngay_thanhtoan"/>
+	            	</group>
+            	</field>
+            </field>
+        </record>
+    </data>
+    
+</openerp>

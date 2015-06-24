@@ -134,7 +134,7 @@
 					<field name="den_ngay"/>
 					<field name="ngay_nhanhang"/>
 					<field name="port_of_loading"/>
-					<field name="port_of_discharge"/>
+					<field name="port_of_charge"/>
 					<field name="amount_total"/>
 					<field name="type" invisible="1"/>
 					<field name="state"/>
@@ -175,8 +175,11 @@
 									<field name="diadiem_nhanhang" string="Place of delivery"/>
 									<field name="ngay_nhanhang" string="Date of shipment"/>
 									<field name="port_of_loading" />
+									<field name="port_of_charge" />
+									<field name="destinaltion" />
 									<field name="partial_shipment" />
 									<field name="transshipment" />
+									<field name="arbitration_id" />
 								</group>
 							</page>
 							<page string="Product line" >

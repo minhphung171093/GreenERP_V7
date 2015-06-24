@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    	<record id="product_search_form_view_inherit" model="ir.ui.view">
+            <field name="name">product.search.form.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_search_form_view"/>
+            <field name="arch" type="xml">
+            	<field name="categ_id" position="after">
+            		<field name="chatluong_id"/>
+            		<field name="quycach_donggoi_id"/>
+            		<field name="quycach_baobi_id"/>
+            		<field name="nha_sanxuat_id"/>
+            		<field name="nuoc_sanxuat_id"/>
+            	</field>
+            	<filter string='Company' position="after">
+            		<filter string='Chất lượng' icon="terp-go-home" domain="[]" context="{'group_by' : 'chatluong_id'}"/>
+            		<filter string='Quy cách đóng gói' icon="terp-go-home" domain="[]" context="{'group_by' : 'quycach_donggoi_id'}"/>
+            		<filter string='Nhà sản xuất' icon="terp-go-home" domain="[]" context="{'group_by' : 'nha_sanxuat_id'}"/>
+            		<filter string='Nước sản xuất' icon="terp-go-home" domain="[]" context="{'group_by' : 'nuoc_sanxuat_id'}"/>
+            	</filter>
+            </field>
+        </record>
+        
+        <record id="product_product_tree_view_inherit" model="ir.ui.view">
+            <field name="name">product.product.tree.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_product_tree_view"/>
+            <field eval="7" name="priority"/>
+            <field name="arch" type="xml">
+	    		<field name="name" position="after">
+            		<field name="chatluong_id"/>
+            		<field name="quycach_donggoi_id"/>
+            		<field name="nha_sanxuat_id"/>
+            		<field name="nuoc_sanxuat_id"/>
+            	</field>
+            </field>
+        </record>
+        <record id="product_normal_form_view_inherit" model="ir.ui.view">
+            <field name="name">product.normal.form.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field eval="7" name="priority"/>
+            <field name="arch" type="xml">
+            	<field name="default_code" position="after">
+            		<field name="chatluong_id"/>
+            		<field name="quycach_donggoi_id"/>
+            		<field name="quycach_baobi_id"/>
+            	</field>
+            	<field name="list_price" position="after">
+            		<field name="nha_sanxuat_id"/>
+            		<field name="nuoc_sanxuat_id"/>
+            	</field>
+            </field>
+        </record>
+    </data>
+    
+</openerp>

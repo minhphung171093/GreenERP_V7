@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+	    <record id="sale_arbitration_tree_view" model="ir.ui.view">
+			<field name="name">sale.arbitration.tree</field>
+			<field name="model">sale.arbitration</field>
+			<field name="arch" type="xml">
+				<tree string="Arbitration">
+					<field name="name"/>
+					<field name="description"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="sale_arbitration_filter_view" model="ir.ui.view">
+			<field name="name">sale.arbitration.filter</field>
+			<field name="model">sale.arbitration</field>
+            <field name="arch" type="xml">
+                <search string="Search Arbitration">
+                    <field name="name"/>
+               </search>
+            </field>
+        </record>
+		
+		<record id="sale_arbitration_form_view" model="ir.ui.view">
+			<field name="name">sale.arbitration.form</field>
+			<field name="model">sale.arbitration</field>
+            <field name="arch" type="xml">
+	            <form string="Arbitration" version="7.0">
+	            	<sheet>
+	            		<group>
+		                	<field name="name"/>
+							<field name="description"/>
+						</group>
+		         	</sheet>
+		         </form>
+			</field>
+		</record>
+          
+		<record id="action_sale_arbitration" model="ir.actions.act_window">
+            <field name="name">Arbitration</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.arbitration</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="sale_arbitration_tree_view"/>
+            <field name="domain">[]</field>
+        </record>
+<!--Dieu kien giao hang-->
+		
+		<record id="dieukien_giaohang_tree_view" model="ir.ui.view">
+			<field name="name">dieukien.giaohang.tree</field>
+			<field name="model">dieukien.giaohang</field>
+			<field name="arch" type="xml">
+				<tree string="Điều kiện giao hàng">
+					<field name="name"/>
+					<field name="description"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="dieukien_giaohang_filter_view" model="ir.ui.view">
+			<field name="name">dieukien.giaohang.filter</field>
+			<field name="model">dieukien.giaohang</field>
+            <field name="arch" type="xml">
+                <search string="Điều kiện giao hàng">
+                    <field name="name"/>
+               </search>
+            </field>
+        </record>
+		
+		<record id="dieukien_giaohang_form_view" model="ir.ui.view">
+			<field name="name">dieukien.giaohang.form</field>
+			<field name="model">dieukien.giaohang</field>
+            <field name="arch" type="xml">
+	            <form string="Điều kiện giao hàng" version="7.0">
+	            	<sheet>
+	            		<group>
+		                	<field name="name"/>
+							<field name="description"/>
+						</group>
+		         	</sheet>
+		         </form>
+			</field>
+		</record>
+          
+		<record id="action_dieukien_giaohang" model="ir.actions.act_window">
+            <field name="name">Điều kiện giao hàng</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dieukien.giaohang</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="dieukien_giaohang_tree_view"/>
+            <field name="domain">[]</field>
+        </record>
+        
+<!--Hinh thuc giao hang-->
+		
+		<record id="hinhthuc_giaohang_tree_view" model="ir.ui.view">
+			<field name="name">hinhthuc.giaohang.tree</field>
+			<field name="model">hinhthuc.giaohang</field>
+			<field name="arch" type="xml">
+				<tree string="Hình thức giao hàng">
+					<field name="name"/>
+					<field name="description"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="hinhthuc_giaohang_filter_view" model="ir.ui.view">
+			<field name="name">hinhthuc.giaohang.filter</field>
+			<field name="model">hinhthuc.giaohang</field>
+            <field name="arch" type="xml">
+                <search string="Hình thức giao hàng">
+                    <field name="name"/>
+               </search>
+            </field>
+        </record>
+		
+		<record id="hinhthuc_giaohang_form_view" model="ir.ui.view">
+			<field name="name">hinhthuc.giaohang.form</field>
+			<field name="model">hinhthuc.giaohang</field>
+            <field name="arch" type="xml">
+	            <form string="Hình thức giao hàng" version="7.0">
+	            	<sheet>
+	            		<group>
+		                	<field name="name"/>
+							<field name="description"/>
+						</group>
+		         	</sheet>
+		         </form>
+			</field>
+		</record>
+          
+		<record id="action_hinhthuc_giaohang" model="ir.actions.act_window">
+            <field name="name">Hình thức giao hàng</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hinhthuc.giaohang</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="hinhthuc_giaohang_tree_view"/>
+            <field name="domain">[]</field>
+        </record>
+        
+<!--Chat luong san pham -->     
+        <record id="chatluong_sanpham_tree_view" model="ir.ui.view">
+			<field name="name">chatluong.sanpham.tree</field>
+			<field name="model">chatluong.sanpham</field>
+			<field name="arch" type="xml">
+				<tree string="Chất lượng sản phẩm">
+					<field name="name"/>
+					<field name="description"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="chatluong_sanpham_filter_view" model="ir.ui.view">
+			<field name="name">chatluong.sanpham.filter</field>
+			<field name="model">chatluong.sanpham</field>
+            <field name="arch" type="xml">
+                <search string="Tìm kiếm Chất lượng sản phẩm">
+                    <field name="name"/>
+               </search>
+            </field>
+        </record>
+		
+		<record id="chatluong_sanpham_form_view" model="ir.ui.view">
+			<field name="name">chatluong.sanpham.form</field>
+			<field name="model">chatluong.sanpham</field>
+            <field name="arch" type="xml">
+	            <form string="Chất lượng sản phẩm" version="7.0">
+	            	<sheet>
+	            		<group>
+		                	<field name="name"/>
+							<field name="description"/>
+						</group>
+		         	</sheet>
+		         </form>
+			</field>
+		</record>
+          
+		<record id="action_chatluong_sanpham" model="ir.actions.act_window">
+            <field name="name">Chất lượng sản phẩm</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">chatluong.sanpham</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="chatluong_sanpham_tree_view"/>
+            <field name="domain">[]</field>
+        </record>
+        
+<!--Quy cach dong goi-->
+        <record id="quycach_donggoi_tree_view" model="ir.ui.view">
+			<field name="name">quycach.donggoi.tree</field>
+			<field name="model">quycach.donggoi</field>
+			<field name="arch" type="xml">
+				<tree string="Quy cách đóng gói">
+					<field name="name"/>
+					<field name="description"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="quycach_donggoi_filter_view" model="ir.ui.view">
+			<field name="name">quycach.donggoi.filter</field>
+			<field name="model">quycach.donggoi</field>
+            <field name="arch" type="xml">
+                <search string="Tìm kiếm Quy cách đóng gói">
+                    <field name="name"/>
+               </search>
+            </field>
+        </record>
+		
+		<record id="quycach_donggoi_form_view" model="ir.ui.view">
+			<field name="name">quycach.donggoi.form</field>
+			<field name="model">quycach.donggoi</field>
+            <field name="arch" type="xml">
+	            <form string="Quy cách đóng gói" version="7.0">
+	            	<sheet>
+	            		<group>
+		                	<field name="name"/>
+							<field name="description"/>
+						</group>
+		         	</sheet>
+		         </form>
+			</field>
+		</record>
+          
+		<record id="action_quycach_donggoi" model="ir.actions.act_window">
+            <field name="name">Quy cách đóng gói</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">quycach.donggoi</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="quycach_donggoi_tree_view"/>
+            <field name="domain">[]</field>
+        </record>
+        
+<!--Quy cach bao bi-->
+        <record id="quycach_baobi_tree_view" model="ir.ui.view">
+			<field name="name">quycach.baobi.tree</field>
+			<field name="model">quycach.baobi</field>
+			<field name="arch" type="xml">
+				<tree string="Quy cách bao bì">
+					<field name="name"/>
+					<field name="description"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="quycach_baobi_filter_view" model="ir.ui.view">
+			<field name="name">quycach.baobi.filter</field>
+			<field name="model">quycach.baobi</field>
+            <field name="arch" type="xml">
+                <search string="Tìm kiếm quy cách bao bì">
+                    <field name="name"/>
+               </search>
+            </field>
+        </record>
+		
+		<record id="quycach_baobi_form_view" model="ir.ui.view">
+			<field name="name">quycach.baobi.form</field>
+			<field name="model">quycach.baobi</field>
+            <field name="arch" type="xml">
+	            <form string="Quy cách bao bì" version="7.0">
+	            	<sheet>
+	            		<group>
+		                	<field name="name"/>
+							<field name="description"/>
+						</group>
+		         	</sheet>
+		         </form>
+			</field>
+		</record>
+          
+		<record id="action_quycach_baobi" model="ir.actions.act_window">
+            <field name="name">Quy cách bao bì</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">quycach.baobi</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="quycach_baobi_tree_view"/>
+            <field name="domain">[]</field>
+        </record>
+<!--Nha san xuat-->
+        <record id="nha_sanxuat_tree_view" model="ir.ui.view">
+			<field name="name">nha.sanxuat.tree</field>
+			<field name="model">nha.sanxuat</field>
+			<field name="arch" type="xml">
+				<tree string="Nhà sản xuất">
+					<field name="name"/>
+					<field name="description"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="nha_sanxuat_filter_view" model="ir.ui.view">
+			<field name="name">nha.sanxuat.filter</field>
+			<field name="model">nha.sanxuat</field>
+            <field name="arch" type="xml">
+                <search string="Tìm kiếm nhà sản xuất">
+                    <field name="name"/>
+               </search>
+            </field>
+        </record>
+		
+		<record id="nha_sanxuat_form_view" model="ir.ui.view">
+			<field name="name">nha.sanxuat.form</field>
+			<field name="model">nha.sanxuat</field>
+            <field name="arch" type="xml">
+	            <form string="Nhà sản xuất" version="7.0">
+	            	<sheet>
+	            		<group>
+		                	<field name="name"/>
+							<field name="description"/>
+						</group>
+		         	</sheet>
+		         </form>
+			</field>
+		</record>
+          
+		<record id="action_nha_sanxuat" model="ir.actions.act_window">
+            <field name="name">Nhà sản xuất</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">nha.sanxuat</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="nha_sanxuat_tree_view"/>
+            <field name="domain">[]</field>
+        </record>
+        
+        <menuitem id="menu_config_hopdong" parent="hop_dong" name="Config" sequence="1"/>
+    	<menuitem id="menu_action_sale_arbitration" action="action_sale_arbitration" name="Config Arbitration" parent="menu_config_hopdong" sequence="0"/>
+    	<menuitem id="menu_action_chatluong_sanpham" action="action_chatluong_sanpham" name="Chất lượng sản phẩm" parent="base.menu_base_config" sequence="0"/>
+    	<menuitem id="menu_action_quycach_donggoi" action="action_quycach_donggoi" name="Quy cách đóng gói" parent="base.menu_base_config" sequence="1"/>
+    	<menuitem id="menu_action_quycach_baobi" action="action_quycach_baobi" name="Quy cách bao bì" parent="base.menu_base_config" sequence="2"/>
+    	<menuitem id="menu_action_nha_sanxuat" action="action_nha_sanxuat" name="Nhà sản xuất" parent="base.menu_base_config" sequence="3"/>
+    	<menuitem id="menu_action_dieukien_giaohang" action="action_dieukien_giaohang" name="Điều kiện giao hàng" parent="base.menu_base_config" sequence="4"/>
+    	<menuitem id="menu_action_hinhthuc_giaohang" action="action_hinhthuc_giaohang" name="Hình thức giao hàng" parent="base.menu_base_config" sequence="4"/>
+    	
+    </data>
+    
+</openerp>
