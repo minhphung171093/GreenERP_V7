@@ -33,10 +33,10 @@
             		<field name="hop_dong_id"/>
             	</field>
             	<field name="origin" position="after">
-            		<group>
+        			<div>
 	            		<field name="thanhtoan"/>
 	            		<field name="ngay_thanhtoan"/>
-	            	</group>
+            		</div>
             	</field>
             </field>
         </record>
