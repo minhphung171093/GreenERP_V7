@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+    
+    	<record id="properties_dieukhoanchung" model="admin.property">
+            <field name="name">properties_dieukhoanchung</field>
+            <field name="value">- Hai bên cam kết  thực hiện đầy đủ các điều khoản ghi trong hợp đồng, mọi sự thay đổi hay bổ sung (nếu có) thì đều phải được hai bên thống nhất bằng phụ lục hoặc công văn đã được thỏa thuận qua điện thoại mới có giá trị thực hiện.
+- Trong quá trình thực hiện, nếu có những khó khăn, trở ngại thì hai bên phải thông báo cho nhau để cùng nhau bàn bạc và giải quyết trên tinh thần hợp tác và tôn trọng quyền lợi của hai bên.
+- Nếu bên nào vi phạm hợp đồng, gây thiệt hại cho nhau thì phải chịu trách nhiệm bồi thường vật chất cho bên bị hại đúng theo luật pháp hiện hành của Nhà Nước. Nếu hợp đồng bị vi phạm hoặc bị tranh chấp mà hai bên không giải quyết được thì sự vụ được đưa ra tòa án cấp có thẩm quyền tại Thành phố Hồ Chí Minh giải quyết và phán quyết của Tòa án là chung thẩm.
+- Hợp đồng có hiệu lực kể từ ngày ký và hết hiệu lực khi công nợ giữa hai bên được thanh toán.
+- Hợp đồng xem như được thanh lý, khi bên mua (bên A) thanh toán đủ tiền hàng cho bên bán (bên B) và bên B đã giao đầy  đủ số lượng hàng hóa cho bên A mà hai bên không có bất kỳ khiếu nại nào.
+- Hợp đồng được ký bằng bảng fax hoặc email có chữ ký đóng dấu của hai bên và có hiệu lực như bản chính kể từ ngày ký. Hợp đồng được lập thành 04 bản chính, sẽ được chuyển sau bằng đường bưu điện, mỗi bên giữ 02 bản và có giá trị như nhau để thực hiện.</field>
+        </record>
+        
+        <record id="properties_phuongthucthanhtoan" model="admin.property">
+            <field name="name">properties_phuongthucthanhtoan</field>
+            <field name="value">- Phương thức thanh toán: 
+- Bên A thanh toán cho bên B % giá trị hợp đồng trước khi nhận hàng theo từng lô.
+- Nếu bên nào vi phạm hợp đồng thì phải chịu tiền phạt vi phạm cho bên kia 8% giá trị hợp đồng và bồi thường mọi thiệt hại do việc vi phạm gây ra.
+- Bên vận chuyển sẽ đại diện bên mua cân hàng kiểm tra trọng lượng hàng hóa, do đó đề nghị bên bán tạo điều kiện đển bên vận chuyển cân hàng đầy đủ chính xác.</field>
+        </record>
+    
+    </data>
+</openerp>

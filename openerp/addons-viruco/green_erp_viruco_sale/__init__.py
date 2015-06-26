@@ -22,4 +22,5 @@ import config
 import hop_dong
 import product_product
 import sale
+import res_partner
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
