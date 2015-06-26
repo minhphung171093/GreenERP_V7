@@ -100,6 +100,7 @@ def amount_to_text(nbr, lang='en', currency='euro'):
         1654: thousands six cent cinquante-quatre.
     """
     import netsvc
+#     import netsvcamount_to_text
 #    if nbr > 10000000:
 #        netsvc.Logger().notifyChannel('translate', netsvc.LOG_WARNING, _("Number too large '%d', can not translate it"))
 #        return str(nbr)

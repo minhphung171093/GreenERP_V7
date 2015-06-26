@@ -149,6 +149,6 @@ class sale_order_line(osv.osv):
                     }
         result.update({'chatluong_id': product_obj.chatluong_id.id,'quycach_donggoi_id': product_obj.quycach_donggoi_id.id})
         return {'value': result, 'domain': domain, 'warning': warning}
-sale_order_line()   
+sale_order_line()  
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
