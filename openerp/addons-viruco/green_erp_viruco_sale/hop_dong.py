@@ -65,7 +65,7 @@ class hop_dong(osv.osv):
     
     _columns = {
         'name':fields.char('Số', size = 1024,required = True),
-        'type':fields.selection([('hd_noi','Hợp đồng nội'),('hd_ngoai','Hợp đồng ngoại')],'Loại hợp đồng' ,required=True,readonly=True, states={'moi_tao': [('readonly', False)]}),
+        'type':fields.selection([('hd_noi','Hợp đồng nội'),('hd_ngoai','Hợp đồng ngoại'),('hd_mua','Hợp đồng mua')],'Loại hợp đồng' ,required=True,readonly=True, states={'moi_tao': [('readonly', False)]}),
         'tu_ngay':fields.date('Từ ngày',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
         'den_ngay':fields.date('Đến ngày'),
         'ngay_nhanhang':fields.date('Ngày nhận hàng'),
@@ -78,6 +78,7 @@ class hop_dong(osv.osv):
         'destinaltion':fields.char('Destinaltion'),
         'arbitration_id': fields.many2one('sale.arbitration','Arbitration',readonly=True, states={'moi_tao': [('readonly', False)]}),
         'phucluc_hd':fields.text('Phụ lục Hợp đồng'),
+        'phuongthuc_thanhtoan':fields.text('Phương thức thanh toán'),
         'company_id': fields.many2one('res.company','Công ty',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
         'partner_id': fields.many2one('res.partner','Khách hàng',required = True,domain="[('customer','=',True)]",readonly=True, states={'moi_tao': [('readonly', False)]}),
         'hopdong_line': fields.one2many('hopdong.line','hopdong_id','Line',readonly=True, states={'moi_tao': [('readonly', False)]}),
@@ -108,11 +109,16 @@ class hop_dong(osv.osv):
             ], 'Trạng thái',readonly=True, states={'moi_tao': [('readonly', False)]}),
     }
     
+    def _get_phuongthuc_thanhtoan(self,cr, uid, context=None):
+        property = self.pool.get('admin.property')._get_project_property_by_name(cr, uid, 'properties_phuongthucthanhtoan')
+        return property and property.value or False
+    
     _defaults = {
         'type': 'hd_noi',
         'tu_ngay': time.strftime('%Y-%m-%d'),
         'state': 'moi_tao',
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'hop.dong', context=c),
+        'phuongthuc_thanhtoan': _get_phuongthuc_thanhtoan,
     }
     
     def print_hopdong(self, cr, uid, ids, context=None):

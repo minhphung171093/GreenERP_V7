@@ -25,13 +25,15 @@
     'description': """Sale""",
     'author': "tranhung07081989@gmail.com",
     'website': "www.acespritech.com",
-    'depends': ['sale','sale_stock','product'],
+    'depends': ['sale','sale_stock','product','properties'],
     'data': [
-
              'hop_dong_view.xml',
              'config_view.xml',
              'product_product_view.xml',
+             'res_partner_view.xml',
              'sale_view.xml',
+             'data/property_data.xml',
+             'menu.xml',
              ],
     'demo': [],
     'test': [],

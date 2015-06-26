@@ -14,15 +14,14 @@ import openerp.addons.decimal_precision as dp
 import codecs
 
 
-class product_product(osv.osv):
-    _inherit = 'product.product'
+class res_partner(osv.osv):
+    _inherit = "res.partner"
     _columns = {
-        'chatluong_id':fields.many2one('chatluong.sanpham','Chất lượng'),
-        'quycach_donggoi_id':fields.many2one('quycach.donggoi','Quy cách đóng gói'),
-        'quycach_baobi_id':fields.many2one('quycach.baobi','Quy cách bao bì'),
-        'nha_sanxuat_id':fields.many2one('nha.sanxuat','Nhà sản xuất'),
-        'nuoc_sanxuat_id':fields.many2one('res.country','Nước sản xuất'),
+        'ma_kh':fields.char('Mã khách hàng', size=1024),
+        'loaihinh_kinhdoanh':fields.char('Loại hình kinh doanh', size=1024),
+        'is_giaodichtructiep':fields.boolean('Giao dịch trực tiếp'),
+        'nha_moigioi_id':fields.many2one('res.partner','Nhà môi giới'),
     }
     
-product_product()
+res_partner()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

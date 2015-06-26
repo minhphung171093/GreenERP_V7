@@ -18,9 +18,10 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-import config
 import hop_dong
+import config
 import product_product
 import sale
 import report
+import res_partner
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

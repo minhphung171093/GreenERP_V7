@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    	<menuitem id="menu_cauhinh_dieukhoan"
+    		action="properties.action_model_admin_properties"
+    		name="Cấu hình điều khoản"
+    		parent="menu_config_hopdong"
+			sequence="10"/>
+    </data>
+</openerp>
