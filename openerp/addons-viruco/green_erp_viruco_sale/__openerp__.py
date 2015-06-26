@@ -27,8 +27,8 @@
     'website': "www.acespritech.com",
     'depends': ['sale','sale_stock','product'],
     'data': [
-             'config_view.xml',
              'hop_dong_view.xml',
+             'config_view.xml',
              'product_product_view.xml',
              'sale_view.xml',
              ],

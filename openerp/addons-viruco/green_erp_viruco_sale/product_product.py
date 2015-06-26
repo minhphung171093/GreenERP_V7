@@ -17,9 +17,9 @@ import codecs
 class product_product(osv.osv):
     _inherit = 'product.product'
     _columns = {
-        'chatluong_id':fields.many2one('chatluong.sanpham','Chất lượng',size=1024),
+        'chatluong_id':fields.many2one('chatluong.sanpham','Chất lượng'),
         'quycach_donggoi_id':fields.many2one('quycach.donggoi','Quy cách đóng gói'),
-        'quycach_baobi_id':fields.many2one('quycach.donggoi','Quy cách bao bì'),
+        'quycach_baobi_id':fields.many2one('quycach.baobi','Quy cách bao bì'),
         'nha_sanxuat_id':fields.many2one('nha.sanxuat','Nhà sản xuất'),
         'nuoc_sanxuat_id':fields.many2one('res.country','Nước sản xuất'),
     }

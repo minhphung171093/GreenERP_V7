@@ -12,7 +12,7 @@
             	</field>
             	<filter string='Order Date' position="after">
             		<filter string="Người giới thiệu" icon="terp-go-month" domain="[]" context="{'group_by':'nguoi_gioithieu_id'}"/>
-            		<filter string="Hợp đồng" icon="terp-go-month" domain="[]" context="{'group_by':'hop_dong_ids'}"/>
+            		<filter string="Hợp đồng" icon="terp-go-month" domain="[]" context="{'group_by':'hop_dong_id'}"/>
             	</filter>
             </field>
         </record>
@@ -33,10 +33,57 @@
             		<field name="hop_dong_id"/>
             	</field>
             	<field name="origin" position="after">
-        			<div>
-	            		<field name="thanhtoan"/>
-	            		<field name="ngay_thanhtoan"/>
-            		</div>
+        			<div class="oe_edit_only">
+                        <label for="thanhtoan" style="width: 50%%"/>
+	            		<field name="thanhtoan"  style="width: 15%%"/>
+	            		<field name="ngay_thanhtoan"  style="width: 35%%"/>
+	            	</div>
+	            	<br/>
+	            	<div class="oe_edit_only">
+                        <label for="dagui_nganhang" style="width: 70%%"/>
+	            		<field name="dagui_nganhang"  style="width: 15%%"/>
+	            		<field name="ngaygui_nganhang"  style="width: 15%%"/>
+	            	</div>
+	            	<br/>
+	            	<div class="oe_edit_only">
+                        <label for="dagui_hopdong" style="width: 60%%"/>
+	            		<field name="dagui_hopdong"  style="width: 15%%"/>
+	            		<field name="ngaygui_hopdong"  style="width: 15%%"/>
+	            	</div>
+	            	<br/>
+	            	<div class="oe_edit_only">
+                        <label for="dagui_hoadon" style="width: 60%%"/>
+	            		<field name="dagui_hoadon"  style="width: 15%%"/>
+	            		<field name="ngaygui_hoadon"  style="width: 25%%"/>
+	            	</div>
+	            	<br/>
+	            	<div class="oe_edit_only">
+                        <label for="dagui_chungtugoc" style="width: 70%%"/>
+	            		<field name="dagui_chungtugoc"  style="width: 15%%"/>
+	            		<field name="ngaygui_chungtugoc"  style="width: 15%%"/>
+	            	</div>
+            	</field>
+            	<xpath expr="//form/sheet/notebook/page[@string='Order Lines']/field[@name='order_line']/form/group/group/field[@name='product_id']" position="after">
+          			<field name="chatluong_id"/>
+            		<field name="quycach_donggoi_id"/>
+            	</xpath>
+            	<xpath expr="//form/sheet/notebook/page[@string='Order Lines']/field[@name='order_line']/tree/field[@name='product_id']" position="after">
+          			<field name="chatluong_id"/>
+            		<field name="quycach_donggoi_id"/>
+            	</xpath>
+            </field>
+        </record>
+        
+        <record id="view_order_form_inherit_inherit" model="ir.ui.view">
+            <field name="name">sale.order.form.sale.stock.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale_stock.view_order_form_inherit"/>
+            <field name="arch" type="xml">
+            	<field name="incoterm" position="replace">
+            		<field name="hinhthuc_giaohang_id"/>
+            	</field>
+            	<field name="order_policy" position="after">
+            		<field name="so_chuyenphatnhanh"/>
             	</field>
             </field>
         </record>
