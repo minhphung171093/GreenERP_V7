@@ -11,9 +11,10 @@ from openerp.osv import osv
 from openerp.tools.translate import _
 import random
 import locale
-from green_erp_arulmani_sale.report import amount_to_text_en
-from green_erp_arulmani_sale.report import amount_to_text_indian
-from amount_to_text_indian import Number2Words
+from green_erp_viruco_sale.report import amount_to_text_en
+from green_erp_viruco_sale.report import amount_to_text_vn
+# from green_erp_arulmani_sale.report import amount_to_text_indian
+# from amount_to_text_indian import Number2Words
 #locale.setlocale(locale.LC_NUMERIC, "en_IN")
 DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 DATE_FORMAT = "%Y-%m-%d"
@@ -28,40 +29,40 @@ class Parser(report_sxw.rml_parse):
         super(Parser, self).__init__(cr, uid, name, context=context)
         pool = pooler.get_pool(self.cr.dbname)
         self.localcontext.update({
-            'get_date': self.get_date,
-            'get_date_time': self.get_date,
-            'get_total_amount': self.get_total_amount,
-            'amount_to_text': self.amount_to_text,
-            'tpt_amount_to_text': self.tpt_amount_to_text,
-            'get_qty_mt': self.get_qty_mt,
-            'get_qty_mt1': self.get_qty_mt1,
-            'get_qty_mt2': self.get_qty_mt2,
-            'get_amt': self.get_amt,
-            'get_qty_bags': self.get_qty_bags,
-#             'get_qty_bags_gross': self.get_qty_bags_gross,
-            'get_total': self.get_total,
-            'get_ed_example': self.get_ed_example,
-            'get_total_example': self.get_total_example,
-            'get_excise_duty': self.get_excise_duty, 
-            'get_excise_duty_amt': self.get_excise_duty_amt,
-            'get_subtotal': self.get_subtotal,
-            'get_range_label':self.get_range_label,
-            'get_loc':self.get_loc,
-            'get_comm':self.get_comm,
-            'get_ce':self.get_ce,
-            'get_ecc':self.get_ecc,
-            'get_pan':self.get_pan,
-            'get_cst':self.get_cst,
-            'get_tin':self.get_tin,
-            'c':self.c, 
-            'z':self.z,
-            'get_app':self.get_app, 
-            'get_if_freight_lb':self.get_if_freight_lb,
-            'get_if_freight_amt':self.get_if_freight_amt,
-            'get_if_freight_tamt':self.get_if_freight_tamt,
-            'get_cst_lb':self.get_cst_lb,
-            'get_s3':self.get_s3,
-            'get_sub_ed':self.get_sub_ed,
+#             'get_date': self.get_date,
+#             'get_date_time': self.get_date,
+#             'get_total_amount': self.get_total_amount,
+#             'amount_to_text': self.amount_to_text,
+#             'tpt_amount_to_text': self.tpt_amount_to_text,
+#             'get_qty_mt': self.get_qty_mt,
+#             'get_qty_mt1': self.get_qty_mt1,
+#             'get_qty_mt2': self.get_qty_mt2,
+#             'get_amt': self.get_amt,
+#             'get_qty_bags': self.get_qty_bags,
+# #             'get_qty_bags_gross': self.get_qty_bags_gross,
+#             'get_total': self.get_total,
+#             'get_ed_example': self.get_ed_example,
+#             'get_total_example': self.get_total_example,
+#             'get_excise_duty': self.get_excise_duty, 
+#             'get_excise_duty_amt': self.get_excise_duty_amt,
+#             'get_subtotal': self.get_subtotal,
+#             'get_range_label':self.get_range_label,
+#             'get_loc':self.get_loc,
+#             'get_comm':self.get_comm,
+#             'get_ce':self.get_ce,
+#             'get_ecc':self.get_ecc,
+#             'get_pan':self.get_pan,
+#             'get_cst':self.get_cst,
+#             'get_tin':self.get_tin,
+#             'c':self.c, 
+#             'z':self.z,
+#             'get_app':self.get_app, 
+#             'get_if_freight_lb':self.get_if_freight_lb,
+#             'get_if_freight_amt':self.get_if_freight_amt,
+#             'get_if_freight_tamt':self.get_if_freight_tamt,
+#             'get_cst_lb':self.get_cst_lb,
+#             'get_s3':self.get_s3,
+#             'get_sub_ed':self.get_sub_ed,
         })
     def get_sub_ed(self, line):        
         amt = 0.0

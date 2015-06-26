@@ -132,15 +132,15 @@ class hop_dong(osv.osv):
             return {
                 'type': 'ir.actions.report.xml',
                 'report_name': 'hopdong_noi_report',
-                'datas': datas,
-                'nodestroy' : True
+#                 'datas': datas,
+#                 'nodestroy' : True
                 }
         else:
             return {
                 'type': 'ir.actions.report.xml',
                 'report_name': 'hop_dong_ngoai_report',
-                'datas': datas,
-                'nodestroy' : True
+#                 'datas': datas,
+#                 'nodestroy' : True
             }
     
     def duyet(self, cr, uid, ids, context=None):
