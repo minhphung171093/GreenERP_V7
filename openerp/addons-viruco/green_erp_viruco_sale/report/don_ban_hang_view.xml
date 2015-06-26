@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+    	<record id="don_ban_hang_noi_report" model="ir.actions.report.xml">
+	        <field name="name">don.ban.hang.noi.report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">sale.order</field>
+	        <field name="report_name">Đơn bán hàng nội</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-odt</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-doc'),('compatible_types','=','oo-odt')]"/>
+	        <field name="parser_loc">green_erp_viruco_sale/report/don_ban_hang_noi.py</field>
+	        <field name="report_rml">green_erp_viruco_sale/report/don_ban_hang_noi.odt</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record> 
+    	   
+    	<report 
+			auto="False" 
+			menu="True"
+			id="don_ban_hang_noi_report" 
+			model="sale.order" 
+			name="don_ban_hang_noi_report"
+	        string="Đơn đặt hàng nội"
+	        rml="green_erp_viruco_sale/report/don_ban_hang_noi.odt"/> 
+	        
+	    <record id="don_ban_hang_ngoai_report" model="ir.actions.report.xml">
+	        <field name="name">don.ban.hang.ngoai.report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">sale.order</field>
+	        <field name="report_name">Đơn bán hàng ngoại</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-odt</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-doc'),('compatible_types','=','oo-odt')]"/>
+	        <field name="parser_loc">green_erp_viruco_sale/report/don_ban_hang_ngoai.py</field>
+	        <field name="report_rml">green_erp_viruco_sale/report/don_ban_hang_ngoai.odt</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record> 
+    	   
+    	<report 
+			auto="False" 
+			menu="True"
+			id="don_ban_hang_ngoai_report" 
+			model="sale.order" 
+			name="don_ban_hang_ngoai_report"
+	        string="Đơn đặt hàng ngoại"
+	        rml="green_erp_viruco_sale/report/don_ban_hang_ngoai.odt"/>     
+	    
+	  
+	</data>
+</openerp>

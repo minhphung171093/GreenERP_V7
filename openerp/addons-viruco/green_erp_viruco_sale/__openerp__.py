@@ -34,6 +34,7 @@
              'sale_view.xml',
              'data/property_data.xml',
              'menu.xml',
+             'report/don_ban_hang_view.xml',
              ],
     'demo': [],
     'test': [],
