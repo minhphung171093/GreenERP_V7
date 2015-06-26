@@ -25,8 +25,11 @@
     'description': """Stock""",
     'author': "tranhung07081989@gmail.com",
     'website': "www.acespritech.com",
-    'depends': [],
+    'depends': ['stock','green_erp_viruco_sale'],
     'data': [
+            'config_view.xml',
+            'stock_view.xml', 
+            
              ],
     'demo': [],
     'test': [],
