@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+    	<record id="denghi_nhapkho_report" model="ir.actions.report.xml">
+	        <field name="name">denghi.nhapkho.report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">stock.picking.in</field>
+	        <field name="report_name">Đề nghị nhập kho</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-odt</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-doc'),('compatible_types','=','oo-odt')]"/>
+	        <field name="parser_loc">green_erp_viruco_stock/report/denghi_nhapkho.py</field>
+	        <field name="report_rml">green_erp_viruco_stock/report/denghi_nhapkho.odt</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record> 
+    	   
+    	<report 
+			auto="False" 
+			menu="True"
+			id="denghi_nhapkho_report" 
+			model="stock.picking.in" 
+			name="denghi_nhapkho_report"
+	        string="Đề nghị nhập kho"
+	        rml="green_erp_viruco_stock/report/denghi_nhapkho.odt"/> 
+	        
+    </data>
+    
+</openerp>

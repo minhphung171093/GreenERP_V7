@@ -18,23 +18,5 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-{
-    'name': 'Viruco Stock',
-    'version': '1.0',
-    'category': 'GreenERP',
-    'description': """Stock""",
-    'author': "tranhung07081989@gmail.com",
-    'website': "www.acespritech.com",
-    'depends': ['stock','green_erp_viruco_sale'],
-    'data': [
-            'config_view.xml',
-            'stock_view.xml', 
-            'report/denghi_nhapkho_view.xml',
-            
-             ],
-    'demo': [],
-    'test': [],
-    'installable': True,
-    'auto_install': False,
-}
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+import denghi_nhapkho
