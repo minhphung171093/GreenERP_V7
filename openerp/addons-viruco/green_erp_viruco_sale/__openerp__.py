@@ -28,6 +28,8 @@
     'depends': ['sale','sale_stock','product','properties','report_aeroo','report_aeroo_ooo'],
     'data': [
              'report/hopdong_noi_report_view.xml',
+             'report/hopdong_mua_report_view.xml',
+             'report/hopdong_ngoai_report_view.xml',
              'hop_dong_view.xml',
              'config_view.xml',
              'product_product_view.xml',

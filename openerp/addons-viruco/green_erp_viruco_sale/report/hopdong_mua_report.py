@@ -35,7 +35,7 @@ class Parser(report_sxw.rml_parse):
             'convert_date': self.convert_date,
             'get_dieukhoanchung': self.get_dieukhoanchung,
             'get_tax': self.get_tax,
-            'get_nganhang': self.get_nganhang,            
+            'get_nganhang': self.get_nganhang,
         })
         
     def convert_date(self, date):
@@ -76,3 +76,4 @@ class Parser(report_sxw.rml_parse):
             bank = o.partner_id.bank_ids[0]
             rs+=bank.acc_number+' - '+bank.bank_name
         return rs 
+    

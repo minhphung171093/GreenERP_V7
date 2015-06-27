@@ -16,6 +16,17 @@ import codecs
 class hop_dong(osv.osv):
     _name = "hop.dong"
     
+    def default_get(self, cr, uid, fields, context=None):
+        if context is None:
+            context = {}
+        res = super(hop_dong, self).default_get(cr, uid, fields, context=context)
+        if context.get('default_type')=='hd_ngoai':
+            property = self.pool.get('admin.property')._get_project_property_by_name(cr, uid, 'properties_payment_terms')
+        else:
+            property = self.pool.get('admin.property')._get_project_property_by_name(cr, uid, 'properties_phuongthucthanhtoan')
+        res.update({'phuongthuc_thanhtoan':property and property.value or False})    
+        return res
+    
     def _amount_line_tax(self, cr, uid, line, context=None):
         val = 0.0
         for c in self.pool.get('account.tax').compute_all(cr, uid, line.tax_id, line.price_unit, line.product_qty, line.product_id, line.hopdong_id.partner_id)['taxes']:
@@ -75,6 +86,7 @@ class hop_dong(osv.osv):
         'partial_shipment':fields.boolean('Partial shipment'),
         'transshipment':fields.char('Transshipment'),
         'thongbao_nhanhang':fields.char('Thông báo nhận hàng'),
+        'chat_luong':fields.char('Chất lượng'),
         'destinaltion':fields.char('Destinaltion'),
         'arbitration_id': fields.many2one('sale.arbitration','Arbitration',readonly=True, states={'moi_tao': [('readonly', False)]}),
         'phucluc_hd':fields.text('Phụ lục Hợp đồng'),
@@ -109,16 +121,11 @@ class hop_dong(osv.osv):
             ], 'Trạng thái',readonly=True, states={'moi_tao': [('readonly', False)]}),
     }
     
-    def _get_phuongthuc_thanhtoan(self,cr, uid, context=None):
-        property = self.pool.get('admin.property')._get_project_property_by_name(cr, uid, 'properties_phuongthucthanhtoan')
-        return property and property.value or False
-    
     _defaults = {
         'type': 'hd_noi',
         'tu_ngay': time.strftime('%Y-%m-%d'),
         'state': 'moi_tao',
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'hop.dong', context=c),
-        'phuongthuc_thanhtoan': _get_phuongthuc_thanhtoan,
     }
     
     def print_hopdong(self, cr, uid, ids, context=None):
@@ -135,10 +142,17 @@ class hop_dong(osv.osv):
 #                 'datas': datas,
 #                 'nodestroy' : True
                 }
+        elif hopdong.type=='hd_mua':
+            return {
+                'type': 'ir.actions.report.xml',
+                'report_name': 'hopdong_mua_report',
+#                 'datas': datas,
+#                 'nodestroy' : True
+            }
         else:
             return {
                 'type': 'ir.actions.report.xml',
-                'report_name': 'hop_dong_ngoai_report',
+                'report_name': 'hopdong_ngoai_report',
 #                 'datas': datas,
 #                 'nodestroy' : True
             }
