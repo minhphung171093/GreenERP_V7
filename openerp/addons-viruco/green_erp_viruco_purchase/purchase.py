@@ -25,6 +25,47 @@ class purchase_order(osv.osv):
         'user_id': lambda self, cr, uid, context=None: uid,
     }
     
+    def _prepare_order_picking(self, cr, uid, order, context=None):
+        return {
+            'name': self.pool.get('ir.sequence').get(cr, uid, 'stock.picking.in'),
+            'origin': order.name + ((order.origin and (':' + order.origin)) or ''),
+            'date': self.date_to_datetime(cr, uid, order.date_order, context),
+            'partner_id': order.partner_id.id,
+            'invoice_state': '2binvoiced' if order.invoice_method == 'picking' else 'none',
+            'type': 'in',
+            'purchase_id': order.id,
+            'nguoi_denghi_id': order.user_id and order.user_id.id or False,
+            'company_id': order.company_id.id,
+            'move_lines' : [],
+        }
+    
+    def _prepare_order_line_move(self, cr, uid, order, order_line, picking_id, context=None):
+        price_unit = order_line.price_unit
+        if order.currency_id.id != order.company_id.currency_id.id:
+            #we don't round the price_unit, as we may want to store the standard price with more digits than allowed by the currency
+            price_unit = self.pool.get('res.currency').compute(cr, uid, order.currency_id.id, order.company_id.currency_id.id, price_unit, round=False, context=context)
+        return {
+            'name': order_line.name or '',
+            'product_id': order_line.product_id.id,
+            'product_qty': order_line.product_qty,
+            'product_uos_qty': order_line.product_qty,
+            'product_uom': order_line.product_uom.id,
+            'product_uos': order_line.product_uom.id,
+            'date': self.date_to_datetime(cr, uid, order.date_order, context),
+            'date_expected': self.date_to_datetime(cr, uid, order_line.date_planned, context),
+            'location_id': order.partner_id.property_stock_supplier.id,
+            'location_dest_id': order.location_id.id,
+            'picking_id': picking_id,
+            'partner_id': order.dest_address_id.id or order.partner_id.id,
+            'move_dest_id': order_line.move_dest_id.id,
+            'state': 'draft',
+            'type':'in',
+            'purchase_line_id': order_line.id,
+            'company_id': order.company_id.id,
+            'price_unit': price_unit,
+            'hop_dong_mua_id': order.hop_dong_id and order.hop_dong_id.id or False,
+        }
+    
 purchase_order()
 
 class purchase_order_line(osv.osv):

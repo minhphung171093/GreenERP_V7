@@ -35,6 +35,23 @@ class sale_order(osv.osv):
         'ngaygui_chungtugoc':fields.date('Ngày gửi chứng từ gốc'),
     }
     
+    def _prepare_order_picking(self, cr, uid, order, context=None):
+        pick_name = self.pool.get('ir.sequence').get(cr, uid, 'stock.picking.out')
+        return {
+            'name': pick_name,
+            'origin': order.name,
+            'date': self.date_to_datetime(cr, uid, order.date_order, context),
+            'type': 'out',
+            'state': 'auto',
+            'move_type': order.picking_policy,
+            'sale_id': order.id,
+            'partner_id': order.partner_shipping_id.id,
+            'note': order.note,
+            'invoice_state': (order.order_policy=='picking' and '2binvoiced') or 'none',
+            'company_id': order.company_id.id,
+            'nguoi_denghi_id': order.user_id and order.user_id.id or False,
+        }
+    
 sale_order()
 class sale_order_line(osv.osv):
     _inherit = "sale.order.line"
