@@ -22,7 +22,7 @@ DATE_FORMAT = "%Y-%m-%d"
 from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT, float_compare
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
-from green_erp_viruco_sale.report import amount_to_text_vn
+from green_erp_viruco_sale.report import amount_to_text_en
 
 class Parser(report_sxw.rml_parse):
         
@@ -33,16 +33,14 @@ class Parser(report_sxw.rml_parse):
             'convert':self.convert,
             'convert_f_amount':self.convert_f_amount,
             'convert_date': self.convert_date,
-            'get_dieukhoanchung': self.get_dieukhoanchung,
-            'get_tax': self.get_tax,
-            'get_nganhang': self.get_nganhang,            
+            'get_tong': self.get_tong,
         })
         
     def convert_date(self, date):
         if not date:
             date = time.strftime(DATE_FORMAT)
         date = datetime.strptime(date, DATE_FORMAT)
-        return date.strftime('%d/%m/%Y')
+        return date.strftime('%d-%b-%y')
         
     def convert_f_amount(self, amount):
         a = format(amount,',')
@@ -52,27 +50,25 @@ class Parser(report_sxw.rml_parse):
         return a.replace(',',' ')
     
     def convert(self, amount):
-        amount_text = amount_to_text_vn.amount_to_text(amount, 'vn')
+        amount_text = amount_to_text_en.amount_to_text(amount, 'en', 'Dollars')
         if amount_text and len(amount_text)>1:
             amount = amount_text[1:]
             head = amount_text[:1]
             amount_text = head.upper()+amount
         return amount_text
     
-    def get_tax(self,o):
-        tax = 0
-        if len(o.hopdong_line)>=1:
-            for t in o.hopdong_line[0].tax_id:
-                tax += t.amount*100
-        return int(tax)
-    
-    def get_dieukhoanchung(self):
-        property = self.pool.get('admin.property')._get_project_property_by_name(self.cr, self.uid, 'properties_dieukhoanchung')
-        return property and property.value or False
-    
-    def get_nganhang(self,o):
-        rs = ''
-        if o.partner_id and o.partner_id.bank_ids:
-            bank = o.partner_id.bank_ids[0]
-            rs+=bank.acc_number+' - '+bank.bank_name
-        return rs 
+    def get_tong(self, o):
+        qty = 0
+        dongia = 0
+        thanhtien = 0
+        for line in o.hopdong_line:
+            qty+=line.product_qty
+            dongia += line.price_unit
+            thanhtien += line.price_subtotal
+        return {
+            'qty': qty,
+            'dongia': dongia,
+            'thanhtien': thanhtien,    
+        }
+        
+        

@@ -14,10 +14,19 @@
         
         <record id="properties_phuongthucthanhtoan" model="admin.property">
             <field name="name">properties_phuongthucthanhtoan</field>
-            <field name="value">- Phương thức thanh toán: 
-- Bên A thanh toán cho bên B % giá trị hợp đồng trước khi nhận hàng theo từng lô.
+            <field name="value">- Phương thức thanh toán: chuyển khoản.
+- Bên A thanh toán cho bên B 100% giá trị hợp đồng trước khi nhận hàng theo từng lô.
 - Nếu bên nào vi phạm hợp đồng thì phải chịu tiền phạt vi phạm cho bên kia 8% giá trị hợp đồng và bồi thường mọi thiệt hại do việc vi phạm gây ra.
 - Bên vận chuyển sẽ đại diện bên mua cân hàng kiểm tra trọng lượng hàng hóa, do đó đề nghị bên bán tạo điều kiện đển bên vận chuyển cân hàng đầy đủ chính xác.</field>
+        </record>
+        
+        <record id="properties_payment_terms" model="admin.property">
+            <field name="name">properties_payment_terms</field>
+            <field name="value">Currency	USD 
++ 10% by T/T in advance latest on 03 Feb. 15.
+If any default in time of LC opening, at the Seller's option, the Seller, by writen notice to the Buyer, 1. may extend the validtity of transfer or 2. may terminate the contract.
+Banking charges outside of Vietnam is not at the account of the Seller.
+Third pary's documents are acceptable</field>
         </record>
     
     </data>

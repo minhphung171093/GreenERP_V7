@@ -209,6 +209,9 @@
 	                            </group>
 	                            <div class="oe_clear"/>
 							</page>
+							<page string="Payment terms">
+								<field name="phuongthuc_thanhtoan" nolabel='1'/>
+							</page>
 						</notebook>
 		         	</sheet>
 		         </form>
@@ -290,6 +293,7 @@
 									<field name="ngay_nhanhang" />
 									<field name="diadiem_nhanhang" />
 									<field name="thongbao_nhanhang" />
+									<field name="chat_luong" />
 								</group>
 							</page>
 							<page string="Thông tin mặt hàng" >
