@@ -1,8 +1,9 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Acespritech Solutions Pvt. Ltd.
-#    Copyright (C) 2013-2014
+#    OpenERP, Open Source Management Solution
+#    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
+#    Copyright (C) 2011-2012 Serpent Consulting Services (<http://www.serpentcs.com>)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,6 +20,8 @@
 #
 ##############################################################################
 
-import purchase
-import report
+#----------------------------------------------------------
+# A Module to School Fees Management System
+#-------------------------------------------------------
+import don_mua_hang
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

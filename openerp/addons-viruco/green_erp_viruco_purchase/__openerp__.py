@@ -27,6 +27,7 @@
     'website': "www.acespritech.com",
     'depends': ['purchase','green_erp_viruco_sale'],
     'data': [
+        'report/don_mua_hang_view.xml',
         'purchase_view.xml',
              ],
     'demo': [],
