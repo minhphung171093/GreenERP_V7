@@ -22,3 +22,11 @@ class lo_trinh(osv.osv):
     }
     
 lo_trinh()
+class cang_donghang(osv.osv):
+    _name = 'cang.donghang'
+    _columns = {
+        'name':fields.char('Name',size=1024,required=True),
+        'description': fields.text('Description'),
+    }
+    
+cang_donghang()

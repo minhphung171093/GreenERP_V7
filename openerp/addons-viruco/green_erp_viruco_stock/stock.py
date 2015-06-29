@@ -31,6 +31,7 @@ class stock_picking(osv.osv):
         'lotrinh_den_id':fields.many2one('lo.trinh','Lộ trình đến'),
         'dongia_vanchuyen':fields.float('Đơn giá vận chuyển'),
         'picking_location_dest_id': fields.many2one('stock.location', 'Destination Location',states={'done': [('readonly', True)]}, select=True,),
+        'cang_donghang_id': fields.many2one('cang.donghang', 'Cảng đóng hàng',states={'done': [('readonly', True)]}, select=True,),
     }
      
 stock_picking()
@@ -70,6 +71,7 @@ class stock_picking_out(osv.osv):
         'lotrinh_den_id':fields.many2one('lo.trinh','Lộ trình đến'),
         'dongia_vanchuyen':fields.float('Đơn giá vận chuyển'),
         'picking_location_dest_id': fields.many2one('stock.location', 'Destination Location',states={'done': [('readonly', True)]}, select=True,),
+        'cang_donghang_id': fields.many2one('cang.donghang', 'Cảng đóng hàng',states={'done': [('readonly', True)]}, select=True,),
     }
      
 stock_picking_out()
@@ -77,9 +79,11 @@ class stock_move(osv.osv):
     _inherit = "stock.move"
     _columns = {
         'chatluong_id':fields.many2one('chatluong.sanpham','Chất lượng'),
+        'quycach_baobi_id':fields.many2one('quycach.baobi','Quy cách bao bì'),
         'quycach_donggoi_id':fields.many2one('quycach.donggoi','Quy cách đóng gói'),
         'hop_dong_mua_id':fields.many2one('hop.dong','Hợp đồng mua'),
         'hop_dong_ban_id':fields.many2one('hop.dong','Hợp đồng bán'),
+        'ghichu':fields.char('Ghi chú'),
     }
 stock_move()    
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -162,6 +162,7 @@
                 <tree colors="grey:scrapped == True" string="Stock Moves">
                     <field name="product_id"/>
                     <field name="chatluong_id" />
+                    <field name="quycach_baobi_id" />
             		<field name="quycach_donggoi_id" />
                     <field name="product_qty" on_change="onchange_quantity(product_id, product_qty, product_uom, product_uos)"/>
                     <field name="product_uom" string="Unit of Measure" groups="product.group_uom"/>
@@ -169,6 +170,7 @@
                     <field name="product_uos" groups="product.group_uos"/>
                     <field name="hop_dong_mua_id" domain="[('type','=','hd_mua')]"/>
                     <field name="hop_dong_ban_id" domain="[('type','!=','hd_mua')]"/>
+                    <field name="ghichu" />
                     <field name="location_id" groups="stock.group_locations" invisible="1"/>
                     <field name="picking_id" invisible="1" />
                     <field name="create_date" invisible="1" />
@@ -241,9 +243,11 @@
                                 <field name="date"/>
                                 <field name="date_expected" on_change="onchange_date(date,date_expected)"/>
                                 <field name="chatluong_id" />
+                                <field name="quycach_baobi_id" />
 			            		<field name="quycach_donggoi_id" />
 			            		<field name="hop_dong_mua_id" domain="[('type','=','hd_mua')]"/>
 			            		<field name="hop_dong_ban_id" domain="[('type','!=','hd_mua')]"/>
+			            		<field name="ghichu" />
                             </group>
 
                             <group string="Locations" groups="stock.group_locations">
@@ -334,6 +338,7 @@
             	</field>
             	<field name="stock_journal_id" position="after">
             		<field name="picking_location_dest_id"  on_change="onchange_picking_location_dest_id(picking_location_dest_id, context)"/>
+            		<field name="cang_donghang_id"/>
             	</field>
             	<xpath expr="//field[@name='move_lines']" position="replace">
                     <field name="move_lines" string="Stock Move" context="{'address_out_id': partner_id, 'picking_type': 'out', 'form_view_ref':'green_erp_viruco_stock.view_move_picking_out_form', 'tree_view_ref':'green_erp_viruco_stock.view_move_picking_out_tree'}" options='{"reload_on_button": true}'/>

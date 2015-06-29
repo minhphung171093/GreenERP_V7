@@ -30,6 +30,7 @@
             'config_view.xml',
             'stock_view.xml', 
             'report/denghi_nhapkho_view.xml',
+            'report/denghi_xuathang_view.xml',
             
              ],
     'demo': [],
