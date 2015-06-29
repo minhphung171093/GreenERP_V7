@@ -24,6 +24,7 @@ class Parser(report_sxw.rml_parse):
         pool = pooler.get_pool(self.cr.dbname)
         self.localcontext.update({
             'convert_f_amount':self.convert_f_amount,
+            'get_phieunhapkho': self.get_phieunhapkho,
         })
         
     def convert_f_amount(self, amount):
@@ -32,5 +33,13 @@ class Parser(report_sxw.rml_parse):
         if len(b)==2 and len(b[1])==1:
             a+='0'
         return a.replace(',',' ')
+    
+    def get_phieunhapkho(self, line):
+        pnk = ''
+        for l in line.picking_ids:
+            pnk += l.name+', '
+        if pnk and len(pnk)>3:
+            pnk = pnk[:-2]
+        return pnk
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
