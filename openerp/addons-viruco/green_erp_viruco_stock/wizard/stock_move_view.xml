@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_split_hop_dong" model="ir.ui.view">
+                <field name="name">split.hop.dong.form</field>
+                <field name="model">split.hop.dong</field>
+                <field name="arch" type="xml">
+                <form string="Phân bổ hợp đồng" version="7.0">
+                    <group>
+                        <field name="product_id" readonly="1"/>
+                        <label for="qty"/>
+                        <div>
+                            <field name="qty" readonly="1" class="oe_inline"/>
+                            <field name="product_uom" readonly="1" class="oe_inline"/>
+                        </div>
+                        <field name="location_id" invisible="1"/>
+                    </group>
+                    <field name="line_ids">
+                        <tree string="Phân bổ hợp đồng" editable="bottom">
+                            <field name="hd_mua_id" domain="[('type','=','hd_mua')]"/>
+                            <field name="hd_ban_id" domain="[('type','in',['hd_noi','hd_ngoai'])]"/>
+                            <field name="quantity"/>
+                        </tree>
+                    </field>
+                    <footer>
+                        <button name="split_lot" string="Cắt" type="object" class="oe_highlight"/>
+                        hoặc
+                        <button string="Hủy bỏ" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+                </field>
+            </record>
+
+            <record id="action_split_hop_dong" model="ir.actions.act_window">
+                <field name="name">Phân bổ hợp đồng</field>
+                <field name="type">ir.actions.act_window</field>
+                <field name="res_model">split.hop.dong</field>
+                <field name="view_type">form</field>
+                <field name="view_mode">form</field>
+                <field name="target">new</field>
+                <field name="context">{'form_view_ref': False}</field>
+            </record>
+
+    </data>
+</openerp>

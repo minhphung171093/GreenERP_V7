@@ -175,6 +175,11 @@
                     <field name="picking_id" invisible="1" />
                     <field name="create_date" invisible="1" />
                     <field name="date_expected" invisible="1" />
+                    <button name="%(action_split_hop_dong)d"
+                       string="Phân bổ hợp đồng" type="action"
+                       icon="STOCK_EXECUTE"
+                       states="draft,waiting,confirmed,assigned"
+                       groups="base.group_user"/>
                     <button name="%(stock.move_scrap)d"
                        string="Scrap Products" type="action"
                        icon="terp-gtk-jump-to-ltr" context="{'scrap': True}"
