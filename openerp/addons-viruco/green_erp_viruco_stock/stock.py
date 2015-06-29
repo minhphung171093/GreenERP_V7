@@ -83,6 +83,7 @@ class stock_move(osv.osv):
         'quycach_donggoi_id':fields.many2one('quycach.donggoi','Quy cách đóng gói'),
         'hop_dong_mua_id':fields.many2one('hop.dong','Hợp đồng mua'),
         'hop_dong_ban_id':fields.many2one('hop.dong','Hợp đồng bán'),
+        'picking_ids': fields.many2many('stock.picking.in', 'move_picking_ref', 'move_id', 'picking_id', 'Phiếu nhập kho'),
         'ghichu':fields.char('Ghi chú'),
     }
 stock_move()    

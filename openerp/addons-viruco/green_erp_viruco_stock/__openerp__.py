@@ -29,6 +29,7 @@
     'data': [
         'report/denghi_xuathang_view.xml',
         'report/denghi_nhapkho_view.xml',
+        'report/denghi_xuatkho_view.xml',
         'wizard/stock_move_view.xml',
         'config_view.xml',
         'stock_view.xml', 

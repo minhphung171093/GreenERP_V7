@@ -46,7 +46,7 @@ class split_hop_dong(osv.osv_memory):
         'qty': fields.float('Quantity', digits_compute=dp.get_precision('Product Unit of Measure')),
         'product_id': fields.many2one('product.product', 'Product', required=True, select=True),
         'product_uom': fields.many2one('product.uom', 'Unit of Measure'),
-        'line_ids': fields.one2many('split.hop.dong.line', 'wizard_id', 'Phân bổ hợp đồng'),
+        'line_ids': fields.one2many('split.hop.dong.line', 'wizard_id', 'Phân bổ hợp đồng 1'),
         'location_id': fields.many2one('stock.location', 'Source Location')
      }
 
@@ -97,9 +97,10 @@ class split_hop_dong(osv.osv_memory):
 
                     if quantity_rest == 0:
                         current_move = move.id
-
+                    
+                    picking_ids = [p.id for p in line.picking_ids]
                     move_obj.write(cr, uid, [current_move], {'hop_dong_mua_id': line.hd_mua_id.id,
-                                                             'hop_dong_ban_id': line.hd_ban_id.id,
+                                                             'picking_ids': [(6,0,picking_ids)],
                                                              'state':move.state})
 
                     update_val = {}
@@ -114,12 +115,11 @@ split_hop_dong()
 
 class split_hop_dong_line(osv.osv_memory):
     _name = "split.hop.dong.line"
-    _description = "Stock move Split lines"
     _columns = {
         'quantity': fields.float('Quantity',required=True),
-        'wizard_id': fields.many2one('split.hop.dong', 'Parent Wizard',ondelete='cascade',required=True),
+        'wizard_id': fields.many2one('split.hop.dong', 'Parent Wizard',ondelete='cascade'),
         'hd_mua_id': fields.many2one('hop.dong', 'Hợp đồng mua',required=True),
-        'hd_ban_id': fields.many2one('hop.dong', 'Hợp đồng bán',required=True),
+        'picking_ids': fields.many2many('stock.picking.in', 'split_hd_picking_ref', 'split_hd_id', 'picking_id', 'Phiếu nhập kho',required=True),
     }
     _defaults = {
         'quantity': 1.0,
