@@ -18,9 +18,9 @@
                 </group>
                 <field name="line_ids" required='0'>
                     <tree string="Phân bổ hợp đồng" editable="bottom">
-                        <field name="hd_mua_id" domain="[('type','=','hd_mua')]"/>
-                        <field name="picking_ids" domain="[('type','=','in')]" widget="many2many_tags"/>
-                        <field name="quantity"/>
+                        <field name="hd_mua_id" required='1' domain="[('type','=','hd_mua')]"/>
+                        <field name="picking_ids" required='0' domain="[('type','=','in')]" widget="many2many_tags"/>
+                        <field name="quantity" required='1'/>
                     </tree>
                 </field>
                 <footer>

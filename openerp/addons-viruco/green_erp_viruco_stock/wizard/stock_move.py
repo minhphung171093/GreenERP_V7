@@ -46,7 +46,7 @@ class split_hop_dong(osv.osv_memory):
         'qty': fields.float('Quantity', digits_compute=dp.get_precision('Product Unit of Measure')),
         'product_id': fields.many2one('product.product', 'Product', required=True, select=True),
         'product_uom': fields.many2one('product.uom', 'Unit of Measure'),
-        'line_ids': fields.one2many('split.hop.dong.line', 'wizard_id', 'Phân bổ hợp đồng 1'),
+        'line_ids': fields.one2many('split.hop.dong.line', 'wizard_id', 'Phân bổ hợp đồng'),
         'location_id': fields.many2one('stock.location', 'Source Location')
      }
 
@@ -72,6 +72,8 @@ class split_hop_dong(osv.osv_memory):
                 lines = [l for l in data.line_ids if l]
                 total_move_qty = 0.0
                 for line in lines:
+                    if not line.picking_ids:
+                        raise osv.except_osv(_('Cảnh báo!'), _('Vui lòng nhập phiếu nhập kho!'))
                     quantity = line.quantity
                     total_move_qty += quantity
                     if total_move_qty > move_qty:
@@ -116,10 +118,10 @@ split_hop_dong()
 class split_hop_dong_line(osv.osv_memory):
     _name = "split.hop.dong.line"
     _columns = {
-        'quantity': fields.float('Quantity',required=True),
+        'quantity': fields.float('Quantity',required=False),
         'wizard_id': fields.many2one('split.hop.dong', 'Parent Wizard',ondelete='cascade'),
-        'hd_mua_id': fields.many2one('hop.dong', 'Hợp đồng mua',required=True),
-        'picking_ids': fields.many2many('stock.picking.in', 'split_hd_picking_ref', 'split_hd_id', 'picking_id', 'Phiếu nhập kho',required=True),
+        'hd_mua_id': fields.many2one('hop.dong', 'Hợp đồng mua',required=False),
+        'picking_ids': fields.many2many('stock.picking.in', 'split_hd_picking_ref', 'split_hd_id', 'picking_id', 'Phiếu nhập kho',required=False),
     }
     _defaults = {
         'quantity': 1.0,
