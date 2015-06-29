@@ -15,7 +15,7 @@
                     <field name="product_uom" string="Unit of Measure" groups="product.group_uom"/>
                     <field name="product_uos_qty" groups="product.group_uos"/>
                     <field name="product_uos" groups="product.group_uos"/>
-                    <field name="hop_dong_mua_id" domain="[('type','=','hd_mua')]"/>
+                    <field name="hop_dong_mua_id" readonly='1' domain="[('type','=','hd_mua')]"/>
                     <field name="location_id" groups="stock.group_locations" invisible="1"/>
                     <field name="picking_id" invisible="1" />
                     <field name="create_date" invisible="1" />
@@ -89,7 +89,7 @@
                                 <field name="date_expected" on_change="onchange_date(date,date_expected)"/>
                                 <field name="chatluong_id" />
 			            		<field name="quycach_donggoi_id" />
-			            		<field name="hop_dong_mua_id" domain="[('type','=','hd_mua')]"/>
+			            		<field name="hop_dong_mua_id" readonly='1' domain="[('type','=','hd_mua')]"/>
                             </group>
 
                             <group string="Locations" groups="stock.group_locations">
@@ -169,7 +169,7 @@
                     <field name="product_uos_qty" groups="product.group_uos"/>
                     <field name="product_uos" groups="product.group_uos"/>
                     <field name="hop_dong_mua_id" domain="[('type','=','hd_mua')]"/>
-                    <field name="hop_dong_ban_id" domain="[('type','!=','hd_mua')]"/>
+                    <field name="hop_dong_ban_id" readonly='1' domain="[('type','!=','hd_mua')]"/>
                     <field name="ghichu" />
                     <field name="location_id" groups="stock.group_locations" invisible="1"/>
                     <field name="picking_id" invisible="1" />
@@ -251,7 +251,7 @@
                                 <field name="quycach_baobi_id" />
 			            		<field name="quycach_donggoi_id" />
 			            		<field name="hop_dong_mua_id" domain="[('type','=','hd_mua')]"/>
-			            		<field name="hop_dong_ban_id" domain="[('type','!=','hd_mua')]"/>
+			            		<field name="hop_dong_ban_id" readonly='1' domain="[('type','!=','hd_mua')]"/>
 			            		<field name="ghichu" />
                             </group>
 

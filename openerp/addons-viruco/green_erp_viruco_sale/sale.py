@@ -51,6 +51,33 @@ class sale_order(osv.osv):
             'company_id': order.company_id.id,
             'nguoi_denghi_id': order.user_id and order.user_id.id or False,
         }
+#Them hop dong tren stock move khj confirm sale    
+    def _prepare_order_line_move(self, cr, uid, order, line, picking_id, date_planned, context=None):
+        location_id = order.shop_id.warehouse_id.lot_stock_id.id
+        output_id = order.shop_id.warehouse_id.lot_output_id.id
+        return {
+            'name': line.name,
+            'picking_id': picking_id,
+            'product_id': line.product_id.id,
+            'date': date_planned,
+            'date_expected': date_planned,
+            'product_qty': line.product_uom_qty,
+            'product_uom': line.product_uom.id,
+            'product_uos_qty': (line.product_uos and line.product_uos_qty) or line.product_uom_qty,
+            'product_uos': (line.product_uos and line.product_uos.id)\
+                    or line.product_uom.id,
+            'product_packaging': line.product_packaging.id,
+            'partner_id': line.address_allotment_id.id or order.partner_shipping_id.id,
+            'location_id': location_id,
+            'location_dest_id': output_id,
+            'sale_line_id': line.id,
+            'tracking_id': False,
+            'state': 'draft',
+            #'state': 'waiting',
+            'company_id': order.company_id.id,
+            'price_unit': line.product_id.standard_price or 0.0,
+            'hop_dong_ban_id': order.hop_dong_id and order.hop_dong_id.id or False,
+        }
     
 sale_order()
 class sale_order_line(osv.osv):
