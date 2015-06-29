@@ -2,16 +2,16 @@
 <openerp>
     <data>
     
-    	<record id="denghi_xuathang_report" model="ir.actions.report.xml">
-	        <field name="name">denghi.xuathang.report</field>
+    	<record id="denghi_xuatkho_report" model="ir.actions.report.xml">
+	        <field name="name">denghi.xuatkho.report</field>
 	        <field name="type">ir.actions.report.xml</field>
 	        <field name="model">stock.picking.out</field>
-	        <field name="report_name">Đề nghị xuất hàng</field>
+	        <field name="report_name">Đề nghị xuất kho</field>
 	        <field name="report_type">aeroo</field>
 	        <field name="in_format">oo-odt</field>
 	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-doc'),('compatible_types','=','oo-odt')]"/>
-	        <field name="parser_loc">green_erp_viruco_stock/report/denghi_xuathang.py</field>
-	        <field name="report_rml">green_erp_viruco_stock/report/denghi_xuathang.odt</field>
+	        <field name="parser_loc">green_erp_viruco_stock/report/denghi_xuatkho.py</field>
+	        <field name="report_rml">green_erp_viruco_stock/report/denghi_xuatkho.odt</field>
 	        <field name="parser_state">loc</field>
 	        <field name="tml_source">file</field>
 	        <field name="attachment_use" eval="0"/>
@@ -20,11 +20,11 @@
     	<report 
 			auto="False" 
 			menu="True"
-			id="denghi_xuathang_report" 
+			id="denghi_xuatkho_report" 
 			model="stock.picking.out" 
-			name="denghi_xuathang_report"
-	        string="Đề nghị xuất hàng"
-	        rml="green_erp_viruco_stock/report/denghi_xuathang.odt"/> 
+			name="denghi_xuatkho_report"
+	        string="Đề nghị xuất kho"
+	        rml="green_erp_viruco_stock/report/denghi_xuatkho.odt"/> 
 	        
     </data>
     
