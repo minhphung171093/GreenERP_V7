@@ -64,6 +64,9 @@ class purchase_order(osv.osv):
             'company_id': order.company_id.id,
             'price_unit': price_unit,
             'hop_dong_mua_id': order.hop_dong_id and order.hop_dong_id.id or False,
+            'chatluong_id': order_line.product_id.chatluong_id and order_line.product_id.chatluong_id.id or False,
+            'quycach_donggoi_id': order_line.product_id.quycach_donggoi_id and order_line.product_id.quycach_donggoi_id.id or False,
+            'quycach_baobi_id': order_line.product_id.quycach_baobi_id and order_line.product_id.quycach_baobi_id.id or False,
         }
     
 purchase_order()

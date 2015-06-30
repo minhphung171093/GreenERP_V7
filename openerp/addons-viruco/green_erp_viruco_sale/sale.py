@@ -77,6 +77,9 @@ class sale_order(osv.osv):
             'company_id': order.company_id.id,
             'price_unit': line.product_id.standard_price or 0.0,
             'hop_dong_ban_id': order.hop_dong_id and order.hop_dong_id.id or False,
+            'chatluong_id': line.product_id.chatluong_id and line.product_id.chatluong_id.id or False,
+            'quycach_donggoi_id': line.product_id.quycach_donggoi_id and line.product_id.quycach_donggoi_id.id or False,
+            'quycach_baobi_id': line.product_id.quycach_baobi_id and line.product_id.quycach_baobi_id.id or False,
         }
     
 sale_order()
