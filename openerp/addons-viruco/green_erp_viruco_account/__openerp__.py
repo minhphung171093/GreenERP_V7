@@ -25,7 +25,7 @@
     'description': """Account""",
     'author': "tranhung07081989@gmail.com",
     'website': "www.acespritech.com",
-    'depends': [],
+    'depends': ['green_erp_viruco_base'],
     'data': [
              ],
     'demo': [],

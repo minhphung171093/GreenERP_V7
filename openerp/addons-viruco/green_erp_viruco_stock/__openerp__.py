@@ -25,7 +25,7 @@
     'description': """Stock""",
     'author': "tranhung07081989@gmail.com",
     'website': "www.acespritech.com",
-    'depends': ['stock','green_erp_viruco_sale','report_aeroo','report_aeroo_ooo'],
+    'depends': ['green_erp_viruco_base','stock','green_erp_viruco_sale','report_aeroo','report_aeroo_ooo'],
     'data': [
         'report/denghi_xuathang_view.xml',
         'report/denghi_nhapkho_view.xml',

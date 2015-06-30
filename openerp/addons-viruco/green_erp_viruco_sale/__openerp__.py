@@ -25,7 +25,7 @@
     'description': """Sale""",
     'author': "tranhung07081989@gmail.com",
     'website': "www.acespritech.com",
-    'depends': ['sale','sale_stock','product','properties','report_aeroo','report_aeroo_ooo'],
+    'depends': ['green_erp_viruco_base','sale','sale_stock','product','properties','report_aeroo','report_aeroo_ooo'],
     'data': [
              'report/hopdong_noi_report_view.xml',
              'report/hopdong_mua_report_view.xml',
