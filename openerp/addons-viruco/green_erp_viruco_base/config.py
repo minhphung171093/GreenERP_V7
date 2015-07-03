@@ -12,32 +12,32 @@ from datetime import datetime
 import calendar
 import openerp.addons.decimal_precision as dp
 import codecs
-# import os
-# from xlrd import open_workbook,xldate_as_tuple
-# from openerp import modules
-# base_path = os.path.dirname(modules.get_module_path('green_erp_viruco_base'))
+import os
+from xlrd import open_workbook,xldate_as_tuple
+from openerp import modules
+base_path = os.path.dirname(modules.get_module_path('green_erp_viruco_base'))
 
 
-# class res_country_state(osv.osv):
-#     _inherit = "res.country.state"
-#     _columns = {
-#     }
-#     def init(self, cr):
-#         country_obj = self.pool.get('res.country')
-#         wb = open_workbook(base_path + '/green_erp_viruco_base/data/TinhTP.xls')
-#         for s in wb.sheets():
-#             if (s.name =='Sheet1'):
-#                 for row in range(1,s.nrows):
-#                     val0 = s.cell(row,0).value
-#                     val1 = s.cell(row,1).value
-#                     val2 = s.cell(row,2).value
-#                     country_ids = country_obj.search(cr, 1, [('code','=',val2)])
-#                     if country_ids:
-#                         state_ids = self.search(cr, 1, [('name','=',val1),('code','=',val0),('country_id','in',country_ids)])
-#                         if not state_ids:
-#                             self.create(cr, 1, {'name': val1,'code':val0,'country_id':country_ids[0]})
-#          
-# res_country_state()
+class res_country_state(osv.osv):
+    _inherit = "res.country.state"
+    _columns = {
+    }
+    def init(self, cr):
+        country_obj = self.pool.get('res.country')
+        wb = open_workbook(base_path + '/green_erp_viruco_base/data/TinhTP.xls')
+        for s in wb.sheets():
+            if (s.name =='Sheet1'):
+                for row in range(1,s.nrows):
+                    val0 = s.cell(row,0).value
+                    val1 = s.cell(row,1).value
+                    val2 = s.cell(row,2).value
+                    country_ids = country_obj.search(cr, 1, [('code','=',val2)])
+                    if country_ids:
+                        state_ids = self.search(cr, 1, [('name','=',val1),('code','=',val0),('country_id','in',country_ids)])
+                        if not state_ids:
+                            self.create(cr, 1, {'name': val1,'code':val0,'country_id':country_ids[0]})
+          
+res_country_state()
 
 class sale_arbitration(osv.osv):
     _name = 'sale.arbitration'
