@@ -92,7 +92,7 @@ class hop_dong(osv.osv):
         'phucluc_hd':fields.text('Phụ lục Hợp đồng'),
         'phuongthuc_thanhtoan':fields.text('Phương thức thanh toán'),
         'company_id': fields.many2one('res.company','Công ty',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
-        'partner_id': fields.many2one('res.partner','Khách hàng',required = True,domain="[('customer','=',True)]",readonly=True, states={'moi_tao': [('readonly', False)]}),
+        'partner_id': fields.many2one('res.partner','Khách hàng',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
         'hopdong_line': fields.one2many('hopdong.line','hopdong_id','Line',readonly=True, states={'moi_tao': [('readonly', False)]}),
         
         'amount_untaxed': fields.function(_amount_all, digits_compute=dp.get_precision('Account'), string='Cộng',

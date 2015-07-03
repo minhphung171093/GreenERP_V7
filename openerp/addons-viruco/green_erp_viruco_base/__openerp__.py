@@ -26,8 +26,9 @@
     'sequence': 14,
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',
-    'depends': ['web'],
+    'depends': ['web','base','purchase','sale','sale_stock','product','properties','report_aeroo','report_aeroo_ooo','stock'],
     'data': [
+            'config_view.xml',
     ],
     'css' : [
         "static/src/css/base.css",

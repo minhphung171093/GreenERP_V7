@@ -27,8 +27,7 @@ class stock_picking(osv.osv):
     _columns = {
         'nguoi_denghi_id':fields.many2one('res.users','Người đề nghị'),
         'donvi_vanchuyen':fields.many2one('res.partner','Đơn vị vận chuyển'),
-        'lotrinh_tu_id':fields.many2one('lo.trinh','Lộ trình từ'),
-        'lotrinh_den_id':fields.many2one('lo.trinh','Lộ trình đến'),
+        'lotrinh_id':fields.many2one('lo.trinh','Lộ trình'),
         'dongia_vanchuyen':fields.float('Đơn giá vận chuyển'),
         'picking_location_dest_id': fields.many2one('stock.location', 'Destination Location',states={'done': [('readonly', True)]}, select=True,),
         'cang_donghang_id': fields.many2one('cang.donghang', 'Cảng đóng hàng',states={'done': [('readonly', True)]}, select=True,),
@@ -48,8 +47,7 @@ class stock_picking_in(osv.osv):
     _columns = {
         'nguoi_denghi_id':fields.many2one('res.users','Người đề nghị'),
         'donvi_vanchuyen':fields.many2one('res.partner','Đơn vị vận chuyển'),
-        'lotrinh_tu_id':fields.many2one('lo.trinh','Lộ trình từ'),
-        'lotrinh_den_id':fields.many2one('lo.trinh','Lộ trình đến'),
+        'lotrinh_id':fields.many2one('lo.trinh','Lộ trình'),
         'dongia_vanchuyen':fields.float('Đơn giá vận chuyển'),
         'picking_location_dest_id': fields.many2one('stock.location', 'Destination Location',states={'done': [('readonly', True)]}, select=True,),
     }
@@ -67,8 +65,7 @@ class stock_picking_out(osv.osv):
     _columns = {
         'nguoi_denghi_id':fields.many2one('res.users','Người đề nghị'),
         'donvi_vanchuyen':fields.many2one('res.partner','Đơn vị vận chuyển'),
-        'lotrinh_tu_id':fields.many2one('lo.trinh','Lộ trình từ'),
-        'lotrinh_den_id':fields.many2one('lo.trinh','Lộ trình đến'),
+        'lotrinh_id':fields.many2one('lo.trinh','Lộ trình'),
         'dongia_vanchuyen':fields.float('Đơn giá vận chuyển'),
         'picking_location_dest_id': fields.many2one('stock.location', 'Destination Location',states={'done': [('readonly', True)]}, select=True,),
         'cang_donghang_id': fields.many2one('cang.donghang', 'Cảng đóng hàng',states={'done': [('readonly', True)]}, select=True,),

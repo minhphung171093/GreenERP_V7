@@ -4,7 +4,7 @@
     	<menuitem id="menu_cauhinh_dieukhoan"
     		action="properties.action_model_admin_properties"
     		name="Cấu hình điều khoản"
-    		parent="menu_config_hopdong"
+    		parent="green_erp_viruco_base.menu_config_hopdong"
 			sequence="10"/>
     </data>
 </openerp>

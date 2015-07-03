@@ -19,7 +19,6 @@
 #
 ##############################################################################
 import hop_dong
-import config
 import product_product
 import sale
 import report

@@ -17,7 +17,7 @@ import codecs
 class purchase_order(osv.osv):
     _inherit = "purchase.order"
     _columns = {
-        'hop_dong_id':fields.many2one('hop.dong','Hợp đồng',readonly=True,states={'draft': [('readonly', False)], 'sent': [('readonly', False)]}),
+        'hop_dong_id':fields.many2one('hop.dong','Hợp đồng',required = True,readonly=True,states={'draft': [('readonly', False)], 'sent': [('readonly', False)]}),
         'user_id':fields.many2one('res.users','Người đề nghị',readonly=True,states={'draft': [('readonly', False)], 'sent': [('readonly', False)]}),
     }
     

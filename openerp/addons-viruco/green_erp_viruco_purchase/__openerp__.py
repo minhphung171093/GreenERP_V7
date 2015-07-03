@@ -25,10 +25,11 @@
     'description': """Purchase""",
     'author': "tranhung07081989@gmail.com",
     'website': "www.acespritech.com",
-    'depends': ['green_erp_viruco_base','purchase','green_erp_viruco_sale','report_aeroo','report_aeroo_ooo'],
+    'depends': ['green_erp_viruco_base','purchase'],
     'data': [
-        'report/don_mua_hang_view.xml',
-        'purchase_view.xml',
+             'purchase_view.xml',
+             'report/don_mua_hang_view.xml',
+        
              ],
     'demo': [],
     'test': [],

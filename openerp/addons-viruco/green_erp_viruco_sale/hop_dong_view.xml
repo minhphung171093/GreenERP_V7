@@ -352,8 +352,7 @@
             <field name="act_window_id" ref="action_hop_dong_mua"/>
         </record>
         
-        <menuitem id="hop_dong" name="Hợp đồng" sequence="0"/>
-        <menuitem id="menu_hop_dong" parent="hop_dong" name="Hợp đồng" sequence="0"/>
+        <menuitem id="menu_hop_dong" parent="green_erp_viruco_base.hop_dong" name="Hợp đồng" sequence="0"/>
     	<menuitem id="menu_action_hop_dong_noi" action="action_hop_dong_noi" name="Hợp đồng nội" parent="menu_hop_dong" sequence="0"/>
 		<menuitem id="menu_action_hop_dong_ngoai" action="action_hop_dong_ngoai" name="Hợp đồng ngoại" parent="menu_hop_dong" sequence="1"/>
 		<menuitem id="menu_action_hop_dong_mua" action="action_hop_dong_mua" name="Hợp đồng mua" parent="menu_hop_dong" sequence="2"/>

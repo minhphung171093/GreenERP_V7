@@ -170,7 +170,7 @@
                     <field name="product_uos" groups="product.group_uos"/>
                     <field name="hop_dong_mua_id" domain="[('type','=','hd_mua')]"/>
                     <field name="hop_dong_ban_id" readonly='1' domain="[('type','!=','hd_mua')]"/>
-                    <field name="picking_ids" domain="[('type','!=','hd_mua')]" widget="many2many_tags"/>
+                    <field name="picking_ids" domain="[('purchase_id.hop_dong_id','=',hop_dong_mua_id)]" widget="many2many_tags"/>
                     <field name="ghichu" />
                     <field name="location_id" groups="stock.group_locations" invisible="1"/>
                     <field name="picking_id" invisible="1" />
@@ -299,8 +299,7 @@
             	</field>
             	<field name="date_done" position="after">
             		<field name="donvi_vanchuyen" />
-            		<field name="lotrinh_tu_id" />
-            		<field name="lotrinh_den_id" />
+            		<field name="lotrinh_id" />
             		<field name="dongia_vanchuyen" />
             	</field>
             </field>            
@@ -316,8 +315,7 @@
             	</field>
             	<field name="date_done" position="after">
             		<field name="donvi_vanchuyen" />
-            		<field name="lotrinh_tu_id" />
-            		<field name="lotrinh_den_id" />
+            		<field name="lotrinh_id" />
             		<field name="dongia_vanchuyen" />
             	</field>
             	<field name="stock_journal_id" position="after">
@@ -339,8 +337,7 @@
             	</field>
             	<field name="date_done" position="after">
             		<field name="donvi_vanchuyen" />
-            		<field name="lotrinh_tu_id" />
-            		<field name="lotrinh_den_id" />
+            		<field name="lotrinh_id" />
             		<field name="dongia_vanchuyen" />
             	</field>
             	<field name="stock_journal_id" position="after">
