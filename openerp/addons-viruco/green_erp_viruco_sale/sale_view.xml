@@ -30,7 +30,7 @@
             	</field>
             	<field name="project_id" position="after">
             		<field name="dieukien_giaohang_id"/>
-            		<field name="hop_dong_id" domain="[('type','!=','hd_mua'),('partner_id','=',partner_id)]"/>
+            		<field name="hop_dong_id" domain="[('type','!=','hd_mua'),('partner_id','=',partner_id),('state','=','da_duyet')]"/>
             	</field>
             	<field name="origin" position="after">
         			<div class="oe_edit_only">

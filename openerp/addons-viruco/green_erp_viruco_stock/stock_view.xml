@@ -253,7 +253,7 @@
 			            		<field name="quycach_donggoi_id" />
 			            		<field name="hop_dong_mua_id" domain="[('type','=','hd_mua')]"/>
 			            		<field name="hop_dong_ban_id" readonly='1' domain="[('type','!=','hd_mua')]"/>
-			            		<field name="picking_ids" domain="[('type','=','in')]" widget="many2many_tags"/>
+			            		<field name="picking_ids" domain="[('type','=','in'),('purchase_id.hop_dong_id','=',hop_dong_mua_id)]" widget="many2many_tags"/>
 			            		<field name="ghichu" />
                             </group>
 

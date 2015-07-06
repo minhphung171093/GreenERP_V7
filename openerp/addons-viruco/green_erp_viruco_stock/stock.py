@@ -12,7 +12,7 @@ from datetime import datetime
 import calendar
 import openerp.addons.decimal_precision as dp
 import codecs
-
+from openerp import netsvc
 
 class stock_picking(osv.osv):
     _inherit = "stock.picking"
@@ -32,8 +32,9 @@ class stock_picking(osv.osv):
         'picking_location_dest_id': fields.many2one('stock.location', 'Destination Location',states={'done': [('readonly', True)]}, select=True,),
         'cang_donghang_id': fields.many2one('cang.donghang', 'Cảng đóng hàng',states={'done': [('readonly', True)]}, select=True,),
     }
-     
+    
 stock_picking()
+
 class stock_picking_in(osv.osv):
     _inherit = "stock.picking.in"
     
