@@ -283,7 +283,7 @@
 	                    </group>
 	                    <group col='4' colspan='2'>
 	                    	<field name="company_id" context="{'show_address': 1}"/>
-	                    	<field name="partner_id"  context="{'show_address': 1}" string='Nhà cung cấp' domain="[('supplier','=',True)]"/>
+	                    	<field name="partner_id"  context="{'show_address': 1,'default_supplier':1,'default_customer':0}" string='Nhà cung cấp' domain="[('supplier','=',True)]"/>
 						</group>
 						<notebook>
 							<page string="Thông tin chung">
