@@ -2462,7 +2462,7 @@ class stock_move(osv.osv):
 
         self.write(cr, uid, move_ids, {'state': 'done', 'date': time.strftime(DEFAULT_SERVER_DATETIME_FORMAT)}, context=context)
         for id in move_ids:
-             wf_service.trg_trigger(uid, 'stock.move', id, cr)
+            wf_service.trg_trigger(uid, 'stock.move', id, cr)
 
         for pick_id in picking_ids:
             wf_service.trg_write(uid, 'stock.picking', pick_id, cr)
