@@ -124,12 +124,45 @@ class sale_order(osv.osv):
         invoice_vals.update(self._inv_get(cr, uid, order, context=context))
         return invoice_vals
     
+    def onchange_hop_dong_id(self, cr, uid, ids, hop_dong_id=False, context=None):
+        if ids:
+            cr.execute(''' delete from sale_order_line where order_id in %s ''',(tuple(ids),))
+        vals = {'order_line':[]}
+        order_line = []
+        if hop_dong_id:
+            hd_obj = self.pool.get('hop.dong')
+            for hd_line in hd_obj.browse(cr, uid, hop_dong_id).hopdong_line:
+                sql = '''
+                    select case when sum(product_uom_qty)!=0 then sum(product_uom_qty) else 0 end quantity
+                        from sale_order_line where hd_line_id=%s
+                '''%(hd_line.id)
+                cr.execute(sql)
+                quantity = cr.fetchone()[0]
+                if quantity<hd_line.product_qty:
+                    val_line={
+                        'product_id': hd_line.product_id and hd_line.product_id.id or False,
+                        'name':hd_line.name,
+                        'chatluong_id':hd_line.product_id and hd_line.product_id.chatluong_id and hd_line.product_id.chatluong_id.id or False,
+                        'quycach_donggoi_id':hd_line.product_id and hd_line.product_id.quycach_donggoi_id and hd_line.product_id.quycach_donggoi_id.id or False,
+                        'product_uom': hd_line.product_uom and hd_line.product_uom.id or False,
+                        'product_uom_qty': hd_line.product_qty-quantity,
+                        'price_unit': hd_line.price_unit,
+                        'tax_id': [(6,0,[t.id for t in hd_line.tax_id])],
+                        'hd_line_id': hd_line.id,
+                        'state': 'draft',
+                        'type': 'make_to_stock',
+                    }
+                    order_line.append((0,0,val_line))
+            vals['order_line'] = order_line
+        return {'value': vals}
+    
 sale_order()
 class sale_order_line(osv.osv):
     _inherit = "sale.order.line"
     _columns = {
                 'chatluong_id':fields.many2one('chatluong.sanpham','Chất lượng'),
                 'quycach_donggoi_id':fields.many2one('quycach.donggoi','Quy cách đóng gói'),
+                'hd_line_id':fields.many2one('hopdong.line','Thông tin mặt hàng'),
                 }
     
     def product_id_change(self, cr, uid, ids, pricelist, product, qty=0,
@@ -239,5 +272,5 @@ class sale_order_line(osv.osv):
         result.update({'chatluong_id': product_obj.chatluong_id.id,'quycach_donggoi_id': product_obj.quycach_donggoi_id.id})
         return {'value': result, 'domain': domain, 'warning': warning}
 sale_order_line()  
-    
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
