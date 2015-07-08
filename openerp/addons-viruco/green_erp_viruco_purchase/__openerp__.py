@@ -25,7 +25,7 @@
     'description': """Purchase""",
     'author': "tranhung07081989@gmail.com",
     'website': "www.acespritech.com",
-    'depends': ['green_erp_viruco_sale','green_erp_viruco_base'],
+    'depends': ['green_erp_viruco_account','green_erp_viruco_base'],
     'data': [
              'purchase_view.xml',
              'report/don_mua_hang_view.xml',
