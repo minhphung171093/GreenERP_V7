@@ -72,8 +72,8 @@ class split_hop_dong(osv.osv_memory):
                 lines = [l for l in data.line_ids if l]
                 total_move_qty = 0.0
                 for line in lines:
-                    if not line.picking_ids:
-                        raise osv.except_osv(_('Cảnh báo!'), _('Vui lòng nhập phiếu nhập kho!'))
+#                     if not line.picking_ids:
+#                         raise osv.except_osv(_('Cảnh báo!'), _('Vui lòng nhập phiếu nhập kho!'))
                     quantity = line.quantity
                     total_move_qty += quantity
                     if total_move_qty > move_qty:
@@ -100,9 +100,9 @@ class split_hop_dong(osv.osv_memory):
                     if quantity_rest == 0:
                         current_move = move.id
                     
-                    picking_ids = [p.id for p in line.picking_ids]
+#                     picking_ids = [p.id for p in line.picking_ids]
                     move_obj.write(cr, uid, [current_move], {'hop_dong_mua_id': line.hd_mua_id.id,
-                                                             'picking_ids': [(6,0,picking_ids)],
+                                                             'picking_in_id': line.picking_in_id.id,
                                                              'state':move.state})
 
                     update_val = {}
@@ -121,7 +121,8 @@ class split_hop_dong_line(osv.osv_memory):
         'quantity': fields.float('Quantity',required=False),
         'wizard_id': fields.many2one('split.hop.dong', 'Parent Wizard',ondelete='cascade'),
         'hd_mua_id': fields.many2one('hop.dong', 'Hợp đồng mua',required=False),
-        'picking_ids': fields.many2many('stock.picking.in', 'split_hd_picking_ref', 'split_hd_id', 'picking_id', 'Phiếu nhập kho',required=False),
+#         'picking_ids': fields.many2many('stock.picking.in', 'split_hd_picking_ref', 'split_hd_id', 'picking_id', 'Phiếu nhập kho',required=False),
+        'picking_in_id': fields.many2one('stock.picking.in', 'Phiếu nhập kho',required=True),
     }
     _defaults = {
         'quantity': 1.0,
