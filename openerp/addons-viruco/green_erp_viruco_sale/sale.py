@@ -35,6 +35,40 @@ class sale_order(osv.osv):
         'ngaygui_chungtugoc':fields.date('Ngày gửi chứng từ gốc'),
     }
     
+    def action_button_confirm(self, cr, uid, ids, context=None):
+        assert len(ids) == 1, 'This option should only be used for a single id at a time.'
+        sale_line_obj = self.pool.get('sale.order.line')
+        hop_dong_obj = self.pool.get('hop.dong')
+        hop_dong_line_obj = self.pool.get('hop.dong.line')
+        for sale in self.browse(cr, uid, ids):
+            if sale.hop_dong_id:
+                for hd_line in sale.hop_dong_t_id.hopdong_line:
+                    sql = '''
+                        select product_id, sum(product_uom_qty) as total_qty
+                        from sale_order_line l
+                        inner join sale_order s on l.order_id = s.id
+                        where s.hop_dong_t_id = %s and s.partner_id = %s and l.product_id = %s and s.state in ('done','progress')
+                        group by product_id
+                    '''%(sale.hop_dong_t_id.id,sale.partner_id.id,hd_line.product_id.id)
+                    cr.execute(sql)
+                    lines_qty = cr.dictfetchall()
+                    product_uom_qty = 0
+                    sale_order_lines = sale_line_obj.search(cr,uid,[('order_id','=',sale.id),('product_id','=',hd_line.product_id.id)])
+                    if sale_order_lines:
+                        product_uom_qty = sale_line_obj.browse(cr,uid,sale_order_lines[0]).product_uom_qty
+                        price_unit = sale_line_obj.browse(cr,uid,sale_order_lines[0]).price_unit
+                        if hd_line.tax_id != sale_line_obj.browse(cr,uid,sale_order_lines[0]).tax_id:
+                            raise osv.except_osv(_('Warning!'),_('Không thể duyệt sản phẩm thuế khác thuế trong hợp đồng: %s!')%(hd_line.tax_id))
+                        if hd_line.price_unit != price_unit:
+                            raise osv.except_osv(_('Warning!'),_('Không thể duyệt sản phẩm với đơn giá khác đơn giá trong hợp đồng: %s!')%(hd_line.price_unit))
+                        for line_qty in lines_qty:
+                            if line_qty['total_qty'] + product_uom_qty > hd_line.product_qty:
+                                raise osv.except_osv(_('Warning!'),_('Không thể duyệt sản phẩm với số lượng lớn hơn số lượng trong hợp đồng thầu: %s!')%(hd_line.product_qty))
+        raise osv.except_osv(_('Cảnh báo!'),_('Dung lai de kien tra!'))
+        wf_service = netsvc.LocalService('workflow')
+        wf_service.trg_validate(uid, 'sale.order', ids[0], 'order_confirm', cr)
+        return True
+    
     def _prepare_order_picking(self, cr, uid, order, context=None):
         pick_name = self.pool.get('ir.sequence').get(cr, uid, 'stock.picking.out')
         return {
