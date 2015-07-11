@@ -57,6 +57,51 @@ class purchase_order(osv.osv):
             vals['order_line'] = order_line
         return {'value': vals}
     
+    #Rang buoc khi mua hang
+    def wkf_confirm_order(self, cr, uid, ids, context=None):
+        todo = []
+        hop_dong_obj = self.pool.get('hop.dong')
+        hop_dong_line_obj = self.pool.get('hopdong.line')
+        for po in self.browse(cr, uid, ids, context=context):
+            if not po.order_line:
+                raise osv.except_osv(_('Error!'),_('You cannot confirm a purchase order without any purchase order line.'))
+            if po.invoice_method == 'picking' and not any([l.product_id and l.product_id.type in ('product', 'consu') for l in po.order_line]):
+                raise osv.except_osv(
+                    _('Error!'),
+                    _("You cannot confirm a purchase order with Invoice Control Method 'Based on incoming shipments' that doesn't contain any stockable item."))
+            if po.hop_dong_id:
+                for order_line in po.order_line:
+                    hop_dong_line = hop_dong_line_obj.search(cr,uid,[('hopdong_id','=',po.hop_dong_id.id),('product_id','=',order_line.product_id.id)])
+                    if not hop_dong_line:
+                        raise osv.except_osv(_('Warning!'),_('Sản phẩm %s không có trong hợp đồng mua!')%(order_line.product_id.name))
+                    sql = '''
+                        select product_id, sum(product_qty) as total_qty
+                        from purchase_order_line l
+                        inner join purchase_order p on l.order_id = p.id
+                        where p.hop_dong_id = %s and p.partner_id = %s and l.product_id = %s and p.state in ('confirmed','done','approved','except_picking','except_invoice')
+                        group by product_id
+                    '''%(po.hop_dong_id.id,po.partner_id.id,order_line.product_id.id)
+                    cr.execute(sql)
+                    lines_qty = cr.dictfetchall()
+                    product_qty = order_line.product_qty
+                    if hop_dong_line_obj.browse(cr,uid,hop_dong_line[0]).tax_id != order_line.taxes_id:
+                        raise osv.except_osv(_('Warning!'),_('Không thể duyệt sản phẩm có thuế khác thuế trong hợp đồng mua!'))
+                    if hop_dong_line_obj.browse(cr,uid,hop_dong_line[0]).price_unit != order_line.price_unit:
+                        raise osv.except_osv(_('Warning!'),_('Không thể duyệt sản phẩm với đơn giá khác đơn giá trong hợp đồng mua: %s!')%(hop_dong_line_obj.browse(cr,uid,hop_dong_line[0]).price_unit))
+                    if lines_qty:
+                        for line_qty in lines_qty:
+                            product_qty += line_qty['total_qty']
+                    if product_qty > hop_dong_line_obj.browse(cr,uid,hop_dong_line[0]).product_qty:
+                        raise osv.except_osv(_('Warning!'),_('Không thể duyệt sản phẩm với số lượng lớn hơn số lượng trong hợp đồng mua: %s!')%(hop_dong_line_obj.browse(cr,uid,hop_dong_line[0]).product_qty))
+            for line in po.order_line:
+                if line.state=='draft':
+                    todo.append(line.id)
+
+        self.pool.get('purchase.order.line').action_confirm(cr, uid, todo, context)
+        for id in ids:
+            self.write(cr, uid, [id], {'state' : 'confirmed', 'validator' : uid})
+        return True
+    
     def _prepare_order_picking(self, cr, uid, order, context=None):
         return {
             'name': self.pool.get('ir.sequence').get(cr, uid, 'stock.picking.in'),
