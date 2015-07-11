@@ -25,8 +25,10 @@
     'description': """Account""",
     'author': "tranhung07081989@gmail.com",
     'website': "www.acespritech.com",
-    'depends': ['green_erp_viruco_base'],
+    'depends': ['green_erp_viruco_base','account_voucher','account'],
     'data': [
+        'account_invoice_view.xml',
+        'account_voucher_view.xml',
              ],
     'demo': [],
     'test': [],

@@ -116,12 +116,87 @@ class sale_order(osv.osv):
             'quycach_baobi_id': line.product_id.quycach_baobi_id and line.product_id.quycach_baobi_id.id or False,
         }
     
+    def _prepare_invoice(self, cr, uid, order, lines, context=None):
+        """Prepare the dict of values to create the new invoice for a
+           sales order. This method may be overridden to implement custom
+           invoice generation (making sure to call super() to establish
+           a clean extension chain).
+
+           :param browse_record order: sale.order record to invoice
+           :param list(int) line: list of invoice line IDs that must be
+                                  attached to the invoice
+           :return: dict of value to create() the invoice
+        """
+        if context is None:
+            context = {}
+        journal_ids = self.pool.get('account.journal').search(cr, uid,
+            [('type', '=', 'sale'), ('company_id', '=', order.company_id.id)],
+            limit=1)
+        if not journal_ids:
+            raise osv.except_osv(_('Error!'),
+                _('Please define sales journal for this company: "%s" (id:%d).') % (order.company_id.name, order.company_id.id))
+        invoice_vals = {
+            'name': order.client_order_ref or '',
+            'origin': order.name,
+            'type': 'out_invoice',
+            'reference': order.client_order_ref or order.name,
+            'account_id': order.partner_id.property_account_receivable.id,
+            'partner_id': order.partner_invoice_id.id,
+            'journal_id': journal_ids[0],
+            'invoice_line': [(6, 0, lines)],
+            'currency_id': order.pricelist_id.currency_id.id,
+            'comment': order.note,
+            'payment_term': order.payment_term and order.payment_term.id or False,
+            'fiscal_position': order.fiscal_position.id or order.partner_id.property_account_position.id,
+            'date_invoice': context.get('date_invoice', False),
+            'company_id': order.company_id.id,
+            'user_id': order.user_id and order.user_id.id or False,
+            'hop_dong_id': order.hop_dong_id and order.hop_dong_id.id or False,
+        }
+
+        # Care for deprecated _inv_get() hook - FIXME: to be removed after 6.1
+        invoice_vals.update(self._inv_get(cr, uid, order, context=context))
+        return invoice_vals
+    
+    def onchange_hop_dong_id(self, cr, uid, ids, hop_dong_id=False, context=None):
+        if ids:
+            cr.execute(''' delete from sale_order_line where order_id in %s ''',(tuple(ids),))
+        vals = {'order_line':[]}
+        order_line = []
+        if hop_dong_id:
+            hd_obj = self.pool.get('hop.dong')
+            for hd_line in hd_obj.browse(cr, uid, hop_dong_id).hopdong_line:
+                sql = '''
+                    select case when sum(product_uom_qty)!=0 then sum(product_uom_qty) else 0 end quantity
+                        from sale_order_line where hd_line_id=%s
+                '''%(hd_line.id)
+                cr.execute(sql)
+                quantity = cr.fetchone()[0]
+                if quantity<hd_line.product_qty:
+                    val_line={
+                        'product_id': hd_line.product_id and hd_line.product_id.id or False,
+                        'name':hd_line.name,
+                        'chatluong_id':hd_line.product_id and hd_line.product_id.chatluong_id and hd_line.product_id.chatluong_id.id or False,
+                        'quycach_donggoi_id':hd_line.product_id and hd_line.product_id.quycach_donggoi_id and hd_line.product_id.quycach_donggoi_id.id or False,
+                        'product_uom': hd_line.product_uom and hd_line.product_uom.id or False,
+                        'product_uom_qty': hd_line.product_qty-quantity,
+                        'price_unit': hd_line.price_unit,
+                        'tax_id': [(6,0,[t.id for t in hd_line.tax_id])],
+                        'hd_line_id': hd_line.id,
+                        'state': 'draft',
+                        'type': 'make_to_stock',
+                    }
+                    order_line.append((0,0,val_line))
+            vals['order_line'] = order_line
+        return {'value': vals}
+    
 sale_order()
 class sale_order_line(osv.osv):
     _inherit = "sale.order.line"
     _columns = {
                 'chatluong_id':fields.many2one('chatluong.sanpham','Chất lượng'),
                 'quycach_donggoi_id':fields.many2one('quycach.donggoi','Quy cách đóng gói'),
+                'hd_line_id':fields.many2one('hopdong.line','Thông tin mặt hàng'),
                 }
     
     def product_id_change(self, cr, uid, ids, pricelist, product, qty=0,
@@ -231,5 +306,5 @@ class sale_order_line(osv.osv):
         result.update({'chatluong_id': product_obj.chatluong_id.id,'quycach_donggoi_id': product_obj.quycach_donggoi_id.id})
         return {'value': result, 'domain': domain, 'warning': warning}
 sale_order_line()  
-    
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

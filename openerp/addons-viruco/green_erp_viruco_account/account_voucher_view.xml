@@ -2,445 +2,84 @@
 <openerp>
     <data>
     
-	    <record id="sale_arbitration_tree_view" model="ir.ui.view">
-			<field name="name">sale.arbitration.tree</field>
-			<field name="model">sale.arbitration</field>
-			<field name="arch" type="xml">
-				<tree string="Arbitration">
-					<field name="name"/>
-					<field name="description"/>
-				</tree>
-			</field>
-		</record>
-		
-		<record id="sale_arbitration_filter_view" model="ir.ui.view">
-			<field name="name">sale.arbitration.filter</field>
-			<field name="model">sale.arbitration</field>
+    	<record id="view_vendor_receipt_form_inherit" model="ir.ui.view">
+            <field name="name">account.voucher.receipt.form.inherit</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_vendor_receipt_form"/>
             <field name="arch" type="xml">
-                <search string="Search Arbitration">
-                    <field name="name"/>
-               </search>
+            	<field name="journal_id" position="after">
+            		<field name="hop_dong_id" on_change="onchange_hopdong_id(hop_dong_id)" domain="[('partner_id','=',partner_id),('type','!=','hd_mua'),('state','=','da_duyet')]"/>
+            	</field>
+            	<xpath expr="//page[@string='Payment Information']" position="before">
+          			<page string='Các đợt thanh toán'>
+          				<field name='dot_thanhtoan_ids' nolabel='1'/>
+          			</page>
+            	</xpath>
+            	<xpath expr="//page[@string='Payment Information']" position="attributes">
+          			<attribute name="invisible">1</attribute>
+            	</xpath>
+            	<xpath expr="//field[@name='partner_id']" position="attributes">
+          			<attribute name="on_change">onchange_partner_id(partner_id, journal_id, amount, currency_id, type, date, hop_dong_id, context)</attribute>
+            	</xpath>
+            	<field name="company_id" position="after">
+            		<field name="nguoi_de_nghi_id"/>
+            	</field>
             </field>
-        </record>
-		
-		<record id="sale_arbitration_form_view" model="ir.ui.view">
-			<field name="name">sale.arbitration.form</field>
-			<field name="model">sale.arbitration</field>
-            <field name="arch" type="xml">
-	            <form string="Arbitration" version="7.0">
-	            	<sheet>
-	            		<group>
-		                	<field name="name"/>
-							<field name="description"/>
-						</group>
-		         	</sheet>
-		         </form>
-			</field>
-		</record>
-          
-		<record id="action_sale_arbitration" model="ir.actions.act_window">
-            <field name="name">Arbitration</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">sale.arbitration</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="sale_arbitration_tree_view"/>
-            <field name="domain">[]</field>
-        </record>
-<!--Dieu kien giao hang-->
-		
-		<record id="dieukien_giaohang_tree_view" model="ir.ui.view">
-			<field name="name">dieukien.giaohang.tree</field>
-			<field name="model">dieukien.giaohang</field>
-			<field name="arch" type="xml">
-				<tree string="Điều kiện giao hàng">
-					<field name="name"/>
-					<field name="description"/>
-				</tree>
-			</field>
-		</record>
-		
-		<record id="dieukien_giaohang_filter_view" model="ir.ui.view">
-			<field name="name">dieukien.giaohang.filter</field>
-			<field name="model">dieukien.giaohang</field>
-            <field name="arch" type="xml">
-                <search string="Điều kiện giao hàng">
-                    <field name="name"/>
-               </search>
-            </field>
-        </record>
-		
-		<record id="dieukien_giaohang_form_view" model="ir.ui.view">
-			<field name="name">dieukien.giaohang.form</field>
-			<field name="model">dieukien.giaohang</field>
-            <field name="arch" type="xml">
-	            <form string="Điều kiện giao hàng" version="7.0">
-	            	<sheet>
-	            		<group>
-		                	<field name="name"/>
-							<field name="description"/>
-						</group>
-		         	</sheet>
-		         </form>
-			</field>
-		</record>
-          
-		<record id="action_dieukien_giaohang" model="ir.actions.act_window">
-            <field name="name">Điều kiện giao hàng</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">dieukien.giaohang</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="dieukien_giaohang_tree_view"/>
-            <field name="domain">[]</field>
         </record>
         
-<!--Hinh thuc giao hang-->
-		
-		<record id="hinhthuc_giaohang_tree_view" model="ir.ui.view">
-			<field name="name">hinhthuc.giaohang.tree</field>
-			<field name="model">hinhthuc.giaohang</field>
-			<field name="arch" type="xml">
-				<tree string="Hình thức giao hàng">
-					<field name="name"/>
-					<field name="description"/>
-				</tree>
-			</field>
-		</record>
-		
-		<record id="hinhthuc_giaohang_filter_view" model="ir.ui.view">
-			<field name="name">hinhthuc.giaohang.filter</field>
-			<field name="model">hinhthuc.giaohang</field>
+        <record id="view_vendor_payment_form_inherit" model="ir.ui.view">
+            <field name="name">account.voucher.payment.form.inherit</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_vendor_payment_form"/>
             <field name="arch" type="xml">
-                <search string="Hình thức giao hàng">
-                    <field name="name"/>
-               </search>
+            	<field name="journal_id" position="after">
+            		<field name="hop_dong_id" on_change="onchange_hopdong_id(hop_dong_id)" domain="[('partner_id','=',partner_id),('type','=','hd_mua'),('state','=','da_duyet')]"/>
+            	</field>
+            	<xpath expr="//page[@string='Payment Information']" position="before">
+          			<page string='Các đợt thanh toán'>
+          				<field name='dot_thanhtoan_ids' nolabel='1'/>
+          			</page>
+            	</xpath>
+            	<xpath expr="//page[@string='Payment Information']" position="attributes">
+          			<attribute name="invisible">1</attribute>
+            	</xpath>
+            	<xpath expr="//field[@name='partner_id']" position="attributes">
+          			<attribute name="on_change">onchange_partner_id(partner_id, journal_id, amount, currency_id, type, date, hop_dong_id, context)</attribute>
+            	</xpath>
+            	<field name="company_id" position="after">
+            		<field name="nguoi_de_nghi_id"/>
+            	</field>
             </field>
         </record>
-		
-		<record id="hinhthuc_giaohang_form_view" model="ir.ui.view">
-			<field name="name">hinhthuc.giaohang.form</field>
-			<field name="model">hinhthuc.giaohang</field>
-            <field name="arch" type="xml">
-	            <form string="Hình thức giao hàng" version="7.0">
-	            	<sheet>
-	            		<group>
-		                	<field name="name"/>
-							<field name="description"/>
-						</group>
-		         	</sheet>
-		         </form>
-			</field>
-		</record>
-          
-		<record id="action_hinhthuc_giaohang" model="ir.actions.act_window">
-            <field name="name">Hình thức giao hàng</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">hinhthuc.giaohang</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="hinhthuc_giaohang_tree_view"/>
-            <field name="domain">[]</field>
-        </record>
-        
-<!--Chat luong san pham -->     
-        <record id="chatluong_sanpham_tree_view" model="ir.ui.view">
-			<field name="name">chatluong.sanpham.tree</field>
-			<field name="model">chatluong.sanpham</field>
-			<field name="arch" type="xml">
-				<tree string="Chất lượng sản phẩm">
-					<field name="name"/>
-					<field name="description"/>
-				</tree>
-			</field>
-		</record>
-		
-		<record id="chatluong_sanpham_filter_view" model="ir.ui.view">
-			<field name="name">chatluong.sanpham.filter</field>
-			<field name="model">chatluong.sanpham</field>
-            <field name="arch" type="xml">
-                <search string="Tìm kiếm Chất lượng sản phẩm">
-                    <field name="name"/>
-               </search>
-            </field>
-        </record>
-		
-		<record id="chatluong_sanpham_form_view" model="ir.ui.view">
-			<field name="name">chatluong.sanpham.form</field>
-			<field name="model">chatluong.sanpham</field>
-            <field name="arch" type="xml">
-	            <form string="Chất lượng sản phẩm" version="7.0">
-	            	<sheet>
-	            		<group>
-		                	<field name="name"/>
-							<field name="description"/>
-						</group>
-		         	</sheet>
-		         </form>
-			</field>
-		</record>
-          
-		<record id="action_chatluong_sanpham" model="ir.actions.act_window">
-            <field name="name">Chất lượng sản phẩm</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">chatluong.sanpham</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="chatluong_sanpham_tree_view"/>
-            <field name="domain">[]</field>
-        </record>
-        
-<!--Quy cach dong goi-->
-        <record id="quycach_donggoi_tree_view" model="ir.ui.view">
-			<field name="name">quycach.donggoi.tree</field>
-			<field name="model">quycach.donggoi</field>
-			<field name="arch" type="xml">
-				<tree string="Quy cách đóng gói">
-					<field name="name"/>
-					<field name="description"/>
-				</tree>
-			</field>
-		</record>
-		
-		<record id="quycach_donggoi_filter_view" model="ir.ui.view">
-			<field name="name">quycach.donggoi.filter</field>
-			<field name="model">quycach.donggoi</field>
-            <field name="arch" type="xml">
-                <search string="Tìm kiếm Quy cách đóng gói">
-                    <field name="name"/>
-               </search>
-            </field>
-        </record>
-		
-		<record id="quycach_donggoi_form_view" model="ir.ui.view">
-			<field name="name">quycach.donggoi.form</field>
-			<field name="model">quycach.donggoi</field>
-            <field name="arch" type="xml">
-	            <form string="Quy cách đóng gói" version="7.0">
-	            	<sheet>
-	            		<group>
-		                	<field name="name"/>
-							<field name="description"/>
-						</group>
-		         	</sheet>
-		         </form>
-			</field>
-		</record>
-          
-		<record id="action_quycach_donggoi" model="ir.actions.act_window">
-            <field name="name">Quy cách đóng gói</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">quycach.donggoi</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="quycach_donggoi_tree_view"/>
-            <field name="domain">[]</field>
-        </record>
-        
-<!--Quy cach bao bi-->
-        <record id="quycach_baobi_tree_view" model="ir.ui.view">
-			<field name="name">quycach.baobi.tree</field>
-			<field name="model">quycach.baobi</field>
-			<field name="arch" type="xml">
-				<tree string="Quy cách bao bì">
-					<field name="name"/>
-					<field name="description"/>
-				</tree>
-			</field>
-		</record>
-		
-		<record id="quycach_baobi_filter_view" model="ir.ui.view">
-			<field name="name">quycach.baobi.filter</field>
-			<field name="model">quycach.baobi</field>
-            <field name="arch" type="xml">
-                <search string="Tìm kiếm quy cách bao bì">
-                    <field name="name"/>
-               </search>
-            </field>
-        </record>
-		
-		<record id="quycach_baobi_form_view" model="ir.ui.view">
-			<field name="name">quycach.baobi.form</field>
-			<field name="model">quycach.baobi</field>
-            <field name="arch" type="xml">
-	            <form string="Quy cách bao bì" version="7.0">
-	            	<sheet>
-	            		<group>
-		                	<field name="name"/>
-							<field name="description"/>
-						</group>
-		         	</sheet>
-		         </form>
-			</field>
-		</record>
-          
-		<record id="action_quycach_baobi" model="ir.actions.act_window">
-            <field name="name">Quy cách bao bì</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">quycach.baobi</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="quycach_baobi_tree_view"/>
-            <field name="domain">[]</field>
-        </record>
-<!--Nha san xuat-->
-        <record id="nha_sanxuat_tree_view" model="ir.ui.view">
-			<field name="name">nha.sanxuat.tree</field>
-			<field name="model">nha.sanxuat</field>
-			<field name="arch" type="xml">
-				<tree string="Nhà sản xuất">
-					<field name="name"/>
-					<field name="description"/>
-				</tree>
-			</field>
-		</record>
-		
-		<record id="nha_sanxuat_filter_view" model="ir.ui.view">
-			<field name="name">nha.sanxuat.filter</field>
-			<field name="model">nha.sanxuat</field>
-            <field name="arch" type="xml">
-                <search string="Tìm kiếm nhà sản xuất">
-                    <field name="name"/>
-               </search>
-            </field>
-        </record>
-		
-		<record id="nha_sanxuat_form_view" model="ir.ui.view">
-			<field name="name">nha.sanxuat.form</field>
-			<field name="model">nha.sanxuat</field>
-            <field name="arch" type="xml">
-	            <form string="Nhà sản xuất" version="7.0">
-	            	<sheet>
-	            		<group>
-		                	<field name="name"/>
-							<field name="description"/>
-						</group>
-		         	</sheet>
-		         </form>
-			</field>
-		</record>
-          
-		<record id="action_nha_sanxuat" model="ir.actions.act_window">
-            <field name="name">Nhà sản xuất</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">nha.sanxuat</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="nha_sanxuat_tree_view"/>
-            <field name="domain">[]</field>
-        </record>
-        
-        <menuitem id="hop_dong" name="Hợp đồng" sequence="0"/>        
-        <menuitem id="menu_config_hopdong" parent="hop_dong" name="Cấu Hình" sequence="3"/>
-    	<menuitem id="menu_action_sale_arbitration" action="action_sale_arbitration" name="Luật định" parent="menu_config_hopdong" sequence="0"/>
-    	<menuitem id="menu_action_chatluong_sanpham" action="action_chatluong_sanpham" name="Chất lượng sản phẩm" parent="base.menu_base_config" sequence="0"/>
-    	<menuitem id="menu_action_quycach_donggoi" action="action_quycach_donggoi" name="Quy cách đóng gói" parent="base.menu_base_config" sequence="1"/>
-    	<menuitem id="menu_action_quycach_baobi" action="action_quycach_baobi" name="Quy cách bao bì" parent="base.menu_base_config" sequence="2"/>
-    	<menuitem id="menu_action_nha_sanxuat" action="action_nha_sanxuat" name="Nhà sản xuất" parent="base.menu_base_config" sequence="3"/>
-    	<menuitem id="menu_action_dieukien_giaohang" action="action_dieukien_giaohang" name="Điều kiện giao hàng" parent="base.menu_base_config" sequence="4"/>
-    	<menuitem id="menu_action_hinhthuc_giaohang" action="action_hinhthuc_giaohang" name="Hình thức giao hàng" parent="base.menu_base_config" sequence="4"/>
     	
-    	<record id="lo_trinh_tree_view" model="ir.ui.view">
-			<field name="name">lo.trinh.tree</field>
-			<field name="model">lo.trinh</field>
-			<field name="arch" type="xml">
-				<tree string="Lộ trình">
-					<field name="name"/>
-					<field name="diadiem_tu"/>
-					<field name="diadiem_den"/>
-					<field name="description"/>
-				</tree>
-			</field>
-		</record>
-		
-		<record id="lo_trinh_filter_view" model="ir.ui.view">
-			<field name="name">lo.trinh.filter</field>
-			<field name="model">lo.trinh</field>
+    	<record id="view_voucher_filter_vendor_pay_inherit" model="ir.ui.view">
+            <field name="name">account.voucher.filter.vendor.pay.inherit</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_voucher_filter_vendor_pay"/>
             <field name="arch" type="xml">
-                <search string="Tìm lộ trình">
-                    <field name="name"/>
-               </search>
+            	<field name="period_id" position="after">
+            		<field name="hop_dong_id"/>
+            	</field>
+            	
+            	<filter string="Period" position="after">
+            		<filter string="Hợp đồng" icon="terp-go-month" domain="[]" context="{'group_by':'hop_dong_id'}"/>
+            	</filter>
             </field>
         </record>
-		
-		<record id="lo_trinh_form_view" model="ir.ui.view">
-			<field name="name">lo.trinh.form</field>
-			<field name="model">lo.trinh</field>
-            <field name="arch" type="xml">
-	            <form string="Lộ trình" version="7.0">
-	            	<sheet>
-	            		<group>
-		                	<field name="name"/>
-							<field name="description"/>
-						</group>
-						<group>
-		                	<field name="diadiem_tu"/>
-							<field name="diadiem_den"/>
-						</group>
-		         	</sheet>
-		         </form>
-			</field>
-		</record>
-          
-		<record id="action_lo_trinh" model="ir.actions.act_window">
-            <field name="name">Lộ trình</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">lo.trinh</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="lo_trinh_tree_view"/>
-            <field name="domain">[]</field>
-        </record>
-	        
-    	<menuitem id="menu_action_lo_trinh" action="action_lo_trinh" name="Lộ trình" parent="stock.menu_stock_configuration" sequence="0"/>
     	
-    	<record id="cang_donghang_tree_view" model="ir.ui.view">
-			<field name="name">cang.donghang.tree</field>
-			<field name="model">cang.donghang</field>
-			<field name="arch" type="xml">
-				<tree string="Cảng đóng hàng">
-					<field name="name"/>
-					<field name="description"/>
-				</tree>
-			</field>
-		</record>
-		
-		<record id="cang_donghang_filter_view" model="ir.ui.view">
-			<field name="name">cang.donghang.filter</field>
-			<field name="model">cang.donghang</field>
+    	<record id="view_voucher_filter_customer_pay_inherit" model="ir.ui.view">
+            <field name="name">account.voucher.filter.customer.pay.inherit</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_voucher_filter_customer_pay"/>
             <field name="arch" type="xml">
-                <search string="Tìm cảng đóng hàng">
-                    <field name="name"/>
-               </search>
+            	<field name="period_id" position="after">
+            		<field name="hop_dong_id"/>
+            	</field>
+            	
+            	<filter string="Period" position="after">
+            		<filter string="Hợp đồng" icon="terp-go-month" domain="[]" context="{'group_by':'hop_dong_id'}"/>
+            	</filter>
             </field>
         </record>
-		
-		<record id="cang_donghang_form_view" model="ir.ui.view">
-			<field name="name">cang.donghang.form</field>
-			<field name="model">cang.donghang</field>
-            <field name="arch" type="xml">
-	            <form string="Cảng đóng hàng" version="7.0">
-	            	<sheet>
-	            		<group>
-		                	<field name="name"/>
-							<field name="description"/>
-						</group>
-		         	</sheet>
-		         </form>
-			</field>
-		</record>
-          
-		<record id="action_cang_donghang" model="ir.actions.act_window">
-            <field name="name">Cảng đóng hàng</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">cang.donghang</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="cang_donghang_tree_view"/>
-            <field name="domain">[]</field>
-        </record>
-        <menuitem id="menu_action_cang_donghang" action="action_cang_donghang" name="Cảng đóng hàng" parent="stock.menu_stock_configuration" sequence="1"/>
-        
     </data>
-    
 </openerp>

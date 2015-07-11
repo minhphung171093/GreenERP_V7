@@ -29,6 +29,7 @@
     'depends': ['web','base','purchase','sale','sale_stock','product','properties','report_aeroo','report_aeroo_ooo','stock','account'],
     'data': [
             'config_view.xml',
+            'hop_dong_view.xml',
     ],
     'css' : [
         "static/src/css/base.css",

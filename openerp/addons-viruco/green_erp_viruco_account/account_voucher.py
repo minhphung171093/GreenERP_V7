@@ -15,105 +15,146 @@ import codecs
 import os
 from xlrd import open_workbook,xldate_as_tuple
 from openerp import modules
-base_path = os.path.dirname(modules.get_module_path('green_erp_viruco_base'))
 
+class account_voucher(osv.osv):
+    _inherit = "account.voucher"
+    
+    _columns = {
+        'hop_dong_id':fields.many2one('hop.dong','Hợp đồng',readonly=True,states={'draft': [('readonly', False)]}),
+        'nguoi_de_nghi_id':fields.many2one('res.users','Người đề nghị'),
+        'dot_thanhtoan_ids':fields.many2many('account.voucher', 'cac_dot_thanh_toan_ref', 'parent_id', 'voucher_id','Các đợt thanh toán',readonly=True),
+    }
+    
+    _defaults = {
+        'nguoi_de_nghi_id': lambda self, cr, uid, context=None: uid,
+    }
+    
+    def onchange_hopdong_id(self, cr, uid, ids, hop_dong_id, context=None):
+        if context is None:
+            context = {}
+        vals = {}
+        vals['dot_thanhtoan_ids'] = False
+        if hop_dong_id:
+            dot_thanhtoan_ids = []
+            if ids:
+                voucher_ids = self.search(cr, uid, [('hop_dong_id','=',hop_dong_id),('id','not in',ids),('state','=','posted')],order='id')
+            else:
+                voucher_ids = self.search(cr, uid, [('hop_dong_id','=',hop_dong_id),('state','=','posted')],order='id')
+            vals['dot_thanhtoan_ids']=[(6,0,voucher_ids)]
+        return {'value':vals}
+    
+    def create(self, cr, uid, vals, context=None):
+        if vals.get('hop_dong_id',False):
+            voucher_ids = self.search(cr, uid, [('hop_dong_id','=',vals['hop_dong_id']),('state','=','posted')])
+            vals['dot_thanhtoan_ids']=[(6,0,voucher_ids)]
+        return super(account_voucher,self).create(cr, uid, vals, context)
+    
+    def write(self, cr, uid, ids, vals, context=None):
+        if vals.get('hop_dong_id',False):
+            voucher_ids = self.search(cr, uid, [('hop_dong_id','=',vals['hop_dong_id']),('state','=','posted'),('id','not in',ids)])
+            vals['dot_thanhtoan_ids']=[(6,0,voucher_ids)]
+        return super(account_voucher,self).write(cr, uid, ids, vals, context)
+    
+    def onchange_partner_id(self, cr, uid, ids, partner_id, journal_id, amount, currency_id, ttype, date, hop_dong_id=False, context=None):
+        if not journal_id:
+            return {}
+        if context is None:
+            context = {}
+        #TODO: comment me and use me directly in the sales/purchases views
+        res = self.basic_onchange_partner(cr, uid, ids, partner_id, journal_id, ttype, context=context)
+        if ttype in ['sale', 'purchase']:
+            return res
+        ctx = context.copy()
+        # not passing the payment_rate currency and the payment_rate in the context but it's ok because they are reset in recompute_payment_rate
+        ctx.update({'date': date})
+        vals = self.recompute_voucher_lines(cr, uid, ids, partner_id, journal_id, amount, currency_id, ttype, date, context=ctx)
+        vals2 = self.recompute_payment_rate(cr, uid, ids, vals, currency_id, date, ttype, journal_id, amount, context=context)
+        for key in vals.keys():
+            res[key].update(vals[key])
+        for key in vals2.keys():
+            res[key].update(vals2[key])
+        #TODO: can probably be removed now
+        #TODO: onchange_partner_id() should not returns [pre_line, line_dr_ids, payment_rate...] for type sale, and not 
+        # [pre_line, line_cr_ids, payment_rate...] for type purchase.
+        # We should definitively split account.voucher object in two and make distinct on_change functions. In the 
+        # meanwhile, bellow lines must be there because the fields aren't present in the view, what crashes if the 
+        # onchange returns a value for them
+        if ttype == 'sale':
+            del(res['value']['line_dr_ids'])
+            del(res['value']['pre_line'])
+            del(res['value']['payment_rate'])
+        elif ttype == 'purchase':
+            del(res['value']['line_cr_ids'])
+            del(res['value']['pre_line'])
+            del(res['value']['payment_rate'])
+        res['value']['line_dr_ids'] = False
+        res['value']['line_cr_ids'] = False
+        if partner_id and hop_dong_id:
+            hop_dong = self.pool.get('hop.dong').browse(cr, uid, hop_dong_id)
+            if partner_id!=hop_dong.partner_id.id:
+                res['value']['hop_dong_id'] = False
+        return res
+    
+    def onchange_amount(self, cr, uid, ids, amount, rate, partner_id, journal_id, currency_id, ttype, date, payment_rate_currency_id, company_id, context=None):
+        if context is None:
+            context = {}
+        ctx = context.copy()
+        ctx.update({'date': date})
+        #read the voucher rate with the right date in the context
+        currency_id = currency_id or self.pool.get('res.company').browse(cr, uid, company_id, context=ctx).currency_id.id
+        voucher_rate = self.pool.get('res.currency').read(cr, uid, currency_id, ['rate'], context=ctx)['rate']
+        ctx.update({
+            'voucher_special_currency': payment_rate_currency_id,
+            'voucher_special_currency_rate': rate * voucher_rate})
+        res = self.recompute_voucher_lines(cr, uid, ids, partner_id, journal_id, amount, currency_id, ttype, date, context=ctx)
+        vals = self.onchange_rate(cr, uid, ids, rate, amount, currency_id, payment_rate_currency_id, company_id, context=ctx)
+        for key in vals.keys():
+            res[key].update(vals[key])
+        res['value']['line_dr_ids'] = False
+        res['value']['line_cr_ids'] = False
+        return res
+    
+    def onchange_journal(self, cr, uid, ids, journal_id, line_ids, tax_id, partner_id, date, amount, ttype, company_id, context=None):
+        if context is None:
+            context = {}
+        if not journal_id:
+            return False
+        journal_pool = self.pool.get('account.journal')
+        journal = journal_pool.browse(cr, uid, journal_id, context=context)
+        if ttype in ('sale', 'receipt'):
+            account_id = journal.default_debit_account_id
+        elif ttype in ('purchase', 'payment'):
+            account_id = journal.default_credit_account_id
+        else:
+            account_id = journal.default_credit_account_id or journal.default_debit_account_id
+        tax_id = False
+        if account_id and account_id.tax_ids:
+            tax_id = account_id.tax_ids[0].id
 
-class res_country_state(osv.osv):
-    _inherit = "res.country.state"
-    _columns = {
-    }
-    def init(self, cr):
-        country_obj = self.pool.get('res.country')
-        wb = open_workbook(base_path + '/green_erp_viruco_base/data/TinhTP.xls')
-        for s in wb.sheets():
-            if (s.name =='Sheet1'):
-                for row in range(1,s.nrows):
-                    val0 = s.cell(row,0).value
-                    val1 = s.cell(row,1).value
-                    val2 = s.cell(row,2).value
-                    country_ids = country_obj.search(cr, 1, [('code','=',val2)])
-                    if country_ids:
-                        state_ids = self.search(cr, 1, [('name','=',val1),('code','=',val0),('country_id','in',country_ids)])
-                        if not state_ids:
-                            self.create(cr, 1, {'name': val1,'code':val0,'country_id':country_ids[0]})
-          
-res_country_state()
-
-class sale_arbitration(osv.osv):
-    _name = 'sale.arbitration'
-    _columns = {
-        'name':fields.char('Name',size=1024,required=True),
-        'description': fields.text('Description'),
-    }
+        vals = {'value':{} }
+        if ttype in ('sale', 'purchase'):
+            vals = self.onchange_price(cr, uid, ids, line_ids, tax_id, partner_id, context)
+            vals['value'].update({'tax_id':tax_id,'amount': amount})
+        currency_id = False
+        if journal.currency:
+            currency_id = journal.currency.id
+        else:
+            currency_id = journal.company_id.currency_id.id
+        vals['value'].update({'currency_id': currency_id, 'payment_rate_currency_id': currency_id})
+        #in case we want to register the payment directly from an invoice, it's confusing to allow to switch the journal 
+        #without seeing that the amount is expressed in the journal currency, and not in the invoice currency. So to avoid
+        #this common mistake, we simply reset the amount to 0 if the currency is not the invoice currency.
+        if context.get('payment_expected_currency') and currency_id != context.get('payment_expected_currency'):
+            vals['value']['amount'] = 0
+            amount = 0
+        if partner_id:
+            res = self.onchange_partner_id(cr, uid, ids, partner_id, journal_id, amount, currency_id, ttype, date, context)
+            for key in res.keys():
+                vals[key].update(res[key])
+                
+        vals['value']['line_dr_ids'] = False
+        vals['value']['line_cr_ids'] = False
+        return vals
     
-sale_arbitration()
-class chatluong_sanpham(osv.osv):
-    _name = 'chatluong.sanpham'
-    _columns = {
-        'name':fields.char('Tên',size=1024,required=True),
-        'description': fields.text('Ghi chú'),
-    }
-    
-chatluong_sanpham()
-class quycach_donggoi(osv.osv):
-    _name = 'quycach.donggoi'
-    _columns = {
-        'name':fields.char('Tên',size=1024,required=True),
-        'description': fields.text('Ghi chú'),
-    }
-    
-quycach_donggoi()
-class quycach_baobi(osv.osv):
-    _name = 'quycach.baobi'
-    _columns = {
-        'name':fields.char('Tên',size=1024,required=True),
-        'description': fields.text('Ghi chú'),
-    }
-    
-quycach_baobi()
-class nha_sanxuat(osv.osv):
-    _name = 'nha.sanxuat'
-    _columns = {
-        'name':fields.char('Tên nhà sản xuất',size=1024,required=True),
-        'description': fields.text('Ghi chú'),
-    }
-    
-nha_sanxuat()
-
-class dieukien_giaohang(osv.osv):
-    _name = 'dieukien.giaohang'
-    _columns = {
-        'name':fields.char('Điều kiện',size=1024,required=True),
-        'description': fields.text('Ghi chú'),
-    }
-    
-dieukien_giaohang()
-
-class hinhthuc_giaohang(osv.osv):
-    _name = 'hinhthuc.giaohang'
-    _columns = {
-        'name':fields.char('Tên',size=1024,required=True),
-        'description': fields.text('Ghi chú'),
-    }
-    
-hinhthuc_giaohang()
-
-class lo_trinh(osv.osv):
-    _name = 'lo.trinh'
-    _columns = {
-        'name':fields.char('Name',size=1024,required=True),
-        'diadiem_tu':fields.char('Từ',size=1024,required=True),
-        'diadiem_den':fields.char('Đến',size=1024,required=True),
-        'description': fields.text('Description'),
-    }
-    
-lo_trinh()
-class cang_donghang(osv.osv):
-    _name = 'cang.donghang'
-    _columns = {
-        'name':fields.char('Name',size=1024,required=True),
-        'description': fields.text('Description'),
-    }
-    
-cang_donghang()
+account_voucher()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

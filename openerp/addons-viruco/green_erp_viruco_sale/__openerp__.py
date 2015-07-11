@@ -25,12 +25,11 @@
     'description': """Sale""",
     'author': "tranhung07081989@gmail.com",
     'website': "www.acespritech.com",
-    'depends': ['green_erp_viruco_base','sale'],
+    'depends': ['green_erp_viruco_base','sale','green_erp_viruco_account'],
     'data': [
              'report/hopdong_noi_report_view.xml',
              'report/hopdong_mua_report_view.xml',
              'report/hopdong_ngoai_report_view.xml',
-             'hop_dong_view.xml',
              'product_product_view.xml',
              'res_partner_view.xml',
              'sale_view.xml',
