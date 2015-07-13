@@ -35,11 +35,11 @@ class Parser(report_sxw.rml_parse):
         return a.replace(',',' ')
     
     def get_phieunhapkho(self, line):
-        pnk = ''
-        for l in line.picking_ids:
-            pnk += l.name+', '
-        if pnk and len(pnk)>3:
-            pnk = pnk[:-2]
-        return pnk
+#         pnk = ''
+#         for l in line.picking_ids:
+#             pnk += l.name+', '
+#         if pnk and len(pnk)>3:
+#             pnk = pnk[:-2]
+        return line.picking_id and line.picking_id.name or ''
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
