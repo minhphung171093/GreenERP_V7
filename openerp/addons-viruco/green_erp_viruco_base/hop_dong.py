@@ -94,7 +94,6 @@ class hop_dong(osv.osv):
         'company_id': fields.many2one('res.company','Công ty',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
         'partner_id': fields.many2one('res.partner','Khách hàng',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
         'hopdong_line': fields.one2many('hopdong.line','hopdong_id','Line',readonly=True, states={'moi_tao': [('readonly', False)]}),
-        
         'amount_untaxed': fields.function(_amount_all, digits_compute=dp.get_precision('Account'), string='Cộng',
             store={
                 'hop.dong': (lambda self, cr, uid, ids, c={}: ids, ['hopdong_line'], 10),
@@ -157,8 +156,14 @@ class hop_dong(osv.osv):
 #                 'nodestroy' : True
             }
     
-    def duyet(self, cr, uid, ids, context=None):
-        return self.write(cr, uid, ids, {'state': 'da_duyet'})
+#     def duyet_hd_noi(self, cr, uid, ids, context=None):
+#         return self.write(cr, uid, ids, {'state': 'da_duyet'})
+#     
+#     def duyet_hd_ngoai(self, cr, uid, ids, context=None):
+#         return self.write(cr, uid, ids, {'state': 'da_duyet'})
+#     
+#     def duyet_hd_mua(self, cr, uid, ids, context=None):
+#         return self.write(cr, uid, ids, {'state': 'da_duyet'})
     
     def het_han(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids, {'state': 'het_han'})

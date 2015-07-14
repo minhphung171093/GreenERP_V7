@@ -308,4 +308,35 @@ class sale_order_line(osv.osv):
         return {'value': result, 'domain': domain, 'warning': warning}
 sale_order_line()  
 
+class hop_dong(osv.osv):
+    _inherit = "hop.dong"
+    
+    def duyet_hd_noi(self, cr, uid, ids, context=None):
+        sale_obj = self.pool.get('sale.order')
+        order_line = []
+        vals = {}
+        wf_service = netsvc.LocalService('workflow')
+        for hd in self.browse(cr, uid, ids):
+            vals={'partner_id':hd.partner_id.id,'hop_dong_id':hd.id,'order_policy':'picking','state':'draft'}
+            vals.update(sale_obj.onchange_partner_id(cr, uid, [], hd.partner_id.id)['value'])
+            vals.update(sale_obj.onchange_hop_dong_id(cr, uid, [], hd.id)['value'])
+            sale_id = sale_obj.create(cr, uid, vals)
+            sale_obj.action_button_confirm(cr, uid, [sale_id])
+        return self.write(cr, uid, ids, {'state': 'da_duyet'})
+    
+    def duyet_hd_ngoai(self, cr, uid, ids, context=None):
+        sale_obj = self.pool.get('sale.order')
+        order_line = []
+        vals = {}
+        wf_service = netsvc.LocalService('workflow')
+        for hd in self.browse(cr, uid, ids):
+            vals={'partner_id':hd.partner_id.id,'hop_dong_id':hd.id,'order_policy':'picking','state':'draft'}
+            vals.update(sale_obj.onchange_partner_id(cr, uid, [], hd.partner_id.id)['value'])
+            vals.update(sale_obj.onchange_hop_dong_id(cr, uid, [], hd.id)['value'])
+            sale_id = sale_obj.create(cr, uid, vals)
+            sale_obj.action_button_confirm(cr, uid, [sale_id])
+        return self.write(cr, uid, ids, {'state': 'da_duyet'})
+    
+hop_dong()
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
