@@ -9,6 +9,31 @@ from openerp.tools.translate import _
 class stock_partial_picking(osv.osv_memory):
     _inherit = "stock.partial.picking"
     
+    def default_get(self, cr, uid, fields, context=None):
+        if context is None: context = {}
+        res = super(stock_partial_picking, self).default_get(cr, uid, fields, context=context)
+        picking_ids = context.get('active_ids', [])
+        active_model = context.get('active_model')
+
+        if not picking_ids or len(picking_ids) != 1:
+            # Partial Picking Processing may only be done for one picking at a time
+            return res
+        assert active_model in ('stock.picking', 'stock.picking.in', 'stock.picking.out'), 'Bad context propagation'
+        picking_id, = picking_ids
+        if 'picking_id' in fields:
+            res.update(picking_id=picking_id)
+        if 'move_ids' in fields:
+            picking = self.pool.get('stock.picking').browse(cr, uid, picking_id, context=context)
+            if picking.type=='out':
+                moves = [self._partial_move_for(cr, uid, m, context=context) for m in picking.move_lines if m.state not in ('done','cancel') and m.hop_dong_mua_id and m.picking_in_id]
+            else:
+                moves = [self._partial_move_for(cr, uid, m, context=context) for m in picking.move_lines if m.state not in ('done','cancel')]
+            res.update(move_ids=moves)
+        if 'date' in fields:
+            res.update(date=time.strftime(DEFAULT_SERVER_DATETIME_FORMAT))
+        res['help_text'] = self.__get_help_text(cr, uid, picking_id, context=context)
+        return res
+    
     def do_partial(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
