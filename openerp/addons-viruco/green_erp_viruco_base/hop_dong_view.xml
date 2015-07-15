@@ -52,12 +52,17 @@
 	                    	<label string="Số"/>
 	                        <field name="name" class="oe_inline" nolabel="1" />
 	                    </h1>
-	                    <group>
+	                    <group col='4' colspan='2'>
 	                    	<field name="type" invisible='1'/>
+	                    	<field name="currency_company_id" invisible='1'/>
 	                    </group>
 	                    <group col='4' colspan='2'>
+	                    	<field name="donbanhang_id" context="{'search_donbanhang_noi':1,'donbanhang_id':donbanhang_id}" on_change="onchange_donbanhang_id(donbanhang_id)" required='1' domain="[('type','=','dbh_noi'),('state','=','da_duyet')]"/>
+	                    	<newline/>
 	                    	<field name="company_id" context="{'show_address': 1}"/>
 	                    	<field name="partner_id"  context="{'show_address': 1}" domain="[('customer','=',True)]"/>
+	                    	<field name="pricelist_id" domain="[('currency_id','=',currency_company_id),('type','=','sale')]" on_change="onchange_pricelist_id(pricelist_id,hopdong_line)"/>
+	                    	<field name="currency_id"/>
 						</group>
 						<notebook>
 							<page string="Thông tin chung">
@@ -163,12 +168,17 @@
 	                    	<label string="No."/>
 	                        <field name="name" class="oe_inline" nolabel="1" />
 	                    </h1>
-	                    <group>
+	                    <group col='4' colspan='2'>
 	                    	<field name="type" invisible='1'/>
+	                    	<field name="currency_company_id" invisible='1'/>
 	                    </group>
 	                    <group col='4' colspan='2'>
+	                    	<field name="donbanhang_id" context="{'search_donbanhang_ngoai':1,'donbanhang_id':donbanhang_id}" on_change="onchange_donbanhang_id(donbanhang_id)" required='1' domain="[('type','=','dbh_ngoai'),('state','=','da_duyet')]"/>
+	                    	<newline/>
 	                    	<field name="company_id" string="Company" context="{'show_address': 1}"/>
 	                    	<field name="partner_id" string="Partner"  context="{'show_address': 1}" domain="[('customer','=',True)]"/>
+							<field name="pricelist_id" domain="[('currency_id','!=',currency_company_id),('type','=','sale')]" string="Pricelist" on_change="onchange_pricelist_id(pricelist_id,hopdong_line)"/>
+	                    	<field name="currency_id" string="Currency"/>
 						</group>
 						<notebook>
 							<page string="Information">
@@ -278,12 +288,15 @@
 	                    	<label string="Số"/>
 	                        <field name="name" class="oe_inline" nolabel="1" />
 	                    </h1>
-	                    <group>
+	                    <group col='4' colspan='2'>
 	                    	<field name="type" invisible='1'/>
+	                    	<field name="currency_company_id" invisible='1'/>
 	                    </group>
 	                    <group col='4' colspan='2'>
 	                    	<field name="company_id" context="{'show_address': 1}"/>
 	                    	<field name="partner_id"  context="{'show_address': 1,'default_supplier':1,'default_customer':0}" string='Nhà cung cấp' domain="[('supplier','=',True)]"/>
+	                    	<field name="pricelist_id" domain="[('currency_id','=',currency_company_id),('type','=','purchase')]" on_change="onchange_pricelist_id(pricelist_id,hopdong_line)"/>
+	                    	<field name="currency_id"/>
 						</group>
 						<notebook>
 							<page string="Thông tin chung">
@@ -352,12 +365,253 @@
             <field name="act_window_id" ref="action_hop_dong_mua"/>
         </record>
         
-        <menuitem id="menu_hopdong_ban" parent="green_erp_viruco_base.hop_dong" name="Hợp Đồng Bán" sequence="1"/>
-        <menuitem id="menu_hopdong_mua" parent="green_erp_viruco_base.hop_dong" name="Hợp Đồng Mua" sequence="2"/>
+        <menuitem id="menu_hopdong_ban" parent="green_erp_viruco_base.hop_dong" name="Hợp Đồng Bán" sequence="10"/>
+        <menuitem id="menu_hopdong_mua" parent="green_erp_viruco_base.hop_dong" name="Hợp Đồng Mua" sequence="20"/>
     	<menuitem id="menu_action_hop_dong_noi" action="action_hop_dong_noi" name="Hợp đồng nội" parent="menu_hopdong_ban" sequence="0"/>
 		<menuitem id="menu_action_hop_dong_ngoai" action="action_hop_dong_ngoai" name="Hợp đồng ngoại" parent="menu_hopdong_ban" sequence="1"/>
 		<menuitem id="menu_action_hop_dong_mua" action="action_hop_dong_mua" name="Hợp đồng mua" parent="menu_hopdong_mua" sequence="2"/>
     	
+    	<record id="don_ban_hang_noi_tree_view" model="ir.ui.view">
+			<field name="name">don_ban_hang.noi.tree</field>
+			<field name="model">don.ban.hang</field>
+			<field name="arch" type="xml">
+				<tree string="Đơn bán hàng nội">
+					<field name="name"/>
+					<field name="partner_id"/>
+					<field name="ngay"/>
+					<field name="amount_total"/>
+					<field name="state"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="view_don_ban_hang_noi_filter" model="ir.ui.view">
+            <field name="name">don_ban_hang.noi.select</field>
+            <field name="model">don.ban.hang</field>
+            <field name="arch" type="xml">
+                <search string="Đơn bán hàng nội">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Status" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>
+		
+		<record id="don_ban_hang_noi_form_view" model="ir.ui.view">
+            <field name="name">don_ban_hang.noi.form</field>
+            <field name="model">don.ban.hang</field>
+            <field name="arch" type="xml">
+	            <form string="Đơn bán hàng nội" version="7.0">
+					<header>
+						<button name="print_donbanhang" string="In đơn bán hàng nội" type="object" class="oe_highlight"/>
+						<button name="duyet" string="Duyệt" states="moi_tao" type="object" class="oe_highlight"/>
+						<button name="huy_bo" string="Hủy bỏ" type="object" states="moi_tao,da_duyet" class="oe_highlight"/>
+						<field name="state" widget="statusbar" statusbar_visible="moi_tao,da_duyet,het_han,huy_bo"/>
+					</header>
+	            	<sheet>
+	                    <h1>
+	                    	<label string="Số"/>
+	                        <field name="name" class="oe_inline" nolabel="1" />
+	                    </h1>
+	                    <group>
+	                    	<field name="company_id" context="{'show_address': 1}" invisible='1'/>
+	                    	<field name="type" invisible='1'/>
+	                    	<field name="currency_company_id" invisible='1'/>
+	                    </group>
+	                    <group col='4' colspan='2'>
+	                    	<field name="partner_id"  context="{'show_address': 1}" domain="[('customer','=',True)]"/>
+	                    	<field name="ngay"/>
+	                    	<field name="pricelist_id" domain="[('currency_id','=',currency_company_id),('type','=','sale')]" on_change="onchange_pricelist_id(pricelist_id,don_ban_hang_line)"/>
+	                    	<field name="currency_id"/>
+	                    	<field name="user_id"/>
+						</group>
+						<notebook>
+							<page string="Thông tin mặt hàng" >
+								<field name="don_ban_hang_line">
+									<tree editable='top'>
+	                                    <field name="product_id" on_change="onchange_product_id(product_qty,parent.ngay,parent.partner_id,parent.pricelist_id,product_id, context)"/>
+	                                    <field name="name"/>
+	                                    <field name="product_uom"/>
+	                                    <field name="product_qty"/>
+	                                    <field name="price_unit"/>
+	                                    <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]"/>
+	                                    <field name="price_subtotal"/>
+									</tree>
+								</field>
+								<group class="oe_subtotal_footer oe_right" colspan="2" name="hopdong_total">
+	                                <field name="amount_untaxed" widget='monetary' />
+	                                <field name="amount_tax" widget='monetary' />
+	                                <div class="oe_subtotal_footer_separator oe_inline">
+	                                    <label for="amount_total" />
+	                                    <button name="button_dummy"
+	                                        states="moi_tao" string="(update)" type="object" class="oe_edit_only oe_link"/>
+	                                </div>
+	                                <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' />
+	                            </group>
+	                            <div class="oe_clear"/>
+							</page>
+						</notebook>
+		         	</sheet>
+		         </form>
+			</field>
+		</record>
+          
+		<record id="action_don_ban_hang_noi" model="ir.actions.act_window">
+            <field name="name">Đơn bán hàng nội</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">don.ban.hang</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="don_ban_hang_noi_tree_view"/>
+            <field name="domain">[('type','=','dbh_noi')]</field>
+            <field name="context">{'default_type':'dbh_noi'}</field>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_don_ban_hang_noi1">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="don_ban_hang_noi_tree_view"/>
+            <field name="act_window_id" ref="action_don_ban_hang_noi"/>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_don_ban_hang_noi2">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="don_ban_hang_noi_form_view"/>
+            <field name="act_window_id" ref="action_don_ban_hang_noi"/>
+        </record>
+        
+    	<record id="don_ban_hang_ngoai_tree_view" model="ir.ui.view">
+			<field name="name">don_ban_hang.ngoai.tree</field>
+			<field name="model">don.ban.hang</field>
+			<field name="arch" type="xml">
+				<tree string="Đơn bán hàng ngoại">
+					<field name="name"/>
+					<field name="partner_id"/>
+					<field name="ngay"/>
+					<field name="amount_total"/>
+					<field name="state"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="view_don_ban_hang_ngoai_filter" model="ir.ui.view">
+            <field name="name">don_ban_hang.ngoai.select</field>
+            <field name="model">don.ban.hang</field>
+            <field name="arch" type="xml">
+                <search string="Đơn bán hàng ngoại">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Status" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>
+		
+		<record id="don_ban_hang_ngoai_form_view" model="ir.ui.view">
+            <field name="name">don_ban_hang.ngoai.form</field>
+            <field name="model">don.ban.hang</field>
+            <field name="arch" type="xml">
+	            <form string="Đơn bán hàng ngoại" version="7.0">
+					<header>
+						<button name="print_donbanhang" string="In đơn bán hàng ngoại" type="object" class="oe_highlight"/>
+						<button name="duyet" string="Duyệt" states="moi_tao" type="object" class="oe_highlight"/>
+						<button name="huy_bo" string="Hủy bỏ" type="object" states="moi_tao,da_duyet" class="oe_highlight"/>
+						<field name="state" widget="statusbar" statusbar_visible="moi_tao,da_duyet,het_han,huy_bo"/>
+					</header>
+	            	<sheet>
+	                    <h1>
+	                    	<label string="Số"/>
+	                        <field name="name" class="oe_inline" nolabel="1" />
+	                    </h1>
+	                    <group>
+	                    	<field name="company_id" context="{'show_address': 1}" invisible='1'/>
+	                    	<field name="type" invisible='1'/>
+	                    	<field name="currency_company_id" invisible='1'/>
+	                    </group>
+	                    <group col='4' colspan='2'>
+	                    	<field name="partner_id" context="{'show_address': 1}" domain="[('customer','=',True)]"/>
+	                    	<field name="ngay"/>
+	                    	<field name="pricelist_id" domain="[('currency_id','!=',currency_company_id),('type','=','sale')]" on_change="onchange_pricelist_id(pricelist_id,don_ban_hang_line)"/>
+	                    	<field name="currency_id"/>
+	                    	<field name="user_id"/>
+	                    	<field name="thoigian_giaohang"/>
+	                    	<field name="nguoi_gioithieu_id"/>
+	                    	<field name="dieukien_giaohang_id"/>
+	                    	<field name="payment_term" widget="selection"/>
+						</group>
+						<notebook>
+							<page string="Thông tin mặt hàng" >
+								<field name="don_ban_hang_line">
+									<tree editable='top'>
+	                                    <field name="product_id" on_change="onchange_product_id(product_qty,parent.ngay,parent.partner_id,parent.pricelist_id,product_id, context)"/>
+	                                    <field name="name"/>
+	                                    <field name="product_uom"/>
+	                                    <field name="product_qty"/>
+	                                    <field name="price_unit"/>
+	                                    <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]"/>
+	                                    <field name="price_subtotal"/>
+									</tree>
+								</field>
+								<group class="oe_subtotal_footer oe_right" colspan="2" name="hopdong_total">
+	                                <field name="amount_untaxed" widget='monetary' />
+	                                <field name="amount_tax" widget='monetary' />
+	                                <div class="oe_subtotal_footer_separator oe_inline">
+	                                    <label for="amount_total" />
+	                                    <button name="button_dummy"
+	                                        states="moi_tao" string="(update)" type="object" class="oe_edit_only oe_link"/>
+	                                </div>
+	                                <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' />
+	                            </group>
+	                            <div class="oe_clear"/>
+	                            <field name="note" class="oe_inline" placeholder="Terms and conditions..."/>
+							</page>
+						</notebook>
+		         	</sheet>
+		         </form>
+			</field>
+		</record>
+          
+		<record id="action_don_ban_hang_ngoai" model="ir.actions.act_window">
+            <field name="name">Đơn bán hàng ngoại</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">don.ban.hang</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="don_ban_hang_ngoai_tree_view"/>
+            <field name="domain">[('type','=','dbh_ngoai')]</field>
+            <field name="context">{'default_type':'dbh_ngoai'}</field>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_don_ban_hang_ngoai1">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="don_ban_hang_ngoai_tree_view"/>
+            <field name="act_window_id" ref="action_don_ban_hang_ngoai"/>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_don_ban_hang_ngoai2">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="don_ban_hang_ngoai_form_view"/>
+            <field name="act_window_id" ref="action_don_ban_hang_ngoai"/>
+        </record>
+    	
+    	<menuitem id="menu_don_ban_hang"
+    		name="Đơn Bán Hàng"
+    		parent="green_erp_viruco_base.hop_dong"
+			sequence="3"/>
+    	
+    	<menuitem id="menu_action_don_ban_hang_noi"
+    		action="action_don_ban_hang_noi"
+    		name="Đơn bán hàng nội"
+    		parent="menu_don_ban_hang"
+			sequence="10"/>
+    	
+    	<menuitem id="menu_action_don_ban_hang_ngoai"
+    		action="action_don_ban_hang_ngoai"
+    		name="Đơn bán hàng ngoại"
+    		parent="menu_don_ban_hang"
+			sequence="20"/>
+    	
     </data>
-    
 </openerp>

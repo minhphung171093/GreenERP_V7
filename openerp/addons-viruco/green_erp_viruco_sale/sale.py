@@ -320,6 +320,7 @@ class hop_dong(osv.osv):
             vals={'partner_id':hd.partner_id.id,'hop_dong_id':hd.id,'order_policy':'picking','state':'draft'}
             vals.update(sale_obj.onchange_partner_id(cr, uid, [], hd.partner_id.id)['value'])
             vals.update(sale_obj.onchange_hop_dong_id(cr, uid, [], hd.id)['value'])
+            vals.update({'pricelist_id':hd.pricelist_id.id,})
             sale_id = sale_obj.create(cr, uid, vals)
             sale_obj.action_button_confirm(cr, uid, [sale_id])
         return self.write(cr, uid, ids, {'state': 'da_duyet'})
@@ -333,6 +334,7 @@ class hop_dong(osv.osv):
             vals={'partner_id':hd.partner_id.id,'hop_dong_id':hd.id,'order_policy':'picking','state':'draft'}
             vals.update(sale_obj.onchange_partner_id(cr, uid, [], hd.partner_id.id)['value'])
             vals.update(sale_obj.onchange_hop_dong_id(cr, uid, [], hd.id)['value'])
+            vals.update({'pricelist_id':hd.pricelist_id.id,})
             sale_id = sale_obj.create(cr, uid, vals)
             sale_obj.action_button_confirm(cr, uid, [sale_id])
         return self.write(cr, uid, ids, {'state': 'da_duyet'})
