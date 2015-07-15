@@ -89,7 +89,7 @@ class hop_dong(osv.osv):
         'chat_luong':fields.char('Chất lượng'),
         'destinaltion':fields.char('Destinaltion'),
         'arbitration_id': fields.many2one('sale.arbitration','Arbitration',readonly=True, states={'moi_tao': [('readonly', False)]}),
-        'phucluc_hd':fields.text('Phụ lục Hợp đồng'),
+#         'phucluc_hd':fields.text('Phụ lục Hợp đồng'),
         'phuongthuc_thanhtoan':fields.text('Phương thức thanh toán'),
         'company_id': fields.many2one('res.company','Công ty',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
         'partner_id': fields.many2one('res.partner','Khách hàng',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
@@ -156,15 +156,6 @@ class hop_dong(osv.osv):
 #                 'nodestroy' : True
             }
     
-#     def duyet_hd_noi(self, cr, uid, ids, context=None):
-#         return self.write(cr, uid, ids, {'state': 'da_duyet'})
-#     
-#     def duyet_hd_ngoai(self, cr, uid, ids, context=None):
-#         return self.write(cr, uid, ids, {'state': 'da_duyet'})
-#     
-#     def duyet_hd_mua(self, cr, uid, ids, context=None):
-#         return self.write(cr, uid, ids, {'state': 'da_duyet'})
-    
     def het_han(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids, {'state': 'het_han'})
     
@@ -211,4 +202,6 @@ class hopdong_line(osv.osv):
                     }
         return {'value': vals}
 hopdong_line()
+
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
