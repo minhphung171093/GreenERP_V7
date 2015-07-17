@@ -331,7 +331,7 @@
         </record>
         
         <menuitem id="hop_dong" name="Hợp đồng" sequence="0"/>        
-        <menuitem id="menu_config_hopdong" parent="hop_dong" name="Cấu Hình" sequence="5"/>
+        <menuitem id="menu_config_hopdong" parent="hop_dong" name="Cấu Hình" sequence="100"/>
     	<menuitem id="menu_action_sale_arbitration" action="action_sale_arbitration" name="Luật định" parent="menu_config_hopdong" sequence="0"/>
     	<menuitem id="menu_action_chatluong_sanpham" action="action_chatluong_sanpham" name="Chất lượng sản phẩm" parent="base.menu_base_config" sequence="0"/>
     	<menuitem id="menu_action_quycach_donggoi" action="action_quycach_donggoi" name="Quy cách đóng gói" parent="base.menu_base_config" sequence="1"/>

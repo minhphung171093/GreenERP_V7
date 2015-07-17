@@ -327,7 +327,7 @@ class hop_dong(osv.osv):
         for hd in self.browse(cr, uid, ids):
             warehouse_obj = self.pool.get('stock.warehouse')
             warehouse_ids = warehouse_obj.search(cr, uid, [('company_id','=',hd.company_id.id)])
-            vals={'warehouse_id': warehouse_ids and warehouse_ids[0] or False,'partner_id':hd.partner_id.id,'hop_dong_id':hd.id,'invoice_method':'picking','state':'draft'}
+            vals={'pricelist_id':hd.pricelist_id.id,'warehouse_id': warehouse_ids and warehouse_ids[0] or False,'partner_id':hd.partner_id.id,'hop_dong_id':hd.id,'invoice_method':'picking','state':'draft'}
             vals.update(purchase_obj.onchange_partner_id(cr, uid, [], hd.partner_id.id)['value'])
             vals.update(purchase_obj.onchange_hop_dong_id(cr, uid, [], hd.id)['value'])
             vals.update(purchase_obj.onchange_warehouse_id(cr, uid, [], warehouse_ids and warehouse_ids[0] or False)['value'])

@@ -3,6 +3,7 @@
 #
 #    OpenERP, Open Source Management Solution
 #    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
+#    Copyright (C) 2011-2012 Serpent Consulting Services (<http://www.serpentcs.com>)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,26 +20,9 @@
 #
 ##############################################################################
 
-{
-    'name': 'Viruco BASE',
-    'version': '1.0',
-    'category': 'GreenERP',
-    'sequence': 14,
-    'author': 'nguyentoanit@gmail.com',
-    'website' : 'http://incomtech.com/',
-    'depends': ['web','base','purchase','sale','sale_stock','product','properties','report_aeroo','report_aeroo_ooo','stock','account'],
-    'data': [
-            'report/don_ban_hang_view.xml',
-            'config_view.xml',
-            'hop_dong_view.xml',
-            'phuluc_hop_dong_view.xml',
-    ],
-    'css' : [
-        "static/src/css/base.css",
-    ],
-    'qweb': ['static/src/xml/base.xml'],
-    'installable': True,
-    'auto_install': False,
-    'application': True,
-}
+#----------------------------------------------------------
+# A Module to School Fees Management System
+#-------------------------------------------------------
+import don_ban_hang_noi
+import don_ban_hang_ngoai
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

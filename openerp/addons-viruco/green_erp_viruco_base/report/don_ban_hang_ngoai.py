@@ -48,7 +48,7 @@ class Parser(report_sxw.rml_parse):
     
     def _amount_line_tax(self, cr, uid, line, context=None):
         val = 0.0
-        for c in self.pool.get('account.tax').compute_all(cr, uid, line.tax_id, line.price_unit * (1-(line.discount or 0.0)/100.0), line.product_uom_qty, line.product_id, line.order_id.partner_id)['taxes']:
+        for c in self.pool.get('account.tax').compute_all(cr, uid, line.tax_id, line.price_unit, line.product_qty, line.product_id, line.donbanhang_id.partner_id)['taxes']:
             val += c.get('amount', 0.0)
         return val
     
@@ -63,7 +63,7 @@ class Parser(report_sxw.rml_parse):
         cur = order.pricelist_id.currency_id
         val = 0
         val1 = 0
-        for line in order.order_line:
+        for line in order.don_ban_hang_line:
             val += self._amount_line_tax(self.cr, self.uid, line)
             val1 += line.price_subtotal
         tax = cur_obj.round(self.cr, self.uid, cur, val)
