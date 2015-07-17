@@ -20,6 +20,9 @@ class res_partner(osv.osv):
         'ma_kh':fields.char('Mã khách hàng', size=1024),
         'loaihinh_kinhdoanh':fields.char('Loại hình kinh doanh', size=1024),
         'is_giaodichtructiep':fields.boolean('Giao dịch trực tiếp'),
+        'nha_moigioi':fields.boolean('Nhà môi giới'),
+        'donvi_vanchuyen':fields.boolean('Đơn vị vận chuyển'),
+        'is_giaodichtructiep':fields.boolean('Giao dịch trực tiếp'),
         'nha_moigioi_id':fields.many2one('res.partner','Nhà môi giới'),
     }
     
@@ -55,6 +58,13 @@ class res_partner(osv.osv):
         return True
     
     _constraints = [(check_vat, _construct_constraint_msg, ["vat"])]
+    
+    def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
+        if args is None:
+            args = []
+        args+=['|',('vat','ilike',name),('ma_kh','ilike',name)]
+        ids = self.search(cr, user, args, context=context, limit=limit)
+        return self.name_get(cr, user, ids, context=context)
     
 res_partner()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -72,6 +72,8 @@
 									<field name="ngay_nhanhang" />
 									<field name="diadiem_nhanhang" />
 									<field name="thongbao_nhanhang" />
+									<newline/>
+									<field name="quycachdonggoi_chatluong" colspan='4'/>
 								</group>
 							</page>
 							<page string="Thông tin mặt hàng" >
@@ -87,14 +89,14 @@
 									</tree>
 								</field>
 								<group class="oe_subtotal_footer oe_right" colspan="2" name="hopdong_total">
-	                                <field name="amount_untaxed" widget='monetary' />
-	                                <field name="amount_tax" widget='monetary' />
+	                                <field name="amount_untaxed" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+	                                <field name="amount_tax" widget='monetary' options="{'currency_field': 'currency_id'}"/>
 	                                <div class="oe_subtotal_footer_separator oe_inline">
 	                                    <label for="amount_total" />
 	                                    <button name="button_dummy"
 	                                        states="moi_tao" string="(update)" type="object" class="oe_edit_only oe_link"/>
 	                                </div>
-	                                <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' />
+	                                <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'currency_id'}"/>
 	                            </group>
 	                            <div class="oe_clear"/>
 							</page>
@@ -208,14 +210,14 @@
 									</tree>
 								</field>
 								<group class="oe_subtotal_footer oe_right" colspan="2" name="hopdong_total">
-	                                <field name="amount_untaxed" widget='monetary' />
-	                                <field name="amount_tax" widget='monetary' />
+	                                <field name="amount_untaxed" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+	                                <field name="amount_tax" widget='monetary' options="{'currency_field': 'currency_id'}"/>
 	                                <div class="oe_subtotal_footer_separator oe_inline">
 	                                    <label for="amount_total" />
 	                                    <button name="button_dummy"
 	                                        states="moi_tao" string="(update)" type="object" class="oe_edit_only oe_link"/>
 	                                </div>
-	                                <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' />
+	                                <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'currency_id'}"/>
 	                            </group>
 	                            <div class="oe_clear"/>
 							</page>
@@ -293,6 +295,8 @@
 	                    	<field name="currency_company_id" invisible='1'/>
 	                    </group>
 	                    <group col='4' colspan='2'>
+	                    	<field name="donmuahang_id" context="{'search_donmuahang':1,'donmuahang_id':donmuahang_id}" on_change="onchange_donmuahang_id(donmuahang_id)" required='1' domain="[('state','=','da_duyet')]"/>
+	                    	<newline/>
 	                    	<field name="company_id" context="{'show_address': 1}"/>
 	                    	<field name="partner_id"  context="{'show_address': 1,'default_supplier':1,'default_customer':0}" string='Nhà cung cấp' domain="[('supplier','=',True)]"/>
 	                    	<field name="pricelist_id" domain="[('currency_id','=',currency_company_id),('type','=','purchase')]" on_change="onchange_pricelist_id(pricelist_id,hopdong_line)"/>
@@ -322,14 +326,14 @@
 									</tree>
 								</field>
 								<group class="oe_subtotal_footer oe_right" colspan="2" name="hopdong_total">
-	                                <field name="amount_untaxed" widget='monetary' />
-	                                <field name="amount_tax" widget='monetary' />
+	                                <field name="amount_untaxed" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+	                                <field name="amount_tax" widget='monetary' options="{'currency_field': 'currency_id'}"/>
 	                                <div class="oe_subtotal_footer_separator oe_inline">
 	                                    <label for="amount_total" />
 	                                    <button name="button_dummy"
 	                                        states="moi_tao" string="(update)" type="object" class="oe_edit_only oe_link"/>
 	                                </div>
-	                                <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' />
+	                                <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'currency_id'}"/>
 	                            </group>
 	                            <div class="oe_clear"/>
 							</page>
@@ -441,14 +445,14 @@
 									</tree>
 								</field>
 								<group class="oe_subtotal_footer oe_right" colspan="2" name="hopdong_total">
-	                                <field name="amount_untaxed" widget='monetary' />
-	                                <field name="amount_tax" widget='monetary' />
+	                                <field name="amount_untaxed" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+	                                <field name="amount_tax" widget='monetary' options="{'currency_field': 'currency_id'}"/>
 	                                <div class="oe_subtotal_footer_separator oe_inline">
 	                                    <label for="amount_total" />
 	                                    <button name="button_dummy"
 	                                        states="moi_tao" string="(update)" type="object" class="oe_edit_only oe_link"/>
 	                                </div>
-	                                <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' />
+	                                <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'currency_id'}"/>
 	                            </group>
 	                            <div class="oe_clear"/>
 							</page>
@@ -555,14 +559,14 @@
 									</tree>
 								</field>
 								<group class="oe_subtotal_footer oe_right" colspan="2" name="hopdong_total">
-	                                <field name="amount_untaxed" widget='monetary' />
-	                                <field name="amount_tax" widget='monetary' />
+	                                <field name="amount_untaxed" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+	                                <field name="amount_tax" widget='monetary' options="{'currency_field': 'currency_id'}"/>
 	                                <div class="oe_subtotal_footer_separator oe_inline">
 	                                    <label for="amount_total" />
 	                                    <button name="button_dummy"
 	                                        states="moi_tao" string="(update)" type="object" class="oe_edit_only oe_link"/>
 	                                </div>
-	                                <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' />
+	                                <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'currency_id'}"/>
 	                            </group>
 	                            <div class="oe_clear"/>
 	                            <field name="note" class="oe_inline" placeholder="Terms and conditions..."/>
@@ -612,6 +616,126 @@
     		name="Đơn bán hàng ngoại"
     		parent="menu_don_ban_hang"
 			sequence="20"/>
+    	
+    	<record id="don_mua_hang_tree_view" model="ir.ui.view">
+			<field name="name">don_mua_hang.tree</field>
+			<field name="model">don.mua.hang</field>
+			<field name="arch" type="xml">
+				<tree string="Đơn bán hàng">
+					<field name="name"/>
+					<field name="partner_id"/>
+					<field name="ngay"/>
+					<field name="amount_total"/>
+					<field name="state"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="view_don_mua_hang_filter" model="ir.ui.view">
+            <field name="name">don_mua_hang.select</field>
+            <field name="model">don.mua.hang</field>
+            <field name="arch" type="xml">
+                <search string="Đơn bán hàng">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Status" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>
+		
+		<record id="don_mua_hang_form_view" model="ir.ui.view">
+            <field name="name">don_mua_hang.form</field>
+            <field name="model">don.mua.hang</field>
+            <field name="arch" type="xml">
+	            <form string="Đơn bán hàng" version="7.0">
+					<header>
+						<button name="print_donmuahang" string="In đơn mua hàng" type="object" class="oe_highlight"/>
+						<button name="duyet" string="Duyệt" states="moi_tao" type="object" class="oe_highlight"/>
+						<button name="huy_bo" string="Hủy bỏ" type="object" states="moi_tao,da_duyet" class="oe_highlight"/>
+						<field name="state" widget="statusbar" statusbar_visible="moi_tao,da_duyet,huy_bo"/>
+					</header>
+	            	<sheet>
+	                    <h1>
+	                    	<label string="Số"/>
+	                        <field name="name" class="oe_inline" nolabel="1" />
+	                    </h1>
+	                    <group>
+	                    	<field name="company_id" context="{'show_address': 1}" invisible='1'/>
+	                    	<field name="type" invisible='1'/>
+	                    	<field name="currency_company_id" invisible='1'/>
+	                    </group>
+	                    <group col='4' colspan='2'>
+	                    	<field name="partner_id" context="{'show_address': 1}" domain="[('customer','=',True)]"/>
+	                    	<field name="ngay"/>
+	                    	<field name="pricelist_id" domain="[('type','=','purchase')]" on_change="onchange_pricelist_id(pricelist_id,don_mua_hang_line)"/>
+	                    	<field name="currency_id"/>
+	                    	<field name="user_id"/>
+						</group>
+						<notebook>
+							<page string="Thông tin mặt hàng" >
+								<field name="don_mua_hang_line">
+									<tree editable='top'>
+	                                    <field name="product_id" on_change="onchange_product_id(product_qty,parent.ngay,parent.partner_id,parent.pricelist_id,product_id, context)"/>
+	                                    <field name="name"/>
+	                                    <field name="product_uom"/>
+	                                    <field name="product_qty"/>
+	                                    <field name="price_unit"/>
+	                                    <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]"/>
+	                                    <field name="price_subtotal"/>
+									</tree>
+								</field>
+								<group class="oe_subtotal_footer oe_right" colspan="2" name="hopdong_total">
+	                                <field name="amount_untaxed" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+	                                <field name="amount_tax" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+	                                <div class="oe_subtotal_footer_separator oe_inline">
+	                                    <label for="amount_total" />
+	                                    <button name="button_dummy"
+	                                        states="moi_tao" string="(update)" type="object" class="oe_edit_only oe_link"/>
+	                                </div>
+	                                <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+	                            </group>
+	                            <div class="oe_clear"/>
+	                            <field name="note" class="oe_inline" placeholder="Terms and conditions..."/>
+							</page>
+						</notebook>
+		         	</sheet>
+		         </form>
+			</field>
+		</record>
+          
+		<record id="action_don_mua_hang" model="ir.actions.act_window">
+            <field name="name">Đơn mua hàng</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">don.mua.hang</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="don_mua_hang_tree_view"/>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_don_mua_hang1">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="don_mua_hang_tree_view"/>
+            <field name="act_window_id" ref="action_don_mua_hang"/>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_don_mua_hang2">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="don_mua_hang_form_view"/>
+            <field name="act_window_id" ref="action_don_mua_hang"/>
+        </record>
+    	
+    	<menuitem id="menu_don_mua_hang"
+    		name="Đơn Mua Hàng"
+    		parent="green_erp_viruco_base.hop_dong"
+			sequence="3"/>
+    	
+    	<menuitem id="menu_action_don_mua_hang"
+    		action="action_don_mua_hang"
+    		name="Đơn mua hàng"
+    		parent="menu_don_mua_hang"
+			sequence="10"/>
     	
     </data>
 </openerp>

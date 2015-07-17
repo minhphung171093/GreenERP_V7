@@ -292,5 +292,29 @@ class stock_move(osv.osv):
 
         return True
     
-stock_move()    
+stock_move()
+
+class stock_location(osv.osv):
+    _inherit = "stock.location"
+    
+    def name_get(self, cr, uid, ids, context=None):
+        # always return the full hierarchical name
+        res = self._complete_name(cr, uid, ids, 'complete_name', None, context=context)
+        return res.items()
+
+    def _complete_name(self, cr, uid, ids, name, args, context=None):
+        """ Forms complete name of location from parent location to child location.
+        @return: Dictionary of values
+        """
+        res = {}
+        for m in self.browse(cr, uid, ids, context=context):
+#             names = [m.name]
+#             parent = m.location_id
+#             while parent:
+#                 names.append(parent.name)
+#                 parent = parent.location_id
+            res[m.id] = m.name
+        return res
+
+stock_location()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

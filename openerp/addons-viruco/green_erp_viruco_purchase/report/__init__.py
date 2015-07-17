@@ -23,5 +23,4 @@
 #----------------------------------------------------------
 # A Module to School Fees Management System
 #-------------------------------------------------------
-import don_mua_hang
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

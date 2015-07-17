@@ -28,8 +28,6 @@
     'depends': ['green_erp_viruco_account','green_erp_viruco_base'],
     'data': [
              'purchase_view.xml',
-             'report/don_mua_hang_view.xml',
-        
              ],
     'demo': [],
     'test': [],

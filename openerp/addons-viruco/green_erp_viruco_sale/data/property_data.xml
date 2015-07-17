@@ -28,6 +28,11 @@ If any default in time of LC opening, at the Seller's option, the Seller, by wri
 Banking charges outside of Vietnam is not at the account of the Seller.
 Third pary's documents are acceptable</field>
         </record>
+        
+        <record id="properties_quycachdonggoi_chatluong" model="admin.property">
+            <field name="name">properties_quycachdonggoi_chatluong</field>
+            <field name="value">- Hàng đóng bành 33.33 kgs, cân đủ, không cong queo, không sống điểm, không ẩm mốc, không lẫn tạp chất, kéo ra có độ đàn hồi không rách.</field>
+        </record>
     
     </data>
 </openerp>

@@ -298,7 +298,7 @@
             		<field name="nguoi_denghi_id" />
             	</field>
             	<field name="date_done" position="after">
-            		<field name="donvi_vanchuyen" />
+            		<field name="donvi_vanchuyen" context="{'default_donvi_vanchuyen':1,'default_customer':0}" domain="[('donvi_vanchuyen','=',True)]" />
             		<field name="lotrinh_id" />
             		<field name="dongia_vanchuyen" />
             	</field>
@@ -314,7 +314,7 @@
             		<field name="nguoi_denghi_id" />
             	</field>
             	<field name="date_done" position="after">
-            		<field name="donvi_vanchuyen" />
+            		<field name="donvi_vanchuyen" context="{'default_donvi_vanchuyen':1,'default_customer':0}" domain="[('donvi_vanchuyen','=',True)]"/>
             		<field name="lotrinh_id" />
             		<field name="dongia_vanchuyen" />
             	</field>
@@ -336,7 +336,7 @@
             		<field name="nguoi_denghi_id" />
             	</field>
             	<field name="date_done" position="after">
-            		<field name="donvi_vanchuyen" />
+            		<field name="donvi_vanchuyen" context="{'default_donvi_vanchuyen':1,'default_customer':0}" domain="[('donvi_vanchuyen','=',True)]"/>
             		<field name="lotrinh_id" />
             		<field name="dongia_vanchuyen" />
             	</field>

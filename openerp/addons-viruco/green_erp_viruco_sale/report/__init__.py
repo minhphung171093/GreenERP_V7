@@ -23,8 +23,6 @@
 #----------------------------------------------------------
 # A Module to School Fees Management System
 #-------------------------------------------------------
-import don_ban_hang_noi
-import don_ban_hang_ngoai
 import hopdong_noi_report
 import hopdong_mua_report
 import hopdong_ngoai_report
