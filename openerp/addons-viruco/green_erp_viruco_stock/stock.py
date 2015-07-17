@@ -175,6 +175,100 @@ class stock_picking(osv.osv):
         'cang_donghang_id': fields.many2one('cang.donghang', 'Cảng đóng hàng',states={'done': [('readonly', True)]}, select=True,),
     }
     
+    def _prepare_invoice_line(self, cr, uid, group, picking, move_line, invoice_id,
+        invoice_vals, context=None):
+        """ Builds the dict containing the values for the invoice line
+            @param group: True or False
+            @param picking: picking object
+            @param: move_line: move_line object
+            @param: invoice_id: ID of the related invoice
+            @param: invoice_vals: dict used to created the invoice
+            @return: dict that will be used to create the invoice line
+        """
+        if group:
+            name = (picking.name or '') + '-' + move_line.name
+        else:
+            name = move_line.name
+        origin = move_line.picking_id.name or ''
+        if move_line.picking_id.origin:
+            origin += ':' + move_line.picking_id.origin
+
+        if invoice_vals['type'] in ('out_invoice', 'out_refund'):
+            account_id = move_line.product_id.property_account_income.id
+            if not account_id:
+                account_id = move_line.product_id.categ_id.\
+                        property_account_income_categ.id
+        else:
+            account_id = move_line.product_id.property_account_expense.id
+            if not account_id:
+                account_id = move_line.product_id.categ_id.\
+                        property_account_expense_categ.id
+        if invoice_vals['fiscal_position']:
+            fp_obj = self.pool.get('account.fiscal.position')
+            fiscal_position = fp_obj.browse(cr, uid, invoice_vals['fiscal_position'], context=context)
+            account_id = fp_obj.map_account(cr, uid, fiscal_position, account_id)
+        # set UoS if it's a sale and the picking doesn't have one
+        uos_id = move_line.product_uos and move_line.product_uos.id or False
+        if not uos_id and invoice_vals['type'] in ('out_invoice', 'out_refund'):
+            uos_id = move_line.product_uom.id
+
+        return {
+            'name': name,
+            'origin': origin,
+            'invoice_id': invoice_id,
+            'uos_id': uos_id,
+            'product_id': move_line.product_id.id,
+            'account_id': account_id,
+            'price_unit': self._get_price_unit_invoice(cr, uid, move_line, invoice_vals['type']),
+            'discount': self._get_discount_invoice(cr, uid, move_line),
+            'quantity': move_line.product_uos_qty or move_line.product_qty,
+            'invoice_line_tax_id': [(6, 0, self._get_taxes_invoice(cr, uid, move_line, invoice_vals['type']))],
+            'account_analytic_id': self._get_account_analytic_invoice(cr, uid, picking, move_line),
+            'stock_move_id': move_line.id,
+        }
+    
+    def _prepare_invoice(self, cr, uid, picking, partner, inv_type, journal_id, context=None):
+        """ Builds the dict containing the values for the invoice
+            @param picking: picking object
+            @param partner: object of the partner to invoice
+            @param inv_type: type of the invoice ('out_invoice', 'in_invoice', ...)
+            @param journal_id: ID of the accounting journal
+            @return: dict that will be used to create the invoice object
+        """
+        if isinstance(partner, int):
+            partner = self.pool.get('res.partner').browse(cr, uid, partner, context=context)
+        if inv_type in ('out_invoice', 'out_refund'):
+            account_id = partner.property_account_receivable.id
+            payment_term = partner.property_payment_term.id or False
+        else:
+            account_id = partner.property_account_payable.id
+            payment_term = partner.property_supplier_payment_term.id or False
+        comment = self._get_comment_invoice(cr, uid, picking)
+        if picking.type=='in':
+            hop_dong_id = picking.purchase_id and picking.purchase_id.hop_dong_id.id or False
+        if picking.type=='out':
+            hop_dong_id = picking.sale_id and picking.sale_id.hop_dong_id.id or False
+        invoice_vals = {
+            'name': picking.name,
+            'origin': (picking.name or '') + (picking.origin and (':' + picking.origin) or ''),
+            'type': inv_type,
+            'account_id': account_id,
+            'partner_id': partner.id,
+            'comment': comment,
+            'payment_term': payment_term,
+            'fiscal_position': partner.property_account_position.id,
+            'date_invoice': context.get('date_inv', False),
+            'company_id': picking.company_id.id,
+            'user_id': uid,
+            'hop_dong_id': hop_dong_id,
+        }
+        cur_id = self.get_currency_id(cr, uid, picking)
+        if cur_id:
+            invoice_vals['currency_id'] = cur_id
+        if journal_id:
+            invoice_vals['journal_id'] = journal_id
+        return invoice_vals
+    
 stock_picking()
 
 class stock_picking_in(osv.osv):
@@ -292,6 +386,55 @@ class stock_move(osv.osv):
 
         return True
     
+    def _create_product_valuation_moves(self, cr, uid, move, context=None):
+        """
+        Generate the appropriate accounting moves if the product being moves is subject
+        to real_time valuation tracking, and the source or destination location is
+        a transit location or is outside of the company.
+        """
+        if move.product_id.valuation == 'real_time': # FIXME: product valuation should perhaps be a property?
+            if context is None:
+                context = {}
+            src_company_ctx = dict(context,force_company=move.location_id.company_id.id)
+            dest_company_ctx = dict(context,force_company=move.location_dest_id.company_id.id)
+            # do not take the company of the one of the user
+            # used to select the correct period
+            company_ctx = dict(context, company_id=move.company_id.id)
+            account_moves = []
+            # Outgoing moves (or cross-company output part)
+            if move.location_id.company_id \
+                and (move.location_id.usage == 'internal' and move.location_dest_id.usage != 'internal'\
+                     or move.location_id.company_id != move.location_dest_id.company_id):
+                journal_id, acc_src, acc_dest, acc_valuation = self._get_accounting_data_for_valuation(cr, uid, move, src_company_ctx)
+                reference_amount, reference_currency_id = self._get_reference_accounting_values_for_valuation(cr, uid, move, src_company_ctx)
+                #returning goods to supplier
+                if move.location_dest_id.usage == 'supplier':
+                    account_moves += [(journal_id, self._create_account_move_line(cr, uid, move, acc_valuation, acc_src, reference_amount, reference_currency_id, context))]
+                else:
+                    account_moves += [(journal_id, self._create_account_move_line(cr, uid, move, acc_valuation, acc_dest, reference_amount, reference_currency_id, context))]
+
+            # Incoming moves (or cross-company input part)
+            if move.location_dest_id.company_id \
+                and (move.location_id.usage != 'internal' and move.location_dest_id.usage == 'internal'\
+                     or move.location_id.company_id != move.location_dest_id.company_id):
+                journal_id, acc_src, acc_dest, acc_valuation = self._get_accounting_data_for_valuation(cr, uid, move, dest_company_ctx)
+                reference_amount, reference_currency_id = self._get_reference_accounting_values_for_valuation(cr, uid, move, src_company_ctx)
+                #goods return from customer
+                if move.location_id.usage == 'customer':
+                    account_moves += [(journal_id, self._create_account_move_line(cr, uid, move, acc_dest, acc_valuation, reference_amount, reference_currency_id, context))]
+                else:
+                    account_moves += [(journal_id, self._create_account_move_line(cr, uid, move, acc_src, acc_valuation, reference_amount, reference_currency_id, context))]
+
+            move_obj = self.pool.get('account.move')
+            for j_id, move_lines in account_moves:
+                move_obj.create(cr, uid,
+                        {
+                         'journal_id': j_id,
+                         'line_id': move_lines,
+                         'company_id': move.company_id.id,
+                         'stock_move_id': move.id,
+                         'ref': move.picking_id and move.picking_id.name}, context=company_ctx)
+    
 stock_move()
 
 class stock_location(osv.osv):
@@ -317,4 +460,22 @@ class stock_location(osv.osv):
         return res
 
 stock_location()
+
+class account_move(osv.osv):
+    _inherit = "account.move"
+    
+    _columns = {
+        'stock_move_id': fields.many2one('stock.move', 'Stock Move'),
+    }
+    
+account_move()
+
+class account_invoice_line(osv.osv):
+    _inherit = "account.invoice.line"
+    
+    _columns = {
+        'stock_move_id': fields.many2one('stock.move', 'Stock Move'),
+    }
+    
+account_invoice_line()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

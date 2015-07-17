@@ -34,42 +34,43 @@ class sale_order(osv.osv):
         'ngaygui_hoadon':fields.date('Ngày gửi hóa đơn'),
         'dagui_chungtugoc':fields.boolean('Đã gửi chứng từ gốc'),
         'ngaygui_chungtugoc':fields.date('Ngày gửi chứng từ gốc'),
+        'plhd_id':fields.many2one('phuluc.hop.dong','Phụ lục hợp đồng'),
     }
-    
-    def action_button_confirm(self, cr, uid, ids, context=None):
-        assert len(ids) == 1, 'This option should only be used for a single id at a time.'
-        sale_line_obj = self.pool.get('sale.order.line')
-        hop_dong_obj = self.pool.get('hop.dong')
-        hop_dong_line_obj = self.pool.get('hopdong.line')
-        for sale in self.browse(cr, uid, ids):
-            if sale.hop_dong_id:
-                for order_line in sale.order_line:
-                    hop_dong_line = hop_dong_line_obj.search(cr,uid,[('hopdong_id','=',sale.hop_dong_id.id),('product_id','=',order_line.product_id.id)])
-                    if not hop_dong_line:
-                        raise osv.except_osv(_('Warning!'),_('Sản phẩm %s không có trong hợp đồng!')%(order_line.product_id.name))
-                    sql = '''
-                        select product_id, sum(product_uom_qty) as total_qty
-                        from sale_order_line l
-                        inner join sale_order s on l.order_id = s.id
-                        where s.hop_dong_id = %s and s.partner_id = %s and l.product_id = %s and s.state in ('done','manual','progress')
-                        group by product_id
-                    '''%(sale.hop_dong_id.id,sale.partner_id.id,order_line.product_id.id)
-                    cr.execute(sql)
-                    lines_qty = cr.dictfetchall()
-                    product_uom_qty = order_line.product_uom_qty
-                    if hop_dong_line_obj.browse(cr,uid,hop_dong_line[0]).tax_id != order_line.tax_id:
-                        raise osv.except_osv(_('Warning!'),_('Không thể duyệt sản phẩm có thuế khác thuế trong hợp đồng!'))
-                    if hop_dong_line_obj.browse(cr,uid,hop_dong_line[0]).price_unit != order_line.price_unit:
-                        raise osv.except_osv(_('Warning!'),_('Không thể duyệt sản phẩm với đơn giá khác đơn giá trong hợp đồng: %s!')%(hop_dong_line_obj.browse(cr,uid,hop_dong_line[0]).price_unit))
-                    if lines_qty:
-                        for line_qty in lines_qty:
-                            product_uom_qty += line_qty['total_qty']
-                    if product_uom_qty > hop_dong_line_obj.browse(cr,uid,hop_dong_line[0]).product_qty:
-                        raise osv.except_osv(_('Warning!'),_('Không thể duyệt sản phẩm với số lượng lớn hơn số lượng trong hợp đồng: %s!')%(hop_dong_line_obj.browse(cr,uid,hop_dong_line[0]).product_qty))
-        wf_service = netsvc.LocalService('workflow')
-        wf_service.trg_validate(uid, 'sale.order', ids[0], 'order_confirm', cr)
-        return True
-    
+#     
+#     def action_button_confirm(self, cr, uid, ids, context=None):
+#         assert len(ids) == 1, 'This option should only be used for a single id at a time.'
+#         sale_line_obj = self.pool.get('sale.order.line')
+#         hop_dong_obj = self.pool.get('hop.dong')
+#         hop_dong_line_obj = self.pool.get('hopdong.line')
+#         for sale in self.browse(cr, uid, ids):
+#             if sale.hop_dong_id:
+#                 for order_line in sale.order_line:
+#                     hop_dong_line = hop_dong_line_obj.search(cr,uid,[('hopdong_id','=',sale.hop_dong_id.id),('product_id','=',order_line.product_id.id)])
+#                     if not hop_dong_line:
+#                         raise osv.except_osv(_('Warning!'),_('Sản phẩm %s không có trong hợp đồng!')%(order_line.product_id.name))
+#                     sql = '''
+#                         select product_id, sum(product_uom_qty) as total_qty
+#                         from sale_order_line l
+#                         inner join sale_order s on l.order_id = s.id
+#                         where s.hop_dong_id = %s and s.partner_id = %s and l.product_id = %s and s.state in ('done','manual','progress')
+#                         group by product_id
+#                     '''%(sale.hop_dong_id.id,sale.partner_id.id,order_line.product_id.id)
+#                     cr.execute(sql)
+#                     lines_qty = cr.dictfetchall()
+#                     product_uom_qty = order_line.product_uom_qty
+#                     if hop_dong_line_obj.browse(cr,uid,hop_dong_line[0]).tax_id != order_line.tax_id:
+#                         raise osv.except_osv(_('Warning!'),_('Không thể duyệt sản phẩm có thuế khác thuế trong hợp đồng!'))
+#                     if hop_dong_line_obj.browse(cr,uid,hop_dong_line[0]).price_unit != order_line.price_unit:
+#                         raise osv.except_osv(_('Warning!'),_('Không thể duyệt sản phẩm với đơn giá khác đơn giá trong hợp đồng: %s!')%(hop_dong_line_obj.browse(cr,uid,hop_dong_line[0]).price_unit))
+#                     if lines_qty:
+#                         for line_qty in lines_qty:
+#                             product_uom_qty += line_qty['total_qty']
+#                     if product_uom_qty > hop_dong_line_obj.browse(cr,uid,hop_dong_line[0]).product_qty:
+#                         raise osv.except_osv(_('Warning!'),_('Không thể duyệt sản phẩm với số lượng lớn hơn số lượng trong hợp đồng: %s!')%(hop_dong_line_obj.browse(cr,uid,hop_dong_line[0]).product_qty))
+#         wf_service = netsvc.LocalService('workflow')
+#         wf_service.trg_validate(uid, 'sale.order', ids[0], 'order_confirm', cr)
+#         return True
+#     
     def _prepare_order_picking(self, cr, uid, order, context=None):
         pick_name = self.pool.get('ir.sequence').get(cr, uid, 'stock.picking.out')
         return {
@@ -198,6 +199,7 @@ class sale_order_line(osv.osv):
                 'chatluong_id':fields.many2one('chatluong.sanpham','Chất lượng'),
                 'quycach_donggoi_id':fields.many2one('quycach.donggoi','Quy cách đóng gói'),
                 'hd_line_id':fields.many2one('hopdong.line','Thông tin mặt hàng'),
+                'plhd_line_id':fields.many2one('phuluc.hopdong.line','Phụ lục hợp đồng line'),
                 }
     
     def product_id_change(self, cr, uid, ids, pricelist, product, qty=0,
@@ -315,7 +317,6 @@ class hop_dong(osv.osv):
         sale_obj = self.pool.get('sale.order')
         order_line = []
         vals = {}
-        wf_service = netsvc.LocalService('workflow')
         for hd in self.browse(cr, uid, ids):
             vals={'partner_id':hd.partner_id.id,'hop_dong_id':hd.id,'order_policy':'picking','state':'draft'}
             vals.update(sale_obj.onchange_partner_id(cr, uid, [], hd.partner_id.id)['value'])
@@ -329,7 +330,6 @@ class hop_dong(osv.osv):
         sale_obj = self.pool.get('sale.order')
         order_line = []
         vals = {}
-        wf_service = netsvc.LocalService('workflow')
         for hd in self.browse(cr, uid, ids):
             vals={'partner_id':hd.partner_id.id,'hop_dong_id':hd.id,'order_policy':'picking','state':'draft'}
             vals.update(sale_obj.onchange_partner_id(cr, uid, [], hd.partner_id.id)['value'])
@@ -340,5 +340,196 @@ class hop_dong(osv.osv):
         return self.write(cr, uid, ids, {'state': 'da_duyet'})
     
 hop_dong()
+
+class phuluc_hop_dong(osv.osv):
+    _inherit = "phuluc.hop.dong"
+    
+    def duyet_phuluc_hd_noi(self, cr, uid, ids, context=None):
+        hd_line_obj = self.pool.get('hopdong.line')
+        sale_obj = self.pool.get('sale.order')
+        stock_move_obj = self.pool.get('stock.move')
+        account_move_obj = self.pool.get('account.move')
+        invoice_line_obj = self.pool.get('account.invoice.line')
+        sale_line_obj = self.pool.get('sale.order.line')
+        for plhd in self.browse(cr, uid, ids):
+            order_line = []
+            for plhp_line in plhd.phuluc_hopdong_line:
+                hd_line_ids = hd_line_obj.search(cr, uid, [('hopdong_id','=',plhp_line.phuluc_hopdong_id.hop_dong_id.id),('product_id','=',plhp_line.product_id.id)])
+                if hd_line_ids:
+                    for hd_line in hd_line_obj.browse(cr, uid, hd_line_ids):
+                        # thay doi don gia
+                        if plhp_line.price_unit!=hd_line.price_unit:
+                            sale_line_ids = sale_line_obj.search(cr, uid, [('hd_line_id','=',hd_line.id)])
+                            sale_line_obj.write(cr, uid, sale_line_ids, {'price_unit': plhp_line.price_unit})
+                            stock_move_ids = stock_move_obj.search(cr, uid, [('sale_line_id','in',sale_line_ids)])
+                            invoice_line_ids = invoice_line_obj.search(cr, uid, [('stock_move_id','in',stock_move_ids)])
+                            invoice_line_obj.write(cr, uid, invoice_line_ids, {'price_unit': plhp_line.price_unit})
+                            
+                        # thay doi so luong tang
+                        if plhp_line.product_qty>hd_line.product_qty:
+                            val_line={
+                                'product_id': plhp_line.product_id and plhp_line.product_id.id or False,
+                                'name':plhp_line.name,
+                                'chatluong_id':plhp_line.product_id and plhp_line.product_id.chatluong_id and plhp_line.product_id.chatluong_id.id or False,
+                                'quycach_donggoi_id':plhp_line.product_id and plhp_line.product_id.quycach_donggoi_id and plhp_line.product_id.quycach_donggoi_id.id or False,
+                                'product_uom': plhp_line.product_uom and plhp_line.product_uom.id or False,
+                                'product_uom_qty': plhp_line.product_qty-hd_line.product_qty,
+                                'price_unit': plhp_line.price_unit,
+                                'tax_id': [(6,0,[t.id for t in plhp_line.tax_id])],
+                                'plhd_line_id': plhp_line.id,
+                                'state': 'draft',
+                                'type': 'make_to_stock',
+                            }
+                            order_line.append((0,0,val_line))
+                            
+                        # thay doi so luong giam
+                        if plhp_line.product_qty<hd_line.product_qty:
+                            sale_line_ids = sale_line_obj.search(cr, uid, [('hd_line_id','=',hd_line.id)])
+                            sale_line_obj.write(cr, uid, sale_line_ids, {'product_uom_qty': plhp_line.product_qty})
+                            stock_move_ids = stock_move_obj.search(cr, uid, [('sale_line_id','in',sale_line_ids)],order='product_qty desc')
+                            qty = hd_line.product_qty-plhp_line.product_qty
+                            for stock_move in stock_move_obj.browse(cr, uid, stock_move_ids):
+                                if qty <= 0:
+                                    break
+                                move_qty = stock_move.product_qty
+                                if move_qty<=qty:
+                                    cr.execute(''' delete from account_move_line where move_id in (select id from account_move where stock_move_id = %s ) ''',(stock_move.id,))
+                                    cr.execute(''' delete from account_move where stock_move_id = %s ''',(stock_move.id,))
+                                    cr.execute(''' delete from account_invoice_line where stock_move_id = %s and invoice_id in (select id from account_invoice where hop_dong_id=%s) ''',(stock_move.id,hd_line.hopdong_id.id,))
+                                    cr.execute(''' delete from stock_move where id = %s ''',(stock_move.id,))
+                                else:
+                                    move_in_ids = stock_move_obj.search(cr, uid, [('picking_id','=',stock_move.picking_in_id.id),('product_id','=',stock_move.product_id.id)])
+                                    if move_in_ids:
+                                        move_in = stock_move_obj.browse(cr, uid, move_in_ids[0])
+                                        product_obj.write(cr, uid, [stock_move.product_id.id], {'standard_price':move_in.purchase_line_id.price_unit})
+                                    stock_move_obj.write(cr, uid, [stock_move.id], {'product_qty': stock_move.product_qty-qty})
+                                    cr.execute(''' delete from account_move where stock_move_id = %s ''',(stock_move.id,))
+                                    stock_move_obj._create_product_valuation_moves(cr, uid, stock_move)
+                                    invoice_line_ids = invoice_line_obj.search(cr, uid, [('stock_move_id','=',stock_move.id)])
+                                    invoice_line_obj.write(cr, uid, invoice_line_ids, {'quantity': stock_move.product_qty-qty})
+                                qty -= move_qty
+                        
+                else:
+                    val_line={
+                        'product_id': plhp_line.product_id and plhp_line.product_id.id or False,
+                        'name':plhp_line.name,
+                        'chatluong_id':plhp_line.product_id and plhp_line.product_id.chatluong_id and plhp_line.product_id.chatluong_id.id or False,
+                        'quycach_donggoi_id':plhp_line.product_id and plhp_line.product_id.quycach_donggoi_id and plhp_line.product_id.quycach_donggoi_id.id or False,
+                        'product_uom': plhp_line.product_uom and plhp_line.product_uom.id or False,
+                        'product_uom_qty': plhp_line.product_qty,
+                        'price_unit': plhp_line.price_unit,
+                        'tax_id': [(6,0,[t.id for t in plhp_line.tax_id])],
+                        'plhd_line_id': plhp_line.id,
+                        'state': 'draft',
+                        'type': 'make_to_stock',
+                    }
+                    order_line.append((0,0,val_line))
+            if order_line:
+                create_sale_vals={'partner_id':plhp_line.phuluc_hopdong_id.hop_dong_id.partner_id.id,
+                                  'hop_dong_id':plhp_line.phuluc_hopdong_id.hop_dong_id.id,
+                                  'plhd_id': plhd.id,
+                                  'order_policy':'picking',
+                                  'state':'draft'}
+                create_sale_vals.update(sale_obj.onchange_partner_id(cr, uid, [], plhp_line.phuluc_hopdong_id.hop_dong_id.partner_id.id)['value'])
+                create_sale_vals.update({'pricelist_id':plhp_line.phuluc_hopdong_id.hop_dong_id.pricelist_id.id,
+                                         'order_line': order_line})
+                sale_id = sale_obj.create(cr, uid, create_sale_vals)
+                sale_obj.action_button_confirm(cr, uid, [sale_id])
+        return self.write(cr, uid, ids, {'state': 'da_duyet'})
+    
+    def duyet_phuluc_hd_ngoai(self, cr, uid, ids, context=None):
+        hd_line_obj = self.pool.get('hopdong.line')
+        sale_obj = self.pool.get('sale.order')
+        stock_move_obj = self.pool.get('stock.move')
+        account_move_obj = self.pool.get('account.move')
+        invoice_line_obj = self.pool.get('account.invoice.line')
+        sale_line_obj = self.pool.get('sale.order.line')
+        for plhd in self.browse(cr, uid, ids):
+            order_line = []
+            for plhp_line in plhd.phuluc_hopdong_line:
+                hd_line_ids = hd_line_obj.search(cr, uid, [('hopdong_id','=',plhp_line.phuluc_hopdong_id.hop_dong_id.id),('product_id','=',plhp_line.product_id.id)])
+                if hd_line_ids:
+                    for hd_line in hd_line_obj.browse(cr, uid, hd_line_ids):
+                        # thay doi don gia
+                        if plhp_line.price_unit!=hd_line.price_unit:
+                            sale_line_ids = sale_line_obj.search(cr, uid, [('hd_line_id','=',hd_line.id)])
+                            sale_line_obj.write(cr, uid, sale_line_ids, {'price_unit': plhp_line.price_unit})
+                            stock_move_ids = stock_move_obj.search(cr, uid, [('sale_line_id','in',sale_line_ids)])
+                            invoice_line_ids = invoice_line_obj.search(cr, uid, [('stock_move_id','in',stock_move_ids)])
+                            invoice_line_obj.write(cr, uid, invoice_line_ids, {'price_unit': plhp_line.price_unit})
+                            
+                        # thay doi so luong tang
+                        if plhp_line.product_qty>hd_line.product_qty:
+                            val_line={
+                                'product_id': plhp_line.product_id and plhp_line.product_id.id or False,
+                                'name':plhp_line.name,
+                                'chatluong_id':plhp_line.product_id and plhp_line.product_id.chatluong_id and plhp_line.product_id.chatluong_id.id or False,
+                                'quycach_donggoi_id':plhp_line.product_id and plhp_line.product_id.quycach_donggoi_id and plhp_line.product_id.quycach_donggoi_id.id or False,
+                                'product_uom': plhp_line.product_uom and plhp_line.product_uom.id or False,
+                                'product_uom_qty': plhp_line.product_qty-hd_line.product_qty,
+                                'price_unit': plhp_line.price_unit,
+                                'tax_id': [(6,0,[t.id for t in plhp_line.tax_id])],
+                                'plhd_line_id': plhp_line.id,
+                                'state': 'draft',
+                                'type': 'make_to_stock',
+                            }
+                            order_line.append((0,0,val_line))
+                            
+                        # thay doi so luong giam
+                        if plhp_line.product_qty<hd_line.product_qty:
+                            sale_line_ids = sale_line_obj.search(cr, uid, [('hd_line_id','=',hd_line.id)])
+                            sale_line_obj.write(cr, uid, sale_line_ids, {'product_uom_qty': plhp_line.product_qty})
+                            stock_move_ids = stock_move_obj.search(cr, uid, [('sale_line_id','in',sale_line_ids)],order='product_qty desc')
+                            qty = hd_line.product_qty-plhp_line.product_qty
+                            for stock_move in stock_move_obj.browse(cr, uid, stock_move_ids):
+                                if qty <= 0:
+                                    break
+                                move_qty = stock_move.product_qty
+                                if move_qty<=qty:
+                                    cr.execute(''' delete from account_move_line where move_id in (select id from account_move where stock_move_id = %s ) ''',(stock_move.id,))
+                                    cr.execute(''' delete from account_move where stock_move_id = %s ''',(stock_move.id,))
+                                    cr.execute(''' delete from account_invoice_line where stock_move_id = %s and invoice_id in (select id from account_invoice where hop_dong_id=%s) ''',(stock_move.id,hd_line.hopdong_id.id,))
+                                    cr.execute(''' delete from stock_move where id = %s ''',(stock_move.id,))
+                                else:
+                                    move_in_ids = stock_move_obj.search(cr, uid, [('picking_id','=',stock_move.picking_in_id.id),('product_id','=',stock_move.product_id.id)])
+                                    if move_in_ids:
+                                        move_in = stock_move_obj.browse(cr, uid, move_in_ids[0])
+                                        product_obj.write(cr, uid, [stock_move.product_id.id], {'standard_price':move_in.purchase_line_id.price_unit})
+                                    stock_move_obj.write(cr, uid, [stock_move.id], {'product_qty': stock_move.product_qty-qty})
+                                    cr.execute(''' delete from account_move where stock_move_id = %s ''',(stock_move.id,))
+                                    stock_move_obj._create_product_valuation_moves(cr, uid, stock_move)
+                                    invoice_line_ids = invoice_line_obj.search(cr, uid, [('stock_move_id','=',stock_move.id)])
+                                    invoice_line_obj.write(cr, uid, invoice_line_ids, {'quantity': stock_move.product_qty-qty})
+                                qty -= move_qty
+                        
+                else:
+                    val_line={
+                        'product_id': plhp_line.product_id and plhp_line.product_id.id or False,
+                        'name':plhp_line.name,
+                        'chatluong_id':plhp_line.product_id and plhp_line.product_id.chatluong_id and plhp_line.product_id.chatluong_id.id or False,
+                        'quycach_donggoi_id':plhp_line.product_id and plhp_line.product_id.quycach_donggoi_id and plhp_line.product_id.quycach_donggoi_id.id or False,
+                        'product_uom': plhp_line.product_uom and plhp_line.product_uom.id or False,
+                        'product_uom_qty': plhp_line.product_qty,
+                        'price_unit': plhp_line.price_unit,
+                        'tax_id': [(6,0,[t.id for t in plhp_line.tax_id])],
+                        'plhd_line_id': plhp_line.id,
+                        'state': 'draft',
+                        'type': 'make_to_stock',
+                    }
+                    order_line.append((0,0,val_line))
+            if order_line:
+                create_sale_vals={'partner_id':plhp_line.phuluc_hopdong_id.hop_dong_id.partner_id.id,
+                                  'hop_dong_id':plhp_line.phuluc_hopdong_id.hop_dong_id.id,
+                                  'plhd_id': plhd.id,
+                                  'order_policy':'picking',
+                                  'state':'draft'}
+                create_sale_vals.update(sale_obj.onchange_partner_id(cr, uid, [], plhp_line.phuluc_hopdong_id.hop_dong_id.partner_id.id)['value'])
+                create_sale_vals.update({'pricelist_id':plhp_line.phuluc_hopdong_id.hop_dong_id.pricelist_id.id,
+                                         'order_line': order_line})
+                sale_id = sale_obj.create(cr, uid, create_sale_vals)
+                sale_obj.action_button_confirm(cr, uid, [sale_id])
+        return self.write(cr, uid, ids, {'state': 'da_duyet'})
+    
+phuluc_hop_dong()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -62,13 +62,13 @@ class phuluc_hop_dong(osv.osv):
                 multi='sums', help="The amount without tax.", track_visibility='always'),
             'amount_tax': fields.function(_amount_all, digits_compute=dp.get_precision('Account'), string='Thuế GTGT',
                 store={
-                    'hop.dong': (lambda self, cr, uid, ids, c={}: ids, ['phuluc_hopdong_line'], 10),
+                    'phuluc.hop.dong': (lambda self, cr, uid, ids, c={}: ids, ['phuluc_hopdong_line'], 10),
                     'phuluc.hopdong.line': (_get_order, ['price_unit', 'tax_id', 'product_qty'], 10),
                 },
                 multi='sums', help="The tax amount."),
             'amount_total': fields.function(_amount_all, digits_compute=dp.get_precision('Account'), string='Tổng cộng',
                 store={
-                    'hop.dong': (lambda self, cr, uid, ids, c={}: ids, ['phuluc_hopdong_line'], 10),
+                    'phuluc.hop.dong': (lambda self, cr, uid, ids, c={}: ids, ['phuluc_hopdong_line'], 10),
                     'phuluc.hopdong.line': (_get_order, ['price_unit', 'tax_id', 'product_qty'], 10),
                 },
                 multi='sums', help="The total amount."),
