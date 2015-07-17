@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+	    <record id="phuluc_hop_dong_noi_tree_view" model="ir.ui.view">
+			<field name="name">phuluc.hop.dong.noi.tree</field>
+			<field name="model">phuluc.hop.dong</field>
+			<field name="arch" type="xml">
+				<tree string="Phụ lục hợp đồng nội" colors="gray:state== 'huy_bo';red:state== 'het_han'">
+					<field name="name"/>
+					<field name="hop_dong_id"/>
+					<field name="tu_ngay"/>
+					<field name="den_ngay"/>
+					<field name="amount_total"/>
+					<field name="type" invisible="1"/>
+					<field name="state"/>
+				</tree>
+			</field>
+		</record>
+		
+		
+		<record id="phuluc_hop_dong_noi_form_view" model="ir.ui.view">
+            <field name="name">phuluc.hop.dong.noi.form</field>
+            <field name="model">phuluc.hop.dong</field>
+            <field name="arch" type="xml">
+	            <form string="Phụ lục hợp đồng nội" version="7.0">
+					<header>
+						<button name="print_phuluc_hopdong" string="In phụ lục" type="object" class="oe_highlight"/>
+						<button name="duyet_phuluc_hd_noi" string="Duyệt" states="moi_tao" type="object" class="oe_highlight"/>
+						<button name="het_han" string="Hết hạn" states="da_duyet" type="object" class="oe_highlight"/>
+						<button name="huy_bo" string="Hủy bỏ" type="object" states="moi_tao,da_duyet,het_han" class="oe_highlight"/>
+						<button name="set_to_draft" string="Quay lại mới tạo" states="huy_bo" type="object" class="oe_highlight"/>
+						<field name="state" widget="statusbar" statusbar_visible="moi_tao,da_duyet,het_han,huy_bo"/>
+					</header>
+	            	<sheet>
+	                    <h1>
+	                    	<label string="Số"/>
+	                        <field name="name" class="oe_inline" nolabel="1" />
+	                    </h1>
+	                    <group>
+	                    	<field name="type" invisible='1'/>
+	                    </group>
+	                    <group col='4' colspan='2'>
+	                    	<field name="hop_dong_id" domain="[('type','=','hd_noi'),('state','=','da_duyet')]"/>
+						</group>
+						<notebook>
+							<page string="Thông tin chung">
+								<group col='4' colspan='2'>
+									<field name="tu_ngay" />
+									<field name="den_ngay" />
+								</group>
+							</page>
+							<page string="Thông tin mặt hàng" >
+								<field name="phuluc_hopdong_line">
+									<tree editable='top'>
+	                                    <field name="product_id" on_change="onchange_product_id(product_id, context)"/>
+	                                    <field name="name"/>
+	                                    <field name="product_uom"/>
+	                                    <field name="product_qty"/>
+	                                    <field name="price_unit"/>
+	                                    <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]"/>
+	                                    <field name="price_subtotal"/>
+									</tree>
+								</field>
+								<group class="oe_subtotal_footer oe_right" colspan="2" name="phuluc_hopdong_total">
+	                                <field name="amount_untaxed" widget='monetary' />
+	                                <field name="amount_tax" widget='monetary' />
+	                                <div class="oe_subtotal_footer_separator oe_inline">
+	                                    <label for="amount_total" />
+	                                    <button name="button_dummy"
+	                                        states="moi_tao" string="(update)" type="object" class="oe_edit_only oe_link"/>
+	                                </div>
+	                                <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' />
+	                            </group>
+	                            <div class="oe_clear"/>
+							</page>
+						</notebook>
+		         	</sheet>
+		         </form>
+			</field>
+		</record>
+          
+		<record id="action_phuluc_hop_dong_noi" model="ir.actions.act_window">
+            <field name="name">Phụ lục hợp đồng nội</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">phuluc.hop.dong</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="phuluc_hop_dong_noi_tree_view"/>
+            <field name="domain">[('type','=','hd_noi')]</field>
+            <field name="context">{'default_type':'hd_noi'}</field>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_phuluc_hop_dong_noi1">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="phuluc_hop_dong_noi_tree_view"/>
+            <field name="act_window_id" ref="action_phuluc_hop_dong_noi"/>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_phuluc_hop_dong_noi2">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="phuluc_hop_dong_noi_form_view"/>
+            <field name="act_window_id" ref="action_phuluc_hop_dong_noi"/>
+        </record>
+        
+        <record id="phuluc_hop_dong_ngoai_tree_view" model="ir.ui.view">
+			<field name="name">phuluc.hop.dong.ngoai.tree</field>
+			<field name="model">phuluc.hop.dong</field>
+			<field name="arch" type="xml">
+				<tree string="Annex contract" colors="gray:state== 'huy_bo';red:state== 'het_han'">
+					<field name="name"/>
+					<field name="hop_dong_id" string="Contract"/>
+					<field name="tu_ngay"/>
+					<field name="den_ngay"/>
+					<field name="amount_total"/>
+					<field name="type" invisible="1"/>
+					<field name="state"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="phuluc_hop_dong_ngoai_form_view" model="ir.ui.view">
+            <field name="name">phuluc.hop.dong.ngoai.form</field>
+            <field name="model">phuluc.hop.dong</field>
+            <field name="arch" type="xml">
+	            <form string="Annex contract" version="7.0">
+					<header>
+						<button name="print_phuluc_hopdong" string="Print annex contract" type="object" class="oe_highlight"/>
+						<button name="duyet_phuluc_hd_ngoai" string="Confirm" states="moi_tao" type="object" class="oe_highlight"/>
+						<button name="het_han" string="Expire" states="da_duyet" type="object" class="oe_highlight"/>
+						<button name="huy_bo" string="Cancel" type="object" states="moi_tao,da_duyet,het_han" class="oe_highlight"/>
+						<button name="set_to_draft" string="Set to draft" states="huy_bo" type="object" class="oe_highlight"/>
+						<field name="state" widget="statusbar" statusbar_visible="moi_tao,da_duyet,het_han,huy_bo"/>
+					</header>
+	            	<sheet>
+	                    <h1>
+	                    	<label string="No."/>
+	                        <field name="name" class="oe_inline" nolabel="1" />
+	                    </h1>
+	                    <group>
+	                    	<field name="type" invisible='1'/>
+	                    </group>
+	                    <group col='4' colspan='2'>
+	                    	<field name="hop_dong_id" string="Contract" domain="[('type','=','hd_ngoai'),('state','=','da_duyet')]"/>
+						</group>
+						<notebook>
+							<page string="Information">
+								<group col='4' colspan='2'>
+									<field name="tu_ngay" string="From date" />
+									<field name="den_ngay" string="To date"/>
+								</group>
+							</page>
+							<page string="Product line" >
+								<field name="phuluc_hopdong_line">
+									<tree editable='top'>
+	                                    <field name="product_id" on_change="onchange_product_id(product_id, context)"/>
+	                                    <field name="name"/>
+	                                    <field name="product_uom"/>
+	                                    <field name="product_qty"/>
+	                                    <field name="price_unit"/>
+	                                    <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]"/>
+	                                    <field name="price_subtotal"/>
+									</tree>
+								</field>
+								<group class="oe_subtotal_footer oe_right" colspan="2" name="phuluc_hopdong_total">
+	                                <field name="amount_untaxed" widget='monetary' />
+	                                <field name="amount_tax" widget='monetary' />
+	                                <div class="oe_subtotal_footer_separator oe_inline">
+	                                    <label for="amount_total" />
+	                                    <button name="button_dummy"
+	                                        states="moi_tao" string="(update)" type="object" class="oe_edit_only oe_link"/>
+	                                </div>
+	                                <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' />
+	                            </group>
+	                            <div class="oe_clear"/>
+							</page>
+						</notebook>
+		         	</sheet>
+		         </form>
+			</field>
+		</record>
+		
+        
+        <record id="action_phuluc_hop_dong_ngoai" model="ir.actions.act_window">
+            <field name="name">Phụ lục hợp đồng ngoại</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">phuluc.hop.dong</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="phuluc_hop_dong_ngoai_tree_view"/>
+            <field name="domain">[('type','=','hd_ngoai')]</field>
+            <field name="context">{'default_type':'hd_ngoai'}</field>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_phuluc_hop_dong_ngoai1">
+            <field name="sequence" eval="3"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="phuluc_hop_dong_ngoai_tree_view"/>
+            <field name="act_window_id" ref="action_phuluc_hop_dong_ngoai"/>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_phuluc_hop_dong_ngoai2">
+            <field name="sequence" eval="4"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="phuluc_hop_dong_ngoai_form_view"/>
+            <field name="act_window_id" ref="action_phuluc_hop_dong_ngoai"/>
+        </record>
+        
+        <record id="phuluc_hop_dong_mua_tree_view" model="ir.ui.view">
+			<field name="name">phuluc.hop.dong.mua.tree</field>
+			<field name="model">phuluc.hop.dong</field>
+			<field name="arch" type="xml">
+				<tree string="Phụ lục hợp đồng mua" colors="gray:state== 'huy_bo';red:state== 'het_han'">
+					<field name="name"/>
+					<field name="hop_dong_id"/>
+					<field name="tu_ngay"/>
+					<field name="den_ngay"/>
+					<field name="amount_total"/>
+					<field name="type" invisible="1"/>
+					<field name="state"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="phuluc_hop_dong_mua_form_view" model="ir.ui.view">
+            <field name="name">phuluc.hop.dong.mua.form</field>
+            <field name="model">phuluc.hop.dong</field>
+            <field name="arch" type="xml">
+	            <form string="Phụ lục hợp đồng mua" version="7.0">
+					<header>
+						<button name="print_phuluc_hopdong" string="In phụ lục" type="object" class="oe_highlight"/>
+						<button name="duyet_phuluc_hd_mua" string="Duyệt" states="moi_tao" type="object" class="oe_highlight"/>
+						<button name="het_han" string="Hết hạn" states="da_duyet" type="object" class="oe_highlight"/>
+						<button name="huy_bo" string="Hủy bỏ" type="object" states="moi_tao,da_duyet,het_han" class="oe_highlight"/>
+						<button name="set_to_draft" string="Quay lại mới tạo" states="huy_bo" type="object" class="oe_highlight"/>
+						<field name="state" widget="statusbar" statusbar_visible="moi_tao,da_duyet,het_han,huy_bo"/>
+					</header>
+	            	<sheet>
+	                    <h1>
+	                    	<label string="Số"/>
+	                        <field name="name" class="oe_inline" nolabel="1" />
+	                    </h1>
+	                    <group>
+	                    	<field name="type" invisible='1'/>
+	                    </group>
+	                    <group col='4' colspan='2'>
+	                    	<field name="hop_dong_id" domain="[('type','=','hd_mua'),('state','=','da_duyet')]"/>
+						</group>
+						<notebook>
+							<page string="Thông tin chung">
+								<group col='4' colspan='2'>
+									<field name="tu_ngay" />
+									<field name="den_ngay" />
+								</group>
+							</page>
+							<page string="Thông tin mặt hàng" >
+								<field name="phuluc_hopdong_line">
+									<tree editable='top'>
+	                                    <field name="product_id" on_change="onchange_product_id(product_id, context)"/>
+	                                    <field name="name"/>
+	                                    <field name="product_uom"/>
+	                                    <field name="product_qty"/>
+	                                    <field name="price_unit"/>
+	                                    <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','sale')]"/>
+	                                    <field name="price_subtotal"/>
+									</tree>
+								</field>
+								<group class="oe_subtotal_footer oe_right" colspan="2" name="phuluc_hopdong_total">
+	                                <field name="amount_untaxed" widget='monetary' />
+	                                <field name="amount_tax" widget='monetary' />
+	                                <div class="oe_subtotal_footer_separator oe_inline">
+	                                    <label for="amount_total" />
+	                                    <button name="button_dummy"
+	                                        states="moi_tao" string="(update)" type="object" class="oe_edit_only oe_link"/>
+	                                </div>
+	                                <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' />
+	                            </group>
+	                            <div class="oe_clear"/>
+							</page>
+						</notebook>
+		         	</sheet>
+		         </form>
+			</field>
+		</record>
+          
+		<record id="action_phuluc_hop_dong_mua" model="ir.actions.act_window">
+            <field name="name">Phụ lục hợp đồng mua</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">phuluc.hop.dong</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="phuluc_hop_dong_mua_tree_view"/>
+            <field name="domain">[('type','=','hd_mua')]</field>
+            <field name="context">{'default_type':'hd_mua'}</field>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_phuluc_hop_dong_mua1">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="phuluc_hop_dong_mua_tree_view"/>
+            <field name="act_window_id" ref="action_phuluc_hop_dong_mua"/>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_phuluc_hop_dong_mua2">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="phuluc_hop_dong_mua_form_view"/>
+            <field name="act_window_id" ref="action_phuluc_hop_dong_mua"/>
+        </record>
+        
+        <menuitem id="menu_phuluc_hopdong_ban" parent="green_erp_viruco_base.hop_dong" name="Phụ lục hợp Đồng Bán" sequence="3"/>
+        <menuitem id="menu_phuluc_hopdong_mua" parent="green_erp_viruco_base.hop_dong" name="Phụ lục hợp Đồng Mua" sequence="4"/>
+    	<menuitem id="menu_action_phuluc_hop_dong_noi" action="action_phuluc_hop_dong_noi" name="Phụ lục hợp đồng nội" parent="menu_phuluc_hopdong_ban" sequence="0"/>
+		<menuitem id="menu_action_phuluc_hop_dong_ngoai" action="action_phuluc_hop_dong_ngoai" name="Phụ lục hợp đồng ngoại" parent="menu_phuluc_hopdong_ban" sequence="1"/>
+		<menuitem id="menu_action_phuluc_hop_dong_mua" action="action_phuluc_hop_dong_mua" name="Phụ lục hợp đồng mua" parent="menu_phuluc_hopdong_mua" sequence="2"/>
+    	
+    </data>
+    
+</openerp>

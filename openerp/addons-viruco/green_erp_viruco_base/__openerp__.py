@@ -32,6 +32,7 @@
             'report/don_mua_hang_view.xml',
             'config_view.xml',
             'hop_dong_view.xml',
+            'phuluc_hop_dong_view.xml',
     ],
     'css' : [
         "static/src/css/base.css",
