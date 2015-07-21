@@ -15,6 +15,7 @@ import codecs
 from openerp import netsvc
 
 
+
 class sale_order(osv.osv):
     _inherit = "sale.order"
     _columns = {
@@ -326,6 +327,192 @@ class hop_dong(osv.osv):
             sale_obj.action_button_confirm(cr, uid, [sale_id])
         return self.write(cr, uid, ids, {'state': 'da_duyet'})
     
+    def huy_hd_noi(self, cr, uid, ids, context=None):
+        wf_service = netsvc.LocalService('workflow')
+        for huy in self.browse(cr,uid,ids):
+            sql = '''
+                select id from account_invoice where hop_dong_id = %s
+            '''%(huy.id)
+            cr.execute(sql)
+            invoice_ids = cr.dictfetchall()
+            if invoice_ids:
+                for invoice in invoice_ids:
+                    wf_service.trg_validate(uid, 'account.invoice', invoice['id'], 'invoice_cancel', cr)
+                    self.pool.get('account.invoice').action_cancel_draft(cr,uid,[invoice['id']])
+                    sql = '''
+                        delete from account_invoice_line where invoice_id = %s
+                    '''%(invoice['id'])
+                    cr.execute(sql)
+                    sql = '''
+                        delete from account_invoice where id = %s
+                    '''%(invoice['id'])
+                    cr.execute(sql)
+            sql = '''
+                 select id from stock_move where hop_dong_ban_id = %s and state = 'done'
+            '''%(huy.id)
+            cr.execute(sql)
+            move_ids = cr.dictfetchall()
+            if move_ids:
+                for move in move_ids:
+                    sql = '''
+                        delete from account_move_line where move_id in (select id from account_move where stock_move_id = %s)
+                    '''%(move['id'])
+                    cr.execute(sql)
+                    sql = '''
+                        delete from account_move where stock_move_id = %s
+                    '''%(move['id'])
+                    cr.execute(sql)
+                    sql = '''
+                        delete from stock_picking where id in (select picking_id from stock_move where id = %s)
+                    '''%(move['id'])
+                    cr.execute(sql)
+                    sql = '''
+                        delete from stock_move where id = %s
+                    '''%(move['id'])
+                    cr.execute(sql)
+            sql = '''
+                 select id,picking_id from stock_move where hop_dong_ban_id = %s and state != 'done'
+            '''%(huy.id)
+            cr.execute(sql)
+            move_state_ids = cr.dictfetchall()
+            if move_state_ids:
+                for move_state in move_state_ids:
+                    wf_service.trg_validate(uid, 'stock.picking', move_state['picking_id'], 'button_cancel', cr)
+                    sql = '''
+                        delete from stock_picking where id in (select picking_id from stock_move where id = %s)
+                    '''%(move_state['id'])
+                    cr.execute(sql)
+                    sql = '''
+                        delete from stock_move where id = %s
+                    '''%(move_state['id']) 
+                    cr.execute(sql)
+                    
+            sql = '''
+                 select id from sale_order where hop_dong_id = %s and state in ('manual', 'process')
+            '''%(huy.id)
+            cr.execute(sql)
+            sale_ids = cr.dictfetchall()   
+            if sale_ids:
+                for sale in sale_ids:
+                    self.pool.get('sale.order').action_cancel(cr,uid,[sale['id']]) 
+                    sql = '''
+                        delete from sale_order_line where order_id in (select id from sale_order where id = %s)
+                    '''%(sale['id'])
+                    cr.execute(sql)
+                    sql = '''
+                        delete from sale_order where id = %s
+                    '''%(sale['id']) 
+                    
+            sql = '''
+                 select id from sale_order where hop_dong_id = %s and state not in ('manual', 'process')
+            '''%(huy.id)
+            cr.execute(sql)
+            sale_2_ids = cr.dictfetchall()   
+            if sale_2_ids:
+                for sale_2 in sale_2_ids:
+                    sql = '''
+                        delete from sale_order_line where order_id in (select id from sale_order where id = %s)
+                    '''%(sale_2['id'])
+                    cr.execute(sql)
+                    sql = '''
+                        delete from sale_order where id = %s
+                    '''%(sale_2['id']) 
+                    cr.execute(sql)
+        return self.write(cr, uid, ids, {'state': 'huy_bo'})
+
+    def huy_hd_ngoai(self, cr, uid, ids, context=None):
+        wf_service = netsvc.LocalService('workflow')
+        for huy in self.browse(cr,uid,ids):
+            sql = '''
+                select id from account_invoice where hop_dong_id = %s
+            '''%(huy.id)
+            cr.execute(sql)
+            invoice_ids = cr.dictfetchall()
+            if invoice_ids:
+                for invoice in invoice_ids:
+                    wf_service.trg_validate(uid, 'account.invoice', invoice['id'], 'invoice_cancel', cr)
+                    self.pool.get('account.invoice').action_cancel_draft(cr,uid,[invoice['id']])
+                    sql = '''
+                        delete from account_invoice_line where invoice_id = %s
+                    '''%(invoice['id'])
+                    cr.execute(sql)
+                    sql = '''
+                        delete from account_invoice where id = %s
+                    '''%(invoice['id'])
+                    cr.execute(sql)
+            sql = '''
+                 select id from stock_move where hop_dong_ban_id = %s and state = 'done'
+            '''%(huy.id)
+            cr.execute(sql)
+            move_ids = cr.dictfetchall()
+            if move_ids:
+                for move in move_ids:
+                    sql = '''
+                        delete from account_move_line where move_id in (select id from account_move where stock_move_id = %s)
+                    '''%(move['id'])
+                    cr.execute(sql)
+                    sql = '''
+                        delete from account_move where stock_move_id = %s
+                    '''%(move['id'])
+                    cr.execute(sql)
+                    sql = '''
+                        delete from stock_picking where id in (select picking_id from stock_move where id = %s)
+                    '''%(move['id'])
+                    cr.execute(sql)
+                    sql = '''
+                        delete from stock_move where id = %s
+                    '''%(move['id'])
+                    cr.execute(sql)
+            sql = '''
+                 select id,picking_id from stock_move where hop_dong_ban_id = %s and state != 'done'
+            '''%(huy.id)
+            cr.execute(sql)
+            move_state_ids = cr.dictfetchall()
+            if move_state_ids:
+                for move_state in move_state_ids:
+                    wf_service.trg_validate(uid, 'stock.picking', move_state['picking_id'], 'button_cancel', cr)
+                    sql = '''
+                        delete from stock_picking where id in (select picking_id from stock_move where id = %s)
+                    '''%(move_state['id'])
+                    cr.execute(sql)
+                    sql = '''
+                        delete from stock_move where id = %s
+                    '''%(move_state['id']) 
+                    cr.execute(sql)
+                    
+            sql = '''
+                 select id from sale_order where hop_dong_id = %s and state in ('manual', 'process')
+            '''%(huy.id)
+            cr.execute(sql)
+            sale_ids = cr.dictfetchall()   
+            if sale_ids:
+                for sale in sale_ids:
+                    self.pool.get('sale.order').action_cancel(cr,uid,[sale['id']]) 
+                    sql = '''
+                        delete from sale_order_line where order_id in (select id from sale_order where id = %s)
+                    '''%(sale['id'])
+                    cr.execute(sql)
+                    sql = '''
+                        delete from sale_order where id = %s
+                    '''%(sale['id']) 
+                    
+            sql = '''
+                 select id from sale_order where hop_dong_id = %s and state not in ('manual', 'process')
+            '''%(huy.id)
+            cr.execute(sql)
+            sale_2_ids = cr.dictfetchall()   
+            if sale_2_ids:
+                for sale_2 in sale_2_ids:
+                    sql = '''
+                        delete from sale_order_line where order_id in (select id from sale_order where id = %s)
+                    '''%(sale_2['id'])
+                    cr.execute(sql)
+                    sql = '''
+                        delete from sale_order where id = %s
+                    '''%(sale_2['id']) 
+                    cr.execute(sql)
+        return self.write(cr, uid, ids, {'state': 'huy_bo'})
+        
     def duyet_hd_ngoai(self, cr, uid, ids, context=None):
         sale_obj = self.pool.get('sale.order')
         order_line = []
