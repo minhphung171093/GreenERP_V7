@@ -58,7 +58,7 @@ class split_hop_dong(osv.osv_memory):
                     sql = '''
                         select case when sum(product_qty)!=0 then sum(product_qty) else 0 end product_qty_out
                             from stock_move
-                            where product_id=%s and location_id!=location_dest_id and location_id=%s and picking_in_id=%s and hop_dong_mua_id=%s and id!=%s
+                            where state!='cancel' and product_id=%s and location_id!=location_dest_id and location_id=%s and picking_in_id=%s and hop_dong_mua_id=%s and id!=%s
                     '''%(move.product_id.id,location_id,line['picking_id'],line['hop_dong_mua_id'],move.id)
                     cr.execute(sql)
                     product_qty_out = cr.fetchone()[0]
@@ -98,7 +98,7 @@ class split_hop_dong(osv.osv_memory):
                 sql = '''
                     select case when sum(product_qty)!=0 then sum(product_qty) else 0 end product_qty_out
                         from stock_move
-                        where product_id=%s and location_id!=location_dest_id and location_id=%s and picking_in_id=%s and hop_dong_mua_id=%s and id!=%s
+                        where state!='cancel' and product_id=%s and location_id!=location_dest_id and location_id=%s and picking_in_id=%s and hop_dong_mua_id=%s and id!=%s
                 '''%(move.product_id.id,location_id,line['picking_id'],line['hop_dong_mua_id'],move.id)
                 cr.execute(sql)
                 product_qty_out = cr.fetchone()[0]

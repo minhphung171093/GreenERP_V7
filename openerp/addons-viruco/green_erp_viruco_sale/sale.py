@@ -350,11 +350,14 @@ class phuluc_hop_dong(osv.osv):
         stock_move_obj = self.pool.get('stock.move')
         account_move_obj = self.pool.get('account.move')
         invoice_line_obj = self.pool.get('account.invoice.line')
+        invoice_obj = self.pool.get('account.invoice')
         sale_line_obj = self.pool.get('sale.order.line')
+        product_obj = self.pool.get('product.product')
         for plhd in self.browse(cr, uid, ids):
             order_line = []
             for plhp_line in plhd.phuluc_hopdong_line:
                 hd_line_ids = hd_line_obj.search(cr, uid, [('hopdong_id','=',plhp_line.phuluc_hopdong_id.hop_dong_id.id),('product_id','=',plhp_line.product_id.id)])
+                #sua san pham da co trong hop dong
                 if hd_line_ids:
                     for hd_line in hd_line_obj.browse(cr, uid, hd_line_ids):
                         # thay doi don gia
@@ -362,6 +365,13 @@ class phuluc_hop_dong(osv.osv):
                             sale_line_ids = sale_line_obj.search(cr, uid, [('hd_line_id','=',hd_line.id)])
                             sale_line_obj.write(cr, uid, sale_line_ids, {'price_unit': plhp_line.price_unit})
                             stock_move_ids = stock_move_obj.search(cr, uid, [('sale_line_id','in',sale_line_ids)])
+                            cr.execute('''
+                                select invoice_id from account_invoice_line where stock_move_id in %s and invoice_id in (select id from account_invoice where hop_dong_id=%s)
+                            ''',(tuple(stock_move_ids),hd_line.hopdong_id.id,))
+                            invoices = cr.fetchall()
+                            for invoice in invoices:
+                                if invoice and invoice_obj  .browse(cr, uid, invoice[0]).state not in ['draft','cancel']:
+                                    raise osv.except_osv(_('Cảnh báo!'),_("Vui lòng hủy hóa đơn để chỉnh sửa!")) 
                             invoice_line_ids = invoice_line_obj.search(cr, uid, [('stock_move_id','in',stock_move_ids)])
                             invoice_line_obj.write(cr, uid, invoice_line_ids, {'price_unit': plhp_line.price_unit})
                             
@@ -395,6 +405,13 @@ class phuluc_hop_dong(osv.osv):
                                 if move_qty<=qty:
                                     cr.execute(''' delete from account_move_line where move_id in (select id from account_move where stock_move_id = %s ) ''',(stock_move.id,))
                                     cr.execute(''' delete from account_move where stock_move_id = %s ''',(stock_move.id,))
+                                    sql = '''
+                                        select invoice_id from account_invoice_line where stock_move_id = %s and invoice_id in (select id from account_invoice where hop_dong_id=%s) limit 1
+                                    '''%(stock_move.id,hd_line.hopdong_id.id)
+                                    cr.execute(sql)
+                                    invoice = cr.fetchone()
+                                    if invoice and invoice_obj.browse(cr, uid, invoice[0]).state not in ['draft','cancel']:
+                                        raise osv.except_osv(_('Cảnh báo!'),_("Vui lòng hủy hóa đơn để chỉnh sửa!")) 
                                     cr.execute(''' delete from account_invoice_line where stock_move_id = %s and invoice_id in (select id from account_invoice where hop_dong_id=%s) ''',(stock_move.id,hd_line.hopdong_id.id,))
                                     cr.execute(''' delete from stock_move where id = %s ''',(stock_move.id,))
                                 else:
@@ -405,10 +422,17 @@ class phuluc_hop_dong(osv.osv):
                                     stock_move_obj.write(cr, uid, [stock_move.id], {'product_qty': stock_move.product_qty-qty})
                                     cr.execute(''' delete from account_move where stock_move_id = %s ''',(stock_move.id,))
                                     stock_move_obj._create_product_valuation_moves(cr, uid, stock_move)
+                                    sql = '''
+                                        select invoice_id from account_invoice_line where stock_move_id = %s and invoice_id in (select id from account_invoice where hop_dong_id=%s) limit 1
+                                    '''%(stock_move.id,hd_line.hopdong_id.id)
+                                    cr.execute(sql)
+                                    invoice = cr.fetchone()
+                                    if invoice and invoice_obj.browse(cr, uid, invoice[0]).state not in ['draft','cancel']:
+                                        raise osv.except_osv(_('Cảnh báo!'),_("Vui lòng hủy hóa đơn để chỉnh sửa!")) 
                                     invoice_line_ids = invoice_line_obj.search(cr, uid, [('stock_move_id','=',stock_move.id)])
                                     invoice_line_obj.write(cr, uid, invoice_line_ids, {'quantity': stock_move.product_qty-qty})
                                 qty -= move_qty
-                        
+                #them moi san pham chua co trong hop dong        
                 else:
                     val_line={
                         'product_id': plhp_line.product_id and plhp_line.product_id.id or False,
@@ -425,13 +449,13 @@ class phuluc_hop_dong(osv.osv):
                     }
                     order_line.append((0,0,val_line))
             if order_line:
-                create_sale_vals={'partner_id':plhp_line.phuluc_hopdong_id.hop_dong_id.partner_id.id,
-                                  'hop_dong_id':plhp_line.phuluc_hopdong_id.hop_dong_id.id,
+                create_sale_vals={'partner_id':plhd.hop_dong_id.partner_id.id,
+                                  'hop_dong_id':plhd.hop_dong_id.id,
                                   'plhd_id': plhd.id,
                                   'order_policy':'picking',
                                   'state':'draft'}
-                create_sale_vals.update(sale_obj.onchange_partner_id(cr, uid, [], plhp_line.phuluc_hopdong_id.hop_dong_id.partner_id.id)['value'])
-                create_sale_vals.update({'pricelist_id':plhp_line.phuluc_hopdong_id.hop_dong_id.pricelist_id.id,
+                create_sale_vals.update(sale_obj.onchange_partner_id(cr, uid, [], plhd.hop_dong_id.partner_id.id)['value'])
+                create_sale_vals.update({'pricelist_id':plhd.hop_dong_id.pricelist_id.id,
                                          'order_line': order_line})
                 sale_id = sale_obj.create(cr, uid, create_sale_vals)
                 sale_obj.action_button_confirm(cr, uid, [sale_id])
@@ -443,11 +467,14 @@ class phuluc_hop_dong(osv.osv):
         stock_move_obj = self.pool.get('stock.move')
         account_move_obj = self.pool.get('account.move')
         invoice_line_obj = self.pool.get('account.invoice.line')
+        invoice_obj = self.pool.get('account.invoice')
         sale_line_obj = self.pool.get('sale.order.line')
+        product_obj = self.pool.get('product.product')
         for plhd in self.browse(cr, uid, ids):
             order_line = []
             for plhp_line in plhd.phuluc_hopdong_line:
                 hd_line_ids = hd_line_obj.search(cr, uid, [('hopdong_id','=',plhp_line.phuluc_hopdong_id.hop_dong_id.id),('product_id','=',plhp_line.product_id.id)])
+                #sua san pham da co trong hop dong
                 if hd_line_ids:
                     for hd_line in hd_line_obj.browse(cr, uid, hd_line_ids):
                         # thay doi don gia
@@ -455,6 +482,13 @@ class phuluc_hop_dong(osv.osv):
                             sale_line_ids = sale_line_obj.search(cr, uid, [('hd_line_id','=',hd_line.id)])
                             sale_line_obj.write(cr, uid, sale_line_ids, {'price_unit': plhp_line.price_unit})
                             stock_move_ids = stock_move_obj.search(cr, uid, [('sale_line_id','in',sale_line_ids)])
+                            cr.execute('''
+                                select invoice_id from account_invoice_line where stock_move_id in %s and invoice_id in (select id from account_invoice where hop_dong_id=%s)
+                            ''',(tuple(stock_move_ids),hd_line.hopdong_id.id,))
+                            invoices = cr.fetchall()
+                            for invoice in invoices:
+                                if invoice and invoice_obj  .browse(cr, uid, invoice[0]).state not in ['draft','cancel']:
+                                    raise osv.except_osv(_('Cảnh báo!'),_("Vui lòng hủy hóa đơn để chỉnh sửa!")) 
                             invoice_line_ids = invoice_line_obj.search(cr, uid, [('stock_move_id','in',stock_move_ids)])
                             invoice_line_obj.write(cr, uid, invoice_line_ids, {'price_unit': plhp_line.price_unit})
                             
@@ -488,6 +522,13 @@ class phuluc_hop_dong(osv.osv):
                                 if move_qty<=qty:
                                     cr.execute(''' delete from account_move_line where move_id in (select id from account_move where stock_move_id = %s ) ''',(stock_move.id,))
                                     cr.execute(''' delete from account_move where stock_move_id = %s ''',(stock_move.id,))
+                                    sql = '''
+                                        select invoice_id from account_invoice_line where stock_move_id = %s and invoice_id in (select id from account_invoice where hop_dong_id=%s) limit 1
+                                    '''%(stock_move.id,hd_line.hopdong_id.id)
+                                    cr.execute(sql)
+                                    invoice = cr.fetchone()
+                                    if invoice and invoice_obj.browse(cr, uid, invoice[0]).state not in ['draft','cancel']:
+                                        raise osv.except_osv(_('Cảnh báo!'),_("Vui lòng hủy hóa đơn để chỉnh sửa!")) 
                                     cr.execute(''' delete from account_invoice_line where stock_move_id = %s and invoice_id in (select id from account_invoice where hop_dong_id=%s) ''',(stock_move.id,hd_line.hopdong_id.id,))
                                     cr.execute(''' delete from stock_move where id = %s ''',(stock_move.id,))
                                 else:
@@ -498,10 +539,17 @@ class phuluc_hop_dong(osv.osv):
                                     stock_move_obj.write(cr, uid, [stock_move.id], {'product_qty': stock_move.product_qty-qty})
                                     cr.execute(''' delete from account_move where stock_move_id = %s ''',(stock_move.id,))
                                     stock_move_obj._create_product_valuation_moves(cr, uid, stock_move)
+                                    sql = '''
+                                        select invoice_id from account_invoice_line where stock_move_id = %s and invoice_id in (select id from account_invoice where hop_dong_id=%s) limit 1
+                                    '''%(stock_move.id,hd_line.hopdong_id.id)
+                                    cr.execute(sql)
+                                    invoice = cr.fetchone()
+                                    if invoice and invoice_obj.browse(cr, uid, invoice[0]).state not in ['draft','cancel']:
+                                        raise osv.except_osv(_('Cảnh báo!'),_("Vui lòng hủy hóa đơn để chỉnh sửa!")) 
                                     invoice_line_ids = invoice_line_obj.search(cr, uid, [('stock_move_id','=',stock_move.id)])
                                     invoice_line_obj.write(cr, uid, invoice_line_ids, {'quantity': stock_move.product_qty-qty})
                                 qty -= move_qty
-                        
+                #them moi san pham chua co trong hop dong        
                 else:
                     val_line={
                         'product_id': plhp_line.product_id and plhp_line.product_id.id or False,
@@ -518,13 +566,13 @@ class phuluc_hop_dong(osv.osv):
                     }
                     order_line.append((0,0,val_line))
             if order_line:
-                create_sale_vals={'partner_id':plhp_line.phuluc_hopdong_id.hop_dong_id.partner_id.id,
-                                  'hop_dong_id':plhp_line.phuluc_hopdong_id.hop_dong_id.id,
+                create_sale_vals={'partner_id':plhd.hop_dong_id.partner_id.id,
+                                  'hop_dong_id':plhd.hop_dong_id.id,
                                   'plhd_id': plhd.id,
                                   'order_policy':'picking',
                                   'state':'draft'}
-                create_sale_vals.update(sale_obj.onchange_partner_id(cr, uid, [], plhp_line.phuluc_hopdong_id.hop_dong_id.partner_id.id)['value'])
-                create_sale_vals.update({'pricelist_id':plhp_line.phuluc_hopdong_id.hop_dong_id.pricelist_id.id,
+                create_sale_vals.update(sale_obj.onchange_partner_id(cr, uid, [], plhd.hop_dong_id.partner_id.id)['value'])
+                create_sale_vals.update({'pricelist_id':plhd.hop_dong_id.pricelist_id.id,
                                          'order_line': order_line})
                 sale_id = sale_obj.create(cr, uid, create_sale_vals)
                 sale_obj.action_button_confirm(cr, uid, [sale_id])
