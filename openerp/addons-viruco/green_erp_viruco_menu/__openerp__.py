@@ -1,8 +1,8 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Acespritech Solutions Pvt. Ltd.
-#    Copyright (C) 2013-2014
+#    OpenERP, Open Source Management Solution
+#    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -18,21 +18,20 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+
 {
-    'name': 'Viruco Purchase',
+    'name': 'Viruco MENU',
     'version': '1.0',
     'category': 'GreenERP',
-    'description': """Purchase""",
-    'author': "tranhung07081989@gmail.com",
-    'website': "www.acespritech.com",
-    'depends': ['green_erp_viruco_account','green_erp_viruco_base'],
+    'sequence': 14,
+    'author': 'nguyentoanit@gmail.com',
+    'website' : 'http://incomtech.com/',
+    'depends': ['base'],
     'data': [
-             'purchase_view.xml',
-             'menu.xml',
-             ],
-    'demo': [],
-    'test': [],
+            'ir_ui_menu_view.xml',
+    ],
     'installable': True,
     'auto_install': False,
+    'application': True,
 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -7,5 +7,13 @@
     		name="Cấu hình điều khoản"
     		parent="green_erp_viruco_base.menu_config_hopdong"
 			sequence="1"/>
+			
+		<record model="ir.ui.menu" id="sale.menu_sale_quotations">
+	    	<field name="active" eval="False"/>
+		</record>
+		
+		<record model="ir.ui.menu" id="sale.menu_sale_order">
+	    	<field name="active" eval="False"/>
+		</record>
     </data>
 </openerp>

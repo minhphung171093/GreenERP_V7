@@ -26,7 +26,7 @@
     'sequence': 14,
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',
-    'depends': ['web','base','purchase','sale','sale_stock','product','properties','report_aeroo','report_aeroo_ooo','stock','account'],
+    'depends': ['green_erp_viruco_menu','web','base','purchase','sale','sale_stock','product','properties','report_aeroo','report_aeroo_ooo','stock','account'],
     'data': [
             'report/don_ban_hang_view.xml',
             'report/don_mua_hang_view.xml',
