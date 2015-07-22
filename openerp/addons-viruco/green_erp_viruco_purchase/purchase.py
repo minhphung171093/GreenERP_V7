@@ -338,6 +338,99 @@ class hop_dong(osv.osv):
             wf_service.trg_validate(uid, 'purchase.order', purchase_id, 'purchase_confirm', cr)
         return self.write(cr, uid, ids, {'state': 'da_duyet'})
     
+    def huy_hd_mua(self, cr, uid, ids, context=None):
+        wf_service = netsvc.LocalService('workflow')
+        for huy in self.browse(cr,uid,ids):
+            sql = '''
+                select id from account_invoice where hop_dong_id = %s
+            '''%(huy.id)
+            cr.execute(sql)
+            invoice_ids = cr.dictfetchall()
+            if invoice_ids:
+                for invoice in invoice_ids:
+                    wf_service.trg_validate(uid, 'account.invoice', invoice['id'], 'invoice_cancel', cr)
+                    self.pool.get('account.invoice').action_cancel_draft(cr,uid,[invoice['id']])
+                    sql = '''
+                        delete from account_invoice_line where invoice_id = %s
+                    '''%(invoice['id'])
+                    cr.execute(sql)
+                    sql = '''
+                        delete from account_invoice where id = %s
+                    '''%(invoice['id'])
+                    cr.execute(sql)
+            sql = '''
+                 select id from stock_move where hop_dong_mua_id = %s and state = 'done'
+            '''%(huy.id)
+            cr.execute(sql)
+            move_ids = cr.dictfetchall()
+            if move_ids:
+                for move in move_ids:
+                    sql = '''
+                        delete from account_move_line where move_id in (select id from account_move where stock_move_id = %s)
+                    '''%(move['id'])
+                    cr.execute(sql)
+                    sql = '''
+                        delete from account_move where stock_move_id = %s
+                    '''%(move['id'])
+                    cr.execute(sql)
+                    sql = '''
+                        delete from stock_picking where id in (select picking_id from stock_move where id = %s)
+                    '''%(move['id'])
+                    cr.execute(sql)
+                    sql = '''
+                        delete from stock_move where id = %s
+                    '''%(move['id'])
+                    cr.execute(sql)
+            sql = '''
+                 select id,picking_id from stock_move where hop_dong_mua_id = %s and state != 'done'
+            '''%(huy.id)
+            cr.execute(sql)
+            move_state_ids = cr.dictfetchall()
+            if move_state_ids:
+                for move_state in move_state_ids:
+                    wf_service.trg_validate(uid, 'stock.picking', move_state['picking_id'], 'button_cancel', cr)
+                    sql = '''
+                        delete from stock_picking where id in (select picking_id from stock_move where id = %s)
+                    '''%(move_state['id'])
+                    cr.execute(sql)
+                    sql = '''
+                        delete from stock_move where id = %s
+                    '''%(move_state['id']) 
+                    cr.execute(sql)
+                     
+            sql = '''
+                 select id from purchase_order where hop_dong_id = %s and state in ('approved', 'except_picking', 'except_invoice')
+            '''%(huy.id)
+            cr.execute(sql)
+            purchase_ids = cr.dictfetchall()   
+            if purchase_ids:
+                for purchase in purchase_ids:
+                    self.pool.get('purchase.order').action_cancel(cr,uid,[purchase['id']]) 
+                    sql = '''
+                        delete from purchase_order_line where order_id in (select id from purchase_order where id = %s)
+                    '''%(purchase['id'])
+                    cr.execute(sql)
+                    sql = '''
+                        delete from purchase_order where id = %s
+                    '''%(purchase['id']) 
+                     
+            sql = '''
+                 select id from purchase_order where hop_dong_id = %s and state not in ('approved', 'except_picking', 'except_invoice')
+            '''%(huy.id)
+            cr.execute(sql)
+            purchase_2_ids = cr.dictfetchall()   
+            if purchase_2_ids:
+                for purchase_2 in purchase_2_ids:
+                    sql = '''
+                        delete from purchase_order_line where order_id in (select id from purchase_order where id = %s)
+                    '''%(purchase_2['id'])
+                    cr.execute(sql)
+                    sql = '''
+                        delete from purchase_order where id = %s
+                    '''%(purchase_2['id']) 
+                    cr.execute(sql)
+        return self.write(cr, uid, ids, {'state': 'huy_bo'})
+    
 hop_dong()
 
 class phuluc_hop_dong(osv.osv):
