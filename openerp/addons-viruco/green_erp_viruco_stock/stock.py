@@ -269,6 +269,70 @@ class stock_picking(osv.osv):
             invoice_vals['journal_id'] = journal_id
         return invoice_vals
     
+    def has_valuation_moves(self, cr, uid, move):
+        return self.pool.get('account.move').search(cr, uid, [
+            ('stock_move_id', '=', move.id),
+            ])
+    
+    def action_revert_done(self, cr, uid, ids, context=None):
+        move_ids = []
+        invoice_ids = []
+        if not len(ids):
+            return False
+        
+        sql ='''
+            Select id 
+            FROM
+                stock_move where picking_id = %s
+        '''%(ids[0])
+        cr.execute(sql)
+        for line in cr.dictfetchall():
+            move_ids.append(line['id'])
+        if move_ids:
+            sql='''
+                SELECT state ,id
+                FROM account_invoice 
+                WHERE id IN (
+                     SELECT distinct invoice_id 
+                     FROM account_invoice_line 
+                     WHERE stock_move_id in(%s))
+            '''%(','.join(map(str,move_ids)))
+            cr.execute(sql)
+            for line in cr.dictfetchall():
+                if line['state'] not in ('draft','cancel'):
+                    raise osv.except_osv(
+                        _('Cảnh báo'),
+                        _('You must first cancel all Invoice order(s) attached to this sales order.'))
+                else:
+                    invoice_ids.append(line['id'])
+            if invoice_ids:
+                cr.execute('delete from account_invoice where id in %s',(tuple(invoice_ids),))
+#                 self.pool.get('account.invoice').unlink(cr,uid,invoice_ids)
+                
+        for picking in self.browse(cr, uid, ids, context):
+            for line in picking.move_lines:
+                if self.has_valuation_moves(cr, uid, line):
+                    raise osv.except_osv(
+                        _('Cảnh báo'),
+                        _('Sản phẩm "%s" đã sinh bút toán "%s". \
+                            Vui lòng xóa bút toán trước') % (line.name,
+                                                   line.picking_id.name))
+                line.write({'state': 'draft','invoiced_qty':0})
+            self.write(cr, uid, [picking.id], {'state': 'draft'})
+            if picking.invoice_state == 'invoiced':# and not picking.invoice_id:
+                self.write(cr, uid, [picking.id],
+                           {'invoice_state': '2binvoiced'})
+            wf_service = netsvc.LocalService("workflow")
+            # Deleting the existing instance of workflow
+            wf_service.trg_delete(uid, 'stock.picking', picking.id, cr)
+            wf_service.trg_create(uid, 'stock.picking', picking.id, cr)
+        for (id, name) in self.name_get(cr, uid, ids):
+            message = _(
+                "The stock picking '%s' has been set in draft state."
+                ) % (name,)
+            self.log(cr, uid, id, message)
+        return True
+    
 stock_picking()
 
 class stock_picking_in(osv.osv):
@@ -288,7 +352,71 @@ class stock_picking_in(osv.osv):
         'dongia_vanchuyen':fields.float('Đơn giá vận chuyển'),
         'picking_location_dest_id': fields.many2one('stock.location', 'Destination Location',states={'done': [('readonly', True)]}, select=True,),
     }
-     
+    
+    def has_valuation_moves(self, cr, uid, move):
+        return self.pool.get('account.move').search(cr, uid, [
+            ('stock_move_id', '=', move.id),
+            ])
+    
+    def action_revert_done(self, cr, uid, ids, context=None):
+        move_ids = []
+        invoice_ids = []
+        if not len(ids):
+            return False
+        
+        sql ='''
+            Select id 
+            FROM
+                stock_move where picking_id = %s
+        '''%(ids[0])
+        cr.execute(sql)
+        for line in cr.dictfetchall():
+            move_ids.append(line['id'])
+        if move_ids:
+            sql='''
+                SELECT state ,id
+                FROM account_invoice 
+                WHERE id IN (
+                     SELECT distinct invoice_id 
+                     FROM account_invoice_line 
+                     WHERE stock_move_id in(%s))
+            '''%(','.join(map(str,move_ids)))
+            cr.execute(sql)
+            for line in cr.dictfetchall():
+                if line['state'] not in ('draft','cancel'):
+                    raise osv.except_osv(
+                        _('Cảnh báo'),
+                        _('Vui lòng hủy bỏ tất cả các hóa đơn của phiếu nhập này trước!'))
+                else:
+                    invoice_ids.append(line['id'])
+            if invoice_ids:
+                cr.execute('delete from account_invoice where id in %s',(tuple(invoice_ids),))
+#                 self.pool.get('account.invoice').unlink(cr,uid,invoice_ids)
+                
+        for picking in self.browse(cr, uid, ids, context):
+            for line in picking.move_lines:
+                if self.has_valuation_moves(cr, uid, line):
+                    raise osv.except_osv(
+                        _('Cảnh báo'),
+                        _('Sản phẩm "%s" đã sinh bút toán "%s". \
+                            Vui lòng xóa bút toán trước') % (line.name,
+                                                   line.picking_id.name))
+                line.write({'state': 'draft','invoiced_qty':0})
+            self.write(cr, uid, [picking.id], {'state': 'draft'})
+            if picking.invoice_state == 'invoiced':# and not picking.invoice_id:
+                self.write(cr, uid, [picking.id],
+                           {'invoice_state': '2binvoiced'})
+            wf_service = netsvc.LocalService("workflow")
+            # Deleting the existing instance of workflow
+            wf_service.trg_delete(uid, 'stock.picking', picking.id, cr)
+            wf_service.trg_create(uid, 'stock.picking', picking.id, cr)
+        for (id, name) in self.name_get(cr, uid, ids):
+            message = _(
+                "The stock picking '%s' has been set in draft state."
+                ) % (name,)
+            self.log(cr, uid, id, message)
+        return True
+    
 stock_picking_in()
 class stock_picking_out(osv.osv):
     _inherit = "stock.picking.out"
@@ -307,8 +435,73 @@ class stock_picking_out(osv.osv):
         'picking_location_dest_id': fields.many2one('stock.location', 'Destination Location',states={'done': [('readonly', True)]}, select=True,),
         'cang_donghang_id': fields.many2one('cang.donghang', 'Cảng đóng hàng',states={'done': [('readonly', True)]}, select=True,),
     }
-     
+    
+    def has_valuation_moves(self, cr, uid, move):
+        return self.pool.get('account.move').search(cr, uid, [
+            ('stock_move_id', '=', move.id),
+            ])
+    
+    def action_revert_done(self, cr, uid, ids, context=None):
+        move_ids = []
+        invoice_ids = []
+        if not len(ids):
+            return False
+        
+        sql ='''
+            Select id 
+            FROM
+                stock_move where picking_id = %s
+        '''%(ids[0])
+        cr.execute(sql)
+        for line in cr.dictfetchall():
+            move_ids.append(line['id'])
+        if move_ids:
+            sql='''
+                SELECT state ,id
+                FROM account_invoice 
+                WHERE id IN (
+                     SELECT distinct invoice_id 
+                     FROM account_invoice_line 
+                     WHERE stock_move_id in(%s))
+            '''%(','.join(map(str,move_ids)))
+            cr.execute(sql)
+            for line in cr.dictfetchall():
+                if line['state'] not in ('draft','cancel'):
+                    raise osv.except_osv(
+                        _('Cảnh báo'),
+                        _('Vui lòng hủy bỏ tất cả các hóa đơn của phiếu xuất này trước!'))
+                else:
+                    invoice_ids.append(line['id'])
+            if invoice_ids:
+                cr.execute('delete from account_invoice where id in %s',(tuple(invoice_ids),))
+#                 self.pool.get('account.invoice').unlink(cr,uid,invoice_ids)
+                
+        for picking in self.browse(cr, uid, ids, context):
+            for line in picking.move_lines:
+                if self.has_valuation_moves(cr, uid, line):
+                    raise osv.except_osv(
+                        _('Cảnh báo'),
+                        _('Sản phẩm "%s" đã sinh bút toán "%s". \
+                            Vui lòng xóa bút toán trước') % (line.name,
+                                                   line.picking_id.name))
+                line.write({'state': 'draft','invoiced_qty':0})
+            self.write(cr, uid, [picking.id], {'state': 'draft'})
+            if picking.invoice_state == 'invoiced':# and not picking.invoice_id:
+                self.write(cr, uid, [picking.id],
+                           {'invoice_state': '2binvoiced'})
+            wf_service = netsvc.LocalService("workflow")
+            # Deleting the existing instance of workflow
+            wf_service.trg_delete(uid, 'stock.picking', picking.id, cr)
+            wf_service.trg_create(uid, 'stock.picking', picking.id, cr)
+        for (id, name) in self.name_get(cr, uid, ids):
+            message = _(
+                "The stock picking '%s' has been set in draft state."
+                ) % (name,)
+            self.log(cr, uid, id, message)
+        return True
+    
 stock_picking_out()
+
 class stock_move(osv.osv):
     _inherit = "stock.move"
     _columns = {

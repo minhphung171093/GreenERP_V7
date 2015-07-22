@@ -324,6 +324,9 @@
             	<xpath expr="//field[@name='move_lines']" position="replace">
                     <field name="move_lines" string="Stock Move" context="{'address_in_id': partner_id, 'picking_type': 'in', 'form_view_ref':'green_erp_viruco_stock.view_move_picking_in_form', 'tree_view_ref':'green_erp_viruco_stock.view_move_picking_in_tree'}" options='{"reload_on_button": true}'/>
             	</xpath>
+            	<xpath expr="//button[@name='button_cancel']" position="after">
+                    <button name="action_revert_done" states="cancel,done" string="Chỉnh sửa lại" type="object"/>
+            	</xpath>
             </field>
         </record>
         
@@ -347,6 +350,9 @@
             	<xpath expr="//field[@name='move_lines']" position="replace">
                     <field name="move_lines" string="Stock Move" context="{'address_out_id': partner_id, 'picking_type': 'out', 'form_view_ref':'green_erp_viruco_stock.view_move_picking_out_form', 'tree_view_ref':'green_erp_viruco_stock.view_move_picking_out_tree'}" options='{"reload_on_button": true}'/>
                 </xpath>
+                <xpath expr="//button[@name='button_cancel']" position="after">
+                    <button name="action_revert_done" states="cancel,done" string="Chỉnh sửa lại" type="object"/>
+            	</xpath>
             </field>
         </record>
     </data>
