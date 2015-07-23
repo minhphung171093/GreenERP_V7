@@ -24,8 +24,7 @@
 	                        <field name="update_cost" invisible="1"/>
 	                        <field name="cost"  invisible="1"/>
 	                        <field name="currency"  invisible="1"/>
-	                        <field name="location_id" invisible="context.get('default_type',False) and context.get('default_type')=='out' and 1 or 0"/>
-	                        <field name="location_dest_id" invisible="context.get('default_type',False) and context.get('default_type')=='out' and 1 or 0"/>
+	                        <field name="location_dest_id" domain="[('usage','=','internal'),('chained_location_type','!=','customer')]" invisible="context.get('default_type',False) and context.get('default_type')=='out' and 1 or 0"/>
 	                    </tree>
 	                </field>
                 </field>

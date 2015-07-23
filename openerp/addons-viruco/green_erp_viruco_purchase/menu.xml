@@ -9,5 +9,11 @@
 		<record model="ir.ui.menu" id="purchase.menu_purchase_form_action">
 	    	<field name="active" eval="False"/>
 		</record>
+		
+    	<menuitem id="menu_action_don_mua_hang"
+    		action="green_erp_viruco_base.action_don_mua_hang"
+    		name="Đơn mua hàng"
+    		parent="purchase.menu_procurement_management"
+			sequence="0"/>
     </data>
 </openerp>

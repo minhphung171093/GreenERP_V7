@@ -15,5 +15,18 @@
 		<record model="ir.ui.menu" id="sale.menu_sale_order">
 	    	<field name="active" eval="False"/>
 		</record>
+		
+    	<menuitem id="menu_action_don_ban_hang_noi"
+    		action="green_erp_viruco_base.action_don_ban_hang_noi"
+    		name="Đơn bán hàng nội"
+    		parent="base.menu_sales"
+			sequence="0"/>
+    	
+    	<menuitem id="menu_action_don_ban_hang_ngoai"
+    		action="green_erp_viruco_base.action_don_ban_hang_ngoai"
+    		name="Đơn bán hàng ngoại"
+    		parent="base.menu_sales"
+			sequence="0"/>
+    	
     </data>
 </openerp>

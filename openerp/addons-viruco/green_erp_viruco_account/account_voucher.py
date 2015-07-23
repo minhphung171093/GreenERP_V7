@@ -35,12 +35,14 @@ class account_voucher(osv.osv):
         vals = {}
         vals['dot_thanhtoan_ids'] = False
         if hop_dong_id:
+            hop_dong = self.pool.get('hop.dong').browse(cr, uid, hop_dong_id)
             dot_thanhtoan_ids = []
             if ids:
                 voucher_ids = self.search(cr, uid, [('hop_dong_id','=',hop_dong_id),('id','not in',ids),('state','=','posted')],order='id')
             else:
                 voucher_ids = self.search(cr, uid, [('hop_dong_id','=',hop_dong_id),('state','=','posted')],order='id')
             vals['dot_thanhtoan_ids']=[(6,0,voucher_ids)]
+            vals['partner_id']=hop_dong.partner_id.id
         return {'value':vals}
     
     def create(self, cr, uid, vals, context=None):
