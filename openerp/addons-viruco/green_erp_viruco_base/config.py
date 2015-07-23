@@ -116,4 +116,94 @@ class cang_donghang(osv.osv):
     }
     
 cang_donghang()
+
+class bang_gia(osv.osv):
+    _name = 'bang.gia'
+    _columns = {
+        'name':fields.date('Ngày',required=True,readonly=True, states={'moi_tao': [('readonly', False)]}),
+        'currency_id': fields.many2one('res.currency', 'Đơn vị tiền tệ', required=True,readonly=True, states={'moi_tao': [('readonly', False)]}),
+        'banggia_line': fields.one2many('bang.gia.line', 'banggia_id', 'Chi tiết bảng giá',readonly=True, states={'moi_tao': [('readonly', False)]}),
+        'state': fields.selection([
+            ('moi_tao', 'Mới tạo'),
+            ('da_duyet', 'Đã duyệt'),
+            ('huy_bo', 'Hủy bỏ'),
+            ], 'Trạng thái',readonly=True, states={'moi_tao': [('readonly', False)]}),
+    }
+    
+    _defaults = {
+        'name': time.strftime('%Y-%m-%d'),
+        'state': 'moi_tao',
+    }
+    
+    def onchange_name(self, cr, uid, ids, name=False, currency_id=False, context=None):
+        vals = {}
+        if name and currency_id:
+            if ids:
+                cr.execute('delete from bang_gia_line where banggia_id in %s',(tuple(ids),))
+            old_banggia_ids = self.search(cr, uid, [('name','<',name),('currency_id','=',currency_id),('state','=','da_duyet')], order='name desc', limit=1)
+            if old_banggia_ids:
+                banggia = self.browse(cr, uid, old_banggia_ids[0])
+                banggia_line = []
+                for line in banggia.banggia_line:
+                    banggia_line.append((0,0,{
+                        'product_id': line.product_id.id,
+                        'gia': line.gia,
+                    }))
+                vals = {'banggia_line': banggia_line} 
+        return {'value': vals}
+
+    def duyet(self, cr, uid, ids, context=None):
+        product_pricelist_version_obj = self.pool.get('product.pricelist.version')
+        product_pricelist_obj = self.pool.get('product.pricelist')
+        for bg in self.browse(cr, uid, ids):
+            product_pricelist_ids = product_pricelist_obj.search(cr, uid, [('currency_id','=',bg.currency_id.id)])
+            if not product_pricelist_ids:
+                product_pricelist_id = product_pricelist_obj.create(cr, uid, {'name': 'Public Pricelist',
+                                                                              'type':'sale',
+                                                                              'currency_id':bg.currency_id.id})
+            else:
+                product_pricelist_id = product_pricelist_ids[0]
+            
+            items = []
+            for line in bg.banggia_line:
+                items.append((0,0,{
+                    'name': line.product_id.name,
+                    'product': line.product_id.id,
+                    'base': 1,
+                    'price_surcharge': line.gia,
+                }))
+                
+            product_pricelist_version_obj.create(cr, uid, {
+                'pricelist_id':product_pricelist_id,
+                'name': 'Bảng giá ngày '+bg.name[8:10]+'/'+bg.name[5:7]+'/'+bg.name[:4],
+                'date_start': bg.name,
+                'date_end': bg.name,
+                'items_id': items,
+            })
+            
+        return self.write(cr, uid, ids, {'state': 'da_duyet'})
+    
+    def huy_bo(self, cr, uid, ids, context=None):
+        product_pricelist_version_obj = self.pool.get('product.pricelist.version')
+        product_pricelist_obj = self.pool.get('product.pricelist')
+        for bg in self.browse(cr, uid, ids):
+            product_pricelist_ids = product_pricelist_obj.search(cr, uid, [('currency_id','=',bg.currency_id.id)])
+            product_pricelist_version_ids = product_pricelist_version_obj.search(cr, uid, [('pricelist_id','in', product_pricelist_ids),('date_start','=', bg.name),('date_end','=', bg.name)])
+            product_pricelist_version_obj.unlink(cr, uid, product_pricelist_version_ids)
+        return self.write(cr, uid, ids, {'state': 'huy_bo'})
+    
+    def chinh_sua_lai(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {'state': 'moi_tao'})
+    
+bang_gia()
+
+class bang_gia_line(osv.osv):
+    _name = 'bang.gia.line'
+    _columns = {
+        'banggia_id': fields.many2one('bang.gia', 'Bảng giá', ondelete='cascade'),
+        'product_id': fields.many2one('product.product', 'Sản phẩm', required=True),
+        'gia': fields.float('Giá', required=True),
+    }
+    
+bang_gia_line()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+		<menuitem id="menu_action_bang_gia"
+			action="action_bang_gia"
+			name="Bảng giá"
+			parent="menu_config_hopdong" sequence="20"/>
+    
+    </data>
+</openerp>

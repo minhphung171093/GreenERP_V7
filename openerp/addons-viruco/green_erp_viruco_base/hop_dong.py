@@ -417,6 +417,9 @@ class don_ban_hang(osv.osv):
                 'report_name': 'don_ban_hang_ngoai_report',
             }
     
+    def huy_bo(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {'state':'huy_bo'})
+    
 don_ban_hang()
 
 class don_ban_hang_line(osv.osv):
@@ -593,6 +596,9 @@ class don_mua_hang(osv.osv):
             'type': 'ir.actions.report.xml',
             'report_name': 'don_mua_hang_report',
             }
+    
+    def huy_bo(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {'state':'huy_bo'})
     
 don_mua_hang()
 
