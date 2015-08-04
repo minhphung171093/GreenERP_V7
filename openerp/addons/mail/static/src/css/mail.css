@@ -14,7 +14,7 @@
     position: relative;
     top: -6px;  /* centering entypo ... urgh */
     color: white;
-    background: #68b3a5;
+    background: #009441;
     width: 32px;
     height: 50px;
     padding: 0px;
@@ -23,7 +23,7 @@
 	border: none;
 }
 .openerp .oe_topbar_item.oe_topbar_compose_full_email button:hover{
-	background: #68b3a5;
+	background: #13BD49;
 }
 
 /* ------------ MAIL WIDGET --------------- */
@@ -563,22 +563,22 @@
 }
 .openerp .oe_followers button.oe_follower.oe_following{
     color: white;
-    background-color: #3465A4;
-    background-image: -webkit-linear-gradient(top, #729FCF, #3465A4);
-    background-image:    -moz-linear-gradient(top, #729FCF, #3465A4);
-    background-image:     -ms-linear-gradient(top, #729FCF, #3465A4);
-    background-image:      -o-linear-gradient(top, #729FCF, #3465A4);
-    background-image:         linear-gradient(to bottom, #729FCF, #3465A4);
+    background-color: #009441;
+    background-image: -webkit-linear-gradient(top, #009441, #009441);
+    background-image:    -moz-linear-gradient(top, #009441, #009441);
+    background-image:     -ms-linear-gradient(top, #009441, #009441);
+    background-image:      -o-linear-gradient(top, #009441, #009441);
+    background-image:         linear-gradient(to bottom, #009441, #009441);
 }
 .openerp .oe_followers button.oe_follower.oe_following:hover{
     color: white;
     filter:none;
-    background-color: #A21A1A;
+    background-color: #13BD49;
     background-image: -webkit-linear-gradient(top, #DF3F3F, #A21A1A);
     background-image:    -moz-linear-gradient(top, #DF3F3F, #A21A1A);
     background-image:     -ms-linear-gradient(top, #DF3F3F, #A21A1A);
     background-image:      -o-linear-gradient(top, #DF3F3F, #A21A1A);
-    background-image:         linear-gradient(to bottom, #DF3F3F, #A21A1A);
+    background-image:         linear-gradient(to bottom, #13BD49, #13BD49);
 }
 
 .openerp .oe_followers button.oe_follower .oe_follow, 

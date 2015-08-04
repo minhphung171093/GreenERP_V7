@@ -674,7 +674,7 @@ button.navbar-toggle:focus {
 }
 
 .openerp .oe_topbar_item.oe_topbar_compose_full_email button {
-    background-color:#009FE3!important;   
+    background-color:#009441!important;   
 }
 
 
@@ -983,13 +983,13 @@ button.navbar-toggle:focus {
 
 .openerp .oe_followers button.oe_follower.oe_following {
     background-image:none!important;
-    background-color:#12AFCB!important;
+    background-color:#009441!important;
     color:#FFF!important;
 }
 
 .openerp .oe_followers button.oe_follower.oe_following:hover {
     background-image:none!important;
-    background-color:#f25656 !important;
+    background-color:#13BD49 !important;
 }
 
 .openerp .oe_followers button.oe_follower.oe_notfollow {
