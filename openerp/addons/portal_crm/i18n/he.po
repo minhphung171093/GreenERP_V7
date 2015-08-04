@@ -1,31 +1,31 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * portal_crm
-# 
-# Translators:
+# Hebrew translation for openobject-addons
+# Copyright (c) 2013 Rosetta Contributors and Canonical Ltd 2013
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-08-14 00:10+0000\n"
-"PO-Revision-Date: 2015-05-29 13:15+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Hebrew (http://www.transifex.com/projects/p/odoo-7/language/he/)\n"
+"PO-Revision-Date: 2013-12-30 19:12+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: he\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2014-08-14 07:10+0000\n"
+"X-Generator: Launchpad (build 17156)\n"
 
 #. module: portal_crm
 #: selection:portal_crm.crm_contact_us,type:0
 msgid "Lead"
-msgstr "ליד (Lead)"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,title:0
 msgid "Title"
-msgstr "כותרת"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,probability:0
@@ -35,7 +35,7 @@ msgstr ""
 #. module: portal_crm
 #: view:portal_crm.crm_contact_us:0
 msgid "Contact us"
-msgstr "צרו עימנו קשר"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,date_action:0
@@ -45,27 +45,27 @@ msgstr ""
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,fax:0
 msgid "Fax"
-msgstr "פקס"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,zip:0
 msgid "Zip"
-msgstr "מיקוד"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,message_unread:0
 msgid "Unread Messages"
-msgstr "הודעות שלא נקראו"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,company_id:0
 msgid "Company"
-msgstr "חברה"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,day_open:0
 msgid "Days to Open"
-msgstr "ימים לפתיחה"
+msgstr ""
 
 #. module: portal_crm
 #: view:portal_crm.crm_contact_us:0
@@ -75,27 +75,27 @@ msgstr ""
 #. module: portal_crm
 #: selection:portal_crm.crm_contact_us,priority:0
 msgid "Highest"
-msgstr "גבוהה ביותר"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,mobile:0
 msgid "Mobile"
-msgstr "נייד"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,description:0
 msgid "Notes"
-msgstr "פתקים"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,message_ids:0
 msgid "Messages"
-msgstr "הודעות"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,color:0
 msgid "Color Index"
-msgstr "מפתח צבעים"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,partner_latitude:0
@@ -110,12 +110,12 @@ msgstr ""
 #. module: portal_crm
 #: selection:portal_crm.crm_contact_us,state:0
 msgid "Cancelled"
-msgstr "בוטל"
+msgstr ""
 
 #. module: portal_crm
 #: help:portal_crm.crm_contact_us,message_unread:0
 msgid "If checked new messages require your attention."
-msgstr "אם מסומן אז הודעה חדשה דורשת התייחסותכם."
+msgstr ""
 
 #. module: portal_crm
 #: help:portal_crm.crm_contact_us,channel_id:0
@@ -125,18 +125,18 @@ msgstr ""
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,type_id:0
 msgid "Campaign"
-msgstr "קמפיין"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,ref:0
 msgid "Reference"
-msgstr "הפניה"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,date_action_next:0
 #: field:portal_crm.crm_contact_us,title_action:0
 msgid "Next Action"
-msgstr "פעולה הבאה"
+msgstr ""
 
 #. module: portal_crm
 #: help:portal_crm.crm_contact_us,message_summary:0
@@ -148,17 +148,17 @@ msgstr ""
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,partner_id:0
 msgid "Partner"
-msgstr "שותף"
+msgstr ""
 
 #. module: portal_crm
 #: model:ir.actions.act_window,name:portal_crm.action_contact_us
 msgid "Contact Us"
-msgstr "צרו קשר"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,name:0
 msgid "Subject"
-msgstr "נושא"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,opt_out:0
@@ -168,17 +168,17 @@ msgstr ""
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,priority:0
 msgid "Priority"
-msgstr "עדיפות"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,state_id:0
 msgid "State"
-msgstr "סטטוס"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,message_follower_ids:0
 msgid "Followers"
-msgstr "עוקבים"
+msgstr ""
 
 #. module: portal_crm
 #: help:portal_crm.crm_contact_us,partner_id:0
@@ -193,37 +193,37 @@ msgstr ""
 #. module: portal_crm
 #: selection:portal_crm.crm_contact_us,state:0
 msgid "New"
-msgstr "חדש"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,type:0
 msgid "Type"
-msgstr "סוג"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,email_from:0
 msgid "Email"
-msgstr "דוא״ל"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,channel_id:0
 msgid "Channel"
-msgstr "ערוץ"
+msgstr ""
 
 #. module: portal_crm
 #: view:portal_crm.crm_contact_us:0
 msgid "Name"
-msgstr "שם"
+msgstr ""
 
 #. module: portal_crm
 #: selection:portal_crm.crm_contact_us,priority:0
 msgid "Lowest"
-msgstr "נמוכה ביותר"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,create_date:0
 msgid "Creation Date"
-msgstr "תאריך היצירה"
+msgstr ""
 
 #. module: portal_crm
 #: view:portal_crm.crm_contact_us:0
@@ -241,12 +241,12 @@ msgstr ""
 #. module: portal_crm
 #: view:portal_crm.crm_contact_us:0
 msgid "Close"
-msgstr "סגור"
+msgstr ""
 
 #. module: portal_crm
 #: selection:portal_crm.crm_contact_us,state:0
 msgid "Pending"
-msgstr "ממתינה"
+msgstr ""
 
 #. module: portal_crm
 #: help:portal_crm.crm_contact_us,type:0
@@ -256,27 +256,27 @@ msgstr ""
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,categ_ids:0
 msgid "Categories"
-msgstr "קטיגוריות"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,stage_id:0
 msgid "Stage"
-msgstr "שלב"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,user_login:0
 msgid "User Login"
-msgstr "התחברות משתמש"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,contact_name:0
 msgid "Contact Name"
-msgstr "שם איש הקשר"
+msgstr ""
 
 #. module: portal_crm
 #: model:ir.ui.menu,name:portal_crm.portal_company_contact
 msgid "Contact"
-msgstr "איש קשר"
+msgstr ""
 
 #. module: portal_crm
 #: view:portal_crm.crm_contact_us:0
@@ -296,7 +296,7 @@ msgstr ""
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,task_ids:0
 msgid "Tasks"
-msgstr "משימות"
+msgstr ""
 
 #. module: portal_crm
 #: view:portal_crm.crm_contact_us:0
@@ -306,12 +306,12 @@ msgstr ""
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,company_currency:0
 msgid "Currency"
-msgstr "מטבע"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,write_date:0
 msgid "Update Date"
-msgstr "תאריך עדכון"
+msgstr ""
 
 #. module: portal_crm
 #: view:portal_crm.crm_contact_us:0
@@ -326,34 +326,34 @@ msgstr ""
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,ref2:0
 msgid "Reference 2"
-msgstr "הפנייה 2"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,user_email:0
 msgid "User Email"
-msgstr "דוא\"ל של המשתמש"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,date_open:0
 msgid "Opened"
-msgstr "פתוחה"
+msgstr ""
 
 #. module: portal_crm
 #: selection:portal_crm.crm_contact_us,state:0
 msgid "In Progress"
-msgstr "בתהליך"
+msgstr ""
 
 #. module: portal_crm
 #: help:portal_crm.crm_contact_us,partner_name:0
 msgid ""
-"The name of the future partner company that will be created while converting"
-" the lead into opportunity"
+"The name of the future partner company that will be created while converting "
+"the lead into opportunity"
 msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,planned_cost:0
 msgid "Planned Costs"
-msgstr "עלויות מתוכננות"
+msgstr ""
 
 #. module: portal_crm
 #: help:portal_crm.crm_contact_us,date_deadline:0
@@ -371,13 +371,13 @@ msgstr ""
 #. module: portal_crm
 #: selection:portal_crm.crm_contact_us,priority:0
 msgid "Low"
-msgstr "נמוכה"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,date_closed:0
 #: selection:portal_crm.crm_contact_us,state:0
 msgid "Closed"
-msgstr "סגור"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,date_assign:0
@@ -387,12 +387,12 @@ msgstr ""
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,state:0
 msgid "Status"
-msgstr "סטטוס"
+msgstr ""
 
 #. module: portal_crm
 #: selection:portal_crm.crm_contact_us,priority:0
 msgid "Normal"
-msgstr "רגילה"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,email_cc:0
@@ -402,52 +402,52 @@ msgstr ""
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,street2:0
 msgid "Street2"
-msgstr "רחוב2"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,id:0
 msgid "ID"
-msgstr "מזהה"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,phone:0
 msgid "Phone"
-msgstr "טלפון"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,message_is_follower:0
 msgid "Is a Follower"
-msgstr "הוא עוקב"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,active:0
 msgid "Active"
-msgstr "פעיל"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,user_id:0
 msgid "Salesperson"
-msgstr "איש מכירות"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,day_close:0
 msgid "Days to Close"
-msgstr "ימים לסגירה"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,company_ids:0
 msgid "Companies"
-msgstr "חברות"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,message_summary:0
 msgid "Summary"
-msgstr "תקציר"
+msgstr ""
 
 #. module: portal_crm
 #: view:portal_crm.crm_contact_us:0
 msgid "Subject..."
-msgstr "נושא..."
+msgstr ""
 
 #. module: portal_crm
 #: help:portal_crm.crm_contact_us,section_id:0
@@ -483,7 +483,7 @@ msgstr ""
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,city:0
 msgid "City"
-msgstr "ישוב"
+msgstr ""
 
 #. module: portal_crm
 #: view:portal_crm.crm_contact_us:0
@@ -493,7 +493,7 @@ msgstr ""
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,function:0
 msgid "Function"
-msgstr "תפקוד"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,referred:0
@@ -518,7 +518,7 @@ msgstr ""
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,country_id:0
 msgid "Country"
-msgstr "ארץ"
+msgstr ""
 
 #. module: portal_crm
 #: view:portal_crm.crm_contact_us:0
@@ -537,7 +537,7 @@ msgstr ""
 #. module: portal_crm
 #: help:portal_crm.crm_contact_us,message_ids:0
 msgid "Messages and communication history"
-msgstr "היסטוריית הודעות ותקשורת"
+msgstr ""
 
 #. module: portal_crm
 #: help:portal_crm.crm_contact_us,type_id:0
@@ -549,22 +549,22 @@ msgstr ""
 #. module: portal_crm
 #: selection:portal_crm.crm_contact_us,priority:0
 msgid "High"
-msgstr "גבוהה"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,section_id:0
 msgid "Sales Team"
-msgstr "צוות מכירות"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,street:0
 msgid "Street"
-msgstr "רחוב"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,date_action_last:0
 msgid "Last Action"
-msgstr "פעולה אחרונה"
+msgstr ""
 
 #. module: portal_crm
 #: model:ir.model,name:portal_crm.model_portal_crm_crm_contact_us

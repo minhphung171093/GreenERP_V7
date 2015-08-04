@@ -1,58 +1,59 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * crm_partner_assign
-# 
-# Translators:
+# Czech translation for openobject-addons
+# Copyright (c) 2013 Rosetta Contributors and Canonical Ltd 2013
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-03-07 08:38+0000\n"
-"PO-Revision-Date: 2015-05-29 13:00+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Czech (http://www.transifex.com/projects/p/odoo-7/language/cs/)\n"
+"PO-Revision-Date: 2013-03-30 12:42+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: cs\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-11-21 06:06+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,delay_close:0
 msgid "Delay to Close"
-msgstr "Doba do ukončení"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,author_id:0
 msgid "Author"
-msgstr "Autor"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,planned_revenue:0
 msgid "Planned Revenue"
-msgstr "Plánovaný výnos"
+msgstr ""
 
 #. module: crm_partner_assign
 #: help:crm.lead.forward.to.partner,type:0
 msgid ""
 "Message type: email for email message, notification for system message, "
 "comment for other messages such as user replies"
-msgstr "Druh zprávy: 'E-mail' pro e-mailové zprávy, 'Upozornění' pro zprávy systému, 'Komentář' pro ostatní zprávy, jako odpovědi uživatelů."
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,nbr:0
 msgid "# of Cases"
-msgstr "# případů"
+msgstr ""
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 view:crm.partner.report.assign:0
+#: view:crm.lead.report.assign:0
+#: view:crm.partner.report.assign:0
 msgid "Group By..."
-msgstr "Seskupit podle..."
+msgstr ""
 
 #. module: crm_partner_assign
 #: help:crm.lead.forward.to.partner,body:0
 msgid "Automatically sanitized HTML contents"
-msgstr "Automaticky ošetřený HTML obsah"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.lead:0
@@ -67,19 +68,19 @@ msgstr ""
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,starred:0
 msgid "Starred"
-msgstr "Označeno hvězdičkou"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.lead.forward.to.partner:0
 msgid "Body"
-msgstr "Tělo"
+msgstr ""
 
 #. module: crm_partner_assign
 #: help:crm.lead.forward.to.partner,email_from:0
 msgid ""
 "Email address of the sender. This field is set when no matching partner is "
 "found for incoming emails."
-msgstr "E-mailová adresa odesílatele. Pole je nastaveno, nepodaří-li se pro příchozí e-maily nalézt odpovídající kontakt."
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.partner.report.assign:0
@@ -89,12 +90,12 @@ msgstr ""
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,type:0
 msgid "Lead"
-msgstr "Zájemce"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.lead.report.assign:0
 msgid "Delay to close"
-msgstr "Doba do ukončení"
+msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.forward.to.partner,history_mode:0
@@ -102,14 +103,15 @@ msgid "Whole Story"
 msgstr ""
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,company_id:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,company_id:0
 msgid "Company"
-msgstr "Společnost"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,notification_ids:0
 msgid "Notifications"
-msgstr "Upozornění"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,date_assign:0
@@ -117,25 +119,27 @@ msgid "Partner Date"
 msgstr ""
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 view:crm.partner.report.assign:0
+#: view:crm.lead.report.assign:0
+#: view:crm.partner.report.assign:0
 #: view:res.partner:0
 msgid "Salesperson"
-msgstr "Obchodník"
+msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,priority:0
 msgid "Highest"
-msgstr "Nejvyšší"
+msgstr ""
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,day:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,day:0
 msgid "Day"
-msgstr "Den"
+msgstr ""
 
 #. module: crm_partner_assign
 #: help:crm.lead.forward.to.partner,message_id:0
 msgid "Message unique identifier"
-msgstr "Jedinečný identifikátor zprávy"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:res.partner,date_review_next:0
@@ -148,14 +152,15 @@ msgid "Latest email"
 msgstr ""
 
 #. module: crm_partner_assign
-#: field:crm.lead,partner_latitude:0 field:res.partner,partner_latitude:0
+#: field:crm.lead,partner_latitude:0
+#: field:res.partner,partner_latitude:0
 msgid "Geo Latitude"
 msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,state:0
 msgid "Cancelled"
-msgstr "Zrušeno"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.lead:0
@@ -165,17 +170,17 @@ msgstr ""
 #. module: crm_partner_assign
 #: model:ir.model,name:crm_partner_assign.model_crm_lead_forward_to_partner
 msgid "Email composition wizard"
-msgstr "Průvodce sestavením emailu"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.partner.report.assign,turnover:0
 msgid "Turnover"
-msgstr "Obrat"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,date_closed:0
 msgid "Close Date"
-msgstr "Datum uzavření"
+msgstr ""
 
 #. module: crm_partner_assign
 #: help:res.partner,partner_weight:0
@@ -192,7 +197,7 @@ msgstr ""
 #. module: crm_partner_assign
 #: selection:crm.lead.forward.to.partner,type:0
 msgid "System notification"
-msgstr "Upozornění systému"
+msgstr ""
 
 #. module: crm_partner_assign
 #: code:addons/crm_partner_assign/wizard/crm_forward_to_partner.py:74
@@ -219,7 +224,7 @@ msgstr ""
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,email_from:0
 msgid "From"
-msgstr "Od"
+msgstr ""
 
 #. module: crm_partner_assign
 #: model:ir.actions.act_window,name:crm_partner_assign.res_partner_grade_action
@@ -229,40 +234,42 @@ msgid "Partner Grade"
 msgstr ""
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 view:crm.partner.report.assign:0
+#: view:crm.lead.report.assign:0
+#: view:crm.partner.report.assign:0
 msgid "Section"
-msgstr "Sekce"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.lead.forward.to.partner:0
 msgid "Send"
-msgstr "Odeslat"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:res.partner:0
 msgid "Next"
-msgstr "Další"
+msgstr ""
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,priority:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,priority:0
 msgid "Priority"
-msgstr "Priorita"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,delay_expected:0
 msgid "Overpassed Deadline"
-msgstr "Překročený krajní termín"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,type:0
 #: field:crm.lead.report.assign,type:0
 msgid "Type"
-msgstr "Druh"
+msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.forward.to.partner,type:0
 msgid "Email"
-msgstr "Email"
+msgstr ""
 
 #. module: crm_partner_assign
 #: help:crm.lead,partner_assigned_id:0
@@ -272,7 +279,7 @@ msgstr ""
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,priority:0
 msgid "Lowest"
-msgstr "Nejnižší"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.partner.report.assign:0
@@ -282,7 +289,7 @@ msgstr ""
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,template_id:0
 msgid "Template"
-msgstr "Šablona"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.lead.report.assign:0
@@ -292,12 +299,12 @@ msgstr ""
 #. module: crm_partner_assign
 #: view:crm.lead.report.assign:0
 msgid "Leads Analysis"
-msgstr "Analýza zájemců"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,creation_date:0
 msgid "Creation Date"
-msgstr "Datum vytvoření"
+msgstr ""
 
 #. module: crm_partner_assign
 #: model:ir.model,name:crm_partner_assign.model_res_partner_activation
@@ -307,17 +314,17 @@ msgstr ""
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,parent_id:0
 msgid "Parent Message"
-msgstr "Nadřazená zpráva"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,res_id:0
 msgid "Related Document ID"
-msgstr "Související ID dokumentu"
+msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,state:0
 msgid "Pending"
-msgstr "Čekající"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.lead:0
@@ -327,12 +334,12 @@ msgstr ""
 #. module: crm_partner_assign
 #: help:crm.lead.report.assign,type:0
 msgid "Type is used to separate Leads and Opportunities"
-msgstr "Druh používaný pro odlišení zájemců a příležitostí"
+msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,month:0
 msgid "July"
-msgstr "Červenec"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.partner.report.assign:0
@@ -340,19 +347,21 @@ msgid "Date Review"
 msgstr ""
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,stage_id:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,stage_id:0
 msgid "Stage"
-msgstr "Fáze"
+msgstr ""
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,state:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,state:0
 msgid "Status"
-msgstr "Stav"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,to_read:0
 msgid "To read"
-msgstr "K přečtení"
+msgstr ""
 
 #. module: crm_partner_assign
 #: code:addons/crm_partner_assign/wizard/crm_forward_to_partner.py:74
@@ -366,14 +375,16 @@ msgid "Geo Localization"
 msgstr ""
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 view:crm.partner.report.assign:0
+#: view:crm.lead.report.assign:0
+#: view:crm.partner.report.assign:0
 msgid "Opportunities Assignment Analysis"
 msgstr ""
 
 #. module: crm_partner_assign
-#: view:crm.lead.forward.to.partner:0 view:res.partner:0
+#: view:crm.lead.forward.to.partner:0
+#: view:res.partner:0
 msgid "Cancel"
-msgstr "Zrušit"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,history_mode:0
@@ -383,12 +394,12 @@ msgstr ""
 #. module: crm_partner_assign
 #: view:res.partner:0
 msgid "Close"
-msgstr "Uzavřít"
+msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,month:0
 msgid "March"
-msgstr "Březen"
+msgstr ""
 
 #. module: crm_partner_assign
 #: model:ir.actions.act_window,name:crm_partner_assign.action_report_crm_opportunity_assign
@@ -399,59 +410,62 @@ msgstr ""
 #. module: crm_partner_assign
 #: help:crm.lead.report.assign,delay_close:0
 msgid "Number of Days to close the case"
-msgstr "Počet dnů do uzavření případu"
+msgstr ""
 
 #. module: crm_partner_assign
 #: help:crm.lead.forward.to.partner,notified_partner_ids:0
 msgid ""
 "Partners that have a notification pushing this message in their mailboxes"
-msgstr "Kontakty, které mají potlačeno oznámenío zprávvě ve svých poštovních schránkách"
+msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.forward.to.partner,type:0
 msgid "Comment"
-msgstr "Komentář"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:res.partner,partner_weight:0
 msgid "Weight"
-msgstr "Hmotnost"
+msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,month:0
 msgid "April"
-msgstr "Duben"
+msgstr ""
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,grade_id:0
-#: view:crm.partner.report.assign:0 field:crm.partner.report.assign,grade_id:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,grade_id:0
+#: view:crm.partner.report.assign:0
+#: field:crm.partner.report.assign,grade_id:0
 msgid "Grade"
 msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,month:0
 msgid "December"
-msgstr "Prosinec"
+msgstr ""
 
 #. module: crm_partner_assign
 #: help:crm.lead.forward.to.partner,vote_user_ids:0
 msgid "Users that voted for this message"
-msgstr "Uživatelé, kteří hodnotili tuto zprávu"
+msgstr ""
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,month:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,month:0
 msgid "Month"
-msgstr "Měsíc"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,opening_date:0
 msgid "Opening Date"
-msgstr "Datum otevření"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,child_ids:0
 msgid "Child Messages"
-msgstr "Podřízené zprávy"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.partner.report.assign,date_review:0
@@ -462,32 +476,32 @@ msgstr ""
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,subject:0
 msgid "Subject"
-msgstr "Předmět"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.lead.forward.to.partner:0
 msgid "or"
-msgstr "nebo"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,body:0
 msgid "Contents"
-msgstr "Obsah"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,vote_user_ids:0
 msgid "Votes"
-msgstr "Ohodnocení"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.lead.report.assign:0
 msgid "#Opportunities"
-msgstr "# příležitostí"
+msgstr ""
 
 #. module: crm_partner_assign
 #: help:crm.lead.forward.to.partner,starred:0
 msgid "Current user has a starred notification linked to this message"
-msgstr "Aktuální uživatel má v úkolech (označeno hvězdičkou) oznámení související s touto zprávou"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.partner.report.assign,date_partnership:0
@@ -498,22 +512,23 @@ msgstr ""
 #. module: crm_partner_assign
 #: view:crm.lead:0
 msgid "Team"
-msgstr "Tým"
+msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,state:0
 msgid "Draft"
-msgstr "Koncept"
+msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,priority:0
 msgid "Low"
-msgstr "Nízká"
+msgstr ""
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 selection:crm.lead.report.assign,state:0
+#: view:crm.lead.report.assign:0
+#: selection:crm.lead.report.assign,state:0
 msgid "Closed"
-msgstr "Uzavřeno"
+msgstr ""
 
 #. module: crm_partner_assign
 #: model:ir.actions.act_window,name:crm_partner_assign.action_crm_send_mass_forward
@@ -521,14 +536,15 @@ msgid "Mass forward to partner"
 msgstr ""
 
 #. module: crm_partner_assign
-#: view:res.partner:0 field:res.partner,opportunity_assigned_ids:0
+#: view:res.partner:0
+#: field:res.partner,opportunity_assigned_ids:0
 msgid "Assigned Opportunities"
 msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead,date_assign:0
 msgid "Assignation Date"
-msgstr "Datum převodu"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,probability_max:0
@@ -538,61 +554,62 @@ msgstr ""
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,month:0
 msgid "August"
-msgstr "Srpen"
+msgstr ""
 
 #. module: crm_partner_assign
 #: help:crm.lead.forward.to.partner,record_name:0
 msgid "Name get of the related document."
-msgstr "Jméno získané ze souvisejícího dokumentu."
+msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,priority:0
 msgid "Normal"
-msgstr "Normální"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:res.partner:0
 msgid "Escalate"
-msgstr "Stupňovat"
+msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,month:0
 msgid "June"
-msgstr "Červen"
+msgstr ""
 
 #. module: crm_partner_assign
 #: help:crm.lead.report.assign,delay_open:0
 msgid "Number of Days to open the case"
-msgstr "Počet dní do otevření případu"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,delay_open:0
 msgid "Delay to Open"
-msgstr "Doba do otevření"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,user_id:0
 #: field:crm.partner.report.assign,user_id:0
 msgid "User"
-msgstr "Uživatel"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:res.partner.grade,active:0
 msgid "Active"
-msgstr "Aktivní"
+msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,month:0
 msgid "November"
-msgstr "Listopad"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.lead.report.assign:0
 msgid "Extended Filters..."
-msgstr "Rozšířené filtry..."
+msgstr ""
 
 #. module: crm_partner_assign
-#: field:crm.lead,partner_longitude:0 field:res.partner,partner_longitude:0
+#: field:crm.lead,partner_longitude:0
+#: field:res.partner,partner_longitude:0
 msgid "Geo Longitude"
 msgstr ""
 
@@ -609,7 +626,7 @@ msgstr ""
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,month:0
 msgid "October"
-msgstr "Říjen"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.lead:0
@@ -619,7 +636,7 @@ msgstr ""
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,month:0
 msgid "January"
-msgstr "Leden"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.lead.forward.to.partner:0
@@ -629,12 +646,12 @@ msgstr ""
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,date:0
 msgid "Date"
-msgstr "Datum"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.lead.report.assign:0
 msgid "Planned Revenues"
-msgstr "Plánované výnosy"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:res.partner:0
@@ -654,23 +671,24 @@ msgstr ""
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,message_id:0
 msgid "Message-Id"
-msgstr "ID zprávy"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.lead.forward.to.partner:0
 #: field:crm.lead.forward.to.partner,attachment_ids:0
 msgid "Attachments"
-msgstr "Přílohy"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,record_name:0
 msgid "Message Record Name"
-msgstr "Název záznamu zprávy"
+msgstr ""
 
 #. module: crm_partner_assign
-#: field:res.partner.activation,sequence:0 field:res.partner.grade,sequence:0
+#: field:res.partner.activation,sequence:0
+#: field:res.partner.grade,sequence:0
 msgid "Sequence"
-msgstr "Řazení"
+msgstr ""
 
 #. module: crm_partner_assign
 #: code:addons/crm_partner_assign/partner_geo_assign.py:37
@@ -683,7 +701,7 @@ msgstr ""
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,month:0
 msgid "September"
-msgstr "Září"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:res.partner.grade,name:0
@@ -696,14 +714,15 @@ msgid "Last date this case was forwarded/assigned to a partner"
 msgstr ""
 
 #. module: crm_partner_assign
-#: selection:crm.lead.report.assign,state:0 view:res.partner:0
+#: selection:crm.lead.report.assign,state:0
+#: view:res.partner:0
 msgid "Open"
-msgstr "Otevřít"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,subtype_id:0
 msgid "Subtype"
-msgstr "Poddruh"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:res.partner,date_localization:0
@@ -713,17 +732,17 @@ msgstr ""
 #. module: crm_partner_assign
 #: view:crm.lead.report.assign:0
 msgid "Current"
-msgstr "Aktuální"
+msgstr ""
 
 #. module: crm_partner_assign
 #: model:ir.model,name:crm_partner_assign.model_crm_lead
 msgid "Lead/Opportunity"
-msgstr "Zájemce/příležitost"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,notified_partner_ids:0
 msgid "Notified partners"
-msgstr "Upozorněné kontakty"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.lead.forward.to.partner:0
@@ -735,27 +754,30 @@ msgstr ""
 #: field:crm.lead.report.assign,section_id:0
 #: field:crm.partner.report.assign,section_id:0
 msgid "Sales Team"
-msgstr "Obchodní tým"
+msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,month:0
 msgid "May"
-msgstr "Květen"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,probable_revenue:0
 msgid "Probable Revenue"
-msgstr "Pravděpodobný výnos"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.partner.report.assign:0
-#: field:crm.partner.report.assign,activation:0 view:res.partner:0
-#: field:res.partner,activation:0 view:res.partner.activation:0
+#: field:crm.partner.report.assign,activation:0
+#: view:res.partner:0
+#: field:res.partner,activation:0
+#: view:res.partner.activation:0
 msgid "Activation"
 msgstr ""
 
 #. module: crm_partner_assign
-#: view:crm.lead:0 field:crm.lead,partner_assigned_id:0
+#: view:crm.lead:0
+#: field:crm.lead,partner_assigned_id:0
 msgid "Assigned Partner"
 msgstr ""
 
@@ -767,27 +789,27 @@ msgstr ""
 #. module: crm_partner_assign
 #: help:crm.lead.forward.to.partner,to_read:0
 msgid "Current user has an unread notification linked to this message"
-msgstr "Aktuální uživatel má nepřečtené oznámení související s touto zprávou"
+msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,type:0
 msgid "Opportunity"
-msgstr "Příležitost"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,partner_id:0
 msgid "Customer"
-msgstr "Zákazník"
+msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,month:0
 msgid "February"
-msgstr "Únor"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:res.partner.activation,name:0
 msgid "Name"
-msgstr "Název"
+msgstr ""
 
 #. module: crm_partner_assign
 #: model:ir.actions.act_window,name:crm_partner_assign.res_partner_activation_act
@@ -796,21 +818,23 @@ msgid "Partner Activations"
 msgstr ""
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,country_id:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,country_id:0
 #: view:crm.partner.report.assign:0
 #: field:crm.partner.report.assign,country_id:0
 msgid "Country"
-msgstr "Země"
+msgstr ""
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,year:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,year:0
 msgid "Year"
-msgstr "Rok"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:res.partner:0
 msgid "Convert to Opportunity"
-msgstr "Převést na příležitost"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.lead:0
@@ -820,7 +844,7 @@ msgstr ""
 #. module: crm_partner_assign
 #: view:crm.lead.report.assign:0
 msgid "Delay to open"
-msgstr "Doba do otevření"
+msgstr ""
 
 #. module: crm_partner_assign
 #: model:ir.actions.act_window,name:crm_partner_assign.action_report_crm_partner_assign
@@ -833,7 +857,7 @@ msgstr ""
 msgid ""
 "Technical field holding the message notifications. Use notified_partner_ids "
 "to access notified partners."
-msgstr "Technické pole obsahující upozornění na zprávu. Pro přístup upozorněných kontaktů používá notified_partner_ids."
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.partner.report.assign:0
@@ -848,12 +872,12 @@ msgstr ""
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,composition_mode:0
 msgid "Composition mode"
-msgstr "Režim psaní"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,model:0
 msgid "Related Document Model"
-msgstr "Související dokumentový model"
+msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.forward.to.partner,history_mode:0
@@ -863,9 +887,9 @@ msgstr ""
 #. module: crm_partner_assign
 #: help:crm.lead.forward.to.partner,author_id:0
 msgid ""
-"Author of the message. If not set, email_from may hold an email address that"
-" did not match any partner."
-msgstr "Autor zprávy. Není-li nastaven, email_from může obsahovat e-mailovou adresu, která neodpovídá žádnému kontaktu."
+"Author of the message. If not set, email_from may hold an email address that "
+"did not match any partner."
+msgstr ""
 
 #. module: crm_partner_assign
 #: model:ir.model,name:crm_partner_assign.model_crm_partner_report_assign
@@ -875,27 +899,27 @@ msgstr ""
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,priority:0
 msgid "High"
-msgstr "Vysoká"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,partner_ids:0
 msgid "Additional contacts"
-msgstr "Další kontakty"
+msgstr ""
 
 #. module: crm_partner_assign
 #: help:crm.lead.forward.to.partner,parent_id:0
 msgid "Initial thread message."
-msgstr "Počáteční zpráva vlákna."
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,create_date:0
 msgid "Create Date"
-msgstr "Datum vytvoření"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,filter_id:0
 msgid "Filters"
-msgstr "Filtry"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.lead.report.assign:0
@@ -904,4 +928,4 @@ msgstr "Filtry"
 #: field:crm.partner.report.assign,partner_id:0
 #: model:ir.model,name:crm_partner_assign.model_res_partner
 msgid "Partner"
-msgstr "Kontakt"
+msgstr ""

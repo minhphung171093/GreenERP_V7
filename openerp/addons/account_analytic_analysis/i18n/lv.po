@@ -1,27 +1,26 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * account_analytic_analysis
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2012
+# Latvian translation for openobject-addons
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-08-14 00:10+0000\n"
-"PO-Revision-Date: 2015-05-29 12:59+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Latvian (http://www.transifex.com/projects/p/odoo-7/language/lv/)\n"
+"PO-Revision-Date: 2012-12-21 23:00+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Latvian <lv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: lv\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2014-08-14 06:36+0000\n"
+"X-Generator: Launchpad (build 17156)\n"
 
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
 msgid "No order to invoice, create"
-msgstr "Nav pasūtījumu rēķinu izrakstīšanai, izveidot"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: code:addons/account_analytic_analysis/account_analytic_analysis.py:548
@@ -32,22 +31,22 @@ msgstr ""
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
 msgid "Group By..."
-msgstr "Grupēt pēc..."
+msgstr ""
 
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
 msgid "Template"
-msgstr "Veidne"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
 msgid "To Invoice"
-msgstr "Izrakstāms rēķinā"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
 msgid "Remaining"
-msgstr "Atlicis"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: field:account.analytic.account,real_margin_rate:0
@@ -72,7 +71,7 @@ msgstr "Nepiestādītais Apjoms"
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
 msgid "⇒ Invoice"
-msgstr "⇒ Rēķins"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: field:account.analytic.account,ca_invoiced:0
@@ -87,13 +86,14 @@ msgstr "Pēdējo Piestādīto Izmaksu Datums"
 #. module: account_analytic_analysis
 #: help:account.analytic.account,fix_price_to_invoice:0
 msgid "Sum of quotations for this contract."
-msgstr "Šī līguma piedāvājumu summa."
+msgstr ""
 
 #. module: account_analytic_analysis
 #: model:ir.actions.act_window,help:account_analytic_analysis.action_sales_order
 msgid ""
 "<p class=\"oe_view_nocontent_create\">\n"
-"                Click to create a quotation that can be converted into a sales\n"
+"                Click to create a quotation that can be converted into a "
+"sales\n"
 "                order.\n"
 "              </p><p>\n"
 "                Use sale orders to track everything that should be invoiced\n"
@@ -110,12 +110,12 @@ msgstr "Kopējā klientam piestādītā summa no šā konta"
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
 msgid "Cancelled"
-msgstr "Atcelts"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: help:account.analytic.account,timesheet_ca_invoiced:0
 msgid "Sum of timesheet lines invoiced for this contract."
-msgstr "Šī līguma darbu uzskates tabeļu rindu summa, par kuru izrakstīti rēķini."
+msgstr ""
 
 #. module: account_analytic_analysis
 #: model:email.template,subject:account_analytic_analysis.account_analytic_cron_email_template
@@ -136,7 +136,7 @@ msgstr ""
 #. module: account_analytic_analysis
 #: help:account.analytic.account,revenue_per_hour:0
 msgid "Computed using the formula: Invoiced Amount / Total Time"
-msgstr "Aprēķināts pēc formulas: Izrakstīto rēķinu summa / Kopējais laiks"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: field:account_analytic_analysis.summary.month,account_id:0
@@ -148,12 +148,12 @@ msgstr "Analītiskais Konts"
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
 msgid "Partner"
-msgstr "Partneris"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
 msgid "Contracts that are not assigned to an account manager."
-msgstr "Līgumi kas nav piesaistīti kontu pārvaldībai."
+msgstr ""
 
 #. module: account_analytic_analysis
 #: model:ir.actions.act_window,help:account_analytic_analysis.action_account_analytic_overdue
@@ -165,8 +165,10 @@ msgid ""
 "                end date is passed or the working effort is higher than the\n"
 "                maximum authorized one.\n"
 "              </p><p>\n"
-"                OpenERP automatically sets contracts to be renewed in a pending\n"
-"                state. After the negociation, the salesman should close or renew\n"
+"                OpenERP automatically sets contracts to be renewed in a "
+"pending\n"
+"                state. After the negociation, the salesman should close or "
+"renew\n"
 "                pending contracts.\n"
 "              </p>\n"
 "            "
@@ -175,12 +177,12 @@ msgstr ""
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
 msgid "End Date"
-msgstr "Beigu datums"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
 msgid "Account Manager"
-msgstr "Kontu Pārvaldnieks"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: help:account.analytic.account,remaining_hours_to_invoice:0
@@ -190,7 +192,7 @@ msgstr ""
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
 msgid "Expected"
-msgstr "Sagaidāms"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
@@ -200,12 +202,12 @@ msgstr ""
 #. module: account_analytic_analysis
 #: help:account.analytic.account,theorical_margin:0
 msgid "Computed using the formula: Theoretical Revenue - Total Costs"
-msgstr "Aprēķināts pēc formulas: teorētiskie ieņēmumi - kopējas izmaksas"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: field:account.analytic.account,hours_qtt_invoiced:0
 msgid "Invoiced Time"
-msgstr "Rēķinos izrakstītais laiks"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: field:account.analytic.account,fix_price_to_invoice:0
@@ -213,24 +215,24 @@ msgstr "Rēķinos izrakstītais laiks"
 #: field:account.analytic.account,remaining_hours_to_invoice:0
 #: field:account.analytic.account,timesheet_ca_invoiced:0
 msgid "Remaining Time"
-msgstr "Atlikušais laiks"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
 msgid ""
 "{'required': [('type','=','contract')], 'invisible': [('type','in',['view', "
 "'normal','template'])]}"
-msgstr "{'required': [('type','=','contract')], 'invisible': [('type','in',['view', 'normal','template'])]}"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
 msgid "Pricelist"
-msgstr "Cenrādis"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: help:account.analytic.account,remaining_hours:0
 msgid "Computed using the formula: Maximum Time - Total Worked Time"
-msgstr "Aprēķināts pēc formulas: maksimālais laiks - kopējais atstrādātais laiks"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: help:account.analytic.account,hours_quantity:0
@@ -242,24 +244,26 @@ msgstr ""
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
 msgid "Nothing to invoice, create"
-msgstr "Nav par ko izrakstīt rēķinus, izveidot"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: model:res.groups,name:account_analytic_analysis.group_template_required
 msgid "Mandatory use of templates in contracts"
-msgstr "Līgumos obligāta sagatavju izmantošana"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: help:account.analytic.account,last_worked_invoiced_date:0
 msgid ""
 "If invoice from the costs, this is the date of the latest work or cost that "
 "have been invoiced."
-msgstr "Rēķins par izmaksām, šis ir pēdējo darbu vai piestādīto izmaksu rēķina datums."
+msgstr ""
+"Rēķins par izmaksām, šis ir pēdējo darbu vai piestādīto izmaksu rēķina "
+"datums."
 
 #. module: account_analytic_analysis
 #: field:account.analytic.account,hours_quantity:0
 msgid "Total Worked Time"
-msgstr "Kopējais nostrādātais laiks"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: field:account.analytic.account,real_margin:0
@@ -291,17 +295,19 @@ msgstr ""
 #. module: account_analytic_analysis
 #: help:account.analytic.account,real_margin_rate:0
 msgid "Computes using the formula: (Real Margin / Total Costs) * 100."
-msgstr "Aprēķināts izmantojot formulu: (Patiesais Uzcenojums / Kopējās Izmaksas) * 100"
+msgstr ""
+"Aprēķināts izmantojot formulu: (Patiesais Uzcenojums / Kopējās Izmaksas) * "
+"100"
 
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
 msgid "or view"
-msgstr "vai parādīt"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
 msgid "Parent"
-msgstr "Vecāks"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
@@ -318,12 +324,12 @@ msgstr "Mēnesis"
 #: model:ir.actions.act_window,name:account_analytic_analysis.action_hr_tree_invoiced_all
 #: model:ir.ui.menu,name:account_analytic_analysis.menu_action_hr_tree_invoiced_all
 msgid "Time & Materials to Invoice"
-msgstr "Laiks un materiāli rēķina izrakstīšanai"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
 msgid "Start Date"
-msgstr "Sākuma datums"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
@@ -333,7 +339,7 @@ msgstr ""
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
 msgid "Invoiced"
-msgstr "Rēķins izrakstīts"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: model:email.template,body_html:account_analytic_analysis.account_analytic_cron_email_template
@@ -354,14 +360,18 @@ msgid ""
 "        % for account in accounts:\n"
 "        <tr>\n"
 "            <td>${partner.name}</td>\n"
-"            <td><a href=\"${ctx[\"base_url\"]}/#action=${ctx[\"action_id\"]}&id=${account.id}&view_type=form\">${account.name}</a></td>\n"
-"            <td>${account.date_start} to ${account.date and account.date or '???'}</td>\n"
+"            <td><a "
+"href=\"${ctx[\"base_url\"]}/#action=${ctx[\"action_id\"]}&id=${account.id}&vi"
+"ew_type=form\">${account.name}</a></td>\n"
+"            <td>${account.date_start} to ${account.date and account.date or "
+"'???'}</td>\n"
 "            <td>\n"
 "            % if account.quantity_max != 0.0:\n"
 "                ${account.remaining_hours}/${account.quantity_max} units\n"
 "            % endif\n"
 "            </td>\n"
-"            <td>${account.partner_id.phone or ''}, ${account.partner_id.email or ''}</td>\n"
+"            <td>${account.partner_id.phone or ''}, "
+"${account.partner_id.email or ''}</td>\n"
 "        </tr>\n"
 "        % endfor\n"
 "    % endfor\n"
@@ -404,12 +414,12 @@ msgstr ""
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
 msgid "Timesheets"
-msgstr "Darba uzkaites Tabeles"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
 msgid "Closed"
-msgstr "Slēgts"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: help:account.analytic.account,hours_qtt_non_invoiced:0
@@ -421,12 +431,12 @@ msgstr ""
 #. module: account_analytic_analysis
 #: field:account.analytic.account,is_overdue_quantity:0
 msgid "Overdue Quantity"
-msgstr "Kavēts daudzums"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
 msgid "Status"
-msgstr "Statuss"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: field:account.analytic.account,ca_theorical:0
@@ -436,20 +446,20 @@ msgstr "Teorētiskā Peļņa"
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
 msgid "To Renew"
-msgstr "Atjaunošanai"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
 #: model:ir.actions.act_window,name:account_analytic_analysis.action_account_analytic_overdue_all
 #: model:ir.ui.menu,name:account_analytic_analysis.menu_action_account_analytic_overdue_all
 msgid "Contracts"
-msgstr "Līgumi"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
 #: model:ir.actions.act_window,name:account_analytic_analysis.action_sales_order
 msgid "Sales Orders"
-msgstr "Tirdzniecības Pasūtījumi"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: help:account.analytic.account,last_invoice_date:0
@@ -462,7 +472,9 @@ msgid ""
 "Based on the costs you had on the project, what would have been the revenue "
 "if all these costs have been invoiced at the normal sale price provided by "
 "the pricelist."
-msgstr "Balstoties uz jūsu izmaksām strādājot pie projekta, iespējamā peļņa ja visas izmaksas piestādītu pēc normālas cenas no parastās cenu lapas."
+msgstr ""
+"Balstoties uz jūsu izmaksām strādājot pie projekta, iespējamā peļņa ja visas "
+"izmaksas piestādītu pēc normālas cenas no parastās cenu lapas."
 
 #. module: account_analytic_analysis
 #: field:account.analytic.account,user_ids:0
@@ -482,7 +494,8 @@ msgid ""
 "                    Click here to create a template of contract.\n"
 "                </p><p>\n"
 "                    Templates are used to prefigure contract/project that \n"
-"                    can be selected by the salespeople to quickly configure the\n"
+"                    can be selected by the salespeople to quickly configure "
+"the\n"
 "                    terms and conditions of the contract.\n"
 "                </p>\n"
 "            "
@@ -496,7 +509,7 @@ msgstr "Kopējās Stundas pēc Lietotājiem"
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
 msgid "Contract"
-msgstr "Līgums"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: help:sale.config.settings,group_template_required:0
@@ -515,7 +528,7 @@ msgstr ""
 #. module: account_analytic_analysis
 #: field:account.analytic.account,revenue_per_hour:0
 msgid "Revenue per Time (real)"
-msgstr "Ieņēmumi laikā (reālā)"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
@@ -528,9 +541,12 @@ msgid ""
 "<p class=\"oe_view_nocontent_create\">\n"
 "                    Click to create a new contract.\n"
 "                </p><p>\n"
-"                    Use contracts to follow tasks, issues, timesheets or invoicing based on\n"
-"                    work done, expenses and/or sales orders. OpenERP will automatically manage\n"
-"                    the alerts for the renewal of the contracts to the right salesperson.\n"
+"                    Use contracts to follow tasks, issues, timesheets or "
+"invoicing based on\n"
+"                    work done, expenses and/or sales orders. OpenERP will "
+"automatically manage\n"
+"                    the alerts for the renewal of the contracts to the right "
+"salesperson.\n"
 "                </p>\n"
 "            "
 msgstr ""
@@ -538,32 +554,33 @@ msgstr ""
 #. module: account_analytic_analysis
 #: field:account.analytic.account,toinvoice_total:0
 msgid "Total to Invoice"
-msgstr "Kopā rēķina izrakstīšanai"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
 msgid "Contracts not assigned"
-msgstr "Nepiesaistīt līgumi"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
 msgid "Customer Contracts"
-msgstr "Klienta līgumi"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: field:account.analytic.account,invoiced_total:0
 msgid "Total Invoiced"
-msgstr "Izrakstīto rēķinu summa"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
 msgid "In Progress"
-msgstr "Tiek izpildīts"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: help:account.analytic.account,remaining_ca:0
 msgid "Computed using the formula: Max Invoice Price - Invoiced Amount."
-msgstr "Aprēķināts izmantojot formulu: Maksimālā Rēķina Cena - Piestādītā Summa."
+msgstr ""
+"Aprēķināts izmantojot formulu: Maksimālā Rēķina Cena - Piestādītā Summa."
 
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
@@ -578,15 +595,17 @@ msgstr "Pēdējā Rēķina Datums"
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
 msgid "Units Remaining"
-msgstr "Atlikušās vienības"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: model:ir.actions.act_window,help:account_analytic_analysis.action_hr_tree_invoiced_all
 msgid ""
 "<p>\n"
 "                You will find here timesheets and purchases you did for\n"
-"                contracts that can be reinvoiced to the customer.  If you want\n"
-"                to record new activities to invoice, you should use the timesheet\n"
+"                contracts that can be reinvoiced to the customer.  If you "
+"want\n"
+"                to record new activities to invoice, you should use the "
+"timesheet\n"
 "                menu instead.\n"
 "              </p>\n"
 "            "
@@ -595,12 +614,12 @@ msgstr ""
 #. module: account_analytic_analysis
 #: field:account.analytic.account,hours_qtt_non_invoiced:0
 msgid "Uninvoiced Time"
-msgstr "Laiks bez rēķina"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
 msgid "Invoicing"
-msgstr "Rēķinu izrakstīšana"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: field:account.analytic.account,total_cost:0
@@ -619,7 +638,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:account_analytic_analysis.action_account_analytic_overdue
 #: model:ir.ui.menu,name:account_analytic_analysis.menu_action_account_analytic_overdue
 msgid "Contracts to Renew"
-msgstr "Līgumi atjaunošanai"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: help:account.analytic.account,toinvoice_total:0
@@ -634,7 +653,7 @@ msgstr "Teorētiskais Uzcenojums"
 #. module: account_analytic_analysis
 #: field:account.analytic.account,remaining_total:0
 msgid "Total Remaining"
-msgstr "Kopā atlicis"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: help:account.analytic.account,real_margin:0
@@ -644,12 +663,12 @@ msgstr "Aprēķināts izmantojot formulu: Piestādītā Summa - Kopējās Izmaks
 #. module: account_analytic_analysis
 #: field:account.analytic.account,hours_qtt_est:0
 msgid "Estimation of Hours to Invoice"
-msgstr "Stundu novērtējums rēķinu izrakstīšanai"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: field:account.analytic.account,fix_price_invoices:0
 msgid "Fixed Price"
-msgstr "Fiksēta cena"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: help:account.analytic.account,last_worked_date:0
@@ -673,25 +692,27 @@ msgstr ""
 #. module: account_analytic_analysis
 #: field:sale.config.settings,group_template_required:0
 msgid "Mandatory use of templates."
-msgstr "Obligāta sagatavju izmantošana."
+msgstr ""
 
 #. module: account_analytic_analysis
 #: model:ir.actions.act_window,name:account_analytic_analysis.template_of_contract_action
 #: model:ir.ui.menu,name:account_analytic_analysis.menu_template_of_contract_action
 msgid "Contract Template"
-msgstr "Līguma sagatave"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: help:account.analytic.account,total_cost:0
 msgid ""
 "Total of costs for this account. It includes real costs (from invoices) and "
 "indirect costs, like time spent on timesheets."
-msgstr "Kopējās šā konta izmaksas. Ieskaitot reālās izmaksas (no rēķiniem) un netiešās izmaksas, kā patērētais laiks no laika tabelēm."
+msgstr ""
+"Kopējās šā konta izmaksas. Ieskaitot reālās izmaksas (no rēķiniem) un "
+"netiešās izmaksas, kā patērētais laiks no laika tabelēm."
 
 #. module: account_analytic_analysis
 #: field:account.analytic.account,est_total:0
 msgid "Total Estimation"
-msgstr "Kopējais novērtējums"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: field:account.analytic.account,remaining_ca:0
@@ -703,7 +724,9 @@ msgstr "Atlikusī Peļņa"
 msgid ""
 "If invoice from analytic account, the remaining amount you can invoice to "
 "the customer based on the total costs."
-msgstr "Ja piestāda rēķinu no analītiskā konta, atlikušo summu jūs variet klientam piestādīt balstoties uz kopējām izmaksām."
+msgstr ""
+"Ja piestāda rēķinu no analītiskā konta, atlikušo summu jūs variet klientam "
+"piestādīt balstoties uz kopējām izmaksām."
 
 #. module: account_analytic_analysis
 #: field:account_analytic_analysis.summary.month,unit_amount:0
@@ -720,9 +743,9 @@ msgstr ""
 #. module: account_analytic_analysis
 #: field:account.analytic.account,invoice_on_timesheets:0
 msgid "On Timesheets"
-msgstr "Darbu uzskates tabelēs"
+msgstr ""
 
 #. module: account_analytic_analysis
 #: view:account.analytic.account:0
 msgid "Total"
-msgstr "Kopā"
+msgstr ""

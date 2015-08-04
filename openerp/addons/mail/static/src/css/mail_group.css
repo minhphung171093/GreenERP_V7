@@ -11,7 +11,7 @@
 .openerp .oe_form_sheetbg.openerp_mail_group_sheet .oe_form_sheet {
   min-height: 0px;
   max-height: none;
-  padding: 0px 18px;
+  padding: 20px 18px 0;
 }
 
 /* Resize footer width */
@@ -92,10 +92,8 @@
 
 .openerp .oe_group_button .oe_group_join {
     color: white;
-    background-color: #3465A4;
-    background-image: -webkit-linear-gradient(top, #729FCF, #3465A4);
-    background-image:    -moz-linear-gradient(top, #729FCF, #3465A4);
-    background-image:     -ms-linear-gradient(top, #729FCF, #3465A4);
-    background-image:      -o-linear-gradient(top, #729FCF, #3465A4);
-    background-image:         linear-gradient(to bottom, #729FCF, #3465A4);
+    background-color: #f5a623;
+}
+.openerp .oe_group_button .oe_group_join:hover{
+    background-color: #d48e1a;
 }

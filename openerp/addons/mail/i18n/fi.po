@@ -1,36 +1,36 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * mail
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2012
+# Finnish translation for openobject-addons
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-08-14 00:10+0000\n"
-"PO-Revision-Date: 2015-05-29 13:15+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Finnish (http://www.transifex.com/projects/p/odoo-7/language/fi/)\n"
+"PO-Revision-Date: 2014-08-15 10:39+0000\n"
+"Last-Translator: Olivier Dony (Odoo) <Unknown>\n"
+"Language-Team: Finnish <fi@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: fi\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2014-08-16 06:46+0000\n"
+"X-Generator: Launchpad (build 17156)\n"
 
 #. module: mail
-#: view:mail.followers:0
+#: view:mail.followers:mail.view_mail_subscription_form
 msgid "Followers Form"
 msgstr "Seuraajien lomake"
 
 #. module: mail
-#: code:addons/mail/mail_thread.py:259
+#: code:addons/mail/mail_thread.py:385
 #, python-format
 msgid "%s created"
 msgstr "%s luotu"
 
 #. module: mail
-#: field:mail.compose.message,author_id:0 view:mail.mail:0
+#: field:mail.compose.message,author_id:0
+#: view:mail.mail:mail.view_mail_search
 #: field:mail.message,author_id:0
 msgid "Author"
 msgstr "Tekijä"
@@ -63,18 +63,20 @@ msgstr "Kommentit"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:314
+#: code:addons/mail/static/src/xml/mail.xml:334
 #, python-format
 msgid "more messages"
 msgstr "lisää viestejö"
 
 #. module: mail
-#: view:mail.alias:0 view:mail.mail:0
+#: view:mail.alias:0
+#: view:mail.mail:0
 msgid "Group By..."
 msgstr "Ryhmittely..."
 
 #. module: mail
-#: help:mail.compose.message,body:0 help:mail.message,body:0
+#: help:mail.compose.message,body:0
+#: help:mail.message,body:0
 msgid "Automatically sanitized HTML contents"
 msgstr "Automaattisesti puhdistetut HTML-sisällöt"
 
@@ -86,8 +88,11 @@ msgid ""
 msgstr ""
 
 #. module: mail
+#. openerp-web
+#: code:addons/mail/static/src/js/mail.js:1970
 #: model:ir.actions.act_window,name:mail.action_email_compose_message_wizard
-#: view:mail.compose.message:0
+#: view:mail.compose.message:mail.email_compose_message_wizard_form
+#, python-format
 msgid "Compose Email"
 msgstr "Luo sähköposti"
 
@@ -99,7 +104,8 @@ msgid ""
 msgstr ""
 
 #. module: mail
-#: view:mail.group:0
+#: view:mail.group:mail.view_group_form
+#: view:mail.group:mail.view_group_tree
 msgid "Group Name"
 msgstr "Ryhmän nimi"
 
@@ -110,23 +116,24 @@ msgstr "Julkinen"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:278
+#: code:addons/mail/static/src/xml/mail.xml:297
 #, python-format
 msgid "to"
 msgstr "lähetti vastaanottajalle"
 
 #. module: mail
-#: view:mail.mail:0
+#: view:mail.mail:mail.view_mail_form
 msgid "Body"
 msgstr "Sisältö"
 
 #. module: mail
-#: view:mail.message:0
+#: view:mail.message:mail.view_message_search
 msgid "Show messages to read"
 msgstr "Näytä luettevat viestit"
 
 #. module: mail
-#: help:mail.compose.message,email_from:0 help:mail.message,email_from:0
+#: help:mail.compose.message,email_from:0
+#: help:mail.message,email_from:0
 msgid ""
 "Email address of the sender. This field is set when no matching partner is "
 "found for incoming emails."
@@ -139,14 +146,14 @@ msgstr "Sähköpostin ohjattu koostaminen"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:269
+#: code:addons/mail/static/src/xml/mail.xml:286
 #, python-format
 msgid "updated document"
 msgstr "päivitetty dokumentti"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail_followers.xml:23
+#: code:addons/mail/static/src/xml/mail_followers.xml:28
 #, python-format
 msgid "Add others"
 msgstr "Lisää seuraajia"
@@ -162,19 +169,21 @@ msgid ""
 "Policy to receive emails for new messages pushed to your personal Inbox:\n"
 "- Never: no emails are sent\n"
 "- Incoming Emails only: for messages received by the system via email\n"
-"- Incoming Emails and Discussions: for incoming emails along with internal discussions\n"
+"- Incoming Emails and Discussions: for incoming emails along with internal "
+"discussions\n"
 "- All Messages: for every notification you receive in your Inbox"
 msgstr ""
 
 #. module: mail
-#: field:mail.group,message_unread:0 field:mail.thread,message_unread:0
+#: field:mail.group,message_unread:0
+#: field:mail.thread,message_unread:0
 #: field:res.partner,message_unread:0
 msgid "Unread Messages"
 msgstr "Lukemattomia viestejä"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:314
+#: code:addons/mail/static/src/xml/mail.xml:334
 #, python-format
 msgid "show"
 msgstr "näytä"
@@ -194,38 +203,41 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/js/mail.js:1032
+#: code:addons/mail/static/src/js/mail.js:1021
 #, python-format
 msgid "Do you really want to delete this message?"
 msgstr "Haluatko varmasti poistaa tämän viestin?"
 
 #. module: mail
-#: view:mail.message:0 field:mail.notification,read:0
+#: field:mail.notification,is_read:0
 msgid "Read"
 msgstr "Lue"
 
 #. module: mail
-#: view:mail.group:0
+#: view:mail.group:mail.view_group_search
 msgid "Search Groups"
 msgstr "Hakuryhmät"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/js/mail_followers.js:110
+#: code:addons/mail/static/src/js/mail_followers.js:140
 #, python-format
 msgid ""
 "Warning! \n"
-" %s won't be notified of any email or discussion on this document. Do you really want to remove him from the followers ?"
+" %s won't be notified of any email or discussion on this document. Do you "
+"really want to remove him from the followers ?"
 msgstr ""
 
 #. module: mail
-#: field:mail.compose.message,res_id:0 field:mail.followers,res_id:0
-#: field:mail.message,res_id:0 field:mail.wizard.invite,res_id:0
+#: field:mail.compose.message,res_id:0
+#: field:mail.followers,res_id:0
+#: field:mail.message,res_id:0
+#: field:mail.wizard.invite,res_id:0
 msgid "Related Document ID"
 msgstr "Liittyvä dokumentti ID"
 
 #. module: mail
-#: code:addons/mail/mail_message.py:739
+#: code:addons/mail/mail_message.py:755
 #, python-format
 msgid "Access Denied"
 msgstr "Pääsy evätty"
@@ -240,7 +252,7 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:213
+#: code:addons/mail/static/src/xml/mail.xml:223
 #, python-format
 msgid "Uploading error"
 msgstr "Tuontilatauksessa virhe"
@@ -251,28 +263,30 @@ msgid "Support"
 msgstr "Tuki"
 
 #. module: mail
-#: code:addons/mail/mail_message.py:740
+#: code:addons/mail/mail_message.py:756
 #, python-format
 msgid ""
-"The requested operation cannot be completed due to security restrictions. Please contact your system administrator.\n"
+"The requested operation cannot be completed due to security restrictions. "
+"Please contact your system administrator.\n"
 "\n"
 "(Document type: %s, Operation: %s)"
-msgstr "Pyydettyä toimenpidettä ei voi suorittaa turvarajoitteiden vuoksi. Ole hyvä ja ota yhteyttä pääkäyttäjään.\n\n(Dokumentin tyyppi: %s, Toimenpide: %s)"
+msgstr ""
 
 #. module: mail
-#: view:mail.mail:0 selection:mail.mail,state:0
+#: view:mail.mail:mail.view_mail_search
+#: selection:mail.mail,state:0
 msgid "Received"
 msgstr "Vastaanotettu"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:72
+#: code:addons/mail/static/src/xml/mail.xml:74
 #, python-format
 msgid "Attach a File"
 msgstr "Liitä tiedosto"
 
 #. module: mail
-#: view:mail.mail:0
+#: view:mail.mail:mail.view_mail_search
 msgid "Thread"
 msgstr "Viestit"
 
@@ -306,38 +320,42 @@ msgid "References"
 msgstr "Viitteet"
 
 #. module: mail
-#: view:mail.wizard.invite:0
+#: view:mail.wizard.invite:mail.mail_wizard_invite_form
 msgid "Add Followers"
 msgstr "Lisää seuraajat"
 
 #. module: mail
-#: help:mail.compose.message,author_id:0 help:mail.message,author_id:0
+#: help:mail.compose.message,author_id:0
+#: help:mail.message,author_id:0
 msgid ""
-"Author of the message. If not set, email_from may hold an email address that"
-" did not match any partner."
+"Author of the message. If not set, email_from may hold an email address that "
+"did not match any partner."
 msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:97
-#: code:addons/mail/static/src/xml/mail.xml:109
+#: code:addons/mail/static/src/xml/mail.xml:99
+#: code:addons/mail/static/src/xml/mail.xml:111
 #, python-format
 msgid "uploading"
 msgstr "siirretään"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail_followers.xml:52
+#: code:addons/mail/static/src/xml/mail_followers.xml:62
 #, python-format
 msgid "more."
 msgstr "lisää."
 
 #. module: mail
-#: help:mail.compose.message,type:0 help:mail.message,type:0
+#: help:mail.compose.message,type:0
+#: help:mail.message,type:0
 msgid ""
 "Message type: email for email message, notification for system message, "
 "comment for other messages such as user replies"
-msgstr "Viestityyppi: Sähköposti  sähköposteille, Ilmoitus järjestelmän viesteille, ja Kommentti muille viesteille, kuten käyttäjien vastauksille."
+msgstr ""
+"Viestityyppi: Sähköposti  sähköposteille, Ilmoitus järjestelmän viesteille, "
+"ja Kommentti muille viesteille, kuten käyttäjien vastauksille."
 
 #. module: mail
 #: help:mail.message.subtype,relation_field:0
@@ -353,7 +371,8 @@ msgid "Cancelled"
 msgstr "Peruttu"
 
 #. module: mail
-#: field:mail.mail,reply_to:0
+#: field:mail.compose.message,reply_to:0
+#: field:mail.message,reply_to:0
 msgid "Reply-To"
 msgstr "Vastausosoite"
 
@@ -371,7 +390,8 @@ msgid "Send a message"
 msgstr "Lähetä viesti"
 
 #. module: mail
-#: help:mail.group,message_unread:0 help:mail.thread,message_unread:0
+#: help:mail.group,message_unread:0
+#: help:mail.thread,message_unread:0
 #: help:res.partner,message_unread:0
 msgid "If checked new messages require your attention."
 msgstr "Jos valittu, uudet viestit vaativat huomiosi."
@@ -399,34 +419,35 @@ msgstr "Automaatinen poisto"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:295
+#: code:addons/mail/static/src/xml/mail.xml:312
 #, python-format
 msgid "notified"
 msgstr "ilmoitettu"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:275
+#: code:addons/mail/static/src/xml/mail.xml:292
 #, python-format
 msgid "logged a note"
 msgstr "kirjattu ilmoitus lokiin"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail_followers.xml:12 view:mail.group:0
+#: code:addons/mail/static/src/xml/mail_followers.xml:13
+#: view:mail.group:mail.view_group_kanban
 #, python-format
 msgid "Unfollow"
 msgstr "Lopeta seuraaminen"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:313
+#: code:addons/mail/static/src/xml/mail.xml:333
 #, python-format
 msgid "show one more message"
 msgstr "näytä seuraava viesti"
 
 #. module: mail
-#: code:addons/mail/mail_mail.py:76 code:addons/mail/res_users.py:69
+#: code:addons/mail/mail_message.py:177
 #, python-format
 msgid "Invalid Action!"
 msgstr "Virheellinen toiminto!"
@@ -440,8 +461,8 @@ msgstr "Käyttäjän kuva"
 
 #. module: mail
 #: model:ir.actions.act_window,name:mail.action_view_mail_mail
-#: model:ir.ui.menu,name:mail.menu_mail_mail view:mail.mail:0
-#: view:mail.message:0
+#: model:ir.ui.menu,name:mail.menu_mail_mail
+#: view:mail.mail:mail.view_mail_tree
 msgid "Emails"
 msgstr "Sähköpostit"
 
@@ -451,12 +472,15 @@ msgid "Related Partner"
 msgstr "Liittyvä kumppani"
 
 #. module: mail
-#: help:mail.group,message_summary:0 help:mail.thread,message_summary:0
+#: help:mail.group,message_summary:0
+#: help:mail.thread,message_summary:0
 #: help:res.partner,message_summary:0
 msgid ""
 "Holds the Chatter summary (number of messages, ...). This summary is "
 "directly in html format in order to be inserted in kanban views."
-msgstr "Sisältää viestien yhteenvedon (viestien määrän,...). Tämä yhteenveto on valmiiksi  html-muodossa, jotta se voidaan viedä kanban näkymään."
+msgstr ""
+"Sisältää viestien yhteenvedon (viestien määrän,...). Tämä yhteenveto on "
+"valmiiksi  html-muodossa, jotta se voidaan viedä kanban näkymään."
 
 #. module: mail
 #: help:mail.alias,alias_model_id:0
@@ -477,12 +501,13 @@ msgid "Relation field"
 msgstr "Yhdistämiskenttä"
 
 #. module: mail
-#: selection:mail.compose.message,type:0 selection:mail.message,type:0
+#: selection:mail.compose.message,type:0
+#: selection:mail.message,type:0
 msgid "System notification"
 msgstr "Järjestelmän ilmoitus"
 
 #. module: mail
-#: view:mail.message:0
+#: view:mail.message:mail.view_message_search
 msgid "To Read"
 msgstr "Lue"
 
@@ -497,7 +522,8 @@ msgid "Organizer"
 msgstr "Järjestäjä"
 
 #. module: mail
-#: field:mail.compose.message,subject:0 field:mail.message,subject:0
+#: field:mail.compose.message,subject:0
+#: field:mail.message,subject:0
 msgid "Subject"
 msgstr "Aihe"
 
@@ -507,24 +533,28 @@ msgid "Partners"
 msgstr "Kumppanit"
 
 #. module: mail
-#: view:mail.mail:0
+#: view:mail.mail:mail.view_mail_form
+#: view:mail.mail:mail.view_mail_tree
 msgid "Retry"
 msgstr "Yritä uudelleen"
 
 #. module: mail
-#: field:mail.compose.message,email_from:0 field:mail.mail,email_from:0
+#: field:mail.compose.message,email_from:0
 #: field:mail.message,email_from:0
 msgid "From"
 msgstr "Lähettäjä"
 
 #. module: mail
-#: field:mail.compose.message,subtype_id:0 field:mail.followers,subtype_ids:0
-#: field:mail.message,subtype_id:0 view:mail.message.subtype:0
+#: field:mail.compose.message,subtype_id:0
+#: field:mail.followers,subtype_ids:0
+#: field:mail.message,subtype_id:0
+#: view:mail.message.subtype:mail.view_message_subtype_tree
 msgid "Subtype"
 msgstr "Alityyppi"
 
 #. module: mail
-#: view:mail.mail:0 view:mail.message.subtype:0
+#: view:mail.mail:mail.view_mail_form
+#: view:mail.message.subtype:mail.view_mail_message_subtype_form
 msgid "Email message"
 msgstr "Sähköpostiviesti"
 
@@ -535,45 +565,47 @@ msgstr "base.config.settings"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/js/mail_followers.js:157
+#: code:addons/mail/static/src/js/mail_followers.js:188
 #, python-format
 msgid "followers"
 msgstr "seuraajat"
 
 #. module: mail
-#: view:mail.group:0
+#: view:mail.group:mail.view_group_form
 msgid "Send a message to the group"
 msgstr "Lähetä viesti ryhmälle"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:36 view:mail.compose.message:0
+#: code:addons/mail/static/src/xml/mail.xml:36
+#: view:mail.compose.message:mail.email_compose_message_wizard_form
 #, python-format
 msgid "Send"
 msgstr "Lähetä"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/js/mail_followers.js:153
+#: code:addons/mail/static/src/js/mail_followers.js:184
 #, python-format
 msgid "No followers"
 msgstr "Ei seuraajia"
 
 #. module: mail
-#: view:mail.mail:0
+#: view:mail.mail:mail.view_mail_search
 msgid "Failed"
 msgstr "Epäonnistui"
 
 #. module: mail
-#: view:mail.mail:0
+#: view:mail.mail:mail.view_mail_tree
 msgid "Cancel Email"
 msgstr "Peruuta sähköposti"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail_followers.xml:22
+#: code:addons/mail/static/src/xml/mail_followers.xml:27
 #: model:ir.actions.act_window,name:mail.action_view_followers
-#: model:ir.ui.menu,name:mail.menu_email_followers view:mail.followers:0
+#: model:ir.ui.menu,name:mail.menu_email_followers
+#: view:mail.followers:mail.view_followers_tree
 #: field:mail.group,message_follower_ids:0
 #: field:mail.thread,message_follower_ids:0
 #: field:res.partner,message_follower_ids:0
@@ -588,38 +620,41 @@ msgid "Archives"
 msgstr "Arkistot"
 
 #. module: mail
-#: view:mail.compose.message:0
+#: view:mail.compose.message:mail.email_compose_message_wizard_form
 msgid "Subject..."
 msgstr "Aihe..."
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:96
-#: code:addons/mail/static/src/xml/mail.xml:108
+#: code:addons/mail/static/src/xml/mail.xml:98
+#: code:addons/mail/static/src/xml/mail.xml:110
 #, python-format
 msgid "Delete this attachment"
 msgstr "Poista tämä liite"
 
 #. module: mail
-#: code:addons/mail/mail_thread.py:114
+#: code:addons/mail/mail_thread.py:173
 #, python-format
 msgid "New"
 msgstr "Uusi"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/js/mail_followers.js:155
+#: code:addons/mail/static/src/js/mail_followers.js:186
 #, python-format
 msgid "One follower"
 msgstr "Yksi seuraaja"
 
 #. module: mail
-#: field:mail.compose.message,type:0 field:mail.message,type:0
+#: field:mail.compose.message,type:0
+#: view:mail.message:mail.view_message_search
+#: field:mail.message,type:0
 msgid "Type"
 msgstr "Tyyppi"
 
 #. module: mail
-#: selection:mail.compose.message,type:0 view:mail.mail:0
+#: selection:mail.compose.message,type:0
+#: view:mail.mail:mail.view_mail_search
 #: selection:mail.message,type:0
 msgid "Email"
 msgstr "Sähköposti"
@@ -640,7 +675,7 @@ msgid "by"
 msgstr ""
 
 #. module: mail
-#: code:addons/mail/res_users.py:89
+#: code:addons/mail/res_users.py:98
 #, python-format
 msgid "%s has joined the %s network."
 msgstr "%s on liittynyt %s verkkoon."
@@ -649,12 +684,16 @@ msgstr "%s on liittynyt %s verkkoon."
 #: help:mail.group,image_small:0
 msgid ""
 "Small-sized photo of the group. It is automatically resized as a 64x64px "
-"image, with aspect ratio preserved. Use this field anywhere a small image is"
-" required."
-msgstr "Pienikokoinen ryhmän kuva. Muutetaan automaattisesti kokoon 64x64 kuvasuhde säilyttäen. Käytä tätä kenttää paikoissa, joissa pientä kuvaa tarvitaan."
+"image, with aspect ratio preserved. Use this field anywhere a small image is "
+"required."
+msgstr ""
+"Pienikokoinen ryhmän kuva. Muutetaan automaattisesti kokoon 64x64 kuvasuhde "
+"säilyttäen. Käytä tätä kenttää paikoissa, joissa pientä kuvaa tarvitaan."
 
 #. module: mail
-#: view:mail.compose.message:0 field:mail.message,partner_ids:0
+#: view:mail.compose.message:mail.email_compose_message_wizard_form
+#: field:mail.message,partner_ids:0
+#: field:mail.wizard.invite,partner_ids:0
 msgid "Recipients"
 msgstr "Vastaanottajat"
 
@@ -671,7 +710,10 @@ msgid "Authorized Group"
 msgstr "Valtuutettu ryhmä"
 
 #. module: mail
-#: view:mail.group:0
+#. openerp-web
+#: code:addons/mail/static/src/xml/suggestions.xml:30
+#: view:mail.group:mail.view_group_kanban
+#, python-format
 msgid "Join Group"
 msgstr "Liity ryhmään"
 
@@ -694,7 +736,8 @@ msgid "<div>You have been invited to follow a new document.</div>"
 msgstr "<div>Sinut on kutsuttu seuraamaan uutta dokumenttia..</div>"
 
 #. module: mail
-#: field:mail.compose.message,parent_id:0 field:mail.message,parent_id:0
+#: field:mail.compose.message,parent_id:0
+#: field:mail.message,parent_id:0
 msgid "Parent Message"
 msgstr "Edeltävä viesti"
 
@@ -705,11 +748,12 @@ msgstr "Kaikki viestit (keskustelut, sähköpostit, järjestelmän ilmoitukset)"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/js/mail_followers.js:252
+#: code:addons/mail/static/src/js/mail_followers.js:309
 #, python-format
 msgid ""
 "Warning! \n"
-"You won't be notified of any email or discussion on this document. Do you really want to unfollow this document ?"
+"You won't be notified of any email or discussion on this document. Do you "
+"really want to unfollow this document ?"
 msgstr ""
 
 #. module: mail
@@ -721,7 +765,13 @@ msgid ""
 "                    This list contains messages sent to you.\n"
 "                </p>\n"
 "            "
-msgstr "<p>\n                    <b>Ei yksityistä viestiä.</b>\n                </p><p>\n                    Tämä luettelo sisältää sinulle lähetetyt viestit.\n                </p>\n            "
+msgstr ""
+"<p>\n"
+"                    <b>Ei yksityistä viestiä.</b>\n"
+"                </p><p>\n"
+"                    Tämä luettelo sisältää sinulle lähetetyt viestit.\n"
+"                </p>\n"
+"            "
 
 #. module: mail
 #: model:mail.group,name:mail.group_rd
@@ -734,25 +784,26 @@ msgid "Invite wizard"
 msgstr "Kutsuavustaja"
 
 #. module: mail
-#: view:mail.mail:0
+#: view:mail.mail:mail.view_mail_form
 msgid "Advanced"
 msgstr "Lisäasetukset"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:245
+#: code:addons/mail/static/src/xml/mail.xml:255
 #, python-format
 msgid "Move to Inbox"
 msgstr "Siirrä saapuneisiin"
 
 #. module: mail
-#: code:addons/mail/wizard/mail_compose_message.py:194
+#: code:addons/mail/wizard/mail_compose_message.py:188
 #, python-format
 msgid "Re:"
 msgstr "Viite:"
 
 #. module: mail
-#: field:mail.compose.message,to_read:0 field:mail.message,to_read:0
+#: field:mail.compose.message,to_read:0
+#: field:mail.message,to_read:0
 msgid "To read"
 msgstr "Lue"
 
@@ -766,19 +817,20 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:338
+#: code:addons/mail/static/src/xml/mail.xml:348
 #, python-format
 msgid "like"
 msgstr "pidän"
 
 #. module: mail
-#: help:mail.followers,res_model:0 help:mail.wizard.invite,res_model:0
+#: help:mail.followers,res_model:0
+#: help:mail.wizard.invite,res_model:0
 msgid "Model of the followed resource"
 msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/js/mail.js:982
+#: code:addons/mail/static/src/xml/mail.xml:273
 #, python-format
 msgid "read less"
 msgstr "lue vähemmän"
@@ -791,7 +843,12 @@ msgid "Send a message to all followers of the document"
 msgstr ""
 
 #. module: mail
-#: view:mail.compose.message:0 view:mail.wizard.invite:0
+#. openerp-web
+#: code:addons/mail/static/src/js/mail_followers.js:105
+#: view:mail.compose.message:mail.email_compose_message_wizard_form
+#: view:mail.mail:mail.view_mail_form
+#: view:mail.wizard.invite:mail.mail_wizard_invite_form
+#, python-format
 msgid "Cancel"
 msgstr "Peruuta"
 
@@ -820,7 +877,7 @@ msgid "ir.ui.menu"
 msgstr "ir.ui.menu"
 
 #. module: mail
-#: view:mail.message:0
+#: view:mail.message:mail.view_message_search
 msgid "Has attachments"
 msgstr "On liitteitä"
 
@@ -858,7 +915,8 @@ msgid "Log a note"
 msgstr "Kirjaa ilmoitus lokiin"
 
 #. module: mail
-#: selection:mail.compose.message,type:0 view:mail.mail:0
+#: selection:mail.compose.message,type:0
+#: view:mail.mail:mail.view_mail_search
 #: selection:mail.message,type:0
 msgid "Comment"
 msgstr "Kommentti"
@@ -869,12 +927,24 @@ msgid ""
 "<p>\n"
 "                    <b>Good Job!</b> Your inbox is empty.\n"
 "                </p><p>\n"
-"                    Your inbox contains private messages or emails sent to you\n"
-"                    as well as information related to documents or people you\n"
+"                    Your inbox contains private messages or emails sent to "
+"you\n"
+"                    as well as information related to documents or people "
+"you\n"
 "                    follow.\n"
 "                </p>\n"
 "            "
-msgstr "<p>\n                    <b>Hyvää työtä!</b> Saapuvien postilaatikkosi on tyhjä.\n                </p><p>\n                    Sinun saapuvien postilaatikkosi sisältää sinulle lähetettyjä\n                    yksityisiä viestejä, sähköposteja tai informaatiota dokumenteista\n                    tai henkilöistä, joita seuraat.\n                </p>\n            "
+msgstr ""
+"<p>\n"
+"                    <b>Hyvää työtä!</b> Saapuvien postilaatikkosi on tyhjä.\n"
+"                </p><p>\n"
+"                    Sinun saapuvien postilaatikkosi sisältää sinulle "
+"lähetettyjä\n"
+"                    yksityisiä viestejä, sähköposteja tai informaatiota "
+"dokumenteista\n"
+"                    tai henkilöistä, joita seuraat.\n"
+"                </p>\n"
+"            "
 
 #. module: mail
 #: field:mail.mail,notification:0
@@ -889,12 +959,13 @@ msgid "Compose a new message"
 msgstr "Kirjoita uusi viesti"
 
 #. module: mail
-#: view:mail.mail:0
+#: view:mail.mail:mail.view_mail_form
+#: view:mail.mail:mail.view_mail_tree
 msgid "Send Now"
 msgstr "Lähetä heti"
 
 #. module: mail
-#: code:addons/mail/mail_mail.py:76
+#: code:addons/mail/mail_message.py:177
 #, python-format
 msgid ""
 "Unable to send email, please configure the sender's email address or alias."
@@ -913,7 +984,8 @@ msgid "Photo"
 msgstr "Kuva"
 
 #. module: mail
-#: help:mail.compose.message,vote_user_ids:0 help:mail.message,vote_user_ids:0
+#: help:mail.compose.message,vote_user_ids:0
+#: help:mail.message,vote_user_ids:0
 msgid "Users that voted for this message"
 msgstr ""
 
@@ -925,17 +997,18 @@ msgid ""
 msgstr ""
 
 #. module: mail
-#: view:mail.mail:0
+#: view:mail.mail:mail.view_mail_search
 msgid "Month"
 msgstr "Kuukausi"
 
 #. module: mail
-#: view:mail.mail:0
+#: view:mail.mail:mail.view_mail_search
 msgid "Email Search"
 msgstr "Sähköpostin haku"
 
 #. module: mail
-#: field:mail.compose.message,child_ids:0 field:mail.message,child_ids:0
+#: field:mail.compose.message,child_ids:0
+#: field:mail.message,child_ids:0
 msgid "Child Messages"
 msgstr ""
 
@@ -945,25 +1018,29 @@ msgid "Owner"
 msgstr "Omistaja"
 
 #. module: mail
-#: code:addons/mail/res_partner.py:52
+#: code:addons/mail/res_partner.py:51
 #, python-format
 msgid "Partner Profile"
 msgstr "Kumppaniprofiili"
 
 #. module: mail
 #: model:ir.model,name:mail.model_mail_message
-#: field:mail.mail,mail_message_id:0 view:mail.message:0
-#: field:mail.notification,message_id:0 field:mail.wizard.invite,message:0
+#: field:mail.mail,mail_message_id:0
+#: view:mail.message:mail.view_message_form
+#: field:mail.notification,message_id:0
+#: field:mail.wizard.invite,message:0
 msgid "Message"
 msgstr "Viesti"
 
 #. module: mail
-#: help:mail.followers,res_id:0 help:mail.wizard.invite,res_id:0
+#: help:mail.followers,res_id:0
+#: help:mail.wizard.invite,res_id:0
 msgid "Id of the followed resource"
 msgstr ""
 
 #. module: mail
-#: field:mail.compose.message,body:0 field:mail.message,body:0
+#: field:mail.compose.message,body:0
+#: field:mail.message,body:0
 msgid "Contents"
 msgstr "Sisällöt"
 
@@ -982,18 +1059,19 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:56
+#: code:addons/mail/static/src/xml/mail.xml:57
 #, python-format
 msgid "Log a note for this document. No notification will be sent"
 msgstr ""
 
 #. module: mail
-#: view:mail.group:0
+#: view:mail.group:mail.view_group_search
 msgid "Group"
 msgstr "Ryhmä"
 
 #. module: mail
-#: help:mail.compose.message,starred:0 help:mail.message,starred:0
+#: help:mail.compose.message,starred:0
+#: help:mail.message,starred:0
 msgid "Current user has a starred notification linked to this message"
 msgstr ""
 
@@ -1003,13 +1081,13 @@ msgid "Privacy"
 msgstr "Yksityisyys"
 
 #. module: mail
-#: view:mail.mail:0
+#: view:mail.mail:mail.view_mail_search
 msgid "Notification"
 msgstr "Ilmoitus"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/js/mail.js:655
+#: code:addons/mail/static/src/js/mail.js:611
 #, python-format
 msgid "Please complete partner's informations"
 msgstr ""
@@ -1018,7 +1096,7 @@ msgstr ""
 #: code:addons/mail/mail_mail.py:191
 #, python-format
 msgid "<p>Access this document <a href=\"%s\">directly in OpenERP</a></p>"
-msgstr "<p>Käytä tätä dokumenttia <a href=\"%s\">suoraan OpenERP:ssä</a></p>"
+msgstr ""
 
 #. module: mail
 #: view:mail.compose.message:0
@@ -1047,38 +1125,51 @@ msgid ""
 "                    No message found and no message sent yet.\n"
 "                </p><p>\n"
 "                    Click on the top-right icon to compose a message. This\n"
-"                    message will be sent by email if it's an internal contact.\n"
+"                    message will be sent by email if it's an internal "
+"contact.\n"
 "                </p>\n"
 "            "
-msgstr "<p>\n                    Viestejä ei löydy, eikä yhtään viestiä ole lähetetty vielä.\n                </p><p>\n                    Klikkaa ylä-oikealla olevaa ikonia muodostaaksesi viestin.\n                    Tämä viesti lähetetään sähköpostilla, jos kontakti on sisäinen.\n                </p>\n            "
+msgstr ""
+"<p>\n"
+"                    Viestejä ei löydy, eikä yhtään viestiä ole lähetetty "
+"vielä.\n"
+"                </p><p>\n"
+"                    Klikkaa ylä-oikealla olevaa ikonia muodostaaksesi "
+"viestin.\n"
+"                    Tämä viesti lähetetään sähköpostilla, jos kontakti on "
+"sisäinen.\n"
+"                </p>\n"
+"            "
 
 #. module: mail
-#: view:mail.mail:0 field:mail.mail,state:0
+#: view:mail.mail:mail.view_mail_form
+#: view:mail.mail:mail.view_mail_search
+#: field:mail.mail,state:0
 msgid "Status"
 msgstr "Tila"
 
 #. module: mail
-#: view:mail.mail:0 selection:mail.mail,state:0
+#: view:mail.mail:mail.view_mail_search
+#: selection:mail.mail,state:0
 msgid "Outgoing"
 msgstr "Lähtevä"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:55
-#: code:addons/mail/static/src/xml/mail.xml:192 view:mail.compose.message:0
-#: view:mail.wizard.invite:0
+#: code:addons/mail/static/src/xml/mail.xml:56
 #, python-format
 msgid "or"
 msgstr "tai"
 
 #. module: mail
-#: code:addons/mail/mail_thread.py:113
+#: code:addons/mail/mail_thread.py:172
 #, python-format
 msgid "You have one unread message"
 msgstr "Sinulla on yksi lukematon viesti"
 
 #. module: mail
-#: help:mail.compose.message,record_name:0 help:mail.message,record_name:0
+#: help:mail.compose.message,record_name:0
+#: help:mail.message,record_name:0
 msgid "Name get of the related document."
 msgstr ""
 
@@ -1086,13 +1177,14 @@ msgstr ""
 #: model:ir.actions.act_window,name:mail.action_view_notifications
 #: model:ir.model,name:mail.model_mail_notification
 #: model:ir.ui.menu,name:mail.menu_email_notifications
-#: field:mail.compose.message,notification_ids:0 view:mail.message:0
-#: field:mail.message,notification_ids:0 view:mail.notification:0
+#: field:mail.compose.message,notification_ids:0
+#: field:mail.message,notification_ids:0
+#: view:mail.notification:mail.view_notification_tree
 msgid "Notifications"
 msgstr "Ilmoitukset"
 
 #. module: mail
-#: view:mail.alias:0
+#: view:mail.alias:mail.view_mail_alias_search
 msgid "Search Alias"
 msgstr "Hae alias"
 
@@ -1106,7 +1198,7 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:312
+#: code:addons/mail/static/src/xml/mail.xml:332
 #, python-format
 msgid "show more message"
 msgstr "näytä lisää viestejä"
@@ -1115,8 +1207,8 @@ msgstr "näytä lisää viestejä"
 #: help:mail.message.subtype,name:0
 msgid ""
 "Message subtype gives a more precise type on the message, especially for "
-"system notifications. For example, it can be a notification related to a new"
-" record (New), or to a stage change in a process (Stage change). Message "
+"system notifications. For example, it can be a notification related to a new "
+"record (New), or to a stage change in a process (Stage change). Message "
 "subtypes allow to precisely tune the notifications the user want to receive "
 "on its wall."
 msgstr ""
@@ -1144,35 +1236,38 @@ msgid "Is a Follower"
 msgstr "on seuraaja"
 
 #. module: mail
-#: view:mail.alias:0 view:mail.mail:0
+#: view:mail.alias:mail.view_mail_alias_search
+#: view:mail.mail:mail.view_mail_form
+#: view:mail.mail:mail.view_mail_tree
 msgid "User"
 msgstr "Käyttäjä"
 
 #. module: mail
-#: view:mail.group:0
+#: view:mail.group:mail.view_group_tree
 msgid "Groups"
 msgstr "Ryhmät"
 
 #. module: mail
-#: view:mail.message:0
+#: view:mail.message:mail.view_message_search
 msgid "Messages Search"
 msgstr "Viestien haku"
 
 #. module: mail
-#: field:mail.compose.message,date:0 field:mail.message,date:0
+#: field:mail.compose.message,date:0
+#: field:mail.message,date:0
 msgid "Date"
 msgstr "Päiväys"
 
 #. module: mail
-#: view:mail.mail:0
+#: view:mail.mail:mail.view_mail_search
 msgid "Extended Filters..."
 msgstr "Laajennetut suodattimet..."
 
 #. module: mail
-#: code:addons/mail/mail_group.py:180
+#: code:addons/mail/mail_group.py:174
 #, python-format
 msgid "Warning!"
-msgstr "Varoitus!"
+msgstr ""
 
 #. module: mail
 #: selection:res.partner,notification_email_send:0
@@ -1181,14 +1276,14 @@ msgstr "Vain saapuvat sähköpostit"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:293
+#: code:addons/mail/static/src/xml/mail.xml:310
 #, python-format
 msgid "more"
 msgstr "lisää"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:121
+#: code:addons/mail/static/src/xml/mail.xml:123
 #, python-format
 msgid "To:"
 msgstr "Vastaanottaja:"
@@ -1217,7 +1312,7 @@ msgstr "Käyttäjät"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:247
+#: code:addons/mail/static/src/xml/mail.xml:257
 #, python-format
 msgid "Mark as Todo"
 msgstr "Merkitse tehtäväksi"
@@ -1228,7 +1323,8 @@ msgid "Parent subtype, used for automatic subscription."
 msgstr ""
 
 #. module: mail
-#: field:mail.group,message_summary:0 field:mail.thread,message_summary:0
+#: field:mail.group,message_summary:0
+#: field:mail.thread,message_summary:0
 #: field:res.partner,message_summary:0
 msgid "Summary"
 msgstr "Yhteenveto"
@@ -1240,17 +1336,19 @@ msgid ""
 msgstr ""
 
 #. module: mail
-#: view:mail.compose.message:0 view:mail.wizard.invite:0
+#: view:mail.compose.message:mail.email_compose_message_wizard_form
+#: view:mail.wizard.invite:mail.mail_wizard_invite_form
 msgid "Add contacts to notify..."
 msgstr "Lisää kontaktit, joille ilmoitetaan..."
 
 #. module: mail
-#: view:mail.group:0
+#: view:mail.group:mail.view_group_form
 msgid "Group Form"
 msgstr "Ryhmälomake"
 
 #. module: mail
-#: field:mail.compose.message,starred:0 field:mail.message,starred:0
+#: field:mail.compose.message,starred:0
+#: field:mail.message,starred:0
 #: field:mail.notification,starred:0
 msgid "Starred"
 msgstr "Tähdellä varustetut"
@@ -1268,7 +1366,7 @@ msgstr "Virhe"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail_followers.xml:13
+#: code:addons/mail/static/src/xml/mail_followers.xml:14
 #, python-format
 msgid "Following"
 msgstr "Seurataan"
@@ -1280,7 +1378,7 @@ msgid ""
 msgstr ""
 
 #. module: mail
-#: code:addons/mail/mail_group.py:180
+#: code:addons/mail/mail_group.py:174
 #, python-format
 msgid ""
 "You cannot delete those groups, as the Whole Company group is required by "
@@ -1298,19 +1396,20 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail_followers.xml:52
+#: code:addons/mail/static/src/xml/mail_followers.xml:62
 #, python-format
 msgid "And"
 msgstr "Ja"
 
 #. module: mail
-#: code:addons/mail/mail_thread.py:113
+#: code:addons/mail/mail_thread.py:172
 #, python-format
 msgid "You have %d unread messages"
 msgstr "Sinulla on %d lukematonta viestiä"
 
 #. module: mail
-#: field:mail.compose.message,message_id:0 field:mail.message,message_id:0
+#: field:mail.compose.message,message_id:0
+#: field:mail.message,message_id:0
 msgid "Message-Id"
 msgstr "Viestin ID"
 
@@ -1322,13 +1421,15 @@ msgid ""
 msgstr ""
 
 #. module: mail
-#: field:mail.compose.message,attachment_ids:0 view:mail.mail:0
+#: field:mail.compose.message,attachment_ids:0
+#: view:mail.mail:mail.view_mail_form
 #: field:mail.message,attachment_ids:0
 msgid "Attachments"
 msgstr "Liitteet"
 
 #. module: mail
-#: field:mail.compose.message,record_name:0 field:mail.message,record_name:0
+#: field:mail.compose.message,record_name:0
+#: field:mail.message,record_name:0
 msgid "Message Record Name"
 msgstr "Viestin tietuenimi"
 
@@ -1343,13 +1444,13 @@ msgid "Starred message that goes into the todo mailbox"
 msgstr "Tähdellinen viesti, joka siirtyy tehtävät -postilaatikkoon"
 
 #. module: mail
-#: view:mail.group:0
+#: view:mail.group:mail.view_group_form
 msgid "Topics discussed in this group..."
 msgstr "Aiheet tämän ryhmän keskusteltavaksi..."
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:124 view:mail.compose.message:0
+#: code:addons/mail/static/src/xml/mail.xml:127
 #, python-format
 msgid "Followers of"
 msgstr ""
@@ -1357,7 +1458,8 @@ msgstr ""
 #. module: mail
 #: help:mail.mail,auto_delete:0
 msgid "Permanently delete this email after sending it, to save space"
-msgstr "Poista tämä viesti pysyvästi viestin lähettämisen jälkeen säästääksesi tilaa"
+msgstr ""
+"Poista tämä viesti pysyvästi viestin lähettämisen jälkeen säästääksesi tilaa"
 
 #. module: mail
 #: model:ir.actions.client,name:mail.action_mail_group_feeds
@@ -1366,7 +1468,7 @@ msgstr "Keskusteluryhmä"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:243
+#: code:addons/mail/static/src/xml/mail.xml:253
 #, python-format
 msgid "Done"
 msgstr "Valmis"
@@ -1378,7 +1480,7 @@ msgstr "Keskustelut"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail_followers.xml:11
+#: code:addons/mail/static/src/xml/mail_followers.xml:12
 #, python-format
 msgid "Follow"
 msgstr "Seuraa"
@@ -1390,8 +1492,8 @@ msgstr "Koko yhtiö"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:130
-#: code:addons/mail/static/src/xml/mail.xml:293 view:mail.compose.message:0
+#: code:addons/mail/static/src/xml/mail.xml:137
+#: code:addons/mail/static/src/xml/mail.xml:310
 #, python-format
 msgid "and"
 msgstr "ja"
@@ -1402,7 +1504,7 @@ msgid "Rich-text/HTML message"
 msgstr "Rich-text/HTML -muotoiltu viesti"
 
 #. module: mail
-#: view:mail.mail:0
+#: view:mail.mail:mail.view_mail_search
 msgid "Creation Month"
 msgstr "Luontikuukausi"
 
@@ -1419,7 +1521,7 @@ msgid "Show already read messages"
 msgstr "Näytä jo luetut viestit"
 
 #. module: mail
-#: view:mail.message:0
+#: view:mail.message:mail.view_message_search
 msgid "Content"
 msgstr "Sisältö"
 
@@ -1430,7 +1532,8 @@ msgstr "Vastaanottaja"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:246 view:mail.mail:0
+#: code:addons/mail/static/src/xml/mail.xml:256
+#: view:mail.mail:mail.view_mail_form
 #, python-format
 msgid "Reply"
 msgstr "Vastaa"
@@ -1466,12 +1569,15 @@ msgid "Aliased Model"
 msgstr "Aliasmalli"
 
 #. module: mail
-#: help:mail.compose.message,message_id:0 help:mail.message,message_id:0
+#: help:mail.compose.message,message_id:0
+#: help:mail.message,message_id:0
 msgid "Message unique identifier"
 msgstr "Viestin yksilöivä tunniste"
 
 #. module: mail
-#: field:mail.group,description:0 field:mail.message.subtype,description:0
+#: field:mail.group,description:0
+#: view:mail.message.subtype:mail.view_mail_message_subtype_form
+#: field:mail.message.subtype,description:0
 msgid "Description"
 msgstr "Kuvaus"
 
@@ -1482,18 +1588,19 @@ msgstr "Dokumentin seuraajat"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail_followers.xml:35
+#: code:addons/mail/static/src/xml/mail_followers.xml:41
 #, python-format
 msgid "Remove this follower"
 msgstr "Irroita tämä seuraaja"
 
 #. module: mail
-#: selection:res.partner,notification_email_send:0
+#: selection:res.partner,notify_email:0
 msgid "Never"
 msgstr "Ei koskaan"
 
 #. module: mail
-#: field:mail.mail,mail_server_id:0
+#: field:mail.compose.message,mail_server_id:0
+#: field:mail.message,mail_server_id:0
 msgid "Outgoing mail server"
 msgstr "Lähtevän postin palvelin"
 
@@ -1504,7 +1611,8 @@ msgid "Partners email addresses not found"
 msgstr "Parnerin sähköpostiosoitetta ei löydy"
 
 #. module: mail
-#: view:mail.mail:0 selection:mail.mail,state:0
+#: view:mail.mail:mail.view_mail_search
+#: selection:mail.mail,state:0
 msgid "Sent"
 msgstr "Lähetetty"
 
@@ -1514,9 +1622,11 @@ msgid "Rich-text Contents"
 msgstr "Rich-text -muotoiset sisällöt"
 
 #. module: mail
-#: help:mail.compose.message,to_read:0 help:mail.message,to_read:0
+#: help:mail.compose.message,to_read:0
+#: help:mail.message,to_read:0
 msgid "Current user has an unread notification linked to this message"
-msgstr "Nykyisellä käyttäjällä on lukematon ilmoitus kytkettynä tähän viestiin"
+msgstr ""
+"Nykyisellä käyttäjällä on lukematon ilmoitus kytkettynä tähän viestiin"
 
 #. module: mail
 #: model:ir.model,name:mail.model_mail_thread
@@ -1540,7 +1650,7 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:214
+#: code:addons/mail/static/src/xml/mail.xml:224
 #, python-format
 msgid "Please, wait while the file is uploading."
 msgstr "Odota kunnes tiedosto on ladattu sisään."
@@ -1549,13 +1659,14 @@ msgstr "Odota kunnes tiedosto on ladattu sisään."
 #: view:mail.group:0
 msgid ""
 "This group is visible by everyone,\n"
-"                                    including your customers if you installed\n"
+"                                    including your customers if you "
+"installed\n"
 "                                    the portal module."
 msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:244
+#: code:addons/mail/static/src/xml/mail.xml:254
 #, python-format
 msgid "Set back to Todo"
 msgstr "Plautettu takaisin tehtäviin"
@@ -1592,27 +1703,30 @@ msgstr "Et voi luoda rekursiivisia kumppanihierarkioita"
 #. module: mail
 #: help:base.config.settings,alias_domain:0
 msgid ""
-"If you have setup a catch-all email domain redirected to the OpenERP server,"
-" enter the domain name here."
+"If you have setup a catch-all email domain redirected to the OpenERP server, "
+"enter the domain name here."
 msgstr ""
 
 #. module: mail
 #: model:ir.actions.act_window,name:mail.action_view_mail_message
-#: model:ir.ui.menu,name:mail.menu_mail_message field:mail.group,message_ids:0
-#: view:mail.message:0 field:mail.thread,message_ids:0
+#: model:ir.ui.menu,name:mail.menu_mail_message
+#: field:mail.group,message_ids:0
+#: view:mail.message:mail.view_message_tree
+#: field:mail.thread,message_ids:0
 #: field:res.partner,message_ids:0
 msgid "Messages"
 msgstr "Viestit"
 
 #. module: mail
-#: code:addons/mail/mail_mail.py:222 code:addons/mail/mail_mail.py:243
+#: code:addons/mail/mail_mail.py:222
+#: code:addons/mail/mail_mail.py:243
 #, python-format
 msgid "Followers of %s"
 msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:140
+#: code:addons/mail/static/src/xml/mail.xml:146
 #, python-format
 msgid "others..."
 msgstr "muut..."
@@ -1624,7 +1738,9 @@ msgid "To-do"
 msgstr "Tehtävät"
 
 #. module: mail
-#: view:mail.alias:0 field:mail.alias,alias_name:0 field:mail.group,alias_id:0
+#: view:mail.alias:mail.view_mail_alias_form
+#: view:mail.alias:mail.view_mail_alias_tree
+#: field:mail.group,alias_id:0
 #: field:res.users,alias_id:0
 msgid "Alias"
 msgstr "Alias"
@@ -1644,7 +1760,7 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:150
+#: code:addons/mail/static/src/xml/mail.xml:156
 #, python-format
 msgid "(no email address)"
 msgstr "(ei sähköpostiosoitetta)"
@@ -1656,13 +1772,14 @@ msgid "Messaging"
 msgstr "Viestit"
 
 #. module: mail
-#: view:mail.alias:0 field:mail.message.subtype,res_model:0
+#: view:mail.alias:mail.view_mail_alias_search
+#: field:mail.message.subtype,res_model:0
 msgid "Model"
 msgstr "Malli"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:207
+#: code:addons/mail/static/src/xml/mail.xml:217
 #, python-format
 msgid "No messages."
 msgstr "Ei viestejä."
@@ -1675,7 +1792,8 @@ msgid ""
 msgstr ""
 
 #. module: mail
-#: help:mail.group,message_ids:0 help:mail.thread,message_ids:0
+#: help:mail.group,message_ids:0
+#: help:mail.thread,message_ids:0
 #: help:res.partner,message_ids:0
 msgid "Messages and communication history"
 msgstr "Viesti- ja kommunikointihistoria"
@@ -1691,14 +1809,16 @@ msgid "Composition mode"
 msgstr ""
 
 #. module: mail
-#: field:mail.compose.message,model:0 field:mail.followers,res_model:0
-#: field:mail.message,model:0 field:mail.wizard.invite,res_model:0
+#: field:mail.compose.message,model:0
+#: field:mail.followers,res_model:0
+#: field:mail.message,model:0
+#: field:mail.wizard.invite,res_model:0
 msgid "Related Document Model"
 msgstr "Liittyvä dokumenttimalli"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:339
+#: code:addons/mail/static/src/xml/mail.xml:349
 #, python-format
 msgid "unlike"
 msgstr "en pidä"
@@ -1735,11 +1855,23 @@ msgid ""
 "<p>\n"
 "                    <b>No todo.</b>\n"
 "                </p><p>\n"
-"                    When you process messages in your inbox, you can mark some\n"
-"                    as <i>todo</i>. From this menu, you can process all your todo.\n"
+"                    When you process messages in your inbox, you can mark "
+"some\n"
+"                    as <i>todo</i>. From this menu, you can process all your "
+"todo.\n"
 "                </p>\n"
 "            "
-msgstr "<p>\n                    <b>Ei tehtäviä.</b>\n                </p><p>\n                    Kun käsittelet saapuvat viestit. voit merkitä haluamasi viestit\n                    merkinnällä <i>tehtävä</i>. Tästä valinnasta voit käsitellä\n                    kaikki tehtäväsi.\n                </p>\n            "
+msgstr ""
+"<p>\n"
+"                    <b>Ei tehtäviä.</b>\n"
+"                </p><p>\n"
+"                    Kun käsittelet saapuvat viestit. voit merkitä haluamasi "
+"viestit\n"
+"                    merkinnällä <i>tehtävä</i>. Tästä valinnasta voit "
+"käsitellä\n"
+"                    kaikki tehtäväsi.\n"
+"                </p>\n"
+"            "
 
 #. module: mail
 #: selection:mail.mail,state:0
@@ -1752,7 +1884,8 @@ msgid "Additional contacts"
 msgstr "Lisäkontaktit"
 
 #. module: mail
-#: help:mail.compose.message,parent_id:0 help:mail.message,parent_id:0
+#: help:mail.compose.message,parent_id:0
+#: help:mail.message,parent_id:0
 msgid "Initial thread message."
 msgstr ""
 

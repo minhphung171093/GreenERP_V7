@@ -1,22 +1,21 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * survey
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2012
+# Swedish translation for openobject-addons
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-08-14 00:11+0000\n"
-"PO-Revision-Date: 2015-05-29 13:24+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Swedish (http://www.transifex.com/projects/p/odoo-7/language/sv/)\n"
+"PO-Revision-Date: 2012-12-21 23:00+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: sv\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2014-08-14 07:29+0000\n"
+"X-Generator: Launchpad (build 17156)\n"
 
 #. module: survey
 #: view:survey.response.line:0
@@ -49,14 +48,15 @@ msgid "Answers:"
 msgstr ""
 
 #. module: survey
-#: view:survey:0 field:survey,invited_user_ids:0
+#: view:survey:0
+#: field:survey,invited_user_ids:0
 msgid "Invited User"
 msgstr "Inbjudna användare"
 
 #. module: survey
 #: model:survey.type,name:survey.survey_type1
 msgid "Human Resources"
-msgstr "Personal"
+msgstr ""
 
 #. module: survey
 #: selection:survey.answer,type:0
@@ -76,7 +76,9 @@ msgid "Cancel Request"
 msgstr ""
 
 #. module: survey
-#: view:survey:0 view:survey.page:0 view:survey.question:0
+#: view:survey:0
+#: view:survey.page:0
+#: view:survey.question:0
 #: view:survey.request:0
 msgid "Group By..."
 msgstr "Gruppera på..."
@@ -117,8 +119,11 @@ msgid "History Lines"
 msgstr "Historikrader"
 
 #. module: survey
-#: view:survey:0 view:survey.page:0 view:survey.question:0
-#: field:survey.question,descriptive_text:0 selection:survey.question,type:0
+#: view:survey:0
+#: view:survey.page:0
+#: view:survey.question:0
+#: field:survey.question,descriptive_text:0
+#: selection:survey.question,type:0
 msgid "Descriptive Text"
 msgstr ""
 
@@ -209,9 +214,8 @@ msgstr "survey.name.wiz"
 #, python-format
 msgid ""
 "Maximum Required Answer you                                     entered for "
-"your maximum is greater than the number of answer."
-"                                      Please use a number that is smaller "
-"than %d."
+"your maximum is greater than the number of answer.                           "
+"           Please use a number that is smaller than %d."
 msgstr ""
 
 #. module: survey
@@ -234,8 +238,10 @@ msgid ""
 msgstr ""
 
 #. module: survey
-#: model:ir.model,name:survey.model_survey_question view:survey:0
-#: view:survey.page:0 view:survey.question:0
+#: model:ir.model,name:survey.model_survey_question
+#: view:survey:0
+#: view:survey.page:0
+#: view:survey.question:0
 msgid "Survey Question"
 msgstr "Enkätfråga"
 
@@ -245,12 +251,14 @@ msgid "Use if question type is rating_scale"
 msgstr ""
 
 #. module: survey
-#: field:survey.print,page_number:0 field:survey.print.answer,page_number:0
+#: field:survey.print,page_number:0
+#: field:survey.print.answer,page_number:0
 msgid "Include Page Number"
 msgstr ""
 
 #. module: survey
-#: view:survey.page:0 view:survey.question:0
+#: view:survey.page:0
+#: view:survey.question:0
 msgid "Ok"
 msgstr "Ok"
 
@@ -265,12 +273,14 @@ msgid "Survey History"
 msgstr "Enkäthistorik"
 
 #. module: survey
-#: field:survey.response.answer,comment:0 field:survey.response.line,comment:0
+#: field:survey.response.answer,comment:0
+#: field:survey.response.line,comment:0
 msgid "Notes"
 msgstr "Anteckningar"
 
 #. module: survey
-#: view:survey:0 view:survey.request:0
+#: view:survey:0
+#: view:survey.request:0
 msgid "Search Survey"
 msgstr "Sök enkät"
 
@@ -307,7 +317,8 @@ msgid "Survey Statistics"
 msgstr "Enkätstatistik"
 
 #. module: survey
-#: selection:survey,state:0 selection:survey.request,state:0
+#: selection:survey,state:0
+#: selection:survey.request,state:0
 msgid "Cancelled"
 msgstr "Avbruten"
 
@@ -317,11 +328,12 @@ msgid "Rating Scale"
 msgstr ""
 
 #. module: survey
-#: code:addons/survey/survey.py:153 code:addons/survey/survey.py:188
+#: code:addons/survey/survey.py:153
+#: code:addons/survey/survey.py:188
 #, python-format
 msgid ""
-"This survey has no question defined. Please define the questions and answers"
-" first."
+"This survey has no question defined. Please define the questions and answers "
+"first."
 msgstr ""
 
 #. module: survey
@@ -348,7 +360,7 @@ msgstr ""
 #. module: survey
 #: field:survey,color:0
 msgid "Color Index"
-msgstr "Färgindex"
+msgstr ""
 
 #. module: survey
 #: selection:survey.question,type:0
@@ -386,7 +398,8 @@ msgid "At Most"
 msgstr "Inte mer än"
 
 #. module: survey
-#: view:survey:0 view:survey.request:0
+#: view:survey:0
+#: view:survey.request:0
 msgid "My Survey(s)"
 msgstr ""
 
@@ -442,7 +455,8 @@ msgid "Letter (8.5\" x 11\")"
 msgstr "Letter (8.5\" x 11\")"
 
 #. module: survey
-#: view:survey:0 field:survey,responsible_id:0
+#: view:survey:0
+#: field:survey,responsible_id:0
 msgid "Responsible"
 msgstr "Ansvarig"
 
@@ -455,7 +469,7 @@ msgstr "survey.request"
 #: code:addons/survey/wizard/survey_answer.py:379
 #, python-format
 msgid "Previous"
-msgstr "Föregående"
+msgstr ""
 
 #. module: survey
 #: field:survey.question,comment_maximum_float:0
@@ -469,7 +483,8 @@ msgid "survey.tbl.column.heading"
 msgstr "survey.tbl.column.heading"
 
 #. module: survey
-#: view:survey.send.invitation:0 field:survey.send.invitation,send_mail:0
+#: view:survey.send.invitation:0
+#: field:survey.send.invitation,send_mail:0
 msgid "Send Mail for New User"
 msgstr ""
 
@@ -481,7 +496,7 @@ msgstr "Från"
 #. module: survey
 #: view:survey:0
 msgid "Cancel Survey"
-msgstr "Avbryt undersökning"
+msgstr ""
 
 #. module: survey
 #: selection:survey.question,comment_valid_type:0
@@ -502,7 +517,8 @@ msgid "Must Be A Whole Number"
 msgstr ""
 
 #. module: survey
-#: field:survey.answer,question_id:0 view:survey.question:0
+#: field:survey.answer,question_id:0
+#: view:survey.question:0
 #: field:survey.question,question:0
 #: field:survey.question.column.heading,question_id:0
 #: field:survey.response.line,question_id:0
@@ -518,7 +534,7 @@ msgstr ""
 #: code:addons/survey/wizard/survey_answer.py:380
 #, python-format
 msgid "Next"
-msgstr "Framåt"
+msgstr ""
 
 #. module: survey
 #: view:survey.request:0
@@ -531,15 +547,18 @@ msgstr ""
 #: code:addons/survey/wizard/survey_send_invitation.py:194
 #, python-format
 msgid "Unknown"
-msgstr "Okänd"
+msgstr ""
 
 #. module: survey
-#: view:survey:0 view:survey.page:0 view:survey.question:0
+#: view:survey:0
+#: view:survey.page:0
+#: view:survey.question:0
 msgid "Between"
 msgstr "Mellan"
 
 #. module: survey
-#: view:survey.print:0 view:survey.print.answer:0
+#: view:survey.print:0
+#: view:survey.print.answer:0
 #: view:survey.print.statistics:0
 msgid "Print"
 msgstr "Utskrift"
@@ -555,31 +574,38 @@ msgid "Make Comment Field an Answer Choice"
 msgstr ""
 
 #. module: survey
-#: view:survey:0 field:survey,type:0
+#: view:survey:0
+#: field:survey,type:0
 msgid "Type"
 msgstr "Typ"
 
 #. module: survey
-#: selection:survey.answer,type:0 field:survey.request,email:0
+#: selection:survey.answer,type:0
+#: field:survey.request,email:0
 msgid "Email"
-msgstr "Epost"
+msgstr ""
 
 #. module: survey
-#: view:survey:0 view:survey.page:0 view:survey.question:0
+#: view:survey:0
+#: view:survey.page:0
+#: view:survey.question:0
 msgid "Required Answer"
 msgstr ""
 
 #. module: survey
-#: code:addons/survey/survey.py:425 code:addons/survey/survey.py:513
+#: code:addons/survey/survey.py:425
+#: code:addons/survey/survey.py:513
 #, python-format
-msgid "You must enter one or more column headings for question \"%s\" of page %s."
+msgid ""
+"You must enter one or more column headings for question \"%s\" of page %s."
 msgstr ""
 
 #. module: survey
-#: code:addons/survey/survey.py:97 code:addons/survey/survey.py:260
+#: code:addons/survey/survey.py:97
+#: code:addons/survey/survey.py:260
 #, python-format
 msgid "%s (copy)"
-msgstr "%s (kopia)"
+msgstr ""
 
 #. module: survey
 #: code:addons/survey/report/survey_browse_response.py:231
@@ -607,12 +633,12 @@ msgstr ""
 #. module: survey
 #: model:ir.ui.menu,name:survey.menu_reporting
 msgid "Reporting"
-msgstr "Rapporter"
+msgstr ""
 
 #. module: survey
 #: model:ir.actions.act_window,name:survey.act_survey_answer
 msgid "Answers"
-msgstr "Svar"
+msgstr ""
 
 #. module: survey
 #: selection:survey.response,response_type:0
@@ -627,7 +653,8 @@ msgstr ""
 
 #. module: survey
 #: model:ir.actions.act_window,name:survey.action_survey_type_form
-#: model:ir.model,name:survey.model_survey_type view:survey.type:0
+#: model:ir.model,name:survey.model_survey_type
+#: view:survey.type:0
 msgid "Survey Type"
 msgstr ""
 
@@ -654,7 +681,7 @@ msgstr ""
 #. module: survey
 #: field:survey.question,req_error_msg:0
 msgid "Error Message"
-msgstr "Felmeddelande"
+msgstr ""
 
 #. module: survey
 #: code:addons/survey/wizard/survey_answer.py:125
@@ -679,7 +706,9 @@ msgid "survey.print"
 msgstr ""
 
 #. module: survey
-#: view:survey:0 view:survey.page:0 field:survey.question,page_id:0
+#: view:survey:0
+#: view:survey.page:0
+#: field:survey.question,page_id:0
 msgid "Survey Page"
 msgstr ""
 
@@ -710,16 +739,15 @@ msgstr ""
 #. module: survey
 #: view:survey:0
 msgid "Edit..."
-msgstr "Redigera..."
+msgstr ""
 
 #. module: survey
 #: code:addons/survey/survey.py:478
 #, python-format
 msgid ""
 "Maximum Required Answer you                                     entered for "
-"your maximum is greater than the number of answer."
-"                                     Please use a number that is smaller "
-"than %d."
+"your maximum is greater than the number of answer.                           "
+"          Please use a number that is smaller than %d."
 msgstr ""
 
 #. module: survey
@@ -728,14 +756,18 @@ msgid "Survey description..."
 msgstr ""
 
 #. module: survey
-#: view:survey:0 view:survey.page:0 view:survey.question:0
+#: view:survey:0
+#: view:survey.page:0
+#: view:survey.question:0
 msgid "When the question is not answered, display this error message:"
 msgstr ""
 
 #. module: survey
-#: view:survey:0 view:survey.page:0 view:survey.question:0
+#: view:survey:0
+#: view:survey.page:0
+#: view:survey.question:0
 msgid "Options"
-msgstr "Alternativ"
+msgstr ""
 
 #. module: survey
 #: code:addons/survey/survey.py:437
@@ -746,17 +778,20 @@ msgstr ""
 #. module: survey
 #: view:survey:0
 msgid "Delete"
-msgstr "Ta bort"
+msgstr ""
 
 #. module: survey
-#: field:survey.response.answer,comment_field:0 view:survey.response.line:0
+#: field:survey.response.answer,comment_field:0
+#: view:survey.response.line:0
 msgid "Comment"
-msgstr "Kommentar"
+msgstr ""
 
 #. module: survey
 #: model:ir.model,name:survey.model_survey_answer
 #: model:ir.model,name:survey.model_survey_response_answer
-#: view:survey.answer:0 view:survey.response:0 view:survey.response.answer:0
+#: view:survey.answer:0
+#: view:survey.response:0
+#: view:survey.response.answer:0
 #: view:survey.response.line:0
 msgid "Survey Answer"
 msgstr ""
@@ -764,23 +799,25 @@ msgstr ""
 #. module: survey
 #: selection:survey.answer,type:0
 msgid "Selection"
-msgstr "Urval"
+msgstr ""
 
 #. module: survey
 #: model:ir.actions.act_window,name:survey.action_browse_survey_response
 #: view:survey:0
 msgid "Answer Survey"
-msgstr "Svara på undersökningen"
+msgstr ""
 
 #. module: survey
-#: view:survey:0 view:survey.page:0 view:survey.question:0
+#: view:survey:0
+#: view:survey.page:0
+#: view:survey.question:0
 msgid "Comment Field"
 msgstr ""
 
 #. module: survey
 #: selection:survey.response,response_type:0
 msgid "Manually"
-msgstr "Manually"
+msgstr ""
 
 #. module: survey
 #: view:survey.send.invitation:0
@@ -793,10 +830,12 @@ msgid "User responsible for survey"
 msgstr ""
 
 #. module: survey
-#: field:survey,page_ids:0 view:survey.page:0 view:survey.question:0
+#: field:survey,page_ids:0
+#: view:survey.page:0
+#: view:survey.question:0
 #: field:survey.response.line,page_id:0
 msgid "Page"
-msgstr "Sida"
+msgstr ""
 
 #. module: survey
 #: field:survey.question,comment_column:0
@@ -815,7 +854,9 @@ msgid "Print Without Page Breaks"
 msgstr ""
 
 #. module: survey
-#: view:survey:0 view:survey.page:0 view:survey.question:0
+#: view:survey:0
+#: view:survey.page:0
+#: view:survey.question:0
 msgid "When the comment is an invalid format, display this error message"
 msgstr ""
 
@@ -824,7 +865,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:survey.act_survey_question
 #: field:survey.page,question_ids:0
 msgid "Questions"
-msgstr "Frågor"
+msgstr ""
 
 #. module: survey
 #: help:survey,response_user:0
@@ -838,14 +879,15 @@ msgid " Answer :- "
 msgstr ""
 
 #. module: survey
-#: model:ir.model,name:survey.model_res_users field:survey,users:0
+#: model:ir.model,name:survey.model_res_users
+#: field:survey,users:0
 msgid "Users"
-msgstr "Användare"
+msgstr ""
 
 #. module: survey
 #: view:survey.send.invitation:0
 msgid "Message"
-msgstr "Meddelande"
+msgstr ""
 
 #. module: survey
 #: field:survey.send.invitation,mail_subject:0
@@ -872,14 +914,17 @@ msgid "Page Number"
 msgstr ""
 
 #. module: survey
-#: view:survey.print:0 view:survey.print.answer:0
+#: view:survey.print:0
+#: view:survey.print.answer:0
 msgid "Print Option"
 msgstr "Utskrift alternativ"
 
 #. module: survey
-#: view:survey:0 view:survey.page:0 view:survey.question:0
+#: view:survey:0
+#: view:survey.page:0
+#: view:survey.question:0
 msgid "and"
-msgstr "and"
+msgstr ""
 
 #. module: survey
 #: model:ir.actions.act_window,name:survey.action_view_survey_print_statistics
@@ -890,10 +935,12 @@ msgstr ""
 #. module: survey
 #: field:survey.send.invitation.log,note:0
 msgid "Log"
-msgstr "Logg"
+msgstr ""
 
 #. module: survey
-#: view:survey:0 view:survey.page:0 view:survey.question:0
+#: view:survey:0
+#: view:survey.page:0
+#: view:survey.question:0
 msgid "When the choices do not add up correctly, display this error message"
 msgstr ""
 
@@ -934,16 +981,17 @@ msgid "Validate Text"
 msgstr ""
 
 #. module: survey
-#: view:survey.browse.answer:0 view:survey.name.wiz:0
+#: view:survey.browse.answer:0
+#: view:survey.name.wiz:0
 msgid "Start"
-msgstr "Start"
+msgstr ""
 
 #. module: survey
 #: code:addons/survey/wizard/survey_selection.py:83
 #, python-format
 msgid ""
-"You cannot give more responses. Please contact the author of this survey for"
-" further assistance."
+"You cannot give more responses. Please contact the author of this survey for "
+"further assistance."
 msgstr ""
 
 #. module: survey
@@ -953,9 +1001,10 @@ msgid "Maximum number"
 msgstr ""
 
 #. module: survey
-#: selection:survey.request,state:0 selection:survey.response.line,state:0
+#: selection:survey.request,state:0
+#: selection:survey.response.line,state:0
 msgid "Draft"
-msgstr "Preliminär"
+msgstr ""
 
 #. module: survey
 #: model:ir.model,name:survey.model_survey_print_statistics
@@ -965,7 +1014,7 @@ msgstr ""
 #. module: survey
 #: selection:survey,state:0
 msgid "Closed"
-msgstr "Avslutad"
+msgstr ""
 
 #. module: survey
 #: selection:survey.question,type:0
@@ -973,14 +1022,20 @@ msgid "Matrix of Drop-down Menus"
 msgstr ""
 
 #. module: survey
-#: code:addons/survey/wizard/survey_answer.py:226 view:survey:0
-#: field:survey.answer,answer:0 field:survey.name.wiz,response:0
-#: view:survey.page:0 view:survey.print.answer:0
-#: field:survey.print.answer,response_ids:0 view:survey.question:0
-#: field:survey.question,answer_choice_ids:0 field:survey.request,response:0
+#: code:addons/survey/wizard/survey_answer.py:226
+#: view:survey:0
+#: field:survey.answer,answer:0
+#: field:survey.name.wiz,response:0
+#: view:survey.page:0
+#: view:survey.print.answer:0
+#: field:survey.print.answer,response_ids:0
+#: view:survey.question:0
+#: field:survey.question,answer_choice_ids:0
+#: field:survey.request,response:0
 #: field:survey.response,question_ids:0
 #: field:survey.response.answer,answer_id:0
-#: field:survey.response.answer,response_id:0 view:survey.response.line:0
+#: field:survey.response.answer,response_id:0
+#: view:survey.response.line:0
 #: field:survey.response.line,response_answer_ids:0
 #: field:survey.response.line,response_id:0
 #: field:survey.response.line,response_table_ids:0
@@ -988,7 +1043,7 @@ msgstr ""
 #: field:survey.tbl.column.heading,response_table_id:0
 #, python-format
 msgid "Answer"
-msgstr "Svar"
+msgstr ""
 
 #. module: survey
 #: field:survey,max_response_limit:0
@@ -1017,16 +1072,19 @@ msgid "Date and Time"
 msgstr ""
 
 #. module: survey
-#: view:survey:0 field:survey,state:0 view:survey.request:0
-#: field:survey.request,state:0 field:survey.response,state:0
+#: view:survey:0
+#: field:survey,state:0
+#: view:survey.request:0
+#: field:survey.request,state:0
+#: field:survey.response,state:0
 #: field:survey.response.line,state:0
 msgid "Status"
-msgstr "Status"
+msgstr ""
 
 #. module: survey
 #: model:ir.actions.act_window,name:survey.action_view_survey_print
 msgid "Print Survey"
-msgstr "Skriv Undersökning"
+msgstr ""
 
 #. module: survey
 #: code:addons/survey/report/survey_browse_response.py:309
@@ -1042,11 +1100,12 @@ msgstr ""
 #. module: survey
 #: view:survey:0
 msgid "Started"
-msgstr "Påbörjad"
+msgstr ""
 
 #. module: survey
 #: model:ir.actions.act_window,name:survey.action_view_survey_print_answer
-#: view:survey:0 view:survey.print.answer:0
+#: view:survey:0
+#: view:survey.print.answer:0
 msgid "Print Answer"
 msgstr ""
 
@@ -1087,12 +1146,15 @@ msgid "Customer Feeback"
 msgstr ""
 
 #. module: survey
-#: view:survey:0 view:survey.page:0 view:survey.question:0
+#: view:survey:0
+#: view:survey.page:0
+#: view:survey.question:0
 msgid "Validation"
-msgstr "Granskning"
+msgstr ""
 
 #. module: survey
-#: view:survey.request:0 selection:survey.request,state:0
+#: view:survey.request:0
+#: selection:survey.request,state:0
 msgid "Waiting Answer"
 msgstr ""
 
@@ -1105,12 +1167,13 @@ msgstr ""
 #. module: survey
 #: field:res.users,survey_id:0
 msgid "Groups"
-msgstr "Groups"
+msgstr ""
 
 #. module: survey
-#: selection:survey.answer,type:0 selection:survey.question,type:0
+#: selection:survey.answer,type:0
+#: selection:survey.question,type:0
 msgid "Date"
-msgstr "Datum"
+msgstr ""
 
 #. module: survey
 #: view:survey:0
@@ -1118,7 +1181,8 @@ msgid "All New Survey"
 msgstr ""
 
 #. module: survey
-#: view:survey:0 view:survey.page:0
+#: view:survey:0
+#: view:survey.page:0
 msgid "Description on the survey page..."
 msgstr ""
 
@@ -1128,10 +1192,12 @@ msgid "survey.send.invitation"
 msgstr ""
 
 #. module: survey
-#: field:survey.history,user_id:0 view:survey.request:0
-#: field:survey.request,user_id:0 field:survey.response,user_id:0
+#: field:survey.history,user_id:0
+#: view:survey.request:0
+#: field:survey.request,user_id:0
+#: field:survey.response,user_id:0
 msgid "User"
-msgstr "Användare"
+msgstr ""
 
 #. module: survey
 #: field:survey.name.wiz,transfer:0
@@ -1150,7 +1216,8 @@ msgid "You cannot select same answer more than one time.'"
 msgstr ""
 
 #. module: survey
-#: field:survey.print,paper_size:0 field:survey.print.answer,paper_size:0
+#: field:survey.print,paper_size:0
+#: field:survey.print.answer,paper_size:0
 msgid "Paper Size"
 msgstr ""
 
@@ -1189,16 +1256,24 @@ msgstr ""
 
 #. module: survey
 #: model:ir.actions.report.xml,name:survey.report_survey_form
-#: model:ir.model,name:survey.model_survey view:survey:0
-#: view:survey.browse.answer:0 field:survey.browse.answer,survey_id:0
-#: field:survey.history,survey_id:0 view:survey.name.wiz:0
-#: field:survey.name.wiz,survey_id:0 view:survey.page:0
-#: field:survey.page,survey_id:0 view:survey.print:0
-#: field:survey.print,survey_ids:0 field:survey.print.statistics,survey_ids:0
-#: field:survey.question,survey:0 view:survey.request:0
-#: field:survey.request,survey_id:0 field:survey.response,survey_id:0
+#: model:ir.model,name:survey.model_survey
+#: view:survey:0
+#: view:survey.browse.answer:0
+#: field:survey.browse.answer,survey_id:0
+#: field:survey.history,survey_id:0
+#: view:survey.name.wiz:0
+#: field:survey.name.wiz,survey_id:0
+#: view:survey.page:0
+#: field:survey.page,survey_id:0
+#: view:survey.print:0
+#: field:survey.print,survey_ids:0
+#: field:survey.print.statistics,survey_ids:0
+#: field:survey.question,survey:0
+#: view:survey.request:0
+#: field:survey.request,survey_id:0
+#: field:survey.response,survey_id:0
 msgid "Survey"
-msgstr "Undersökning"
+msgstr ""
 
 #. module: survey
 #: field:survey.question,in_visible_rating_weight:0
@@ -1208,7 +1283,7 @@ msgstr ""
 #. module: survey
 #: selection:survey.answer,type:0
 msgid "Integer"
-msgstr "Heltal"
+msgstr ""
 
 #. module: survey
 #: selection:survey.question,type:0
@@ -1223,17 +1298,17 @@ msgstr ""
 #. module: survey
 #: view:survey:0
 msgid "History"
-msgstr "Historia"
+msgstr ""
 
 #. module: survey
 #: view:survey.request:0
 msgid "Late"
-msgstr "Sent"
+msgstr ""
 
 #. module: survey
 #: field:survey.type,code:0
 msgid "Code"
-msgstr "Kod"
+msgstr ""
 
 #. module: survey
 #: model:ir.ui.menu,name:survey.menu_print_survey_statistics
@@ -1241,12 +1316,15 @@ msgid "Surveys Statistics"
 msgstr ""
 
 #. module: survey
-#: field:survey.print,orientation:0 field:survey.print.answer,orientation:0
+#: field:survey.print,orientation:0
+#: field:survey.print.answer,orientation:0
 msgid "Orientation"
-msgstr "Orientering"
+msgstr ""
 
 #. module: survey
-#: view:survey:0 view:survey.answer:0 view:survey.page:0
+#: view:survey:0
+#: view:survey.answer:0
+#: view:survey.page:0
 #: view:survey.question:0
 msgid "Seq"
 msgstr ""
@@ -1268,21 +1346,23 @@ msgid "#Required Answer"
 msgstr ""
 
 #. module: survey
-#: field:survey.answer,sequence:0 field:survey.question,sequence:0
+#: field:survey.answer,sequence:0
+#: field:survey.question,sequence:0
 msgid "Sequence"
-msgstr "Nummerserie"
+msgstr ""
 
 #. module: survey
 #: field:survey.question,comment_label:0
 msgid "Field Label"
-msgstr "Fält ledtext"
+msgstr ""
 
 #. module: survey
-#: code:addons/survey/wizard/survey_answer.py:382 view:survey.request:0
+#: code:addons/survey/wizard/survey_answer.py:382
+#: view:survey.request:0
 #: selection:survey.request,state:0
 #, python-format
 msgid "Done"
-msgstr "Färdig"
+msgstr ""
 
 #. module: survey
 #: view:survey:0
@@ -1295,16 +1375,19 @@ msgid "Allow Only One Answer per Column (Forced Ranking)"
 msgstr ""
 
 #. module: survey
-#: view:survey.browse.answer:0 view:survey.name.wiz:0 view:survey.print:0
-#: view:survey.print.answer:0 view:survey.print.statistics:0
+#: view:survey.browse.answer:0
+#: view:survey.name.wiz:0
+#: view:survey.print:0
+#: view:survey.print.answer:0
+#: view:survey.print.statistics:0
 #: view:survey.send.invitation:0
 msgid "Cancel"
-msgstr "Avbryt"
+msgstr ""
 
 #. module: survey
 #: view:survey:0
 msgid "Close"
-msgstr "Stäng"
+msgstr ""
 
 #. module: survey
 #: field:survey.question,comment_minimum_float:0
@@ -1313,9 +1396,10 @@ msgid "Minimum decimal number"
 msgstr ""
 
 #. module: survey
-#: view:survey:0 selection:survey,state:0
+#: view:survey:0
+#: selection:survey,state:0
 msgid "Open"
-msgstr "Öppna"
+msgstr ""
 
 #. module: survey
 #: code:addons/survey/survey.py:509
@@ -1445,10 +1529,13 @@ msgid "Survey Questions"
 msgstr "Enkätfrågor"
 
 #. module: survey
-#: field:survey,note:0 field:survey.name.wiz,note:0 view:survey.page:0
-#: field:survey.page,note:0 view:survey.response.line:0
+#: field:survey,note:0
+#: field:survey.name.wiz,note:0
+#: view:survey.page:0
+#: field:survey.page,note:0
+#: view:survey.response.line:0
 msgid "Description"
-msgstr "Beskrivning"
+msgstr ""
 
 #. module: survey
 #: selection:survey.question,required_type:0
@@ -1489,7 +1576,7 @@ msgstr ""
 #: code:addons/survey/report/survey_browse_response.py:232
 #, python-format
 msgid "Finished"
-msgstr "Klart"
+msgstr ""
 
 #. module: survey
 #: code:addons/survey/survey.py:691
@@ -1535,7 +1622,7 @@ msgstr ""
 #. module: survey
 #: model:ir.actions.act_window,name:survey.act_survey_pages
 msgid "Pages"
-msgstr "Sidor"
+msgstr ""
 
 #. module: survey
 #: code:addons/survey/survey.py:456
@@ -1555,7 +1642,7 @@ msgstr ""
 #. module: survey
 #: field:survey.type,name:0
 msgid "Name"
-msgstr "Namn"
+msgstr ""
 
 #. module: survey
 #: view:survey.page:0
@@ -1586,17 +1673,28 @@ msgid "Error message"
 msgstr ""
 
 #. module: survey
-#: code:addons/survey/survey.py:153 code:addons/survey/survey.py:170
-#: code:addons/survey/survey.py:188 code:addons/survey/survey.py:425
-#: code:addons/survey/survey.py:437 code:addons/survey/survey.py:451
-#: code:addons/survey/survey.py:456 code:addons/survey/survey.py:466
-#: code:addons/survey/survey.py:472 code:addons/survey/survey.py:478
-#: code:addons/survey/survey.py:484 code:addons/survey/survey.py:488
-#: code:addons/survey/survey.py:494 code:addons/survey/survey.py:498
-#: code:addons/survey/survey.py:509 code:addons/survey/survey.py:513
-#: code:addons/survey/survey.py:518 code:addons/survey/survey.py:524
-#: code:addons/survey/survey.py:526 code:addons/survey/survey.py:528
-#: code:addons/survey/survey.py:533 code:addons/survey/survey.py:535
+#: code:addons/survey/survey.py:153
+#: code:addons/survey/survey.py:170
+#: code:addons/survey/survey.py:188
+#: code:addons/survey/survey.py:425
+#: code:addons/survey/survey.py:437
+#: code:addons/survey/survey.py:451
+#: code:addons/survey/survey.py:456
+#: code:addons/survey/survey.py:466
+#: code:addons/survey/survey.py:472
+#: code:addons/survey/survey.py:478
+#: code:addons/survey/survey.py:484
+#: code:addons/survey/survey.py:488
+#: code:addons/survey/survey.py:494
+#: code:addons/survey/survey.py:498
+#: code:addons/survey/survey.py:509
+#: code:addons/survey/survey.py:513
+#: code:addons/survey/survey.py:518
+#: code:addons/survey/survey.py:524
+#: code:addons/survey/survey.py:526
+#: code:addons/survey/survey.py:528
+#: code:addons/survey/survey.py:533
+#: code:addons/survey/survey.py:535
 #: code:addons/survey/survey.py:691
 #: code:addons/survey/wizard/survey_answer.py:118
 #: code:addons/survey/wizard/survey_answer.py:125
@@ -1623,15 +1721,15 @@ msgstr ""
 #: code:addons/survey/wizard/survey_send_invitation.py:71
 #, python-format
 msgid "Warning!"
-msgstr "Varning!"
+msgstr ""
 
 #. module: survey
 #: code:addons/survey/survey.py:466
 #, python-format
 msgid ""
 "Minimum Required Answer                                     you entered is "
-"greater than the number of answer.                                    Please"
-" use a number that is smaller than %d."
+"greater than the number of answer.                                    Please "
+"use a number that is smaller than %d."
 msgstr ""
 
 #. module: survey
@@ -1642,7 +1740,7 @@ msgstr ""
 #. module: survey
 #: field:survey,id:0
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: survey
 #: code:addons/survey/survey.py:488
@@ -1660,7 +1758,7 @@ msgstr ""
 #. module: survey
 #: selection:survey.question,required_type:0
 msgid "All"
-msgstr "Alla"
+msgstr ""
 
 #. module: survey
 #: selection:survey.question,comment_valid_type:0
@@ -1691,15 +1789,19 @@ msgstr ""
 #. module: survey
 #: selection:survey.answer,type:0
 msgid "Float"
-msgstr "Flyttal"
+msgstr ""
 
 #. module: survey
-#: code:addons/survey/wizard/survey_answer.py:395 view:survey.browse.answer:0
-#: view:survey.name.wiz:0 view:survey.print:0 view:survey.print.answer:0
-#: view:survey.print.statistics:0 view:survey.send.invitation:0
+#: code:addons/survey/wizard/survey_answer.py:395
+#: view:survey.browse.answer:0
+#: view:survey.name.wiz:0
+#: view:survey.print:0
+#: view:survey.print.answer:0
+#: view:survey.print.statistics:0
+#: view:survey.send.invitation:0
 #, python-format
 msgid "or"
-msgstr "eller"
+msgstr ""
 
 #. module: survey
 #: field:survey,title:0
@@ -1709,7 +1811,7 @@ msgstr ""
 #. module: survey
 #: field:survey.question.column.heading,rating_weight:0
 msgid "Weight"
-msgstr "Vikt"
+msgstr ""
 
 #. module: survey
 #: selection:survey.answer,type:0
@@ -1720,7 +1822,7 @@ msgstr ""
 #: field:survey.response,date_create:0
 #: field:survey.response.line,date_create:0
 msgid "Create Date"
-msgstr "Skapat datum"
+msgstr ""
 
 #. module: survey
 #: field:survey.question,column_name:0
@@ -1730,7 +1832,8 @@ msgstr ""
 #. module: survey
 #: model:ir.actions.act_window,name:survey.action_survey_page_form
 #: model:ir.model,name:survey.model_survey_page
-#: model:ir.ui.menu,name:survey.menu_survey_page_form1 view:survey.page:0
+#: model:ir.ui.menu,name:survey.menu_survey_page_form1
+#: view:survey.page:0
 msgid "Survey Pages"
 msgstr ""
 
@@ -1745,7 +1848,8 @@ msgid "Is Answer Type Invisible?"
 msgstr ""
 
 #. module: survey
-#: selection:survey.question,type:0 view:survey.response.line:0
+#: selection:survey.question,type:0
+#: view:survey.response.line:0
 msgid "Table"
 msgstr ""
 

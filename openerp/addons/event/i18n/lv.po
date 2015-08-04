@@ -1,25 +1,25 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * event
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2014
+# Latvian translation for openobject-addons
+# Copyright (c) 2014 Rosetta Contributors and Canonical Ltd 2014
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-08-14 00:10+0000\n"
-"PO-Revision-Date: 2015-05-29 13:13+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Latvian (http://www.transifex.com/projects/p/odoo-7/language/lv/)\n"
+"PO-Revision-Date: 2014-10-23 11:34+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Latvian <lv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: lv\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2014-10-24 06:34+0000\n"
+"X-Generator: Launchpad (build 17203)\n"
 
 #. module: event
-#: view:event.event:0 view:report.event.registration:0
+#: view:event.event:event.view_event_search
+#: view:report.event.registration:event.view_report_event_registration_search
 msgid "My Events"
 msgstr "Mani pasākumi"
 
@@ -39,10 +39,11 @@ msgid "Main Speaker"
 msgstr ""
 
 #. module: event
-#: view:event.event:0 view:event.registration:0
+#: view:event.event:0
+#: view:event.registration:0
 #: view:report.event.registration:0
 msgid "Group By..."
-msgstr "Grupēt pēc..."
+msgstr ""
 
 #. module: event
 #: field:event.event,register_min:0
@@ -50,7 +51,7 @@ msgid "Minimum Registrations"
 msgstr ""
 
 #. module: event
-#: help:event.event,register_min:0
+#: help:event.event,seats_min:0
 msgid ""
 "You can for each event define a minimum registration level. If you do not "
 "enough registrations you are not able to confirm your event. (put 0 to "
@@ -73,7 +74,8 @@ msgid "Concert of Bon Jovi"
 msgstr ""
 
 #. module: event
-#: view:event.registration:0 selection:event.registration,state:0
+#: view:event.registration:event.view_event_registration_form
+#: selection:event.registration,state:0
 #: selection:report.event.registration,registration_state:0
 msgid "Attended"
 msgstr "Piedalījās"
@@ -81,16 +83,17 @@ msgstr "Piedalījās"
 #. module: event
 #: selection:report.event.registration,month:0
 msgid "March"
-msgstr "Marts"
+msgstr ""
 
 #. module: event
-#: view:event.registration:0
+#: view:event.registration:event.view_event_registration_form
 msgid "Send Email"
 msgstr "Nosūtīt e-pastu"
 
 #. module: event
-#: field:event.event,company_id:0 field:event.registration,company_id:0
-#: view:report.event.registration:0
+#: field:event.event,company_id:0
+#: field:event.registration,company_id:0
+#: view:report.event.registration:event.view_report_event_registration_search
 #: field:report.event.registration,company_id:0
 msgid "Company"
 msgstr "Uzņēmums"
@@ -107,7 +110,7 @@ msgid "Default Maximum Registration"
 msgstr "Noklusējuma maksimālas reģistrācijas"
 
 #. module: event
-#: view:report.event.registration:0
+#: view:report.event.registration:event.view_report_event_registration_search
 msgid "Display"
 msgstr "Parādīt"
 
@@ -117,7 +120,9 @@ msgid "Available Registrations"
 msgstr ""
 
 #. module: event
-#: view:event.registration:0
+#: view:event.registration:event.view_event_registration_calendar
+#: view:event.registration:event.view_event_registration_form
+#: view:event.registration:event.view_registration_search
 #: model:ir.model,name:event.model_event_registration
 msgid "Event Registration"
 msgstr "Pasākuma reģistrācija"
@@ -130,33 +135,32 @@ msgstr "Palīdz jums pārvaldīt jūsu pasākumus."
 #. module: event
 #: view:report.event.registration:0
 msgid "Day"
-msgstr "Diena"
+msgstr ""
 
 #. module: event
-#: view:report.event.registration:0
+#: view:report.event.registration:event.report_event_registration_graph
+#: view:report.event.registration:event.view_report_event_registration_search
 msgid "Event on Registration"
 msgstr "Pasākumi reģistrācijā"
 
 #. module: event
-#: view:event.event:0
+#: view:event.event:event.view_event_search
 msgid "Confirmed events"
 msgstr "Apstiprināti pasākumi"
 
 #. module: event
 #: view:event.event:0
 msgid "ZIP"
-msgstr "PASTA KODS"
+msgstr ""
 
 #. module: event
-#: view:report.event.registration:0
+#: view:report.event.registration:event.view_report_event_registration_search
 msgid "Event Beginning Date"
 msgstr "Pasākuma sākuma datums"
 
 #. module: event
 #: model:ir.actions.act_window,name:event.action_report_event_registration
-#: model:ir.model,name:event.model_report_event_registration
 #: model:ir.ui.menu,name:event.menu_report_event_registration
-#: view:report.event.registration:0
 msgid "Events Analysis"
 msgstr "Pasākumu analīze"
 
@@ -166,50 +170,54 @@ msgid "It will select this default maximum value when you choose this event"
 msgstr ""
 
 #. module: event
-#: view:report.event.registration:0
 #: field:report.event.registration,user_id_registration:0
 msgid "Register"
 msgstr "Reģistrēties"
 
 #. module: event
-#: field:event.event,message_ids:0 field:event.registration,message_ids:0
+#: field:event.event,message_ids:0
+#: field:event.registration,message_ids:0
 msgid "Messages"
 msgstr "Ziņojumi"
 
 #. module: event
-#: view:event.event:0 field:event.event,registration_ids:0
+#: view:event.event:event.view_event_form
+#: field:event.event,registration_ids:0
 #: model:ir.actions.act_window,name:event.act_event_list_register_event
 #: model:ir.actions.act_window,name:event.action_registration
-#: model:ir.ui.menu,name:event.menu_action_registration view:res.partner:0
+#: model:ir.ui.menu,name:event.menu_action_registration
 msgid "Registrations"
 msgstr "Reģistrācijas"
 
 #. module: event
-#: code:addons/event/event.py:89 code:addons/event/event.py:100
+#: code:addons/event/event.py:89
+#: code:addons/event/event.py:100
 #: code:addons/event/event.py:357
 #, python-format
 msgid "Error!"
-msgstr "Kļūda!"
+msgstr ""
 
 #. module: event
-#: view:event.event:0
+#: view:event.event:event.view_event_form
 msgid "Confirm Event"
 msgstr "Apstiprināt pasākumu"
 
 #. module: event
-#: view:board.board:0 model:ir.actions.act_window,name:event.act_event_view
+#: view:board.board:0
+#: model:ir.actions.act_window,name:event.act_event_view
 msgid "Next Events"
 msgstr ""
 
 #. module: event
-#: selection:event.event,state:0 selection:event.registration,state:0
+#: selection:event.event,state:0
+#: selection:event.registration,state:0
 #: selection:report.event.registration,event_state:0
 #: selection:report.event.registration,registration_state:0
 msgid "Cancelled"
 msgstr "Atsaukta"
 
 #. module: event
-#: view:event.event:0
+#: view:event.event:event.view_event_kanban
 msgid "ticket"
 msgstr "biļete"
 
@@ -219,30 +227,30 @@ msgid "Opera of Verdi"
 msgstr ""
 
 #. module: event
-#: help:event.event,message_unread:0 help:event.registration,message_unread:0
+#: help:event.event,message_unread:0
+#: help:event.registration,message_unread:0
 msgid "If checked new messages require your attention."
 msgstr "Ja atzīmēts, tad jauni ziņojumi pieprasīs jūsu uzmanību."
 
 #. module: event
-#: view:report.event.registration:0
 #: field:report.event.registration,registration_state:0
 msgid "Registration State"
 msgstr "Reģistrācijas stāvoklis"
 
 #. module: event
-#: view:event.event:0
+#: view:event.event:event.view_event_kanban
 msgid "tickets"
 msgstr "biļetes"
 
 #. module: event
 #: view:event.event:0
 msgid "Street..."
-msgstr "Iela..."
+msgstr ""
 
 #. module: event
 #: view:res.partner:0
 msgid "False"
-msgstr "Aplams"
+msgstr ""
 
 #. module: event
 #: field:event.registration,event_end_date:0
@@ -258,23 +266,28 @@ msgid ""
 msgstr ""
 
 #. module: event
-#: view:report.event.registration:0
+#: view:report.event.registration:event.view_report_event_registration_search
 msgid "Registrations in confirmed or done state"
 msgstr "Reģistrācijas stāvoklī Apstiprinātas vai Pabeigtas"
 
 #. module: event
-#: code:addons/event/event.py:106 code:addons/event/event.py:108
+#: code:addons/event/event.py:106
+#: code:addons/event/event.py:108
 #, python-format
 msgid "Warning!"
-msgstr "Uzmanību!"
+msgstr ""
 
 #. module: event
-#: view:event.event:0 view:event.registration:0
+#: view:event.event:event.view_event_form
+#: view:event.registration:event.view_event_registration_form
+#: view:event.registration:event.view_event_registration_graph
+#: view:event.registration:event.view_event_registration_tree
 msgid "Registration"
 msgstr "Reģistrācija"
 
 #. module: event
-#: view:event.registration:0 field:event.registration,partner_id:0
+#: view:event.registration:event.view_registration_search
+#: field:event.registration,partner_id:0
 #: model:ir.model,name:event.model_res_partner
 msgid "Partner"
 msgstr "Partneris"
@@ -290,15 +303,17 @@ msgid " Event Type "
 msgstr ""
 
 #. module: event
-#: view:event.registration:0 field:event.registration,event_id:0
-#: model:ir.model,name:event.model_event_event
-#: view:report.event.registration:0 field:report.event.registration,event_id:0
-#: view:res.partner:0
+#: view:event.registration:event.view_registration_search
+#: field:event.registration,event_id:0
+#: view:report.event.registration:event.view_report_event_registration_search
+#: field:report.event.registration,event_id:0
 msgid "Event"
 msgstr "Pasākums"
 
 #. module: event
-#: view:event.event:0 selection:event.event,state:0 view:event.registration:0
+#: view:event.event:event.view_event_search
+#: selection:event.event,state:0
+#: view:event.registration:event.view_registration_search
 #: selection:event.registration,state:0
 #: selection:report.event.registration,event_state:0
 #: selection:report.event.registration,registration_state:0
@@ -306,22 +321,24 @@ msgid "Confirmed"
 msgstr "Apstiprināts"
 
 #. module: event
-#: view:event.registration:0
+#: view:event.registration:event.view_registration_search
+#: view:report.event.registration:event.view_report_event_registration_search
 msgid "Participant"
 msgstr "Dalībnieks"
 
 #. module: event
-#: view:event.registration:0 view:report.event.registration:0
+#: view:event.registration:event.view_event_registration_form
+#: view:report.event.registration:event.view_report_event_registration_search
 msgid "Confirm"
 msgstr "Apstiprināt"
 
 #. module: event
-#: view:event.event:0
+#: view:event.event:event.view_event_kanban
 msgid "Organized by"
 msgstr "Organizē"
 
 #. module: event
-#: view:event.event:0
+#: view:event.event:event.view_event_form
 msgid "Register with this event"
 msgstr "Reģistrēties šim pasākumam"
 
@@ -333,7 +350,7 @@ msgid ""
 msgstr ""
 
 #. module: event
-#: view:event.event:0
+#: view:event.event:event.view_event_kanban
 msgid "Only"
 msgstr "Tikai"
 
@@ -344,18 +361,21 @@ msgid "Followers"
 msgstr "Sekotāji"
 
 #. module: event
-#: view:event.event:0
+#: field:event.event,address_id:0
 msgid "Location"
 msgstr "Vieta"
 
 #. module: event
-#: view:event.event:0 field:event.event,message_unread:0
-#: view:event.registration:0 field:event.registration,message_unread:0
+#: view:event.event:event.view_event_search
+#: field:event.event,message_unread:0
+#: view:event.registration:event.view_registration_search
+#: field:event.registration,message_unread:0
 msgid "Unread Messages"
 msgstr "Neizlasīti ziņojumi"
 
 #. module: event
-#: view:event.registration:0 view:report.event.registration:0
+#: view:event.registration:event.view_registration_search
+#: view:report.event.registration:event.view_report_event_registration_search
 msgid "New"
 msgstr "Jauns"
 
@@ -370,35 +390,37 @@ msgid "Email"
 msgstr "E-pasts"
 
 #. module: event
-#: code:addons/event/event.py:331
+#: code:addons/event/event.py:339
 #, python-format
 msgid "New registration confirmed: %s."
 msgstr "Jauna reģistrācija apstiprināta: %s."
 
 #. module: event
-#: view:event.event:0
+#: view:event.event:event.view_event_search
 msgid "Upcoming"
 msgstr "Nākamie"
 
 #. module: event
 #: field:event.registration,create_date:0
 msgid "Creation Date"
-msgstr "Izveides Datums"
+msgstr ""
 
 #. module: event
-#: view:report.event.registration:0 field:report.event.registration,user_id:0
+#: field:report.event.registration,user_id:0
 msgid "Event Responsible"
 msgstr "Pasākuma atbildīgais"
 
 #. module: event
-#: view:event.event:0 view:event.registration:0 view:res.partner:0
+#: view:event.event:event.view_event_form
+#: view:event.registration:event.view_event_registration_form
+#: view:event.registration:event.view_event_registration_tree
 msgid "Cancel Registration"
 msgstr "Atcelt reģistrāciju"
 
 #. module: event
 #: selection:report.event.registration,month:0
 msgid "July"
-msgstr "Jūlijs"
+msgstr ""
 
 #. module: event
 #: field:event.event,reply_to:0
@@ -406,22 +428,22 @@ msgid "Reply-To Email"
 msgstr "E-pasts atbildēm"
 
 #. module: event
-#: view:event.registration:0
+#: view:event.registration:event.view_registration_search
 msgid "Confirmed registrations"
 msgstr "Apstiprinātas reģistrācijas"
 
 #. module: event
 #: view:event.event:0
 msgid "Starting Date"
-msgstr "Sākuma Datums"
+msgstr ""
 
 #. module: event
-#: view:event.event:0
+#: view:event.event:event.view_event_calendar
 msgid "Event Organization"
 msgstr "Pasākuma organizācija"
 
 #. module: event
-#: view:event.confirm:0
+#: view:event.confirm:event.view_event_confirm
 msgid "Confirm Anyway"
 msgstr "Tomēr apstiprināt"
 
@@ -431,7 +453,7 @@ msgid "Speaker who will be giving speech at the event."
 msgstr ""
 
 #. module: event
-#: view:event.event:0
+#: view:event.event:event.view_event_form
 msgid "Cancel Event"
 msgstr "Atcelt pasākumu"
 
@@ -442,7 +464,7 @@ msgid "Events Filling Status"
 msgstr ""
 
 #. module: event
-#: view:event.event:0
+#: view:event.event:event.view_event_tree
 msgid "Event Category"
 msgstr "Pasākuma kategorija"
 
@@ -457,7 +479,7 @@ msgid "Open Event Menu"
 msgstr "Atvērtu pasākumu menu"
 
 #. module: event
-#: view:report.event.registration:0
+#: view:report.event.registration:event.view_report_event_registration_search
 #: field:report.event.registration,event_state:0
 msgid "Event State"
 msgstr "Pasākuma stāvoklis"
@@ -468,19 +490,20 @@ msgid "Logs"
 msgstr "Žurnāli"
 
 #. module: event
-#: view:event.event:0 field:event.event,state_id:0
+#: view:event.event:0
+#: field:event.event,state_id:0
 msgid "State"
-msgstr "Stāvoklis"
+msgstr ""
 
 #. module: event
 #: selection:report.event.registration,month:0
 msgid "September"
-msgstr "Septembris"
+msgstr ""
 
 #. module: event
 #: selection:report.event.registration,month:0
 msgid "December"
-msgstr "Decembris"
+msgstr ""
 
 #. module: event
 #: help:event.registration,origin:0
@@ -499,9 +522,10 @@ msgid "Registration Confirmation Email"
 msgstr "Reģistrācijas apstiprināšanas e-pasts"
 
 #. module: event
-#: view:report.event.registration:0 field:report.event.registration,month:0
+#: view:report.event.registration:0
+#: field:report.event.registration,month:0
 msgid "Month"
-msgstr "Mēnesis"
+msgstr ""
 
 #. module: event
 #: field:event.registration,date_closed:0
@@ -509,12 +533,12 @@ msgid "Attended Date"
 msgstr "Piedalījās dienā"
 
 #. module: event
-#: view:event.event:0
+#: view:event.event:event.view_event_form
 msgid "Finish Event"
 msgstr "Pabeigt pasākumu"
 
 #. module: event
-#: view:event.registration:0
+#: view:event.registration:event.view_registration_search
 msgid "Registrations in unconfirmed state"
 msgstr "Reģistrācijas neapstiprinātā stāvoklī"
 
@@ -531,7 +555,7 @@ msgstr "Sākuma datums"
 #. module: event
 #: view:event.confirm:0
 msgid "or"
-msgstr "vai"
+msgstr ""
 
 #. module: event
 #: help:res.partner,speaker:0
@@ -548,8 +572,8 @@ msgstr ""
 #: help:event.event,state:0
 msgid ""
 "If event is created, the status is 'Draft'.If event is confirmed for the "
-"particular dates the status is set to 'Confirmed'. If the event is over, the"
-" status is set to 'Done'.If event is cancelled the status is set to "
+"particular dates the status is set to 'Confirmed'. If the event is over, the "
+"status is set to 'Done'.If event is cancelled the status is set to "
 "'Cancelled'."
 msgstr ""
 
@@ -559,8 +583,10 @@ msgid ""
 "<p class=\"oe_view_nocontent_create\">\n"
 "               Click to add a new event.\n"
 "             </p><p>\n"
-"               OpenERP helps you schedule and efficiently organize your events:\n"
-"               track subscriptions and participations, automate the confirmation emails,\n"
+"               OpenERP helps you schedule and efficiently organize your "
+"events:\n"
+"               track subscriptions and participations, automate the "
+"confirmation emails,\n"
 "               sell tickets, etc.\n"
 "             </p>\n"
 "           "
@@ -608,28 +634,32 @@ msgid "Draft"
 msgstr "Melnraksts"
 
 #. module: event
-#: view:event.event:0
+#: view:event.event:event.view_event_search
 msgid "Events in New state"
 msgstr "Pasākumi stāvoklī Jauns"
 
 #. module: event
-#: view:report.event.registration:0
+#: view:report.event.registration:event.view_report_event_registration_search
 msgid "Events which are in New state"
 msgstr "Pasākumi kas ir stāvoklī Jauns"
 
 #. module: event
-#: view:event.event:0 model:ir.actions.act_window,name:event.action_event_view
-#: model:ir.actions.act_window,name:event.open_board_associations_manager
+#: view:event.event:event.view_event_form
+#: view:event.event:event.view_event_search
+#: view:event.event:event.view_event_tree
+#: model:ir.actions.act_window,name:event.action_event_view
 #: model:ir.module.category,name:event.module_category_event_management
+#: model:ir.ui.menu,name:event.event_configuration
 #: model:ir.ui.menu,name:event.event_main_menu
-#: model:ir.ui.menu,name:event.menu_board_associations_manager
 #: model:ir.ui.menu,name:event.menu_event_event
-#: model:ir.ui.menu,name:event.menu_reporting_events view:res.partner:0
+#: model:ir.ui.menu,name:event.menu_reporting_events
 msgid "Events"
 msgstr "Pasākumi"
 
 #. module: event
-#: view:event.event:0 field:event.event,state:0 view:event.registration:0
+#: view:event.event:event.view_event_search
+#: field:event.event,state:0
+#: view:event.registration:event.view_registration_search
 #: field:event.registration,state:0
 msgid "Status"
 msgstr "Statuss"
@@ -642,27 +672,28 @@ msgstr ""
 #. module: event
 #: selection:report.event.registration,month:0
 msgid "August"
-msgstr "Augusts"
+msgstr ""
 
 #. module: event
 #: field:event.event,zip:0
 msgid "zip"
-msgstr "zip"
+msgstr ""
 
 #. module: event
-#: field:res.partner,event_ids:0 field:res.partner,event_registration_ids:0
+#: field:res.partner,event_ids:0
+#: field:res.partner,event_registration_ids:0
 msgid "unknown"
-msgstr "nezināma"
+msgstr ""
 
 #. module: event
 #: field:event.event,street2:0
 msgid "Street2"
-msgstr "Iela2"
+msgstr ""
 
 #. module: event
 #: selection:report.event.registration,month:0
 msgid "June"
-msgstr "Jūnijs"
+msgstr ""
 
 #. module: event
 #: help:event.type,default_reply_to:0
@@ -673,7 +704,8 @@ msgid ""
 msgstr ""
 
 #. module: event
-#: help:event.event,message_ids:0 help:event.registration,message_ids:0
+#: help:event.event,message_ids:0
+#: help:event.registration,message_ids:0
 msgid "Messages and communication history"
 msgstr "Ziņojumu un komunikācijas vēsture"
 
@@ -687,8 +719,11 @@ msgstr "Tālrunis"
 msgid ""
 "\n"
 "        <p>Hello ${object.name},</p>\n"
-"        <p>The event ${object.event_id.name} that you registered for is confirmed and will be held from ${object.event_id.date_begin} to ${object.event_id.date_end}.\n"
-"        For any further information please contact our event department.</p>\n"
+"        <p>The event ${object.event_id.name} that you registered for is "
+"confirmed and will be held from ${object.event_id.date_begin} to "
+"${object.event_id.date_end}.\n"
+"        For any further information please contact our event "
+"department.</p>\n"
 "        <p>Thank you for your participation!</p>\n"
 "        <p>Best regards</p>"
 msgstr ""
@@ -706,59 +741,60 @@ msgid "User"
 msgstr "Lietotājs"
 
 #. module: event
-#: view:event.confirm:0
+#: view:event.confirm:event.view_event_confirm
 msgid ""
 "Warning: This Event has not reached its Minimum Registration Limit. Are you "
 "sure you want to confirm it?"
 msgstr ""
 
 #. module: event
-#: view:event.event:0
+#: view:event.event:event.view_event_form
 msgid "(confirmed:"
 msgstr "(apstiprināts:"
 
 #. module: event
-#: view:event.registration:0
+#: view:event.registration:event.view_registration_search
 msgid "My Registrations"
 msgstr "Manas reģistrācijas"
 
 #. module: event
 #: selection:report.event.registration,month:0
 msgid "November"
-msgstr "Novembris"
+msgstr ""
 
 #. module: event
-#: view:report.event.registration:0
+#: view:report.event.registration:event.view_report_event_registration_search
 msgid "Extended Filters..."
 msgstr "Paplašinātie filtri..."
 
 #. module: event
-#: field:report.event.registration,nbevent:0
+#: field:report.event.registration,nbregistration:0
 msgid "Number of Registrations"
 msgstr "Reģistrāciju skaits"
 
 #. module: event
 #: selection:report.event.registration,month:0
 msgid "October"
-msgstr "Oktobris"
+msgstr ""
 
 #. module: event
 #: selection:report.event.registration,month:0
 msgid "January"
-msgstr "Janvāris"
+msgstr ""
 
 #. module: event
-#: view:event.event:0
+#: view:event.event:event.view_event_form
 msgid "Set To Draft"
 msgstr "Atzīmēt kā melnrakstu"
 
 #. module: event
-#: view:event.event:0 view:event.registration:0 view:res.partner:0
+#: view:event.event:event.view_event_form
+#: view:event.registration:event.view_event_registration_tree
 msgid "Confirm Registration"
 msgstr "Apstiprināt Reģistrāciju"
 
 #. module: event
-#: code:addons/event/event.py:89
+#: code:addons/event/event.py:222
 #, python-format
 msgid ""
 "You have already set a registration for this event as 'Attended'. Please "
@@ -768,7 +804,7 @@ msgstr ""
 #. module: event
 #: view:res.partner:0
 msgid "Date"
-msgstr "Datums"
+msgstr ""
 
 #. module: event
 #: view:event.event:0
@@ -783,7 +819,7 @@ msgstr "Noklusējuma minimuma reģistrācijas"
 #. module: event
 #: field:event.event,address_id:0
 msgid "Location Address"
-msgstr "Noliktavas adrese"
+msgstr ""
 
 #. module: event
 #: model:ir.actions.act_window,name:event.action_event_type
@@ -794,12 +830,13 @@ msgstr "Pasākumu tipi"
 #. module: event
 #: help:event.event,email_registration_id:0
 msgid ""
-"This field contains the template of the mail that will be automatically sent"
-" each time a registration for this event is confirmed."
+"This field contains the template of the mail that will be automatically sent "
+"each time a registration for this event is confirmed."
 msgstr ""
 
 #. module: event
-#: view:event.event:0 view:event.registration:0
+#: view:event.event:event.view_event_form
+#: view:event.registration:event.view_event_registration_tree
 msgid "Attended the Event"
 msgstr "Pasākumu apmeklēja"
 
@@ -826,12 +863,12 @@ msgid "Done"
 msgstr "Izdarīts"
 
 #. module: event
-#: view:report.event.registration:0
+#: view:report.event.registration:event.view_report_event_registration_search
 msgid "Show Confirmed Registrations"
 msgstr "Parādīt apstiprinātas reģistrācijas"
 
 #. module: event
-#: view:event.confirm:0
+#: view:event.confirm:event.view_event_confirm
 msgid "Cancel"
 msgstr "Atcelt"
 
@@ -843,7 +880,7 @@ msgstr ""
 #. module: event
 #: view:event.event:0
 msgid "City"
-msgstr "Pilsēta"
+msgstr ""
 
 #. module: event
 #: model:email.template,subject:event.confirmation_event
@@ -852,38 +889,38 @@ msgid "Your registration at ${object.event_id.name}"
 msgstr "Jūsu reģistrācija uz ${object.event_id.name}"
 
 #. module: event
-#: view:event.registration:0
+#: view:event.registration:event.view_event_registration_form
 msgid "Set To Unconfirmed"
 msgstr "Atzīmēt kā neapstiprinātu"
 
 #. module: event
-#: view:event.event:0 field:event.event,is_subscribed:0
+#: view:event.event:event.view_event_kanban
 msgid "Subscribed"
 msgstr "Abonēta/-s"
 
 #. module: event
-#: view:event.event:0
+#: view:event.event:event.view_event_kanban
 msgid "Unsubscribe"
 msgstr "Atrakstīties"
 
 #. module: event
-#: view:event.event:0 view:event.registration:0
+#: view:event.event:event.view_event_search
+#: view:event.registration:event.view_registration_search
 msgid "Responsible"
 msgstr "Atbildīgais"
 
 #. module: event
-#: view:report.event.registration:0
+#: view:report.event.registration:event.view_report_event_registration_search
 msgid "Registration contact"
 msgstr "Reģistrācijas kontakts"
 
 #. module: event
-#: view:report.event.registration:0
-#: field:report.event.registration,speaker_id:0 field:res.partner,speaker:0
+#: field:res.partner,speaker:0
 msgid "Speaker"
 msgstr "Runātājs"
 
 #. module: event
-#: view:event.event:0
+#: view:event.event:event.view_event_search
 msgid "Upcoming events from today"
 msgstr "Nākamie pasākumi no šodienas"
 
@@ -893,13 +930,13 @@ msgid "Conference on ERP Business"
 msgstr ""
 
 #. module: event
-#: model:ir.actions.act_window,name:event.act_event_view_registration
 #: model:mail.message.subtype,name:event.mt_event_registration
 msgid "New Registration"
 msgstr "Jauna reģistrācija"
 
 #. module: event
-#: field:event.event,note:0
+#: view:event.event:event.view_event_form
+#: field:event.event,description:0
 msgid "Description"
 msgstr "Apraksts"
 
@@ -916,7 +953,7 @@ msgstr "Dalībnieka/ Kontakta vārds"
 #. module: event
 #: selection:report.event.registration,month:0
 msgid "May"
-msgstr "Maijs"
+msgstr ""
 
 #. module: event
 #: view:res.partner:0
@@ -924,7 +961,7 @@ msgid "Events Registration"
 msgstr ""
 
 #. module: event
-#: view:event.event:0
+#: view:event.event:event.view_event_kanban
 msgid "No ticket available."
 msgstr "Nav pieejamu biļešu."
 
@@ -935,7 +972,8 @@ msgid "Maximum Registrations"
 msgstr ""
 
 #. module: event
-#: view:event.event:0 selection:event.event,state:0
+#: view:event.event:event.view_event_search
+#: selection:event.event,state:0
 #: selection:event.registration,state:0
 msgid "Unconfirmed"
 msgstr "Neapstiprināta/-s"
@@ -948,7 +986,7 @@ msgstr "Beigu datums"
 #. module: event
 #: selection:report.event.registration,month:0
 msgid "February"
-msgstr "Februāris"
+msgstr ""
 
 #. module: event
 #: view:board.board:0
@@ -956,12 +994,13 @@ msgid "Association Dashboard"
 msgstr ""
 
 #. module: event
-#: view:event.event:0 field:event.event,name:0 field:event.registration,name:0
+#: view:event.event:event.view_event_tree
+#: field:event.registration,name:0
 msgid "Name"
 msgstr "Nosaukums"
 
 #. module: event
-#: view:event.event:0 field:event.event,country_id:0
+#: field:event.event,country_id:0
 msgid "Country"
 msgstr "Valsts"
 
@@ -978,7 +1017,7 @@ msgstr "Pirmdokuments"
 #. module: event
 #: selection:report.event.registration,month:0
 msgid "April"
-msgstr "Aprīlis"
+msgstr ""
 
 #. module: event
 #: help:event.type,default_email_event:0
@@ -988,13 +1027,16 @@ msgid ""
 msgstr ""
 
 #. module: event
-#: view:report.event.registration:0
+#: view:report.event.registration:event.view_report_event_registration_search
 msgid "Events which are in confirm state"
 msgstr "Pasākumi, kas ir stāvoklī Apstiprināts"
 
 #. module: event
-#: view:event.event:0 view:event.type:0 field:event.type,name:0
-#: view:report.event.registration:0
+#: view:event.event:event.view_event_search
+#: view:event.type:event.view_event_type_form
+#: view:event.type:event.view_event_type_tree
+#: field:event.type,name:0
+#: view:report.event.registration:event.view_report_event_registration_search
 #: field:report.event.registration,event_type:0
 msgid "Event Type"
 msgstr "Pasākuma tips"
@@ -1006,7 +1048,11 @@ msgid "Summary"
 msgstr "Kopsavilkums"
 
 #. module: event
+#: field:event.confirm,id:0
+#: field:event.event,id:0
 #: field:event.registration,id:0
+#: field:event.type,id:0
+#: field:report.event.registration,id:0
 msgid "ID"
 msgstr "ID"
 
@@ -1016,7 +1062,7 @@ msgid "Default Reply-To"
 msgstr "Noklusējuma kam atbildēt"
 
 #. module: event
-#: view:event.event:0
+#: view:event.event:event.view_event_kanban
 msgid "available."
 msgstr "pieejamas."
 
@@ -1027,12 +1073,12 @@ msgid "Event Start Date"
 msgstr ""
 
 #. module: event
-#: view:report.event.registration:0
+#: view:report.event.registration:event.view_report_event_registration_search
 msgid "Participant / Contact"
 msgstr ""
 
 #. module: event
-#: view:event.event:0
+#: view:event.event:event.view_event_form
 msgid "Current Registrations"
 msgstr "Šī brīža reģistrācijas"
 
@@ -1041,8 +1087,11 @@ msgstr "Šī brīža reģistrācijas"
 msgid ""
 "\n"
 "        <p>Hello ${object.name},</p>\n"
-"        <p>We confirm that your registration to the event ${object.event_id.name} has been recorded.\n"
-"        You will automatically receive an email providing you more practical information (such as the schedule, the agenda...) as soon as the event is confirmed.</p>\n"
+"        <p>We confirm that your registration to the event "
+"${object.event_id.name} has been recorded.\n"
+"        You will automatically receive an email providing you more practical "
+"information (such as the schedule, the agenda...) as soon as the event is "
+"confirmed.</p>\n"
 "        <p>Thank you for your participation!</p>\n"
 "        <p>Best regards</p>"
 msgstr ""
@@ -1050,14 +1099,14 @@ msgstr ""
 #. module: event
 #: help:event.event,reply_to:0
 msgid ""
-"The email address of the organizer is likely to be put here, with the effect"
-" to be in the 'Reply-To' of the mails sent automatically at event or "
+"The email address of the organizer is likely to be put here, with the effect "
+"to be in the 'Reply-To' of the mails sent automatically at event or "
 "registrations confirmation. You can also put the email address of your mail "
 "gateway if you use one."
 msgstr ""
 
 #. module: event
-#: view:event.event:0
+#: view:event.event:event.view_event_kanban
 #: model:ir.actions.act_window,name:event.act_register_event_partner
 msgid "Subscribe"
 msgstr "Abonēt"
@@ -1070,19 +1119,19 @@ msgstr "Vadītājs"
 #. module: event
 #: field:event.event,street:0
 msgid "Street"
-msgstr "Iela"
+msgstr ""
 
 #. module: event
-#: view:event.confirm:0
+#: view:event.confirm:event.view_event_confirm
 #: model:ir.actions.act_window,name:event.action_event_confirm
-#: model:ir.model,name:event.model_event_confirm
 msgid "Event Confirmation"
 msgstr "Pasākuma apstiprinājums"
 
 #. module: event
-#: view:report.event.registration:0 field:report.event.registration,year:0
+#: view:report.event.registration:0
+#: field:report.event.registration,year:0
 msgid "Year"
-msgstr "Gads"
+msgstr ""
 
 #. module: event
 #: field:event.event,speaker_confirmed:0

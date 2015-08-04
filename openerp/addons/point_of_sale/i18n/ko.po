@@ -1,22 +1,21 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * point_of_sale
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2012
+# Korean translation for openobject-addons
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-08-14 00:10+0000\n"
-"PO-Revision-Date: 2015-05-29 13:15+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Korean (http://www.transifex.com/projects/p/odoo-7/language/ko/)\n"
+"PO-Revision-Date: 2012-12-21 23:00+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Korean <ko@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: ko\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2014-08-14 07:08+0000\n"
+"X-Generator: Launchpad (build 17156)\n"
 
 #. module: point_of_sale
 #: field:report.transaction.pos,product_nb:0
@@ -38,7 +37,8 @@ msgid ""
 "                touchscreen interface.\n"
 "              </p><p>\n"
 "                If you put a photo on the category, the layout of the\n"
-"                touchscreen interface will automatically. We suggest not to put\n"
+"                touchscreen interface will automatically. We suggest not to "
+"put\n"
 "                a photo on categories for small (1024x768) screens.\n"
 "              </p>\n"
 "            "
@@ -55,9 +55,10 @@ msgid "Computed Balance"
 msgstr ""
 
 #. module: point_of_sale
-#: view:pos.session:0 view:report.pos.order:0
+#: view:pos.session:0
+#: view:report.pos.order:0
 msgid "Today"
-msgstr "오늘"
+msgstr ""
 
 #. module: point_of_sale
 #: field:pos.config,iface_electronic_scale:0
@@ -82,7 +83,8 @@ msgid "&atilde;"
 msgstr ""
 
 #. module: point_of_sale
-#: field:pos.config,journal_id:0 field:pos.order,sale_journal:0
+#: field:pos.config,journal_id:0
+#: field:pos.order,sale_journal:0
 msgid "Sale Journal"
 msgstr ""
 
@@ -93,7 +95,8 @@ msgstr ""
 
 #. module: point_of_sale
 #: model:ir.actions.report.xml,name:point_of_sale.pos_lines_detail
-#: report:pos.details:0 report:pos.details_summary:0
+#: report:pos.details:0
+#: report:pos.details_summary:0
 msgid "Details of Sales"
 msgstr "판매 상세 내역"
 
@@ -103,22 +106,25 @@ msgid "You cannot have two cash controls in one Point Of Sale !"
 msgstr ""
 
 #. module: point_of_sale
-#: field:pos.payment.report.user,user_id:0 field:pos.sale.user,user_id:0
-#: field:pos.sales.user.today,user_id:0 view:report.pos.order:0
+#: field:pos.payment.report.user,user_id:0
+#: field:pos.sale.user,user_id:0
+#: field:pos.sales.user.today,user_id:0
+#: view:report.pos.order:0
 #: field:report.pos.order,user_id:0
 msgid "Salesperson"
-msgstr "영업사원"
+msgstr ""
 
 #. module: point_of_sale
-#: view:report.pos.order:0 field:report.pos.order,day:0
+#: view:report.pos.order:0
+#: field:report.pos.order,day:0
 msgid "Day"
-msgstr "일"
+msgstr ""
 
 #. module: point_of_sale
 #: field:report.sales.by.margin.pos,product_name:0
 #: field:report.sales.by.margin.pos.month,product_name:0
 msgid "Product Name"
-msgstr "상품 이름"
+msgstr ""
 
 #. module: point_of_sale
 #: model:product.template,name:point_of_sale.pamplemousse_rouge_pamplemousse_product_template
@@ -135,13 +141,17 @@ msgstr ""
 #: view:pos.session.opening:0
 msgid ""
 "You may have to control your cash amount in your cash register, before\n"
-"                          being able to start selling through the touchscreen interface."
+"                          being able to start selling through the "
+"touchscreen interface."
 msgstr ""
 
 #. module: point_of_sale
-#: report:account.statement:0 field:pos.box.entries,amount:0
-#: report:pos.invoice:0 field:pos.make.payment,amount:0
-#: report:pos.user.product:0 field:report.transaction.pos,amount:0
+#: report:account.statement:0
+#: field:pos.box.entries,amount:0
+#: report:pos.invoice:0
+#: field:pos.make.payment,amount:0
+#: report:pos.user.product:0
+#: field:report.transaction.pos,amount:0
 msgid "Amount"
 msgstr "금액"
 
@@ -172,11 +182,12 @@ msgstr ""
 #. module: point_of_sale
 #: field:pos.ean_wizard,ean13_pattern:0
 msgid "Reference"
-msgstr "참조"
+msgstr ""
 
 #. module: point_of_sale
 #: code:addons/point_of_sale/point_of_sale.py:1085
-#: code:addons/point_of_sale/point_of_sale.py:1102 report:pos.invoice:0
+#: code:addons/point_of_sale/point_of_sale.py:1102
+#: report:pos.invoice:0
 #: report:pos.lines:0
 #, python-format
 msgid "Tax"
@@ -185,7 +196,7 @@ msgstr "세금"
 #. module: point_of_sale
 #: report:pos.user.product:0
 msgid "Starting Date"
-msgstr "시작 날짜"
+msgstr ""
 
 #. module: point_of_sale
 #: constraint:pos.session:0
@@ -215,7 +226,7 @@ msgstr ""
 #: code:addons/point_of_sale/point_of_sale.py:772
 #, python-format
 msgid "Configuration Error!"
-msgstr "설정 오류!"
+msgstr ""
 
 #. module: point_of_sale
 #: report:account.statement:0
@@ -230,19 +241,21 @@ msgid "Closing Cash Control"
 msgstr ""
 
 #. module: point_of_sale
-#: report:pos.details:0 report:pos.details_summary:0
+#: report:pos.details:0
+#: report:pos.details_summary:0
 msgid "Total of the day"
 msgstr "일일 합계"
 
 #. module: point_of_sale
-#: view:report.pos.order:0 field:report.pos.order,average_price:0
+#: view:report.pos.order:0
+#: field:report.pos.order,average_price:0
 msgid "Average Price"
-msgstr "평균가"
+msgstr ""
 
 #. module: point_of_sale
 #: view:pos.order:0
 msgid "Accounting Information"
-msgstr "회계 정보"
+msgstr ""
 
 #. module: point_of_sale
 #. openerp-web
@@ -262,7 +275,8 @@ msgid "Disc. (%)"
 msgstr ""
 
 #. module: point_of_sale
-#: report:pos.details:0 report:pos.details_summary:0
+#: report:pos.details:0
+#: report:pos.details_summary:0
 msgid "Total discount"
 msgstr "총 할인"
 
@@ -298,25 +312,27 @@ msgstr ""
 
 #. module: point_of_sale
 #: model:ir.actions.act_window,name:point_of_sale.action_report_sales_by_user_pos_today
-#: view:report.sales.by.user.pos:0 view:report.sales.by.user.pos.month:0
+#: view:report.sales.by.user.pos:0
+#: view:report.sales.by.user.pos.month:0
 msgid "Sales by User"
 msgstr ""
 
 #. module: point_of_sale
 #: report:pos.invoice:0
 msgid "Disc.(%)"
-msgstr "할인율(%)"
+msgstr ""
 
 #. module: point_of_sale
 #: code:addons/point_of_sale/point_of_sale.py:1050
 #, python-format
 msgid "Please define income account for this product: \"%s\" (id:%d)."
-msgstr "해당 상품의 소득금액을 정의하세요: \"%s\" (id:%d)."
+msgstr ""
 
 #. module: point_of_sale
-#: view:report.pos.order:0 field:report.pos.order,price_total:0
+#: view:report.pos.order:0
+#: field:report.pos.order,price_total:0
 msgid "Total Price"
-msgstr "총 가격"
+msgstr ""
 
 #. module: point_of_sale
 #: model:product.template,name:point_of_sale.leffe_brune_33cl_product_template
@@ -355,12 +371,12 @@ msgstr ""
 #. module: point_of_sale
 #: view:pos.details:0
 msgid "Dates"
-msgstr "날짜"
+msgstr ""
 
 #. module: point_of_sale
 #: field:pos.category,parent_id:0
 msgid "Parent Category"
-msgstr "페어런트 카테고리"
+msgstr ""
 
 #. module: point_of_sale
 #: field:pos.details,user_ids:0
@@ -394,7 +410,8 @@ msgid "Margin"
 msgstr ""
 
 #. module: point_of_sale
-#: field:pos.discount,discount:0 field:pos.order.line,discount:0
+#: field:pos.discount,discount:0
+#: field:pos.order.line,discount:0
 msgid "Discount (%)"
 msgstr "할인 (%)"
 
@@ -453,8 +470,8 @@ msgstr ""
 #, python-format
 msgid ""
 "Please set your profit and loss accounts on your payment method '%s'. This "
-"will allow OpenERP to post the difference of %.2f in your ending balance. To"
-" close this session, you can update the 'Closing Cash Control' to avoid any "
+"will allow OpenERP to post the difference of %.2f in your ending balance. To "
+"close this session, you can update the 'Closing Cash Control' to avoid any "
 "difference."
 msgstr ""
 
@@ -493,21 +510,23 @@ msgid "Validate & Open Session"
 msgstr ""
 
 #. module: point_of_sale
-#: code:addons/point_of_sale/point_of_sale.py:99 selection:pos.session,state:0
+#: code:addons/point_of_sale/point_of_sale.py:99
+#: selection:pos.session,state:0
 #: selection:pos.session.opening,pos_state:0
 #, python-format
 msgid "In Progress"
-msgstr "진행 중"
+msgstr ""
 
 #. module: point_of_sale
-#: view:pos.session:0 field:pos.session,opening_details_ids:0
+#: view:pos.session:0
+#: field:pos.session,opening_details_ids:0
 msgid "Opening Cash Control"
 msgstr ""
 
 #. module: point_of_sale
 #: help:res.users,ean13:0
 msgid "BarCode"
-msgstr "바코드"
+msgstr ""
 
 #. module: point_of_sale
 #: help:pos.category,image_medium:0
@@ -545,17 +564,22 @@ msgid "Search Cash Statements"
 msgstr ""
 
 #. module: point_of_sale
-#: view:account.bank.statement:0 field:pos.config,state:0 view:pos.order:0
-#: field:pos.order,state:0 report:pos.sales.user:0
-#: report:pos.sales.user.today:0 field:pos.session,state:0
-#: field:pos.session.opening,pos_state_str:0 field:report.pos.order,state:0
+#: view:account.bank.statement:0
+#: field:pos.config,state:0
+#: view:pos.order:0
+#: field:pos.order,state:0
+#: report:pos.sales.user:0
+#: report:pos.sales.user.today:0
+#: field:pos.session,state:0
+#: field:pos.session.opening,pos_state_str:0
+#: field:report.pos.order,state:0
 msgid "Status"
-msgstr "상태"
+msgstr ""
 
 #. module: point_of_sale
 #: selection:report.pos.order,month:0
 msgid "August"
-msgstr "8월"
+msgstr ""
 
 #. module: point_of_sale
 #: model:product.template,name:point_of_sale.pepsi_max_lemon_33cl_product_template
@@ -565,7 +589,7 @@ msgstr ""
 #. module: point_of_sale
 #: selection:report.pos.order,month:0
 msgid "June"
-msgstr "6월"
+msgstr ""
 
 #. module: point_of_sale
 #: view:pos.order.line:0
@@ -600,12 +624,16 @@ msgid ""
 "<p class=\"oe_view_nocontent_create\">\n"
 "                Click to start a new session.\n"
 "              </p><p>\n"
-"                A session is a period of time, usually one day, during which\n"
-"                you sell through the point of sale. The user has to check the\n"
-"                currencies in your cash registers at the beginning and the end\n"
+"                A session is a period of time, usually one day, during "
+"which\n"
+"                you sell through the point of sale. The user has to check "
+"the\n"
+"                currencies in your cash registers at the beginning and the "
+"end\n"
 "                of each session.\n"
 "              </p><p>\n"
-"                Note that you should better to use the menu <i>Your Session</i>\n"
+"                Note that you should better to use the menu <i>Your "
+"Session</i>\n"
 "                to quickly open a new session.\n"
 "              </p>\n"
 "            "
@@ -620,15 +648,16 @@ msgstr ""
 #. module: point_of_sale
 #: view:pos.session.opening:0
 msgid ""
-"You can continue sales from the touchscreen interface by clicking on \"Start"
-" Selling\" or close the cash register session."
+"You can continue sales from the touchscreen interface by clicking on \"Start "
+"Selling\" or close the cash register session."
 msgstr ""
 
 #. module: point_of_sale
-#: report:account.statement:0 report:all.closed.cashbox.of.the.day:0
+#: report:account.statement:0
+#: report:all.closed.cashbox.of.the.day:0
 #: field:pos.session,stop_at:0
 msgid "Closing Date"
-msgstr "마감 날짜"
+msgstr ""
 
 #. module: point_of_sale
 #: view:pos.session:0
@@ -638,7 +667,7 @@ msgstr ""
 #. module: point_of_sale
 #: selection:report.pos.order,month:0
 msgid "October"
-msgstr "10월"
+msgstr ""
 
 #. module: point_of_sale
 #: model:product.template,name:point_of_sale.coca_light_1l_product_template
@@ -646,7 +675,8 @@ msgid "Coca-Cola Light 1L"
 msgstr ""
 
 #. module: point_of_sale
-#: report:pos.details:0 report:pos.details_summary:0
+#: report:pos.details:0
+#: report:pos.details_summary:0
 msgid "Summary"
 msgstr "요약"
 
@@ -661,7 +691,9 @@ msgid "Chaudfontaine 50cl"
 msgstr ""
 
 #. module: point_of_sale
-#: report:pos.invoice:0 report:pos.lines:0 field:pos.order.line,qty:0
+#: report:pos.invoice:0
+#: report:pos.lines:0
+#: field:pos.order.line,qty:0
 #: field:report.sales.by.user.pos,qty:0
 #: field:report.sales.by.user.pos.month,qty:0
 msgid "Quantity"
@@ -682,7 +714,7 @@ msgstr ""
 #. module: point_of_sale
 #: view:account.bank.statement:0
 msgid "Period"
-msgstr "기간"
+msgstr ""
 
 #. module: point_of_sale
 #: report:pos.invoice:0
@@ -697,7 +729,7 @@ msgstr ""
 #. module: point_of_sale
 #: report:pos.details_summary:0
 msgid "Mode of Payment"
-msgstr "결제 모드"
+msgstr ""
 
 #. module: point_of_sale
 #: model:ir.model,name:point_of_sale.model_pos_confirm
@@ -709,7 +741,7 @@ msgstr ""
 #: code:addons/point_of_sale/static/src/xml/pos.xml:457
 #, python-format
 msgid "Barcode Scanner"
-msgstr "바코드 스케너"
+msgstr ""
 
 #. module: point_of_sale
 #: model:product.template,name:point_of_sale.pomme_granny_smith_product_template
@@ -724,7 +756,8 @@ msgid ""
 msgstr ""
 
 #. module: point_of_sale
-#: view:report.pos.order:0 field:report.pos.order,total_discount:0
+#: view:report.pos.order:0
+#: field:report.pos.order,total_discount:0
 msgid "Total Discount"
 msgstr ""
 
@@ -733,7 +766,8 @@ msgstr ""
 #: code:addons/point_of_sale/static/src/xml/pos.xml:39
 #, python-format
 msgid ""
-"The Point of Sale is not supported by Microsoft Internet Explorer. Please use\n"
+"The Point of Sale is not supported by Microsoft Internet Explorer. Please "
+"use\n"
 "                        a modern browser like"
 msgstr ""
 
@@ -743,7 +777,9 @@ msgid "Click to start a session."
 msgstr ""
 
 #. module: point_of_sale
-#: view:pos.details:0 view:pos.payment.report:0 view:pos.payment.report.user:0
+#: view:pos.details:0
+#: view:pos.payment.report:0
+#: view:pos.payment.report.user:0
 #: view:pos.sale.user:0
 msgid "Print Report"
 msgstr ""
@@ -793,7 +829,7 @@ msgstr ""
 #. module: point_of_sale
 #: report:pos.invoice:0
 msgid "Tel. :"
-msgstr "전화 :"
+msgstr ""
 
 #. module: point_of_sale
 #. openerp-web
@@ -822,7 +858,8 @@ msgid "Post All Orders"
 msgstr ""
 
 #. module: point_of_sale
-#: report:account.statement:0 report:all.closed.cashbox.of.the.day:0
+#: report:account.statement:0
+#: report:all.closed.cashbox.of.the.day:0
 #: field:pos.session,cash_register_balance_end_real:0
 msgid "Ending Balance"
 msgstr ""
@@ -858,8 +895,7 @@ msgid ""
 "sale by reusing existing bank and cash through \"Accounting / Configuration "
 "/ Journals / Journals\". Select a journal and check the field \"PoS Payment "
 "Method\" from the \"Point of Sale\" tab. You can also create new payment "
-"methods directly from menu \"PoS Backend / Configuration / Payment "
-"Methods\"."
+"methods directly from menu \"PoS Backend / Configuration / Payment Methods\"."
 msgstr ""
 
 #. module: point_of_sale
@@ -878,9 +914,10 @@ msgid "Spa Reine 1L"
 msgstr ""
 
 #. module: point_of_sale
-#: constraint:res.partner:0 constraint:res.users:0
+#: constraint:res.partner:0
+#: constraint:res.users:0
 msgid "Error: Invalid ean code"
-msgstr "에러: 유효하지 않은 EAN 코드"
+msgstr ""
 
 #. module: point_of_sale
 #: model:pos.category,name:point_of_sale.legumes_racine
@@ -895,7 +932,8 @@ msgid "Open Statements"
 msgstr ""
 
 #. module: point_of_sale
-#: field:pos.details,date_end:0 field:pos.sale.user,date_end:0
+#: field:pos.details,date_end:0
+#: field:pos.sale.user,date_end:0
 msgid "Date End"
 msgstr ""
 
@@ -905,7 +943,8 @@ msgid "Jonagold apples"
 msgstr ""
 
 #. module: point_of_sale
-#: view:account.bank.statement:0 report:account.statement:0
+#: view:account.bank.statement:0
+#: report:account.statement:0
 #: report:all.closed.cashbox.of.the.day:0
 #: model:ir.model,name:point_of_sale.model_account_journal
 #: field:report.pos.order,journal_id:0
@@ -915,7 +954,7 @@ msgstr "저널"
 #. module: point_of_sale
 #: view:pos.session:0
 msgid "Statements"
-msgstr "내역서"
+msgstr ""
 
 #. module: point_of_sale
 #: report:pos.details:0
@@ -925,12 +964,13 @@ msgstr ""
 #. module: point_of_sale
 #: help:pos.config,group_by:0
 msgid ""
-"Check this if you want to group the Journal Items by Product while closing a"
-" Session"
+"Check this if you want to group the Journal Items by Product while closing a "
+"Session"
 msgstr ""
 
 #. module: point_of_sale
-#: report:pos.details:0 report:pos.details_summary:0
+#: report:pos.details:0
+#: report:pos.details_summary:0
 msgid "Total paid"
 msgstr "총 결제액"
 
@@ -973,7 +1013,7 @@ msgstr ""
 #. module: point_of_sale
 #: selection:report.pos.order,month:0
 msgid "March"
-msgstr "3월"
+msgstr ""
 
 #. module: point_of_sale
 #: model:ir.actions.report.xml,name:point_of_sale.pos_users_product_re
@@ -1075,7 +1115,8 @@ msgid "Scan Item Success"
 msgstr ""
 
 #. module: point_of_sale
-#: report:account.statement:0 report:all.closed.cashbox.of.the.day:0
+#: report:account.statement:0
+#: report:all.closed.cashbox.of.the.day:0
 #: field:pos.session,cash_register_balance_start:0
 msgid "Starting Balance"
 msgstr ""
@@ -1129,15 +1170,17 @@ msgstr ""
 #: code:addons/point_of_sale/static/src/xml/pos.xml:285
 #: code:addons/point_of_sale/wizard/pos_payment.py:79
 #: model:ir.actions.act_window,name:point_of_sale.action_pos_payment
-#: report:pos.details:0 view:pos.order:0
+#: report:pos.details:0
+#: view:pos.order:0
 #, python-format
 msgid "Payment"
 msgstr "결제"
 
 #. module: point_of_sale
-#: view:report.pos.order:0 field:report.pos.order,nbr:0
+#: view:report.pos.order:0
+#: field:report.pos.order,nbr:0
 msgid "# of Lines"
-msgstr "입력줄 개수"
+msgstr ""
 
 #. module: point_of_sale
 #. openerp-web
@@ -1149,7 +1192,7 @@ msgstr ""
 #. module: point_of_sale
 #: view:pos.order:0
 msgid "(update)"
-msgstr "(업데이트)"
+msgstr ""
 
 #. module: point_of_sale
 #: model:product.template,name:point_of_sale.ijsboerke_vanille_2,5l_product_template
@@ -1207,7 +1250,7 @@ msgstr ""
 #: code:addons/point_of_sale/static/src/js/screens.js:811
 #, python-format
 msgid "Print"
-msgstr "인쇄"
+msgstr ""
 
 #. module: point_of_sale
 #: model:product.template,name:point_of_sale.ijsboerke_dame_blanche_2,5l_product_template
@@ -1271,21 +1314,24 @@ msgid ""
 msgstr ""
 
 #. module: point_of_sale
-#: view:report.sales.by.margin.pos:0 view:report.sales.by.margin.pos.month:0
-#: view:report.sales.by.user.pos:0 view:report.sales.by.user.pos.month:0
+#: view:report.sales.by.margin.pos:0
+#: view:report.sales.by.margin.pos.month:0
+#: view:report.sales.by.user.pos:0
+#: view:report.sales.by.user.pos.month:0
 #: view:report.transaction.pos:0
 msgid "POS "
 msgstr ""
 
 #. module: point_of_sale
-#: report:account.statement:0 report:pos.user.product:0
+#: report:account.statement:0
+#: report:pos.user.product:0
 msgid "Total :"
-msgstr "합계:"
+msgstr ""
 
 #. module: point_of_sale
 #: view:report.pos.order:0
 msgid "My Sales"
-msgstr "내 판매"
+msgstr ""
 
 #. module: point_of_sale
 #: view:pos.config:0
@@ -1303,7 +1349,8 @@ msgid "Pricelist"
 msgstr "가격리스트"
 
 #. module: point_of_sale
-#: report:pos.details:0 report:pos.details_summary:0
+#: report:pos.details:0
+#: report:pos.details_summary:0
 msgid "Total invoiced"
 msgstr "총 인보이스 금액"
 
@@ -1314,9 +1361,10 @@ msgid "Point of Sale Category"
 msgstr ""
 
 #. module: point_of_sale
-#: view:report.pos.order:0 field:report.pos.order,product_qty:0
+#: view:report.pos.order:0
+#: field:report.pos.order,product_qty:0
 msgid "# of Qty"
-msgstr "수량 개수"
+msgstr ""
 
 #. module: point_of_sale
 #: help:pos.config,sequence_id:0
@@ -1343,13 +1391,14 @@ msgid "Yellow Peppers"
 msgstr ""
 
 #. module: point_of_sale
-#: view:pos.order:0 field:pos.order,date_order:0
+#: view:pos.order:0
+#: field:pos.order,date_order:0
 #: field:report.sales.by.margin.pos,date_order:0
 #: field:report.sales.by.margin.pos.month,date_order:0
 #: field:report.sales.by.user.pos,date_order:0
 #: field:report.sales.by.user.pos.month,date_order:0
 msgid "Order Date"
-msgstr "주문 날짜"
+msgstr ""
 
 #. module: point_of_sale
 #: model:product.template,name:point_of_sale.stella_33cl_product_template
@@ -1397,13 +1446,14 @@ msgstr ""
 #. module: point_of_sale
 #: selection:report.pos.order,month:0
 msgid "September"
-msgstr "9월"
+msgstr ""
 
 #. module: point_of_sale
-#: report:account.statement:0 report:all.closed.cashbox.of.the.day:0
+#: report:account.statement:0
+#: report:all.closed.cashbox.of.the.day:0
 #: field:pos.session,start_at:0
 msgid "Opening Date"
-msgstr "개시일"
+msgstr ""
 
 #. module: point_of_sale
 #: model:ir.actions.act_window,name:point_of_sale.action_pos_session
@@ -1421,7 +1471,7 @@ msgstr ""
 #. module: point_of_sale
 #: report:pos.lines:0
 msgid "Taxes :"
-msgstr "세금 :"
+msgstr ""
 
 #. module: point_of_sale
 #. openerp-web
@@ -1444,7 +1494,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:point_of_sale.pos_category_action
 #: model:ir.ui.menu,name:point_of_sale.menu_pos_category
 msgid "Product Categories"
-msgstr "상품 카테고리"
+msgstr ""
 
 #. module: point_of_sale
 #: help:pos.config,journal_id:0
@@ -1528,9 +1578,13 @@ msgid "Apply Discount"
 msgstr "할인 적용"
 
 #. module: point_of_sale
-#: report:account.statement:0 report:all.closed.cashbox.of.the.day:0
-#: field:pos.box.entries,user_id:0 report:pos.sales.user:0
-#: report:pos.sales.user.today:0 view:pos.session:0 report:pos.user.product:0
+#: report:account.statement:0
+#: report:all.closed.cashbox.of.the.day:0
+#: field:pos.box.entries,user_id:0
+#: report:pos.sales.user:0
+#: report:pos.sales.user.today:0
+#: view:pos.session:0
+#: report:pos.user.product:0
 #: field:report.sales.by.margin.pos,user_id:0
 #: field:report.sales.by.margin.pos.month,user_id:0
 #: field:report.sales.by.user.pos,user_id:0
@@ -1582,7 +1636,8 @@ msgid "transaction for the pos"
 msgstr ""
 
 #. module: point_of_sale
-#: report:pos.details:0 field:report.transaction.pos,date_create:0
+#: report:pos.details:0
+#: field:report.transaction.pos,date_create:0
 msgid "Date"
 msgstr "날짜"
 
@@ -1616,7 +1671,7 @@ msgstr ""
 #. module: point_of_sale
 #: selection:report.pos.order,month:0
 msgid "November"
-msgstr "11월"
+msgstr ""
 
 #. module: point_of_sale
 #. openerp-web
@@ -1654,16 +1709,24 @@ msgid ""
 msgstr ""
 
 #. module: point_of_sale
-#: view:pos.config:0 selection:pos.config,state:0
+#: view:pos.config:0
+#: selection:pos.config,state:0
 msgid "Inactive"
 msgstr ""
 
 #. module: point_of_sale
 #. openerp-web
-#: code:addons/point_of_sale/static/src/xml/pos.xml:313 view:pos.confirm:0
-#: view:pos.details:0 view:pos.discount:0 view:pos.ean_wizard:0
-#: view:pos.make.payment:0 view:pos.open.statement:0 view:pos.payment.report:0
-#: view:pos.payment.report.user:0 view:pos.receipt:0 view:pos.sale.user:0
+#: code:addons/point_of_sale/static/src/xml/pos.xml:313
+#: view:pos.confirm:0
+#: view:pos.details:0
+#: view:pos.discount:0
+#: view:pos.ean_wizard:0
+#: view:pos.make.payment:0
+#: view:pos.open.statement:0
+#: view:pos.payment.report:0
+#: view:pos.payment.report.user:0
+#: view:pos.receipt:0
+#: view:pos.sale.user:0
 #, python-format
 msgid "Cancel"
 msgstr "취소"
@@ -1703,7 +1766,9 @@ msgid "Order IDs Sequence"
 msgstr ""
 
 #. module: point_of_sale
-#: report:pos.invoice:0 report:pos.lines:0 field:pos.order.line,price_unit:0
+#: report:pos.invoice:0
+#: report:pos.lines:0
+#: field:pos.order.line,price_unit:0
 #: report:pos.payment.report.user:0
 msgid "Unit Price"
 msgstr "단가"
@@ -1734,7 +1799,8 @@ msgid "Lines of Point of Sale"
 msgstr "POS 라인"
 
 #. module: point_of_sale
-#: view:pos.order:0 view:report.transaction.pos:0
+#: view:pos.order:0
+#: view:report.transaction.pos:0
 msgid "Amount total"
 msgstr "총액"
 
@@ -1747,7 +1813,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:point_of_sale.action_new_bank_statement_all_tree
 #: view:pos.session:0
 msgid "Cash Registers"
-msgstr "금전등록기"
+msgstr ""
 
 #. module: point_of_sale
 #: help:pos.session,cash_register_balance_end:0
@@ -1769,12 +1835,14 @@ msgstr ""
 #. module: point_of_sale
 #: field:pos.box.entries,ref:0
 msgid "Ref"
-msgstr "참조"
+msgstr ""
 
 #. module: point_of_sale
 #. openerp-web
-#: code:addons/point_of_sale/static/src/xml/pos.xml:94 report:pos.details:0
-#: report:pos.invoice:0 report:pos.lines:0
+#: code:addons/point_of_sale/static/src/xml/pos.xml:94
+#: report:pos.details:0
+#: report:pos.invoice:0
+#: report:pos.lines:0
 #, python-format
 msgid "Price"
 msgstr "가격"
@@ -1785,8 +1853,10 @@ msgid "Coca-Cola Light 33cl"
 msgstr ""
 
 #. module: point_of_sale
-#: view:report.sales.by.margin.pos:0 view:report.sales.by.margin.pos.month:0
-#: view:report.sales.by.user.pos:0 view:report.sales.by.user.pos.month:0
+#: view:report.sales.by.margin.pos:0
+#: view:report.sales.by.margin.pos.month:0
+#: view:report.sales.by.user.pos:0
+#: view:report.sales.by.user.pos.month:0
 #: view:report.transaction.pos:0
 msgid "POS"
 msgstr ""
@@ -1813,7 +1883,7 @@ msgstr ""
 #. module: point_of_sale
 #: field:pos.session,cash_register_difference:0
 msgid "Difference"
-msgstr "오차"
+msgstr ""
 
 #. module: point_of_sale
 #: model:pos.category,name:point_of_sale.autres_agrumes
@@ -1821,16 +1891,19 @@ msgid "Other Citrus"
 msgstr ""
 
 #. module: point_of_sale
-#: report:pos.details:0 report:pos.details_summary:0
+#: report:pos.details:0
+#: report:pos.details_summary:0
 msgid "Start Period"
 msgstr ""
 
 #. module: point_of_sale
-#: report:account.statement:0 field:pos.category,complete_name:0
-#: field:pos.category,name:0 report:pos.sales.user:0
+#: report:account.statement:0
+#: field:pos.category,complete_name:0
+#: field:pos.category,name:0
+#: report:pos.sales.user:0
 #: report:pos.sales.user.today:0
 msgid "Name"
-msgstr "이름"
+msgstr ""
 
 #. module: point_of_sale
 #: model:product.template,name:point_of_sale.spa_gazeuse_33cl_product_template
@@ -1840,8 +1913,8 @@ msgstr ""
 #. module: point_of_sale
 #: view:pos.confirm:0
 msgid ""
-"Generate all sale journal entries for non invoiced orders linked to a closed"
-" cash register or statement."
+"Generate all sale journal entries for non invoiced orders linked to a closed "
+"cash register or statement."
 msgstr ""
 
 #. module: point_of_sale
@@ -1852,22 +1925,23 @@ msgstr ""
 #. module: point_of_sale
 #: view:pos.ean_wizard:0
 msgid "Apply"
-msgstr "적용"
+msgstr ""
 
 #. module: point_of_sale
 #. openerp-web
 #: code:addons/point_of_sale/static/src/xml/pos.xml:288
 #, python-format
 msgid ""
-"Please insert your card in the reader and follow the instructions to complete\n"
+"Please insert your card in the reader and follow the instructions to "
+"complete\n"
 "            your purchase"
 msgstr ""
 
 #. module: point_of_sale
 #: help:product.product,income_pdt:0
 msgid ""
-"Check if, this is a product you can use to put cash into a statement for the"
-" point of sale backend."
+"Check if, this is a product you can use to put cash into a statement for the "
+"point of sale backend."
 msgstr ""
 
 #. module: point_of_sale
@@ -1907,9 +1981,13 @@ msgid "POS ordered created during current year"
 msgstr ""
 
 #. module: point_of_sale
-#: report:pos.details:0 report:pos.details_summary:0 report:pos.lines:0
-#: report:pos.payment.report.user:0 report:pos.sales.user:0
-#: report:pos.sales.user.today:0 report:pos.user.product:0
+#: report:pos.details:0
+#: report:pos.details_summary:0
+#: report:pos.lines:0
+#: report:pos.payment.report.user:0
+#: report:pos.sales.user:0
+#: report:pos.sales.user.today:0
+#: report:pos.user.product:0
 msgid "Print Date"
 msgstr "인쇄 날짜"
 
@@ -1920,14 +1998,17 @@ msgstr ""
 
 #. module: point_of_sale
 #: help:pos.category,sequence:0
-msgid "Gives the sequence order when displaying a list of product categories."
+msgid ""
+"Gives the sequence order when displaying a list of product categories."
 msgstr ""
 
 #. module: point_of_sale
-#: view:account.bank.statement:0 view:pos.order:0 view:pos.session:0
+#: view:account.bank.statement:0
+#: view:pos.order:0
+#: view:pos.session:0
 #: view:report.pos.order:0
 msgid "Group By..."
-msgstr "분류 기준..."
+msgstr ""
 
 #. module: point_of_sale
 #. openerp-web
@@ -1993,12 +2074,12 @@ msgstr "베이스"
 #: code:addons/point_of_sale/static/src/xml/pos.xml:747
 #, python-format
 msgid "&nbsp;"
-msgstr "&nbsp;"
+msgstr ""
 
 #. module: point_of_sale
 #: model:pos.category,name:point_of_sale.categ_others
 msgid "Others"
-msgstr "기타"
+msgstr ""
 
 #. module: point_of_sale
 #. openerp-web
@@ -2006,7 +2087,7 @@ msgstr "기타"
 #: code:addons/point_of_sale/static/src/js/screens.js:881
 #, python-format
 msgid "Validate"
-msgstr "검증"
+msgstr ""
 
 #. module: point_of_sale
 #: model:pos.category,name:point_of_sale.autres_legumes_frais
@@ -2041,7 +2122,9 @@ msgid "Coca-Cola Light Lemon 2L"
 msgstr ""
 
 #. module: point_of_sale
-#: report:pos.details:0 report:pos.invoice:0 field:pos.order,amount_tax:0
+#: report:pos.details:0
+#: report:pos.invoice:0
+#: field:pos.order,amount_tax:0
 msgid "Taxes"
 msgstr "세금"
 
@@ -2062,9 +2145,10 @@ msgstr ""
 #. module: point_of_sale
 #: model:ir.actions.act_window,name:point_of_sale.product_normal_action
 #: model:ir.ui.menu,name:point_of_sale.menu_point_of_sale_product
-#: model:ir.ui.menu,name:point_of_sale.menu_pos_products view:pos.order:0
+#: model:ir.ui.menu,name:point_of_sale.menu_pos_products
+#: view:pos.order:0
 msgid "Products"
-msgstr "상품"
+msgstr ""
 
 #. module: point_of_sale
 #: model:product.template,name:point_of_sale.oetker_4formaggi_product_template
@@ -2088,8 +2172,10 @@ msgstr ""
 
 #. module: point_of_sale
 #. openerp-web
-#: code:addons/point_of_sale/static/src/xml/pos.xml:84 report:pos.details:0
-#: report:pos.payment.report.user:0 report:pos.user.product:0
+#: code:addons/point_of_sale/static/src/xml/pos.xml:84
+#: report:pos.details:0
+#: report:pos.payment.report.user:0
+#: report:pos.user.product:0
 #: field:report.sales.by.margin.pos,qty:0
 #: field:report.sales.by.margin.pos.month,qty:0
 #, python-format
@@ -2107,7 +2193,7 @@ msgstr ""
 #: code:addons/point_of_sale/static/src/js/screens.js:717
 #, python-format
 msgid "Help"
-msgstr "도움말"
+msgstr ""
 
 #. module: point_of_sale
 #: view:pos.order:0
@@ -2120,7 +2206,8 @@ msgid "Spa Fruit and Orange 50cl"
 msgstr ""
 
 #. module: point_of_sale
-#: view:pos.config:0 field:pos.config,journal_ids:0
+#: view:pos.config:0
+#: field:pos.config,journal_ids:0
 #: field:pos.session,journal_ids:0
 msgid "Available Payment Methods"
 msgstr ""
@@ -2134,8 +2221,10 @@ msgid ""
 "                You must define a product for everything you sell through\n"
 "                the point of sale interface.\n"
 "              </p><p>\n"
-"                Do not forget to set the price and the point of sale category\n"
-"                in which it should appear. If a product has no point of sale\n"
+"                Do not forget to set the price and the point of sale "
+"category\n"
+"                in which it should appear. If a product has no point of "
+"sale\n"
 "                category, you can not sell it through the point of sale\n"
 "                interface.\n"
 "              </p>\n"
@@ -2145,7 +2234,7 @@ msgstr ""
 #. module: point_of_sale
 #: view:pos.order:0
 msgid "Extra Info"
-msgstr "기타 정보"
+msgstr ""
 
 #. module: point_of_sale
 #: report:pos.invoice:0
@@ -2173,7 +2262,7 @@ msgstr ""
 #. module: point_of_sale
 #: report:pos.invoice:0
 msgid "Source"
-msgstr "소스"
+msgstr ""
 
 #. module: point_of_sale
 #. openerp-web
@@ -2185,7 +2274,7 @@ msgstr ""
 #. module: point_of_sale
 #: field:pos.make.payment,journal_id:0
 msgid "Payment Mode"
-msgstr "결제 모드"
+msgstr ""
 
 #. module: point_of_sale
 #: model:product.template,name:point_of_sale.lays_paprika_45g_product_template
@@ -2196,11 +2285,12 @@ msgstr ""
 #: model:ir.model,name:point_of_sale.model_account_bank_statement
 #: field:pos.session,statement_ids:0
 msgid "Bank Statement"
-msgstr "입출금 내역서"
+msgstr ""
 
 #. module: point_of_sale
 #: code:addons/point_of_sale/point_of_sale.py:101
-#: selection:pos.session,state:0 selection:pos.session.opening,pos_state:0
+#: selection:pos.session,state:0
+#: selection:pos.session.opening,pos_state:0
 #, python-format
 msgid "Closed & Posted"
 msgstr ""
@@ -2217,7 +2307,7 @@ msgstr ""
 #: code:addons/point_of_sale/static/src/xml/pos.xml:562
 #, python-format
 msgid "Phone:"
-msgstr "전화:"
+msgstr ""
 
 #. module: point_of_sale
 #: model:product.template,name:point_of_sale.evian_1l_product_template
@@ -2237,16 +2327,18 @@ msgstr ""
 #. module: point_of_sale
 #: selection:report.pos.order,month:0
 msgid "July"
-msgstr "7월"
+msgstr ""
 
 #. module: point_of_sale
 #: model:ir.actions.act_window,name:point_of_sale.action_pos_config_pos
-#: model:ir.ui.menu,name:point_of_sale.menu_pos_config_pos view:pos.session:0
+#: model:ir.ui.menu,name:point_of_sale.menu_pos_config_pos
+#: view:pos.session:0
 msgid "Point of Sales"
 msgstr ""
 
 #. module: point_of_sale
-#: report:pos.details:0 report:pos.details_summary:0
+#: report:pos.details:0
+#: report:pos.details_summary:0
 msgid "Qty of product"
 msgstr "상품 수량"
 
@@ -2266,7 +2358,8 @@ msgstr ""
 
 #. module: point_of_sale
 #: code:addons/point_of_sale/point_of_sale.py:100
-#: selection:pos.session,state:0 selection:pos.session.opening,pos_state:0
+#: selection:pos.session,state:0
+#: selection:pos.session.opening,pos_state:0
 #, python-format
 msgid "Closing Control"
 msgstr ""
@@ -2311,7 +2404,8 @@ msgid "Jupiler 50cl"
 msgstr ""
 
 #. module: point_of_sale
-#: report:pos.details:0 report:pos.details_summary:0
+#: report:pos.details:0
+#: report:pos.details_summary:0
 msgid "End Period"
 msgstr ""
 
@@ -2343,14 +2437,15 @@ msgid "Chimay Red 33cl"
 msgstr ""
 
 #. module: point_of_sale
-#: view:report.pos.order:0 field:report.pos.order,month:0
+#: view:report.pos.order:0
+#: field:report.pos.order,month:0
 msgid "Month"
-msgstr "월"
+msgstr ""
 
 #. module: point_of_sale
 #: field:pos.category,image_medium:0
 msgid "Medium-sized image"
-msgstr "중간 크기 이미지"
+msgstr ""
 
 #. module: point_of_sale
 #: model:product.template,name:point_of_sale.papillon_orange_product_template
@@ -2363,10 +2458,11 @@ msgid "Year of order date"
 msgstr ""
 
 #. module: point_of_sale
-#: report:pos.sales.user:0 report:pos.sales.user.today:0
+#: report:pos.sales.user:0
+#: report:pos.sales.user.today:0
 #: field:report.pos.order,date:0
 msgid "Date Order"
-msgstr "주문에 날짜 부여"
+msgstr ""
 
 #. module: point_of_sale
 #: help:product.product,to_weight:0
@@ -2377,7 +2473,8 @@ msgstr ""
 
 #. module: point_of_sale
 #: model:ir.actions.act_window,name:point_of_sale.action_new_bank_statement_tree
-#: field:pos.box.entries,journal_id:0 field:pos.session,cash_register_id:0
+#: field:pos.box.entries,journal_id:0
+#: field:pos.session,cash_register_id:0
 msgid "Cash Register"
 msgstr ""
 
@@ -2419,9 +2516,10 @@ msgid "Opening Balance"
 msgstr ""
 
 #. module: point_of_sale
-#: view:account.bank.statement:0 selection:report.pos.order,state:0
+#: view:account.bank.statement:0
+#: selection:report.pos.order,state:0
 msgid "Closed"
-msgstr "마감됨"
+msgstr ""
 
 #. module: point_of_sale
 #: field:pos.config,iface_cashdrawer:0
@@ -2469,9 +2567,10 @@ msgid "An internal identification of the point of sale"
 msgstr ""
 
 #. module: point_of_sale
-#: view:pos.config:0 selection:pos.config,state:0
+#: view:pos.config:0
+#: selection:pos.config,state:0
 msgid "Active"
-msgstr "활성"
+msgstr ""
 
 #. module: point_of_sale
 #: field:pos.session,name:0
@@ -2500,8 +2599,10 @@ msgstr ""
 #: code:addons/point_of_sale/static/src/xml/pos.xml:220
 #: code:addons/point_of_sale/static/src/xml/pos.xml:426
 #: code:addons/point_of_sale/static/src/xml/pos.xml:601
-#: report:all.closed.cashbox.of.the.day:0 report:pos.invoice:0
-#: report:pos.lines:0 report:pos.payment.report.user:0
+#: report:all.closed.cashbox.of.the.day:0
+#: report:pos.invoice:0
+#: report:pos.lines:0
+#: report:pos.payment.report.user:0
 #, python-format
 msgid "Total:"
 msgstr "합계:"
@@ -2509,7 +2610,7 @@ msgstr "합계:"
 #. module: point_of_sale
 #: field:res.users,ean13:0
 msgid "EAN13"
-msgstr "EAN13"
+msgstr ""
 
 #. module: point_of_sale
 #. openerp-web
@@ -2526,7 +2627,7 @@ msgstr ""
 #. module: point_of_sale
 #: view:pos.order:0
 msgid "Statement lines"
-msgstr "내역서 입력줄"
+msgstr ""
 
 #. module: point_of_sale
 #: model:product.template,name:point_of_sale.croky_paprika_45g_product_template
@@ -2582,7 +2683,9 @@ msgstr "완료"
 #. openerp-web
 #: code:addons/point_of_sale/static/src/xml/pos.xml:328
 #: model:ir.actions.report.xml,name:point_of_sale.pos_invoice_report
-#: report:pos.invoice:0 view:pos.order:0 field:pos.order,invoice_id:0
+#: report:pos.invoice:0
+#: view:pos.order:0
+#: field:pos.order,invoice_id:0
 #, python-format
 msgid "Invoice"
 msgstr "인보이스"
@@ -2601,12 +2704,14 @@ msgid "Rochefort \"8\" 33cl"
 msgstr ""
 
 #. module: point_of_sale
-#: view:account.bank.statement:0 view:pos.session:0
+#: view:account.bank.statement:0
+#: view:pos.session:0
 msgid "Open"
-msgstr "오픈"
+msgstr ""
 
 #. module: point_of_sale
-#: field:pos.order,name:0 field:pos.order.line,order_id:0
+#: field:pos.order,name:0
+#: field:pos.order.line,order_id:0
 msgid "Order Ref"
 msgstr "주문 참조"
 
@@ -2641,9 +2746,10 @@ msgid "Payment Terminal"
 msgstr ""
 
 #. module: point_of_sale
-#: view:account.bank.statement:0 field:pos.session,user_id:0
+#: view:account.bank.statement:0
+#: field:pos.session,user_id:0
 msgid "Responsible"
-msgstr "담당자:"
+msgstr ""
 
 #. module: point_of_sale
 #: model:product.template,name:point_of_sale.croky_bolognaise_250g_product_template
@@ -2685,13 +2791,15 @@ msgid "Today's Payment By User"
 msgstr ""
 
 #. module: point_of_sale
-#: view:report.sales.by.margin.pos:0 view:report.sales.by.margin.pos.month:0
+#: view:report.sales.by.margin.pos:0
+#: view:report.sales.by.margin.pos.month:0
 msgid "Sales by User Margin"
 msgstr ""
 
 #. module: point_of_sale
 #. openerp-web
-#: code:addons/point_of_sale/static/src/xml/pos.xml:427 report:pos.invoice:0
+#: code:addons/point_of_sale/static/src/xml/pos.xml:427
+#: report:pos.invoice:0
 #, python-format
 msgid "Taxes:"
 msgstr "세금:"
@@ -2708,9 +2816,12 @@ msgstr ""
 
 #. module: point_of_sale
 #: model:ir.model,name:point_of_sale.model_product_product
-#: report:pos.details:0 field:pos.order.line,product_id:0
-#: report:pos.payment.report.user:0 report:pos.user.product:0
-#: view:report.pos.order:0 field:report.pos.order,product_id:0
+#: report:pos.details:0
+#: field:pos.order.line,product_id:0
+#: report:pos.payment.report.user:0
+#: report:pos.user.product:0
+#: view:report.pos.order:0
+#: field:report.pos.order,product_id:0
 msgid "Product"
 msgstr "상품"
 
@@ -2750,7 +2861,8 @@ msgstr ""
 
 #. module: point_of_sale
 #: code:addons/point_of_sale/wizard/pos_session_opening.py:67
-#: field:pos.box.entries,session_id:0 view:pos.order:0
+#: field:pos.box.entries,session_id:0
+#: view:pos.order:0
 #: field:pos.order,session_id:0
 #, python-format
 msgid "Session"
@@ -2767,9 +2879,10 @@ msgid "Dr. Oetker La Margherita"
 msgstr ""
 
 #. module: point_of_sale
-#: view:pos.order:0 selection:pos.order,state:0
+#: view:pos.order:0
+#: selection:pos.order,state:0
 msgid "Posted"
-msgstr "기장됨"
+msgstr ""
 
 #. module: point_of_sale
 #. openerp-web
@@ -2825,12 +2938,13 @@ msgstr ""
 #. module: point_of_sale
 #: report:pos.details:0
 msgid "Order"
-msgstr "주문"
+msgstr ""
 
 #. module: point_of_sale
-#: model:ir.model,name:point_of_sale.model_res_users report:pos.details:0
+#: model:ir.model,name:point_of_sale.model_res_users
+#: report:pos.details:0
 msgid "Users"
-msgstr "사용자"
+msgstr ""
 
 #. module: point_of_sale
 #: view:pos.details:0
@@ -2847,7 +2961,7 @@ msgstr ""
 #. module: point_of_sale
 #: report:pos.lines:0
 msgid "Net Total :"
-msgstr "순 합계:"
+msgstr ""
 
 #. module: point_of_sale
 #: field:pos.session,cash_journal_id:0
@@ -2857,7 +2971,7 @@ msgstr ""
 #. module: point_of_sale
 #: model:res.groups,name:point_of_sale.group_pos_manager
 msgid "Manager"
-msgstr "매니저"
+msgstr ""
 
 #. module: point_of_sale
 #: model:product.template,name:point_of_sale.lays_poivre_sel_oven_150g_product_template
@@ -2865,13 +2979,16 @@ msgid "Lays Salt and Pepper Oven Baked 150g"
 msgstr ""
 
 #. module: point_of_sale
-#: field:pos.details,date_start:0 field:pos.sale.user,date_start:0
+#: field:pos.details,date_start:0
+#: field:pos.sale.user,date_start:0
 msgid "Date Start"
 msgstr ""
 
 #. module: point_of_sale
-#: field:pos.order,amount_total:0 report:pos.payment.report.user:0
-#: view:pos.session:0 field:report.sales.by.user.pos,amount:0
+#: field:pos.order,amount_total:0
+#: report:pos.payment.report.user:0
+#: view:pos.session:0
+#: field:report.sales.by.user.pos,amount:0
 #: field:report.sales.by.user.pos.month,amount:0
 msgid "Total"
 msgstr "합계"
@@ -2917,7 +3034,7 @@ msgstr ""
 #. module: point_of_sale
 #: view:pos.order:0
 msgid "Search Sales Order"
-msgstr "판매 주문 검색"
+msgstr ""
 
 #. module: point_of_sale
 #: field:pos.config,iface_self_checkout:0
@@ -2937,8 +3054,8 @@ msgstr ""
 #. module: point_of_sale
 #: help:pos.order,user_id:0
 msgid ""
-"Person who uses the the cash register. It can be a reliever, a student or an"
-" interim employee."
+"Person who uses the the cash register. It can be a reliever, a student or an "
+"interim employee."
 msgstr ""
 
 #. module: point_of_sale
@@ -2972,11 +3089,17 @@ msgid "Generate Journal Entries"
 msgstr ""
 
 #. module: point_of_sale
-#: report:account.statement:0 report:all.closed.cashbox.of.the.day:0
-#: report:pos.details:0 report:pos.details_summary:0 report:pos.lines:0
-#: field:pos.order,company_id:0 field:pos.order.line,company_id:0
-#: report:pos.payment.report.user:0 report:pos.sales.user:0
-#: report:pos.sales.user.today:0 report:pos.user.product:0
+#: report:account.statement:0
+#: report:all.closed.cashbox.of.the.day:0
+#: report:pos.details:0
+#: report:pos.details_summary:0
+#: report:pos.lines:0
+#: field:pos.order,company_id:0
+#: field:pos.order.line,company_id:0
+#: report:pos.payment.report.user:0
+#: report:pos.sales.user:0
+#: report:pos.sales.user.today:0
+#: report:pos.user.product:0
 #: field:report.pos.order,company_id:0
 msgid "Company"
 msgstr "회상"
@@ -2989,7 +3112,7 @@ msgstr "인보이스 날짜"
 #. module: point_of_sale
 #: field:pos.box.entries,name:0
 msgid "Reason"
-msgstr "이유"
+msgstr ""
 
 #. module: point_of_sale
 #: model:product.template,name:point_of_sale.orangina_33cl_product_template
@@ -3027,14 +3150,14 @@ msgstr ""
 #: code:addons/point_of_sale/static/src/xml/pos.xml:454
 #, python-format
 msgid "Reset"
-msgstr "초기화"
+msgstr ""
 
 #. module: point_of_sale
 #. openerp-web
 #: code:addons/point_of_sale/static/src/xml/pos.xml:342
 #, python-format
 msgid "Ok"
-msgstr "OK"
+msgstr ""
 
 #. module: point_of_sale
 #. openerp-web
@@ -3082,7 +3205,7 @@ msgstr ""
 #: code:addons/point_of_sale/wizard/pos_box_out.py:91
 #, python-format
 msgid "Error!"
-msgstr "오류!"
+msgstr ""
 
 #. module: point_of_sale
 #: report:pos.lines:0
@@ -3090,14 +3213,15 @@ msgid "No. Of Articles"
 msgstr ""
 
 #. module: point_of_sale
-#: selection:pos.order,state:0 selection:report.pos.order,state:0
+#: selection:pos.order,state:0
+#: selection:report.pos.order,state:0
 msgid "Cancelled"
-msgstr "취소됨"
+msgstr ""
 
 #. module: point_of_sale
 #: report:pos.user.product:0
 msgid "Ending Date"
-msgstr "종료 날짜"
+msgstr ""
 
 #. module: point_of_sale
 #: help:product.product,pos_categ_id:0
@@ -3119,10 +3243,11 @@ msgstr ""
 #. module: point_of_sale
 #: model:pos.category,name:point_of_sale.ice_cream
 msgid "Ice Cream"
-msgstr "아이스크림"
+msgstr ""
 
 #. module: point_of_sale
-#: field:pos.config,shop_id:0 field:pos.order,shop_id:0
+#: field:pos.config,shop_id:0
+#: field:pos.order,shop_id:0
 #: field:report.pos.order,shop_id:0
 msgid "Shop"
 msgstr "샵"
@@ -3154,7 +3279,8 @@ msgid "IJsboerke Stracciatella 2.5L"
 msgstr ""
 
 #. module: point_of_sale
-#: view:report.sales.by.user.pos:0 view:report.sales.by.user.pos.month:0
+#: view:report.sales.by.user.pos:0
+#: view:report.sales.by.user.pos.month:0
 #: view:report.transaction.pos:0
 msgid "POS Report"
 msgstr ""
@@ -3198,12 +3324,12 @@ msgstr ""
 #. module: point_of_sale
 #: field:pos.box.entries,product_id:0
 msgid "Operation"
-msgstr "오퍼레이션"
+msgstr ""
 
 #. module: point_of_sale
 #: field:pos.order,account_move:0
 msgid "Journal Entry"
-msgstr "장부 기입"
+msgstr ""
 
 #. module: point_of_sale
 #: code:addons/point_of_sale/point_of_sale.py:769
@@ -3245,10 +3371,11 @@ msgid ""
 msgstr ""
 
 #. module: point_of_sale
-#: view:pos.order:0 selection:pos.order,state:0
+#: view:pos.order:0
+#: selection:pos.order,state:0
 #: selection:report.pos.order,state:0
 msgid "New"
-msgstr "새로 만들기"
+msgstr ""
 
 #. module: point_of_sale
 #: view:pos.open.statement:0
@@ -3338,17 +3465,17 @@ msgstr ""
 #. module: point_of_sale
 #: model:ir.actions.act_window,name:point_of_sale.action_pos_invoice
 msgid "Invoices"
-msgstr "인보이스"
+msgstr ""
 
 #. module: point_of_sale
 #: selection:report.pos.order,month:0
 msgid "December"
-msgstr "12월"
+msgstr ""
 
 #. module: point_of_sale
 #: field:pos.category,image:0
 msgid "Image"
-msgstr "이미지"
+msgstr ""
 
 #. module: point_of_sale
 #: model:product.template,name:point_of_sale.spa_gazeuse_1,5l_product_template
@@ -3356,7 +3483,8 @@ msgid "Spa Barisart 1.5l"
 msgstr ""
 
 #. module: point_of_sale
-#: code:addons/point_of_sale/point_of_sale.py:831 view:pos.order:0
+#: code:addons/point_of_sale/point_of_sale.py:831
+#: view:pos.order:0
 #, python-format
 msgid "Return Products"
 msgstr ""
@@ -3371,7 +3499,7 @@ msgstr ""
 #: code:addons/point_of_sale/static/src/xml/pos.xml:484
 #, python-format
 msgid "Print Invoice"
-msgstr "송장 인쇄"
+msgstr ""
 
 #. module: point_of_sale
 #: model:product.template,name:point_of_sale.peche_product_template
@@ -3384,32 +3512,47 @@ msgid "Sales Details"
 msgstr ""
 
 #. module: point_of_sale
-#: view:account.journal:0 model:ir.model,name:point_of_sale.model_pos_order
+#: view:account.journal:0
+#: model:ir.model,name:point_of_sale.model_pos_order
 #: model:ir.ui.menu,name:point_of_sale.menu_point_rep
 #: model:ir.ui.menu,name:point_of_sale.menu_point_root
-#: field:pos.session,config_id:0 field:pos.session.opening,pos_config_id:0
-#: view:product.product:0 view:res.partner:0 view:res.users:0
+#: field:pos.session,config_id:0
+#: field:pos.session.opening,pos_config_id:0
+#: view:product.product:0
+#: view:res.partner:0
+#: view:res.users:0
 msgid "Point of Sale"
 msgstr "POS"
 
 #. module: point_of_sale
-#: view:pos.order:0 field:pos.order,user_id:0
+#: view:pos.order:0
+#: field:pos.order,user_id:0
 msgid "Salesman"
 msgstr "판매 사원"
 
 #. module: point_of_sale
 #. openerp-web
-#: code:addons/point_of_sale/static/src/xml/pos.xml:41 view:pos.confirm:0
-#: view:pos.details:0 view:pos.discount:0 view:pos.ean_wizard:0
-#: view:pos.make.payment:0 view:pos.open.statement:0 view:pos.payment.report:0
-#: view:pos.payment.report.user:0 view:pos.receipt:0 view:pos.sale.user:0
+#: code:addons/point_of_sale/static/src/xml/pos.xml:41
+#: view:pos.confirm:0
+#: view:pos.details:0
+#: view:pos.discount:0
+#: view:pos.ean_wizard:0
+#: view:pos.make.payment:0
+#: view:pos.open.statement:0
+#: view:pos.payment.report:0
+#: view:pos.payment.report.user:0
+#: view:pos.receipt:0
+#: view:pos.sale.user:0
 #, python-format
 msgid "or"
-msgstr "또는"
+msgstr ""
 
 #. module: point_of_sale
-#: report:pos.details:0 view:pos.order:0 selection:pos.order,state:0
-#: view:report.pos.order:0 selection:report.pos.order,state:0
+#: report:pos.details:0
+#: view:pos.order:0
+#: selection:pos.order,state:0
+#: view:report.pos.order:0
+#: selection:report.pos.order,state:0
 msgid "Invoiced"
 msgstr "인보이스됨"
 
@@ -3429,8 +3572,10 @@ msgid ""
 "<p class=\"oe_view_nocontent_create\">\n"
 "                Click to create a new order.\n"
 "              </p><p>\n"
-"                Use this menu to browse your preceeding orders. To record new\n"
-"                orders, you should better use the menu <i>Your Session</i> for\n"
+"                Use this menu to browse your preceeding orders. To record "
+"new\n"
+"                orders, you should better use the menu <i>Your Session</i> "
+"for\n"
 "                the touchscreen interface.\n"
 "              </p>\n"
 "            "
@@ -3480,7 +3625,8 @@ msgid "Mode of Taxes"
 msgstr "세금 모드"
 
 #. module: point_of_sale
-#: field:pos.order,amount_paid:0 selection:pos.order,state:0
+#: field:pos.order,amount_paid:0
+#: selection:pos.order,state:0
 msgid "Paid"
 msgstr "결제됨"
 
@@ -3542,7 +3688,8 @@ msgstr ""
 
 #. module: point_of_sale
 #. openerp-web
-#: code:addons/point_of_sale/static/src/xml/pos.xml:483 view:pos.receipt:0
+#: code:addons/point_of_sale/static/src/xml/pos.xml:483
+#: view:pos.receipt:0
 #, python-format
 msgid "Print Receipt"
 msgstr ""
@@ -3561,7 +3708,7 @@ msgstr "결제 날짜"
 #. module: point_of_sale
 #: selection:report.pos.order,month:0
 msgid "January"
-msgstr "1월"
+msgstr ""
 
 #. module: point_of_sale
 #: view:pos.order.line:0
@@ -3622,7 +3769,8 @@ msgid "Dr. Oetker Ristorante Mozzarella"
 msgstr ""
 
 #. module: point_of_sale
-#: report:pos.details:0 report:pos.payment.report.user:0
+#: report:pos.details:0
+#: report:pos.payment.report.user:0
 msgid "Disc(%)"
 msgstr ""
 
@@ -3634,7 +3782,7 @@ msgstr ""
 #. module: point_of_sale
 #: view:pos.order:0
 msgid "General Information"
-msgstr "일반 정보"
+msgstr ""
 
 #. module: point_of_sale
 #: view:pos.order.line:0
@@ -3730,20 +3878,21 @@ msgstr "주문 라인"
 #. module: point_of_sale
 #: report:pos.invoice:0
 msgid "Customer Code"
-msgstr "고객 코드"
+msgstr ""
 
 #. module: point_of_sale
-#: report:pos.invoice:0 report:pos.lines:0
+#: report:pos.invoice:0
+#: report:pos.lines:0
 msgid "Description"
 msgstr "설명"
 
 #. module: point_of_sale
 #: help:account.journal,amount_authorized_diff:0
 msgid ""
-"This field depicts the maximum difference allowed between the ending balance"
-" and the theorical cash when closing a session, for non-POS managers. If "
-"this maximum is reached, the user will have an error message at the closing "
-"of his session saying that he needs to contact his manager."
+"This field depicts the maximum difference allowed between the ending balance "
+"and the theorical cash when closing a session, for non-POS managers. If this "
+"maximum is reached, the user will have an error message at the closing of "
+"his session saying that he needs to contact his manager."
 msgstr ""
 
 #. module: point_of_sale
@@ -3755,7 +3904,7 @@ msgstr ""
 #. module: point_of_sale
 #: selection:report.pos.order,month:0
 msgid "May"
-msgstr "5월"
+msgstr ""
 
 #. module: point_of_sale
 #: report:pos.lines:0
@@ -3765,7 +3914,7 @@ msgstr ""
 #. module: point_of_sale
 #: field:pos.order,note:0
 msgid "Internal Notes"
-msgstr "내부 메모"
+msgstr ""
 
 #. module: point_of_sale
 #: model:product.template,name:point_of_sale.ijsboerke_chocolat_2,5l_product_template
@@ -3776,8 +3925,8 @@ msgstr ""
 #: help:pos.category,image_small:0
 msgid ""
 "Small-sized image of the category. It is automatically resized as a 64x64px "
-"image, with aspect ratio preserved. Use this field anywhere a small image is"
-" required."
+"image, with aspect ratio preserved. Use this field anywhere a small image is "
+"required."
 msgstr ""
 
 #. module: point_of_sale
@@ -3796,28 +3945,33 @@ msgid ""
 "<p class=\"oe_view_nocontent_create\">\n"
 "                Click to add a payment method.\n"
 "              </p><p>\n"
-"                Payment methods are defined by accounting journals having the\n"
-"                field <i>PoS Payment Method</i> checked. In order to be useable\n"
-"                from the touchscreen interface, you must set the payment method\n"
+"                Payment methods are defined by accounting journals having "
+"the\n"
+"                field <i>PoS Payment Method</i> checked. In order to be "
+"useable\n"
+"                from the touchscreen interface, you must set the payment "
+"method\n"
 "                on the <i>Point of Sale</i> configuration.\n"
 "              </p>\n"
 "            "
 msgstr ""
 
 #. module: point_of_sale
-#: view:pos.order:0 field:pos.order,partner_id:0 view:report.pos.order:0
+#: view:pos.order:0
+#: field:pos.order,partner_id:0
+#: view:report.pos.order:0
 msgid "Customer"
-msgstr "고객"
+msgstr ""
 
 #. module: point_of_sale
 #: selection:report.pos.order,month:0
 msgid "February"
-msgstr "2월"
+msgstr ""
 
 #. module: point_of_sale
 #: view:res.partner:0
 msgid "Edit"
-msgstr "편집"
+msgstr ""
 
 #. module: point_of_sale
 #: view:pos.session.opening:0
@@ -3842,10 +3996,11 @@ msgstr ""
 #. module: point_of_sale
 #: selection:report.pos.order,month:0
 msgid "April"
-msgstr "4월"
+msgstr ""
 
 #. module: point_of_sale
-#: view:pos.order:0 field:pos.order,statement_ids:0
+#: view:pos.order:0
+#: field:pos.order,statement_ids:0
 msgid "Payments"
 msgstr "결제"
 
@@ -3893,10 +4048,11 @@ msgstr ""
 #. module: point_of_sale
 #: field:pos.category,sequence:0
 msgid "Sequence"
-msgstr "시퀀스"
+msgstr ""
 
 #. module: point_of_sale
-#: code:addons/point_of_sale/wizard/pos_return.py:316 view:pos.make.payment:0
+#: code:addons/point_of_sale/wizard/pos_return.py:316
+#: view:pos.make.payment:0
 #, python-format
 msgid "Make Payment"
 msgstr ""
@@ -3904,7 +4060,7 @@ msgstr ""
 #. module: point_of_sale
 #: constraint:pos.category:0
 msgid "Error ! You cannot create recursive categories."
-msgstr "오류! 재귀적 분류를 생성할 수 없습니다."
+msgstr ""
 
 #. module: point_of_sale
 #: model:ir.model,name:point_of_sale.model_pos_sales_user_today
@@ -3919,7 +4075,8 @@ msgid "Next Order"
 msgstr ""
 
 #. module: point_of_sale
-#: code:addons/point_of_sale/point_of_sale.py:98 selection:pos.session,state:0
+#: code:addons/point_of_sale/point_of_sale.py:98
+#: selection:pos.session,state:0
 #: selection:pos.session.opening,pos_state:0
 #, python-format
 msgid "Opening Control"
@@ -3931,9 +4088,10 @@ msgid "Month of order date"
 msgstr ""
 
 #. module: point_of_sale
-#: view:report.pos.order:0 field:report.pos.order,year:0
+#: view:report.pos.order:0
+#: field:report.pos.order,year:0
 msgid "Year"
-msgstr "년"
+msgstr ""
 
 #. module: point_of_sale
 #. openerp-web
@@ -3954,3 +4112,7 @@ msgstr ""
 #: field:pos.session,order_ids:0
 msgid "Orders"
 msgstr ""
+
+#, python-format
+#~ msgid "No Pricelist !"
+#~ msgstr "가격리스트가 없음!"

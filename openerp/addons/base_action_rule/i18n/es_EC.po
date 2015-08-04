@@ -1,27 +1,26 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * base_action_rule
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2012
+# Spanish (Ecuador) translation for openobject-addons
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-06-07 19:36+0000\n"
-"PO-Revision-Date: 2015-05-29 13:04+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Spanish (Ecuador) (http://www.transifex.com/projects/p/odoo-7/language/es_EC/)\n"
+"PO-Revision-Date: 2012-12-21 23:00+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Spanish (Ecuador) <es_EC@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: es_EC\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-11-21 06:02+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #. module: base_action_rule
 #: selection:base.action.rule.lead.test,state:0
 msgid "In Progress"
-msgstr "En proceso"
+msgstr ""
 
 #. module: base_action_rule
 #: view:base.action.rule:0
@@ -51,7 +50,7 @@ msgstr ""
 #. module: base_action_rule
 #: field:base.action.rule.lead.test,user_id:0
 msgid "Responsible"
-msgstr "Responsable"
+msgstr ""
 
 #. module: base_action_rule
 #: help:base.action.rule,server_action_ids:0
@@ -84,12 +83,12 @@ msgstr ""
 #. module: base_action_rule
 #: selection:base.action.rule.lead.test,state:0
 msgid "Closed"
-msgstr "Cerrado"
+msgstr ""
 
 #. module: base_action_rule
 #: selection:base.action.rule.lead.test,state:0
 msgid "New"
-msgstr "Nuevo"
+msgstr ""
 
 #. module: base_action_rule
 #: field:base.action.rule,trg_date_range:0
@@ -99,17 +98,17 @@ msgstr ""
 #. module: base_action_rule
 #: view:base.action.rule:0
 msgid "Conditions"
-msgstr "Condiciones"
+msgstr ""
 
 #. module: base_action_rule
 #: selection:base.action.rule.lead.test,state:0
 msgid "Pending"
-msgstr "Pendiente"
+msgstr ""
 
 #. module: base_action_rule
 #: field:base.action.rule.lead.test,state:0
 msgid "Status"
-msgstr "Estado"
+msgstr ""
 
 #. module: base_action_rule
 #: field:base.action.rule,filter_pre_id:0
@@ -145,7 +144,7 @@ msgstr ""
 #. module: base_action_rule
 #: selection:base.action.rule,trg_date_range_type:0
 msgid "Hours"
-msgstr "Horas"
+msgstr ""
 
 #. module: base_action_rule
 #: view:base.action.rule:0
@@ -153,9 +152,10 @@ msgid "To create a new filter:"
 msgstr ""
 
 #. module: base_action_rule
-#: field:base.action.rule,active:0 field:base.action.rule.lead.test,active:0
+#: field:base.action.rule,active:0
+#: field:base.action.rule.lead.test,active:0
 msgid "Active"
-msgstr "Activo"
+msgstr ""
 
 #. module: base_action_rule
 #: view:base.action.rule:0
@@ -203,12 +203,12 @@ msgstr ""
 #. module: base_action_rule
 #: selection:base.action.rule,trg_date_range_type:0
 msgid "Months"
-msgstr "Meses"
+msgstr ""
 
 #. module: base_action_rule
 #: selection:base.action.rule,trg_date_range_type:0
 msgid "Days"
-msgstr "Días"
+msgstr ""
 
 #. module: base_action_rule
 #: view:base.action.rule:0
@@ -233,12 +233,12 @@ msgstr ""
 #. module: base_action_rule
 #: selection:base.action.rule.lead.test,state:0
 msgid "Cancelled"
-msgstr "Cancelado"
+msgstr ""
 
 #. module: base_action_rule
 #: field:base.action.rule,model:0
 msgid "Model"
-msgstr "Modelo"
+msgstr ""
 
 #. module: base_action_rule
 #: field:base.action.rule,last_run:0
@@ -248,7 +248,7 @@ msgstr ""
 #. module: base_action_rule
 #: selection:base.action.rule,trg_date_range_type:0
 msgid "Minutes"
-msgstr "Minutos"
+msgstr ""
 
 #. module: base_action_rule
 #: field:base.action.rule,model_id:0
@@ -258,19 +258,18 @@ msgstr ""
 #. module: base_action_rule
 #: help:base.action.rule,filter_pre_id:0
 msgid ""
-"If present, this condition must be satisfied before the update of the "
-"record."
+"If present, this condition must be satisfied before the update of the record."
 msgstr ""
 
 #. module: base_action_rule
 #: field:base.action.rule,sequence:0
 msgid "Sequence"
-msgstr "Sequence"
+msgstr ""
 
 #. module: base_action_rule
 #: view:base.action.rule:0
 msgid "Actions"
-msgstr "Acciones"
+msgstr ""
 
 #. module: base_action_rule
 #: model:ir.actions.act_window,help:base_action_rule.base_action_rule_act
@@ -279,9 +278,11 @@ msgid ""
 "                Click to setup a new automated action rule. \n"
 "              </p><p>\n"
 "                Use automated actions to automatically trigger actions for\n"
-"                various screens. Example: a lead created by a specific user may\n"
+"                various screens. Example: a lead created by a specific user "
+"may\n"
 "                be automatically set to a specific sales team, or an\n"
-"                opportunity which still has status pending after 14 days might\n"
+"                opportunity which still has status pending after 14 days "
+"might\n"
 "                trigger an automatic reminder email.\n"
 "              </p>\n"
 "            "
@@ -290,17 +291,17 @@ msgstr ""
 #. module: base_action_rule
 #: field:base.action.rule,create_date:0
 msgid "Create Date"
-msgstr "Fecha de Creación"
+msgstr ""
 
 #. module: base_action_rule
 #: field:base.action.rule.lead.test,date_action_last:0
 msgid "Last Action"
-msgstr "Última acción"
+msgstr ""
 
 #. module: base_action_rule
 #: field:base.action.rule.lead.test,partner_id:0
 msgid "Partner"
-msgstr "Empresa"
+msgstr ""
 
 #. module: base_action_rule
 #: field:base.action.rule,trg_date_id:0
@@ -308,11 +309,12 @@ msgid "Trigger Date"
 msgstr ""
 
 #. module: base_action_rule
-#: view:base.action.rule:0 field:base.action.rule,server_action_ids:0
+#: view:base.action.rule:0
+#: field:base.action.rule,server_action_ids:0
 msgid "Server Actions"
-msgstr "Acciones del servidor"
+msgstr ""
 
 #. module: base_action_rule
 #: field:base.action.rule.lead.test,name:0
 msgid "Subject"
-msgstr "Asunto"
+msgstr ""

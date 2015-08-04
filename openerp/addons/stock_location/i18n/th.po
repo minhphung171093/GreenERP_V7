@@ -1,22 +1,21 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * stock_location
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2013
+# Thai translation for openobject-addons
+# Copyright (c) 2013 Rosetta Contributors and Canonical Ltd 2013
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-06-07 19:37+0000\n"
-"PO-Revision-Date: 2015-05-23 13:53+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Thai (http://www.transifex.com/projects/p/odoo-7/language/th/)\n"
+"PO-Revision-Date: 2013-07-01 08:07+0000\n"
+"Last-Translator: Sumonchai ( เหลา ) <sumonchai@gmail.com>\n"
+"Language-Team: Thai <th@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: th\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-11-21 06:37+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #. module: stock_location
 #: help:product.pulled.flow,company_id:0
@@ -104,14 +103,18 @@ msgstr "สถานใบแจ้งหนี้"
 #. module: stock_location
 #: help:stock.location.path,auto:0
 msgid ""
-"This is used to define paths the product has to follow within the location tree.\n"
-"The 'Automatic Move' value will create a stock move after the current one that will be validated automatically. With 'Manual Operation', the stock move has to be validated by a worker. With 'Automatic No Step Added', the location is replaced in the original move."
+"This is used to define paths the product has to follow within the location "
+"tree.\n"
+"The 'Automatic Move' value will create a stock move after the current one "
+"that will be validated automatically. With 'Manual Operation', the stock "
+"move has to be validated by a worker. With 'Automatic No Step Added', the "
+"location is replaced in the original move."
 msgstr ""
 
 #. module: stock_location
 #: view:product.product:0
 msgid "Conditions"
-msgstr "เงื่อนไข"
+msgstr ""
 
 #. module: stock_location
 #: model:stock.location,name:stock_location.location_pack_zone
@@ -255,7 +258,7 @@ msgstr ""
 #. module: stock_location
 #: field:stock.location.path,product_id:0
 msgid "Products"
-msgstr "สินค้า"
+msgstr ""
 
 #. module: stock_location
 #: model:stock.location,name:stock_location.stock_location_qualitytest0
@@ -307,7 +310,7 @@ msgstr ""
 #. module: stock_location
 #: model:ir.model,name:stock_location.model_procurement_order
 msgid "Procurement"
-msgstr "จัดซื้อ"
+msgstr ""
 
 #. module: stock_location
 #: field:product.pulled.flow,location_id:0
@@ -316,7 +319,8 @@ msgid "Destination Location"
 msgstr ""
 
 #. module: stock_location
-#: field:stock.location.path,auto:0 selection:stock.location.path,auto:0
+#: field:stock.location.path,auto:0
+#: selection:stock.location.path,auto:0
 msgid "Automatic Move"
 msgstr ""
 
@@ -334,7 +338,7 @@ msgstr ""
 #. module: stock_location
 #: view:product.product:0
 msgid "Action Type"
-msgstr "ชนิดการทำงาน"
+msgstr ""
 
 #. module: stock_location
 #: field:product.pulled.flow,procure_method:0
@@ -368,7 +372,7 @@ msgstr ""
 #: field:product.pulled.flow,journal_id:0
 #: field:stock.location.path,journal_id:0
 msgid "Journal"
-msgstr "สมุดบัญชี"
+msgstr ""
 
 #. module: stock_location
 #: field:product.pulled.flow,cancel_cascade:0

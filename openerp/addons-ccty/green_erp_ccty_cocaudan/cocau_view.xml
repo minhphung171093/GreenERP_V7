@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    	<record id="co_cau_search" model="ir.ui.view">
+	        <field name="name">co.cau.search</field>
+	        <field name="model">co.cau</field>
+	        <field name="type">search</field>
+	        <field name="arch" type="xml">
+	            <search string="Thông tin đàn vật nuôi">
+	                <group>
+	                    <field name="chon_loai" />
+	                    <field name="can_bo_ghi_so_id" />
+	                    <field name="ngay_ghi_so" />                    
+	                    <field name="tang_giam" />
+	                    <field name="ly_do" />
+	                    <field name="ten_ho_id" />
+	                    <field name="quan_huyen_id" />
+	                    <field name="phuong_xa_id" />
+	                    <field name="khu_pho_id" />
+	                </group>
+	            </search>	
+	        </field>
+	    </record>
+    
+        <record model="ir.ui.view" id="co_cau_tree">
+            <field name="name">co.cau.tree</field>
+            <field name="model">co.cau</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Tree Thông tin đàn vật nuôi">
+                    <field name="chon_loai" />
+                    <field name="can_bo_ghi_so_id" />
+                    <field name="ngay_ghi_so" />                    
+                    <field name="tang_giam" />
+                    <field name="ly_do" />
+                    <field name="ten_ho_id" />
+                    <field name="quan_huyen_id" />
+                    <field name="phuong_xa_id" />
+                    <field name="khu_pho_id" />
+                </tree>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="co_cau_form">
+            <field name="name">co.cau.form</field>
+            <field name="model">co.cau</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="form Thông tin đàn vật nuôi" version="7.0">
+	                <sheet>
+                		<group col="4"  string="Thông tin hộ chăn nuôi">
+		            		<field name="chon_loai" />
+		                    <field name="can_bo_ghi_so_id" />
+		                    <field name="ngay_ghi_so" />                    
+		                    <field name="tang_giam" />
+		                    <field name="ten_ho_id" />
+		                    <field name="ly_do" />
+		                    <field name="quan_huyen_id" />
+		                    <field name="phuong_xa_id" />
+		                    <field name="khu_pho_id" />
+                		</group>
+	                </sheet>
+                </form>
+            </field>
+        </record>
+       
+        <record model="ir.actions.act_window" id="action_co_cau">
+            <field name="name">Thông tin đàn vật nuôi</field>
+            <field name="res_model">co.cau</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        					
+        
+    </data>
+</openerp>

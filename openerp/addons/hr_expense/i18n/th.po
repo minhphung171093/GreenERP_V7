@@ -1,22 +1,21 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * hr_expense
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2013
+# Thai translation for openobject-addons
+# Copyright (c) 2013 Rosetta Contributors and Canonical Ltd 2013
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-08-14 00:10+0000\n"
-"PO-Revision-Date: 2015-05-29 13:00+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Thai (http://www.transifex.com/projects/p/odoo-7/language/th/)\n"
+"PO-Revision-Date: 2013-06-20 10:23+0000\n"
+"Last-Translator: Sumonchai ( เหลา ) <sumonchai@gmail.com>\n"
+"Language-Team: Thai <th@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: th\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2014-08-14 06:55+0000\n"
+"X-Generator: Launchpad (build 17156)\n"
 
 #. module: hr_expense
 #: view:hr.expense.expense:0
@@ -51,10 +50,11 @@ msgstr ""
 #: field:hr.expense.expense,date_confirm:0
 #: field:hr.expense.report,date_confirm:0
 msgid "Confirmation Date"
-msgstr "วันที่ยืนยัน"
+msgstr ""
 
 #. module: hr_expense
-#: view:hr.expense.expense:0 view:hr.expense.report:0
+#: view:hr.expense.expense:0
+#: view:hr.expense.report:0
 msgid "Group By..."
 msgstr "จัดกลุ่มตาม..."
 
@@ -69,8 +69,10 @@ msgid "Validated By"
 msgstr "ตรวจสอบโดย"
 
 #. module: hr_expense
-#: view:hr.expense.expense:0 field:hr.expense.expense,department_id:0
-#: view:hr.expense.report:0 field:hr.expense.report,department_id:0
+#: view:hr.expense.expense:0
+#: field:hr.expense.expense,department_id:0
+#: view:hr.expense.report:0
+#: field:hr.expense.report,department_id:0
 msgid "Department"
 msgstr "แผนก"
 
@@ -80,7 +82,8 @@ msgid "New Expense"
 msgstr ""
 
 #. module: hr_expense
-#: field:hr.expense.line,uom_id:0 view:product.product:0
+#: field:hr.expense.line,uom_id:0
+#: view:product.product:0
 msgid "Unit of Measure"
 msgstr "หน่วยของการวัด"
 
@@ -100,7 +103,8 @@ msgid "Waiting Payment"
 msgstr "คอยการจ่ายเงิน"
 
 #. module: hr_expense
-#: field:hr.expense.expense,company_id:0 view:hr.expense.report:0
+#: field:hr.expense.expense,company_id:0
+#: view:hr.expense.report:0
 #: field:hr.expense.report,company_id:0
 msgid "Company"
 msgstr "บริษัท"
@@ -129,7 +133,8 @@ msgid "Expenses Statistics"
 msgstr ""
 
 #. module: hr_expense
-#: view:hr.expense.report:0 field:hr.expense.report,day:0
+#: view:hr.expense.report:0
+#: field:hr.expense.report,day:0
 msgid "Day"
 msgstr "วัน"
 
@@ -158,7 +163,7 @@ msgstr "ข้อความ"
 #: code:addons/hr_expense/hr_expense.py:355
 #, python-format
 msgid "Error!"
-msgstr "ผิดพลาด!"
+msgstr ""
 
 #. module: hr_expense
 #: model:mail.message.subtype,description:hr_expense.mt_expense_refused
@@ -169,7 +174,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:hr_expense.hr_expense_product
 #: view:product.product:0
 msgid "Products"
-msgstr "สินค้า"
+msgstr ""
 
 #. module: hr_expense
 #: view:hr.expense.report:0
@@ -194,7 +199,7 @@ msgstr ""
 #. module: hr_expense
 #: help:hr.expense.expense,message_unread:0
 msgid "If checked new messages require your attention."
-msgstr "ถ้าการตรวจสอบข้อความใหม่ให้ระบุความสนใจของคุณ"
+msgstr ""
 
 #. module: hr_expense
 #: selection:hr.expense.report,state:0
@@ -209,7 +214,7 @@ msgstr ""
 #. module: hr_expense
 #: field:hr.expense.line,ref:0
 msgid "Reference"
-msgstr "อ้างอิง"
+msgstr ""
 
 #. module: hr_expense
 #: report:hr.expense:0
@@ -224,9 +229,10 @@ msgid ""
 msgstr ""
 
 #. module: hr_expense
-#: view:hr.expense.report:0 field:hr.expense.report,nbr:0
+#: view:hr.expense.report:0
+#: field:hr.expense.report,nbr:0
 msgid "# of Lines"
-msgstr "# ของรายการ"
+msgstr ""
 
 #. module: hr_expense
 #: help:hr.expense.expense,message_summary:0
@@ -239,7 +245,7 @@ msgstr ""
 #: code:addons/hr_expense/hr_expense.py:455
 #, python-format
 msgid "Warning"
-msgstr "แจ้งเตือน"
+msgstr ""
 
 #. module: hr_expense
 #: report:hr.expense:0
@@ -259,22 +265,24 @@ msgstr ""
 #. module: hr_expense
 #: field:hr.expense.report,price_average:0
 msgid "Average Price"
-msgstr "ราคาเฉลี่ย"
+msgstr ""
 
 #. module: hr_expense
 #: help:hr.expense.expense,state:0
 msgid ""
 "When the expense request is created the status is 'Draft'.\n"
-" It is confirmed by the user and request is sent to admin, the status is 'Waiting Confirmation'.            \n"
+" It is confirmed by the user and request is sent to admin, the status is "
+"'Waiting Confirmation'.            \n"
 "If the admin accepts it, the status is 'Accepted'.\n"
-" If the accounting entries are made for the expense request, the status is 'Waiting Payment'."
+" If the accounting entries are made for the expense request, the status is "
+"'Waiting Payment'."
 msgstr ""
 
 #. module: hr_expense
 #: view:hr.expense.expense:0
 #: model:process.transition.action,name:hr_expense.process_transition_action_confirm0
 msgid "Confirm"
-msgstr "ยืนยัน"
+msgstr ""
 
 #. module: hr_expense
 #: model:process.node,note:hr_expense.process_node_supplierinvoice0
@@ -292,16 +300,18 @@ msgid "Gives the sequence order when displaying a list of expense lines."
 msgstr ""
 
 #. module: hr_expense
-#: field:hr.expense.expense,state:0 view:hr.expense.report:0
+#: field:hr.expense.expense,state:0
+#: view:hr.expense.report:0
 #: field:hr.expense.report,state:0
 msgid "Status"
-msgstr "สถานะ"
+msgstr ""
 
 #. module: hr_expense
-#: field:hr.expense.line,analytic_account:0 view:hr.expense.report:0
+#: field:hr.expense.line,analytic_account:0
+#: view:hr.expense.report:0
 #: field:hr.expense.report,analytic_account:0
 msgid "Analytic account"
-msgstr "วิเคราะห์บัญชี"
+msgstr ""
 
 #. module: hr_expense
 #: field:hr.expense.report,date:0
@@ -316,28 +326,33 @@ msgstr ""
 #. module: hr_expense
 #: field:hr.expense.expense,message_follower_ids:0
 msgid "Followers"
-msgstr "ผู้ติดตาม"
+msgstr ""
 
 #. module: hr_expense
-#: report:hr.expense:0 view:hr.expense.expense:0
-#: field:hr.expense.expense,employee_id:0 view:hr.expense.report:0
+#: report:hr.expense:0
+#: view:hr.expense.expense:0
+#: field:hr.expense.expense,employee_id:0
+#: view:hr.expense.report:0
 msgid "Employee"
-msgstr "พนักงาน"
+msgstr ""
 
 #. module: hr_expense
-#: view:hr.expense.expense:0 selection:hr.expense.expense,state:0
+#: view:hr.expense.expense:0
+#: selection:hr.expense.expense,state:0
 msgid "New"
-msgstr "ใหม่"
+msgstr ""
 
 #. module: hr_expense
-#: report:hr.expense:0 field:hr.expense.report,product_qty:0
+#: report:hr.expense:0
+#: field:hr.expense.report,product_qty:0
 msgid "Qty"
-msgstr "ปริมาณ"
+msgstr ""
 
 #. module: hr_expense
-#: view:hr.expense.report:0 field:hr.expense.report,price_total:0
+#: view:hr.expense.report:0
+#: field:hr.expense.report,price_total:0
 msgid "Total Price"
-msgstr "ราคารวม"
+msgstr ""
 
 #. module: hr_expense
 #: model:process.node,note:hr_expense.process_node_reinvoicing0
@@ -351,7 +366,8 @@ msgid "The employee must have a home address."
 msgstr ""
 
 #. module: hr_expense
-#: view:board.board:0 view:hr.expense.expense:0
+#: view:board.board:0
+#: view:hr.expense.expense:0
 #: model:ir.actions.act_window,name:hr_expense.action_my_expense
 msgid "My Expenses"
 msgstr ""
@@ -359,7 +375,7 @@ msgstr ""
 #. module: hr_expense
 #: view:hr.expense.report:0
 msgid "Creation Date"
-msgstr "วันที่สร้าง"
+msgstr ""
 
 #. module: hr_expense
 #: model:ir.actions.report.xml,name:hr_expense.hr_expenses
@@ -377,19 +393,21 @@ msgid "Reimburse expense"
 msgstr ""
 
 #. module: hr_expense
-#: field:hr.expense.expense,journal_id:0 field:hr.expense.report,journal_id:0
+#: field:hr.expense.expense,journal_id:0
+#: field:hr.expense.report,journal_id:0
 msgid "Force Journal"
 msgstr ""
 
 #. module: hr_expense
-#: view:hr.expense.report:0 field:hr.expense.report,no_of_products:0
+#: view:hr.expense.report:0
+#: field:hr.expense.report,no_of_products:0
 msgid "# of Products"
 msgstr ""
 
 #. module: hr_expense
 #: selection:hr.expense.report,month:0
 msgid "July"
-msgstr "กรกฎาคม"
+msgstr ""
 
 #. module: hr_expense
 #: model:process.transition,note:hr_expense.process_transition_reimburseexpense0
@@ -400,7 +418,7 @@ msgstr ""
 #: code:addons/hr_expense/hr_expense.py:119
 #, python-format
 msgid "Warning!"
-msgstr "คำเตือน!"
+msgstr ""
 
 #. module: hr_expense
 #: model:process.node,name:hr_expense.process_node_reimbursement0
@@ -408,7 +426,8 @@ msgid "Reimbursement"
 msgstr ""
 
 #. module: hr_expense
-#: field:hr.expense.expense,date_valid:0 field:hr.expense.report,date_valid:0
+#: field:hr.expense.expense,date_valid:0
+#: field:hr.expense.report,date_valid:0
 msgid "Validation Date"
 msgstr ""
 
@@ -432,17 +451,19 @@ msgid "Expenses Analysis"
 msgstr ""
 
 #. module: hr_expense
-#: view:hr.expense.expense:0 field:hr.expense.line,expense_id:0
+#: view:hr.expense.expense:0
+#: field:hr.expense.line,expense_id:0
 #: model:ir.model,name:hr_expense.model_hr_expense_expense
 #: model:process.process,name:hr_expense.process_process_expenseprocess0
 msgid "Expense"
 msgstr ""
 
 #. module: hr_expense
-#: view:hr.expense.expense:0 field:hr.expense.expense,line_ids:0
+#: view:hr.expense.expense:0
+#: field:hr.expense.expense,line_ids:0
 #: view:hr.expense.line:0
 msgid "Expense Lines"
-msgstr "รายการการใช้จ่าย"
+msgstr ""
 
 #. module: hr_expense
 #: field:hr.expense.report,delay_confirm:0
@@ -452,24 +473,25 @@ msgstr ""
 #. module: hr_expense
 #: selection:hr.expense.report,month:0
 msgid "September"
-msgstr "กันยายน"
+msgstr ""
 
 #. module: hr_expense
 #: selection:hr.expense.report,month:0
 msgid "December"
-msgstr "ธันวาคม"
+msgstr ""
 
 #. module: hr_expense
-#: view:hr.expense.expense:0 view:hr.expense.report:0
+#: view:hr.expense.expense:0
+#: view:hr.expense.report:0
 #: field:hr.expense.report,month:0
 msgid "Month"
-msgstr "เดือน"
+msgstr ""
 
 #. module: hr_expense
 #: field:hr.expense.expense,currency_id:0
 #: field:hr.expense.report,currency_id:0
 msgid "Currency"
-msgstr "สกุลเงิน"
+msgstr ""
 
 #. module: hr_expense
 #: field:hr.expense.expense,voucher_id:0
@@ -479,7 +501,7 @@ msgstr ""
 #. module: hr_expense
 #: selection:hr.expense.expense,state:0
 msgid "Waiting Approval"
-msgstr "กำลังรอการอนุมัติ"
+msgstr ""
 
 #. module: hr_expense
 #: model:process.node,note:hr_expense.process_node_draftexpenses0
@@ -495,8 +517,8 @@ msgstr ""
 #: code:addons/hr_expense/hr_expense.py:455
 #, python-format
 msgid ""
-"Selected Unit of Measure does not belong to the same category as the product"
-" Unit of Measure"
+"Selected Unit of Measure does not belong to the same category as the product "
+"Unit of Measure"
 msgstr ""
 
 #. module: hr_expense
@@ -507,7 +529,7 @@ msgstr ""
 #. module: hr_expense
 #: field:hr.expense.expense,note:0
 msgid "Note"
-msgstr "บันทึก"
+msgstr ""
 
 #. module: hr_expense
 #: model:process.transition,note:hr_expense.process_transition_reimbursereinvoice0
@@ -517,12 +539,12 @@ msgstr ""
 #. module: hr_expense
 #: selection:hr.expense.report,state:0
 msgid "Draft"
-msgstr "ฉบับร่าง"
+msgstr ""
 
 #. module: hr_expense
 #: selection:hr.expense.expense,state:0
 msgid "Paid"
-msgstr "ชำระแล้ว"
+msgstr ""
 
 #. module: hr_expense
 #: code:addons/hr_expense/hr_expense.py:355
@@ -540,7 +562,7 @@ msgstr ""
 #. module: hr_expense
 #: selection:hr.expense.report,month:0
 msgid "August"
-msgstr "สิงหาคม"
+msgstr ""
 
 #. module: hr_expense
 #: model:process.node,note:hr_expense.process_node_approved0
@@ -548,14 +570,15 @@ msgid "The direct manager approves the sheet"
 msgstr ""
 
 #. module: hr_expense
-#: view:hr.expense.expense:0 field:hr.expense.expense,amount:0
+#: view:hr.expense.expense:0
+#: field:hr.expense.expense,amount:0
 msgid "Total Amount"
-msgstr "จำนวนเงินรวม"
+msgstr ""
 
 #. module: hr_expense
 #: selection:hr.expense.report,month:0
 msgid "June"
-msgstr "มิถุนายน"
+msgstr ""
 
 #. module: hr_expense
 #: model:process.node,name:hr_expense.process_node_draftexpenses0
@@ -565,7 +588,7 @@ msgstr ""
 #. module: hr_expense
 #: field:hr.expense.expense,message_is_follower:0
 msgid "Is a Follower"
-msgstr "เป็นผู้ติดตาม"
+msgstr ""
 
 #. module: hr_expense
 #: model:ir.actions.act_window,name:hr_expense.product_normal_form_view_installer
@@ -573,25 +596,26 @@ msgid "Review Your Expenses Products"
 msgstr ""
 
 #. module: hr_expense
-#: report:hr.expense:0 field:hr.expense.expense,date:0
+#: report:hr.expense:0
+#: field:hr.expense.expense,date:0
 #: field:hr.expense.line,date_value:0
 msgid "Date"
-msgstr "วันที่"
+msgstr ""
 
 #. module: hr_expense
 #: selection:hr.expense.report,month:0
 msgid "November"
-msgstr "พฤศจิกายน"
+msgstr ""
 
 #. module: hr_expense
 #: view:hr.expense.report:0
 msgid "Extended Filters..."
-msgstr "ตัวกรองเพิ่มเติม"
+msgstr ""
 
 #. module: hr_expense
 #: field:hr.expense.expense,user_id:0
 msgid "User"
-msgstr "ผู้ใช้"
+msgstr ""
 
 #. module: hr_expense
 #: model:ir.ui.menu,name:hr_expense.menu_hr_product
@@ -601,7 +625,7 @@ msgstr ""
 #. module: hr_expense
 #: selection:hr.expense.report,month:0
 msgid "October"
-msgstr "ตุลาคม"
+msgstr ""
 
 #. module: hr_expense
 #: model:ir.actions.act_window,help:hr_expense.expense_all
@@ -609,8 +633,10 @@ msgid ""
 "<p class=\"oe_view_nocontent_create\">\n"
 "                Click to register new expenses. \n"
 "              </p><p>\n"
-"                OpenERP will ensure the whole process is followed; the expense\n"
-"                sheet is validated by manager(s), the employee is reimbursed\n"
+"                OpenERP will ensure the whole process is followed; the "
+"expense\n"
+"                sheet is validated by manager(s), the employee is "
+"reimbursed\n"
 "                from his expenses, some expenses must be re-invoiced to the\n"
 "                customers.\n"
 "              </p>\n"
@@ -625,7 +651,7 @@ msgstr ""
 #. module: hr_expense
 #: selection:hr.expense.report,month:0
 msgid "January"
-msgstr "มกราคม"
+msgstr ""
 
 #. module: hr_expense
 #: report:hr.expense:0
@@ -635,12 +661,12 @@ msgstr ""
 #. module: hr_expense
 #: field:hr.expense.expense,message_summary:0
 msgid "Summary"
-msgstr "สรุป"
+msgstr ""
 
 #. module: hr_expense
 #: model:ir.model,name:hr_expense.model_account_move_line
 msgid "Journal Items"
-msgstr "รายการสมุดบัญชีรายวัน"
+msgstr ""
 
 #. module: hr_expense
 #: model:product.template,name:hr_expense.car_travel_product_template
@@ -650,7 +676,7 @@ msgstr ""
 #. module: hr_expense
 #: view:hr.expense.expense:0
 msgid "Submit to Manager"
-msgstr "ส่งไปยังผู้จัดการ"
+msgstr ""
 
 #. module: hr_expense
 #: view:hr.expense.report:0
@@ -671,7 +697,7 @@ msgstr ""
 #: model:process.node,name:hr_expense.process_node_supplierinvoice0
 #: model:process.transition,name:hr_expense.process_transition_approveinvoice0
 msgid "Supplier Invoice"
-msgstr "ใบแจ้งหนี้จากผู้จัดจำหน่าย"
+msgstr ""
 
 #. module: hr_expense
 #: view:hr.expense.expense:0
@@ -681,7 +707,7 @@ msgstr ""
 #. module: hr_expense
 #: field:hr.expense.report,voucher_id:0
 msgid "Receipt"
-msgstr "ใบเสร็จ"
+msgstr ""
 
 #. module: hr_expense
 #: view:hr.expense.report:0
@@ -689,24 +715,27 @@ msgid "Approved Expenses"
 msgstr ""
 
 #. module: hr_expense
-#: report:hr.expense:0 field:hr.expense.line,unit_amount:0
+#: report:hr.expense:0
+#: field:hr.expense.line,unit_amount:0
 msgid "Unit Price"
-msgstr "ราคาต่อหน่วย"
+msgstr ""
 
 #. module: hr_expense
-#: view:hr.expense.report:0 selection:hr.expense.report,state:0
+#: view:hr.expense.report:0
+#: selection:hr.expense.report,state:0
 msgid "Done"
-msgstr "เสร็จ"
+msgstr ""
 
 #. module: hr_expense
 #: model:process.transition.action,name:hr_expense.process_transition_action_supplierinvoice0
 msgid "Invoice"
-msgstr "ใบแจ้งหนี้"
+msgstr ""
 
 #. module: hr_expense
-#: view:hr.expense.report:0 field:hr.expense.report,year:0
+#: view:hr.expense.report:0
+#: field:hr.expense.report,year:0
 msgid "Year"
-msgstr "ปี"
+msgstr ""
 
 #. module: hr_expense
 #: model:process.transition,name:hr_expense.process_transition_reimbursereinvoice0
@@ -727,7 +756,7 @@ msgstr ""
 #: view:hr.expense.expense:0
 #: model:process.transition.action,name:hr_expense.process_transition_action_refuse0
 msgid "Refuse"
-msgstr "ปฏิเสธ"
+msgstr ""
 
 #. module: hr_expense
 #: model:process.transition,name:hr_expense.process_transition_confirmexpense0
@@ -774,29 +803,33 @@ msgid ""
 msgstr ""
 
 #. module: hr_expense
-#: selection:hr.expense.expense,state:0 view:hr.expense.report:0
+#: selection:hr.expense.expense,state:0
+#: view:hr.expense.report:0
 #: model:mail.message.subtype,name:hr_expense.mt_expense_approved
 #: model:process.node,name:hr_expense.process_node_approved0
 msgid "Approved"
-msgstr "อนุมัติแล้ว"
+msgstr ""
 
 #. module: hr_expense
-#: field:hr.expense.line,product_id:0 view:hr.expense.report:0
+#: field:hr.expense.line,product_id:0
+#: view:hr.expense.report:0
 #: field:hr.expense.report,product_id:0
 #: model:ir.model,name:hr_expense.model_product_product
 msgid "Product"
-msgstr "ผลิตภัณฑ์"
+msgstr ""
 
 #. module: hr_expense
-#: report:hr.expense:0 view:hr.expense.expense:0
-#: field:hr.expense.expense,name:0 field:hr.expense.line,description:0
+#: report:hr.expense:0
+#: view:hr.expense.expense:0
+#: field:hr.expense.expense,name:0
+#: field:hr.expense.line,description:0
 msgid "Description"
-msgstr "รายละเอียด"
+msgstr ""
 
 #. module: hr_expense
 #: selection:hr.expense.report,month:0
 msgid "May"
-msgstr "พฤษภาคม"
+msgstr ""
 
 #. module: hr_expense
 #: field:hr.expense.line,unit_quantity:0
@@ -806,7 +839,7 @@ msgstr ""
 #. module: hr_expense
 #: report:hr.expense:0
 msgid "Price"
-msgstr "ราคา"
+msgstr ""
 
 #. module: hr_expense
 #: field:hr.expense.report,no_of_account:0
@@ -818,7 +851,7 @@ msgstr ""
 #: model:mail.message.subtype,name:hr_expense.mt_expense_refused
 #: model:process.node,name:hr_expense.process_node_refused0
 msgid "Refused"
-msgstr "ถูกปฏิเสธ"
+msgstr ""
 
 #. module: hr_expense
 #: field:product.product,hr_expense_ok:0
@@ -841,7 +874,8 @@ msgid "Employee's Name"
 msgstr ""
 
 #. module: hr_expense
-#: view:hr.expense.report:0 field:hr.expense.report,user_id:0
+#: view:hr.expense.report:0
+#: field:hr.expense.report,user_id:0
 msgid "Validation User"
 msgstr ""
 
@@ -853,12 +887,12 @@ msgstr ""
 #. module: hr_expense
 #: selection:hr.expense.report,month:0
 msgid "February"
-msgstr "กุมภาพันธ์"
+msgstr ""
 
 #. module: hr_expense
 #: report:hr.expense:0
 msgid "Name"
-msgstr "ชื่อ"
+msgstr ""
 
 #. module: hr_expense
 #: code:addons/hr_expense/hr_expense.py:119
@@ -884,7 +918,7 @@ msgstr ""
 #. module: hr_expense
 #: selection:hr.expense.report,month:0
 msgid "April"
-msgstr "เมษายน"
+msgstr ""
 
 #. module: hr_expense
 #: field:hr.expense.line,name:0
@@ -894,17 +928,17 @@ msgstr ""
 #. module: hr_expense
 #: view:hr.expense.expense:0
 msgid "Approve"
-msgstr "อนุมัติ"
+msgstr ""
 
 #. module: hr_expense
 #: help:hr.expense.expense,message_ids:0
 msgid "Messages and communication history"
-msgstr "ข้อความและประวัติการติดต่อ"
+msgstr ""
 
 #. module: hr_expense
 #: field:hr.expense.line,sequence:0
 msgid "Sequence"
-msgstr "ลำดับ"
+msgstr ""
 
 #. module: hr_expense
 #: model:process.transition,note:hr_expense.process_transition_confirmexpense0
@@ -928,19 +962,20 @@ msgstr ""
 #. module: hr_expense
 #: view:hr.expense.expense:0
 msgid "Accounting"
-msgstr "บัญชี"
+msgstr ""
 
 #. module: hr_expense
 #: view:hr.expense.expense:0
 #: model:mail.message.subtype,name:hr_expense.mt_expense_confirmed
 msgid "To Approve"
-msgstr "ให้การอนุมัติ"
+msgstr ""
 
 #. module: hr_expense
-#: view:hr.expense.expense:0 view:hr.expense.line:0
+#: view:hr.expense.expense:0
+#: view:hr.expense.line:0
 #: field:hr.expense.line,total_amount:0
 msgid "Total"
-msgstr "รวม"
+msgstr ""
 
 #. module: hr_expense
 #: model:process.node,name:hr_expense.process_node_reinvoicing0

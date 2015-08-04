@@ -1,22 +1,21 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * hr_timesheet
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2012
+# Estonian translation for openobject-addons
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-06-07 19:36+0000\n"
-"PO-Revision-Date: 2015-05-29 13:00+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Estonian (http://www.transifex.com/projects/p/odoo-7/language/et/)\n"
+"PO-Revision-Date: 2012-12-21 23:00+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Estonian <et@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: et\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-11-21 06:13+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #. module: hr_timesheet
 #: model:ir.actions.act_window,help:hr_timesheet.act_analytic_cost_revenue
@@ -25,15 +24,20 @@ msgid ""
 "                No activity yet on this contract.\n"
 "              </p><p>\n"
 "                In OpenERP, contracts and projects are implemented using\n"
-"                analytic account. So, you can track costs and revenues to analyse\n"
+"                analytic account. So, you can track costs and revenues to "
+"analyse\n"
 "                your margins easily.\n"
 "              </p><p>\n"
-"                Costs will be created automatically when you register supplier\n"
+"                Costs will be created automatically when you register "
+"supplier\n"
 "                invoices, expenses or timesheets.\n"
 "              </p><p>\n"
-"                Revenues will be created automatically when you create customer\n"
-"                invoices. Customer invoices can be created based on sale orders\n"
-"                (fixed price invoices), on timesheets (based on the work done) or\n"
+"                Revenues will be created automatically when you create "
+"customer\n"
+"                invoices. Customer invoices can be created based on sale "
+"orders\n"
+"                (fixed price invoices), on timesheets (based on the work "
+"done) or\n"
 "                on expenses (e.g. reinvoicing of travel costs).\n"
 "              </p>\n"
 "            "
@@ -54,21 +58,21 @@ msgstr "(Jätke tühjaks, et kuvada praegune aeg)"
 #. module: hr_timesheet
 #: view:hr.analytic.timesheet:0
 msgid "Group By..."
-msgstr "Grupeeri..."
+msgstr ""
 
 #. module: hr_timesheet
 #: model:ir.actions.act_window,help:hr_timesheet.action_hr_timesheet_sign_in
 msgid ""
 "Employees can encode their time spent on the different projects. A project "
-"is an analytic account and the time spent on a project generate costs on the"
-" analytic account. This feature allows to record at the same time the "
+"is an analytic account and the time spent on a project generate costs on the "
+"analytic account. This feature allows to record at the same time the "
 "attendance and the timesheet."
 msgstr ""
 
 #. module: hr_timesheet
 #: field:hr.employee,uom_id:0
 msgid "Unit of Measure"
-msgstr "Mõõtühik"
+msgstr ""
 
 #. module: hr_timesheet
 #: field:hr.employee,journal_id:0
@@ -140,7 +144,8 @@ msgid "Work done in the last period"
 msgstr "Tehtud töö viimases perioodis"
 
 #. module: hr_timesheet
-#: field:hr.sign.in.project,name:0 field:hr.sign.out.project,name:0
+#: field:hr.sign.in.project,name:0
+#: field:hr.sign.out.project,name:0
 msgid "Employees name"
 msgstr ""
 
@@ -190,12 +195,12 @@ msgstr ""
 #: code:addons/hr_timesheet/wizard/hr_timesheet_print_employee.py:43
 #, python-format
 msgid "Warning!"
-msgstr "Hoiatus!"
+msgstr ""
 
 #. module: hr_timesheet
 #: field:hr.analytic.timesheet,partner_id:0
 msgid "Partner"
-msgstr "Partner"
+msgstr ""
 
 #. module: hr_timesheet
 #: code:addons/hr_timesheet/report/user_timesheet.py:44
@@ -219,7 +224,7 @@ msgstr "Kokku"
 #. module: hr_timesheet
 #: view:hr.analytic.timesheet:0
 msgid "Analytic account"
-msgstr "Analüütiline konto"
+msgstr ""
 
 #. module: hr_timesheet
 #: model:ir.actions.act_window,help:hr_timesheet.act_hr_timesheet_line_evry1_all_form
@@ -227,8 +232,10 @@ msgid ""
 "<p class=\"oe_view_nocontent_create\">\n"
 "                Click to record activities.\n"
 "              </p><p>\n"
-"                You can register and track your workings hours by project every\n"
-"                day. Every time spent on a project will become a cost in the\n"
+"                You can register and track your workings hours by project "
+"every\n"
+"                day. Every time spent on a project will become a cost in "
+"the\n"
 "                analytic accounting/contract and can be re-invoiced to\n"
 "                customers if required.\n"
 "              </p>\n"
@@ -258,10 +265,11 @@ msgstr ""
 #: selection:hr.analytical.timesheet.users,month:0
 #, python-format
 msgid "July"
-msgstr "Juuli"
+msgstr ""
 
 #. module: hr_timesheet
-#: field:hr.sign.in.project,date:0 field:hr.sign.out.project,date_start:0
+#: field:hr.sign.in.project,date:0
+#: field:hr.sign.out.project,date_start:0
 msgid "Starting Date"
 msgstr "Alguskuupäev"
 
@@ -304,7 +312,7 @@ msgstr ""
 #: selection:hr.analytical.timesheet.users,month:0
 #, python-format
 msgid "September"
-msgstr "September"
+msgstr ""
 
 #. module: hr_timesheet
 #: code:addons/hr_timesheet/report/user_timesheet.py:41
@@ -313,7 +321,7 @@ msgstr "September"
 #: selection:hr.analytical.timesheet.users,month:0
 #, python-format
 msgid "December"
-msgstr "Detsember"
+msgstr ""
 
 #. module: hr_timesheet
 #: field:hr.analytical.timesheet.users,employee_ids:0
@@ -333,10 +341,11 @@ msgstr "Töö kirjeldus"
 
 #. module: hr_timesheet
 #: view:hr.analytical.timesheet.employee:0
-#: view:hr.analytical.timesheet.users:0 view:hr.sign.in.project:0
+#: view:hr.analytical.timesheet.users:0
+#: view:hr.sign.in.project:0
 #: view:hr.sign.out.project:0
 msgid "or"
-msgstr "või"
+msgstr ""
 
 #. module: hr_timesheet
 #: xsl:hr.analytical.timesheet:0
@@ -372,7 +381,8 @@ msgid "(Keep empty for current time)"
 msgstr "(Hoia tühjana praeguse aja jaoks)"
 
 #. module: hr_timesheet
-#: field:account.analytic.account,use_timesheets:0 view:hr.employee:0
+#: field:account.analytic.account,use_timesheets:0
+#: view:hr.employee:0
 msgid "Timesheets"
 msgstr "Tööajalehed"
 
@@ -396,7 +406,7 @@ msgstr ""
 #: selection:hr.analytical.timesheet.users,month:0
 #, python-format
 msgid "August"
-msgstr "August"
+msgstr ""
 
 #. module: hr_timesheet
 #: code:addons/hr_timesheet/hr_timesheet.py:155
@@ -413,17 +423,18 @@ msgstr ""
 #: selection:hr.analytical.timesheet.users,month:0
 #, python-format
 msgid "June"
-msgstr "Juuni"
+msgstr ""
 
 #. module: hr_timesheet
-#: field:hr.sign.in.project,state:0 field:hr.sign.out.project,state:0
+#: field:hr.sign.in.project,state:0
+#: field:hr.sign.out.project,state:0
 msgid "Current Status"
-msgstr "Praegune staatus"
+msgstr ""
 
 #. module: hr_timesheet
 #: view:hr.analytic.timesheet:0
 msgid "Date"
-msgstr "Kuupäev"
+msgstr ""
 
 #. module: hr_timesheet
 #: code:addons/hr_timesheet/report/user_timesheet.py:41
@@ -432,7 +443,7 @@ msgstr "Kuupäev"
 #: selection:hr.analytical.timesheet.users,month:0
 #, python-format
 msgid "November"
-msgstr "Number"
+msgstr ""
 
 #. module: hr_timesheet
 #: field:hr.sign.out.project,date:0
@@ -446,7 +457,7 @@ msgstr "Sulgemise kuupäev"
 #: selection:hr.analytical.timesheet.users,month:0
 #, python-format
 msgid "October"
-msgstr "Oktoober"
+msgstr ""
 
 #. module: hr_timesheet
 #: code:addons/hr_timesheet/report/user_timesheet.py:41
@@ -455,17 +466,18 @@ msgstr "Oktoober"
 #: selection:hr.analytical.timesheet.users,month:0
 #, python-format
 msgid "January"
-msgstr "Jaanuar"
+msgstr ""
 
 #. module: hr_timesheet
 #: code:addons/hr_timesheet/report/user_timesheet.py:44
 #: code:addons/hr_timesheet/report/users_timesheet.py:77
 #, python-format
 msgid "Thu"
-msgstr "Saaja"
+msgstr ""
 
 #. module: hr_timesheet
-#: view:hr.sign.in.project:0 view:hr.sign.out.project:0
+#: view:hr.sign.in.project:0
+#: view:hr.sign.out.project:0
 msgid "Sign In/Out by Project"
 msgstr ""
 
@@ -475,14 +487,15 @@ msgid "Print Employee Timesheet & Print My Timesheet"
 msgstr ""
 
 #. module: hr_timesheet
-#: field:hr.sign.in.project,emp_id:0 field:hr.sign.out.project,emp_id:0
+#: field:hr.sign.in.project,emp_id:0
+#: field:hr.sign.out.project,emp_id:0
 msgid "Employee ID"
 msgstr ""
 
 #. module: hr_timesheet
 #: view:hr.analytical.timesheet.users:0
 msgid "Period"
-msgstr "Periood"
+msgstr ""
 
 #. module: hr_timesheet
 #: view:hr.sign.out.project:0
@@ -491,7 +504,8 @@ msgstr "Üldine info"
 
 #. module: hr_timesheet
 #: view:hr.analytical.timesheet.employee:0
-#: view:hr.analytical.timesheet.users:0 view:hr.sign.in.project:0
+#: view:hr.analytical.timesheet.users:0
+#: view:hr.sign.in.project:0
 #: view:hr.sign.out.project:0
 msgid "Cancel"
 msgstr "Tühista"
@@ -507,13 +521,13 @@ msgstr "Tööatajate tööajaleht"
 #. module: hr_timesheet
 #: view:hr.analytic.timesheet:0
 msgid "Information"
-msgstr "Info"
+msgstr ""
 
 #. module: hr_timesheet
 #: field:hr.analytical.timesheet.employee,employee_id:0
 #: model:ir.model,name:hr_timesheet.model_hr_employee
 msgid "Employee"
-msgstr "Töötaja"
+msgstr ""
 
 #. module: hr_timesheet
 #: view:hr.sign.in.project:0
@@ -536,7 +550,8 @@ msgid "Timesheet Line"
 msgstr "Tööajalehe rida"
 
 #. module: hr_timesheet
-#: view:hr.analytic.timesheet:0 field:hr.employee,product_id:0
+#: view:hr.analytic.timesheet:0
+#: field:hr.employee,product_id:0
 msgid "Product"
 msgstr "Toode"
 
@@ -552,7 +567,7 @@ msgstr "Kasutajad"
 #: selection:hr.analytical.timesheet.users,month:0
 #, python-format
 msgid "May"
-msgstr "Mai"
+msgstr ""
 
 #. module: hr_timesheet
 #: view:hr.analytic.timesheet:0
@@ -576,7 +591,7 @@ msgstr ""
 #: selection:hr.analytical.timesheet.users,month:0
 #, python-format
 msgid "February"
-msgstr "Veebruar"
+msgstr ""
 
 #. module: hr_timesheet
 #: model:ir.model,name:hr_timesheet.model_hr_sign_out_project
@@ -594,7 +609,7 @@ msgstr ""
 #. module: hr_timesheet
 #: view:hr.analytical.timesheet.users:0
 msgid "Employees"
-msgstr "Töötajad"
+msgstr ""
 
 #. module: hr_timesheet
 #: code:addons/hr_timesheet/report/user_timesheet.py:41
@@ -603,7 +618,7 @@ msgstr "Töötajad"
 #: selection:hr.analytical.timesheet.users,month:0
 #, python-format
 msgid "March"
-msgstr "Märts"
+msgstr ""
 
 #. module: hr_timesheet
 #: code:addons/hr_timesheet/report/user_timesheet.py:41
@@ -612,7 +627,7 @@ msgstr "Märts"
 #: selection:hr.analytical.timesheet.users,month:0
 #, python-format
 msgid "April"
-msgstr "Aprill"
+msgstr ""
 
 #. module: hr_timesheet
 #: code:addons/hr_timesheet/wizard/hr_timesheet_sign_in_out.py:77
@@ -635,15 +650,16 @@ msgstr "Aasta"
 #. module: hr_timesheet
 #: view:hr.analytic.timesheet:0
 msgid "Duration"
-msgstr "Kestvus"
+msgstr ""
 
 #. module: hr_timesheet
 #: view:hr.analytic.timesheet:0
 msgid "Accounting"
-msgstr "Raamatupidamine"
+msgstr ""
 
 #. module: hr_timesheet
-#: xsl:hr.analytical.timesheet:0 xsl:hr.analytical.timesheet_users:0
+#: xsl:hr.analytical.timesheet:0
+#: xsl:hr.analytical.timesheet_users:0
 msgid "Total"
 msgstr "Kokku"
 

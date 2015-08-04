@@ -1,22 +1,21 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * crm_helpdesk
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2012
+# Romanian translation for openobject-addons
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-08-14 00:10+0000\n"
-"PO-Revision-Date: 2015-05-29 13:00+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Romanian (http://www.transifex.com/projects/p/odoo-7/language/ro/)\n"
+"PO-Revision-Date: 2013-03-07 18:46+0000\n"
+"Last-Translator: ERPSystems.ro <Unknown>\n"
+"Language-Team: Romanian <ro@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: ro\n"
-"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2014-08-14 06:48+0000\n"
+"X-Generator: Launchpad (build 17156)\n"
 
 #. module: crm_helpdesk
 #: field:crm.helpdesk.report,delay_close:0
@@ -29,7 +28,8 @@ msgid "# of Cases"
 msgstr "# de Cazuri"
 
 #. module: crm_helpdesk
-#: view:crm.helpdesk:0 view:crm.helpdesk.report:0
+#: view:crm.helpdesk:0
+#: view:crm.helpdesk.report:0
 msgid "Group By..."
 msgstr "Grupeaza dupa..."
 
@@ -49,7 +49,8 @@ msgid "Unread Messages"
 msgstr "Mesaje necitite"
 
 #. module: crm_helpdesk
-#: field:crm.helpdesk,company_id:0 view:crm.helpdesk.report:0
+#: field:crm.helpdesk,company_id:0
+#: view:crm.helpdesk.report:0
 #: field:crm.helpdesk.report,company_id:0
 msgid "Company"
 msgstr "Companie"
@@ -65,12 +66,14 @@ msgid "Salesperson"
 msgstr "Agent de vanzari"
 
 #. module: crm_helpdesk
-#: selection:crm.helpdesk,priority:0 selection:crm.helpdesk.report,priority:0
+#: selection:crm.helpdesk,priority:0
+#: selection:crm.helpdesk.report,priority:0
 msgid "Highest"
 msgstr "Cel mai ridicat (cea mai ridicata)"
 
 #. module: crm_helpdesk
-#: view:crm.helpdesk.report:0 field:crm.helpdesk.report,day:0
+#: view:crm.helpdesk.report:0
+#: field:crm.helpdesk.report,day:0
 msgid "Day"
 msgstr "Zi"
 
@@ -95,7 +98,8 @@ msgid "My company"
 msgstr "Compania mea"
 
 #. module: crm_helpdesk
-#: selection:crm.helpdesk,state:0 selection:crm.helpdesk.report,state:0
+#: selection:crm.helpdesk,state:0
+#: selection:crm.helpdesk.report,state:0
 msgid "Cancelled"
 msgstr "Anulat(a)"
 
@@ -111,7 +115,8 @@ msgid "Helpdesk Analysis"
 msgstr "Analiza helpdesk (serviciu de asistenta tehnica)"
 
 #. module: crm_helpdesk
-#: view:crm.helpdesk.report:0 field:crm.helpdesk.report,date_closed:0
+#: view:crm.helpdesk.report:0
+#: field:crm.helpdesk.report,date_closed:0
 msgid "Close Date"
 msgstr "Data inchiderii"
 
@@ -130,7 +135,9 @@ msgstr "Urmatoarea actiune"
 msgid ""
 "Holds the Chatter summary (number of messages, ...). This summary is "
 "directly in html format in order to be inserted in kanban views."
-msgstr "Contine rezumatul Chatter (numar de mesaje, ...). Acest rezumat este direct in format HTML, icu scopul de a se introduce in vizualizari kanban."
+msgstr ""
+"Contine rezumatul Chatter (numar de mesaje, ...). Acest rezumat este direct "
+"in format HTML, icu scopul de a se introduce in vizualizari kanban."
 
 #. module: crm_helpdesk
 #: view:crm.helpdesk:0
@@ -143,8 +150,10 @@ msgid "Extra Info"
 msgstr "Informatii suplimentare"
 
 #. module: crm_helpdesk
-#: view:crm.helpdesk:0 field:crm.helpdesk,partner_id:0
-#: view:crm.helpdesk.report:0 field:crm.helpdesk.report,partner_id:0
+#: view:crm.helpdesk:0
+#: field:crm.helpdesk,partner_id:0
+#: view:crm.helpdesk.report:0
+#: field:crm.helpdesk.report,partner_id:0
 msgid "Partner"
 msgstr "Partener"
 
@@ -159,8 +168,10 @@ msgid "Section"
 msgstr "Sectiune"
 
 #. module: crm_helpdesk
-#: view:crm.helpdesk:0 field:crm.helpdesk,priority:0
-#: view:crm.helpdesk.report:0 field:crm.helpdesk.report,priority:0
+#: view:crm.helpdesk:0
+#: field:crm.helpdesk,priority:0
+#: view:crm.helpdesk.report:0
+#: field:crm.helpdesk.report,priority:0
 msgid "Priority"
 msgstr "Prioritate"
 
@@ -170,7 +181,8 @@ msgid "Followers"
 msgstr "Persoane interesate"
 
 #. module: crm_helpdesk
-#: view:crm.helpdesk:0 selection:crm.helpdesk,state:0
+#: view:crm.helpdesk:0
+#: selection:crm.helpdesk,state:0
 #: view:crm.helpdesk.report:0
 msgid "New"
 msgstr "Nou(a)"
@@ -186,13 +198,15 @@ msgid "Email"
 msgstr "E-mail"
 
 #. module: crm_helpdesk
-#: field:crm.helpdesk,channel_id:0 view:crm.helpdesk.report:0
+#: field:crm.helpdesk,channel_id:0
+#: view:crm.helpdesk.report:0
 #: field:crm.helpdesk.report,channel_id:0
 msgid "Channel"
 msgstr "Canal"
 
 #. module: crm_helpdesk
-#: selection:crm.helpdesk,priority:0 selection:crm.helpdesk.report,priority:0
+#: selection:crm.helpdesk,priority:0
+#: selection:crm.helpdesk.report,priority:0
 msgid "Lowest"
 msgstr "Cel mai scazut (cea mai scazuta)"
 
@@ -207,7 +221,8 @@ msgid "My Sales Team(s)"
 msgstr "Echipa mea (echipele mele) de vanzari"
 
 #. module: crm_helpdesk
-#: field:crm.helpdesk,create_date:0 field:crm.helpdesk.report,create_date:0
+#: field:crm.helpdesk,create_date:0
+#: field:crm.helpdesk.report,create_date:0
 msgid "Creation Date"
 msgstr "Data crearii"
 
@@ -217,7 +232,8 @@ msgid "Reset to Draft"
 msgstr "Resetare ca Ciorna"
 
 #. module: crm_helpdesk
-#: view:crm.helpdesk:0 field:crm.helpdesk,date_deadline:0
+#: view:crm.helpdesk:0
+#: field:crm.helpdesk,date_deadline:0
 #: field:crm.helpdesk.report,date_deadline:0
 msgid "Deadline"
 msgstr "Termen limita"
@@ -268,7 +284,9 @@ msgstr "Anulati Cazul"
 msgid ""
 "Helpdesk requests that are assigned to me or to one of the sale teams I "
 "manage"
-msgstr "Cereri de asistenta tehnica ce imi sunt atribuite mie sau uneia dintre echipele de vanzari pe care le gestionez eu"
+msgstr ""
+"Cereri de asistenta tehnica ce imi sunt atribuite mie sau uneia dintre "
+"echipele de vanzari pe care le gestionez eu"
 
 #. module: crm_helpdesk
 #: view:crm.helpdesk.report:0
@@ -301,7 +319,8 @@ msgid "December"
 msgstr "Decembrie"
 
 #. module: crm_helpdesk
-#: view:crm.helpdesk.report:0 field:crm.helpdesk.report,month:0
+#: view:crm.helpdesk.report:0
+#: field:crm.helpdesk.report,month:0
 msgid "Month"
 msgstr "Luna"
 
@@ -321,7 +340,8 @@ msgid "Reference 2"
 msgstr "Referinta 2"
 
 #. module: crm_helpdesk
-#: field:crm.helpdesk,categ_id:0 field:crm.helpdesk.report,categ_id:0
+#: field:crm.helpdesk,categ_id:0
+#: field:crm.helpdesk.report,categ_id:0
 msgid "Category"
 msgstr "Categorie"
 
@@ -336,7 +356,8 @@ msgid "Helpdesk Support"
 msgstr "Suport asistenta tehnica"
 
 #. module: crm_helpdesk
-#: field:crm.helpdesk,planned_cost:0 field:crm.helpdesk.report,planned_cost:0
+#: field:crm.helpdesk,planned_cost:0
+#: field:crm.helpdesk.report,planned_cost:0
 msgid "Planned Costs"
 msgstr "Costuri planificate"
 
@@ -351,7 +372,10 @@ msgid ""
 "These email addresses will be added to the CC field of all inbound and "
 "outbound emails for this record before being sent. Separate multiple email "
 "addresses with a comma"
-msgstr "Aceste adrese de email vor fi adaugate in campul CC al tuturor email-urilor primite si trimise pentru aceasta inregistrare inainte de a fi trimise. Despartiti adresele de mail multiple cu o virgula"
+msgstr ""
+"Aceste adrese de email vor fi adaugate in campul CC al tuturor email-urilor "
+"primite si trimise pentru aceasta inregistrare inainte de a fi trimise. "
+"Despartiti adresele de mail multiple cu o virgula"
 
 #. module: crm_helpdesk
 #: view:crm.helpdesk:0
@@ -364,24 +388,30 @@ msgid "Draft"
 msgstr "Ciorna"
 
 #. module: crm_helpdesk
-#: selection:crm.helpdesk,priority:0 selection:crm.helpdesk.report,priority:0
+#: selection:crm.helpdesk,priority:0
+#: selection:crm.helpdesk.report,priority:0
 msgid "Low"
 msgstr "Scazut(a)"
 
 #. module: crm_helpdesk
-#: field:crm.helpdesk,date_closed:0 selection:crm.helpdesk,state:0
-#: view:crm.helpdesk.report:0 selection:crm.helpdesk.report,state:0
+#: field:crm.helpdesk,date_closed:0
+#: selection:crm.helpdesk,state:0
+#: view:crm.helpdesk.report:0
+#: selection:crm.helpdesk.report,state:0
 msgid "Closed"
 msgstr "Inchis(a)"
 
 #. module: crm_helpdesk
-#: view:crm.helpdesk:0 selection:crm.helpdesk,state:0
+#: view:crm.helpdesk:0
+#: selection:crm.helpdesk,state:0
 #: selection:crm.helpdesk.report,state:0
 msgid "Pending"
 msgstr "In asteptare"
 
 #. module: crm_helpdesk
-#: view:crm.helpdesk:0 field:crm.helpdesk,state:0 view:crm.helpdesk.report:0
+#: view:crm.helpdesk:0
+#: field:crm.helpdesk,state:0
+#: view:crm.helpdesk.report:0
 #: field:crm.helpdesk.report,state:0
 msgid "Status"
 msgstr "Stare"
@@ -392,7 +422,8 @@ msgid "August"
 msgstr "August"
 
 #. module: crm_helpdesk
-#: selection:crm.helpdesk,priority:0 selection:crm.helpdesk.report,priority:0
+#: selection:crm.helpdesk,priority:0
+#: selection:crm.helpdesk.report,priority:0
 msgid "Normal"
 msgstr "Normal"
 
@@ -420,12 +451,28 @@ msgid ""
 "                Helpdesk and Support allow you to track your interventions.\n"
 "              </p><p>\n"
 "                Use the OpenERP Issues system to manage your support\n"
-"                activities. Issues can be connected to the email gateway: new\n"
-"                emails may create issues, each of them automatically gets the\n"
+"                activities. Issues can be connected to the email gateway: "
+"new\n"
+"                emails may create issues, each of them automatically gets "
+"the\n"
 "                history of the conversation with the customer.\n"
 "              </p>\n"
 "            "
-msgstr "<clasa p=\"oe_vizualizare_niciuncontinut_creeaza\">\n                Faceti click pentru a crea o cerere noua. \n              </p><p>\n                Serviciul de Asistenta tehnica si Suport va permite sa tineti evidenta interventiilor dumneavoastra.\n              </p><p>\n                Folositi sistemul OpenERP Probleme pentru a gestiona activitatile\n                de asistenta tehnica. Problemele pot fi conectate la email gateway: email-urile\n                noi pot crea probleme, fiecare dintre ele primind automat\n                istoricul conversatiilor cu clientii.\n              </p>\n            "
+msgstr ""
+"<clasa p=\"oe_vizualizare_niciuncontinut_creeaza\">\n"
+"                Faceti click pentru a crea o cerere noua. \n"
+"              </p><p>\n"
+"                Serviciul de Asistenta tehnica si Suport va permite sa "
+"tineti evidenta interventiilor dumneavoastra.\n"
+"              </p><p>\n"
+"                Folositi sistemul OpenERP Probleme pentru a gestiona "
+"activitatile\n"
+"                de asistenta tehnica. Problemele pot fi conectate la email "
+"gateway: email-urile\n"
+"                noi pot crea probleme, fiecare dintre ele primind automat\n"
+"                istoricul conversatiilor cu clientii.\n"
+"              </p>\n"
+"            "
 
 #. module: crm_helpdesk
 #: field:crm.helpdesk,planned_revenue:0
@@ -467,7 +514,9 @@ msgstr "Cereri de asistenta tehnica"
 msgid ""
 "Responsible sales team. Define Responsible user and Email account for mail "
 "gateway."
-msgstr "Echipa de vanzari responsabila. Definiti Utilizatorul responsabil si Contul de email pentru mail gateway."
+msgstr ""
+"Echipa de vanzari responsabila. Definiti Utilizatorul responsabil si Contul "
+"de email pentru mail gateway."
 
 #. module: crm_helpdesk
 #: selection:crm.helpdesk.report,month:0
@@ -485,7 +534,8 @@ msgid "Summary"
 msgstr "Continut"
 
 #. module: crm_helpdesk
-#: view:crm.helpdesk:0 field:crm.helpdesk,date:0
+#: view:crm.helpdesk:0
+#: field:crm.helpdesk,date:0
 msgid "Date"
 msgstr "Data"
 
@@ -515,7 +565,8 @@ msgid "Communication"
 msgstr "Comunicare"
 
 #. module: crm_helpdesk
-#: view:crm.helpdesk:0 view:crm.helpdesk.report:0
+#: view:crm.helpdesk:0
+#: view:crm.helpdesk.report:0
 #: selection:crm.helpdesk.report,state:0
 msgid "Open"
 msgstr "Deschideti"
@@ -543,7 +594,8 @@ msgid "Helpdesk"
 msgstr "Serviciu de asistenta tehnica"
 
 #. module: crm_helpdesk
-#: view:crm.helpdesk:0 field:crm.helpdesk,user_id:0
+#: view:crm.helpdesk:0
+#: field:crm.helpdesk,user_id:0
 msgid "Responsible"
 msgstr "Responsabil"
 
@@ -583,7 +635,10 @@ msgid ""
 "Have a general overview of all support requests by sorting them with "
 "specific criteria such as the processing time, number of requests answered, "
 "emails sent and costs."
-msgstr "Aveti o vedere de ansamblu asupra tuturor cererilor de asistenta tehnica sortandu-le prin criterii specifice precum timpul de procesare, numarul de cereri rezolvate, email-uri trimise si costuri."
+msgstr ""
+"Aveti o vedere de ansamblu asupra tuturor cererilor de asistenta tehnica "
+"sortandu-le prin criterii specifice precum timpul de procesare, numarul de "
+"cereri rezolvate, email-uri trimise si costuri."
 
 #. module: crm_helpdesk
 #: selection:crm.helpdesk.report,month:0
@@ -596,7 +651,8 @@ msgid "Name"
 msgstr "Nume"
 
 #. module: crm_helpdesk
-#: view:crm.helpdesk.report:0 field:crm.helpdesk.report,name:0
+#: view:crm.helpdesk.report:0
+#: field:crm.helpdesk.report,name:0
 msgid "Year"
 msgstr "An"
 
@@ -618,11 +674,21 @@ msgstr "Cazurile mele"
 #. module: crm_helpdesk
 #: help:crm.helpdesk,state:0
 msgid ""
-"The status is set to 'Draft', when a case is created.                                  \n"
-"If the case is in progress the status is set to 'Open'.                                  \n"
-"When the case is over, the status is set to 'Done'.                                  \n"
+"The status is set to 'Draft', when a case is created.                        "
+"          \n"
+"If the case is in progress the status is set to 'Open'.                      "
+"            \n"
+"When the case is over, the status is set to 'Done'.                          "
+"        \n"
 "If the case needs to be reviewed then the status is set to 'Pending'."
-msgstr "Starea este setata pe 'Ciorna', atunci cand este creat un caz.                                  \nAtunci cand cazul este in desfasurare, starea este setata pe 'Deschis'.                                  \nAtunci cand cazul este finalizat, starea este setata pe 'Efectuat'.                                  \nAtunci cand cazul trebuie verificat, atunci starea este 'In asteptare'."
+msgstr ""
+"Starea este setata pe 'Ciorna', atunci cand este creat un caz.               "
+"                   \n"
+"Atunci cand cazul este in desfasurare, starea este setata pe 'Deschis'.      "
+"                            \n"
+"Atunci cand cazul este finalizat, starea este setata pe 'Efectuat'.          "
+"                        \n"
+"Atunci cand cazul trebuie verificat, atunci starea este 'In asteptare'."
 
 #. module: crm_helpdesk
 #: help:crm.helpdesk,message_ids:0
@@ -634,7 +700,9 @@ msgstr "Istoric mesaje si conversatii"
 msgid ""
 "Create and manage helpdesk categories to better manage and classify your "
 "support requests."
-msgstr "Creeaza si gestioneaza categoriile serviciului de asistenta tehnica pentru a gestiona si clasifica mai bine cererile de asistenta tehnica."
+msgstr ""
+"Creeaza si gestioneaza categoriile serviciului de asistenta tehnica pentru a "
+"gestiona si clasifica mai bine cererile de asistenta tehnica."
 
 #. module: crm_helpdesk
 #: view:crm.helpdesk:0
@@ -647,12 +715,14 @@ msgid "Open Helpdesk Request"
 msgstr "Deschide Cererea de asistenta tehnica"
 
 #. module: crm_helpdesk
-#: selection:crm.helpdesk,priority:0 selection:crm.helpdesk.report,priority:0
+#: selection:crm.helpdesk,priority:0
+#: selection:crm.helpdesk.report,priority:0
 msgid "High"
 msgstr "Ridicat(a)"
 
 #. module: crm_helpdesk
-#: view:crm.helpdesk:0 field:crm.helpdesk,section_id:0
+#: view:crm.helpdesk:0
+#: field:crm.helpdesk,section_id:0
 #: view:crm.helpdesk.report:0
 msgid "Sales Team"
 msgstr "Echipa de vanzari"
@@ -671,3 +741,9 @@ msgstr "Atribuit(a) Mie sau Echipei Mele de Vanzari(s)"
 #: field:crm.helpdesk,duration:0
 msgid "Duration"
 msgstr "Durata"
+
+#~ msgid "Cancel"
+#~ msgstr "Anuleaza"
+
+#~ msgid "Close"
+#~ msgstr "Inchideti"

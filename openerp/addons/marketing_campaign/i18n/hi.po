@@ -1,22 +1,21 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * marketing_campaign
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2012
+# Hindi translation for openobject-addons
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-08-14 00:10+0000\n"
-"PO-Revision-Date: 2015-05-23 13:52+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Hindi (http://www.transifex.com/projects/p/odoo-7/language/hi/)\n"
+"PO-Revision-Date: 2012-12-21 23:00+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Hindi <hi@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: hi\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2014-08-14 07:03+0000\n"
+"X-Generator: Launchpad (build 17156)\n"
 
 #. module: marketing_campaign
 #: view:marketing.campaign:0
@@ -32,7 +31,8 @@ msgstr "पिछला गतिविधि"
 #: code:addons/marketing_campaign/marketing_campaign.py:817
 #, python-format
 msgid "The current step for this item has no email or report to preview."
-msgstr "इस मद के लिए मौजूदा कदम नहीं ईमेल या पूर्वावलोकन करने के लिए रिपोर्ट किया है."
+msgstr ""
+"इस मद के लिए मौजूदा कदम नहीं ईमेल या पूर्वावलोकन करने के लिए रिपोर्ट किया है."
 
 #. module: marketing_campaign
 #: constraint:marketing.campaign.transition:0
@@ -50,8 +50,10 @@ msgid "Custom Action"
 msgstr ""
 
 #. module: marketing_campaign
-#: view:campaign.analysis:0 view:marketing.campaign:0
-#: view:marketing.campaign.segment:0 view:marketing.campaign.workitem:0
+#: view:campaign.analysis:0
+#: view:marketing.campaign:0
+#: view:marketing.campaign.segment:0
+#: view:marketing.campaign.workitem:0
 msgid "Group By..."
 msgstr "इस आधार पर समूहीकृत"
 
@@ -84,7 +86,8 @@ msgid "Campaign Editor"
 msgstr "अभियान संपादक"
 
 #. module: marketing_campaign
-#: view:marketing.campaign:0 selection:marketing.campaign,state:0
+#: view:marketing.campaign:0
+#: selection:marketing.campaign,state:0
 #: view:marketing.campaign.segment:0
 #: selection:marketing.campaign.segment,state:0
 msgid "Running"
@@ -93,14 +96,14 @@ msgstr "फैलना"
 #. module: marketing_campaign
 #: model:email.template,body_html:marketing_campaign.email_template_3
 msgid ""
-"Hi, we are delighted to let you know that you have entered the select circle"
-" of our Gold Partners"
+"Hi, we are delighted to let you know that you have entered the select circle "
+"of our Gold Partners"
 msgstr ""
 
 #. module: marketing_campaign
 #: selection:campaign.analysis,month:0
 msgid "March"
-msgstr "मार्च"
+msgstr ""
 
 #. module: marketing_campaign
 #: field:marketing.campaign.activity,object_id:0
@@ -115,7 +118,9 @@ msgstr ""
 #. module: marketing_campaign
 #: help:marketing.campaign.activity,condition:0
 msgid ""
-"Python expression to decide whether the activity can be executed, otherwise it will be deleted or cancelled.The expression may use the following [browsable] variables:\n"
+"Python expression to decide whether the activity can be executed, otherwise "
+"it will be deleted or cancelled.The expression may use the following "
+"[browsable] variables:\n"
 "   - activity: the campaign activity\n"
 "   - workitem: the campaign workitem\n"
 "   - resource: the resource object this campaign item represents\n"
@@ -124,9 +129,10 @@ msgid ""
 msgstr ""
 
 #. module: marketing_campaign
-#: view:marketing.campaign:0 view:marketing.campaign.segment:0
+#: view:marketing.campaign:0
+#: view:marketing.campaign.segment:0
 msgid "Set to Draft"
-msgstr "ड्राफ्ट के लिए सेट करें"
+msgstr ""
 
 #. module: marketing_campaign
 #: view:marketing.campaign.activity:0
@@ -154,7 +160,8 @@ msgid "Launch Date"
 msgstr "विमोचन तिथि"
 
 #. module: marketing_campaign
-#: view:campaign.analysis:0 field:campaign.analysis,day:0
+#: view:campaign.analysis:0
+#: field:campaign.analysis,day:0
 msgid "Day"
 msgstr "दिन"
 
@@ -201,11 +208,12 @@ msgid ""
 msgstr ""
 
 #. module: marketing_campaign
-#: selection:campaign.analysis,state:0 selection:marketing.campaign,state:0
+#: selection:campaign.analysis,state:0
+#: selection:marketing.campaign,state:0
 #: selection:marketing.campaign.segment,state:0
 #: selection:marketing.campaign.workitem,state:0
 msgid "Cancelled"
-msgstr "निरस्त"
+msgstr ""
 
 #. module: marketing_campaign
 #: selection:marketing.campaign.transition,trigger:0
@@ -215,10 +223,14 @@ msgstr ""
 #. module: marketing_campaign
 #: help:marketing.campaign,mode:0
 msgid ""
-"Test - It creates and process all the activities directly (without waiting for the delay on transitions) but does not send emails or produce reports.\n"
-"Test in Realtime - It creates and processes all the activities directly but does not send emails or produce reports.\n"
-"With Manual Confirmation - the campaigns runs normally, but the user has to validate all workitem manually.\n"
-"Normal - the campaign runs normally and automatically sends all emails and reports (be very careful with this mode, you're live!)"
+"Test - It creates and process all the activities directly (without waiting "
+"for the delay on transitions) but does not send emails or produce reports.\n"
+"Test in Realtime - It creates and processes all the activities directly but "
+"does not send emails or produce reports.\n"
+"With Manual Confirmation - the campaigns runs normally, but the user has to "
+"validate all workitem manually.\n"
+"Normal - the campaign runs normally and automatically sends all emails and "
+"reports (be very careful with this mode, you're live!)"
 msgstr ""
 
 #. module: marketing_campaign
@@ -232,8 +244,10 @@ msgid "False"
 msgstr ""
 
 #. module: marketing_campaign
-#: view:campaign.analysis:0 field:campaign.analysis,campaign_id:0
-#: view:marketing.campaign:0 field:marketing.campaign.activity,campaign_id:0
+#: view:campaign.analysis:0
+#: field:campaign.analysis,campaign_id:0
+#: view:marketing.campaign:0
+#: field:marketing.campaign.activity,campaign_id:0
 #: view:marketing.campaign.segment:0
 #: field:marketing.campaign.segment,campaign_id:0
 #: view:marketing.campaign.workitem:0
@@ -247,8 +261,10 @@ msgid "Hello, you will receive your welcome pack via email shortly."
 msgstr ""
 
 #. module: marketing_campaign
-#: view:campaign.analysis:0 field:campaign.analysis,segment_id:0
-#: view:marketing.campaign.segment:0 view:marketing.campaign.workitem:0
+#: view:campaign.analysis:0
+#: field:campaign.analysis,segment_id:0
+#: view:marketing.campaign.segment:0
+#: view:marketing.campaign.workitem:0
 #: field:marketing.campaign.workitem,segment_id:0
 msgid "Segment"
 msgstr ""
@@ -264,8 +280,10 @@ msgstr ""
 msgid ""
 "The type of action to execute when an item enters this activity, such as:\n"
 "   - Email: send an email using a predefined email template\n"
-"   - Report: print an existing Report defined on the resource item and save it into a specific directory\n"
-"   - Custom Action: execute a predefined action, e.g. to modify the fields of the resource record\n"
+"   - Report: print an existing Report defined on the resource item and save "
+"it into a specific directory\n"
+"   - Custom Action: execute a predefined action, e.g. to modify the fields "
+"of the resource record\n"
 "  "
 msgstr ""
 
@@ -280,16 +298,17 @@ msgid "Month(s)"
 msgstr ""
 
 #. module: marketing_campaign
-#: view:campaign.analysis:0 field:campaign.analysis,partner_id:0
+#: view:campaign.analysis:0
+#: field:campaign.analysis,partner_id:0
 #: model:ir.model,name:marketing_campaign.model_res_partner
 #: field:marketing.campaign.workitem,partner_id:0
 msgid "Partner"
-msgstr "साथी"
+msgstr ""
 
 #. module: marketing_campaign
 #: model:ir.filters,name:marketing_campaign.filter0
 msgid "Partners"
-msgstr "साथी"
+msgstr ""
 
 #. module: marketing_campaign
 #: view:campaign.analysis:0
@@ -300,7 +319,7 @@ msgstr ""
 #: selection:marketing.campaign,state:0
 #: selection:marketing.campaign.segment,state:0
 msgid "New"
-msgstr "नया"
+msgstr ""
 
 #. module: marketing_campaign
 #: sql_constraint:marketing.campaign.transition:0
@@ -310,14 +329,15 @@ msgstr "अंतराल सकारात्मक या शून्य �
 #. module: marketing_campaign
 #: selection:marketing.campaign.activity,type:0
 msgid "Email"
-msgstr "ईमेल"
+msgstr ""
 
 #. module: marketing_campaign
-#: field:marketing.campaign,name:0 field:marketing.campaign.activity,name:0
+#: field:marketing.campaign,name:0
+#: field:marketing.campaign.activity,name:0
 #: field:marketing.campaign.segment,name:0
 #: field:marketing.campaign.transition,name:0
 msgid "Name"
-msgstr "नाम"
+msgstr ""
 
 #. module: marketing_campaign
 #: field:marketing.campaign.workitem,res_name:0
@@ -330,7 +350,8 @@ msgid "Synchronization mode"
 msgstr ""
 
 #. module: marketing_campaign
-#: view:marketing.campaign:0 view:marketing.campaign.segment:0
+#: view:marketing.campaign:0
+#: view:marketing.campaign.segment:0
 msgid "Run"
 msgstr ""
 
@@ -365,7 +386,8 @@ msgstr ""
 #: model:ir.actions.act_window,name:marketing_campaign.action_marketing_campaign_form
 #: model:ir.ui.menu,name:marketing_campaign.menu_marketing_campaign
 #: model:ir.ui.menu,name:marketing_campaign.menu_marketing_campaign_form
-#: view:marketing.campaign:0 view:res.partner:0
+#: view:marketing.campaign:0
+#: view:res.partner:0
 msgid "Campaigns"
 msgstr ""
 
@@ -388,12 +410,12 @@ msgstr ""
 #. module: marketing_campaign
 #: selection:campaign.analysis,month:0
 msgid "July"
-msgstr "जुलाई"
+msgstr ""
 
 #. module: marketing_campaign
 #: model:ir.ui.menu,name:marketing_campaign.menu_marketing_configuration
 msgid "Configuration"
-msgstr "कॉन्फ़िगरेशन"
+msgstr ""
 
 #. module: marketing_campaign
 #: help:marketing.campaign.activity,variable_cost:0
@@ -452,12 +474,16 @@ msgid ""
 "<p class=\"oe_view_nocontent_create\">\n"
 "            Click to create a marketing campaign.\n"
 "          </p><p>\n"
-"            OpenERP's marketing campaign allows you to automate communication\n"
-"            to your prospects. You can define a segment (set of conditions) on\n"
+"            OpenERP's marketing campaign allows you to automate "
+"communication\n"
+"            to your prospects. You can define a segment (set of conditions) "
+"on\n"
 "            your leads and partners to fullfil the campaign.\n"
 "          </p><p>\n"
-"            A campaign can have many activities like sending an email, printing\n"
-"            a letter, assigning to a team, etc. These activities are triggered\n"
+"            A campaign can have many activities like sending an email, "
+"printing\n"
+"            a letter, assigning to a team, etc. These activities are "
+"triggered\n"
 "            from specific situations; contact form, 10 days after first\n"
 "            contact, if a lead is not closed yet, etc.\n"
 "          </p>\n"
@@ -478,24 +504,25 @@ msgstr ""
 #. module: marketing_campaign
 #: selection:campaign.analysis,month:0
 msgid "September"
-msgstr "सितंबर"
+msgstr ""
 
 #. module: marketing_campaign
 #: selection:campaign.analysis,month:0
 msgid "December"
-msgstr "दिसंबर"
+msgstr ""
 
 #. module: marketing_campaign
 #: help:marketing.campaign,partner_field_id:0
 msgid ""
-"The generated workitems will be linked to the partner related to the record."
-" If the record is the partner itself leave this field empty. This is useful "
+"The generated workitems will be linked to the partner related to the record. "
+"If the record is the partner itself leave this field empty. This is useful "
 "for reporting purposes, via the Campaign Analysis or Campaign Follow-up "
 "views."
 msgstr ""
 
 #. module: marketing_campaign
-#: view:campaign.analysis:0 field:campaign.analysis,month:0
+#: view:campaign.analysis:0
+#: field:campaign.analysis,month:0
 msgid "Month"
 msgstr ""
 
@@ -556,8 +583,8 @@ msgid ""
 "records to inject in the campaign. \"No duplicates\" prevents selecting "
 "records which have already entered the campaign previously.If the campaign "
 "has a \"unique field\" set, \"no duplicates\" will also prevent selecting "
-"records which have the same value for the unique field as other records that"
-" already entered the campaign."
+"records which have the same value for the unique field as other records that "
+"already entered the campaign."
 msgstr ""
 
 #. module: marketing_campaign
@@ -576,9 +603,10 @@ msgid "Directory"
 msgstr ""
 
 #. module: marketing_campaign
-#: view:marketing.campaign:0 view:marketing.campaign.segment:0
+#: view:marketing.campaign:0
+#: view:marketing.campaign.segment:0
 msgid "Draft"
-msgstr "मसौदा"
+msgstr ""
 
 #. module: marketing_campaign
 #: view:marketing.campaign.workitem:0
@@ -591,13 +619,16 @@ msgid "Preview"
 msgstr ""
 
 #. module: marketing_campaign
-#: view:campaign.analysis:0 field:campaign.analysis,state:0
-#: view:marketing.campaign:0 field:marketing.campaign,state:0
-#: view:marketing.campaign.segment:0 field:marketing.campaign.segment,state:0
+#: view:campaign.analysis:0
+#: field:campaign.analysis,state:0
+#: view:marketing.campaign:0
+#: field:marketing.campaign,state:0
+#: view:marketing.campaign.segment:0
+#: field:marketing.campaign.segment,state:0
 #: view:marketing.campaign.workitem:0
 #: field:marketing.campaign.workitem,state:0
 msgid "Status"
-msgstr "स्थिति"
+msgstr ""
 
 #. module: marketing_campaign
 #: selection:campaign.analysis,month:0
@@ -622,7 +653,8 @@ msgid ""
 msgstr ""
 
 #. module: marketing_campaign
-#: view:campaign.analysis:0 selection:campaign.analysis,state:0
+#: view:campaign.analysis:0
+#: selection:campaign.analysis,state:0
 #: view:marketing.campaign.workitem:0
 #: selection:marketing.campaign.workitem,state:0
 msgid "To Do"
@@ -631,7 +663,7 @@ msgstr ""
 #. module: marketing_campaign
 #: selection:campaign.analysis,month:0
 msgid "June"
-msgstr "जून"
+msgstr ""
 
 #. module: marketing_campaign
 #: model:ir.model,name:marketing_campaign.model_email_template
@@ -679,7 +711,8 @@ msgid "Unique Field"
 msgstr ""
 
 #. module: marketing_campaign
-#: selection:campaign.analysis,state:0 view:marketing.campaign.workitem:0
+#: selection:campaign.analysis,state:0
+#: view:marketing.campaign.workitem:0
 #: selection:marketing.campaign.workitem,state:0
 msgid "Exception"
 msgstr ""
@@ -700,7 +733,8 @@ msgid "January"
 msgstr ""
 
 #. module: marketing_campaign
-#: view:marketing.campaign.workitem:0 field:marketing.campaign.workitem,date:0
+#: view:marketing.campaign.workitem:0
+#: field:marketing.campaign.workitem,date:0
 msgid "Execution Date"
 msgstr ""
 
@@ -725,7 +759,7 @@ msgstr ""
 #: code:addons/marketing_campaign/marketing_campaign.py:158
 #, python-format
 msgid "Error"
-msgstr "त्रुटि!"
+msgstr ""
 
 #. module: marketing_campaign
 #: field:marketing.campaign.activity,server_action_id:0
@@ -741,7 +775,7 @@ msgstr ""
 #. module: marketing_campaign
 #: field:marketing.campaign.activity,start:0
 msgid "Start"
-msgstr "प्रारंभ"
+msgstr ""
 
 #. module: marketing_campaign
 #: code:addons/marketing_campaign/marketing_campaign.py:817
@@ -772,12 +806,14 @@ msgid "How is the destination workitem triggered"
 msgstr ""
 
 #. module: marketing_campaign
-#: view:campaign.analysis:0 selection:campaign.analysis,state:0
-#: view:marketing.campaign:0 selection:marketing.campaign,state:0
+#: view:campaign.analysis:0
+#: selection:campaign.analysis,state:0
+#: view:marketing.campaign:0
+#: selection:marketing.campaign,state:0
 #: selection:marketing.campaign.segment,state:0
 #: selection:marketing.campaign.workitem,state:0
 msgid "Done"
-msgstr "हो गया"
+msgstr ""
 
 #. module: marketing_campaign
 #: code:addons/marketing_campaign/marketing_campaign.py:214
@@ -788,12 +824,12 @@ msgstr ""
 #. module: marketing_campaign
 #: view:marketing.campaign.workitem:0
 msgid "Cancel"
-msgstr "रद्द"
+msgstr ""
 
 #. module: marketing_campaign
 #: view:marketing.campaign.segment:0
 msgid "Close"
-msgstr "बंद"
+msgstr ""
 
 #. module: marketing_campaign
 #: constraint:marketing.campaign.segment:0
@@ -809,7 +845,7 @@ msgstr ""
 #: view:marketing.campaign.workitem:0
 #: field:marketing.campaign.workitem,res_id:0
 msgid "Resource ID"
-msgstr "संसाधन आईडी"
+msgstr ""
 
 #. module: marketing_campaign
 #: model:ir.model,name:marketing_campaign.model_marketing_campaign_transition
@@ -825,7 +861,8 @@ msgstr ""
 #: model:ir.actions.act_window,name:marketing_campaign.act_marketing_campaing_segment_opened
 #: model:ir.actions.act_window,name:marketing_campaign.action_marketing_campaign_segment_form
 #: model:ir.ui.menu,name:marketing_campaign.menu_marketing_campaign_segment_form
-#: view:marketing.campaign:0 view:marketing.campaign.segment:0
+#: view:marketing.campaign:0
+#: view:marketing.campaign.segment:0
 msgid "Segments"
 msgstr ""
 
@@ -845,7 +882,8 @@ msgid "Day(s)"
 msgstr ""
 
 #. module: marketing_campaign
-#: view:marketing.campaign:0 field:marketing.campaign,activity_ids:0
+#: view:marketing.campaign:0
+#: field:marketing.campaign,activity_ids:0
 #: view:marketing.campaign.activity:0
 msgid "Activities"
 msgstr ""
@@ -863,7 +901,7 @@ msgstr ""
 #. module: marketing_campaign
 #: field:marketing.campaign.activity,type:0
 msgid "Type"
-msgstr "प्रकार"
+msgstr ""
 
 #. module: marketing_campaign
 #: model:email.template,subject:marketing_campaign.email_template_3
@@ -873,9 +911,9 @@ msgstr ""
 #. module: marketing_campaign
 #: help:marketing.campaign,unique_field_id:0
 msgid ""
-"If set, this field will help segments that work in \"no duplicates\" mode to"
-" avoid selecting similar records twice. Similar records are records that "
-"have the same value for this unique field. For example by choosing the "
+"If set, this field will help segments that work in \"no duplicates\" mode to "
+"avoid selecting similar records twice. Similar records are records that have "
+"the same value for this unique field. For example by choosing the "
 "\"email_from\" field for CRM Leads you would prevent sending the same "
 "campaign to the same email address again. If not set, the \"no duplicates\" "
 "segments will only avoid selecting the same record again if it entered the "
@@ -898,7 +936,7 @@ msgstr ""
 #. module: marketing_campaign
 #: field:marketing.campaign.segment,date_done:0
 msgid "End Date"
-msgstr "समाप्ति तिथि"
+msgstr ""
 
 #. module: marketing_campaign
 #: selection:campaign.analysis,month:0
@@ -906,8 +944,10 @@ msgid "February"
 msgstr ""
 
 #. module: marketing_campaign
-#: view:campaign.analysis:0 field:campaign.analysis,res_id:0
-#: view:marketing.campaign:0 field:marketing.campaign,object_id:0
+#: view:campaign.analysis:0
+#: field:campaign.analysis,res_id:0
+#: view:marketing.campaign:0
+#: field:marketing.campaign,object_id:0
 #: field:marketing.campaign.segment,object_id:0
 #: view:marketing.campaign.workitem:0
 #: field:marketing.campaign.workitem,object_id:0
@@ -917,9 +957,9 @@ msgstr ""
 #. module: marketing_campaign
 #: help:marketing.campaign,fixed_cost:0
 msgid ""
-"Fixed cost for running this campaign. You may also specify variable cost and"
-" revenue on each campaign activity. Cost and Revenue statistics are included"
-" in Campaign Reporting."
+"Fixed cost for running this campaign. You may also specify variable cost and "
+"revenue on each campaign activity. Cost and Revenue statistics are included "
+"in Campaign Reporting."
 msgstr ""
 
 #. module: marketing_campaign
@@ -955,12 +995,14 @@ msgid "The campaign cannot be marked as done before all segments are closed."
 msgstr ""
 
 #. module: marketing_campaign
-#: view:marketing.campaign:0 field:marketing.campaign,mode:0
+#: view:marketing.campaign:0
+#: field:marketing.campaign,mode:0
 msgid "Mode"
 msgstr ""
 
 #. module: marketing_campaign
-#: view:campaign.analysis:0 field:campaign.analysis,activity_id:0
+#: view:campaign.analysis:0
+#: field:campaign.analysis,activity_id:0
 #: view:marketing.campaign.workitem:0
 #: field:marketing.campaign.workitem,activity_id:0
 msgid "Activity"
@@ -1018,11 +1060,13 @@ msgid "Welcome to the OpenERP Partner Channel!"
 msgstr ""
 
 #. module: marketing_campaign
-#: view:campaign.analysis:0 field:campaign.analysis,total_cost:0
+#: view:campaign.analysis:0
+#: field:campaign.analysis,total_cost:0
 msgid "Cost"
 msgstr ""
 
 #. module: marketing_campaign
-#: view:campaign.analysis:0 field:campaign.analysis,year:0
+#: view:campaign.analysis:0
+#: field:campaign.analysis,year:0
 msgid "Year"
 msgstr ""

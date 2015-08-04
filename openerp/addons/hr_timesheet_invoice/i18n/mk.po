@@ -1,25 +1,25 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * hr_timesheet_invoice
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2013
+# Macedonian translation for openobject-addons
+# Copyright (c) 2013 Rosetta Contributors and Canonical Ltd 2013
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-08-14 00:10+0000\n"
-"PO-Revision-Date: 2015-05-23 13:51+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Macedonian (http://www.transifex.com/projects/p/odoo-7/language/mk/)\n"
+"PO-Revision-Date: 2013-03-28 23:23+0000\n"
+"Last-Translator: Sofce Dimitrijeva <Unknown>\n"
+"Language-Team: Macedonian <mk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: mk\n"
-"Plural-Forms: nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2014-08-14 06:58+0000\n"
+"X-Generator: Launchpad (build 17156)\n"
 
 #. module: hr_timesheet_invoice
-#: view:report.timesheet.line:0 view:report_timesheet.user:0
+#: view:report.timesheet.line:0
+#: view:report_timesheet.user:0
 msgid "Timesheet by user"
 msgstr "Временска таблица по корисник"
 
@@ -38,7 +38,9 @@ msgstr "Тип на фактурирање"
 msgid ""
 "The product to invoice is defined on the employee form, the price will be "
 "deducted by this pricelist on the product."
-msgstr "Производот кој треба да се фактурира е дефиниран на формуларот на вработениот, цената ќе биде добиена од овој ценовник за производот."
+msgstr ""
+"Производот кој треба да се фактурира е дефиниран на формуларот на "
+"вработениот, цената ќе биде добиена од овој ценовник за производот."
 
 #. module: hr_timesheet_invoice
 #: code:addons/hr_timesheet_invoice/wizard/hr_timesheet_analytic_profit.py:58
@@ -118,7 +120,8 @@ msgid "Display time in the history of works"
 msgstr "Прикажи време на историја на работи"
 
 #. module: hr_timesheet_invoice
-#: view:report.timesheet.line:0 field:report.timesheet.line,day:0
+#: view:report.timesheet.line:0
+#: field:report.timesheet.line,day:0
 msgid "Day"
 msgstr "Ден"
 
@@ -127,7 +130,10 @@ msgstr "Ден"
 msgid ""
 "Fill this field only if you want to force to use a specific product. Keep "
 "empty to use the real product that comes from the cost."
-msgstr "Пополнете го ова поле доколку сакате присилно да употребите одреден производ. Оставете празно за да го употребите реалниот производ што произлегува од трошокот."
+msgstr ""
+"Пополнете го ова поле доколку сакате присилно да употребите одреден "
+"производ. Оставете празно за да го употребите реалниот производ што "
+"произлегува од трошокот."
 
 #. module: hr_timesheet_invoice
 #: model:ir.actions.act_window,help:hr_timesheet_invoice.action_hr_timesheet_invoice_factor_form
@@ -135,14 +141,26 @@ msgid ""
 "<p class=\"oe_view_nocontent_create\">\n"
 "                Click to add a new type of invoicing.\n"
 "              </p><p>\n"
-"                OpenERP allows you to create default invoicing types. You might\n"
+"                OpenERP allows you to create default invoicing types. You "
+"might\n"
 "                have to regularly assign discounts because of a specific\n"
-"                contract or agreement with a customer. From this menu, you can\n"
+"                contract or agreement with a customer. From this menu, you "
+"can\n"
 "                create additional types of invoicing to speed up your\n"
 "                invoicing.\n"
 "              </p>\n"
 "            "
-msgstr "<p class=\"oe_view_nocontent_create\">\nКликнете за да додадете нов тип на фактурирање.\n</p><p>\nOpenERP ви дозволува да креирате стандардни типови на фактурирање.  Можете\nда доделите попусти поради специфичен \nдоговор или спогодба со клиентот. Од ова мени, можете да\nкреирате дополнителни типови на фактурирање за да го забрзате\nфактурирањето.\n</p>\n            "
+msgstr ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"Кликнете за да додадете нов тип на фактурирање.\n"
+"</p><p>\n"
+"OpenERP ви дозволува да креирате стандардни типови на фактурирање.  Можете\n"
+"да доделите попусти поради специфичен \n"
+"договор или спогодба со клиентот. Од ова мени, можете да\n"
+"креирате дополнителни типови на фактурирање за да го забрзате\n"
+"фактурирањето.\n"
+"</p>\n"
+"            "
 
 #. module: hr_timesheet_invoice
 #: view:report.timesheet.line:0
@@ -167,7 +185,7 @@ msgstr "Проект"
 #. module: hr_timesheet_invoice
 #: view:account.analytic.account:0
 msgid "Invoice on Timesheets Options"
-msgstr "Фактура на опции од распоред"
+msgstr ""
 
 #. module: hr_timesheet_invoice
 #: field:report.account.analytic.line.to.invoice,amount:0
@@ -206,7 +224,12 @@ msgid ""
 "timesheet invoicing, you may use another ratio. For instance, if you do a "
 "20% advance invoice (fixed price, based on a sales order), you should "
 "invoice the rest on timesheet with a 80% ratio."
-msgstr "Вообичаено фактурирате 100% од вашите временски таблици. Но доколку комбинирате фиксна цена и фактурирање по временска таблица, може да употребите и друг сооднос.  На пример, доколку издадете фактура на 20% аванс (финска цена, засновано на налог за продажба), остатокот од временската таблица треба да го фактурирате со сооднос од 80%."
+msgstr ""
+"Вообичаено фактурирате 100% од вашите временски таблици. Но доколку "
+"комбинирате фиксна цена и фактурирање по временска таблица, може да "
+"употребите и друг сооднос.  На пример, доколку издадете фактура на 20% аванс "
+"(финска цена, засновано на налог за продажба), остатокот од временската "
+"таблица треба да го фактурирате со сооднос од 80%."
 
 #. module: hr_timesheet_invoice
 #: view:hr.timesheet.invoice.create:0
@@ -296,7 +319,9 @@ msgstr "Прикажи датум во историја на работи"
 msgid ""
 "The cost of each work done will be displayed on the invoice. You probably "
 "don't want to check this"
-msgstr "Трошокот на секоја завршена работа ќе биде прикажана на фактурата. Најверојатно не сакате да го означите ова"
+msgstr ""
+"Трошокот на секоја завршена работа ќе биде прикажана на фактурата. "
+"Најверојатно не сакате да го означите ова"
 
 #. module: hr_timesheet_invoice
 #: view:hr.timesheet.invoice.create.final:0
@@ -309,7 +334,8 @@ msgid "Timesheet by User"
 msgstr "Временска таблица по корисник"
 
 #. module: hr_timesheet_invoice
-#: view:account.analytic.line:0 view:hr.analytic.timesheet:0
+#: view:account.analytic.line:0
+#: view:hr.analytic.timesheet:0
 #: model:ir.actions.act_window,name:hr_timesheet_invoice.act_acc_analytic_acc_2_report_acc_analytic_line_to_invoice
 msgid "To Invoice"
 msgstr "Да се фактурира"
@@ -344,7 +370,7 @@ msgstr "Јули"
 #. module: hr_timesheet_invoice
 #: field:account.analytic.line,to_invoice:0
 msgid "Invoiceable"
-msgstr "Може да се фактурира"
+msgstr ""
 
 #. module: hr_timesheet_invoice
 #: code:addons/hr_timesheet_invoice/wizard/hr_timesheet_invoice_create.py:56
@@ -418,11 +444,12 @@ msgstr "Декември"
 #. module: hr_timesheet_invoice
 #: view:hr.timesheet.invoice.create.final:0
 msgid "Invoice contract"
-msgstr "Договор по фактура"
+msgstr ""
 
 #. module: hr_timesheet_invoice
 #: field:report.account.analytic.line.to.invoice,month:0
-#: view:report.timesheet.line:0 field:report.timesheet.line,month:0
+#: view:report.timesheet.line:0
+#: field:report.timesheet.line,month:0
 #: field:report_timesheet.account,month:0
 #: field:report_timesheet.account.date,month:0
 #: field:report_timesheet.user,month:0
@@ -440,7 +467,8 @@ msgid "Non Assigned timesheets to users"
 msgstr "Недоделени распореди на корисници"
 
 #. module: hr_timesheet_invoice
-#: view:account.analytic.line:0 view:hr.analytic.timesheet:0
+#: view:account.analytic.line:0
+#: view:hr.analytic.timesheet:0
 #: field:report.timesheet.line,invoice_id:0
 msgid "Invoiced"
 msgstr "Фактурирано"
@@ -453,10 +481,11 @@ msgstr "Макс. количина"
 #. module: hr_timesheet_invoice
 #: report:account.analytic.profit:0
 msgid "Invoice rate by user"
-msgstr "Стапка на фактура според корисник"
+msgstr ""
 
 #. module: hr_timesheet_invoice
-#: view:report_timesheet.account:0 view:report_timesheet.account.date:0
+#: view:report_timesheet.account:0
+#: view:report_timesheet.account.date:0
 msgid "Timesheet by account"
 msgstr "Временска таблица по сметка"
 
@@ -546,11 +575,12 @@ msgstr "Да се фактурира"
 #. module: hr_timesheet_invoice
 #: report:account.analytic.profit:0
 msgid "Eff."
-msgstr "Ефикасност"
+msgstr ""
 
 #. module: hr_timesheet_invoice
 #: field:hr.timesheet.analytic.profit,employee_ids:0
-#: view:report.timesheet.line:0 field:report.timesheet.line,user_id:0
+#: view:report.timesheet.line:0
+#: field:report.timesheet.line,user_id:0
 #: field:report_timesheet.account,user_id:0
 #: field:report_timesheet.account.date,user_id:0
 #: field:report_timesheet.invoice,user_id:0
@@ -562,7 +592,7 @@ msgstr "Корисник"
 #: code:addons/hr_timesheet_invoice/hr_timesheet_invoice.py:188
 #, python-format
 msgid "Analytic Account Incomplete!"
-msgstr "Аналитичкото конто не е комплетирано!"
+msgstr ""
 
 #. module: hr_timesheet_invoice
 #: selection:report.account.analytic.line.to.invoice,month:0
@@ -609,7 +639,8 @@ msgid "Balance"
 msgstr "Салдо"
 
 #. module: hr_timesheet_invoice
-#: field:report.analytic.account.close,quantity:0 view:report.timesheet.line:0
+#: field:report.analytic.account.close,quantity:0
+#: view:report.timesheet.line:0
 msgid "Quantity"
 msgstr "Количина"
 
@@ -639,7 +670,9 @@ msgstr "Аналитички ставки за фактурирање"
 msgid ""
 "It allows to set the discount while making invoice, keep empty if the "
 "activities should not be invoiced."
-msgstr "Ви овозможува да поставите попуст додека ја правите фактурата, оставете празно доколку активностите не треба да бидат фактурирани."
+msgstr ""
+"Ви овозможува да поставите попуст додека ја правите фактурата, оставете "
+"празно доколку активностите не треба да бидат фактурирани."
 
 #. module: hr_timesheet_invoice
 #: field:account.analytic.account,amount_max:0
@@ -668,7 +701,8 @@ msgid "Invoice"
 msgstr "Фактура"
 
 #. module: hr_timesheet_invoice
-#: view:hr.timesheet.analytic.profit:0 view:hr.timesheet.invoice.create:0
+#: view:hr.timesheet.analytic.profit:0
+#: view:hr.timesheet.invoice.create:0
 #: view:hr.timesheet.invoice.create.final:0
 msgid "Cancel"
 msgstr "Откажи"
@@ -702,7 +736,8 @@ msgid "Do you want to show details of work in invoice?"
 msgstr "Дали сакате да прикажете детали од работата во фактура?"
 
 #. module: hr_timesheet_invoice
-#: view:hr.timesheet.invoice.create:0 view:hr.timesheet.invoice.create.final:0
+#: view:hr.timesheet.invoice.create:0
+#: view:hr.timesheet.invoice.create.final:0
 #: model:ir.actions.act_window,name:hr_timesheet_invoice.action_hr_timesheet_invoice_create
 #: model:ir.actions.act_window,name:hr_timesheet_invoice.action_hr_timesheet_invoice_create_final
 msgid "Create Invoice"
@@ -731,7 +766,8 @@ msgstr "Распореди за фактурирање"
 #. module: hr_timesheet_invoice
 #: code:addons/hr_timesheet_invoice/hr_timesheet_invoice.py:189
 #, python-format
-msgid "Contract incomplete. Please fill in the Customer and Pricelist fields."
+msgid ""
+"Contract incomplete. Please fill in the Customer and Pricelist fields."
 msgstr "Некомплетен договор. Пополнете ги полињата Клиент и Ценовник."
 
 #. module: hr_timesheet_invoice
@@ -742,7 +778,8 @@ msgstr "Дневна временска таблица по сметка"
 #. module: hr_timesheet_invoice
 #: field:hr.timesheet.invoice.create.final,product:0
 #: field:report.account.analytic.line.to.invoice,product_id:0
-#: view:report.timesheet.line:0 field:report.timesheet.line,product_id:0
+#: view:report.timesheet.line:0
+#: field:report.timesheet.line,product_id:0
 msgid "Product"
 msgstr "Производ"
 
@@ -783,7 +820,8 @@ msgstr "Поминато време"
 #. module: hr_timesheet_invoice
 #: help:account.analytic.account,amount_max:0
 msgid "Keep empty if this contract is not limited to a total fixed price."
-msgstr "Оставете празно доколку овој договор не е ограничен на вкупна фиксна цена."
+msgstr ""
+"Оставете празно доколку овој договор не е ограничен на вкупна фиксна цена."
 
 #. module: hr_timesheet_invoice
 #: view:hr.timesheet.invoice.create.final:0
@@ -857,11 +895,11 @@ msgstr "Фактурата е веќе поврзана со некоја ана
 #. module: hr_timesheet_invoice
 #: view:hr.timesheet.invoice.create:0
 msgid ""
-"When reinvoicing costs, the amount on the invoice lines is given by the sale"
-" price of the corresponding product (if any, and if its sale price is not "
-"0). You can use the following field to enforce the use of a single product "
-"for all the chosen lines in the future invoices."
-msgstr "Кога фактурирате трошкови, сумата на ставките од фактурата е дадена од продажната цена на соодветниот производ (ако ја има, и неговата продажна цена не е 0). Можете да го користите следното поле за да ја присилите употребата на единствен производ за сите избрани ставки во идните фактури."
+"When reinvoicing costs, the amount on the invoice lines is given by the sale "
+"price of the corresponding product (if any, and if its sale price is not 0). "
+"You can use the following field to enforce the use of a single product for "
+"all the chosen lines in the future invoices."
+msgstr ""
 
 #. module: hr_timesheet_invoice
 #: field:hr.timesheet.invoice.create,name:0
@@ -886,7 +924,8 @@ msgid "80%"
 msgstr "80%"
 
 #. module: hr_timesheet_invoice
-#: view:hr.timesheet.analytic.profit:0 view:hr.timesheet.invoice.create:0
+#: view:hr.timesheet.analytic.profit:0
+#: view:hr.timesheet.invoice.create:0
 #: view:hr.timesheet.invoice.create.final:0
 msgid "or"
 msgstr "или"
@@ -897,16 +936,19 @@ msgid "Manager"
 msgstr "Менаџер"
 
 #. module: hr_timesheet_invoice
-#: report:account.analytic.profit:0 field:hr.timesheet.invoice.create,price:0
+#: report:account.analytic.profit:0
+#: field:hr.timesheet.invoice.create,price:0
 #: field:hr.timesheet.invoice.create.final,price:0
-#: view:report.timesheet.line:0 field:report.timesheet.line,cost:0
+#: view:report.timesheet.line:0
+#: field:report.timesheet.line,cost:0
 #: field:report_timesheet.user,cost:0
 msgid "Cost"
 msgstr "Трошок"
 
 #. module: hr_timesheet_invoice
 #: field:report.account.analytic.line.to.invoice,name:0
-#: view:report.timesheet.line:0 field:report.timesheet.line,name:0
+#: view:report.timesheet.line:0
+#: field:report.timesheet.line,name:0
 #: field:report_timesheet.account,name:0
 #: field:report_timesheet.account.date,name:0
 #: field:report_timesheet.user,name:0
@@ -917,3 +959,7 @@ msgstr "Година"
 #: view:hr.timesheet.analytic.profit:0
 msgid "Duration"
 msgstr "Времетраење"
+
+#, python-format
+#~ msgid "Analytic Account incomplete !"
+#~ msgstr "Некомплетна аналитичка сметка !"

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    	<record id="nhap_xuat_search" model="ir.ui.view">
+	        <field name="name">nhap.xuat.search</field>
+	        <field name="model">nhap.xuat</field>
+	        <field name="type">search</field>
+	        <field name="arch" type="xml">
+	            <search string="Nhập xuất">
+	                <group>
+	                    <field name="chu_hang" />
+	            		<field name="loai_hinh" />
+	                    <field name="loai_hang" />
+	                    <field name="ngay_nhap_xuat" />
+	                    <field name="soluong" />                    
+	                    <field name="noi_xuat_phat" />
+	                    <field name="noi_nhan" />
+	                    <field name="so_xe" />
+	                </group>
+	            </search>	
+	        </field>
+	    </record>
+    
+        <record model="ir.ui.view" id="nhap_xuat_tree">
+            <field name="name">nhap.xuat.tree</field>
+            <field name="model">nhap.xuat</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Tree Nhập xuất">
+                	<field name="chu_hang" />
+            		<field name="loai_hinh" />
+                    <field name="loai_hang" />
+                    <field name="ngay_nhap_xuat" />
+                    <field name="soluong" />                    
+                    <field name="noi_xuat_phat" />
+                    <field name="noi_nhan" />
+                    <field name="so_xe" />
+                </tree>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="nhap_xuat_form">
+            <field name="name">nhap.xuat.form</field>
+            <field name="model">nhap.xuat</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="form nhập xuất" version="7.0">
+	                <sheet>
+                		<group col="4"  string="Thông tin nhập xuất quá cảnh">
+		            		<field name="chu_hang" />
+		            		<field name="loai_hinh" />
+		                    <field name="loai_hang" />
+		                    <field name="ngay_nhap_xuat" />
+		                    <field name="soluong" />                    
+		                    <field name="noi_xuat_phat" />
+		                    <field name="noi_nhan" />
+		                    <field name="so_xe" />
+                		</group>
+	                </sheet>
+                </form>
+            </field>
+        </record>
+       
+        <record model="ir.actions.act_window" id="action_nhap_xuat">
+            <field name="name">Thông tin nhập xuất quá cảnh</field>
+            <field name="res_model">nhap.xuat</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+        			
+    </data>
+</openerp>

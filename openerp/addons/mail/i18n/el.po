@@ -1,38 +1,39 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * mail
-# 
-# Translators:
+# Greek translation for openobject-addons
+# Copyright (c) 2014 Rosetta Contributors and Canonical Ltd 2014
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-08-14 00:10+0000\n"
-"PO-Revision-Date: 2015-05-29 14:41+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Greek (http://www.transifex.com/projects/p/odoo-7/language/el/)\n"
+"PO-Revision-Date: 2014-10-05 23:03+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Greek <el@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: el\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2014-10-06 06:56+0000\n"
+"X-Generator: Launchpad (build 17196)\n"
 
 #. module: mail
-#: view:mail.followers:0
+#: view:mail.followers:mail.view_mail_subscription_form
 msgid "Followers Form"
-msgstr "Ακόλουθοι από"
+msgstr ""
 
 #. module: mail
-#: code:addons/mail/mail_thread.py:259
+#: code:addons/mail/mail_thread.py:384
 #, python-format
 msgid "%s created"
-msgstr "%s δημιουργήθηκε"
+msgstr ""
 
 #. module: mail
-#: field:mail.compose.message,author_id:0 view:mail.mail:0
+#: field:mail.compose.message,author_id:0
+#: view:mail.mail:mail.view_mail_search
 #: field:mail.message,author_id:0
 msgid "Author"
-msgstr "Δημιουργός"
+msgstr ""
 
 #. module: mail
 #: view:mail.mail:0
@@ -53,29 +54,31 @@ msgstr ""
 #: field:mail.compose.message,vote_user_ids:0
 #: field:mail.message,vote_user_ids:0
 msgid "Votes"
-msgstr "Ψήφοι"
+msgstr ""
 
 #. module: mail
 #: view:mail.message:0
 msgid "Comments"
-msgstr "Σχόλια"
+msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:314
+#: code:addons/mail/static/src/xml/mail.xml:334
 #, python-format
 msgid "more messages"
-msgstr "περισσότερα μηνύματα"
+msgstr ""
 
 #. module: mail
-#: view:mail.alias:0 view:mail.mail:0
+#: view:mail.alias:0
+#: view:mail.mail:0
 msgid "Group By..."
-msgstr "Ομαδοποίηση Κατά..."
+msgstr ""
 
 #. module: mail
-#: help:mail.compose.message,body:0 help:mail.message,body:0
+#: help:mail.compose.message,body:0
+#: help:mail.message,body:0
 msgid "Automatically sanitized HTML contents"
-msgstr "Αυτόματα απολυμαίνει HTML περιεχόμενα"
+msgstr ""
 
 #. module: mail
 #: help:mail.alias,alias_name:0
@@ -85,10 +88,13 @@ msgid ""
 msgstr ""
 
 #. module: mail
+#. openerp-web
+#: code:addons/mail/static/src/js/mail.js:1970
 #: model:ir.actions.act_window,name:mail.action_email_compose_message_wizard
-#: view:mail.compose.message:0
+#: view:mail.compose.message:mail.email_compose_message_wizard_form
+#, python-format
 msgid "Compose Email"
-msgstr "Σύνταξη Email"
+msgstr ""
 
 #. module: mail
 #: constraint:mail.alias:0
@@ -98,62 +104,64 @@ msgid ""
 msgstr ""
 
 #. module: mail
-#: view:mail.group:0
+#: view:mail.group:mail.view_group_form
+#: view:mail.group:mail.view_group_tree
 msgid "Group Name"
-msgstr "Όνομα Ομάδας"
+msgstr ""
 
 #. module: mail
 #: selection:mail.group,public:0
 msgid "Public"
-msgstr "Κοινόχρηστο"
+msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:278
+#: code:addons/mail/static/src/xml/mail.xml:297
 #, python-format
 msgid "to"
-msgstr "σε"
+msgstr ""
 
 #. module: mail
-#: view:mail.mail:0
+#: view:mail.mail:mail.view_mail_form
 msgid "Body"
-msgstr "Κυρίως κείμενο"
+msgstr ""
 
 #. module: mail
-#: view:mail.message:0
+#: view:mail.message:mail.view_message_search
 msgid "Show messages to read"
-msgstr "Εμφάνιση μηνυμάτων για ανάγνωση"
+msgstr ""
 
 #. module: mail
-#: help:mail.compose.message,email_from:0 help:mail.message,email_from:0
+#: help:mail.compose.message,email_from:0
+#: help:mail.message,email_from:0
 msgid ""
 "Email address of the sender. This field is set when no matching partner is "
 "found for incoming emails."
-msgstr "Email διευθύνσεις του αποστολέα. Αυτό το πεδίο ρυθμίζεται όταν κανένας ταιριαστός συνεργάτης δεν βρέθηκε για τα εισερχόμενα emails."
+msgstr ""
 
 #. module: mail
 #: model:ir.model,name:mail.model_mail_compose_message
 msgid "Email composition wizard"
-msgstr "Οδηγός Σύνταξης Email"
+msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:269
+#: code:addons/mail/static/src/xml/mail.xml:286
 #, python-format
 msgid "updated document"
-msgstr "επικαιροποιημένο έγγραφο"
+msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail_followers.xml:23
+#: code:addons/mail/static/src/xml/mail_followers.xml:28
 #, python-format
 msgid "Add others"
-msgstr "Προσθήκη άλλων"
+msgstr ""
 
 #. module: mail
 #: field:mail.message.subtype,parent_id:0
 msgid "Parent"
-msgstr "Μητρικός"
+msgstr ""
 
 #. module: mail
 #: help:res.partner,notification_email_send:0
@@ -161,22 +169,24 @@ msgid ""
 "Policy to receive emails for new messages pushed to your personal Inbox:\n"
 "- Never: no emails are sent\n"
 "- Incoming Emails only: for messages received by the system via email\n"
-"- Incoming Emails and Discussions: for incoming emails along with internal discussions\n"
+"- Incoming Emails and Discussions: for incoming emails along with internal "
+"discussions\n"
 "- All Messages: for every notification you receive in your Inbox"
 msgstr ""
 
 #. module: mail
-#: field:mail.group,message_unread:0 field:mail.thread,message_unread:0
+#: field:mail.group,message_unread:0
+#: field:mail.thread,message_unread:0
 #: field:res.partner,message_unread:0
 msgid "Unread Messages"
-msgstr "Αδιάβαστα Μυνήματα"
+msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:314
+#: code:addons/mail/static/src/xml/mail.xml:334
 #, python-format
 msgid "show"
-msgstr "εμφάνιση"
+msgstr ""
 
 #. module: mail
 #: help:mail.group,group_ids:0
@@ -193,41 +203,44 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/js/mail.js:1032
+#: code:addons/mail/static/src/js/mail.js:1021
 #, python-format
 msgid "Do you really want to delete this message?"
 msgstr ""
 
 #. module: mail
-#: view:mail.message:0 field:mail.notification,read:0
+#: field:mail.notification,is_read:0
 msgid "Read"
-msgstr "Ανάγνωση"
-
-#. module: mail
-#: view:mail.group:0
-msgid "Search Groups"
-msgstr "Αναζήτηση ομάδων"
-
-#. module: mail
-#. openerp-web
-#: code:addons/mail/static/src/js/mail_followers.js:110
-#, python-format
-msgid ""
-"Warning! \n"
-" %s won't be notified of any email or discussion on this document. Do you really want to remove him from the followers ?"
 msgstr ""
 
 #. module: mail
-#: field:mail.compose.message,res_id:0 field:mail.followers,res_id:0
-#: field:mail.message,res_id:0 field:mail.wizard.invite,res_id:0
-msgid "Related Document ID"
-msgstr "Κωδικός σχετικού εγγράφου"
+#: view:mail.group:mail.view_group_search
+msgid "Search Groups"
+msgstr ""
 
 #. module: mail
-#: code:addons/mail/mail_message.py:739
+#. openerp-web
+#: code:addons/mail/static/src/js/mail_followers.js:140
+#, python-format
+msgid ""
+"Warning! \n"
+" %s won't be notified of any email or discussion on this document. Do you "
+"really want to remove him from the followers ?"
+msgstr ""
+
+#. module: mail
+#: field:mail.compose.message,res_id:0
+#: field:mail.followers,res_id:0
+#: field:mail.message,res_id:0
+#: field:mail.wizard.invite,res_id:0
+msgid "Related Document ID"
+msgstr ""
+
+#. module: mail
+#: code:addons/mail/mail_message.py:763
 #, python-format
 msgid "Access Denied"
-msgstr "Δεν επιτρέπεται η πρόσβαση"
+msgstr ""
 
 #. module: mail
 #: help:mail.group,image_medium:0
@@ -239,41 +252,43 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:213
+#: code:addons/mail/static/src/xml/mail.xml:223
 #, python-format
 msgid "Uploading error"
-msgstr "Σφάλμα κατά την μεταφόρτωση"
+msgstr ""
 
 #. module: mail
 #: model:mail.group,name:mail.group_support
 msgid "Support"
-msgstr "Υποστήριξη"
+msgstr ""
 
 #. module: mail
-#: code:addons/mail/mail_message.py:740
+#: code:addons/mail/mail_message.py:764
 #, python-format
 msgid ""
-"The requested operation cannot be completed due to security restrictions. Please contact your system administrator.\n"
+"The requested operation cannot be completed due to security restrictions. "
+"Please contact your system administrator.\n"
 "\n"
 "(Document type: %s, Operation: %s)"
 msgstr ""
 
 #. module: mail
-#: view:mail.mail:0 selection:mail.mail,state:0
+#: view:mail.mail:mail.view_mail_search
+#: selection:mail.mail,state:0
 msgid "Received"
-msgstr "Παραλήφθηκε"
+msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:72
+#: code:addons/mail/static/src/xml/mail.xml:74
 #, python-format
 msgid "Attach a File"
-msgstr "Επισύναψη Αρχείου"
+msgstr ""
 
 #. module: mail
-#: view:mail.mail:0
+#: view:mail.mail:mail.view_mail_search
 msgid "Thread"
-msgstr "Νήμα"
+msgstr ""
 
 #. module: mail
 #. openerp-web
@@ -292,7 +307,7 @@ msgstr ""
 #. module: mail
 #: field:base.config.settings,alias_domain:0
 msgid "Alias Domain"
-msgstr "Ψευδώνυμο Τομέα"
+msgstr ""
 
 #. module: mail
 #: field:mail.group,group_ids:0
@@ -302,41 +317,43 @@ msgstr ""
 #. module: mail
 #: field:mail.mail,references:0
 msgid "References"
-msgstr "Παραπομπές"
+msgstr ""
 
 #. module: mail
-#: view:mail.wizard.invite:0
+#: view:mail.wizard.invite:mail.mail_wizard_invite_form
 msgid "Add Followers"
-msgstr "Προσθήκη Ακολούθων"
+msgstr ""
 
 #. module: mail
-#: help:mail.compose.message,author_id:0 help:mail.message,author_id:0
+#: help:mail.compose.message,author_id:0
+#: help:mail.message,author_id:0
 msgid ""
-"Author of the message. If not set, email_from may hold an email address that"
-" did not match any partner."
-msgstr "Συγγραφέας του μυνήματος. Εάν δεν ρυθμιστεί, email από αυτές τις email διευθύνσεις που δεν ταιριάζουν σε κανένα συνεργάτη."
+"Author of the message. If not set, email_from may hold an email address that "
+"did not match any partner."
+msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:97
-#: code:addons/mail/static/src/xml/mail.xml:109
+#: code:addons/mail/static/src/xml/mail.xml:99
+#: code:addons/mail/static/src/xml/mail.xml:111
 #, python-format
 msgid "uploading"
-msgstr "μεταφόρτωση"
+msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail_followers.xml:52
+#: code:addons/mail/static/src/xml/mail_followers.xml:62
 #, python-format
 msgid "more."
-msgstr "περισσότερα."
+msgstr ""
 
 #. module: mail
-#: help:mail.compose.message,type:0 help:mail.message,type:0
+#: help:mail.compose.message,type:0
+#: help:mail.message,type:0
 msgid ""
 "Message type: email for email message, notification for system message, "
 "comment for other messages such as user replies"
-msgstr "Τύπος Μηνύματος: email για email μηνύματα, ειδοποίηση για μήνυμα συστήματος, σχόλιο για άλλα μηνύματα όπως είναι οι απαντήσεις χρηστών"
+msgstr ""
 
 #. module: mail
 #: help:mail.message.subtype,relation_field:0
@@ -349,12 +366,13 @@ msgstr ""
 #. module: mail
 #: selection:mail.mail,state:0
 msgid "Cancelled"
-msgstr "Ακυρωμένο"
+msgstr ""
 
 #. module: mail
-#: field:mail.mail,reply_to:0
+#: field:mail.compose.message,reply_to:0
+#: field:mail.message,reply_to:0
 msgid "Reply-To"
-msgstr "Απάντηση στο"
+msgstr ""
 
 #. module: mail
 #: code:addons/mail/wizard/invite.py:37
@@ -367,13 +385,14 @@ msgstr ""
 #: code:addons/mail/static/src/xml/mail.xml:54
 #, python-format
 msgid "Send a message"
-msgstr "Αποστολή ενός μηνύματος"
+msgstr ""
 
 #. module: mail
-#: help:mail.group,message_unread:0 help:mail.thread,message_unread:0
+#: help:mail.group,message_unread:0
+#: help:mail.thread,message_unread:0
 #: help:res.partner,message_unread:0
 msgid "If checked new messages require your attention."
-msgstr "Εάν επιλεγεί τα νέα μηνύματα χρειάζονται την προσοχή σας"
+msgstr ""
 
 #. module: mail
 #: field:mail.group,image_medium:0
@@ -384,12 +403,12 @@ msgstr ""
 #: model:ir.actions.client,name:mail.action_mail_to_me_feeds
 #: model:ir.ui.menu,name:mail.mail_tomefeeds
 msgid "To: me"
-msgstr "Προς: Εμένα"
+msgstr ""
 
 #. module: mail
 #: field:mail.message.subtype,name:0
 msgid "Message Type"
-msgstr "Τύπος μηνύματος"
+msgstr ""
 
 #. module: mail
 #: field:mail.mail,auto_delete:0
@@ -398,64 +417,66 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:295
+#: code:addons/mail/static/src/xml/mail.xml:312
 #, python-format
 msgid "notified"
-msgstr "ειδοποιούμενοι"
+msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:275
+#: code:addons/mail/static/src/xml/mail.xml:292
 #, python-format
 msgid "logged a note"
-msgstr "καταγραφή σημείωσης"
+msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail_followers.xml:12 view:mail.group:0
+#: code:addons/mail/static/src/xml/mail_followers.xml:13
+#: view:mail.group:mail.view_group_kanban
 #, python-format
 msgid "Unfollow"
-msgstr "Άρση ακολούθησης"
+msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:313
+#: code:addons/mail/static/src/xml/mail.xml:333
 #, python-format
 msgid "show one more message"
-msgstr "εμφάνιση ενός ακόμη μηνύματος"
+msgstr ""
 
 #. module: mail
-#: code:addons/mail/mail_mail.py:76 code:addons/mail/res_users.py:69
+#: code:addons/mail/mail_message.py:177
 #, python-format
 msgid "Invalid Action!"
-msgstr "Μη Έγκυρη Ενέργεια!"
+msgstr ""
 
 #. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/xml/mail.xml:25
 #, python-format
 msgid "User img"
-msgstr "Εικόνα χρήστη"
+msgstr ""
 
 #. module: mail
 #: model:ir.actions.act_window,name:mail.action_view_mail_mail
-#: model:ir.ui.menu,name:mail.menu_mail_mail view:mail.mail:0
-#: view:mail.message:0
+#: model:ir.ui.menu,name:mail.menu_mail_mail
+#: view:mail.mail:mail.view_mail_tree
 msgid "Emails"
-msgstr "Email"
+msgstr ""
 
 #. module: mail
 #: field:mail.followers,partner_id:0
 msgid "Related Partner"
-msgstr "Σχετιζόμενος συνεργάτης"
+msgstr ""
 
 #. module: mail
-#: help:mail.group,message_summary:0 help:mail.thread,message_summary:0
+#: help:mail.group,message_summary:0
+#: help:mail.thread,message_summary:0
 #: help:res.partner,message_summary:0
 msgid ""
 "Holds the Chatter summary (number of messages, ...). This summary is "
 "directly in html format in order to be inserted in kanban views."
-msgstr "Κρατά την συνολική σύνοψη (αριθμός των μυνημάτων, ...). Αυτή η σύνοψη είναι κατ' ευθείαν σε html format για να μπορεί να ενσωματωθεί σε εμφανίσεις kanban."
+msgstr ""
 
 #. module: mail
 #: help:mail.alias,alias_model_id:0
@@ -473,59 +494,65 @@ msgstr ""
 #. module: mail
 #: field:mail.message.subtype,relation_field:0
 msgid "Relation field"
-msgstr "Συσχετιζόμενο πεδίο"
+msgstr ""
 
 #. module: mail
-#: selection:mail.compose.message,type:0 selection:mail.message,type:0
+#: selection:mail.compose.message,type:0
+#: selection:mail.message,type:0
 msgid "System notification"
-msgstr "Ειδοποιήσεις Συστήματος"
+msgstr ""
 
 #. module: mail
-#: view:mail.message:0
+#: view:mail.message:mail.view_message_search
 msgid "To Read"
-msgstr "Προς Ανάγνωση"
+msgstr ""
 
 #. module: mail
 #: model:ir.model,name:mail.model_res_partner
 msgid "Partner"
-msgstr "Συνεργάτης"
+msgstr ""
 
 #. module: mail
 #: model:ir.ui.menu,name:mail.mail_my_stuff
 msgid "Organizer"
-msgstr "Ατζέντα"
+msgstr ""
 
 #. module: mail
-#: field:mail.compose.message,subject:0 field:mail.message,subject:0
+#: field:mail.compose.message,subject:0
+#: field:mail.message,subject:0
 msgid "Subject"
-msgstr "Θέμα"
+msgstr ""
 
 #. module: mail
 #: field:mail.wizard.invite,partner_ids:0
 msgid "Partners"
-msgstr "Συνεργάτες"
+msgstr ""
 
 #. module: mail
-#: view:mail.mail:0
+#: view:mail.mail:mail.view_mail_form
+#: view:mail.mail:mail.view_mail_tree
 msgid "Retry"
-msgstr "Επανάληψη"
+msgstr ""
 
 #. module: mail
-#: field:mail.compose.message,email_from:0 field:mail.mail,email_from:0
+#: field:mail.compose.message,email_from:0
 #: field:mail.message,email_from:0
 msgid "From"
-msgstr "Από"
+msgstr ""
 
 #. module: mail
-#: field:mail.compose.message,subtype_id:0 field:mail.followers,subtype_ids:0
-#: field:mail.message,subtype_id:0 view:mail.message.subtype:0
+#: field:mail.compose.message,subtype_id:0
+#: field:mail.followers,subtype_ids:0
+#: field:mail.message,subtype_id:0
+#: view:mail.message.subtype:mail.view_message_subtype_tree
 msgid "Subtype"
-msgstr "Υποτύπος"
+msgstr ""
 
 #. module: mail
-#: view:mail.mail:0 view:mail.message.subtype:0
+#: view:mail.mail:mail.view_mail_form
+#: view:mail.message.subtype:mail.view_mail_message_subtype_form
 msgid "Email message"
-msgstr "Μήνυμα ηλεκτρονικού ταχυδρομείου"
+msgstr ""
 
 #. module: mail
 #: model:ir.model,name:mail.model_base_config_settings
@@ -534,104 +561,109 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/js/mail_followers.js:157
+#: code:addons/mail/static/src/js/mail_followers.js:188
 #, python-format
 msgid "followers"
-msgstr "ακόλουθοι"
+msgstr ""
 
 #. module: mail
-#: view:mail.group:0
+#: view:mail.group:mail.view_group_form
 msgid "Send a message to the group"
-msgstr "Αποστολή ενός μηνύματος στην ομάδα"
+msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:36 view:mail.compose.message:0
+#: code:addons/mail/static/src/xml/mail.xml:36
+#: view:mail.compose.message:mail.email_compose_message_wizard_form
 #, python-format
 msgid "Send"
-msgstr "Αποστολή"
+msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/js/mail_followers.js:153
+#: code:addons/mail/static/src/js/mail_followers.js:184
 #, python-format
 msgid "No followers"
-msgstr "Χωρίς ακόλουθους"
+msgstr ""
 
 #. module: mail
-#: view:mail.mail:0
+#: view:mail.mail:mail.view_mail_search
 msgid "Failed"
-msgstr "Αποτυχία"
+msgstr ""
 
 #. module: mail
-#: view:mail.mail:0
+#: view:mail.mail:mail.view_mail_tree
 msgid "Cancel Email"
-msgstr "Ακύρωση μηνύματος"
+msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail_followers.xml:22
+#: code:addons/mail/static/src/xml/mail_followers.xml:27
 #: model:ir.actions.act_window,name:mail.action_view_followers
-#: model:ir.ui.menu,name:mail.menu_email_followers view:mail.followers:0
+#: model:ir.ui.menu,name:mail.menu_email_followers
+#: view:mail.followers:mail.view_followers_tree
 #: field:mail.group,message_follower_ids:0
 #: field:mail.thread,message_follower_ids:0
 #: field:res.partner,message_follower_ids:0
 #, python-format
 msgid "Followers"
-msgstr "Ακόλουθοι"
+msgstr ""
 
 #. module: mail
 #: model:ir.actions.client,name:mail.action_mail_archives_feeds
 #: model:ir.ui.menu,name:mail.mail_archivesfeeds
 msgid "Archives"
-msgstr "Αρχειοθετημένα"
+msgstr ""
 
 #. module: mail
-#: view:mail.compose.message:0
+#: view:mail.compose.message:mail.email_compose_message_wizard_form
 msgid "Subject..."
-msgstr "Θέμα..."
+msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:96
-#: code:addons/mail/static/src/xml/mail.xml:108
+#: code:addons/mail/static/src/xml/mail.xml:98
+#: code:addons/mail/static/src/xml/mail.xml:110
 #, python-format
 msgid "Delete this attachment"
-msgstr "Διαγραφή συνημμένου"
+msgstr ""
 
 #. module: mail
-#: code:addons/mail/mail_thread.py:114
+#: code:addons/mail/mail_thread.py:172
 #, python-format
 msgid "New"
-msgstr "Νέο"
+msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/js/mail_followers.js:155
+#: code:addons/mail/static/src/js/mail_followers.js:186
 #, python-format
 msgid "One follower"
-msgstr "Ένας ακόλουθος"
+msgstr ""
 
 #. module: mail
-#: field:mail.compose.message,type:0 field:mail.message,type:0
+#: field:mail.compose.message,type:0
+#: view:mail.message:mail.view_message_search
+#: field:mail.message,type:0
 msgid "Type"
-msgstr "Τύπος"
+msgstr ""
 
 #. module: mail
-#: selection:mail.compose.message,type:0 view:mail.mail:0
+#: selection:mail.compose.message,type:0
+#: view:mail.mail:mail.view_mail_search
 #: selection:mail.message,type:0
 msgid "Email"
-msgstr "Email"
+msgstr ""
 
 #. module: mail
 #: field:ir.ui.menu,mail_group_id:0
 msgid "Mail Group"
-msgstr "Ομάδα ηλεκτρονικού ταχυδρομείου"
+msgstr ""
 
 #. module: mail
 #: field:mail.alias,alias_defaults:0
 msgid "Default Values"
-msgstr "Προεπιλεγμένες τιμές"
+msgstr ""
 
 #. module: mail
 #: view:mail.mail:0
@@ -639,23 +671,25 @@ msgid "by"
 msgstr ""
 
 #. module: mail
-#: code:addons/mail/res_users.py:89
+#: code:addons/mail/res_users.py:98
 #, python-format
 msgid "%s has joined the %s network."
-msgstr "%s έχει ενταχθεί το δίκτυο του %s."
+msgstr ""
 
 #. module: mail
 #: help:mail.group,image_small:0
 msgid ""
 "Small-sized photo of the group. It is automatically resized as a 64x64px "
-"image, with aspect ratio preserved. Use this field anywhere a small image is"
-" required."
+"image, with aspect ratio preserved. Use this field anywhere a small image is "
+"required."
 msgstr ""
 
 #. module: mail
-#: view:mail.compose.message:0 field:mail.message,partner_ids:0
+#: view:mail.compose.message:mail.email_compose_message_wizard_form
+#: field:mail.message,partner_ids:0
+#: field:mail.wizard.invite,partner_ids:0
 msgid "Recipients"
-msgstr "Αποδέκτες"
+msgstr ""
 
 #. module: mail
 #. openerp-web
@@ -670,9 +704,12 @@ msgid "Authorized Group"
 msgstr ""
 
 #. module: mail
-#: view:mail.group:0
+#. openerp-web
+#: code:addons/mail/static/src/xml/suggestions.xml:30
+#: view:mail.group:mail.view_group_kanban
+#, python-format
 msgid "Join Group"
-msgstr "Συμμετοχή σε ομάδα"
+msgstr ""
 
 #. module: mail
 #: help:mail.mail,email_from:0
@@ -693,9 +730,10 @@ msgid "<div>You have been invited to follow a new document.</div>"
 msgstr ""
 
 #. module: mail
-#: field:mail.compose.message,parent_id:0 field:mail.message,parent_id:0
+#: field:mail.compose.message,parent_id:0
+#: field:mail.message,parent_id:0
 msgid "Parent Message"
-msgstr "Γονικό μήνυμα"
+msgstr ""
 
 #. module: mail
 #: selection:res.partner,notification_email_send:0
@@ -704,11 +742,12 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/js/mail_followers.js:252
+#: code:addons/mail/static/src/js/mail_followers.js:309
 #, python-format
 msgid ""
 "Warning! \n"
-"You won't be notified of any email or discussion on this document. Do you really want to unfollow this document ?"
+"You won't be notified of any email or discussion on this document. Do you "
+"really want to unfollow this document ?"
 msgstr ""
 
 #. module: mail
@@ -725,35 +764,36 @@ msgstr ""
 #. module: mail
 #: model:mail.group,name:mail.group_rd
 msgid "R&D"
-msgstr "Έρευνας και ανάπτυξης (R&D)"
+msgstr ""
 
 #. module: mail
 #: model:ir.model,name:mail.model_mail_wizard_invite
 msgid "Invite wizard"
-msgstr "Οδηγός Προσκλήσεων"
+msgstr ""
 
 #. module: mail
-#: view:mail.mail:0
+#: view:mail.mail:mail.view_mail_form
 msgid "Advanced"
-msgstr "Για προχωρημένους"
+msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:245
+#: code:addons/mail/static/src/xml/mail.xml:255
 #, python-format
 msgid "Move to Inbox"
-msgstr "Μετακίνηση στα Εισερχόμενα"
+msgstr ""
 
 #. module: mail
-#: code:addons/mail/wizard/mail_compose_message.py:194
+#: code:addons/mail/wizard/mail_compose_message.py:188
 #, python-format
 msgid "Re:"
-msgstr "Re:"
+msgstr ""
 
 #. module: mail
-#: field:mail.compose.message,to_read:0 field:mail.message,to_read:0
+#: field:mail.compose.message,to_read:0
+#: field:mail.message,to_read:0
 msgid "To read"
-msgstr "Προς ανάγνωση"
+msgstr ""
 
 #. module: mail
 #: code:addons/mail/res_users.py:69
@@ -765,19 +805,20 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:338
+#: code:addons/mail/static/src/xml/mail.xml:348
 #, python-format
 msgid "like"
-msgstr "Μου αρέσει"
+msgstr ""
 
 #. module: mail
-#: help:mail.followers,res_model:0 help:mail.wizard.invite,res_model:0
+#: help:mail.followers,res_model:0
+#: help:mail.wizard.invite,res_model:0
 msgid "Model of the followed resource"
 msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/js/mail.js:982
+#: code:addons/mail/static/src/xml/mail.xml:273
 #, python-format
 msgid "read less"
 msgstr ""
@@ -790,21 +831,26 @@ msgid "Send a message to all followers of the document"
 msgstr ""
 
 #. module: mail
-#: view:mail.compose.message:0 view:mail.wizard.invite:0
+#. openerp-web
+#: code:addons/mail/static/src/js/mail_followers.js:105
+#: view:mail.compose.message:mail.email_compose_message_wizard_form
+#: view:mail.mail:mail.view_mail_form
+#: view:mail.wizard.invite:mail.mail_wizard_invite_form
+#, python-format
 msgid "Cancel"
-msgstr "Άκυρο"
+msgstr ""
 
 #. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/xml/mail.xml:47
 #, python-format
 msgid "Share with my followers..."
-msgstr "Μοίρασμα με τους ακολούθους μου..."
+msgstr ""
 
 #. module: mail
 #: field:mail.notification,partner_id:0
 msgid "Contact"
-msgstr "Επαφή"
+msgstr ""
 
 #. module: mail
 #: view:mail.group:0
@@ -819,9 +865,9 @@ msgid "ir.ui.menu"
 msgstr ""
 
 #. module: mail
-#: view:mail.message:0
+#: view:mail.message:mail.view_message_search
 msgid "Has attachments"
-msgstr "Έχει συνημμένα"
+msgstr ""
 
 #. module: mail
 #: view:mail.mail:0
@@ -846,7 +892,7 @@ msgstr ""
 #. module: mail
 #: model:ir.model,name:mail.model_mail_message_subtype
 msgid "Message subtypes"
-msgstr "Υποτύπος μηνύματος"
+msgstr ""
 
 #. module: mail
 #. openerp-web
@@ -857,10 +903,11 @@ msgid "Log a note"
 msgstr ""
 
 #. module: mail
-#: selection:mail.compose.message,type:0 view:mail.mail:0
+#: selection:mail.compose.message,type:0
+#: view:mail.mail:mail.view_mail_search
 #: selection:mail.message,type:0
 msgid "Comment"
-msgstr "Σχόλιο"
+msgstr ""
 
 #. module: mail
 #: model:ir.actions.client,help:mail.action_mail_inbox_feeds
@@ -868,8 +915,10 @@ msgid ""
 "<p>\n"
 "                    <b>Good Job!</b> Your inbox is empty.\n"
 "                </p><p>\n"
-"                    Your inbox contains private messages or emails sent to you\n"
-"                    as well as information related to documents or people you\n"
+"                    Your inbox contains private messages or emails sent to "
+"you\n"
+"                    as well as information related to documents or people "
+"you\n"
 "                    follow.\n"
 "                </p>\n"
 "            "
@@ -878,7 +927,7 @@ msgstr ""
 #. module: mail
 #: field:mail.mail,notification:0
 msgid "Is Notification"
-msgstr "Είναι Ειδοποίηση"
+msgstr ""
 
 #. module: mail
 #. openerp-web
@@ -888,12 +937,13 @@ msgid "Compose a new message"
 msgstr ""
 
 #. module: mail
-#: view:mail.mail:0
+#: view:mail.mail:mail.view_mail_form
+#: view:mail.mail:mail.view_mail_tree
 msgid "Send Now"
-msgstr "Αποστολή τώρα"
+msgstr ""
 
 #. module: mail
-#: code:addons/mail/mail_mail.py:76
+#: code:addons/mail/mail_message.py:177
 #, python-format
 msgid ""
 "Unable to send email, please configure the sender's email address or alias."
@@ -909,12 +959,13 @@ msgstr ""
 #. module: mail
 #: field:mail.group,image:0
 msgid "Photo"
-msgstr "Φωτογραφία"
+msgstr ""
 
 #. module: mail
-#: help:mail.compose.message,vote_user_ids:0 help:mail.message,vote_user_ids:0
+#: help:mail.compose.message,vote_user_ids:0
+#: help:mail.message,vote_user_ids:0
 msgid "Users that voted for this message"
-msgstr "Χρήστες που ψήφισαν αυτό το μήνυμα"
+msgstr ""
 
 #. module: mail
 #: help:mail.group,alias_id:0
@@ -924,53 +975,58 @@ msgid ""
 msgstr ""
 
 #. module: mail
-#: view:mail.mail:0
+#: view:mail.mail:mail.view_mail_search
 msgid "Month"
-msgstr "Μήνας"
+msgstr ""
 
 #. module: mail
-#: view:mail.mail:0
+#: view:mail.mail:mail.view_mail_search
 msgid "Email Search"
-msgstr "Αναζήτηση Email"
+msgstr ""
 
 #. module: mail
-#: field:mail.compose.message,child_ids:0 field:mail.message,child_ids:0
+#: field:mail.compose.message,child_ids:0
+#: field:mail.message,child_ids:0
 msgid "Child Messages"
-msgstr "Θυγατρικά μηνύματα"
+msgstr ""
 
 #. module: mail
 #: field:mail.alias,alias_user_id:0
 msgid "Owner"
-msgstr "Κάτοχος"
+msgstr ""
 
 #. module: mail
-#: code:addons/mail/res_partner.py:52
+#: code:addons/mail/res_partner.py:51
 #, python-format
 msgid "Partner Profile"
-msgstr "Προφίλ Συνεργάτη"
+msgstr ""
 
 #. module: mail
 #: model:ir.model,name:mail.model_mail_message
-#: field:mail.mail,mail_message_id:0 view:mail.message:0
-#: field:mail.notification,message_id:0 field:mail.wizard.invite,message:0
+#: field:mail.mail,mail_message_id:0
+#: view:mail.message:mail.view_message_form
+#: field:mail.notification,message_id:0
+#: field:mail.wizard.invite,message:0
 msgid "Message"
-msgstr "Μήνυμα"
+msgstr ""
 
 #. module: mail
-#: help:mail.followers,res_id:0 help:mail.wizard.invite,res_id:0
+#: help:mail.followers,res_id:0
+#: help:mail.wizard.invite,res_id:0
 msgid "Id of the followed resource"
 msgstr ""
 
 #. module: mail
-#: field:mail.compose.message,body:0 field:mail.message,body:0
+#: field:mail.compose.message,body:0
+#: field:mail.message,body:0
 msgid "Contents"
-msgstr "Περιεχόμενα"
+msgstr ""
 
 #. module: mail
 #: model:ir.actions.act_window,name:mail.action_view_mail_alias
 #: model:ir.ui.menu,name:mail.mail_alias_menu
 msgid "Aliases"
-msgstr "Ψευδώνυμο"
+msgstr ""
 
 #. module: mail
 #: help:mail.message.subtype,description:0
@@ -981,34 +1037,35 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:56
+#: code:addons/mail/static/src/xml/mail.xml:57
 #, python-format
 msgid "Log a note for this document. No notification will be sent"
 msgstr ""
 
 #. module: mail
-#: view:mail.group:0
+#: view:mail.group:mail.view_group_search
 msgid "Group"
-msgstr "Ομάδα"
+msgstr ""
 
 #. module: mail
-#: help:mail.compose.message,starred:0 help:mail.message,starred:0
+#: help:mail.compose.message,starred:0
+#: help:mail.message,starred:0
 msgid "Current user has a starred notification linked to this message"
-msgstr "Ο τρέχων χρήστης ένα μια ειδοποίηση με αστέρια συνδεμένη με αυτό το μύνημα"
+msgstr ""
 
 #. module: mail
 #: field:mail.group,public:0
 msgid "Privacy"
-msgstr "Απόρρητο"
+msgstr ""
 
 #. module: mail
-#: view:mail.mail:0
+#: view:mail.mail:mail.view_mail_search
 msgid "Notification"
-msgstr "Ειδοποίηση"
+msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/js/mail.js:655
+#: code:addons/mail/static/src/js/mail.js:611
 #, python-format
 msgid "Please complete partner's informations"
 msgstr ""
@@ -1037,7 +1094,7 @@ msgstr ""
 #. module: mail
 #: model:ir.ui.menu,name:mail.mail_group_root
 msgid "My Groups"
-msgstr "Οι ομάδες μου"
+msgstr ""
 
 #. module: mail
 #: model:ir.actions.client,help:mail.action_mail_archives_feeds
@@ -1046,54 +1103,58 @@ msgid ""
 "                    No message found and no message sent yet.\n"
 "                </p><p>\n"
 "                    Click on the top-right icon to compose a message. This\n"
-"                    message will be sent by email if it's an internal contact.\n"
+"                    message will be sent by email if it's an internal "
+"contact.\n"
 "                </p>\n"
 "            "
 msgstr ""
 
 #. module: mail
-#: view:mail.mail:0 field:mail.mail,state:0
+#: view:mail.mail:mail.view_mail_form
+#: view:mail.mail:mail.view_mail_search
+#: field:mail.mail,state:0
 msgid "Status"
-msgstr "Κατάσταση"
+msgstr ""
 
 #. module: mail
-#: view:mail.mail:0 selection:mail.mail,state:0
+#: view:mail.mail:mail.view_mail_search
+#: selection:mail.mail,state:0
 msgid "Outgoing"
-msgstr "Εξερχόμενο"
+msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:55
-#: code:addons/mail/static/src/xml/mail.xml:192 view:mail.compose.message:0
-#: view:mail.wizard.invite:0
+#: code:addons/mail/static/src/xml/mail.xml:56
 #, python-format
 msgid "or"
-msgstr "ή"
+msgstr ""
 
 #. module: mail
-#: code:addons/mail/mail_thread.py:113
+#: code:addons/mail/mail_thread.py:171
 #, python-format
 msgid "You have one unread message"
-msgstr "Έχετε ένα μη αναγνωσμένο μήνυμα"
+msgstr ""
 
 #. module: mail
-#: help:mail.compose.message,record_name:0 help:mail.message,record_name:0
+#: help:mail.compose.message,record_name:0
+#: help:mail.message,record_name:0
 msgid "Name get of the related document."
-msgstr "Όνομα που πήρε από το σχετικό έγγραφο"
+msgstr ""
 
 #. module: mail
 #: model:ir.actions.act_window,name:mail.action_view_notifications
 #: model:ir.model,name:mail.model_mail_notification
 #: model:ir.ui.menu,name:mail.menu_email_notifications
-#: field:mail.compose.message,notification_ids:0 view:mail.message:0
-#: field:mail.message,notification_ids:0 view:mail.notification:0
+#: field:mail.compose.message,notification_ids:0
+#: field:mail.message,notification_ids:0
+#: view:mail.notification:mail.view_notification_tree
 msgid "Notifications"
-msgstr "Ειδοποιήσεις"
+msgstr ""
 
 #. module: mail
-#: view:mail.alias:0
+#: view:mail.alias:mail.view_mail_alias_search
 msgid "Search Alias"
-msgstr "Αναζήτηση Ψευδώνυμου"
+msgstr ""
 
 #. module: mail
 #: help:mail.alias,alias_force_thread_id:0
@@ -1105,17 +1166,17 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:312
+#: code:addons/mail/static/src/xml/mail.xml:332
 #, python-format
 msgid "show more message"
-msgstr "εμφάνιση μηνύματος"
+msgstr ""
 
 #. module: mail
 #: help:mail.message.subtype,name:0
 msgid ""
 "Message subtype gives a more precise type on the message, especially for "
-"system notifications. For example, it can be a notification related to a new"
-" record (New), or to a stage change in a process (Stage change). Message "
+"system notifications. For example, it can be a notification related to a new "
+"record (New), or to a stage change in a process (Stage change). Message "
 "subtypes allow to precisely tune the notifications the user want to receive "
 "on its wall."
 msgstr ""
@@ -1133,45 +1194,48 @@ msgstr ""
 #. module: mail
 #: selection:mail.group,public:0
 msgid "Selected Group Only"
-msgstr "Μόνο η επιλεγμένη ομάδα"
+msgstr ""
 
 #. module: mail
 #: field:mail.group,message_is_follower:0
 #: field:mail.thread,message_is_follower:0
 #: field:res.partner,message_is_follower:0
 msgid "Is a Follower"
-msgstr "Είναι Ακόλουθος"
+msgstr ""
 
 #. module: mail
-#: view:mail.alias:0 view:mail.mail:0
+#: view:mail.alias:mail.view_mail_alias_search
+#: view:mail.mail:mail.view_mail_form
+#: view:mail.mail:mail.view_mail_tree
 msgid "User"
-msgstr "Χρήστης"
+msgstr ""
 
 #. module: mail
-#: view:mail.group:0
+#: view:mail.group:mail.view_group_tree
 msgid "Groups"
-msgstr "Ομάδες"
+msgstr ""
 
 #. module: mail
-#: view:mail.message:0
+#: view:mail.message:mail.view_message_search
 msgid "Messages Search"
-msgstr "Αναζήτηση μηνυμάτων"
+msgstr ""
 
 #. module: mail
-#: field:mail.compose.message,date:0 field:mail.message,date:0
+#: field:mail.compose.message,date:0
+#: field:mail.message,date:0
 msgid "Date"
-msgstr "Ημερομηνία"
+msgstr ""
 
 #. module: mail
-#: view:mail.mail:0
+#: view:mail.mail:mail.view_mail_search
 msgid "Extended Filters..."
-msgstr "Εκτεταμένα Φίλτρα..."
+msgstr ""
 
 #. module: mail
-#: code:addons/mail/mail_group.py:180
+#: code:addons/mail/mail_group.py:174
 #, python-format
 msgid "Warning!"
-msgstr "Προειδοποίηση"
+msgstr ""
 
 #. module: mail
 #: selection:res.partner,notification_email_send:0
@@ -1180,17 +1244,17 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:293
+#: code:addons/mail/static/src/xml/mail.xml:310
 #, python-format
 msgid "more"
-msgstr "περισσότερα"
+msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:121
+#: code:addons/mail/static/src/xml/mail.xml:123
 #, python-format
 msgid "To:"
-msgstr "Προς:"
+msgstr ""
 
 #. module: mail
 #. openerp-web
@@ -1202,24 +1266,24 @@ msgstr ""
 #. module: mail
 #: model:ir.model,name:mail.model_res_groups
 msgid "Access Groups"
-msgstr "Ομάδες Πρόσβασης"
+msgstr ""
 
 #. module: mail
 #: field:mail.message.subtype,default:0
 msgid "Default"
-msgstr "Προεπιλογή"
+msgstr ""
 
 #. module: mail
 #: model:ir.model,name:mail.model_res_users
 msgid "Users"
-msgstr "Χρήστες"
+msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:247
+#: code:addons/mail/static/src/xml/mail.xml:257
 #, python-format
 msgid "Mark as Todo"
-msgstr "Επισήμανση ως Να-Γίνει"
+msgstr ""
 
 #. module: mail
 #: help:mail.message.subtype,parent_id:0
@@ -1227,10 +1291,11 @@ msgid "Parent subtype, used for automatic subscription."
 msgstr ""
 
 #. module: mail
-#: field:mail.group,message_summary:0 field:mail.thread,message_summary:0
+#: field:mail.group,message_summary:0
+#: field:mail.thread,message_summary:0
 #: field:res.partner,message_summary:0
 msgid "Summary"
-msgstr "Περίληψη"
+msgstr ""
 
 #. module: mail
 #: help:mail.message.subtype,res_model:0
@@ -1239,38 +1304,40 @@ msgid ""
 msgstr ""
 
 #. module: mail
-#: view:mail.compose.message:0 view:mail.wizard.invite:0
+#: view:mail.compose.message:mail.email_compose_message_wizard_form
+#: view:mail.wizard.invite:mail.mail_wizard_invite_form
 msgid "Add contacts to notify..."
-msgstr "Προσθήκη επαφών για ενημέρωση..."
+msgstr ""
 
 #. module: mail
-#: view:mail.group:0
+#: view:mail.group:mail.view_group_form
 msgid "Group Form"
-msgstr "Ομαδοποίηση φόρμας"
+msgstr ""
 
 #. module: mail
-#: field:mail.compose.message,starred:0 field:mail.message,starred:0
+#: field:mail.compose.message,starred:0
+#: field:mail.message,starred:0
 #: field:mail.notification,starred:0
 msgid "Starred"
-msgstr "Πρωταγωνίστησε"
+msgstr ""
 
 #. module: mail
 #: field:mail.group,menu_id:0
 msgid "Related Menu"
-msgstr "Σχετικό Μενού"
+msgstr ""
 
 #. module: mail
-#: code:addons/mail/update.py:93
+#: code:addons/mail/update.py:91
 #, python-format
 msgid "Error"
-msgstr "Σφάλμα"
+msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail_followers.xml:13
+#: code:addons/mail/static/src/xml/mail_followers.xml:14
 #, python-format
 msgid "Following"
-msgstr "Ακολουθώ"
+msgstr ""
 
 #. module: mail
 #: sql_constraint:mail.alias:0
@@ -1279,7 +1346,7 @@ msgid ""
 msgstr ""
 
 #. module: mail
-#: code:addons/mail/mail_group.py:180
+#: code:addons/mail/mail_group.py:174
 #, python-format
 msgid ""
 "You cannot delete those groups, as the Whole Company group is required by "
@@ -1297,21 +1364,22 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail_followers.xml:52
+#: code:addons/mail/static/src/xml/mail_followers.xml:62
 #, python-format
 msgid "And"
-msgstr "Και"
+msgstr ""
 
 #. module: mail
-#: code:addons/mail/mail_thread.py:113
+#: code:addons/mail/mail_thread.py:171
 #, python-format
 msgid "You have %d unread messages"
 msgstr ""
 
 #. module: mail
-#: field:mail.compose.message,message_id:0 field:mail.message,message_id:0
+#: field:mail.compose.message,message_id:0
+#: field:mail.message,message_id:0
 msgid "Message-Id"
-msgstr "Κωδικός Μηνύματος"
+msgstr ""
 
 #. module: mail
 #: help:mail.group,image:0
@@ -1321,20 +1389,22 @@ msgid ""
 msgstr ""
 
 #. module: mail
-#: field:mail.compose.message,attachment_ids:0 view:mail.mail:0
+#: field:mail.compose.message,attachment_ids:0
+#: view:mail.mail:mail.view_mail_form
 #: field:mail.message,attachment_ids:0
 msgid "Attachments"
-msgstr "Συνημμένα"
+msgstr ""
 
 #. module: mail
-#: field:mail.compose.message,record_name:0 field:mail.message,record_name:0
+#: field:mail.compose.message,record_name:0
+#: field:mail.message,record_name:0
 msgid "Message Record Name"
-msgstr "Περιγραφή εγγραφής Μυνήματος"
+msgstr ""
 
 #. module: mail
 #: field:mail.mail,email_cc:0
 msgid "Cc"
-msgstr "Κοινοποίηση"
+msgstr ""
 
 #. module: mail
 #: help:mail.notification,starred:0
@@ -1342,16 +1412,16 @@ msgid "Starred message that goes into the todo mailbox"
 msgstr ""
 
 #. module: mail
-#: view:mail.group:0
+#: view:mail.group:mail.view_group_form
 msgid "Topics discussed in this group..."
 msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:124 view:mail.compose.message:0
+#: code:addons/mail/static/src/xml/mail.xml:127
 #, python-format
 msgid "Followers of"
-msgstr "Ακόλουθοι του"
+msgstr ""
 
 #. module: mail
 #: help:mail.mail,auto_delete:0
@@ -1361,56 +1431,56 @@ msgstr ""
 #. module: mail
 #: model:ir.actions.client,name:mail.action_mail_group_feeds
 msgid "Discussion Group"
-msgstr "Ομάδα Συζήτησης"
+msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:243
+#: code:addons/mail/static/src/xml/mail.xml:253
 #, python-format
 msgid "Done"
-msgstr "Εκπληρωμένο"
+msgstr ""
 
 #. module: mail
 #: model:mail.message.subtype,name:mail.mt_comment
 msgid "Discussions"
-msgstr "Συζητήσεις"
+msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail_followers.xml:11
+#: code:addons/mail/static/src/xml/mail_followers.xml:12
 #, python-format
 msgid "Follow"
-msgstr "Ακολουθώ"
+msgstr ""
 
 #. module: mail
 #: model:mail.group,name:mail.group_all_employees
 msgid "Whole Company"
-msgstr "Ολόκληρη Εταιρεία"
+msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:130
-#: code:addons/mail/static/src/xml/mail.xml:293 view:mail.compose.message:0
+#: code:addons/mail/static/src/xml/mail.xml:137
+#: code:addons/mail/static/src/xml/mail.xml:310
 #, python-format
 msgid "and"
-msgstr "και"
+msgstr ""
 
 #. module: mail
 #: help:mail.mail,body_html:0
 msgid "Rich-text/HTML message"
-msgstr "Rich-text/HTML μήνυμα"
+msgstr ""
 
 #. module: mail
-#: view:mail.mail:0
+#: view:mail.mail:mail.view_mail_search
 msgid "Creation Month"
-msgstr "Μήνας δημιουργίας"
+msgstr ""
 
 #. module: mail
 #: help:mail.compose.message,notified_partner_ids:0
 #: help:mail.message,notified_partner_ids:0
 msgid ""
 "Partners that have a notification pushing this message in their mailboxes"
-msgstr "Συνεργάτες που έχουν προώθηση ειδοποιήσεων αυτού του μυνήματος στα εισερχόμενα τους"
+msgstr ""
 
 #. module: mail
 #: view:mail.message:0
@@ -1418,27 +1488,28 @@ msgid "Show already read messages"
 msgstr ""
 
 #. module: mail
-#: view:mail.message:0
+#: view:mail.message:mail.view_message_search
 msgid "Content"
-msgstr "Περιεχόμενα"
+msgstr ""
 
 #. module: mail
 #: field:mail.mail,email_to:0
 msgid "To"
-msgstr "'Εως"
+msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:246 view:mail.mail:0
+#: code:addons/mail/static/src/xml/mail.xml:256
+#: view:mail.mail:mail.view_mail_form
 #, python-format
 msgid "Reply"
-msgstr "Απάντηση"
+msgstr ""
 
 #. module: mail
 #: field:mail.compose.message,notified_partner_ids:0
 #: field:mail.message,notified_partner_ids:0
 msgid "Notified partners"
-msgstr "Ειδοποιούμενοι συνεργάτες"
+msgstr ""
 
 #. module: mail
 #. openerp-web
@@ -1462,39 +1533,43 @@ msgstr ""
 #. module: mail
 #: field:mail.alias,alias_model_id:0
 msgid "Aliased Model"
-msgstr "Μοντέλο Ψευδωνύμου"
+msgstr ""
 
 #. module: mail
-#: help:mail.compose.message,message_id:0 help:mail.message,message_id:0
+#: help:mail.compose.message,message_id:0
+#: help:mail.message,message_id:0
 msgid "Message unique identifier"
-msgstr "Μοναδικός ταυτοποιητής μυνήματος"
+msgstr ""
 
 #. module: mail
-#: field:mail.group,description:0 field:mail.message.subtype,description:0
+#: field:mail.group,description:0
+#: view:mail.message.subtype:mail.view_mail_message_subtype_form
+#: field:mail.message.subtype,description:0
 msgid "Description"
-msgstr "Περιγραφή"
+msgstr ""
 
 #. module: mail
 #: model:ir.model,name:mail.model_mail_followers
 msgid "Document Followers"
-msgstr "Ακόλουθοι του εγγράφου"
+msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail_followers.xml:35
+#: code:addons/mail/static/src/xml/mail_followers.xml:41
 #, python-format
 msgid "Remove this follower"
-msgstr "Αφαίρεση ακολούθου"
+msgstr ""
 
 #. module: mail
-#: selection:res.partner,notification_email_send:0
+#: selection:res.partner,notify_email:0
 msgid "Never"
-msgstr "Ποτέ"
+msgstr ""
 
 #. module: mail
-#: field:mail.mail,mail_server_id:0
+#: field:mail.compose.message,mail_server_id:0
+#: field:mail.message,mail_server_id:0
 msgid "Outgoing mail server"
-msgstr "Διακομιστής εξερχόμενης αλληλογραφίας"
+msgstr ""
 
 #. module: mail
 #: code:addons/mail/mail_message.py:934
@@ -1503,30 +1578,32 @@ msgid "Partners email addresses not found"
 msgstr ""
 
 #. module: mail
-#: view:mail.mail:0 selection:mail.mail,state:0
+#: view:mail.mail:mail.view_mail_search
+#: selection:mail.mail,state:0
 msgid "Sent"
-msgstr "Αποστολή"
+msgstr ""
 
 #. module: mail
 #: field:mail.mail,body_html:0
 msgid "Rich-text Contents"
-msgstr "Περιεχόμενα εμπλουτισμένου κειμένου"
+msgstr ""
 
 #. module: mail
-#: help:mail.compose.message,to_read:0 help:mail.message,to_read:0
+#: help:mail.compose.message,to_read:0
+#: help:mail.message,to_read:0
 msgid "Current user has an unread notification linked to this message"
-msgstr "Ο τρέχον χρήστης έχει μια αδιάβαστη ειδοποίηση συνδεμένη με αυτό το μύνημα"
+msgstr ""
 
 #. module: mail
 #: model:ir.model,name:mail.model_mail_thread
 msgid "Email Thread"
-msgstr "Νήμα Email"
+msgstr ""
 
 #. module: mail
 #: model:ir.actions.act_window,name:mail.action_view_groups
 #: model:ir.ui.menu,name:mail.mail_allgroups
 msgid "Join a group"
-msgstr "Συμμετοχή σε μια ομάδα"
+msgstr ""
 
 #. module: mail
 #: model:ir.actions.client,help:mail.action_mail_group_feeds
@@ -1539,7 +1616,7 @@ msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:214
+#: code:addons/mail/static/src/xml/mail.xml:224
 #, python-format
 msgid "Please, wait while the file is uploading."
 msgstr ""
@@ -1548,13 +1625,14 @@ msgstr ""
 #: view:mail.group:0
 msgid ""
 "This group is visible by everyone,\n"
-"                                    including your customers if you installed\n"
+"                                    including your customers if you "
+"installed\n"
 "                                    the portal module."
 msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:244
+#: code:addons/mail/static/src/xml/mail.xml:254
 #, python-format
 msgid "Set back to Todo"
 msgstr ""
@@ -1581,7 +1659,7 @@ msgstr ""
 #. module: mail
 #: field:mail.group,name:0
 msgid "Name"
-msgstr "Όνομα"
+msgstr ""
 
 #. module: mail
 #: constraint:res.partner:0
@@ -1591,47 +1669,52 @@ msgstr ""
 #. module: mail
 #: help:base.config.settings,alias_domain:0
 msgid ""
-"If you have setup a catch-all email domain redirected to the OpenERP server,"
-" enter the domain name here."
+"If you have setup a catch-all email domain redirected to the OpenERP server, "
+"enter the domain name here."
 msgstr ""
 
 #. module: mail
 #: model:ir.actions.act_window,name:mail.action_view_mail_message
-#: model:ir.ui.menu,name:mail.menu_mail_message field:mail.group,message_ids:0
-#: view:mail.message:0 field:mail.thread,message_ids:0
+#: model:ir.ui.menu,name:mail.menu_mail_message
+#: field:mail.group,message_ids:0
+#: view:mail.message:mail.view_message_tree
+#: field:mail.thread,message_ids:0
 #: field:res.partner,message_ids:0
 msgid "Messages"
-msgstr "Μηνύματα"
+msgstr ""
 
 #. module: mail
-#: code:addons/mail/mail_mail.py:222 code:addons/mail/mail_mail.py:243
+#: code:addons/mail/mail_mail.py:222
+#: code:addons/mail/mail_mail.py:243
 #, python-format
 msgid "Followers of %s"
 msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:140
+#: code:addons/mail/static/src/xml/mail.xml:146
 #, python-format
 msgid "others..."
-msgstr "άλλα..."
+msgstr ""
 
 #. module: mail
 #: model:ir.actions.client,name:mail.action_mail_star_feeds
 #: model:ir.ui.menu,name:mail.mail_starfeeds
 msgid "To-do"
-msgstr "Να-Γίνει"
+msgstr ""
 
 #. module: mail
-#: view:mail.alias:0 field:mail.alias,alias_name:0 field:mail.group,alias_id:0
+#: view:mail.alias:mail.view_mail_alias_form
+#: view:mail.alias:mail.view_mail_alias_tree
+#: field:mail.group,alias_id:0
 #: field:res.users,alias_id:0
 msgid "Alias"
-msgstr "Ψευδώνυμο"
+msgstr ""
 
 #. module: mail
 #: model:ir.model,name:mail.model_mail_mail
 msgid "Outgoing Mails"
-msgstr "Εξερχόμενα μηνύματα"
+msgstr ""
 
 #. module: mail
 #: help:mail.compose.message,notification_ids:0
@@ -1639,32 +1722,33 @@ msgstr "Εξερχόμενα μηνύματα"
 msgid ""
 "Technical field holding the message notifications. Use notified_partner_ids "
 "to access notified partners."
-msgstr "Τεχνικό παιδίο που κρατά τις ειδοποιήσεις μυνημάτων. Χρησιμοποίησε notified_partner_ids για να έχεις πρόσβαση στους ειδοποιημένους συνεργάτες."
+msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:150
+#: code:addons/mail/static/src/xml/mail.xml:156
 #, python-format
 msgid "(no email address)"
-msgstr "(καμία διεύθυνση ηλεκτρονικού ταχυδρομείου)"
+msgstr ""
 
 #. module: mail
 #: model:ir.ui.menu,name:mail.mail_feeds
 #: model:ir.ui.menu,name:mail.mail_feeds_main
 msgid "Messaging"
-msgstr "Μηνύματα"
+msgstr ""
 
 #. module: mail
-#: view:mail.alias:0 field:mail.message.subtype,res_model:0
+#: view:mail.alias:mail.view_mail_alias_search
+#: field:mail.message.subtype,res_model:0
 msgid "Model"
-msgstr "Μοντέλο"
+msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:207
+#: code:addons/mail/static/src/xml/mail.xml:217
 #, python-format
 msgid "No messages."
-msgstr "Δεν βρέθηκαν μηνύματα."
+msgstr ""
 
 #. module: mail
 #: help:mail.followers,subtype_ids:0
@@ -1674,10 +1758,11 @@ msgid ""
 msgstr ""
 
 #. module: mail
-#: help:mail.group,message_ids:0 help:mail.thread,message_ids:0
+#: help:mail.group,message_ids:0
+#: help:mail.thread,message_ids:0
 #: help:res.partner,message_ids:0
 msgid "Messages and communication history"
-msgstr "Μηνύματα και ιστορικό επικοινωνίας"
+msgstr ""
 
 #. module: mail
 #: help:mail.mail,references:0
@@ -1687,25 +1772,27 @@ msgstr ""
 #. module: mail
 #: field:mail.compose.message,composition_mode:0
 msgid "Composition mode"
-msgstr "Λειτουργία σύνθεσης"
+msgstr ""
 
 #. module: mail
-#: field:mail.compose.message,model:0 field:mail.followers,res_model:0
-#: field:mail.message,model:0 field:mail.wizard.invite,res_model:0
+#: field:mail.compose.message,model:0
+#: field:mail.followers,res_model:0
+#: field:mail.message,model:0
+#: field:mail.wizard.invite,res_model:0
 msgid "Related Document Model"
-msgstr "Μοντέλο Σχετικού Εγγράφου"
+msgstr ""
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:339
+#: code:addons/mail/static/src/xml/mail.xml:349
 #, python-format
 msgid "unlike"
-msgstr "Δεν μου αρέσει"
+msgstr ""
 
 #. module: mail
 #: model:ir.model,name:mail.model_mail_group
 msgid "Discussion group"
-msgstr "Ομάδα συζήτησης"
+msgstr ""
 
 #. module: mail
 #: help:mail.mail,email_cc:0
@@ -1715,10 +1802,10 @@ msgstr ""
 #. module: mail
 #: field:mail.alias,alias_domain:0
 msgid "Alias domain"
-msgstr "Ψευδώνυμο τομέα"
+msgstr ""
 
 #. module: mail
-#: code:addons/mail/update.py:93
+#: code:addons/mail/update.py:91
 #, python-format
 msgid "Error during communication with the publisher warranty server."
 msgstr ""
@@ -1726,7 +1813,7 @@ msgstr ""
 #. module: mail
 #: selection:mail.group,public:0
 msgid "Private"
-msgstr "Προσωπικό"
+msgstr ""
 
 #. module: mail
 #: model:ir.actions.client,help:mail.action_mail_star_feeds
@@ -1734,8 +1821,10 @@ msgid ""
 "<p>\n"
 "                    <b>No todo.</b>\n"
 "                </p><p>\n"
-"                    When you process messages in your inbox, you can mark some\n"
-"                    as <i>todo</i>. From this menu, you can process all your todo.\n"
+"                    When you process messages in your inbox, you can mark "
+"some\n"
+"                    as <i>todo</i>. From this menu, you can process all your "
+"todo.\n"
 "                </p>\n"
 "            "
 msgstr ""
@@ -1743,17 +1832,18 @@ msgstr ""
 #. module: mail
 #: selection:mail.mail,state:0
 msgid "Delivery Failed"
-msgstr "Αποτυχία παράδοσης"
+msgstr ""
 
 #. module: mail
 #: field:mail.compose.message,partner_ids:0
 msgid "Additional contacts"
-msgstr "Πρόσθετες επαφές"
+msgstr ""
 
 #. module: mail
-#: help:mail.compose.message,parent_id:0 help:mail.message,parent_id:0
+#: help:mail.compose.message,parent_id:0
+#: help:mail.message,parent_id:0
 msgid "Initial thread message."
-msgstr "Αρχικό μήνυμα"
+msgstr ""
 
 #. module: mail
 #: model:mail.group,name:mail.group_hr_policies
@@ -1771,12 +1861,12 @@ msgstr ""
 #: model:ir.actions.client,name:mail.action_mail_inbox_feeds
 #: model:ir.ui.menu,name:mail.mail_inboxfeeds
 msgid "Inbox"
-msgstr "Εισερχόμενα"
+msgstr ""
 
 #. module: mail
 #: field:mail.compose.message,filter_id:0
 msgid "Filters"
-msgstr "Φίλτρα"
+msgstr ""
 
 #. module: mail
 #. openerp-web
@@ -1794,7 +1884,7 @@ msgstr ""
 #. module: mail
 #: model:ir.model,name:mail.model_mail_alias
 msgid "Email Aliases"
-msgstr "Ψευδώνυμα μηνυμάτων"
+msgstr ""
 
 #. module: mail
 #: field:mail.group,image_small:0

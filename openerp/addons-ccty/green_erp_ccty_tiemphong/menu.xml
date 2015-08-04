@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    	<menuitem id="tiem_phong" name="Quản lý tiêm phòng"/>
+    	<menuitem id="menu_tiem_phong" parent="tiem_phong" name="Thông tin tiêm phòng"/>
+    	<menuitem id="thong_tin_tiem_phong" parent="menu_tiem_phong" name="Thông tin tiêm phòng" action="action_tiem_phong"/>
+    </data>
+</openerp>

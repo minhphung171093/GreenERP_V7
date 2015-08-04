@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    	<menuitem id="nhap_xuat" name="Nhập - Xuất - Quá cảnh"/>
+    	<menuitem id="menu_nhap_xuat" parent="nhap_xuat" name="Thông tin nhập - Xuất - Quá cảnh"/>
+    	<menuitem id="thong_tin_nhap_xuat" parent="menu_nhap_xuat" name="Thông tin nhập - Xuất - Quá cảnh" action="action_nhap_xuat"/>
+    </data>
+</openerp>

@@ -10,16 +10,13 @@
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
   outline: none;
   resize: none;
   position: absolute;
   background: none;
   overflow: hidden;
   margin: 0;
-  padding: 3px 5px 4px 5px;
+  padding: 7px 5px 7px 5px;
   white-space: nowrap;
   font: 11px "lucida grande", tahoma, verdana, arial, sans-serif;
   line-height: 13px;
@@ -30,7 +27,7 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   position: absolute;
-  top: 0;
+  top: 3px;
   right: 0;
   width: 22px;
   height: 22px;

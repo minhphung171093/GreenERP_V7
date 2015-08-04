@@ -1,31 +1,31 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * account_asset
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2014
+# Persian translation for openobject-addons
+# Copyright (c) 2014 Rosetta Contributors and Canonical Ltd 2014
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-06-07 19:36+0000\n"
-"PO-Revision-Date: 2015-05-29 13:14+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Persian (http://www.transifex.com/projects/p/odoo-7/language/fa/)\n"
+"PO-Revision-Date: 2014-12-25 20:46+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Persian <fa@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: fa\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2014-12-26 06:20+0000\n"
+"X-Generator: Launchpad (build 17286)\n"
 
 #. module: account_asset
-#: view:account.asset.asset:0
+#: view:account.asset.asset:account_asset.view_account_asset_search
 msgid "Assets in draft and open states"
 msgstr ""
 
 #. module: account_asset
 #: field:account.asset.category,method_end:0
-#: field:account.asset.history,method_end:0 field:asset.modify,method_end:0
+#: field:account.asset.history,method_end:0
+#: field:asset.modify,method_end:0
 msgid "Ending date"
 msgstr "تاریخ پایان"
 
@@ -42,7 +42,7 @@ msgstr ""
 #. module: account_asset
 #: view:asset.asset.report:0
 msgid "Group By..."
-msgstr "گروه بندی بر اساس ..."
+msgstr ""
 
 #. module: account_asset
 #: field:asset.asset.report,gross_value:0
@@ -50,15 +50,20 @@ msgid "Gross Amount"
 msgstr "مبلغ ناخالص"
 
 #. module: account_asset
-#: view:account.asset.asset:0 field:account.asset.depreciation.line,asset_id:0
-#: field:account.asset.history,asset_id:0 field:account.move.line,asset_id:0
-#: view:asset.asset.report:0 field:asset.asset.report,asset_id:0
+#: view:account.asset.asset:account_asset.view_account_asset_asset_form
+#: view:account.asset.asset:account_asset.view_account_asset_search
+#: field:account.asset.depreciation.line,asset_id:0
+#: field:account.asset.history,asset_id:0
+#: field:account.move.line,asset_id:0
+#: view:asset.asset.report:account_asset.view_asset_asset_report_search
+#: field:asset.asset.report,asset_id:0
 #: model:ir.model,name:account_asset.model_account_asset_asset
 msgid "Asset"
 msgstr "دارایی"
 
 #. module: account_asset
-#: help:account.asset.asset,prorata:0 help:account.asset.category,prorata:0
+#: help:account.asset.asset,prorata:0
+#: help:account.asset.category,prorata:0
 msgid ""
 "Indicates that the first depreciation entry for this asset have to be done "
 "from the purchase date instead of the first January"
@@ -72,29 +77,32 @@ msgstr "خطی"
 
 #. module: account_asset
 #: field:account.asset.asset,company_id:0
-#: field:account.asset.category,company_id:0 view:asset.asset.report:0
+#: field:account.asset.category,company_id:0
+#: view:asset.asset.report:account_asset.view_asset_asset_report_search
 #: field:asset.asset.report,company_id:0
 msgid "Company"
 msgstr "شرکت"
 
 #. module: account_asset
-#: view:asset.modify:0
+#: view:asset.modify:account_asset.asset_modify_form
 msgid "Modify"
 msgstr ""
 
 #. module: account_asset
-#: selection:account.asset.asset,state:0 view:asset.asset.report:0
+#: selection:account.asset.asset,state:0
+#: view:asset.asset.report:account_asset.view_asset_asset_report_search
 #: selection:asset.asset.report,state:0
 msgid "Running"
-msgstr "در حال اجرا"
+msgstr ""
 
 #. module: account_asset
-#: view:account.asset.asset:0
+#: view:account.asset.asset:account_asset.view_account_asset_asset_form
 msgid "Set to Draft"
 msgstr "تبدیل به پیشنویس"
 
 #. module: account_asset
-#: view:asset.asset.report:0
+#: view:asset.asset.report:account_asset.action_account_asset_report_graph
+#: view:asset.asset.report:account_asset.view_asset_asset_report_search
 #: model:ir.actions.act_window,name:account_asset.action_asset_asset_report
 #: model:ir.model,name:account_asset.model_asset_asset_report
 #: model:ir.ui.menu,name:account_asset.menu_action_asset_asset_report
@@ -119,15 +127,14 @@ msgid "Asset Categories"
 msgstr "دسته های دارایی"
 
 #. module: account_asset
-#: view:account.asset.asset:0
+#: view:account.asset.asset:account_asset.view_account_asset_asset_form
 #: field:account.asset.asset,account_move_line_ids:0
-#: field:account.move.line,entry_ids:0
 #: model:ir.actions.act_window,name:account_asset.act_entries_open
 msgid "Entries"
-msgstr "داده ها"
+msgstr ""
 
 #. module: account_asset
-#: view:account.asset.asset:0
+#: view:account.asset.asset:account_asset.view_account_asset_asset_form
 #: field:account.asset.asset,depreciation_line_ids:0
 msgid "Depreciation Lines"
 msgstr ""
@@ -144,7 +151,7 @@ msgstr ""
 
 #. module: account_asset
 #: field:account.asset.depreciation.line,depreciation_date:0
-#: view:asset.asset.report:0 field:asset.asset.report,depreciation_date:0
+#: field:asset.asset.report,depreciation_date:0
 msgid "Depreciation Date"
 msgstr ""
 
@@ -159,7 +166,8 @@ msgid "Posted Amount"
 msgstr ""
 
 #. module: account_asset
-#: view:account.asset.asset:0 view:asset.asset.report:0
+#: view:account.asset.asset:account_asset.view_account_asset_asset_hierarchy_tree
+#: view:account.asset.asset:account_asset.view_account_asset_asset_tree
 #: model:ir.actions.act_window,name:account_asset.action_account_asset_asset_form
 #: model:ir.ui.menu,name:account_asset.menu_action_account_asset_asset_form
 #: model:ir.ui.menu,name:account_asset.menu_finance_assets
@@ -173,8 +181,11 @@ msgid "Depreciation Account"
 msgstr ""
 
 #. module: account_asset
-#: view:account.asset.asset:0 view:account.asset.category:0
-#: view:account.asset.history:0 view:asset.modify:0 field:asset.modify,note:0
+#: view:account.asset.asset:account_asset.view_account_asset_asset_form
+#: view:account.asset.category:account_asset.view_account_asset_category_form
+#: view:account.asset.history:account_asset.view_account_asset_history_form
+#: view:asset.modify:account_asset.asset_modify_form
+#: field:asset.modify,note:0
 msgid "Notes"
 msgstr "یادداشت‌ها"
 
@@ -184,13 +195,13 @@ msgid "Depreciation Entry"
 msgstr ""
 
 #. module: account_asset
-#: code:addons/account_asset/account_asset.py:82
+#: code:addons/account_asset/account_asset.py:81
 #, python-format
 msgid "Error!"
 msgstr "خطا!"
 
 #. module: account_asset
-#: view:asset.asset.report:0 field:asset.asset.report,nbr:0
+#: field:asset.asset.report,nbr:0
 msgid "# of Depreciation Lines"
 msgstr ""
 
@@ -200,7 +211,7 @@ msgid "Number of Months in a Period"
 msgstr ""
 
 #. module: account_asset
-#: view:asset.asset.report:0
+#: view:asset.asset.report:account_asset.view_asset_asset_report_search
 msgid "Assets in draft state"
 msgstr ""
 
@@ -218,7 +229,7 @@ msgid "Reference"
 msgstr "مرجع‌"
 
 #. module: account_asset
-#: view:account.asset.asset:0
+#: view:account.asset.asset:account_asset.view_account_asset_search
 msgid "Account Asset"
 msgstr ""
 
@@ -236,18 +247,19 @@ msgid "Period Length"
 msgstr "طول دوره"
 
 #. module: account_asset
-#: selection:account.asset.asset,state:0 view:asset.asset.report:0
+#: selection:account.asset.asset,state:0
+#: view:asset.asset.report:account_asset.view_asset_asset_report_search
 #: selection:asset.asset.report,state:0
 msgid "Draft"
 msgstr "پیشنویس"
 
 #. module: account_asset
-#: view:asset.asset.report:0
+#: view:asset.asset.report:account_asset.view_asset_asset_report_search
 msgid "Date of asset purchase"
 msgstr ""
 
 #. module: account_asset
-#: view:account.asset.asset:0
+#: view:account.asset.asset:account_asset.view_account_asset_asset_form
 msgid "Change Duration"
 msgstr "تغییر مدت"
 
@@ -259,7 +271,7 @@ msgid "The number of depreciations needed to depreciate your asset"
 msgstr ""
 
 #. module: account_asset
-#: view:account.asset.category:0
+#: view:account.asset.category:account_asset.view_account_asset_category_form
 msgid "Analytic Information"
 msgstr ""
 
@@ -269,7 +281,8 @@ msgid "Analytic account"
 msgstr "حساب تحلیلی"
 
 #. module: account_asset
-#: field:account.asset.asset,method:0 field:account.asset.category,method:0
+#: field:account.asset.asset,method:0
+#: field:account.asset.category,method:0
 msgid "Computation Method"
 msgstr ""
 
@@ -291,7 +304,7 @@ msgid "Time in month between two depreciations"
 msgstr ""
 
 #. module: account_asset
-#: view:asset.modify:0
+#: view:asset.modify:account_asset.asset_modify_form
 #: model:ir.actions.act_window,name:account_asset.action_asset_modify
 #: model:ir.model,name:account_asset.model_asset_modify
 msgid "Modify Asset"
@@ -303,13 +316,15 @@ msgid "Salvage Value"
 msgstr ""
 
 #. module: account_asset
-#: field:account.asset.asset,category_id:0 view:account.asset.category:0
-#: field:account.invoice.line,asset_category_id:0 view:asset.asset.report:0
+#: field:account.asset.asset,category_id:0
+#: view:account.asset.category:account_asset.view_account_asset_category_search
+#: field:account.invoice.line,asset_category_id:0
+#: view:asset.asset.report:account_asset.view_asset_asset_report_search
 msgid "Asset Category"
 msgstr "دسته دارایی"
 
 #. module: account_asset
-#: view:account.asset.asset:0
+#: view:account.asset.asset:account_asset.view_account_asset_search
 msgid "Assets in closed state"
 msgstr ""
 
@@ -319,18 +334,18 @@ msgid "Parent Asset"
 msgstr ""
 
 #. module: account_asset
-#: view:account.asset.history:0
+#: view:account.asset.history:account_asset.view_account_asset_history_tree
 #: model:ir.model,name:account_asset.model_account_asset_history
 msgid "Asset history"
 msgstr ""
 
 #. module: account_asset
-#: view:account.asset.category:0
+#: view:account.asset.category:account_asset.view_account_asset_category_search
 msgid "Search Asset Category"
 msgstr ""
 
 #. module: account_asset
-#: view:asset.modify:0
+#: view:asset.modify:account_asset.asset_modify_form
 msgid "months"
 msgstr "ماه"
 
@@ -340,7 +355,7 @@ msgid "Invoice Line"
 msgstr "سطر فاکتور"
 
 #. module: account_asset
-#: view:account.asset.asset:0
+#: view:account.asset.asset:account_asset.view_account_asset_asset_form
 msgid "Depreciation Board"
 msgstr ""
 
@@ -357,12 +372,14 @@ msgid "Time Method"
 msgstr ""
 
 #. module: account_asset
-#: view:asset.depreciation.confirmation.wizard:0 view:asset.modify:0
+#: view:asset.depreciation.confirmation.wizard:0
+#: view:asset.modify:0
 msgid "or"
-msgstr "یا"
+msgstr ""
 
 #. module: account_asset
-#: field:account.asset.asset,note:0 field:account.asset.category,note:0
+#: field:account.asset.asset,note:0
+#: field:account.asset.category,note:0
 #: field:account.asset.history,note:0
 msgid "Note"
 msgstr "یادداشت"
@@ -371,26 +388,31 @@ msgstr "یادداشت"
 #: help:account.asset.history,method_time:0
 msgid ""
 "The method to use to compute the dates and number of depreciation lines.\n"
-"Number of Depreciations: Fix the number of depreciation lines and the time between 2 depreciations.\n"
-"Ending Date: Choose the time between 2 depreciations and the date the depreciations won't go beyond."
+"Number of Depreciations: Fix the number of depreciation lines and the time "
+"between 2 depreciations.\n"
+"Ending Date: Choose the time between 2 depreciations and the date the "
+"depreciations won't go beyond."
 msgstr ""
 
 #. module: account_asset
 #: help:account.asset.asset,method_time:0
 #: help:account.asset.category,method_time:0
 msgid ""
-"Choose the method to use to compute the dates and number of depreciation lines.\n"
-"  * Number of Depreciations: Fix the number of depreciation lines and the time between 2 depreciations.\n"
-"  * Ending Date: Choose the time between 2 depreciations and the date the depreciations won't go beyond."
+"Choose the method to use to compute the dates and number of depreciation "
+"lines.\n"
+"  * Number of Depreciations: Fix the number of depreciation lines and the "
+"time between 2 depreciations.\n"
+"  * Ending Date: Choose the time between 2 depreciations and the date the "
+"depreciations won't go beyond."
 msgstr ""
 
 #. module: account_asset
-#: view:asset.asset.report:0
+#: view:asset.asset.report:account_asset.view_asset_asset_report_search
 msgid "Assets in running state"
 msgstr ""
 
 #. module: account_asset
-#: view:account.asset.asset:0
+#: view:account.asset.asset:account_asset.view_account_asset_search
 msgid "Closed"
 msgstr "بسته"
 
@@ -398,12 +420,15 @@ msgstr "بسته"
 #: help:account.asset.asset,state:0
 msgid ""
 "When an asset is created, the status is 'Draft'.\n"
-"If the asset is confirmed, the status goes in 'Running' and the depreciation lines can be posted in the accounting.\n"
-"You can manually close an asset when the depreciation is over. If the last line of depreciation is posted, the asset automatically goes in that status."
+"If the asset is confirmed, the status goes in 'Running' and the depreciation "
+"lines can be posted in the accounting.\n"
+"You can manually close an asset when the depreciation is over. If the last "
+"line of depreciation is posted, the asset automatically goes in that status."
 msgstr ""
 
 #. module: account_asset
-#: field:account.asset.asset,state:0 field:asset.asset.report,state:0
+#: field:account.asset.asset,state:0
+#: field:asset.asset.report,state:0
 msgid "Status"
 msgstr "وضعیت"
 
@@ -414,7 +439,7 @@ msgid "Partner"
 msgstr "شریک تجاری"
 
 #. module: account_asset
-#: view:asset.asset.report:0
+#: view:asset.asset.report:account_asset.view_asset_asset_report_search
 msgid "Posted depreciation lines"
 msgstr ""
 
@@ -424,7 +449,7 @@ msgid "Children Assets"
 msgstr ""
 
 #. module: account_asset
-#: view:asset.asset.report:0
+#: view:asset.asset.report:account_asset.view_asset_asset_report_search
 msgid "Date of depreciation"
 msgstr ""
 
@@ -439,17 +464,18 @@ msgid "Asset Account"
 msgstr "حساب دارایی"
 
 #. module: account_asset
-#: view:asset.asset.report:0
+#: view:asset.asset.report:account_asset.view_asset_asset_report_search
 msgid "Extended Filters..."
 msgstr ""
 
 #. module: account_asset
-#: view:account.asset.asset:0 view:asset.depreciation.confirmation.wizard:0
+#: view:account.asset.asset:account_asset.view_account_asset_asset_form
+#: view:asset.depreciation.confirmation.wizard:account_asset.view_asset_depreciation_confirmation_wizard
 msgid "Compute"
 msgstr "محاسبه"
 
 #. module: account_asset
-#: view:account.asset.history:0
+#: view:account.asset.history:account_asset.view_account_asset_history_form
 msgid "Asset History"
 msgstr ""
 
@@ -474,12 +500,13 @@ msgid "Depreciation Name"
 msgstr ""
 
 #. module: account_asset
-#: view:account.asset.asset:0 field:account.asset.asset,history_ids:0
+#: view:account.asset.asset:account_asset.view_account_asset_asset_form
+#: field:account.asset.asset,history_ids:0
 msgid "History"
 msgstr "تاریخچه"
 
 #. module: account_asset
-#: view:asset.depreciation.confirmation.wizard:0
+#: view:asset.depreciation.confirmation.wizard:account_asset.view_asset_depreciation_confirmation_wizard
 msgid "Compute Asset"
 msgstr "محاسبه دارایی"
 
@@ -489,12 +516,13 @@ msgid "Period"
 msgstr "دوره"
 
 #. module: account_asset
-#: view:account.asset.asset:0
+#: view:account.asset.asset:account_asset.view_account_asset_asset_form
 msgid "General"
 msgstr "کلی"
 
 #. module: account_asset
-#: field:account.asset.asset,prorata:0 field:account.asset.category,prorata:0
+#: field:account.asset.asset,prorata:0
+#: field:account.asset.category,prorata:0
 msgid "Prorata Temporis"
 msgstr ""
 
@@ -504,32 +532,36 @@ msgid "Invoice"
 msgstr "فاکتور"
 
 #. module: account_asset
-#: view:account.asset.asset:0
+#: view:account.asset.asset:account_asset.view_account_asset_asset_form
 msgid "Set to Close"
 msgstr ""
 
 #. module: account_asset
-#: view:asset.depreciation.confirmation.wizard:0 view:asset.modify:0
+#: view:asset.depreciation.confirmation.wizard:account_asset.view_asset_depreciation_confirmation_wizard
+#: view:asset.modify:account_asset.asset_modify_form
 msgid "Cancel"
 msgstr "لغو"
 
 #. module: account_asset
-#: selection:account.asset.asset,state:0 selection:asset.asset.report,state:0
+#: selection:account.asset.asset,state:0
+#: selection:asset.asset.report,state:0
 msgid "Close"
 msgstr "بستن"
 
 #. module: account_asset
+#: code:addons/account_asset/account_asset.py:349
 #: model:ir.model,name:account_asset.model_account_move_line
+#, python-format
 msgid "Journal Items"
-msgstr "آیتم های روزنامه"
+msgstr ""
 
 #. module: account_asset
-#: view:asset.modify:0
+#: view:asset.modify:account_asset.asset_modify_form
 msgid "Asset Durations to Modify"
 msgstr ""
 
 #. module: account_asset
-#: field:account.asset.asset,purchase_date:0 view:asset.asset.report:0
+#: field:account.asset.asset,purchase_date:0
 #: field:asset.asset.report,purchase_date:0
 msgid "Purchase Date"
 msgstr "تاریخ خریداری"
@@ -548,18 +580,18 @@ msgid ""
 msgstr ""
 
 #. module: account_asset
-#: view:account.asset.asset:0
+#: view:account.asset.asset:account_asset.view_account_asset_search
 msgid "Current"
 msgstr "جاری"
 
 #. module: account_asset
-#: code:addons/account_asset/account_asset.py:82
+#: code:addons/account_asset/account_asset.py:81
 #, python-format
 msgid "You cannot delete an asset that contains posted depreciation lines."
 msgstr ""
 
 #. module: account_asset
-#: view:account.asset.category:0
+#: view:account.asset.category:account_asset.view_account_asset_category_form
 msgid "Depreciation Method"
 msgstr ""
 
@@ -579,7 +611,7 @@ msgid "Skip Draft State"
 msgstr ""
 
 #. module: account_asset
-#: view:account.asset.category:0
+#: view:account.asset.category:account_asset.view_account_asset_category_form
 msgid "Depreciation Dates"
 msgstr ""
 
@@ -604,7 +636,8 @@ msgid "Amount Already Depreciated"
 msgstr ""
 
 #. module: account_asset
-#: help:account.asset.asset,method:0 help:account.asset.category,method:0
+#: help:account.asset.asset,method:0
+#: help:account.asset.category,method:0
 msgid ""
 "Choose the method to use to compute the amount of depreciation lines.\n"
 "  * Linear: Calculated on basis of: Gross Value / Number of Depreciations\n"
@@ -613,7 +646,8 @@ msgstr ""
 
 #. module: account_asset
 #: field:account.asset.depreciation.line,move_check:0
-#: view:asset.asset.report:0 field:asset.asset.report,move_check:0
+#: view:asset.asset.report:account_asset.view_asset_asset_report_search
+#: field:asset.asset.report,move_check:0
 msgid "Posted"
 msgstr "ارسال شد"
 
@@ -621,8 +655,10 @@ msgstr "ارسال شد"
 #: model:ir.actions.act_window,help:account_asset.action_asset_asset_report
 msgid ""
 "<p>\n"
-"            From this report, you can have an overview on all depreciation. The\n"
-"            tool search can also be used to personalise your Assets reports and\n"
+"            From this report, you can have an overview on all depreciation. "
+"The\n"
+"            tool search can also be used to personalise your Assets reports "
+"and\n"
 "            so, match this analysis to your needs;\n"
 "          </p>\n"
 "        "
@@ -656,31 +692,33 @@ msgid "Asset depreciation line"
 msgstr ""
 
 #. module: account_asset
-#: view:account.asset.category:0 field:asset.asset.report,asset_category_id:0
+#: view:account.asset.category:account_asset.view_account_asset_category_form
+#: view:account.asset.category:account_asset.view_account_asset_category_tree
+#: field:asset.asset.report,asset_category_id:0
 #: model:ir.model,name:account_asset.model_account_asset_category
 msgid "Asset category"
 msgstr "دسته دارایی"
 
 #. module: account_asset
-#: view:asset.asset.report:0 field:asset.asset.report,depreciation_value:0
+#: field:asset.asset.report,depreciation_value:0
 msgid "Amount of Depreciation Lines"
 msgstr ""
 
 #. module: account_asset
-#: code:addons/account_asset/wizard/wizard_asset_compute.py:50
+#: code:addons/account_asset/wizard/wizard_asset_compute.py:49
 #, python-format
 msgid "Created Asset Moves"
 msgstr ""
 
 #. module: account_asset
-#: view:account.asset.asset:0
+#: view:account.asset.asset:account_asset.view_account_asset_asset_form
 msgid "Add an internal note here..."
 msgstr ""
 
 #. module: account_asset
 #: field:account.asset.depreciation.line,sequence:0
 msgid "Sequence"
-msgstr "دنباله"
+msgstr ""
 
 #. module: account_asset
 #: help:account.asset.category,method_period:0
@@ -704,12 +742,12 @@ msgid "Number of Depreciations"
 msgstr ""
 
 #. module: account_asset
-#: view:account.asset.asset:0
+#: view:account.asset.asset:account_asset.view_account_asset_asset_form
 msgid "Create Move"
 msgstr ""
 
 #. module: account_asset
-#: view:account.asset.asset:0
+#: view:account.asset.asset:account_asset.view_account_asset_asset_form
 msgid "Confirm Asset"
 msgstr ""
 

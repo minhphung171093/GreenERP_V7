@@ -375,21 +375,26 @@
     </ul>
 </t>
 <t t-name="Menu.secondary">
-    <div t-foreach="widget.data.data.children" t-as="menu" style="display: none" class="oe_secondary_menu" t-att-data-menu-parent="menu.id">
-        <t t-foreach="menu.children" t-as="menu">
-            <div class="oe_secondary_menu_section">
-                <t t-esc="menu.name"/>
-                <!--
-                    Shall the section be still clickable ?
-                    <t t-call="Menu.link"/>
-                -->
-            </div>
+    <!--<div class="collapse navbar-collapse navbar-ex1N-collapse">
+
+    </div>-->
+    <ul t-foreach="widget.data.data.children" t-as="menu" style="display: none" class="oe_secondary_menu nav nav-pills nav-stacked" t-att-data-menu-parent="menu.id">
+        <li class="oe_secondary_menu_section" t-foreach="menu.children" t-as="menu">
+            <a href="#" class="dropdown-toggle">
+                <i t-att-class="'menu_section_icon ' + ((menu.icon)? ('fa-' + menu.icon) : '')"></i>
+                <span><t t-esc="menu.name"/></span>
+                <i class="fa fa-angle-right drop-icon"></i>
+            </a>
+            <!--
+                Shall the section be still clickable ?
+                <t t-call="Menu.link"/>
+            -->
             <t t-call="Menu.secondary.submenu"/>
-        </t>
-    </div>
+        </li>
+    </ul>
 </t>
 <t t-name="Menu.secondary.submenu">
-    <ul t-if="menu.children.length" class="oe_secondary_submenu">
+    <ul t-if="menu.children.length" class="oe_secondary_submenu submenu">
         <li t-foreach="menu.children" t-as="menu">
             <t t-call="Menu.link"/>
             <!--<span class="oe_menu_label">8</span>-->
@@ -421,11 +426,11 @@
         <img class="oe_topbar_avatar" t-att-data-default-src="_s + '/web/static/src/img/user_menu_avatar.png'"/>
         <span class="oe_topbar_name"/>
         <ul class="oe_dropdown_menu">
-            <li><a href="#" data-menu="settings">Preferences</a></li>
-            <li><a href="#" data-menu="account">My OpenERP.com account</a></li>
-            <li><a href="#" data-menu="about">About OpenERP</a></li>
-            <li><a href="#" data-menu="help">Help</a></li>
-            <li><a href="#" data-menu="logout">Log out</a></li>
+            <li><a href="#" data-menu="settings"><i class="fa fa-cog"></i>Preferences</a></li>
+            <li><a href="#" data-menu="account"><i class="fa fa-user"></i>My OpenERP.com account</a></li>
+            <li><a href="#" data-menu="about"><i class="fa fa-book"></i>About OpenERP</a></li>
+            <li><a href="#" data-menu="help"><i class="fa fa-question"></i>Help</a></li>
+            <li><a href="#" data-menu="logout"><i class="fa fa-power-off"></i>Log out</a></li>
         </ul>
     </span>
 </t>
@@ -446,9 +451,82 @@
 
 </t>
 
-<t t-name="WebClient">
-    <div class="openerp openerp_webclient_container">
-    <table class="oe_webclient">
+<div t-name="WebClient" >
+    <div class="openerp openerp_webclient_container theme-wrapper">
+        <header class="oe_topbar navbar" id="header-navbar">
+            <div class="container">
+                <a t-attf-href="/?ts=#{Date.now()}#{debug}" id="logo" class="navbar-brand">
+                    <img src="/web/static/src/img/logo_bac.png" alt="" class="normal-logo logo-white"/>
+                </a>
+                <div class="clearfix">
+                    <button class="navbar-toggle" data-target=".navbar-ex1-collapse" data-toggle="collapse" type="button">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="fa fa-bars"></span>
+                    </button>
+                    <div class="nav-no-collapse navbar-left pull-left hidden-sm hidden-xs">
+                        <ul class="nav navbar-nav pull-left">
+                            <li>
+                                <a class="btn" id="make-small-nav">
+                                    <i class="fa fa-bars"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="oe_menu_placeholder"/>
+                    <div class="oe_user_menu_placeholder"/>
+                    <div class="oe_systray"/>
+                </div>
+            </div>
+        </header>
+        <div id="page-wrapper" class="container">
+            <div class="row">
+                <div id="nav-col">
+                    <section id="col-left" class="col-left-nano">
+                        <div id="col-left-inner" class="oe_leftbar col-left-nano-content">
+                            <t t-set="debug" t-value="__debug__ ? '&amp;debug' : ''"/>
+
+                            <div id="user-left-box" class="clearfix hidden-sm hidden-xs dropdown profile2-dropdown">
+                                <a class="oe_logo" t-attf-href="/?ts=#{Date.now()}#{debug}">
+                                    <!--<span class="oe_logo_edit">Edit Company data</span>-->
+                                    <img t-att-src='widget.session.url("/web/binary/company_logo")'/>
+                                </a>
+                                <div class="user-box">
+                                    <span class="name">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                            Company Name
+                                            <i class="fa fa-angle-up"></i>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li class="oe_logo_edit"><a href="user-profile.html"><i class="fa fa-pencil "></i>Edit Company Profile</a></li>
+                                            <li class="oe_logo_edit"><a href="#"><i class="fa fa-file-image-o"></i>Change Picture</a></li>
+
+                                        </ul>
+                                    </span>
+                                    <!--span class="status">
+                                        <i class="fa fa-circle"></i> Online
+                                    </span-->
+                                </div>
+                            </div>
+                            <div class="collapse navbar-collapse navbar-ex1-collapse" id="sidebar-nav">
+                                <div class="oe_secondary_menus_container"/>
+                            </div>
+                        </div>
+                    </section>
+                    <div id="nav-col-submenu"></div>
+                </div>
+                <div id="content-wrapper">
+                    <div class="row">
+                        <div class="oe_application"></div>
+                    </div>
+                    <footer id="footer-bar" class="row">
+                        <p id="footer-copyright" class="col-xs-12">
+                            Powered by OPENERP.
+                        </p>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    <!--<table class="oe_webclient">
         <tr>
             <td colspan="2" class="oe_topbar">
                 <div class="oe_menu_placeholder"/>
@@ -471,9 +549,9 @@
             <td class="oe_application">
             </td>
         </tr>
-    </table>
+    </table>-->
     </div>
-</t>
+</div>
 <t t-name="WebClient.timezone_notification">
     <div class="oe_webclient_timezone_notification">
         <p>Your user's preference timezone does not match your browser timezone:</p>
@@ -514,26 +592,26 @@
                         </h2>
                 </td>
                 <td colspan="2">
-                        <div class="oe_view_manager_view_search" t-opentag="true"/>
+                	<div class="oe_view_manager_buttons oe_right"/>
                 </td>
             </tr>
             <tr class="oe_header_row">
-                <td>
-                        <div class="oe_view_manager_buttons"/>
-                </td>
-                <td colspan="2">
-                        <div class="oe_view_manager_sidebar"/>
-                </td>
-                <td>
-                    <ul class="oe_view_manager_switch oe_button_group oe_right">
+            	<td colspan="1">
+                    <!--<ul class="oe_view_manager_switch oe_button_group oe_left">
                         <t t-if="widget.views_src.length > 1" t-foreach="widget.views_src" t-as="view">
                           <li class="oe_e">
                             <a t-attf-class="oe_vm_switch_#{view.view_type}" t-att-data-view-type="view.view_type"
                                t-att-title="view.button_label"/>
                           </li>
                         </t>
-                    </ul>
-                    <div class="oe_view_manager_pager oe_right"/>
+                    </ul>-->
+                    <div class="oe_view_manager_pager oe_left"/>
+                </td>
+                <td>
+                    <div class="oe_view_manager_sidebar"/>
+                </td>
+                <td colspan="2">
+                    <div class="oe_view_manager_view_search" t-opentag="true"/>
                 </td>
             </tr>
         </table>
@@ -707,7 +785,7 @@
     </td>
 </tr>
 
-<table t-name="ListView" class="oe_list_content">
+<table t-name="ListView" class="oe_list_content table table-hover">
     <t t-set="columns_count" t-value="visible_columns.length + (options.selectable ? 1 : 0) + (options.deletable ? 1 : 0)"/>
     <thead>
         <tr t-if="(!!options.action_buttons and !options.$buttons) or (!!options.pager and !options.$pager)">
@@ -723,7 +801,7 @@
                     <t t-esc="column.string"/>
                 </th>
             </t>
-            <th t-if="options.selectable" width="1"  >
+            <th t-if="options.selectable" width="40"  >
                 <input type="checkbox" class="oe_list_record_selector"/>
             </th>
             <t t-foreach="columns" t-as="column">
@@ -1082,13 +1160,21 @@
     <span>
         <t t-set="placeholder" t-value="widget.getParent().node and widget.getParent().node.attrs.placeholder"/>
         <input type="text" class="oe_datepicker_container" disabled="disabled" style="display: none;"/>
-        <input type="text"
+        <div class="input-group">
+            <span class="oe_input_icon oe_datepicker_trigger input-group-addon" draggable="false" title="Select date"><i class="fa fa-calendar"></i></span>
+            <input type="text" t-att-name="widget.name"
+                    t-att-placeholder="placeholder"
+                    class="oe_datepicker_master form-control">
+
+            </input>
+        </div>
+        <!--<input type="text"
             t-att-name="widget.name"
             t-att-placeholder="placeholder"
             class="oe_datepicker_master"
         /><img class="oe_input_icon oe_datepicker_trigger" draggable="false"
                t-att-src='_s + "/web/static/src/img/ui/field_calendar.png"'
-               title="Select date" width="16" height="16" border="0"/>
+               title="Select date" width="16" height="16" border="0"/>-->
     </span>
 </t>
 <t t-name="FieldDate">
@@ -1673,11 +1759,7 @@
     <input type="number" class="field_integer" value = "0" step="1"/>
 </t>
 <t t-name="SearchView.extended_search.proposition.float">
-    <input class="field_float"
-        t-att-type="widget.decimal_point === '.' ? 'number' : 'text'"
-        t-attf-title="Number using #{widget.decimal_point  || '.' } as decimal separator."
-        t-attf-pattern="[0-9]+([\\#{widget.decimal_point || '.' }][0-9]+)?"
-        t-attf-value="0#{widget.decimal_point || '.' }0" step="0.01"/>
+    <input type="number" class="field_float" value = "0.0" step="0.01"/>
 </t>
 <t t-name="SearchView.extended_search.proposition.selection">
     <select>

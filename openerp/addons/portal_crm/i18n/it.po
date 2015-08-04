@@ -1,71 +1,71 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * portal_crm
-# 
-# Translators:
+# Italian translation for openobject-addons
+# Copyright (c) 2014 Rosetta Contributors and Canonical Ltd 2014
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-08-14 00:10+0000\n"
-"PO-Revision-Date: 2015-05-29 13:00+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Italian (http://www.transifex.com/projects/p/odoo-7/language/it/)\n"
+"PO-Revision-Date: 2014-04-08 15:43+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Italian <it@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: it\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2014-08-14 07:11+0000\n"
+"X-Generator: Launchpad (build 17156)\n"
 
 #. module: portal_crm
 #: selection:portal_crm.crm_contact_us,type:0
 msgid "Lead"
-msgstr "Lead"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,title:0
 msgid "Title"
-msgstr "Titolo"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,probability:0
 msgid "Success Rate (%)"
-msgstr "Tasso di successo (%)"
+msgstr ""
 
 #. module: portal_crm
 #: view:portal_crm.crm_contact_us:0
 msgid "Contact us"
-msgstr "Contattaci"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,date_action:0
 msgid "Next Action Date"
-msgstr "Data prossima azione"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,fax:0
 msgid "Fax"
-msgstr "Fax"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,zip:0
 msgid "Zip"
-msgstr "CAP"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,message_unread:0
 msgid "Unread Messages"
-msgstr "Messaggi Non Letti"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,company_id:0
 msgid "Company"
-msgstr "Azienda"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,day_open:0
 msgid "Days to Open"
-msgstr "Giorni per l'apertura"
+msgstr ""
 
 #. module: portal_crm
 #: view:portal_crm.crm_contact_us:0
@@ -75,155 +75,155 @@ msgstr ""
 #. module: portal_crm
 #: selection:portal_crm.crm_contact_us,priority:0
 msgid "Highest"
-msgstr "Massimo"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,mobile:0
 msgid "Mobile"
-msgstr "Cellulare"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,description:0
 msgid "Notes"
-msgstr "Note"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,message_ids:0
 msgid "Messages"
-msgstr "Messaggi"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,color:0
 msgid "Color Index"
-msgstr "Indice Colore"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,partner_latitude:0
 msgid "Geo Latitude"
-msgstr "Geo Latitudine"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,partner_name:0
 msgid "Customer Name"
-msgstr "Nome cliente"
+msgstr ""
 
 #. module: portal_crm
 #: selection:portal_crm.crm_contact_us,state:0
 msgid "Cancelled"
-msgstr "Annullato"
+msgstr ""
 
 #. module: portal_crm
 #: help:portal_crm.crm_contact_us,message_unread:0
 msgid "If checked new messages require your attention."
-msgstr "Se selezionato, nuovi messaggi richiedono la tua attenzione"
+msgstr ""
 
 #. module: portal_crm
 #: help:portal_crm.crm_contact_us,channel_id:0
 msgid "Communication channel (mail, direct, phone, ...)"
-msgstr "Canale di comunicazione (posta, diretto, telefono, ...)"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,type_id:0
 msgid "Campaign"
-msgstr "Campagna"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,ref:0
 msgid "Reference"
-msgstr "Riferimento"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,date_action_next:0
 #: field:portal_crm.crm_contact_us,title_action:0
 msgid "Next Action"
-msgstr "Prossima Azione"
+msgstr ""
 
 #. module: portal_crm
 #: help:portal_crm.crm_contact_us,message_summary:0
 msgid ""
 "Holds the Chatter summary (number of messages, ...). This summary is "
 "directly in html format in order to be inserted in kanban views."
-msgstr "Gestisce il sommario (numero di messaggi, ...) di Chatter. Questo sommario è direttamente in html così da poter essere inserito nelle viste kanban."
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,partner_id:0
 msgid "Partner"
-msgstr "Partner"
+msgstr ""
 
 #. module: portal_crm
 #: model:ir.actions.act_window,name:portal_crm.action_contact_us
 msgid "Contact Us"
-msgstr "Contattaci"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,name:0
 msgid "Subject"
-msgstr "Oggetto"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,opt_out:0
 msgid "Opt-Out"
-msgstr "Opt-Out"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,priority:0
 msgid "Priority"
-msgstr "Priorità"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,state_id:0
 msgid "State"
-msgstr "Stato"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,message_follower_ids:0
 msgid "Followers"
-msgstr "Followers"
+msgstr ""
 
 #. module: portal_crm
 #: help:portal_crm.crm_contact_us,partner_id:0
 msgid "Linked partner (optional). Usually created when converting the lead."
-msgstr "Partner collegato (opzionale). Solitamente creato durante la conversione del lead."
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,payment_mode:0
 msgid "Payment Mode"
-msgstr "Modalità Pagamento"
+msgstr ""
 
 #. module: portal_crm
 #: selection:portal_crm.crm_contact_us,state:0
 msgid "New"
-msgstr "Nuovo"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,type:0
 msgid "Type"
-msgstr "Tipo"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,email_from:0
 msgid "Email"
-msgstr "Email"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,channel_id:0
 msgid "Channel"
-msgstr "Canale"
+msgstr ""
 
 #. module: portal_crm
 #: view:portal_crm.crm_contact_us:0
 msgid "Name"
-msgstr "Nome"
+msgstr ""
 
 #. module: portal_crm
 #: selection:portal_crm.crm_contact_us,priority:0
 msgid "Lowest"
-msgstr "Minore"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,create_date:0
 msgid "Creation Date"
-msgstr "Data creazione"
+msgstr ""
 
 #. module: portal_crm
 #: view:portal_crm.crm_contact_us:0
@@ -236,67 +236,67 @@ msgid ""
 "If opt-out is checked, this contact has refused to receive emails for mass "
 "mailing and marketing campaign. Filter 'Available for Mass Mailing' allows "
 "users to filter the leads when performing mass mailing."
-msgstr "Se opt-out è spuntato questo contatto non ha richiesto mail per le campagne marketing di mass mailing. Il filtro 'Permetti mass mailing' permette agli utenti di filtrare le lead durante l'esecuzione del mass mailing."
+msgstr ""
 
 #. module: portal_crm
 #: view:portal_crm.crm_contact_us:0
 msgid "Close"
-msgstr "Chiuso"
+msgstr ""
 
 #. module: portal_crm
 #: selection:portal_crm.crm_contact_us,state:0
 msgid "Pending"
-msgstr "In sospeso"
+msgstr ""
 
 #. module: portal_crm
 #: help:portal_crm.crm_contact_us,type:0
 msgid "Type is used to separate Leads and Opportunities"
-msgstr "Il tipo è utilizzato per distinguere i Lead dalle Opportunità"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,categ_ids:0
 msgid "Categories"
-msgstr "Categorie"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,stage_id:0
 msgid "Stage"
-msgstr "Stadio"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,user_login:0
 msgid "User Login"
-msgstr "Login Utente"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,contact_name:0
 msgid "Contact Name"
-msgstr "Nome Contatto"
+msgstr ""
 
 #. module: portal_crm
 #: model:ir.ui.menu,name:portal_crm.portal_company_contact
 msgid "Contact"
-msgstr "Contatto"
+msgstr ""
 
 #. module: portal_crm
 #: view:portal_crm.crm_contact_us:0
 msgid "Your name..."
-msgstr "Il tuo nome..."
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,partner_address_email:0
 msgid "Partner Contact Email"
-msgstr "Email Contatto Partner"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,planned_revenue:0
 msgid "Expected Revenue"
-msgstr "Entrata prevista"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,task_ids:0
 msgid "Tasks"
-msgstr "Attività"
+msgstr ""
 
 #. module: portal_crm
 #: view:portal_crm.crm_contact_us:0
@@ -306,12 +306,12 @@ msgstr ""
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,company_currency:0
 msgid "Currency"
-msgstr "Valuta"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,write_date:0
 msgid "Update Date"
-msgstr "Aggiorna data"
+msgstr ""
 
 #. module: portal_crm
 #: view:portal_crm.crm_contact_us:0
@@ -321,44 +321,44 @@ msgstr ""
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,date_deadline:0
 msgid "Expected Closing"
-msgstr "Chiusura attesa"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,ref2:0
 msgid "Reference 2"
-msgstr "Riferimento 2"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,user_email:0
 msgid "User Email"
-msgstr "Email Utente"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,date_open:0
 msgid "Opened"
-msgstr "Aperto"
+msgstr ""
 
 #. module: portal_crm
 #: selection:portal_crm.crm_contact_us,state:0
 msgid "In Progress"
-msgstr "In Corso"
+msgstr ""
 
 #. module: portal_crm
 #: help:portal_crm.crm_contact_us,partner_name:0
 msgid ""
-"The name of the future partner company that will be created while converting"
-" the lead into opportunity"
-msgstr "Il nome dell'azienda del futuro partner che verrà creato durante la conversione del lead in opportunità"
+"The name of the future partner company that will be created while converting "
+"the lead into opportunity"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,planned_cost:0
 msgid "Planned Costs"
-msgstr "Costi pianificati"
+msgstr ""
 
 #. module: portal_crm
 #: help:portal_crm.crm_contact_us,date_deadline:0
 msgid "Estimate of the date on which the opportunity will be won."
-msgstr "Data stimata nella quale l'opportunità potrebbe essere vinta."
+msgstr ""
 
 #. module: portal_crm
 #: help:portal_crm.crm_contact_us,email_cc:0
@@ -366,104 +366,104 @@ msgid ""
 "These email addresses will be added to the CC field of all inbound and "
 "outbound emails for this record before being sent. Separate multiple email "
 "addresses with a comma"
-msgstr "Questi indirizzi email verranno aggiunti nel campo CC di tutte le email, in entrate e uscita, prima di essere spedite. E' necessario separare gli indirizzi con una virgola"
+msgstr ""
 
 #. module: portal_crm
 #: selection:portal_crm.crm_contact_us,priority:0
 msgid "Low"
-msgstr "Basso"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,date_closed:0
 #: selection:portal_crm.crm_contact_us,state:0
 msgid "Closed"
-msgstr "Chiuso"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,date_assign:0
 msgid "Assignation Date"
-msgstr "Data assegnazione"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,state:0
 msgid "Status"
-msgstr "Stato"
+msgstr ""
 
 #. module: portal_crm
 #: selection:portal_crm.crm_contact_us,priority:0
 msgid "Normal"
-msgstr "Normale"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,email_cc:0
 msgid "Global CC"
-msgstr "CC globale"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,street2:0
 msgid "Street2"
-msgstr "VIa (2)"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,id:0
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,phone:0
 msgid "Phone"
-msgstr "Telefono"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,message_is_follower:0
 msgid "Is a Follower"
-msgstr "E' un Follower"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,active:0
 msgid "Active"
-msgstr "Attivo"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,user_id:0
 msgid "Salesperson"
-msgstr "Commerciale"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,day_close:0
 msgid "Days to Close"
-msgstr "Giorni per la chiusura"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,company_ids:0
 msgid "Companies"
-msgstr "Aziende"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,message_summary:0
 msgid "Summary"
-msgstr "Riepilogo"
+msgstr ""
 
 #. module: portal_crm
 #: view:portal_crm.crm_contact_us:0
 msgid "Subject..."
-msgstr "Oggetto..."
+msgstr ""
 
 #. module: portal_crm
 #: help:portal_crm.crm_contact_us,section_id:0
 msgid ""
 "When sending mails, the default email address is taken from the sales team."
-msgstr "Inviando email, l'indirizzo email di default viene presa dal team di vendita."
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,partner_address_name:0
 msgid "Partner Contact Name"
-msgstr "Nome Contatto Partner"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,partner_longitude:0
 msgid "Geo Longitude"
-msgstr "Geo Longitudine"
+msgstr ""
 
 #. module: portal_crm
 #: view:portal_crm.crm_contact_us:0
@@ -473,52 +473,52 @@ msgstr ""
 #. module: portal_crm
 #: help:portal_crm.crm_contact_us,date_assign:0
 msgid "Last date this case was forwarded/assigned to a partner"
-msgstr "Ultima data di assegnazione/inoltro a partner del caso"
+msgstr ""
 
 #. module: portal_crm
 #: help:portal_crm.crm_contact_us,email_from:0
 msgid "Email address of the contact"
-msgstr "Indirizzo email del contatto"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,city:0
 msgid "City"
-msgstr "Città"
+msgstr ""
 
 #. module: portal_crm
 #: view:portal_crm.crm_contact_us:0
 msgid "Submit"
-msgstr "Invia"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,function:0
 msgid "Function"
-msgstr "Funzione"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,referred:0
 msgid "Referred By"
-msgstr "Segnalato Da"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,partner_assigned_id:0
 msgid "Assigned Partner"
-msgstr "Partner assegnato"
+msgstr ""
 
 #. module: portal_crm
 #: selection:portal_crm.crm_contact_us,type:0
 msgid "Opportunity"
-msgstr "Opportunità"
+msgstr ""
 
 #. module: portal_crm
 #: help:portal_crm.crm_contact_us,partner_assigned_id:0
 msgid "Partner this case has been forwarded/assigned to."
-msgstr "Il partner di questo caso è stato inoltrato/assegnato a"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,country_id:0
 msgid "Country"
-msgstr "Paese"
+msgstr ""
 
 #. module: portal_crm
 #: view:portal_crm.crm_contact_us:0
@@ -532,39 +532,39 @@ msgid ""
 "progress the Status is set to 'Open'. When the case is over, the Status is "
 "set to 'Done'. If the case needs to be reviewed then the Status is  set to "
 "'Pending'."
-msgstr "Lo stato è impostato a 'Bozza', quando un caso viene creato. Se il caso è in progresso lo stato viene impostato a 'Aperto'. Quando un caso viene chiuso, lo stato viene impostato a 'Completato'. Se il caso necessità di essere rivisto lo stato viene impostato su 'In Attesa'."
+msgstr ""
 
 #. module: portal_crm
 #: help:portal_crm.crm_contact_us,message_ids:0
 msgid "Messages and communication history"
-msgstr "Storico messaggi e comunicazioni"
+msgstr ""
 
 #. module: portal_crm
 #: help:portal_crm.crm_contact_us,type_id:0
 msgid ""
 "From which campaign (seminar, marketing campaign, mass mailing, ...) did "
 "this contact come from?"
-msgstr "Da quale campagna (seminario, campagna di marketing, mass mailing, ...) questo contatto arriva?"
+msgstr ""
 
 #. module: portal_crm
 #: selection:portal_crm.crm_contact_us,priority:0
 msgid "High"
-msgstr "Alto"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,section_id:0
 msgid "Sales Team"
-msgstr "Team di vendita"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,street:0
 msgid "Street"
-msgstr "Via"
+msgstr ""
 
 #. module: portal_crm
 #: field:portal_crm.crm_contact_us,date_action_last:0
 msgid "Last Action"
-msgstr "Ultima azione"
+msgstr ""
 
 #. module: portal_crm
 #: model:ir.model,name:portal_crm.model_portal_crm_crm_contact_us

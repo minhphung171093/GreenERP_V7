@@ -1,22 +1,21 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * fleet
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2013
+# Latvian translation for openobject-addons
+# Copyright (c) 2013 Rosetta Contributors and Canonical Ltd 2013
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-08-14 00:11+0000\n"
-"PO-Revision-Date: 2015-05-29 13:00+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Latvian (http://www.transifex.com/projects/p/odoo-7/language/lv/)\n"
+"PO-Revision-Date: 2013-02-25 10:31+0000\n"
+"Last-Translator: Jānis <Unknown>\n"
+"Language-Team: Latvian <lv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: lv\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2014-08-14 06:52+0000\n"
+"X-Generator: Launchpad (build 17156)\n"
 
 #. module: fleet
 #: selection:fleet.vehicle,fuel_type:0
@@ -39,7 +38,8 @@ msgid "Unique number written on the vehicle motor (VIN/SN number)"
 msgstr "Motora unikālais numurs (VIN/SN numurs)"
 
 #. module: fleet
-#: selection:fleet.service.type,category:0 view:fleet.vehicle.log.contract:0
+#: selection:fleet.service.type,category:0
+#: view:fleet.vehicle.log.contract:0
 #: view:fleet.vehicle.log.services:0
 msgid "Service"
 msgstr "Apkope"
@@ -82,8 +82,10 @@ msgid "Resurface Rotors"
 msgstr ""
 
 #. module: fleet
-#: view:fleet.vehicle.cost:0 view:fleet.vehicle.log.fuel:0
-#: view:fleet.vehicle.model:0 view:fleet.vehicle.odometer:0
+#: view:fleet.vehicle.cost:0
+#: view:fleet.vehicle.log.fuel:0
+#: view:fleet.vehicle.model:0
+#: view:fleet.vehicle.odometer:0
 msgid "Group By..."
 msgstr "Grupēt pēc..."
 
@@ -127,7 +129,7 @@ msgstr ""
 #. module: fleet
 #: model:fleet.service.type,name:fleet.type_service_35
 msgid "Power Steering Hose Replacement"
-msgstr "Stūres pastiprinātāja nomaiņa"
+msgstr ""
 
 #. module: fleet
 #: view:fleet.vehicle.log.contract:0
@@ -206,18 +208,21 @@ msgid "Head Gasket(s) Replacement"
 msgstr "Galvas blīves nomaiņa"
 
 #. module: fleet
-#: view:fleet.vehicle:0 selection:fleet.vehicle.cost,cost_type:0
+#: view:fleet.vehicle:0
+#: selection:fleet.vehicle.cost,cost_type:0
 msgid "Services"
 msgstr "Apkopes"
 
 #. module: fleet
-#: help:fleet.vehicle,odometer:0 help:fleet.vehicle.cost,odometer:0
+#: help:fleet.vehicle,odometer:0
+#: help:fleet.vehicle.cost,odometer:0
 #: help:fleet.vehicle.cost,odometer_id:0
 msgid "Odometer measure of the vehicle at the moment of this log"
 msgstr "Odometra rādījums sākumā"
 
 #. module: fleet
-#: view:fleet.vehicle.log.contract:0 field:fleet.vehicle.log.contract,notes:0
+#: view:fleet.vehicle.log.contract:0
+#: field:fleet.vehicle.log.contract,notes:0
 msgid "Terms and Conditions"
 msgstr "Noteikumi un nosacījumi"
 
@@ -272,13 +277,15 @@ msgstr ""
 #. module: fleet
 #: help:fleet.vehicle.log.contract,expiration_date:0
 msgid ""
-"Date when the coverage of the contract expirates (by default, one year after"
-" begin date)"
+"Date when the coverage of the contract expirates (by default, one year after "
+"begin date)"
 msgstr ""
 
 #. module: fleet
-#: view:fleet.vehicle.log.fuel:0 field:fleet.vehicle.log.fuel,notes:0
-#: view:fleet.vehicle.log.services:0 field:fleet.vehicle.log.services,notes:0
+#: view:fleet.vehicle.log.fuel:0
+#: field:fleet.vehicle.log.fuel,notes:0
+#: view:fleet.vehicle.log.services:0
+#: field:fleet.vehicle.log.services,notes:0
 msgid "Notes"
 msgstr "Piezīmes"
 
@@ -323,7 +330,7 @@ msgstr "Gaisa filtra nomaiņa"
 #. module: fleet
 #: model:ir.model,name:fleet.model_fleet_vehicle_tag
 msgid "fleet.vehicle.tag"
-msgstr "Birkas"
+msgstr ""
 
 #. module: fleet
 #: view:fleet.vehicle:0
@@ -353,7 +360,7 @@ msgstr "Automātiskā"
 #. module: fleet
 #: help:fleet.vehicle,message_unread:0
 msgid "If checked new messages require your attention."
-msgstr "Ja atzīmēts, tad jauni ziņojumi pieprasīs jūsu uzmanību."
+msgstr ""
 
 #. module: fleet
 #: code:addons/fleet/fleet.py:414
@@ -387,7 +394,8 @@ msgid "Transmission Used by the vehicle"
 msgstr "Transportlīdzekļa pārnesumkārba"
 
 #. module: fleet
-#: code:addons/fleet/fleet.py:740 view:fleet.vehicle.log.contract:0
+#: code:addons/fleet/fleet.py:740
+#: view:fleet.vehicle.log.contract:0
 #: model:ir.actions.act_window,name:fleet.act_renew_contract
 #, python-format
 msgid "Renew Contract"
@@ -430,7 +438,8 @@ msgid ""
 "                Click to create a new contract. \n"
 "              </p><p>\n"
 "                Manage all your contracts (leasing, insurances, etc.) with\n"
-"                their related services, costs. OpenERP will automatically warn\n"
+"                their related services, costs. OpenERP will automatically "
+"warn\n"
 "                you when some contracts have to be renewed.\n"
 "              </p><p>\n"
 "                Each contract (e.g.: leasing) may include several services\n"
@@ -567,7 +576,7 @@ msgstr "Cena kopā"
 #. module: fleet
 #: model:fleet.service.type,name:fleet.type_service_27
 msgid "Heater Core Replacement"
-msgstr "Pamata apsildes nomaiņa"
+msgstr ""
 
 #. module: fleet
 #: model:fleet.service.type,name:fleet.type_service_14
@@ -650,7 +659,7 @@ msgstr "Iestatījumi"
 #: view:fleet.vehicle.log.contract:0
 #: field:fleet.vehicle.log.contract,sum_cost:0
 msgid "Indicative Costs Total"
-msgstr "Orientējošās izmaksas kopā"
+msgstr ""
 
 #. module: fleet
 #: model:fleet.vehicle.tag,name:fleet.vehicle_tag_junior
@@ -668,21 +677,25 @@ msgid ""
 "<p class=\"oe_view_nocontent_create\">\n"
 "                Click to create a vehicule status.\n"
 "              </p><p>\n"
-"                You can customize available status to track the evolution of\n"
+"                You can customize available status to track the evolution "
+"of\n"
 "                each vehicule. Example: Active, Being Repaired, Sold.\n"
 "              </p>\n"
 "            "
 msgstr ""
 
 #. module: fleet
-#: view:fleet.vehicle:0 field:fleet.vehicle,log_fuel:0
+#: view:fleet.vehicle:0
+#: field:fleet.vehicle,log_fuel:0
 #: view:fleet.vehicle.log.fuel:0
 msgid "Fuel Logs"
 msgstr "Degvielas reģistri"
 
 #. module: fleet
-#: code:addons/fleet/fleet.py:409 code:addons/fleet/fleet.py:413
-#: code:addons/fleet/fleet.py:417 code:addons/fleet/fleet.py:420
+#: code:addons/fleet/fleet.py:409
+#: code:addons/fleet/fleet.py:413
+#: code:addons/fleet/fleet.py:417
+#: code:addons/fleet/fleet.py:420
 #, python-format
 msgid "None"
 msgstr "Nav"
@@ -691,7 +704,7 @@ msgstr "Nav"
 #: model:ir.actions.act_window,name:fleet.action_fleet_reporting_costs_non_effective
 #: model:ir.ui.menu,name:fleet.menu_fleet_reporting_indicative_costs
 msgid "Indicative Costs Analysis"
-msgstr "Orientējošo izmaksu analīze"
+msgstr ""
 
 #. module: fleet
 #: model:fleet.service.type,name:fleet.type_service_12
@@ -745,7 +758,7 @@ msgstr "Odometra vienība"
 #. module: fleet
 #: model:fleet.service.type,name:fleet.type_service_30
 msgid "Intake Manifold Gasket Replacement"
-msgstr "Ieplūdes kolektora blīves nomaiņa"
+msgstr ""
 
 #. module: fleet
 #: selection:fleet.vehicle.log.contract,cost_frequency:0
@@ -763,7 +776,8 @@ msgid "Date when the cost has been executed"
 msgstr "Datums, kad izmaksas tika veiktas"
 
 #. module: fleet
-#: view:fleet.vehicle.cost:0 view:fleet.vehicle.model:0
+#: view:fleet.vehicle.cost:0
+#: view:fleet.vehicle.model:0
 msgid "Vehicles costs"
 msgstr "Transportlīdzekļu izmaksas"
 
@@ -780,14 +794,16 @@ msgstr "Iespējas"
 #. module: fleet
 #: model:fleet.service.type,name:fleet.type_service_26
 msgid "Heater Control Valve Replacement"
-msgstr "Apsildes kontroles vārsta nomaiņa"
+msgstr ""
 
 #. module: fleet
 #: view:fleet.vehicle.log.contract:0
 msgid ""
 "Create a new contract automatically with all the same informations except "
 "for the date that will start at the end of current contract"
-msgstr "Izveidot jaunu līgumu uz iepriekšējiem nosacījumiem, izņemot sākuma datumu, kas sākas pēc iepriekšējā līguma termiņa beigām"
+msgstr ""
+"Izveidot jaunu līgumu uz iepriekšējiem nosacījumiem, izņemot sākuma datumu, "
+"kas sākas pēc iepriekšējā līguma termiņa beigām"
 
 #. module: fleet
 #: selection:fleet.vehicle.log.contract,state:0
@@ -805,12 +821,14 @@ msgid "Other Maintenance"
 msgstr "Cita uzturēšana"
 
 #. module: fleet
-#: view:fleet.vehicle.cost:0 field:fleet.vehicle.cost,parent_id:0
+#: view:fleet.vehicle.cost:0
+#: field:fleet.vehicle.cost,parent_id:0
 msgid "Parent"
 msgstr "Vecāks"
 
 #. module: fleet
-#: field:fleet.vehicle,state_id:0 view:fleet.vehicle.state:0
+#: field:fleet.vehicle,state_id:0
+#: view:fleet.vehicle.state:0
 msgid "State"
 msgstr "Statuss"
 
@@ -830,7 +848,8 @@ msgid ""
 "<p class=\"oe_view_nocontent_create\">\n"
 "                Click to create a new fuel log. \n"
 "              </p><p>\n"
-"                Here you can add refuelling entries for all vehicles.  You can\n"
+"                Here you can add refuelling entries for all vehicles.  You "
+"can\n"
 "                also filter logs of a particular vehicle using the search\n"
 "                field.\n"
 "              </p>\n"
@@ -840,7 +859,7 @@ msgstr ""
 #. module: fleet
 #: model:fleet.service.type,name:fleet.type_service_11
 msgid "Brake Caliper Replacement"
-msgstr "Bremžu skavu nomaiņa"
+msgstr ""
 
 #. module: fleet
 #: field:fleet.vehicle,odometer:0
@@ -881,7 +900,7 @@ msgstr "Degvielas tips"
 #. module: fleet
 #: view:fleet.vehicle.log.contract:0
 msgid "Set Contract In Progress"
-msgstr "Atzīmēt kontraktu progresā"
+msgstr ""
 
 #. module: fleet
 #: field:fleet.vehicle.cost,odometer_unit:0
@@ -900,8 +919,10 @@ msgid "Horsepower"
 msgstr "Zirgspēki"
 
 #. module: fleet
-#: field:fleet.vehicle,image:0 field:fleet.vehicle,image_medium:0
-#: field:fleet.vehicle,image_small:0 field:fleet.vehicle.model,image:0
+#: field:fleet.vehicle,image:0
+#: field:fleet.vehicle,image_medium:0
+#: field:fleet.vehicle,image_small:0
+#: field:fleet.vehicle.model,image:0
 #: field:fleet.vehicle.model,image_medium:0
 #: field:fleet.vehicle.model,image_small:0
 #: field:fleet.vehicle.model.brand,image:0
@@ -911,10 +932,11 @@ msgstr "Logo"
 #. module: fleet
 #: field:fleet.vehicle,horsepower_tax:0
 msgid "Horsepower Taxation"
-msgstr "Zirgspēku nodokļi"
+msgstr ""
 
 #. module: fleet
-#: field:fleet.vehicle,log_services:0 view:fleet.vehicle.log.services:0
+#: field:fleet.vehicle,log_services:0
+#: view:fleet.vehicle.log.services:0
 msgid "Services Logs"
 msgstr "Apkopju reģistri"
 
@@ -948,7 +970,7 @@ msgstr "Šis lauks satur zīmola attēlu, ar ierobežojumu 1024x1024 px."
 #. module: fleet
 #: model:fleet.service.type,name:fleet.type_service_service_11
 msgid "Management Fee"
-msgstr "Administrācijas maksa"
+msgstr ""
 
 #. module: fleet
 #: view:fleet.vehicle:0
@@ -956,7 +978,8 @@ msgid "All vehicles"
 msgstr "Visi transportlīdzekļi"
 
 #. module: fleet
-#: view:fleet.vehicle.log.fuel:0 view:fleet.vehicle.log.services:0
+#: view:fleet.vehicle.log.fuel:0
+#: view:fleet.vehicle.log.services:0
 msgid "Additional Details"
 msgstr "Papildus informācija"
 
@@ -988,7 +1011,7 @@ msgstr "Riepu apkope"
 #. module: fleet
 #: model:fleet.service.type,name:fleet.type_service_8
 msgid "Ball Joint Replacement"
-msgstr "Stieņa uzgaļu nomaiņa"
+msgstr ""
 
 #. module: fleet
 #: field:fleet.vehicle,fuel_type:0
@@ -1019,7 +1042,7 @@ msgstr "Transportlīdzekļa atrašanās vieta (garāža, ...)"
 #. module: fleet
 #: model:fleet.service.type,name:fleet.type_service_28
 msgid "Heater Hose Replacement"
-msgstr "Apsildes šļūtenes nomaiņa"
+msgstr ""
 
 #. module: fleet
 #: field:fleet.vehicle.log.contract,state:0
@@ -1029,7 +1052,7 @@ msgstr "Statuss"
 #. module: fleet
 #: model:fleet.service.type,name:fleet.type_service_40
 msgid "Rotor Replacement"
-msgstr "Turbīnas nomaiņa"
+msgstr ""
 
 #. module: fleet
 #: help:fleet.vehicle.model,brand_id:0
@@ -1052,7 +1075,8 @@ msgid "Tags"
 msgstr "Birkas"
 
 #. module: fleet
-#: view:fleet.vehicle:0 field:fleet.vehicle,log_contracts:0
+#: view:fleet.vehicle:0
+#: field:fleet.vehicle,log_contracts:0
 msgid "Contracts"
 msgstr "Līgumi"
 
@@ -1062,7 +1086,8 @@ msgid "Brake Pad(s) Replacement"
 msgstr "Bremžu kluču nomaiņa"
 
 #. module: fleet
-#: view:fleet.vehicle.log.fuel:0 view:fleet.vehicle.log.services:0
+#: view:fleet.vehicle.log.fuel:0
+#: view:fleet.vehicle.log.services:0
 msgid "Odometer Details"
 msgstr "Odometra dati"
 
@@ -1075,9 +1100,12 @@ msgstr "Vadītājs"
 #: help:fleet.vehicle.model.brand,image_small:0
 msgid ""
 "Small-sized photo of the brand. It is automatically resized as a 64x64px "
-"image, with aspect ratio preserved. Use this field anywhere a small image is"
-" required."
-msgstr "Zīmola maza izmēra attēls. Tas automātiski tiek samazināts uz 64x64px attēlu ar saglabātu malu attiecību. Lietojiet šo lauku jebkur, kur nepieciešams maza izmēra attēls."
+"image, with aspect ratio preserved. Use this field anywhere a small image is "
+"required."
+msgstr ""
+"Zīmola maza izmēra attēls. Tas automātiski tiek samazināts uz 64x64px attēlu "
+"ar saglabātu malu attiecību. Lietojiet šo lauku jebkur, kur nepieciešams "
+"maza izmēra attēls."
 
 #. module: fleet
 #: view:board.board:0
@@ -1092,7 +1120,7 @@ msgstr "Salūzis"
 #. module: fleet
 #: model:fleet.service.type,name:fleet.type_contract_omnium
 msgid "Omnium"
-msgstr "Omnium"
+msgstr ""
 
 #. module: fleet
 #: view:fleet.vehicle.log.services:0
@@ -1137,7 +1165,8 @@ msgid ""
 "              </p>\n"
 "              <p>\n"
 "                Here you can add various odometer entries for all vehicles.\n"
-"                You can also show odometer value for a particular vehicle using\n"
+"                You can also show odometer value for a particular vehicle "
+"using\n"
 "                the search field.\n"
 "              </p>\n"
 "            "
@@ -1159,7 +1188,8 @@ msgid ""
 "<p class=\"oe_view_nocontent_create\">\n"
 "                Click to create a new model.\n"
 "              </p><p>\n"
-"                You can define several models (e.g. A3, A4) for each brand (Audi).\n"
+"                You can define several models (e.g. A3, A4) for each brand "
+"(Audi).\n"
 "              </p>\n"
 "            "
 msgstr ""
@@ -1170,8 +1200,10 @@ msgid ""
 "<p class=\"oe_view_nocontent_create\">\n"
 "                Click to create a new vehicle. \n"
 "              </p><p>\n"
-"                You will be able to manage your fleet by keeping track of the\n"
-"                contracts, services, fixed and recurring costs, odometers and\n"
+"                You will be able to manage your fleet by keeping track of "
+"the\n"
+"                contracts, services, fixed and recurring costs, odometers "
+"and\n"
 "                fuel logs associated to each vehicle.\n"
 "            </p><p>\n"
 "                OpenERP will warn you when services or contract have to be\n"
@@ -1203,7 +1235,8 @@ msgid ""
 "                    <b>Fleet dashboard is empty.</b>\n"
 "                  </p><p>\n"
 "                    To add your first report into this dashboard, go to any\n"
-"                    menu, switch to list or graph view, and click <i>'Add to\n"
+"                    menu, switch to list or graph view, and click <i>'Add "
+"to\n"
 "                    Dashboard'</i> in the extended search options.\n"
 "                  </p><p>\n"
 "                    You can filter and group data before inserting into the\n"
@@ -1247,7 +1280,8 @@ msgid "Battery Replacement"
 msgstr "Bateriju nomaiņa"
 
 #. module: fleet
-#: view:fleet.vehicle.cost:0 field:fleet.vehicle.cost,date:0
+#: view:fleet.vehicle.cost:0
+#: field:fleet.vehicle.cost,date:0
 #: field:fleet.vehicle.odometer,date:0
 msgid "Date"
 msgstr "Datums"
@@ -1274,7 +1308,7 @@ msgstr ""
 #. module: fleet
 #: model:fleet.service.type,name:fleet.type_service_service_17
 msgid "Emissions"
-msgstr "Emisijas"
+msgstr ""
 
 #. module: fleet
 #: model:ir.model,name:fleet.model_fleet_vehicle_model
@@ -1287,10 +1321,12 @@ msgstr "Transportlīdzekļa modelis"
 msgid ""
 "<p>\n"
 "          OpenERP helps you managing the costs for your different vehicles\n"
-"          Costs are generally created from services and contract and appears here.\n"
+"          Costs are generally created from services and contract and appears "
+"here.\n"
 "        </p>\n"
 "        <p>\n"
-"          Thanks to the different filters, OpenERP can only print the effective\n"
+"          Thanks to the different filters, OpenERP can only print the "
+"effective\n"
 "          costs, sort them by type and by vehicle.\n"
 "        </p>\n"
 "      "
@@ -1323,7 +1359,7 @@ msgstr "Odometrs"
 #. module: fleet
 #: model:fleet.service.type,name:fleet.type_service_4
 msgid "A/C Evaporator Replacement"
-msgstr "A/C Evaporator Replacement"
+msgstr ""
 
 #. module: fleet
 #: view:fleet.service.type:0
@@ -1342,7 +1378,8 @@ msgid "Tax roll"
 msgstr ""
 
 #. module: fleet
-#: view:fleet.vehicle.model:0 field:fleet.vehicle.model,vendors:0
+#: view:fleet.vehicle.model:0
+#: field:fleet.vehicle.model,vendors:0
 msgid "Vendors"
 msgstr "Piegādātāji"
 
@@ -1365,7 +1402,8 @@ msgid "Weekly"
 msgstr "Ik nedēļu"
 
 #. module: fleet
-#: view:fleet.vehicle:0 view:fleet.vehicle.odometer:0
+#: view:fleet.vehicle:0
+#: view:fleet.vehicle.odometer:0
 msgid "Odometer Logs"
 msgstr "Odometra reģistri"
 
@@ -1428,10 +1466,11 @@ msgstr ""
 #. module: fleet
 #: view:fleet.vehicle.log.contract:0
 msgid "Indicative Cost"
-msgstr "Orientējošās izmaksas"
+msgstr ""
 
 #. module: fleet
-#: field:fleet.vehicle.model,brand_id:0 view:fleet.vehicle.model.brand:0
+#: field:fleet.vehicle.model,brand_id:0
+#: view:fleet.vehicle.model.brand:0
 msgid "Model Brand"
 msgstr "Zīmols"
 
@@ -1495,7 +1534,7 @@ msgstr ""
 #. module: fleet
 #: model:fleet.service.type,name:fleet.type_service_2
 msgid "A/C Condenser Replacement"
-msgstr "Gaisa kondicionētāja nomaiņa"
+msgstr ""
 
 #. module: fleet
 #: model:fleet.service.type,name:fleet.type_service_19
@@ -1597,7 +1636,7 @@ msgstr "Zīmola nosaukums"
 #. module: fleet
 #: model:fleet.service.type,name:fleet.type_service_36
 msgid "Power Steering Pump Replacement"
-msgstr "Stūres pastiprinātāja sūkņa nomaiņa"
+msgstr ""
 
 #. module: fleet
 #: help:fleet.vehicle.cost,contract_id:0
@@ -1611,25 +1650,31 @@ msgid "Vehicle %s has been added to the fleet!"
 msgstr ""
 
 #. module: fleet
-#: view:fleet.vehicle.log.contract:0 view:fleet.vehicle.log.fuel:0
+#: view:fleet.vehicle.log.contract:0
+#: view:fleet.vehicle.log.fuel:0
 #: view:fleet.vehicle.log.services:0
 msgid "Price"
 msgstr "Cena"
 
 #. module: fleet
-#: field:fleet.vehicle.cost,odometer:0 field:fleet.vehicle.odometer,value:0
+#: field:fleet.vehicle.cost,odometer:0
+#: field:fleet.vehicle.odometer,value:0
 msgid "Odometer Value"
 msgstr "Odometra vērtība"
 
 #. module: fleet
-#: view:fleet.vehicle:0 view:fleet.vehicle.cost:0
-#: field:fleet.vehicle.cost,vehicle_id:0 view:fleet.vehicle.log.fuel:0
-#: view:fleet.vehicle.odometer:0 field:fleet.vehicle.odometer,vehicle_id:0
+#: view:fleet.vehicle:0
+#: view:fleet.vehicle.cost:0
+#: field:fleet.vehicle.cost,vehicle_id:0
+#: view:fleet.vehicle.log.fuel:0
+#: view:fleet.vehicle.odometer:0
+#: field:fleet.vehicle.odometer,vehicle_id:0
 msgid "Vehicle"
 msgstr "Transportlīdzeklis"
 
 #. module: fleet
-#: field:fleet.vehicle.cost,cost_ids:0 view:fleet.vehicle.log.contract:0
+#: field:fleet.vehicle.cost,cost_ids:0
+#: view:fleet.vehicle.log.contract:0
 #: view:fleet.vehicle.log.services:0
 msgid "Included Services"
 msgstr "Iekļautās apkopes"
@@ -1638,7 +1683,9 @@ msgstr "Iekļautās apkopes"
 #: model:ir.actions.act_window,help:fleet.action_fleet_vehicle_kanban
 msgid ""
 "<p>\n"
-"          Here are displayed vehicles for which one or more contracts need to be renewed. If you see this message, then there is no contracts to renew.\n"
+"          Here are displayed vehicles for which one or more contracts need "
+"to be renewed. If you see this message, then there is no contracts to "
+"renew.\n"
 "        </p>\n"
 "      "
 msgstr ""
@@ -1686,10 +1733,14 @@ msgid "Contract Reference"
 msgstr "Līguma atsauce"
 
 #. module: fleet
-#: field:fleet.service.type,name:0 field:fleet.vehicle,name:0
-#: field:fleet.vehicle.cost,name:0 field:fleet.vehicle.log.contract,name:0
-#: field:fleet.vehicle.model,name:0 field:fleet.vehicle.odometer,name:0
-#: field:fleet.vehicle.state,name:0 field:fleet.vehicle.tag,name:0
+#: field:fleet.service.type,name:0
+#: field:fleet.vehicle,name:0
+#: field:fleet.vehicle.cost,name:0
+#: field:fleet.vehicle.log.contract,name:0
+#: field:fleet.vehicle.model,name:0
+#: field:fleet.vehicle.odometer,name:0
+#: field:fleet.vehicle.state,name:0
+#: field:fleet.vehicle.tag,name:0
 msgid "Name"
 msgstr "Nosaukums"
 
@@ -1752,7 +1803,8 @@ msgid "Contracts Costs by Month"
 msgstr "Ikmēneša līguma izmaksas"
 
 #. module: fleet
-#: field:fleet.vehicle,model_id:0 view:fleet.vehicle.model:0
+#: field:fleet.vehicle,model_id:0
+#: view:fleet.vehicle.model:0
 msgid "Model"
 msgstr "Modelis"
 
@@ -1808,7 +1860,8 @@ msgid ""
 "<p class=\"oe_view_nocontent_create\">\n"
 "                Click to create a new type of service.\n"
 "              </p><p>\n"
-"                Each service can used in contracts, as a standalone service or both.\n"
+"                Each service can used in contracts, as a standalone service "
+"or both.\n"
 "              </p>\n"
 "            "
 msgstr ""
@@ -1850,7 +1903,8 @@ msgid "Starter Replacement"
 msgstr "Startera nomaiņa"
 
 #. module: fleet
-#: view:fleet.vehicle.cost:0 field:fleet.vehicle.cost,year:0
+#: view:fleet.vehicle.cost:0
+#: field:fleet.vehicle.cost,year:0
 msgid "Year"
 msgstr "Gads"
 
@@ -1876,7 +1930,8 @@ msgstr "Kopā"
 
 #. module: fleet
 #: help:fleet.service.type,category:0
-msgid "Choose wheter the service refer to contracts, vehicle services or both"
+msgid ""
+"Choose wheter the service refer to contracts, vehicle services or both"
 msgstr ""
 
 #. module: fleet

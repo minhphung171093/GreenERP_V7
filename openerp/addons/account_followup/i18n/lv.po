@@ -1,22 +1,21 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * account_followup
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2014
+# Latvian translation for openobject-addons
+# Copyright (c) 2014 Rosetta Contributors and Canonical Ltd 2014
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-06-07 19:36+0000\n"
-"PO-Revision-Date: 2015-05-29 12:59+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Latvian (http://www.transifex.com/projects/p/odoo-7/language/lv/)\n"
+"PO-Revision-Date: 2014-10-24 17:50+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Latvian <lv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: lv\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2014-10-25 05:58+0000\n"
+"X-Generator: Launchpad (build 17203)\n"
 
 #. module: account_followup
 #: model:email.template,subject:account_followup.email_template_account_followup_default
@@ -32,7 +31,8 @@ msgid "The maximum follow-up level"
 msgstr "Maksimālais atgādinājumu līmenis"
 
 #. module: account_followup
-#: view:account_followup.stat:0 view:res.partner:0
+#: view:account_followup.stat:0
+#: view:res.partner:0
 msgid "Group By..."
 msgstr "Grupēt pēc..."
 
@@ -42,7 +42,7 @@ msgid "Follow-Up"
 msgstr "Atgādināt"
 
 #. module: account_followup
-#: view:account_followup.followup.line:0
+#: view:account_followup.followup.line:account_followup.view_account_followup_followup_line_form
 msgid "%(date)s"
 msgstr "%(date)s"
 
@@ -52,7 +52,7 @@ msgid "Next Action Date"
 msgstr "Nākamās darbības datums"
 
 #. module: account_followup
-#: view:account_followup.followup.line:0
+#: view:account_followup.followup.line:account_followup.view_account_followup_followup_line_form
 #: field:account_followup.followup.line,manual_action:0
 msgid "Manual Action"
 msgstr "Manuāla darbība"
@@ -68,15 +68,16 @@ msgid "Action To Do"
 msgstr "Darāma darbība"
 
 #. module: account_followup
-#: field:account_followup.followup,company_id:0 view:account_followup.stat:0
+#: field:account_followup.followup,company_id:0
+#: view:account_followup.stat:account_followup.view_account_followup_stat_search
 #: field:account_followup.stat,company_id:0
 #: field:account_followup.stat.by.partner,company_id:0
 msgid "Company"
 msgstr "Uzņēmums"
 
 #. module: account_followup
-#: report:account_followup.followup.print:0
-#: code:addons/account_followup/account_followup.py:258
+#: code:addons/account_followup/account_followup.py:256
+#: view:website:account_followup.report_followup
 #, python-format
 msgid "Invoice Date"
 msgstr "Rēķina datums"
@@ -87,25 +88,26 @@ msgid "Email Subject"
 msgstr "E-pasta tēmats"
 
 #. module: account_followup
-#: view:account_followup.followup.line:0
+#: view:account_followup.followup.line:account_followup.view_account_followup_followup_line_form
 msgid "%(user_signature)s"
 msgstr "%(user_signature)s"
 
 #. module: account_followup
-#: view:account_followup.followup.line:0
+#: view:account_followup.followup.line:account_followup.view_account_followup_followup_line_form
 msgid "days overdue, do the following actions:"
 msgstr "kavējuma dienas, izpildiet šādas darbības:"
 
 #. module: account_followup
-#: view:account_followup.followup.line:0
+#: view:account_followup.followup.line:account_followup.view_account_followup_followup_line_form
+#: view:account_followup.followup.line:account_followup.view_account_followup_followup_line_tree
 msgid "Follow-up Steps"
 msgstr "Atgādinājuma soļi"
 
 #. module: account_followup
-#: code:addons/account_followup/account_followup.py:261
+#: code:addons/account_followup/account_followup.py:259
 #, python-format
 msgid "Due Date"
-msgstr "Apmaksas termiņš"
+msgstr ""
 
 #. module: account_followup
 #: model:ir.actions.act_window,name:account_followup.action_account_followup_print
@@ -113,16 +115,16 @@ msgid "Send Follow-Ups"
 msgstr "Sūtīt atgādinājumus"
 
 #. module: account_followup
-#: code:addons/account_followup/account_followup.py:312
-#: code:addons/account_followup/account_followup.py:318
-#: code:addons/account_followup/report/account_followup_print.py:86
+#: code:addons/account_followup/account_followup.py:313
+#: code:addons/account_followup/account_followup.py:319
+#: code:addons/account_followup/report/account_followup_print.py:82
 #, python-format
 msgid "Error!"
-msgstr "Kļūda!"
+msgstr ""
 
 #. module: account_followup
-#: report:account_followup.followup.print:0
-#: code:addons/account_followup/account_followup.py:262
+#: code:addons/account_followup/account_followup.py:260
+#: view:website:account_followup.report_followup
 #, python-format
 msgid "Amount"
 msgstr "Summa"
@@ -135,7 +137,7 @@ msgid ""
 msgstr ""
 
 #. module: account_followup
-#: view:res.partner:0
+#: view:res.partner:account_followup.customer_followup_search_view
 msgid "No Responsible"
 msgstr "Nav atbildīgā"
 
@@ -145,12 +147,18 @@ msgid ""
 "\n"
 "Dear %(partner_name)s,\n"
 "\n"
-"We are disappointed to see that despite sending a reminder, that your account is now seriously overdue.\n"
+"We are disappointed to see that despite sending a reminder, that your "
+"account is now seriously overdue.\n"
 "\n"
-"It is essential that immediate payment is made, otherwise we will have to consider placing a stop on your account which means that we will no longer be able to supply your company with (goods/services).\n"
-"Please, take appropriate measures in order to carry out this payment in the next 8 days.\n"
+"It is essential that immediate payment is made, otherwise we will have to "
+"consider placing a stop on your account which means that we will no longer "
+"be able to supply your company with (goods/services).\n"
+"Please, take appropriate measures in order to carry out this payment in the "
+"next 8 days.\n"
 "\n"
-"If there is a problem with paying invoice that we are not aware of, do not hesitate to contact our accounting department, so that we can resolve the matter quickly.\n"
+"If there is a problem with paying invoice that we are not aware of, do not "
+"hesitate to contact our accounting department, so that we can resolve the "
+"matter quickly.\n"
 "\n"
 "Details of due payments is printed below.\n"
 "\n"
@@ -161,14 +169,18 @@ msgstr ""
 #: model:email.template,body_html:account_followup.email_template_account_followup_level0
 msgid ""
 "\n"
-"<div style=\"font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: rgb(255, 255, 255); \">\n"
+"<div style=\"font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-"
+"serif; font-size: 12px; color: rgb(34, 34, 34); background-color: rgb(255, "
+"255, 255); \">\n"
 "\n"
 "    <p>Dear ${object.name},</p>\n"
 "    <p>\n"
-"    Exception made if there was a mistake of ours, it seems that the following amount stays unpaid. Please, take\n"
+"    Exception made if there was a mistake of ours, it seems that the "
+"following amount stays unpaid. Please, take\n"
 "appropriate measures in order to carry out this payment in the next 8 days.\n"
 "\n"
-"Would your payment have been carried out after this mail was sent, please ignore this message. Do not hesitate to\n"
+"Would your payment have been carried out after this mail was sent, please "
+"ignore this message. Do not hesitate to\n"
 "contact our accounting department.  \n"
 "\n"
 "    </p>\n"
@@ -191,18 +203,18 @@ msgid ""
 msgstr ""
 
 #. module: account_followup
-#: code:addons/account_followup/account_followup.py:260
+#: code:addons/account_followup/account_followup.py:258
 #, python-format
 msgid "Reference"
-msgstr "Atsauce"
+msgstr ""
 
 #. module: account_followup
-#: view:account_followup.stat.by.partner:0
+#: view:account_followup.stat.by.partner:account_followup.account_followup_stat_by_partner_search
 msgid "Balance > 0"
 msgstr "Bilance > 0"
 
 #. module: account_followup
-#: view:account.move.line:0
+#: view:account.move.line:account_followup.account_move_line_partner_tree
 msgid "Total debit"
 msgstr "Debeta summa"
 
@@ -212,7 +224,7 @@ msgid "Next Action"
 msgstr "Nākamā darbība"
 
 #. module: account_followup
-#: view:account_followup.followup.line:0
+#: view:account_followup.followup.line:account_followup.view_account_followup_followup_line_form
 msgid ": Partner Name"
 msgstr ": Partnera nosaukums"
 
@@ -222,8 +234,11 @@ msgid "Assign a Responsible"
 msgstr "Piešķirt atbildīgo"
 
 #. module: account_followup
-#: view:account_followup.followup:0
-#: field:account_followup.followup,followup_line:0 view:res.partner:0
+#: view:account_followup.followup:account_followup.view_account_followup_followup_form
+#: view:account_followup.followup:account_followup.view_account_followup_followup_tree
+#: field:account_followup.followup,followup_line:0
+#: model:ir.ui.menu,name:account_followup.account_followup_main_menu
+#: view:res.partner:account_followup.customer_followup_search_view
 msgid "Follow-up"
 msgstr "Atgādināt"
 
@@ -233,7 +248,8 @@ msgid "VAT:"
 msgstr "PVN:"
 
 #. module: account_followup
-#: view:account_followup.stat:0 field:account_followup.stat,partner_id:0
+#: view:account_followup.stat:account_followup.view_account_followup_stat_search
+#: field:account_followup.stat,partner_id:0
 #: field:account_followup.stat.by.partner,partner_id:0
 #: model:ir.model,name:account_followup.model_res_partner
 msgid "Partner"
@@ -245,14 +261,16 @@ msgid "Email Body"
 msgstr "E-pasta teksts"
 
 #. module: account_followup
-#: view:account_followup.followup:0
+#: view:account_followup.followup:account_followup.view_account_followup_followup_form
 msgid ""
 "To remind customers of paying their invoices, you can\n"
 "                        define different actions depending on how severely\n"
 "                        overdue the customer is. These actions are bundled\n"
-"                        into follow-up levels that are triggered when the due\n"
+"                        into follow-up levels that are triggered when the "
+"due\n"
 "                        date of an invoice has passed a certain\n"
-"                        number of days. If there are other overdue invoices for the \n"
+"                        number of days. If there are other overdue invoices "
+"for the \n"
 "                        same customer, the actions of the most \n"
 "                        overdue invoice will be executed."
 msgstr ""
@@ -273,7 +291,7 @@ msgid "Only one follow-up per company is allowed"
 msgstr "Katram uzņēmuma ir atļauts tikai viens atgādinājums"
 
 #. module: account_followup
-#: code:addons/account_followup/wizard/account_followup_print.py:254
+#: code:addons/account_followup/wizard/account_followup_print.py:258
 #, python-format
 msgid "Invoices Reminder"
 msgstr "Rēķina atgādinājum"
@@ -289,12 +307,12 @@ msgid "Worst Due Date"
 msgstr "Sliktākais termiņš"
 
 #. module: account_followup
-#: view:account_followup.stat:0
+#: view:account_followup.stat:account_followup.view_account_followup_stat_search
 msgid "Not Litigation"
 msgstr "Nav tiesas prāvas"
 
 #. module: account_followup
-#: view:account_followup.print:0
+#: view:account_followup.print:account_followup.view_account_followup_print
 msgid "Send emails and generate letters"
 msgstr "Sūtīt e-pastus un ģenerēt vēstules"
 
@@ -304,7 +322,7 @@ msgid "Manual Follow-Ups"
 msgstr "Manuāli atgādinājumi"
 
 #. module: account_followup
-#: view:account_followup.followup.line:0
+#: view:account_followup.followup.line:account_followup.view_account_followup_followup_line_form
 msgid "%(partner_name)s"
 msgstr "%(partner_name)s"
 
@@ -312,15 +330,22 @@ msgstr "%(partner_name)s"
 #: model:email.template,body_html:account_followup.email_template_account_followup_level1
 msgid ""
 "\n"
-"<div style=\"font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: rgb(255, 255, 255); \">\n"
+"<div style=\"font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-"
+"serif; font-size: 12px; color: rgb(34, 34, 34); background-color: rgb(255, "
+"255, 255); \">\n"
 "    \n"
 "    <p>Dear ${object.name},</p>\n"
 "   <p>\n"
-"    We are disappointed to see that despite sending a reminder, that your account is now seriously overdue.\n"
-"It is essential that immediate payment is made, otherwise we will have to consider placing a stop on your account\n"
-"which means that we will no longer be able to supply your company with (goods/services).\n"
-"Please, take appropriate measures in order to carry out this payment in the next 8 days.\n"
-"If there is a problem with paying invoice that we are not aware of, do not hesitate to contact our accounting\n"
+"    We are disappointed to see that despite sending a reminder, that your "
+"account is now seriously overdue.\n"
+"It is essential that immediate payment is made, otherwise we will have to "
+"consider placing a stop on your account\n"
+"which means that we will no longer be able to supply your company with "
+"(goods/services).\n"
+"Please, take appropriate measures in order to carry out this payment in the "
+"next 8 days.\n"
+"If there is a problem with paying invoice that we are not aware of, do not "
+"hesitate to contact our accounting\n"
 "department. so that we can resolve the matter quickly.\n"
 "Details of due payments is printed below.\n"
 " </p>\n"
@@ -353,7 +378,7 @@ msgid "Follow-up Statistics"
 msgstr "Atgādinājumu statistika"
 
 #. module: account_followup
-#: view:res.partner:0
+#: view:res.partner:account_followup.view_partner_inherit_followup_form
 msgid "Send Overdue Email"
 msgstr "Nosūtīt kavējuma e-pastu"
 
@@ -368,18 +393,18 @@ msgid "Gives the sequence order when displaying a list of follow-up lines."
 msgstr "Dod secību, kad izvada atgādinājumu saraksta rindas."
 
 #. module: account_followup
-#: code:addons/account_followup/wizard/account_followup_print.py:166
+#: code:addons/account_followup/wizard/account_followup_print.py:171
 #, python-format
 msgid " will be sent"
 msgstr " tiks nosūtīts"
 
 #. module: account_followup
-#: view:account_followup.followup.line:0
+#: view:account_followup.followup.line:account_followup.view_account_followup_followup_line_form
 msgid ": User's Company Name"
 msgstr ": Lietotāja uzņēmuma nosaukums"
 
 #. module: account_followup
-#: view:account_followup.followup.line:0
+#: view:account_followup.followup.line:account_followup.view_account_followup_followup_line_form
 #: field:account_followup.followup.line,send_letter:0
 msgid "Send a Letter"
 msgstr "Nosūtīt vēstuli"
@@ -390,11 +415,11 @@ msgid "Payment Follow-ups"
 msgstr "Maksājumu atgādinājumi"
 
 #. module: account_followup
-#: code:addons/account_followup/report/account_followup_print.py:86
+#: code:addons/account_followup/report/account_followup_print.py:82
 #, python-format
 msgid ""
-"The followup plan defined for the current company does not have any followup"
-" action."
+"The followup plan defined for the current company does not have any followup "
+"action."
 msgstr ""
 
 #. module: account_followup
@@ -403,7 +428,8 @@ msgid "Due Days"
 msgstr "Termiņi"
 
 #. module: account_followup
-#: field:account.move.line,followup_line_id:0 view:account_followup.stat:0
+#: field:account.move.line,followup_line_id:0
+#: view:account_followup.stat:account_followup.view_account_followup_stat_search
 msgid "Follow-up Level"
 msgstr "Atgādinājuma līmenis"
 
@@ -423,7 +449,7 @@ msgid "Do Manual Follow-Ups"
 msgstr "Veikt manuālu atgādināšanu"
 
 #. module: account_followup
-#: report:account_followup.followup.print:0
+#: view:website:account_followup.report_followup
 msgid "Li."
 msgstr "Saist."
 
@@ -433,7 +459,7 @@ msgid "Send Email Confirmation"
 msgstr "Nosūtīt apstiprinājumu pa e-pastu"
 
 #. module: account_followup
-#: view:account_followup.stat:0
+#: view:account_followup.stat:account_followup.view_account_followup_stat_search
 msgid "Follow-up Entries with period in current year"
 msgstr "Atgādinājumu ieraksti ar periodu šajā gadā"
 
@@ -448,7 +474,7 @@ msgid "Send Email in Partner Language"
 msgstr "Nosūtīt e-pastu partnera valodā"
 
 #. module: account_followup
-#: code:addons/account_followup/wizard/account_followup_print.py:169
+#: code:addons/account_followup/wizard/account_followup_print.py:174
 #, python-format
 msgid " email(s) sent"
 msgstr " e-pasts/-i nosūtīti"
@@ -464,12 +490,12 @@ msgid "Printed Message"
 msgstr "Izdrukāts ziņojums"
 
 #. module: account_followup
-#: view:res.partner:0
+#: view:res.partner:account_followup.view_partner_inherit_followup_form
 msgid "Responsible of credit collection"
 msgstr ""
 
 #. module: account_followup
-#: code:addons/account_followup/wizard/account_followup_print.py:155
+#: code:addons/account_followup/wizard/account_followup_print.py:160
 #, python-format
 msgid "Anybody"
 msgstr "Jebkuram"
@@ -480,12 +506,13 @@ msgid "When processing, it will send an email"
 msgstr "Kad apstrādā, tas nosūtīs e-pastu"
 
 #. module: account_followup
-#: view:account_followup.stat.by.partner:0
+#: view:account_followup.stat.by.partner:account_followup.account_followup_stat_by_partner_search
+#: view:account_followup.stat.by.partner:account_followup.account_followup_stat_by_partner_tree
 msgid "Partner to Remind"
 msgstr "Partneris kam atgādināt"
 
 #. module: account_followup
-#: view:res.partner:0
+#: view:res.partner:account_followup.view_partner_inherit_followup_form
 msgid "Print Overdue Payments"
 msgstr "Drukāt kavētos maksājumus"
 
@@ -496,7 +523,7 @@ msgid "Follow Ups"
 msgstr "Atgādinājumi"
 
 #. module: account_followup
-#: code:addons/account_followup/account_followup.py:218
+#: code:addons/account_followup/account_followup.py:216
 #, python-format
 msgid "Email not sent because of email address of partner not filled in"
 msgstr "E-pasts nav nosūtīts, jo partnerim nav aizpildīta e-pasta adrese"
@@ -514,7 +541,7 @@ msgid ""
 msgstr ""
 
 #. module: account_followup
-#: view:res.partner:0
+#: view:res.partner:account_followup.customer_followup_search_view
 msgid "Partners with Overdue Credits"
 msgstr "Partneri ar kavētiem kredītiem"
 
@@ -531,13 +558,13 @@ msgid ""
 msgstr ""
 
 #. module: account_followup
-#: code:addons/account_followup/wizard/account_followup_print.py:172
+#: code:addons/account_followup/wizard/account_followup_print.py:177
 #, python-format
 msgid " manual action(s) assigned:"
 msgstr " manuāla(s) darbība(s) piešķirtas:"
 
 #. module: account_followup
-#: view:res.partner:0
+#: view:res.partner:account_followup.customer_followup_search_view
 msgid "Search Partner"
 msgstr "Meklēt Partneri"
 
@@ -547,24 +574,24 @@ msgid "Send Letters and Emails"
 msgstr "Sūtīt vēstules un e-pastus"
 
 #. module: account_followup
-#: view:account_followup.followup:0
+#: view:account_followup.followup:account_followup.view_account_followup_filter
 msgid "Search Follow-up"
 msgstr "Meklēt atgādinājumu"
 
 #. module: account_followup
-#: view:res.partner:0
+#: view:res.partner:account_followup.view_partner_inherit_followup_form
 msgid ""
 "He said the problem was temporary and promised to pay 50% before 15th of "
 "May, balance before 1st of July."
 msgstr ""
 
 #. module: account_followup
-#: view:res.partner:0
+#: view:res.partner:account_followup.view_partner_inherit_followup_form
 msgid "Account Move line"
 msgstr "Konta kustības rinda"
 
 #. module: account_followup
-#: code:addons/account_followup/wizard/account_followup_print.py:237
+#: code:addons/account_followup/wizard/account_followup_print.py:241
 #, python-format
 msgid "Send Letters and Emails: Actions Summary"
 msgstr "Sūtīt vēstules un e-pastus: Darbību kopsavilkums"
@@ -585,7 +612,7 @@ msgid "Days of the follow-up levels must be different"
 msgstr "Atgādinājumu līmeņu dienām jābūt atšķirīgām"
 
 #. module: account_followup
-#: view:res.partner:0
+#: view:res.partner:account_followup.view_partner_inherit_followup_form
 msgid "Click to mark the action as done."
 msgstr "Nospiest, lai atzīmētu darbību par izdarītu."
 
@@ -595,7 +622,7 @@ msgid "Follow-Ups Analysis"
 msgstr "Atgādinājumu analīze"
 
 #. module: account_followup
-#: view:res.partner:0
+#: view:res.partner:account_followup.view_partner_inherit_followup_form
 msgid "Action to be taken e.g. Give a phonecall, Check if it's paid, ..."
 msgstr ""
 
@@ -609,13 +636,14 @@ msgid ""
 msgstr ""
 
 #. module: account_followup
-#: view:res.partner:0
+#: view:res.partner:account_followup.view_partner_inherit_followup_form
 msgid "Print overdue payments report independent of follow-up line"
 msgstr "Drukāt kavēto maksājumu atskaiti neatkarīgi no atgādinājumu rindas"
 
 #. module: account_followup
 #: help:account_followup.print,date:0
-msgid "This field allow you to select a forecast date to plan your follow-ups"
+msgid ""
+"This field allow you to select a forecast date to plan your follow-ups"
 msgstr ""
 
 #. module: account_followup
@@ -624,7 +652,8 @@ msgid "Follow-up Sending Date"
 msgstr "Atgādinājumu izsūtīšanas datums"
 
 #. module: account_followup
-#: view:res.partner:0 field:res.partner,payment_responsible_id:0
+#: view:res.partner:account_followup.customer_followup_search_view
+#: field:res.partner,payment_responsible_id:0
 msgid "Follow-up Responsible"
 msgstr "Atgādinājuma atbildīgais"
 
@@ -632,15 +661,20 @@ msgstr "Atgādinājuma atbildīgais"
 #: model:email.template,body_html:account_followup.email_template_account_followup_level2
 msgid ""
 "\n"
-"<div style=\"font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: rgb(255, 255, 255); \">\n"
+"<div style=\"font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-"
+"serif; font-size: 12px; color: rgb(34, 34, 34); background-color: rgb(255, "
+"255, 255); \">\n"
 "    \n"
 "    <p>Dear ${object.name},</p>\n"
 "    <p>\n"
 "    Despite several reminders, your account is still not settled.\n"
-"Unless full payment is made in next 8 days, legal action for the recovery of the debt will be taken without\n"
+"Unless full payment is made in next 8 days, legal action for the recovery of "
+"the debt will be taken without\n"
 "further notice.\n"
-"I trust that this action will prove unnecessary and details of due payments is printed below.\n"
-"In case of any queries concerning this matter, do not hesitate to contact our accounting department.\n"
+"I trust that this action will prove unnecessary and details of due payments "
+"is printed below.\n"
+"In case of any queries concerning this matter, do not hesitate to contact "
+"our accounting department.\n"
 "</p>\n"
 "<br/>\n"
 "Best Regards,\n"
@@ -678,11 +712,14 @@ msgid ""
 "\n"
 "Despite several reminders, your account is still not settled.\n"
 "\n"
-"Unless full payment is made in next 8 days, then legal action for the recovery of the debt will be taken without further notice.\n"
+"Unless full payment is made in next 8 days, then legal action for the "
+"recovery of the debt will be taken without further notice.\n"
 "\n"
-"I trust that this action will prove unnecessary and details of due payments is printed below.\n"
+"I trust that this action will prove unnecessary and details of due payments "
+"is printed below.\n"
 "\n"
-"In case of any queries concerning this matter, do not hesitate to contact our accounting department.\n"
+"In case of any queries concerning this matter, do not hesitate to contact "
+"our accounting department.\n"
 "\n"
 "Best Regards,\n"
 "            "
@@ -699,7 +736,7 @@ msgid "Latest Follow-up"
 msgstr "Pēdējais atgādinājums"
 
 #. module: account_followup
-#: view:account_followup.sending.results:0
+#: view:account_followup.sending.results:account_followup.view_account_followup_sending_results
 msgid "Download Letters"
 msgstr "Lejupielādēt vēstules"
 
@@ -710,13 +747,13 @@ msgid "unknown"
 msgstr "nezināms"
 
 #. module: account_followup
-#: code:addons/account_followup/account_followup.py:313
+#: code:addons/account_followup/account_followup.py:314
 #, python-format
 msgid "Printed overdue payments report"
 msgstr "Izdrukātā kavēto maksājumu atskaite"
 
 #. module: account_followup
-#: code:addons/account_followup/account_followup.py:290
+#: code:addons/account_followup/account_followup.py:291
 #, python-format
 msgid ""
 "You became responsible to do the next action for the payment follow-up of"
@@ -730,15 +767,16 @@ msgid ""
 msgstr ""
 
 #. module: account_followup
-#: view:res.partner:0
+#: view:res.partner:account_followup.view_partner_inherit_followup_form
 msgid ""
 "Below is the history of the transactions of this\n"
 "                            customer. You can check \"No Follow-up\" in\n"
-"                            order to exclude it from the next follow-up actions."
+"                            order to exclude it from the next follow-up "
+"actions."
 msgstr ""
 
 #. module: account_followup
-#: code:addons/account_followup/wizard/account_followup_print.py:171
+#: code:addons/account_followup/wizard/account_followup_print.py:176
 #, python-format
 msgid " email(s) should have been sent, but "
 msgstr " e-pastam(iem) bija jābūt nosūtītam, bet "
@@ -749,13 +787,13 @@ msgid "Journal Items"
 msgstr "Žurnāla ieraksti"
 
 #. module: account_followup
-#: code:addons/account_followup/account_followup.py:280
+#: code:addons/account_followup/account_followup.py:281
 #, python-format
 msgid "Amount due"
 msgstr ""
 
 #. module: account_followup
-#: report:account_followup.followup.print:0
+#: view:website:account_followup.report_followup
 msgid "Total:"
 msgstr "Summa:"
 
@@ -770,7 +808,7 @@ msgid "Summary"
 msgstr "Kopsavilkums"
 
 #. module: account_followup
-#: view:account_followup.followup.line:0
+#: view:account_followup.followup.line:account_followup.view_account_followup_followup_line_form
 #: field:account_followup.followup.line,send_email:0
 msgid "Send an Email"
 msgstr "Sūtīt e-pastu"
@@ -786,7 +824,7 @@ msgid "Amount Overdue"
 msgstr "Kavēta summa"
 
 #. module: account_followup
-#: code:addons/account_followup/account_followup.py:263
+#: code:addons/account_followup/account_followup.py:261
 #, python-format
 msgid "Lit."
 msgstr ""
@@ -799,7 +837,7 @@ msgid ""
 msgstr ""
 
 #. module: account_followup
-#: view:account_followup.stat:0 field:res.partner,latest_followup_date:0
+#: field:res.partner,latest_followup_date:0
 msgid "Latest Follow-up Date"
 msgstr "Pēdēja atgādinājuma datums"
 
@@ -807,13 +845,17 @@ msgstr "Pēdēja atgādinājuma datums"
 #: model:email.template,body_html:account_followup.email_template_account_followup_default
 msgid ""
 "\n"
-"<div style=\"font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: rgb(255, 255, 255); \">\n"
+"<div style=\"font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-"
+"serif; font-size: 12px; color: rgb(34, 34, 34); background-color: rgb(255, "
+"255, 255); \">\n"
 "    \n"
 "    <p>Dear ${object.name},</p>\n"
 "    <p>\n"
-"    Exception made if there was a mistake of ours, it seems that the following amount stays unpaid. Please, take\n"
+"    Exception made if there was a mistake of ours, it seems that the "
+"following amount stays unpaid. Please, take\n"
 "appropriate measures in order to carry out this payment in the next 8 days.\n"
-"Would your payment have been carried out after this mail was sent, please ignore this message. Do not hesitate to\n"
+"Would your payment have been carried out after this mail was sent, please "
+"ignore this message. Do not hesitate to\n"
 "contact our accounting department.\n"
 "    </p>\n"
 "<br/>\n"
@@ -832,7 +874,7 @@ msgid ""
 msgstr ""
 
 #. module: account_followup
-#: field:account.move.line,result:0 view:account_followup.stat:0
+#: field:account.move.line,result:0
 #: field:account_followup.stat,balance:0
 #: field:account_followup.stat.by.partner,balance:0
 msgid "Balance"
@@ -844,12 +886,12 @@ msgid "Payment Note"
 msgstr "Maksājuma piezīmes"
 
 #. module: account_followup
-#: view:res.partner:0
+#: view:res.partner:account_followup.customer_followup_search_view
 msgid "My Follow-ups"
 msgstr "Mani atgādinājumi"
 
 #. module: account_followup
-#: view:account_followup.followup.line:0
+#: view:account_followup.followup.line:account_followup.view_account_followup_followup_line_form
 msgid "%(company_name)s"
 msgstr "%(company_name)s"
 
@@ -859,9 +901,13 @@ msgid ""
 "\n"
 "Dear %(partner_name)s,\n"
 "\n"
-"Exception made if there was a mistake of ours, it seems that the following amount stays unpaid. Please, take appropriate measures in order to carry out this payment in the next 8 days.\n"
+"Exception made if there was a mistake of ours, it seems that the following "
+"amount stays unpaid. Please, take appropriate measures in order to carry out "
+"this payment in the next 8 days.\n"
 "\n"
-"Would your payment have been carried out after this mail was sent, please ignore this message. Do not hesitate to contact our accounting department.  \n"
+"Would your payment have been carried out after this mail was sent, please "
+"ignore this message. Do not hesitate to contact our accounting department.  "
+"\n"
 "\n"
 "Best Regards,\n"
 msgstr ""
@@ -878,35 +924,37 @@ msgid "Period"
 msgstr "Periods"
 
 #. module: account_followup
-#: code:addons/account_followup/wizard/account_followup_print.py:228
+#: code:addons/account_followup/wizard/account_followup_print.py:234
 #, python-format
 msgid "%s partners have no credits and as such the action is cleared"
 msgstr "%s partneriem nav kredīta un darbība kā tāda ir tukša"
 
 #. module: account_followup
-#: model:ir.actions.report.xml,name:account_followup.account_followup_followup_report
+#: model:ir.actions.report.xml,name:account_followup.action_report_followup
 msgid "Follow-up Report"
 msgstr "Atgādinājumu atskaite"
 
 #. module: account_followup
-#: view:res.partner:0
+#: view:res.partner:account_followup.view_partner_inherit_followup_form
 msgid ""
 ", the latest payment follow-up\n"
 "                            was:"
-msgstr ", pēdējais maksājuma atgādinājums\n                            bija:"
+msgstr ""
+", pēdējais maksājuma atgādinājums\n"
+"                            bija:"
 
 #. module: account_followup
-#: view:account_followup.print:0
+#: view:account_followup.print:account_followup.view_account_followup_print
 msgid "Cancel"
 msgstr "Atcelt"
 
 #. module: account_followup
-#: view:account_followup.sending.results:0
+#: view:account_followup.sending.results:account_followup.view_account_followup_sending_results
 msgid "Close"
 msgstr "Slēgt"
 
 #. module: account_followup
-#: view:account_followup.stat:0
+#: view:account_followup.stat:account_followup.view_account_followup_stat_search
 msgid "Litigation"
 msgstr "Tiesas prāva"
 
@@ -916,7 +964,7 @@ msgid "Max Follow Up Level"
 msgstr "Maks. atgādinājumu līmenis"
 
 #. module: account_followup
-#: code:addons/account_followup/wizard/account_followup_print.py:171
+#: code:addons/account_followup/wizard/account_followup_print.py:176
 #, python-format
 msgid " had unknown email address(es)"
 msgstr " nezināma e-pasta adrese(-s)"
@@ -929,20 +977,21 @@ msgstr ""
 
 #. module: account_followup
 #: model:ir.ui.menu,name:account_followup.menu_finance_followup
-#: view:res.partner:0
+#: view:res.partner:account_followup.view_partner_inherit_followup_form
 msgid "Payment Follow-up"
 msgstr "Maksājuma atgādinājums"
 
 #. module: account_followup
-#: view:account_followup.followup.line:0
+#: view:account_followup.followup.line:account_followup.view_account_followup_followup_line_form
 msgid ": Current Date"
 msgstr ": šodienas datums"
 
 #. module: account_followup
-#: view:account_followup.print:0
+#: view:account_followup.print:account_followup.view_account_followup_print
 msgid ""
 "This action will send follow-up emails, print the letters and\n"
-"                        set the manual actions per customer, according to the follow-up levels defined."
+"                        set the manual actions per customer, according to "
+"the follow-up levels defined."
 msgstr ""
 
 #. module: account_followup
@@ -951,35 +1000,35 @@ msgid "Follow-Up Action"
 msgstr "Atgādinājuma darbība"
 
 #. module: account_followup
-#: view:account_followup.stat:0
+#: view:account_followup.stat:account_followup.view_account_followup_stat_search
 msgid "Including journal entries marked as a litigation"
 msgstr "Ieskaitot žurnāla ierakstus atzīmētus kā tiesas prāva"
 
 #. module: account_followup
-#: report:account_followup.followup.print:0
 #: field:account_followup.sending.results,description:0
-#: code:addons/account_followup/account_followup.py:259
+#: code:addons/account_followup/account_followup.py:257
+#: view:website:account_followup.report_followup
 #, python-format
 msgid "Description"
 msgstr "Apraksts"
 
 #. module: account_followup
-#: view:account_followup.sending.results:0
+#: view:account_followup.sending.results:account_followup.view_account_followup_sending_results
 msgid "Summary of actions"
 msgstr "Darbību kopsavilkums"
 
 #. module: account_followup
-#: report:account_followup.followup.print:0
+#: view:website:account_followup.report_followup
 msgid "Ref"
 msgstr "Ats."
 
 #. module: account_followup
-#: view:account_followup.followup.line:0
+#: view:account_followup.followup.line:account_followup.view_account_followup_followup_line_form
 msgid "After"
 msgstr "Pēc"
 
 #. module: account_followup
-#: view:account_followup.stat:0
+#: view:account_followup.stat:account_followup.view_account_followup_stat_search
 msgid "This Fiscal year"
 msgstr "Šajā finanšu gadā"
 
@@ -989,22 +1038,22 @@ msgid "Latest Follow-up Level without litigation"
 msgstr "Pēdējais atgādinājuma līmenis bez tiesas prāvas"
 
 #. module: account_followup
-#: view:res.partner:0
+#: view:res.partner:account_followup.view_partner_inherit_followup_form
 msgid "⇾ Mark as Done"
 msgstr "⇾ Atzīmēt kā izdarītu"
 
 #. module: account_followup
-#: view:account.move.line:0
+#: view:account.move.line:account_followup.account_move_line_partner_tree
 msgid "Partner entries"
 msgstr "Partnera ieraksti"
 
 #. module: account_followup
-#: view:account_followup.followup.line:0
+#: view:account_followup.followup.line:account_followup.view_account_followup_followup_line_form
 msgid "e.g. Call the customer, check if it's paid, ..."
 msgstr ""
 
 #. module: account_followup
-#: view:account_followup.stat:0
+#: view:account_followup.stat:account_followup.view_account_followup_stat_graph
 msgid "Follow-up lines"
 msgstr "Atgādinājuma rindas"
 
@@ -1016,11 +1065,14 @@ msgid ""
 "\n"
 "Despite several reminders, your account is still not settled.\n"
 "\n"
-"Unless full payment is made in next 8 days, then legal action for the recovery of the debt will be taken without further notice.\n"
+"Unless full payment is made in next 8 days, then legal action for the "
+"recovery of the debt will be taken without further notice.\n"
 "\n"
-"I trust that this action will prove unnecessary and details of due payments is printed below.\n"
+"I trust that this action will prove unnecessary and details of due payments "
+"is printed below.\n"
 "\n"
-"In case of any queries concerning this matter, do not hesitate to contact our accounting department.\n"
+"In case of any queries concerning this matter, do not hesitate to contact "
+"our accounting department.\n"
 "\n"
 "Best Regards,\n"
 msgstr ""
@@ -1033,17 +1085,19 @@ msgid ""
 msgstr ""
 
 #. module: account_followup
-#: view:account_followup.followup.line:0
+#: view:account_followup.followup.line:account_followup.view_account_followup_followup_line_form
 msgid ""
 "Write here the introduction in the letter,\n"
-"                            according to the level of the follow-up. You can\n"
+"                            according to the level of the follow-up. You "
+"can\n"
 "                            use the following keywords in the text. Don't\n"
-"                            forget to translate in all languages you installed\n"
+"                            forget to translate in all languages you "
+"installed\n"
 "                            using to top right icon."
 msgstr ""
 
 #. module: account_followup
-#: view:account_followup.stat:0
+#: view:account_followup.stat:account_followup.view_account_followup_stat_search
 #: model:ir.actions.act_window,name:account_followup.action_followup_stat
 msgid "Follow-ups Sent"
 msgstr "Nosūtītie atgādinājumi"
@@ -1070,7 +1124,7 @@ msgid "Follow-up Statistics by Partner"
 msgstr "Atgādinājumu statistika pēc partnera"
 
 #. module: account_followup
-#: code:addons/account_followup/wizard/account_followup_print.py:172
+#: code:addons/account_followup/wizard/account_followup_print.py:177
 #, python-format
 msgid " letter(s) in report"
 msgstr " vēstule(s) atskaitē"
@@ -1082,7 +1136,7 @@ msgid "My Follow-Ups"
 msgstr ""
 
 #. module: account_followup
-#: view:res.partner:0
+#: view:res.partner:account_followup.customer_followup_tree
 msgid "Customer Followup"
 msgstr "Klienta atgādinājums"
 
@@ -1092,36 +1146,38 @@ msgid ""
 "<p class=\"oe_view_nocontent_create\">\n"
 "                Click to define follow-up levels and their related actions.\n"
 "              </p><p>\n"
-"                For each step, specify the actions to be taken and delay in days. It is\n"
-"                possible to use print and e-mail templates to send specific messages to\n"
+"                For each step, specify the actions to be taken and delay in "
+"days. It is\n"
+"                possible to use print and e-mail templates to send specific "
+"messages to\n"
 "                the customer.\n"
 "              </p>\n"
 "          "
 msgstr ""
 
 #. module: account_followup
-#: code:addons/account_followup/wizard/account_followup_print.py:166
+#: code:addons/account_followup/wizard/account_followup_print.py:171
 #, python-format
 msgid "Follow-up letter of "
 msgstr "Atgādinājuma vēstule "
 
 #. module: account_followup
-#: view:res.partner:0
+#: view:res.partner:account_followup.view_partner_inherit_followup_form
 msgid "The"
 msgstr ""
 
 #. module: account_followup
-#: view:account_followup.print:0
+#: view:account_followup.print:account_followup.view_account_followup_print
 msgid "Send follow-ups"
 msgstr "Nosūtīt atgādinājumus"
 
 #. module: account_followup
-#: view:account.move.line:0
+#: view:account.move.line:account_followup.account_move_line_partner_tree
 msgid "Total credit"
 msgstr "Kredīta summa"
 
 #. module: account_followup
-#: code:addons/account_followup/account_followup.py:312
+#: code:addons/account_followup/account_followup.py:313
 #, python-format
 msgid ""
 "The partner does not have any accounting entries to print in the overdue "
@@ -1134,7 +1190,7 @@ msgid "Sequence"
 msgstr "Secība"
 
 #. module: account_followup
-#: view:res.partner:0
+#: view:res.partner:account_followup.customer_followup_search_view
 msgid "Follow-ups To Do"
 msgstr "Darāmie atgādinājumi"
 
@@ -1144,7 +1200,7 @@ msgid "Customer Ref :"
 msgstr "Klienta ats.:"
 
 #. module: account_followup
-#: report:account_followup.followup.print:0
+#: view:website:account_followup.report_followup
 msgid "Maturity Date"
 msgstr "Brieduma datums"
 
@@ -1167,24 +1223,24 @@ msgid "Test Print"
 msgstr "Testa izdruka"
 
 #. module: account_followup
-#: view:account_followup.followup.line:0
+#: view:account_followup.followup.line:account_followup.view_account_followup_followup_line_form
 msgid ": User Name"
 msgstr ": lietotāja vārds"
 
 #. module: account_followup
-#: view:res.partner:0
+#: view:res.partner:account_followup.view_partner_inherit_followup_form
 msgid "Accounting"
 msgstr "Grāmatvedība"
 
 #. module: account_followup
-#: view:res.partner:0
+#: view:res.partner:account_followup.view_partner_inherit_followup_form
 msgid ""
 "If not specified by the latest follow-up level, it will send from the "
 "default email template"
 msgstr ""
 
 #. module: account_followup
-#: code:addons/account_followup/account_followup.py:318
+#: code:addons/account_followup/account_followup.py:319
 #, python-format
 msgid "There is no followup plan defined for the current company."
 msgstr ""
@@ -1193,3 +1249,22 @@ msgstr ""
 #: field:res.partner,payment_note:0
 msgid "Customer Payment Promise"
 msgstr "Klienta maksājuma solījums"
+
+#~ msgid "Responsible"
+#~ msgstr "Atbildīgais"
+
+#~ msgid ""
+#~ "Check if you want to print follow-ups without changing follow-ups level."
+#~ msgstr ""
+#~ "Atzīmējiet, ja vēlaties drukāt atgādinājumus nemainot atgādinājuma līmeni."
+
+#~ msgid ""
+#~ "<p>\n"
+#~ "                    No journal items found.\n"
+#~ "                </p>\n"
+#~ "            "
+#~ msgstr ""
+#~ "<p>\n"
+#~ "                   Nav atrasti žurnāla ieraksti.\n"
+#~ "                </p>\n"
+#~ "            "

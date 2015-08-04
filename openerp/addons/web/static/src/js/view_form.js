@@ -2506,7 +2506,7 @@ instance.web.DateTimeWidget = instance.web.Widget.extend({
         // click event. Prevent that.
         this.picker('widget').click(function (e) { e.stopPropagation(); });
 
-        this.$el.find('img.oe_datepicker_trigger').click(function() {
+        this.$el.find('.oe_datepicker_trigger').click(function() {
             if (self.get("effective_readonly") || self.picker('widget').is(':visible')) {
                 self.$input.focus();
                 return;
@@ -2543,7 +2543,7 @@ instance.web.DateTimeWidget = instance.web.Widget.extend({
     set_readonly: function(readonly) {
         this.readonly = readonly;
         this.$input.prop('readonly', this.readonly);
-        this.$el.find('img.oe_datepicker_trigger').toggleClass('oe_input_icon_disabled', readonly);
+        this.$el.find('.oe_datepicker_trigger').toggleClass('oe_input_icon_disabled', readonly);
     },
     is_valid_: function() {
         var value_ = this.$input.val();
@@ -5177,17 +5177,6 @@ instance.web.form.FieldBinaryFile = instance.web.form.FieldBinary.extend({
         this._super.apply(this, arguments);
         this.$el.find('input').eq(0).val('');
         this.set_filename('');
-    },
-    set_value: function(value_){
-        var changed = value_ !== this.get_value();
-        this._super.apply(this, arguments);
-        // Trigger value change if size is the same
-        if (!changed){
-            this.trigger("change:value", this, {
-                oldValue: value_,
-                newValue: value_
-            });
-        }
     }
 });
 

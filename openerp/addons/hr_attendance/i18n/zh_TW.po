@@ -1,22 +1,21 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * hr_attendance
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2012
+# Chinese (Traditional) translation for openobject-addons
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-08-14 00:10+0000\n"
-"PO-Revision-Date: 2015-05-29 13:00+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/odoo-7/language/zh_TW/)\n"
+"PO-Revision-Date: 2012-12-21 23:00+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Chinese (Traditional) <zh_TW@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: zh_TW\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2014-08-14 06:54+0000\n"
+"X-Generator: Launchpad (build 17156)\n"
 
 #. module: hr_attendance
 #: model:ir.model,name:hr_attendance.model_hr_attendance_month
@@ -34,10 +33,11 @@ msgid "Last Sign"
 msgstr ""
 
 #. module: hr_attendance
-#: view:hr.attendance:0 field:hr.employee,state:0
+#: view:hr.attendance:0
+#: field:hr.employee,state:0
 #: model:ir.model,name:hr_attendance.model_hr_attendance
 msgid "Attendance"
-msgstr "出勤"
+msgstr ""
 
 #. module: hr_attendance
 #. openerp-web
@@ -86,12 +86,12 @@ msgstr ""
 #. module: hr_attendance
 #: view:hr.attendance:0
 msgid "Group By..."
-msgstr "分類方式..."
+msgstr ""
 
 #. module: hr_attendance
 #: selection:hr.attendance.month,month:0
 msgid "October"
-msgstr "10月"
+msgstr ""
 
 #. module: hr_attendance
 #: field:hr.employee,attendance_access:0
@@ -100,7 +100,8 @@ msgstr ""
 
 #. module: hr_attendance
 #: code:addons/hr_attendance/hr_attendance.py:154
-#: selection:hr.attendance,action:0 view:hr.employee:0
+#: selection:hr.attendance,action:0
+#: view:hr.employee:0
 #, python-format
 msgid "Sign Out"
 msgstr ""
@@ -112,21 +113,23 @@ msgid "No records are found for your selection!"
 msgstr ""
 
 #. module: hr_attendance
-#: view:hr.attendance.error:0 view:hr.attendance.month:0
+#: view:hr.attendance.error:0
+#: view:hr.attendance.month:0
 #: view:hr.attendance.week:0
 msgid "Print"
-msgstr "列印"
+msgstr ""
 
 #. module: hr_attendance
-#: view:hr.attendance:0 field:hr.attendance,employee_id:0
+#: view:hr.attendance:0
+#: field:hr.attendance,employee_id:0
 #: model:ir.model,name:hr_attendance.model_hr_employee
 msgid "Employee"
-msgstr "員工"
+msgstr ""
 
 #. module: hr_attendance
 #: field:hr.attendance.month,month:0
 msgid "Month"
-msgstr "月份"
+msgstr ""
 
 #. module: hr_attendance
 #: report:report.hr.timesheet.attendance.error:0
@@ -135,13 +138,15 @@ msgstr ""
 
 #. module: hr_attendance
 #: code:addons/hr_attendance/hr_attendance.py:154
-#: selection:hr.attendance,action:0 view:hr.employee:0
+#: selection:hr.attendance,action:0
+#: view:hr.employee:0
 #, python-format
 msgid "Sign In"
 msgstr ""
 
 #. module: hr_attendance
-#: field:hr.attendance.error,init_date:0 field:hr.attendance.week,init_date:0
+#: field:hr.attendance.error,init_date:0
+#: field:hr.attendance.week,init_date:0
 msgid "Starting Date"
 msgstr ""
 
@@ -150,23 +155,23 @@ msgstr ""
 #: model:ir.ui.menu,name:hr_attendance.menu_hr_attendance
 #: model:ir.ui.menu,name:hr_attendance.menu_open_view_attendance
 msgid "Attendances"
-msgstr "出席者"
+msgstr ""
 
 #. module: hr_attendance
 #: selection:hr.attendance.month,month:0
 msgid "March"
-msgstr "3月"
+msgstr ""
 
 #. module: hr_attendance
 #: selection:hr.attendance.month,month:0
 msgid "August"
-msgstr "8月"
+msgstr ""
 
 #. module: hr_attendance
 #: code:addons/hr_attendance/hr_attendance.py:161
 #, python-format
 msgid "Warning"
-msgstr "警告"
+msgstr ""
 
 #. module: hr_attendance
 #: help:hr.config.settings,group_hr_attendance:0
@@ -181,7 +186,7 @@ msgstr ""
 #. module: hr_attendance
 #: selection:hr.attendance.month,month:0
 msgid "June"
-msgstr "6月"
+msgstr ""
 
 #. module: hr_attendance
 #: code:addons/hr_attendance/report/attendance_by_month.py:190
@@ -225,7 +230,7 @@ msgstr ""
 #. module: hr_attendance
 #: view:hr.attendance:0
 msgid "Today"
-msgstr "今日"
+msgstr ""
 
 #. module: hr_attendance
 #: report:report.hr.timesheet.attendance.error:0
@@ -245,7 +250,7 @@ msgstr ""
 #. module: hr_attendance
 #: selection:hr.attendance.month,month:0
 msgid "July"
-msgstr "7月"
+msgstr ""
 
 #. module: hr_attendance
 #: model:ir.actions.act_window,name:hr_attendance.action_hr_attendance_error
@@ -254,9 +259,10 @@ msgid "Attendance Error Report"
 msgstr ""
 
 #. module: hr_attendance
-#: view:hr.attendance:0 field:hr.attendance,day:0
+#: view:hr.attendance:0
+#: field:hr.attendance,day:0
 msgid "Day"
-msgstr "日"
+msgstr ""
 
 #. module: hr_attendance
 #: selection:hr.employee,state:0
@@ -271,7 +277,7 @@ msgstr ""
 #. module: hr_attendance
 #: selection:hr.attendance.month,month:0
 msgid "February"
-msgstr "2月"
+msgstr ""
 
 #. module: hr_attendance
 #: field:hr.attendance,action_desc:0
@@ -282,7 +288,7 @@ msgstr ""
 #. module: hr_attendance
 #: field:hr.attendance.month,year:0
 msgid "Year"
-msgstr "年"
+msgstr ""
 
 #. module: hr_attendance
 #: report:report.hr.timesheet.attendance.error:0
@@ -317,12 +323,12 @@ msgstr ""
 #. module: hr_attendance
 #: selection:hr.attendance.month,month:0
 msgid "January"
-msgstr "1月"
+msgstr ""
 
 #. module: hr_attendance
 #: selection:hr.attendance.month,month:0
 msgid "April"
-msgstr "4月"
+msgstr ""
 
 #. module: hr_attendance
 #: view:hr.attendance.week:0
@@ -335,14 +341,15 @@ msgid "Attendance Errors"
 msgstr ""
 
 #. module: hr_attendance
-#: field:hr.attendance,action:0 selection:hr.attendance,action:0
+#: field:hr.attendance,action:0
+#: selection:hr.attendance,action:0
 msgid "Action"
 msgstr "动作"
 
 #. module: hr_attendance
 #: model:ir.ui.menu,name:hr_attendance.menu_hr_time_tracking
 msgid "Time Tracking"
-msgstr "追蹤時間"
+msgstr ""
 
 #. module: hr_attendance
 #: model:ir.actions.act_window,name:hr_attendance.open_view_attendance_reason
@@ -353,7 +360,7 @@ msgstr ""
 #. module: hr_attendance
 #: selection:hr.attendance.month,month:0
 msgid "November"
-msgstr "11月"
+msgstr ""
 
 #. module: hr_attendance
 #: view:hr.attendance.error:0
@@ -366,9 +373,10 @@ msgid "Max. Delay (Min)"
 msgstr ""
 
 #. module: hr_attendance
-#: field:hr.attendance.error,end_date:0 field:hr.attendance.week,end_date:0
+#: field:hr.attendance.error,end_date:0
+#: field:hr.attendance.week,end_date:0
 msgid "Ending Date"
-msgstr "結束日期"
+msgstr ""
 
 #. module: hr_attendance
 #: code:addons/hr_attendance/wizard/hr_attendance_error.py:49
@@ -379,7 +387,7 @@ msgstr ""
 #. module: hr_attendance
 #: selection:hr.attendance.month,month:0
 msgid "September"
-msgstr "9月"
+msgstr ""
 
 #. module: hr_attendance
 #: view:hr.action.reason:0
@@ -406,12 +414,12 @@ msgstr ""
 #. module: hr_attendance
 #: field:hr.action.reason,action_type:0
 msgid "Action Type"
-msgstr "動作類型"
+msgstr ""
 
 #. module: hr_attendance
 #: selection:hr.attendance.month,month:0
 msgid "May"
-msgstr "5月"
+msgstr ""
 
 #. module: hr_attendance
 #: code:addons/hr_attendance/hr_attendance.py:161
@@ -424,13 +432,14 @@ msgstr ""
 #. module: hr_attendance
 #: selection:hr.attendance.month,month:0
 msgid "December"
-msgstr "12月"
+msgstr ""
 
 #. module: hr_attendance
-#: view:hr.attendance.error:0 view:hr.attendance.month:0
+#: view:hr.attendance.error:0
+#: view:hr.attendance.month:0
 #: view:hr.attendance.week:0
 msgid "Cancel"
-msgstr "取消"
+msgstr ""
 
 #. module: hr_attendance
 #: report:report.hr.timesheet.attendance.error:0
@@ -439,14 +448,16 @@ msgstr ""
 
 #. module: hr_attendance
 #: report:report.hr.timesheet.attendance.error:0
-msgid "(*) A negative delay means that the employee worked more than encoded."
+msgid ""
+"(*) A negative delay means that the employee worked more than encoded."
 msgstr ""
 
 #. module: hr_attendance
-#: view:hr.attendance.error:0 view:hr.attendance.month:0
+#: view:hr.attendance.error:0
+#: view:hr.attendance.month:0
 #: view:hr.attendance.week:0
 msgid "or"
-msgstr "或"
+msgstr ""
 
 #. module: hr_attendance
 #: help:hr.attendance,action_desc:0

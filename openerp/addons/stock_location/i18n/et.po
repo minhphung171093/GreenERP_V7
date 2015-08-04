@@ -1,21 +1,20 @@
 # Translation of OpenERP Server.
 # This file contains the translation of the following modules:
-# * stock_location
-# 
-# Translators:
+#	* stock_location
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: OpenERP Server 6.0dev\n"
+"Report-Msgid-Bugs-To: support@openerp.com\n"
 "POT-Creation-Date: 2013-06-07 19:37+0000\n"
-"PO-Revision-Date: 2015-05-29 13:01+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Estonian (http://www.transifex.com/projects/p/odoo-7/language/et/)\n"
+"PO-Revision-Date: 2012-12-21 23:00+0000\n"
+"Last-Translator: Fabien (Open ERP) <fp@tinyerp.com>\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: et\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-11-21 06:37+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #. module: stock_location
 #: help:product.pulled.flow,company_id:0
@@ -26,7 +25,7 @@ msgstr ""
 #: selection:product.pulled.flow,picking_type:0
 #: selection:stock.location.path,picking_type:0
 msgid "Sending Goods"
-msgstr "Kaupade saatmine"
+msgstr ""
 
 #. module: stock_location
 #: view:product.product:0
@@ -36,7 +35,7 @@ msgstr ""
 #. module: stock_location
 #: selection:product.pulled.flow,type_proc:0
 msgid "Move"
-msgstr "Suuna"
+msgstr ""
 
 #. module: stock_location
 #: model:ir.model,name:stock_location.model_stock_location_path
@@ -79,7 +78,7 @@ msgstr ""
 #: selection:product.pulled.flow,picking_type:0
 #: selection:stock.location.path,picking_type:0
 msgid "Internal"
-msgstr "Sisemine"
+msgstr ""
 
 #. module: stock_location
 #: code:addons/stock_location/procurement_pull.py:98
@@ -92,7 +91,7 @@ msgstr ""
 #. module: stock_location
 #: model:ir.model,name:stock_location.model_stock_location
 msgid "Location"
-msgstr "Asukoht"
+msgstr ""
 
 #. module: stock_location
 #: field:product.pulled.flow,invoice_state:0
@@ -103,14 +102,23 @@ msgstr ""
 #. module: stock_location
 #: help:stock.location.path,auto:0
 msgid ""
-"This is used to define paths the product has to follow within the location tree.\n"
-"The 'Automatic Move' value will create a stock move after the current one that will be validated automatically. With 'Manual Operation', the stock move has to be validated by a worker. With 'Automatic No Step Added', the location is replaced in the original move."
-msgstr "Seda kasutatakse, et määratleda rajad mida toode peab järgima asukohapuus.\n'Automaatne liigutamine' väärtus loob lao liikumise pärast praegust, mis valideeritakse automaatselt. 'Käsitsi opereerimine' puhul peab liikumise valideerima laotöötaja. 'Automaatselt sammu ei lisata' puhul asendatakse asukohta originaalliikumises."
+"This is used to define paths the product has to follow within the location "
+"tree.\n"
+"The 'Automatic Move' value will create a stock move after the current one "
+"that will be validated automatically. With 'Manual Operation', the stock "
+"move has to be validated by a worker. With 'Automatic No Step Added', the "
+"location is replaced in the original move."
+msgstr ""
+"Seda kasutatakse, et määratleda rajad mida toode peab järgima asukohapuus.\n"
+"'Automaatne liigutamine' väärtus loob lao liikumise pärast praegust, mis "
+"valideeritakse automaatselt. 'Käsitsi opereerimine' puhul peab liikumise "
+"valideerima laotöötaja. 'Automaatselt sammu ei lisata' puhul asendatakse "
+"asukohta originaalliikumises."
 
 #. module: stock_location
 #: view:product.product:0
 msgid "Conditions"
-msgstr "Tingimused"
+msgstr ""
 
 #. module: stock_location
 #: model:stock.location,name:stock_location.location_pack_zone
@@ -130,7 +138,7 @@ msgstr ""
 #. module: stock_location
 #: selection:product.pulled.flow,type_proc:0
 msgid "Buy"
-msgstr "Osta"
+msgstr ""
 
 #. module: stock_location
 #: view:product.product:0
@@ -151,12 +159,12 @@ msgstr ""
 #: field:product.pulled.flow,company_id:0
 #: field:stock.location.path,company_id:0
 msgid "Company"
-msgstr "Ettevõte"
+msgstr ""
 
 #. module: stock_location
 #: model:ir.model,name:stock_location.model_stock_move
 msgid "Stock Move"
-msgstr "Laoseisu liikumine"
+msgstr ""
 
 #. module: stock_location
 #: help:stock.move,cancel_cascade:0
@@ -176,7 +184,7 @@ msgstr ""
 #. module: stock_location
 #: selection:product.pulled.flow,procure_method:0
 msgid "Make to Stock"
-msgstr "Loo lattu"
+msgstr ""
 
 #. module: stock_location
 #: code:addons/stock_location/procurement_pull.py:118
@@ -193,7 +201,7 @@ msgstr ""
 #: selection:product.pulled.flow,invoice_state:0
 #: selection:stock.location.path,invoice_state:0
 msgid "To Be Invoiced"
-msgstr "Arveldamiseks"
+msgstr ""
 
 #. module: stock_location
 #: help:stock.location.path,delay:0
@@ -213,7 +221,7 @@ msgstr ""
 #. module: stock_location
 #: field:product.pulled.flow,name:0
 msgid "Name"
-msgstr "Nimi"
+msgstr ""
 
 #. module: stock_location
 #: help:product.product,path_ids:0
@@ -230,13 +238,13 @@ msgstr "Käsitsi tehtav operatsioon"
 #: model:ir.model,name:stock_location.model_product_product
 #: field:product.pulled.flow,product_id:0
 msgid "Product"
-msgstr "Toode"
+msgstr ""
 
 #. module: stock_location
 #: field:product.pulled.flow,picking_type:0
 #: field:stock.location.path,picking_type:0
 msgid "Shipping Type"
-msgstr "Saatmise tüüp"
+msgstr ""
 
 #. module: stock_location
 #: help:product.pulled.flow,procure_method:0
@@ -265,7 +273,7 @@ msgstr ""
 #: selection:product.pulled.flow,invoice_state:0
 #: selection:stock.location.path,invoice_state:0
 msgid "Not Applicable"
-msgstr "Pole rakendatav"
+msgstr ""
 
 #. module: stock_location
 #: field:stock.location.path,delay:0
@@ -306,7 +314,7 @@ msgstr ""
 #. module: stock_location
 #: model:ir.model,name:stock_location.model_procurement_order
 msgid "Procurement"
-msgstr "Hankimine"
+msgstr ""
 
 #. module: stock_location
 #: field:product.pulled.flow,location_id:0
@@ -315,7 +323,8 @@ msgid "Destination Location"
 msgstr "Sihtkoht"
 
 #. module: stock_location
-#: field:stock.location.path,auto:0 selection:stock.location.path,auto:0
+#: field:stock.location.path,auto:0
+#: selection:stock.location.path,auto:0
 msgid "Automatic Move"
 msgstr "Automaatne liigutamine"
 
@@ -323,7 +332,7 @@ msgstr "Automaatne liigutamine"
 #: selection:product.pulled.flow,picking_type:0
 #: selection:stock.location.path,picking_type:0
 msgid "Getting Goods"
-msgstr "Kaupade saamine"
+msgstr ""
 
 #. module: stock_location
 #: view:product.product:0
@@ -333,7 +342,7 @@ msgstr ""
 #. module: stock_location
 #: view:product.product:0
 msgid "Action Type"
-msgstr "Toimingu tüüp"
+msgstr ""
 
 #. module: stock_location
 #: field:product.pulled.flow,procure_method:0
@@ -367,7 +376,7 @@ msgstr "Asukohtarajad"
 #: field:product.pulled.flow,journal_id:0
 #: field:stock.location.path,journal_id:0
 msgid "Journal"
-msgstr "Päevik"
+msgstr ""
 
 #. module: stock_location
 #: field:product.pulled.flow,cancel_cascade:0
@@ -379,4 +388,4 @@ msgstr ""
 #: selection:product.pulled.flow,invoice_state:0
 #: selection:stock.location.path,invoice_state:0
 msgid "Invoiced"
-msgstr "Arveldatud"
+msgstr ""

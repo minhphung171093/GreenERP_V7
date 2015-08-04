@@ -1,22 +1,21 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * mail
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2013
+# Czech translation for openobject-addons
+# Copyright (c) 2013 Rosetta Contributors and Canonical Ltd 2013
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2014-08-14 00:10+0000\n"
-"PO-Revision-Date: 2015-05-29 13:00+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Czech (http://www.transifex.com/projects/p/odoo-7/language/cs/)\n"
+"PO-Revision-Date: 2013-03-27 00:37+0000\n"
+"Last-Translator: Radomil Urbánek <acrux@me.com>\n"
+"Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: cs\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2014-08-14 07:01+0000\n"
+"X-Generator: Launchpad (build 17156)\n"
 
 #. module: mail
 #: view:mail.followers:0
@@ -30,7 +29,8 @@ msgid "%s created"
 msgstr ""
 
 #. module: mail
-#: field:mail.compose.message,author_id:0 view:mail.mail:0
+#: field:mail.compose.message,author_id:0
+#: view:mail.mail:0
 #: field:mail.message,author_id:0
 msgid "Author"
 msgstr "Odesílatel"
@@ -69,12 +69,14 @@ msgid "more messages"
 msgstr "více zpráv"
 
 #. module: mail
-#: view:mail.alias:0 view:mail.mail:0
+#: view:mail.alias:0
+#: view:mail.mail:0
 msgid "Group By..."
 msgstr "Seskupit podle…"
 
 #. module: mail
-#: help:mail.compose.message,body:0 help:mail.message,body:0
+#: help:mail.compose.message,body:0
+#: help:mail.message,body:0
 msgid "Automatically sanitized HTML contents"
 msgstr "Automaticky ošetřený HTML obsah"
 
@@ -83,7 +85,9 @@ msgstr "Automaticky ošetřený HTML obsah"
 msgid ""
 "The name of the email alias, e.g. 'jobs' if you want to catch emails for "
 "<jobs@example.my.openerp.com>"
-msgstr "Název aliasu e-mailů, např. 'zamestnani', chcete-li zachytávat e-maily od <zamestnani@mojefirma.cz>"
+msgstr ""
+"Název aliasu e-mailů, např. 'zamestnani', chcete-li zachytávat e-maily od "
+"<zamestnani@mojefirma.cz>"
 
 #. module: mail
 #: model:ir.actions.act_window,name:mail.action_email_compose_message_wizard
@@ -96,7 +100,9 @@ msgstr "Napsat e-mail"
 msgid ""
 "Invalid expression, it must be a literal python dictionary definition e.g. "
 "\"{'field': 'value'}\""
-msgstr "Neplatný výraz - musí se jednat o definici ze slovníku Pythonu, např. \"{'field': 'value'}\""
+msgstr ""
+"Neplatný výraz - musí se jednat o definici ze slovníku Pythonu, např. "
+"\"{'field': 'value'}\""
 
 #. module: mail
 #: view:mail.group:0
@@ -126,11 +132,14 @@ msgid "Show messages to read"
 msgstr "Ukázat zprávy ke čtení"
 
 #. module: mail
-#: help:mail.compose.message,email_from:0 help:mail.message,email_from:0
+#: help:mail.compose.message,email_from:0
+#: help:mail.message,email_from:0
 msgid ""
 "Email address of the sender. This field is set when no matching partner is "
 "found for incoming emails."
-msgstr "E-mailová adresa odesílatele. Pole je nastaveno, nepodaří-li se pro příchozí e-maily nalézt odpovídající kontakt."
+msgstr ""
+"E-mailová adresa odesílatele. Pole je nastaveno, nepodaří-li se pro příchozí "
+"e-maily nalézt odpovídající kontakt."
 
 #. module: mail
 #: model:ir.model,name:mail.model_mail_compose_message
@@ -162,12 +171,14 @@ msgid ""
 "Policy to receive emails for new messages pushed to your personal Inbox:\n"
 "- Never: no emails are sent\n"
 "- Incoming Emails only: for messages received by the system via email\n"
-"- Incoming Emails and Discussions: for incoming emails along with internal discussions\n"
+"- Incoming Emails and Discussions: for incoming emails along with internal "
+"discussions\n"
 "- All Messages: for every notification you receive in your Inbox"
 msgstr ""
 
 #. module: mail
-#: field:mail.group,message_unread:0 field:mail.thread,message_unread:0
+#: field:mail.group,message_unread:0
+#: field:mail.thread,message_unread:0
 #: field:res.partner,message_unread:0
 msgid "Unread Messages"
 msgstr "Nepřečtené zprávy"
@@ -184,7 +195,9 @@ msgstr "ukázat"
 msgid ""
 "Members of those groups will automatically added as followers. Note that "
 "they will be able to manage their subscription manually if necessary."
-msgstr "Členové těchto skupin budou automaticky přidáni jako odběratelé zpráv. Ti si pak budou moci sami spravovat své přihlášení k odběrům v případě potřeby."
+msgstr ""
+"Členové těchto skupin budou automaticky přidáni jako odběratelé zpráv. Ti si "
+"pak budou moci sami spravovat své přihlášení k odběrům v případě potřeby."
 
 #. module: mail
 #: code:addons/mail/wizard/invite.py:76
@@ -200,7 +213,8 @@ msgid "Do you really want to delete this message?"
 msgstr "Chcete opravdu smazat tuto zprávu?"
 
 #. module: mail
-#: view:mail.message:0 field:mail.notification,read:0
+#: view:mail.message:0
+#: field:mail.notification,read:0
 msgid "Read"
 msgstr "Přečtené"
 
@@ -215,12 +229,18 @@ msgstr "Hledat skupiny"
 #, python-format
 msgid ""
 "Warning! \n"
-" %s won't be notified of any email or discussion on this document. Do you really want to remove him from the followers ?"
-msgstr "Varování! \n%s neobdrží upozornění na e-maily ani diskuze ohledně tohoto dokumentu. Opravdu chcete kontakt odstranit z odběratelů?"
+" %s won't be notified of any email or discussion on this document. Do you "
+"really want to remove him from the followers ?"
+msgstr ""
+"Varování! \n"
+"%s neobdrží upozornění na e-maily ani diskuze ohledně tohoto dokumentu. "
+"Opravdu chcete kontakt odstranit z odběratelů?"
 
 #. module: mail
-#: field:mail.compose.message,res_id:0 field:mail.followers,res_id:0
-#: field:mail.message,res_id:0 field:mail.wizard.invite,res_id:0
+#: field:mail.compose.message,res_id:0
+#: field:mail.followers,res_id:0
+#: field:mail.message,res_id:0
+#: field:mail.wizard.invite,res_id:0
 msgid "Related Document ID"
 msgstr "Související ID dokumentu"
 
@@ -236,7 +256,10 @@ msgid ""
 "Medium-sized photo of the group. It is automatically resized as a 128x128px "
 "image, with aspect ratio preserved. Use this field in form views or some "
 "kanban views."
-msgstr "Střední obrázek tohoto kontaktu. Je automaticky přepočítán na 128x128 bodů se zachováním poměru stran. Použijte toto pole v zobrazeních 'formulář' nebo 'kanban'."
+msgstr ""
+"Střední obrázek tohoto kontaktu. Je automaticky přepočítán na 128x128 bodů "
+"se zachováním poměru stran. Použijte toto pole v zobrazeních 'formulář' nebo "
+"'kanban'."
 
 #. module: mail
 #. openerp-web
@@ -254,13 +277,19 @@ msgstr "Podpora"
 #: code:addons/mail/mail_message.py:740
 #, python-format
 msgid ""
-"The requested operation cannot be completed due to security restrictions. Please contact your system administrator.\n"
+"The requested operation cannot be completed due to security restrictions. "
+"Please contact your system administrator.\n"
 "\n"
 "(Document type: %s, Operation: %s)"
-msgstr "Požadovanou operaci nelze dokončit z důvodu bezpečnostnímu omezení. Obraťte se prosím na správce systému. \n\n(Typ dokumentu:% s, Operace:% s)"
+msgstr ""
+"Požadovanou operaci nelze dokončit z důvodu bezpečnostnímu omezení. Obraťte "
+"se prosím na správce systému. \n"
+"\n"
+"(Typ dokumentu:% s, Operace:% s)"
 
 #. module: mail
-#: view:mail.mail:0 selection:mail.mail,state:0
+#: view:mail.mail:0
+#: selection:mail.mail,state:0
 msgid "Received"
 msgstr "Přijaté"
 
@@ -311,11 +340,14 @@ msgid "Add Followers"
 msgstr "Přidat odběratele"
 
 #. module: mail
-#: help:mail.compose.message,author_id:0 help:mail.message,author_id:0
+#: help:mail.compose.message,author_id:0
+#: help:mail.message,author_id:0
 msgid ""
-"Author of the message. If not set, email_from may hold an email address that"
-" did not match any partner."
-msgstr "Autor zprávy. Není-li nastaven, email_from může obsahovat e-mailovou adresu, která neodpovídá žádnému kontaktu."
+"Author of the message. If not set, email_from may hold an email address that "
+"did not match any partner."
+msgstr ""
+"Autor zprávy. Není-li nastaven, email_from může obsahovat e-mailovou adresu, "
+"která neodpovídá žádnému kontaktu."
 
 #. module: mail
 #. openerp-web
@@ -333,11 +365,14 @@ msgid "more."
 msgstr "více."
 
 #. module: mail
-#: help:mail.compose.message,type:0 help:mail.message,type:0
+#: help:mail.compose.message,type:0
+#: help:mail.message,type:0
 msgid ""
 "Message type: email for email message, notification for system message, "
 "comment for other messages such as user replies"
-msgstr "Druh zprávy: 'E-mail' pro e-mailové zprávy, 'Upozornění' pro zprávy systému, 'Komentář' pro ostatní zprávy, jako odpovědi uživatelů."
+msgstr ""
+"Druh zprávy: 'E-mail' pro e-mailové zprávy, 'Upozornění' pro zprávy systému, "
+"'Komentář' pro ostatní zprávy, jako odpovědi uživatelů."
 
 #. module: mail
 #: help:mail.message.subtype,relation_field:0
@@ -345,7 +380,10 @@ msgid ""
 "Field used to link the related model to the subtype model when using "
 "automatic subscription on a related document. The field is used to compute "
 "getattr(related_document.relation_field)."
-msgstr "Pole slouží k propojení souvisejícího modelu s modelem poddruhu, pokud se použije automatické přihlášení k odběru u souvisejícího dokumentu. Pole se používá pro výpočet getattr(related_document.relation_field)."
+msgstr ""
+"Pole slouží k propojení souvisejícího modelu s modelem poddruhu, pokud se "
+"použije automatické přihlášení k odběru u souvisejícího dokumentu. Pole se "
+"používá pro výpočet getattr(related_document.relation_field)."
 
 #. module: mail
 #: selection:mail.mail,state:0
@@ -371,7 +409,8 @@ msgid "Send a message"
 msgstr "Odeslat zprávu"
 
 #. module: mail
-#: help:mail.group,message_unread:0 help:mail.thread,message_unread:0
+#: help:mail.group,message_unread:0
+#: help:mail.thread,message_unread:0
 #: help:res.partner,message_unread:0
 msgid "If checked new messages require your attention."
 msgstr "Bude-li zaškrtnuto, nové zprávy budou vyžadovat vaši pozornost."
@@ -413,7 +452,8 @@ msgstr "přidal poznámku"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail_followers.xml:12 view:mail.group:0
+#: code:addons/mail/static/src/xml/mail_followers.xml:12
+#: view:mail.group:0
 #, python-format
 msgid "Unfollow"
 msgstr "Neodebírat"
@@ -426,7 +466,8 @@ msgid "show one more message"
 msgstr "ukázat ještě jednu zprávu"
 
 #. module: mail
-#: code:addons/mail/mail_mail.py:76 code:addons/mail/res_users.py:69
+#: code:addons/mail/mail_mail.py:76
+#: code:addons/mail/res_users.py:69
 #, python-format
 msgid "Invalid Action!"
 msgstr "Neplatná akce!"
@@ -440,7 +481,8 @@ msgstr "Obrázek uživatele"
 
 #. module: mail
 #: model:ir.actions.act_window,name:mail.action_view_mail_mail
-#: model:ir.ui.menu,name:mail.menu_mail_mail view:mail.mail:0
+#: model:ir.ui.menu,name:mail.menu_mail_mail
+#: view:mail.mail:0
 #: view:mail.message:0
 msgid "Emails"
 msgstr "E-maily"
@@ -451,12 +493,15 @@ msgid "Related Partner"
 msgstr "Související kontakt"
 
 #. module: mail
-#: help:mail.group,message_summary:0 help:mail.thread,message_summary:0
+#: help:mail.group,message_summary:0
+#: help:mail.thread,message_summary:0
 #: help:res.partner,message_summary:0
 msgid ""
 "Holds the Chatter summary (number of messages, ...). This summary is "
 "directly in html format in order to be inserted in kanban views."
-msgstr "Udržuje přehled komunikace (počet zpráv, …). Tento přehled je přímo ve formátu HTML, aby se dal vložit do zobrazení 'kanban'."
+msgstr ""
+"Udržuje přehled komunikace (počet zpráv, …). Tento přehled je přímo ve "
+"formátu HTML, aby se dal vložit do zobrazení 'kanban'."
 
 #. module: mail
 #: help:mail.alias,alias_model_id:0
@@ -464,7 +509,10 @@ msgid ""
 "The model (OpenERP Document Kind) to which this alias corresponds. Any "
 "incoming email that does not reply to an existing record will cause the "
 "creation of a new record of this model (e.g. a Project Task)"
-msgstr "Model (druh OpenERP dokumentu), kterému tento alias odpovídá. Příchozí e-mail, který neodpoví existujícímu záznamu, způsobí vytvoření nového záznamu tohoto modelu (například projektový úkol)."
+msgstr ""
+"Model (druh OpenERP dokumentu), kterému tento alias odpovídá. Příchozí e-"
+"mail, který neodpoví existujícímu záznamu, způsobí vytvoření nového záznamu "
+"tohoto modelu (například projektový úkol)."
 
 #. module: mail
 #: view:base.config.settings:0
@@ -477,7 +525,8 @@ msgid "Relation field"
 msgstr "Pole vztahu"
 
 #. module: mail
-#: selection:mail.compose.message,type:0 selection:mail.message,type:0
+#: selection:mail.compose.message,type:0
+#: selection:mail.message,type:0
 msgid "System notification"
 msgstr "Upozornění systému"
 
@@ -497,7 +546,8 @@ msgid "Organizer"
 msgstr "Organizátor"
 
 #. module: mail
-#: field:mail.compose.message,subject:0 field:mail.message,subject:0
+#: field:mail.compose.message,subject:0
+#: field:mail.message,subject:0
 msgid "Subject"
 msgstr "Předmět"
 
@@ -512,19 +562,23 @@ msgid "Retry"
 msgstr "Opakovat"
 
 #. module: mail
-#: field:mail.compose.message,email_from:0 field:mail.mail,email_from:0
+#: field:mail.compose.message,email_from:0
+#: field:mail.mail,email_from:0
 #: field:mail.message,email_from:0
 msgid "From"
 msgstr "Od"
 
 #. module: mail
-#: field:mail.compose.message,subtype_id:0 field:mail.followers,subtype_ids:0
-#: field:mail.message,subtype_id:0 view:mail.message.subtype:0
+#: field:mail.compose.message,subtype_id:0
+#: field:mail.followers,subtype_ids:0
+#: field:mail.message,subtype_id:0
+#: view:mail.message.subtype:0
 msgid "Subtype"
 msgstr "Poddruh"
 
 #. module: mail
-#: view:mail.mail:0 view:mail.message.subtype:0
+#: view:mail.mail:0
+#: view:mail.message.subtype:0
 msgid "Email message"
 msgstr "E-mailová zpráva"
 
@@ -547,7 +601,8 @@ msgstr "Odeslat zprávu skupině"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:36 view:mail.compose.message:0
+#: code:addons/mail/static/src/xml/mail.xml:36
+#: view:mail.compose.message:0
 #, python-format
 msgid "Send"
 msgstr "Odeslat"
@@ -573,7 +628,8 @@ msgstr "Zrušit e-mail"
 #. openerp-web
 #: code:addons/mail/static/src/xml/mail_followers.xml:22
 #: model:ir.actions.act_window,name:mail.action_view_followers
-#: model:ir.ui.menu,name:mail.menu_email_followers view:mail.followers:0
+#: model:ir.ui.menu,name:mail.menu_email_followers
+#: view:mail.followers:0
 #: field:mail.group,message_follower_ids:0
 #: field:mail.thread,message_follower_ids:0
 #: field:res.partner,message_follower_ids:0
@@ -614,12 +670,14 @@ msgid "One follower"
 msgstr "Jeden odběratel"
 
 #. module: mail
-#: field:mail.compose.message,type:0 field:mail.message,type:0
+#: field:mail.compose.message,type:0
+#: field:mail.message,type:0
 msgid "Type"
 msgstr "Druh"
 
 #. module: mail
-#: selection:mail.compose.message,type:0 view:mail.mail:0
+#: selection:mail.compose.message,type:0
+#: view:mail.mail:0
 #: selection:mail.message,type:0
 msgid "Email"
 msgstr "E-mail"
@@ -649,12 +707,16 @@ msgstr "%s se připojil k %s síti."
 #: help:mail.group,image_small:0
 msgid ""
 "Small-sized photo of the group. It is automatically resized as a 64x64px "
-"image, with aspect ratio preserved. Use this field anywhere a small image is"
-" required."
-msgstr "Malý obrázek tohoto kontaktu. Je automaticky zmenšen na rozměr 64x64 bodů se zachováním poměru stran. Použijte toto pole kdekoli je požadován malý obrázek."
+"image, with aspect ratio preserved. Use this field anywhere a small image is "
+"required."
+msgstr ""
+"Malý obrázek tohoto kontaktu. Je automaticky zmenšen na rozměr 64x64 bodů se "
+"zachováním poměru stran. Použijte toto pole kdekoli je požadován malý "
+"obrázek."
 
 #. module: mail
-#: view:mail.compose.message:0 field:mail.message,partner_ids:0
+#: view:mail.compose.message:0
+#: field:mail.message,partner_ids:0
 msgid "Recipients"
 msgstr "Příjemci"
 
@@ -694,7 +756,8 @@ msgid "<div>You have been invited to follow a new document.</div>"
 msgstr "<div>Byli jste pozváni k odběru nového dokumentu.</div>"
 
 #. module: mail
-#: field:mail.compose.message,parent_id:0 field:mail.message,parent_id:0
+#: field:mail.compose.message,parent_id:0
+#: field:mail.message,parent_id:0
 msgid "Parent Message"
 msgstr "Nadřazená zpráva"
 
@@ -709,8 +772,12 @@ msgstr ""
 #, python-format
 msgid ""
 "Warning! \n"
-"You won't be notified of any email or discussion on this document. Do you really want to unfollow this document ?"
-msgstr "Varování! \nNebudete upozorňováni na e-maily ani diskuze ohledně tohoto dokumentu. Opravdu se chcete odhlásit z odběratelů tohoto dokumentu?"
+"You won't be notified of any email or discussion on this document. Do you "
+"really want to unfollow this document ?"
+msgstr ""
+"Varování! \n"
+"Nebudete upozorňováni na e-maily ani diskuze ohledně tohoto dokumentu. "
+"Opravdu se chcete odhlásit z odběratelů tohoto dokumentu?"
 
 #. module: mail
 #: model:ir.actions.client,help:mail.action_mail_to_me_feeds
@@ -721,7 +788,13 @@ msgid ""
 "                    This list contains messages sent to you.\n"
 "                </p>\n"
 "            "
-msgstr "<p>\n                    <b>Žádné osobní zprávy.</b>\n                </p><p>\n                    Seznam obsahuje zprávy adresované přímo vám.\n                </p>\n            "
+msgstr ""
+"<p>\n"
+"                    <b>Žádné osobní zprávy.</b>\n"
+"                </p><p>\n"
+"                    Seznam obsahuje zprávy adresované přímo vám.\n"
+"                </p>\n"
+"            "
 
 #. module: mail
 #: model:mail.group,name:mail.group_rd
@@ -752,7 +825,8 @@ msgid "Re:"
 msgstr "Re:"
 
 #. module: mail
-#: field:mail.compose.message,to_read:0 field:mail.message,to_read:0
+#: field:mail.compose.message,to_read:0
+#: field:mail.message,to_read:0
 msgid "To read"
 msgstr "K přečtení"
 
@@ -762,7 +836,9 @@ msgstr "K přečtení"
 msgid ""
 "You may not create a user. To create new users, you should use the "
 "\"Settings > Users\" menu."
-msgstr "Uživatele nemůžete vytvořit. Pro vytvoření nového uživatele byste měli použít menu \"Nastavení > Uživatelé\"."
+msgstr ""
+"Uživatele nemůžete vytvořit. Pro vytvoření nového uživatele byste měli "
+"použít menu \"Nastavení > Uživatelé\"."
 
 #. module: mail
 #. openerp-web
@@ -772,7 +848,8 @@ msgid "like"
 msgstr "líbí se mi"
 
 #. module: mail
-#: help:mail.followers,res_model:0 help:mail.wizard.invite,res_model:0
+#: help:mail.followers,res_model:0
+#: help:mail.wizard.invite,res_model:0
 msgid "Model of the followed resource"
 msgstr "Model odebíraných zdrojů"
 
@@ -791,7 +868,8 @@ msgid "Send a message to all followers of the document"
 msgstr ""
 
 #. module: mail
-#: view:mail.compose.message:0 view:mail.wizard.invite:0
+#: view:mail.compose.message:0
+#: view:mail.wizard.invite:0
 msgid "Cancel"
 msgstr "Zrušit"
 
@@ -812,7 +890,9 @@ msgstr "Kontakt"
 msgid ""
 "Only the invited followers can read the\n"
 "                                    discussions on this group."
-msgstr "Příspěvky v této skupině mohou číst pouze\n                                    pozvaní odběratelé."
+msgstr ""
+"Příspěvky v této skupině mohou číst pouze\n"
+"                                    pozvaní odběratelé."
 
 #. module: mail
 #: model:ir.model,name:mail.model_ir_ui_menu
@@ -835,14 +915,18 @@ msgstr "na"
 msgid ""
 "The following partners chosen as recipients for the email have no email "
 "address linked :"
-msgstr "Následující kontakty, vybrané jako příjemci e-mailu, nemají zádnou e-mailovou adresu:"
+msgstr ""
+"Následující kontakty, vybrané jako příjemci e-mailu, nemají zádnou e-"
+"mailovou adresu:"
 
 #. module: mail
 #: help:mail.alias,alias_defaults:0
 msgid ""
 "A Python dictionary that will be evaluated to provide default values when "
 "creating new records for this alias."
-msgstr "Slovník Pythonu, který bude brán jako zdroj výchozích hodnot při vytváření nového záznamu pro tento alias."
+msgstr ""
+"Slovník Pythonu, který bude brán jako zdroj výchozích hodnot při vytváření "
+"nového záznamu pro tento alias."
 
 #. module: mail
 #: model:ir.model,name:mail.model_mail_message_subtype
@@ -858,7 +942,8 @@ msgid "Log a note"
 msgstr "Přidat poznámku"
 
 #. module: mail
-#: selection:mail.compose.message,type:0 view:mail.mail:0
+#: selection:mail.compose.message,type:0
+#: view:mail.mail:0
 #: selection:mail.message,type:0
 msgid "Comment"
 msgstr "Komentář"
@@ -869,12 +954,25 @@ msgid ""
 "<p>\n"
 "                    <b>Good Job!</b> Your inbox is empty.\n"
 "                </p><p>\n"
-"                    Your inbox contains private messages or emails sent to you\n"
-"                    as well as information related to documents or people you\n"
+"                    Your inbox contains private messages or emails sent to "
+"you\n"
+"                    as well as information related to documents or people "
+"you\n"
 "                    follow.\n"
 "                </p>\n"
 "            "
-msgstr "<p>\n                    <b>Výborně!</b> Nemáte žádnou nezpracovanou zprávu v příchozí schránce.\n                </p><p>\n                    Vaše příchozí schránka obsahuje Vám adresované zprávy a e-maily\n                    a také informace týkající se dokumentů, které odebíráte,\n                    nebo osob, jejichž zprávy odebíráte.\n                </p>\n            "
+msgstr ""
+"<p>\n"
+"                    <b>Výborně!</b> Nemáte žádnou nezpracovanou zprávu v "
+"příchozí schránce.\n"
+"                </p><p>\n"
+"                    Vaše příchozí schránka obsahuje Vám adresované zprávy a "
+"e-maily\n"
+"                    a také informace týkající se dokumentů, které "
+"odebíráte,\n"
+"                    nebo osob, jejichž zprávy odebíráte.\n"
+"                </p>\n"
+"            "
 
 #. module: mail
 #: field:mail.mail,notification:0
@@ -898,14 +996,18 @@ msgstr "Odeslat nyní"
 #, python-format
 msgid ""
 "Unable to send email, please configure the sender's email address or alias."
-msgstr "E-mail není možno odeslat. Nastavte prosím e-mailovou adresu nebo alias příjemce."
+msgstr ""
+"E-mail není možno odeslat. Nastavte prosím e-mailovou adresu nebo alias "
+"příjemce."
 
 #. module: mail
 #: help:res.users,alias_id:0
 msgid ""
 "Email address internally associated with this user. Incoming emails will "
 "appear in the user's notifications."
-msgstr "E-mailová adresa je interně přiřazena tomuto uživateli. Příchozí e-maily bude vidět ve svých upozorněních."
+msgstr ""
+"E-mailová adresa je interně přiřazena tomuto uživateli. Příchozí e-maily "
+"bude vidět ve svých upozorněních."
 
 #. module: mail
 #: field:mail.group,image:0
@@ -913,7 +1015,8 @@ msgid "Photo"
 msgstr "Foto"
 
 #. module: mail
-#: help:mail.compose.message,vote_user_ids:0 help:mail.message,vote_user_ids:0
+#: help:mail.compose.message,vote_user_ids:0
+#: help:mail.message,vote_user_ids:0
 msgid "Users that voted for this message"
 msgstr "Uživatelé, kteří hodnotili tuto zprávu"
 
@@ -922,7 +1025,9 @@ msgstr "Uživatelé, kteří hodnotili tuto zprávu"
 msgid ""
 "The email address associated with this group. New emails received will "
 "automatically create new topics."
-msgstr "E-mailová adresa přiřazená této skupině. Nové příchozí e-maily automaticky vytvoří nové téma."
+msgstr ""
+"E-mailová adresa přiřazená této skupině. Nové příchozí e-maily automaticky "
+"vytvoří nové téma."
 
 #. module: mail
 #: view:mail.mail:0
@@ -935,7 +1040,8 @@ msgid "Email Search"
 msgstr "Hledání e-mailu"
 
 #. module: mail
-#: field:mail.compose.message,child_ids:0 field:mail.message,child_ids:0
+#: field:mail.compose.message,child_ids:0
+#: field:mail.message,child_ids:0
 msgid "Child Messages"
 msgstr "Podřízené zprávy"
 
@@ -952,18 +1058,22 @@ msgstr "Profil kontaktu"
 
 #. module: mail
 #: model:ir.model,name:mail.model_mail_message
-#: field:mail.mail,mail_message_id:0 view:mail.message:0
-#: field:mail.notification,message_id:0 field:mail.wizard.invite,message:0
+#: field:mail.mail,mail_message_id:0
+#: view:mail.message:0
+#: field:mail.notification,message_id:0
+#: field:mail.wizard.invite,message:0
 msgid "Message"
 msgstr "Zpráva"
 
 #. module: mail
-#: help:mail.followers,res_id:0 help:mail.wizard.invite,res_id:0
+#: help:mail.followers,res_id:0
+#: help:mail.wizard.invite,res_id:0
 msgid "Id of the followed resource"
 msgstr "ID odebíraného zdroje"
 
 #. module: mail
-#: field:mail.compose.message,body:0 field:mail.message,body:0
+#: field:mail.compose.message,body:0
+#: field:mail.message,body:0
 msgid "Contents"
 msgstr "Obsahy"
 
@@ -978,7 +1088,9 @@ msgstr "Aliasy"
 msgid ""
 "Description that will be added in the message posted for this subtype. If "
 "void, the name will be added instead."
-msgstr "Popis, který bude přidánke zprávě tohoto poddruhu. Je-li prázdné, bude přidáno jméno."
+msgstr ""
+"Popis, který bude přidánke zprávě tohoto poddruhu. Je-li prázdné, bude "
+"přidáno jméno."
 
 #. module: mail
 #. openerp-web
@@ -993,9 +1105,12 @@ msgid "Group"
 msgstr "Skupina"
 
 #. module: mail
-#: help:mail.compose.message,starred:0 help:mail.message,starred:0
+#: help:mail.compose.message,starred:0
+#: help:mail.message,starred:0
 msgid "Current user has a starred notification linked to this message"
-msgstr "Aktuální uživatel má v úkolech (označeno hvězdičkou) oznámení související s touto zprávou"
+msgstr ""
+"Aktuální uživatel má v úkolech (označeno hvězdičkou) oznámení související s "
+"touto zprávou"
 
 #. module: mail
 #: field:mail.group,public:0
@@ -1047,25 +1162,39 @@ msgid ""
 "                    No message found and no message sent yet.\n"
 "                </p><p>\n"
 "                    Click on the top-right icon to compose a message. This\n"
-"                    message will be sent by email if it's an internal contact.\n"
+"                    message will be sent by email if it's an internal "
+"contact.\n"
 "                </p>\n"
 "            "
-msgstr "<p>\n                    Žádné zprávy nebyly dosud ani přijaty ani odeslány.\n                </p><p>\n                    Klepnutím na ikonu s obálkou v pravém horním rohu obrazovky\n                    můžete vytvořit novou zprávu. Půjde-li o interní kontakt,\n                    zpráva bude odeslána e-mailem.\n                </p>\n            "
+msgstr ""
+"<p>\n"
+"                    Žádné zprávy nebyly dosud ani přijaty ani odeslány.\n"
+"                </p><p>\n"
+"                    Klepnutím na ikonu s obálkou v pravém horním rohu "
+"obrazovky\n"
+"                    můžete vytvořit novou zprávu. Půjde-li o interní "
+"kontakt,\n"
+"                    zpráva bude odeslána e-mailem.\n"
+"                </p>\n"
+"            "
 
 #. module: mail
-#: view:mail.mail:0 field:mail.mail,state:0
+#: view:mail.mail:0
+#: field:mail.mail,state:0
 msgid "Status"
 msgstr "Stav"
 
 #. module: mail
-#: view:mail.mail:0 selection:mail.mail,state:0
+#: view:mail.mail:0
+#: selection:mail.mail,state:0
 msgid "Outgoing"
 msgstr "Odchozí"
 
 #. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/xml/mail.xml:55
-#: code:addons/mail/static/src/xml/mail.xml:192 view:mail.compose.message:0
+#: code:addons/mail/static/src/xml/mail.xml:192
+#: view:mail.compose.message:0
 #: view:mail.wizard.invite:0
 #, python-format
 msgid "or"
@@ -1078,7 +1207,8 @@ msgid "You have one unread message"
 msgstr "Máte jednu nepřečtenou zprávu"
 
 #. module: mail
-#: help:mail.compose.message,record_name:0 help:mail.message,record_name:0
+#: help:mail.compose.message,record_name:0
+#: help:mail.message,record_name:0
 msgid "Name get of the related document."
 msgstr "Jméno získané ze souvisejícího dokumentu."
 
@@ -1086,8 +1216,10 @@ msgstr "Jméno získané ze souvisejícího dokumentu."
 #: model:ir.actions.act_window,name:mail.action_view_notifications
 #: model:ir.model,name:mail.model_mail_notification
 #: model:ir.ui.menu,name:mail.menu_email_notifications
-#: field:mail.compose.message,notification_ids:0 view:mail.message:0
-#: field:mail.message,notification_ids:0 view:mail.notification:0
+#: field:mail.compose.message,notification_ids:0
+#: view:mail.message:0
+#: field:mail.message,notification_ids:0
+#: view:mail.notification:0
 msgid "Notifications"
 msgstr "Upozornění"
 
@@ -1102,7 +1234,10 @@ msgid ""
 "Optional ID of a thread (record) to which all incoming messages will be "
 "attached, even if they did not reply to it. If set, this will disable the "
 "creation of new records completely."
-msgstr "Volitelné ID vlákna (záznam), ke kterému budou všechny příchozí zprávy připojeny, i když na ně nebylo zodpovězeno. Je-li nastaveno, zcela zakáže vytváření nových záznamů."
+msgstr ""
+"Volitelné ID vlákna (záznam), ke kterému budou všechny příchozí zprávy "
+"připojeny, i když na ně nebylo zodpovězeno. Je-li nastaveno, zcela zakáže "
+"vytváření nových záznamů."
 
 #. module: mail
 #. openerp-web
@@ -1115,11 +1250,15 @@ msgstr "ukázat více zpráv"
 #: help:mail.message.subtype,name:0
 msgid ""
 "Message subtype gives a more precise type on the message, especially for "
-"system notifications. For example, it can be a notification related to a new"
-" record (New), or to a stage change in a process (Stage change). Message "
+"system notifications. For example, it can be a notification related to a new "
+"record (New), or to a stage change in a process (Stage change). Message "
 "subtypes allow to precisely tune the notifications the user want to receive "
 "on its wall."
-msgstr "Poddruh zpráv ještě více upřesňuje druh zpráv, zejména pro systémová oznámení. Může to být třeba oznámení při vytvoření nového záznamu (New) nebo při změně fáze určitého procesu (Stage change). Poddruh zpráv umožňuje přesně doladit oznámení, která si přeje uživatel zobrazovat na své zdi."
+msgstr ""
+"Poddruh zpráv ještě více upřesňuje druh zpráv, zejména pro systémová "
+"oznámení. Může to být třeba oznámení při vytvoření nového záznamu (New) nebo "
+"při změně fáze určitého procesu (Stage change). Poddruh zpráv umožňuje "
+"přesně doladit oznámení, která si přeje uživatel zobrazovat na své zdi."
 
 #. module: mail
 #: field:res.partner,notification_email_send:0
@@ -1144,7 +1283,8 @@ msgid "Is a Follower"
 msgstr "Je odběratel"
 
 #. module: mail
-#: view:mail.alias:0 view:mail.mail:0
+#: view:mail.alias:0
+#: view:mail.mail:0
 msgid "User"
 msgstr "Uživatel"
 
@@ -1159,7 +1299,8 @@ msgid "Messages Search"
 msgstr "Hledání zpráv"
 
 #. module: mail
-#: field:mail.compose.message,date:0 field:mail.message,date:0
+#: field:mail.compose.message,date:0
+#: field:mail.message,date:0
 msgid "Date"
 msgstr "Datum"
 
@@ -1172,7 +1313,7 @@ msgstr "Rozšířené filtry…"
 #: code:addons/mail/mail_group.py:180
 #, python-format
 msgid "Warning!"
-msgstr "Varování!"
+msgstr ""
 
 #. module: mail
 #: selection:res.partner,notification_email_send:0
@@ -1228,7 +1369,8 @@ msgid "Parent subtype, used for automatic subscription."
 msgstr "Nadřazený poddruh používaný pro automatické přihlašování k odběru."
 
 #. module: mail
-#: field:mail.group,message_summary:0 field:mail.thread,message_summary:0
+#: field:mail.group,message_summary:0
+#: field:mail.thread,message_summary:0
 #: field:res.partner,message_summary:0
 msgid "Summary"
 msgstr "Shrnutí"
@@ -1237,10 +1379,13 @@ msgstr "Shrnutí"
 #: help:mail.message.subtype,res_model:0
 msgid ""
 "Model the subtype applies to. If False, this subtype applies to all models."
-msgstr "Model, pro který se poddruh používá. Je-li chybný, poddruh se použije pro všechny modely."
+msgstr ""
+"Model, pro který se poddruh používá. Je-li chybný, poddruh se použije pro "
+"všechny modely."
 
 #. module: mail
-#: view:mail.compose.message:0 view:mail.wizard.invite:0
+#: view:mail.compose.message:0
+#: view:mail.wizard.invite:0
 msgid "Add contacts to notify..."
 msgstr "Přidat kontakt pro upozornění..."
 
@@ -1250,7 +1395,8 @@ msgid "Group Form"
 msgstr "Formulář"
 
 #. module: mail
-#: field:mail.compose.message,starred:0 field:mail.message,starred:0
+#: field:mail.compose.message,starred:0
+#: field:mail.message,starred:0
 #: field:mail.notification,starred:0
 msgid "Starred"
 msgstr "Označeno hvězdičkou"
@@ -1277,7 +1423,8 @@ msgstr "Odběr zpráv"
 #: sql_constraint:mail.alias:0
 msgid ""
 "Unfortunately this email alias is already used, please choose a unique one"
-msgstr "Tento alias e-mailu je již použit, zvolte prosím jiný jedinečný alias"
+msgstr ""
+"Tento alias e-mailu je již použit, zvolte prosím jiný jedinečný alias"
 
 #. module: mail
 #: code:addons/mail/mail_group.py:180
@@ -1294,7 +1441,11 @@ msgid ""
 "field is not set the system will attempt to find the right owner based on "
 "the sender (From) address, or will use the Administrator account if no "
 "system user is found for that address."
-msgstr "Vlastník záznamů vytvářených z příchozích e-mailů tohoto aliasu. Není-li toto pole nastaveno, pokusí se systém nalézt správného vlastníka na základě adresy odesílateke (From) nebo použije účet správce (nenalezne-li žádného uživatele s touto adresou)."
+msgstr ""
+"Vlastník záznamů vytvářených z příchozích e-mailů tohoto aliasu. Není-li "
+"toto pole nastaveno, pokusí se systém nalézt správného vlastníka na základě "
+"adresy odesílateke (From) nebo použije účet správce (nenalezne-li žádného "
+"uživatele s touto adresou)."
 
 #. module: mail
 #. openerp-web
@@ -1310,7 +1461,8 @@ msgid "You have %d unread messages"
 msgstr "Máte %d nepřečtených zpráv"
 
 #. module: mail
-#: field:mail.compose.message,message_id:0 field:mail.message,message_id:0
+#: field:mail.compose.message,message_id:0
+#: field:mail.message,message_id:0
 msgid "Message-Id"
 msgstr "ID zprávy"
 
@@ -1319,16 +1471,20 @@ msgstr "ID zprávy"
 msgid ""
 "This field holds the image used as photo for the group, limited to "
 "1024x1024px."
-msgstr "Pole obsahuje obrázek používaný jako fotografie skupiny, maximálně 1024x1024 bodů."
+msgstr ""
+"Pole obsahuje obrázek používaný jako fotografie skupiny, maximálně 1024x1024 "
+"bodů."
 
 #. module: mail
-#: field:mail.compose.message,attachment_ids:0 view:mail.mail:0
+#: field:mail.compose.message,attachment_ids:0
+#: view:mail.mail:0
 #: field:mail.message,attachment_ids:0
 msgid "Attachments"
 msgstr "Přílohy"
 
 #. module: mail
-#: field:mail.compose.message,record_name:0 field:mail.message,record_name:0
+#: field:mail.compose.message,record_name:0
+#: field:mail.message,record_name:0
 msgid "Message Record Name"
 msgstr "Název záznamu zprávy"
 
@@ -1349,7 +1505,8 @@ msgstr "Témata diskutovaná v této skupině..."
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:124 view:mail.compose.message:0
+#: code:addons/mail/static/src/xml/mail.xml:124
+#: view:mail.compose.message:0
 #, python-format
 msgid "Followers of"
 msgstr "Odběratelé"
@@ -1391,7 +1548,8 @@ msgstr "Celá firma"
 #. module: mail
 #. openerp-web
 #: code:addons/mail/static/src/xml/mail.xml:130
-#: code:addons/mail/static/src/xml/mail.xml:293 view:mail.compose.message:0
+#: code:addons/mail/static/src/xml/mail.xml:293
+#: view:mail.compose.message:0
 #, python-format
 msgid "and"
 msgstr "a"
@@ -1411,7 +1569,9 @@ msgstr "Měsíc vytvoření"
 #: help:mail.message,notified_partner_ids:0
 msgid ""
 "Partners that have a notification pushing this message in their mailboxes"
-msgstr "Kontakty, které mají potlačeno oznámenío zprávvě ve svých poštovních schránkách"
+msgstr ""
+"Kontakty, které mají potlačeno oznámenío zprávvě ve svých poštovních "
+"schránkách"
 
 #. module: mail
 #: view:mail.message:0
@@ -1430,7 +1590,8 @@ msgstr "Pro"
 
 #. module: mail
 #. openerp-web
-#: code:addons/mail/static/src/xml/mail.xml:246 view:mail.mail:0
+#: code:addons/mail/static/src/xml/mail.xml:246
+#: view:mail.mail:0
 #, python-format
 msgid "Reply"
 msgstr "Odpovědět"
@@ -1453,7 +1614,9 @@ msgstr "tento dokument"
 msgid ""
 "This group is visible by non members.             Invisible groups can add "
 "members through the invite button."
-msgstr "Skupina je přístupná pro ty, co nejsou členy.             Do neviditelných skupin mohou být členové přidáni pomocí zvacího tlačítka."
+msgstr ""
+"Skupina je přístupná pro ty, co nejsou členy.             Do neviditelných "
+"skupin mohou být členové přidáni pomocí zvacího tlačítka."
 
 #. module: mail
 #: model:mail.group,name:mail.group_board
@@ -1466,12 +1629,14 @@ msgid "Aliased Model"
 msgstr "Model s aliasem"
 
 #. module: mail
-#: help:mail.compose.message,message_id:0 help:mail.message,message_id:0
+#: help:mail.compose.message,message_id:0
+#: help:mail.message,message_id:0
 msgid "Message unique identifier"
 msgstr "Jedinečný identifikátor zprávy"
 
 #. module: mail
-#: field:mail.group,description:0 field:mail.message.subtype,description:0
+#: field:mail.group,description:0
+#: field:mail.message.subtype,description:0
 msgid "Description"
 msgstr "Popis"
 
@@ -1504,7 +1669,8 @@ msgid "Partners email addresses not found"
 msgstr "E-mailová adresa kontaktu nebyla nalezena"
 
 #. module: mail
-#: view:mail.mail:0 selection:mail.mail,state:0
+#: view:mail.mail:0
+#: selection:mail.mail,state:0
 msgid "Sent"
 msgstr "Odeslané"
 
@@ -1514,7 +1680,8 @@ msgid "Rich-text Contents"
 msgstr "Rich-text obsah"
 
 #. module: mail
-#: help:mail.compose.message,to_read:0 help:mail.message,to_read:0
+#: help:mail.compose.message,to_read:0
+#: help:mail.message,to_read:0
 msgid "Current user has an unread notification linked to this message"
 msgstr "Aktuální uživatel má nepřečtené oznámení související s touto zprávou"
 
@@ -1536,7 +1703,11 @@ msgid ""
 "                    No message in this group.\n"
 "                </p>\n"
 "            "
-msgstr "<p>\n                    Žádné zprávy nyní nejsou v této skupině.\n                </p>\n            "
+msgstr ""
+"<p>\n"
+"                    Žádné zprávy nyní nejsou v této skupině.\n"
+"                </p>\n"
+"            "
 
 #. module: mail
 #. openerp-web
@@ -1549,9 +1720,13 @@ msgstr "Čekejte prosím, až se soubor nahraje."
 #: view:mail.group:0
 msgid ""
 "This group is visible by everyone,\n"
-"                                    including your customers if you installed\n"
+"                                    including your customers if you "
+"installed\n"
 "                                    the portal module."
-msgstr "Skupina je přístupná pro všechny,\n                                    včetně zákazníků, je-li nainstalován\n                                    modul Portál."
+msgstr ""
+"Skupina je přístupná pro všechny,\n"
+"                                    včetně zákazníků, je-li nainstalován\n"
+"                                    modul Portál."
 
 #. module: mail
 #. openerp-web
@@ -1592,20 +1767,25 @@ msgstr ""
 #. module: mail
 #: help:base.config.settings,alias_domain:0
 msgid ""
-"If you have setup a catch-all email domain redirected to the OpenERP server,"
-" enter the domain name here."
-msgstr "Zadejte název domény, chcete-li nastavit zachytávání celé e-mailové domény přesměrované na OpenERP server."
+"If you have setup a catch-all email domain redirected to the OpenERP server, "
+"enter the domain name here."
+msgstr ""
+"Zadejte název domény, chcete-li nastavit zachytávání celé e-mailové domény "
+"přesměrované na OpenERP server."
 
 #. module: mail
 #: model:ir.actions.act_window,name:mail.action_view_mail_message
-#: model:ir.ui.menu,name:mail.menu_mail_message field:mail.group,message_ids:0
-#: view:mail.message:0 field:mail.thread,message_ids:0
+#: model:ir.ui.menu,name:mail.menu_mail_message
+#: field:mail.group,message_ids:0
+#: view:mail.message:0
+#: field:mail.thread,message_ids:0
 #: field:res.partner,message_ids:0
 msgid "Messages"
 msgstr "Zprávy"
 
 #. module: mail
-#: code:addons/mail/mail_mail.py:222 code:addons/mail/mail_mail.py:243
+#: code:addons/mail/mail_mail.py:222
+#: code:addons/mail/mail_mail.py:243
 #, python-format
 msgid "Followers of %s"
 msgstr ""
@@ -1624,7 +1804,9 @@ msgid "To-do"
 msgstr "Úkoly"
 
 #. module: mail
-#: view:mail.alias:0 field:mail.alias,alias_name:0 field:mail.group,alias_id:0
+#: view:mail.alias:0
+#: field:mail.alias,alias_name:0
+#: field:mail.group,alias_id:0
 #: field:res.users,alias_id:0
 msgid "Alias"
 msgstr "Alias"
@@ -1640,7 +1822,9 @@ msgstr "Odchozí e-maily"
 msgid ""
 "Technical field holding the message notifications. Use notified_partner_ids "
 "to access notified partners."
-msgstr "Technické pole obsahující upozornění na zprávu. Pro přístup upozorněných kontaktů používá notified_partner_ids."
+msgstr ""
+"Technické pole obsahující upozornění na zprávu. Pro přístup upozorněných "
+"kontaktů používá notified_partner_ids."
 
 #. module: mail
 #. openerp-web
@@ -1656,7 +1840,8 @@ msgid "Messaging"
 msgstr "Zprávy"
 
 #. module: mail
-#: view:mail.alias:0 field:mail.message.subtype,res_model:0
+#: view:mail.alias:0
+#: field:mail.message.subtype,res_model:0
 msgid "Model"
 msgstr "Model"
 
@@ -1672,10 +1857,13 @@ msgstr "Žádné zprávy."
 msgid ""
 "Message subtypes followed, meaning subtypes that will be pushed onto the "
 "user's Wall."
-msgstr "Odebírané poddruhy zpráv, tedy podtypy, které se budou zobrazovat uživatelům na zdi."
+msgstr ""
+"Odebírané poddruhy zpráv, tedy podtypy, které se budou zobrazovat uživatelům "
+"na zdi."
 
 #. module: mail
-#: help:mail.group,message_ids:0 help:mail.thread,message_ids:0
+#: help:mail.group,message_ids:0
+#: help:mail.thread,message_ids:0
 #: help:res.partner,message_ids:0
 msgid "Messages and communication history"
 msgstr "Historie zpráv a komunikace"
@@ -1691,8 +1879,10 @@ msgid "Composition mode"
 msgstr "Režim psaní"
 
 #. module: mail
-#: field:mail.compose.message,model:0 field:mail.followers,res_model:0
-#: field:mail.message,model:0 field:mail.wizard.invite,res_model:0
+#: field:mail.compose.message,model:0
+#: field:mail.followers,res_model:0
+#: field:mail.message,model:0
+#: field:mail.wizard.invite,res_model:0
 msgid "Related Document Model"
 msgstr "Související model dokumentu"
 
@@ -1735,11 +1925,22 @@ msgid ""
 "<p>\n"
 "                    <b>No todo.</b>\n"
 "                </p><p>\n"
-"                    When you process messages in your inbox, you can mark some\n"
-"                    as <i>todo</i>. From this menu, you can process all your todo.\n"
+"                    When you process messages in your inbox, you can mark "
+"some\n"
+"                    as <i>todo</i>. From this menu, you can process all your "
+"todo.\n"
 "                </p>\n"
 "            "
-msgstr "<p>\n                    <b>Žádné úkoly.</b>\n                </p><p>\n                    Když procházíte příchozí poštu, můžete některé zprávy označit\n                    jako <i>úkol</i>. Z tohoto menu pak můžete zpracovávat vaše úkoly.\n                </p>\n            "
+msgstr ""
+"<p>\n"
+"                    <b>Žádné úkoly.</b>\n"
+"                </p><p>\n"
+"                    Když procházíte příchozí poštu, můžete některé zprávy "
+"označit\n"
+"                    jako <i>úkol</i>. Z tohoto menu pak můžete zpracovávat "
+"vaše úkoly.\n"
+"                </p>\n"
+"            "
 
 #. module: mail
 #: selection:mail.mail,state:0
@@ -1752,7 +1953,8 @@ msgid "Additional contacts"
 msgstr "Další kontakty"
 
 #. module: mail
-#: help:mail.compose.message,parent_id:0 help:mail.message,parent_id:0
+#: help:mail.compose.message,parent_id:0
+#: help:mail.message,parent_id:0
 msgid "Initial thread message."
 msgstr "Počáteční zpráva vlákna."
 
@@ -1806,3 +2008,23 @@ msgstr "Malý obrázek"
 #: help:mail.mail,reply_to:0
 msgid "Preferred response address for the message"
 msgstr "Upřednostňovaná zpětná adresa pro zprávy"
+
+#~ msgid "Unread"
+#~ msgstr "Nepřečtené"
+
+#~ msgid "Comments and Emails"
+#~ msgstr "Komentáře a e-maily"
+
+#~ msgid "All feeds"
+#~ msgstr "Všechny zprávy"
+
+#~ msgid ""
+#~ "Choose in which case you want to receive an email when you receive new feeds."
+#~ msgstr ""
+#~ "Zvolte si, kdy budete chtít dostávat e-maily při obdržení nových zpráv."
+
+#~ msgid "Receive Feeds by Email"
+#~ msgstr "Dostávat zprávy e-mailem"
+
+#~ msgid "Emails only"
+#~ msgstr "Pouze e-maily"
