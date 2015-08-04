@@ -783,20 +783,21 @@
   margin: 0;
   list-style-type: none;
   padding: 0 0 4px 0;
+  color: #009441;
 }
 .openerp .oe_login button {
   cursor: pointer;
   padding: 6px 16px;
-  color: #fff;
+  color: white;
   margin: 0;
   border: none!important;
-  background: #f5a623!important;
+  background: #009441!important;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
   border-radius: 4px;
 }
 .openerp .oe_login button:hover{
-  background: #d48e1a!important;
+  background: #13BD49!important;
 }
 .openerp .oe_login input, .openerp .oe_login select {
   width: 252px;
@@ -840,10 +841,10 @@
 }
 .openerp .oe_login .oe_login_pane {
   position: absolute;
-  top: 50%;
+  top: 30%;
   left: 50%;
   margin: -160px -166px;
-  border: solid 1px #fff;
+  border: solid 2px #009441;
   background: #fff;
   padding: 22px 32px;
   color: #393939;
@@ -858,7 +859,7 @@
 }
 .openerp .oe_login .oe_login_logo {
   position: absolute;
-  top: -70px;
+  top: -130px;
   left: 0;
   width: 100%;
   margin: 0 auto;
@@ -1547,7 +1548,7 @@
   display: inline-block;
   content: "";
   vertical-align: top;
-  border-top: 5px solid #6fb3e0;
+  border-top: 5px solid #009441;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
   filter: alpha(opacity=50);
@@ -1687,7 +1688,7 @@
 }
 .openerp .oe_searchview .oe_searchview_drawer h3 {
   margin: 8px 4px 4px 12px;
-  color: #2679b5;
+  color: #009441;
   font-size: 13px;
 }
 .openerp .oe_searchview .oe_searchview_drawer h4, .openerp .oe_searchview .oe_searchview_drawer h4 * {
@@ -1697,7 +1698,7 @@
   display: inline-block;
 }
 .openerp .oe_searchview .oe_searchview_drawer h4:hover, .openerp .oe_searchview .oe_searchview_drawer h4 *:hover {
-  background-color: #3399ff;
+  background-color: #009441;
   color: #fff;
   text-shadow: none;
   padding-right: 5px;

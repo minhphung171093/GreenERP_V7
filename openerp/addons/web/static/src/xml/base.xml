@@ -78,8 +78,7 @@
                 </ul>
             </form>
             <div class="oe_login_footer">
-                <a href="#" class="oe_login_manage_db">Manage Databases</a> |
-                <a href="http://www.openerp.com" target="_blank">Powered by <span>OpenERP</span></a>
+                <a href="#" class="oe_login_manage_db">Manage Databases</a>
             </div>
         </div>
     </div>
@@ -427,9 +426,6 @@
         <span class="oe_topbar_name"/>
         <ul class="oe_dropdown_menu">
             <li><a href="#" data-menu="settings"><i class="fa fa-cog"></i>Preferences</a></li>
-            <li><a href="#" data-menu="account"><i class="fa fa-user"></i>My OpenERP.com account</a></li>
-            <li><a href="#" data-menu="about"><i class="fa fa-book"></i>About OpenERP</a></li>
-            <li><a href="#" data-menu="help"><i class="fa fa-question"></i>Help</a></li>
             <li><a href="#" data-menu="logout"><i class="fa fa-power-off"></i>Log out</a></li>
         </ul>
     </span>
@@ -456,7 +452,7 @@
         <header class="oe_topbar navbar" id="header-navbar">
             <div class="container">
                 <a t-attf-href="/?ts=#{Date.now()}#{debug}" id="logo" class="navbar-brand">
-                    <img src="/web/static/src/img/logo_bac.png" alt="" class="normal-logo logo-white"/>
+                    <img src="/web/static/src/img/logo_incomtech.png" alt="" class="normal-logo logo-white"/>
                 </a>
                 <div class="clearfix">
                     <button class="navbar-toggle" data-target=".navbar-ex1-collapse" data-toggle="collapse" type="button">
@@ -520,7 +516,7 @@
                     </div>
                     <footer id="footer-bar" class="row">
                         <p id="footer-copyright" class="col-xs-12">
-                            Powered by OPENERP.
+                            Powered by INCOMTECH
                         </p>
                     </footer>
                 </div>
@@ -592,26 +588,26 @@
                         </h2>
                 </td>
                 <td colspan="2">
-                	<div class="oe_view_manager_buttons oe_right"/>
+                        <div class="oe_view_manager_view_search" t-opentag="true"/>
                 </td>
             </tr>
             <tr class="oe_header_row">
-            	<td colspan="1">
-                    <!--<ul class="oe_view_manager_switch oe_button_group oe_left">
+                <td>
+                        <div class="oe_view_manager_buttons"/>
+                </td>
+                <td colspan="2">
+                        <div class="oe_view_manager_sidebar"/>
+                </td>
+                <td>
+                    <ul class="oe_view_manager_switch oe_button_group oe_right">
                         <t t-if="widget.views_src.length > 1" t-foreach="widget.views_src" t-as="view">
                           <li class="oe_e">
                             <a t-attf-class="oe_vm_switch_#{view.view_type}" t-att-data-view-type="view.view_type"
                                t-att-title="view.button_label"/>
                           </li>
                         </t>
-                    </ul>-->
-                    <div class="oe_view_manager_pager oe_left"/>
-                </td>
-                <td>
-                    <div class="oe_view_manager_sidebar"/>
-                </td>
-                <td colspan="2">
-                    <div class="oe_view_manager_view_search" t-opentag="true"/>
+                    </ul>
+                    <div class="oe_view_manager_pager oe_right"/>
                 </td>
             </tr>
         </table>

@@ -2,7 +2,7 @@
 <openerp>
     <data>
     	<menuitem id="cau_hinh" name="Cấu hình"/>
-    	<menuitem id="menu_danh_muc" parent="cau_hinh" name="Các danh mục"/>
+    	<menuitem id="menu_danh_muc" parent="cau_hinh" icon="STOCK_OPEN" name="Các danh mục"/>
     	<menuitem id="menu_can_bo" parent="menu_danh_muc" name="Danh mục cán bộ" action="action_can_bo"/>
     	<menuitem id="menu_tram" parent="menu_danh_muc" name="Danh mục trạm"  action="action_tram_thu_y"/>
     	<menuitem id="menu_loai" parent="menu_danh_muc" name="Danh mục loài vật" action="action_loai_vat"/>

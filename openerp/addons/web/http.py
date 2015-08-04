@@ -30,14 +30,10 @@ import werkzeug.exceptions
 import werkzeug.utils
 import werkzeug.wrappers
 import werkzeug.wsgi
-from werkzeug.contrib.cache import MemcachedCache
-from werkzeug.contrib.sessions import SessionStore
 
 import openerp
 
 import session
-__all__ = ['Root', 'jsonrequest', 'httprequest', 'Controller',
-           'WebRequest', 'JsonRequest', 'HttpRequest']
 
 _logger = logging.getLogger(__name__)
 
@@ -98,6 +94,14 @@ class WebRequest(object):
         if not self.session:
             self.session = session.OpenERPSession()
             self.httpsession[self.session_id] = self.session
+
+        # set db/uid trackers - they're cleaned up at the WSGI
+        # dispatching phase in openerp.service.wsgi_server.application
+        if self.session._db:
+            threading.current_thread().dbname = self.session._db
+        if self.session._uid:
+            threading.current_thread().uid = self.session._uid
+
         self.context = self.params.pop('context', {})
         self.debug = self.params.pop('debug', False) is not False
         # Determine self.lang
@@ -315,7 +319,7 @@ class HttpRequest(WebRequest):
         While handlers can just return the HTML markup of a page they want to
         send as a string if non-HTML data is returned they need to create a
         complete response object, or the returned data will not be correctly
-        unterpreted by the clients.
+        interpreted by the clients.
 
         :param basestring data: response body
         :param headers: HTTP headers to set on the response
@@ -352,16 +356,30 @@ def httprequest(f):
 addons_module = {}
 addons_manifest = {}
 controllers_class = []
+controllers_class_path = {}
 controllers_object = {}
+controllers_object_path = {}
 controllers_path = {}
 
 class ControllerType(type):
     def __init__(cls, name, bases, attrs):
         super(ControllerType, cls).__init__(name, bases, attrs)
-        controllers_class.append(("%s.%s" % (cls.__module__, cls.__name__), cls))
+        name_class = ("%s.%s" % (cls.__module__, cls.__name__), cls)
+        controllers_class.append(name_class)
+        path = attrs.get('_cp_path')
+        if path not in controllers_class_path:
+            controllers_class_path[path] = name_class
 
 class Controller(object):
     __metaclass__ = ControllerType
+
+    def __new__(cls, *args, **kwargs):
+        subclasses = [c for c in cls.__subclasses__() if c._cp_path == cls._cp_path]
+        if subclasses:
+            name = "%s (extended by %s)" % (cls.__name__, ', '.join(sub.__name__ for sub in subclasses))
+            cls = type(name, tuple(reversed(subclasses)), {})
+
+        return object.__new__(cls)
 
 #----------------------------------------------------------
 # Session context manager
@@ -370,10 +388,7 @@ class Controller(object):
 def session_context(request, session_store, session_lock, sid):
     with session_lock:
         if sid:
-            try:
-                request.session = session_store.get(sid)
-            except:
-                request.session = session_store.new()
+            request.session = session_store.get(sid)
         else:
             request.session = session_store.new()
     try:
@@ -409,7 +424,6 @@ def session_context(request, session_store, session_lock, sid):
                 # only ever add items to them), so we can just update one with the
                 # other to get the right result, if we want to merge the
                 # ``context`` dict we'll need something smarter
-                _logger.info(sid)
                 in_store = session_store.get(sid)
                 for k, v in request.session.iteritems():
                     stored = in_store.get(k)
@@ -474,12 +488,23 @@ class DisableCacheMiddleware(object):
 
 def session_path():
     try:
-        username = getpass.getuser()
-    except Exception:
-        username = "unknown"
+        import pwd
+        username = pwd.getpwuid(os.geteuid()).pw_name
+    except ImportError:
+        try:
+            username = getpass.getuser()
+        except Exception:
+            username = "unknown"
     path = os.path.join(tempfile.gettempdir(), "oe-sessions-" + username)
-    if not os.path.exists(path):
+    try:
         os.mkdir(path, 0700)
+    except OSError as exc:
+        if exc.errno == errno.EEXIST:
+            # directory exists: ensure it has the correct permissions
+            # this will fail if the directory is not owned by the current user
+            os.chmod(path, 0700)
+        else:
+            raise
     return path
 
 class Root(object):
@@ -493,13 +518,7 @@ class Root(object):
 
         # Setup http sessions
         path = session_path()
-        import openerp
-        memcached = openerp.tools.config['memcached']
-        if memcached:
-            _logger.info("use memcached")
-            self.session_store = MemcachedSessionStore(memcached)
-        else:
-            self.session_store = werkzeug.contrib.sessions.FilesystemSessionStore(path)
+        self.session_store = werkzeug.contrib.sessions.FilesystemSessionStore(path)
         self.session_lock = threading.Lock()
         _logger.debug('HTTP sessions stored in: %s', path)
 
@@ -528,10 +547,7 @@ class Root(object):
             if not sid:
                 sid = request.args.get('sid')
 
-            import openerp
-            memcached = openerp.tools.config['memcached']
-            if not memcached:
-                session_gc(self.session_store)
+            session_gc(self.session_store)
 
             with session_context(request, self.session_store, self.session_lock, sid) as session:
                 result = handler(request)
@@ -552,7 +568,7 @@ class Root(object):
         controllers and configure them.  """
 
         for addons_path in openerp.modules.module.ad_paths:
-            for module in sorted(os.listdir(addons_path)):
+            for module in sorted(os.listdir(str(addons_path))):
                 if module not in addons_module:
                     manifest_path = os.path.join(addons_path, module, '__openerp__.py')
                     path_static = os.path.join(addons_path, module, 'static')
@@ -568,10 +584,11 @@ class Root(object):
                         addons_manifest[module] = manifest
                         self.statics['/%s/static' % module] = path_static
 
-        for k, v in controllers_class:
-            if k not in controllers_object:
-                o = v()
-                controllers_object[k] = o
+        for k, v in controllers_class_path.items():
+            if k not in controllers_object_path and hasattr(v[1], '_cp_path'):
+                o = v[1]()
+                controllers_object[v[0]] = o
+                controllers_object_path[k] = o
                 if hasattr(o, '_cp_path'):
                     controllers_path[o._cp_path] = o
 
@@ -610,29 +627,4 @@ class Root(object):
 def wsgi_postload():
     openerp.wsgi.register_wsgi_handler(Root())
 
-class MemcachedSessionStore(SessionStore):
-    def __init__(self, memcached=False, session_class=None):
-        SessionStore.__init__(self)
-        servers = ast.literal_eval(memcached)
-        self.cache = MemcachedCache(servers, default_timeout=0)
-  
-    def save(self, session):
-        self.cache.set(session.sid, dict(session))
-  
-    def delete(self, session):
-        self.cache.delete(session.sid)
-  
-    def get(self, sid):
-        if not self.is_valid_key(sid):
-            return self.session_class.new()
-        try:
-            data = self.cache.get(sid)
-            if not data:
-                data = {}
-        except:
-            data = {}
-        return self.session_class(data, sid, False)
-  
-    def list(self):
-        return self.cache.get_dict().keys()
 # vim:et:ts=4:sw=4:
