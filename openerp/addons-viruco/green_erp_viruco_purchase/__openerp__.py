@@ -27,6 +27,8 @@
     'website': "www.acespritech.com",
     'depends': ['green_erp_viruco_account','green_erp_viruco_base'],
     'data': [
+             'security/viruco_purchase_security.xml',
+             'security/ir.model.access.csv',
              'purchase_view.xml',
              'menu.xml',
              ],

@@ -27,6 +27,8 @@
     'website': "www.acespritech.com",
     'depends': ['green_erp_viruco_base','sale','green_erp_viruco_account'],
     'data': [
+             'security/viruco_sale_security.xml',
+             'security/ir.model.access.csv',
              'report/hopdong_noi_report_view.xml',
              'report/hopdong_mua_report_view.xml',
              'report/hopdong_ngoai_report_view.xml',

@@ -27,6 +27,8 @@
     'website': "www.acespritech.com",
     'depends': ['green_erp_viruco_base','stock','report_aeroo','report_aeroo_ooo'],
     'data': [
+         'security/viruco_stock_security.xml',
+         'security/ir.model.access.csv',
         'report/denghi_xuathang_view.xml',
         'report/denghi_nhapkho_view.xml',
         'report/denghi_xuatkho_view.xml',

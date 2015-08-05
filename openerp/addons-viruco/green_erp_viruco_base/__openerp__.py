@@ -28,6 +28,8 @@
     'website' : 'http://incomtech.com/',
     'depends': ['green_erp_viruco_menu','web','base','purchase','sale','sale_stock','product','properties','report_aeroo','report_aeroo_ooo','stock','account'],
     'data': [
+            'security/viruco_base_security.xml',
+            'security/ir.model.access.csv',
             'report/don_ban_hang_view.xml',
             'report/don_mua_hang_view.xml',
             'config_view.xml',

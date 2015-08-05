@@ -28,6 +28,8 @@
     'website' : 'http://incomtech.com/',
     'depends': ['base'],
     'data': [
+             'security/viruco_menu_security.xml',
+             'security/ir.model.access.csv',
             'ir_ui_menu_view.xml',
     ],
     'installable': True,
