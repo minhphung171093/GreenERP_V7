@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		<record id="pr_approve_multi_form_view" model="ir.ui.view">
+	        <field name="name">alert.form</field>
+	        <field name="model">alert.form</field>
+	        <field eval="20" name="priority"/>
+	        <field name="arch" type="xml">
+	            <form string="Alert" version="7.0">
+	                <field name="message" nolabel="1" />
+	                <footer>
+	                    <button name="bt_approve" type='object' string="Yes" class="oe_highlight"/>
+	                    or
+	                    <button string="No" class="oe_highlight" special="cancel" />
+	                </footer>
+	            </form>
+	        </field>
+    	</record>
+
+	    <record model="ir.actions.act_window" id="action_pr_approve_multi">
+	        <field name="name">Approve</field>
+	        <field name="res_model">alert.form</field>
+	        <field name="view_type">form</field>
+	        <field name="view_mode">form</field>
+	        <field name="view_id" ref="pr_approve_multi_form_view" />
+	        <field name="context">{'default_message': 'Do you want approve?'}</field>
+	        <field name="target">new</field>
+	    </record>
+	    
+	    <record id="pr_reject_multi_form_view" model="ir.ui.view">
+	        <field name="name">alert.form</field>
+	        <field name="model">alert.form</field>
+	        <field eval="20" name="priority"/>
+	        <field name="arch" type="xml">
+	            <form string="Alert" version="7.0">
+	                <field name="message" nolabel="1" />
+	                <footer>
+	                    <button name="bt_reject" type='object' string="Yes" class="oe_highlight"/>
+	                    or
+	                    <button string="No" class="oe_highlight" special="cancel" />
+	                </footer>
+	            </form>
+	        </field>
+    	</record>
+
+	    <record model="ir.actions.act_window" id="action_pr_reject_multi">
+	        <field name="name">Reject</field>
+	        <field name="res_model">alert.form</field>
+	        <field name="view_type">form</field>
+	        <field name="view_mode">form</field>
+	        <field name="view_id" ref="pr_reject_multi_form_view" />
+	        <field name="context">{'default_message': 'Do you want reject?'}</field>
+	        <field name="target">new</field>
+	    </record>
+	    
+    </data>
+</openerp>
+

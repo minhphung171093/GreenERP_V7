@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <record id="seq_bdf_purchase_request" model="ir.sequence.type">
+            <field name="name">Purchase Request</field>
+            <field name="code">bdf.purchase.request</field>
+        </record>
+        
+        <record id="seq_bdf_purchase_request_item" model="ir.sequence">
+            <field name="name">Purchase Request</field>
+            <field name="code">bdf.purchase.request</field>
+            <field name="prefix">%(y)s%(month)s</field>
+            <field name="padding">3</field>
+            <field name="implementation">no_gap</field>
+            <field name="auto_reset">True</field>
+            <field name="reset_period">month</field>
+            <field name="reset_init_number">1</field>
+        </record>
+
+    </data>
+</openerp>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+	    <!-- Create new template Phieu Yeu Cau Trien Khai Truc In -->
+    	<record id="pdf_report_pr_master" model="ir.actions.report.xml">
+	        <field name="name">pdf_report_pr_master</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">bdf.purchase</field>
+	        <field name="report_name">pdf_report_pr_master</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">pdf_purchase/report/pr_master.py</field>
+	        <field name="report_rml">pdf_purchase/report/pr_master.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record>		    
+		
+		<report 
+			auto="False" 
+			menu="False"
+			id="pdf_report_pr_master" 
+			model="bdf.purchase" 
+			name="pdf_report_pr_master"
+	        string="Purchase Request"
+	        rml="pdf_purchase/report/pr_master.ods"/>   	 
+	  	 
+	</data>
+</openerp>

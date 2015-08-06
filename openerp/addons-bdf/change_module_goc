@@ -1,0 +1,39 @@
+web/http.py
+def session_gc(session_store):
+    #if random.random() < 0.001:
+        # we keep session one week
+        last_week = time.time() - 60*10
+        for fname in os.listdir(session_store.path):
+            path = os.path.join(session_store.path, fname)
+            try:
+                if os.path.getmtime(path) < last_week:
+                    os.unlink(path)
+            except OSError:
+                pass
+
+web/controllers/main.py
+html_template = """<!DOCTYPE html>
+<html style="height: 100%%">
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>BlueERP</title>
+        <link rel="shortcut icon" href="/web/static/src/img/favicon.ico" type="image/x-icon"/>
+        <link rel="stylesheet" href="/web/static/src/css/full.css" />
+        %(css)s
+        %(js)s
+        <script type="text/javascript">
+            $(function() {
+                var s = new openerp.init(%(modules)s);
+                %(init)s
+            });
+        </script>
+    </head>
+    <body>
+        <!--[if lte IE 8]>
+        <script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+        <script>CFInstall.check({mode: "overlay"});</script>
+        <![endif]-->
+    </body>
+</html>
+"""

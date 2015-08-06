@@ -1,0 +1,1302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+        <record id="view_bdf_channel_tree" model="ir.ui.view">
+            <field name="name">view.bdf.channel.tree</field>
+            <field name="model">bdf.channel</field>
+            <field name="arch" type="xml">
+                <tree string="Channel" editable="top">
+                    <field name="name"/>
+                    <field name="budget_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="action_view_bdf_channel_tree" model="ir.actions.act_window">
+            <field name="name">Channel</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bdf.channel</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id"/>
+        </record>
+        
+        <record id="view_bdf_cost_center_tree" model="ir.ui.view">
+            <field name="name">view.bdf.cost.center.tree</field>
+            <field name="model">bdf.cost.center</field>
+            <field name="arch" type="xml">
+                <tree string="CostCenter" editable="top">
+                    <field name="name"/>
+                    <field name="cat_id" domain="[('parent_id','=',False)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+                    <field name="sub_cat_id" domain="[('parent_id','=',cat_id)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_bdf_cost_center_tree" model="ir.actions.act_window">
+            <field name="name">Cost Center</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bdf.cost.center</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id"/>
+        </record>
+        
+        
+         <record id="view_bdf_purchase_search" model="ir.ui.view">
+            <field name="name">view.bdf.purchase.search</field>
+            <field name="model">bdf.purchase</field>
+            <field name="arch" type="xml">
+                <search string="Purchase">
+                	<field name="name"/>
+                    <field name="supplier_id"/>
+                    <field name="channel"/>
+                    <field name="product_id"/>
+                    <field name="date"/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Vendor/Suplier" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'supplier_id'}"/>
+                        <!--<filter string="Channel" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'channel'}"/>-->
+                        <filter string="Status" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
+                         <separator/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+    	<record id="view_bdf_purchase_tree" model="ir.ui.view">
+            <field name="name">view.bdf.purchase.tree</field>
+            <field name="model">bdf.purchase</field>
+            <field name="arch" type="xml">
+                <tree string="Purchase Request">
+                	<field name="name"/>
+                	<field name="date"/>
+                	<field name="user_request_id"/>
+                    <field name="supplier_id"/>
+                    <field name="description"/>
+                    <field name="cat"/>
+                    <field name="amt"/>
+                    <field name="user_id" attrs="{'invisible':[('state','=','procurement')]}"/>
+                    <field name="state" invisible='1'/>
+                    <field name="bdf_state"/>
+                    <button name="button_request" icon="approve" string ="Sumbit For Approval" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_purchase_request"/>
+            		<button name="button_reject" icon="reject" string ="Reject" class="oe_highlight" type ="object" groups="pdf_purchase.group_country_manager"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="view_bdf_purchase_nocreateedit_tree" model="ir.ui.view">
+            <field name="name">view.bdf.purchase.tree</field>
+            <field name="model">bdf.purchase</field>
+            <field name="arch" type="xml">
+                <tree string="Purchase Request" create='false' edit='false'>
+                	<field name="name"/>
+                	<field name="date"/>
+                	<field name="user_request_id"/>
+                    <field name="supplier_id"/>
+                    <field name="description"/>
+                    <field name="cat"/>
+                    <field name="amt"/>
+                    <field name="user_id" attrs="{'invisible':[('state','=','procurement')]}"/>
+                    <field name="state" invisible='1'/>
+                    <field name="bdf_state"/>
+                    <button name="button_request" icon="approve" string ="Sumbit For Approval" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_purchase_request"/>
+            		<button name="button_reject" icon="reject" string ="Reject" class="oe_highlight" type ="object" groups="pdf_purchase.group_country_manager"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="view_bdf_purchase_nocreateeditbutton_tree" model="ir.ui.view">
+            <field name="name">view.bdf.purchase.tree</field>
+            <field name="model">bdf.purchase</field>
+            <field name="arch" type="xml">
+                <tree string="Purchase Request" create='false' edit='false'>
+                	<field name="name"/>
+                	<field name="date"/>
+                	<field name="user_request_id"/>
+                    <field name="supplier_id"/>
+                    <field name="description"/>
+                    <field name="cat"/>
+                    <field name="amt"/>
+                    <field name="user_id" attrs="{'invisible':[('state','=','procurement')]}"/>
+                    <field name="state" invisible='1'/>
+                    <field name="bdf_state"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="view_bdf_purchase_procurement_tree" model="ir.ui.view">
+            <field name="name">view.bdf.purchase.tree</field>
+            <field name="model">bdf.purchase</field>
+            <field name="arch" type="xml">
+                <tree string="Purchase Request" create='false' edit='false'>
+                	<field name="name"/>
+                	<field name="date"/>
+                	<field name="user_request_id" string="Latest Approve by"/>
+                    <field name="supplier_id"/>
+                    <field name="description"/>
+                    <field name="cat"/>
+                    <field name="amt"/>
+                    <field name="state" invisible='1'/>
+                    <field name="bdf_state"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="view_bdf_purchase_form" model="ir.ui.view">
+            <field name="name">view.bdf.purchase.form</field>
+            <field name="model">bdf.purchase</field>
+            <field name="type">form</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <form string="Purchase Request" version="7.0">
+	                <header>
+	                	<button name="print_purchase" string="Print" type="object" groups="pdf_purchase.group_purchase_request,pdf_purchase.group_procurement,pdf_purchase.group_budget_control"/>
+	                	
+	            		<button name="button_request" states="purchase_request,reject" string ="Sumbit For Approval" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_purchase_request"/>
+	            		<button name="button_request" states="category_manager" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_category_manager"/>
+	            		<button name="button_request" states="channel_manager" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_channel_manager"/>
+	            		<button name="button_request" states="product_manager" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_product_manager"/>
+	            		<button name="button_request" states="group_pm" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_group_pm"/>
+	            		<button name="button_request" states="bu_manager" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_bu_manager"/>
+	            		<button name="button_request" states="function_head" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_function_head"/>
+	            		<button name="button_request" states="budget_control" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_budget_control"/>
+	            		<button name="button_request" states="control_manager" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_control_manager"/>
+	            		<button name="button_request" states="fi_function_head" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_fi_function_head"/>
+	            		<button name="button_request" states="country_manager" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_country_manager"/>
+	            		
+	            		<button name="button_reject" states="category_manager" string ="Reject" class="oe_highlight" type ="object" groups="pdf_purchase.group_category_manager"/>
+	            		<button name="button_reject" states="channel_manager" string ="Reject" class="oe_highlight" type ="object" groups="pdf_purchase.group_channel_manager"/>
+	            		<button name="button_reject" states="product_manager" string ="Reject" class="oe_highlight" type ="object" groups="pdf_purchase.group_product_manager"/>
+	            		<button name="button_reject" states="group_pm" string ="Reject" class="oe_highlight" type ="object" groups="pdf_purchase.group_group_pm"/>
+	            		<button name="button_reject" states="bu_manager" string ="Reject" class="oe_highlight" type ="object" groups="pdf_purchase.group_bu_manager"/>
+	            		<button name="button_reject" states="function_head" string ="Reject" class="oe_highlight" type ="object" groups="pdf_purchase.group_function_head"/>
+	            		<button name="button_reject" states="budget_control" string ="Reject" class="oe_highlight" type ="object" groups="pdf_purchase.group_budget_control"/>
+	            		<button name="button_reject" states="control_manager" string ="Reject" class="oe_highlight" type ="object" groups="pdf_purchase.group_control_manager"/>
+	            		<button name="button_reject" states="fi_function_head" string ="Reject" class="oe_highlight" type ="object" groups="pdf_purchase.group_fi_function_head"/>
+	            		<button name="button_reject" states="country_manager" string ="Reject" class="oe_highlight" type ="object" groups="pdf_purchase.group_country_manager"/>
+	            		
+	            		<button name="button_set_to_draft" states="cancel" string ="Set to Draft" class="oe_highlight" type ="object"/>
+	                	<field name="state" widget="statusbar" statusbar_visible="purchase_request,procurement"/>
+	                </header>
+	                <sheet>
+		                <div class="oe_title">
+		                    <h1>
+		                    	<label string="PR No."/>
+		                    	<field name="name" readonly="1" class="oe_inline"/>
+		                    	<label string="Date" class="oe_inline"/>
+		                    	<field name="date" readonly="1" class="oe_inline"/>
+		                    </h1>
+		                </div>
+		                <group invisible='1'>
+		                	<field name="create_uid"/>
+		                	<field name="category_manager_id"/>
+		                	<field name="channel_manager_id"/>
+		                	<field name="product_manager_id"/>
+		                	<field name="group_pm_id"/>
+		                	<field name="bu_manager_id"/>
+		                	<field name="function_head_id"/>
+		                	<field name="budget_control_id"/>
+		                	<field name="control_manager_id"/>
+		                	<field name="fi_function_head_id"/>
+		                	<field name="country_manager_id"/>
+		                </group>
+		                <group invisible='1'>
+		                	<field name="request_by_id"/>
+		                	<field name="category_manager_approve_id"/>
+		                	<field name="channel_manager_approve_id"/>
+		                	<field name="product_manager_approve_id"/>
+		                	<field name="group_pm_approve_id"/>
+		                	<field name="bu_manager_approve_id"/>
+		                	<field name="function_head_approve_id"/>
+		                	<field name="budget_control_approve_id"/>
+		                	<field name="control_manager_approve_id"/>
+		                	<field name="fi_function_head_approve_id"/>
+		                	<field name="country_manager_approve_id"/>
+		                	<field name="notify_ids" widget="many2many_tags"/>
+		                	<field name="history_ids" widget="many2many_tags"/>
+		                </group>
+		                <group invisible='1'>
+		                	<field name="process_line" nolabel="1">
+		            			<tree editable='bottom'>
+		            				<field name="name"/>
+		            				<field name="pr_value_filter"/>
+		            				<field name="amount" attrs="{'invisible':[('pr_value_filter','=',False)],'required':[('pr_value_filter','=',True)]}"/>
+		            				<field name="group_id"/>
+		            				<field name="user_id" context="{'search_user_group_process':1,'group_id':group_id}"/>
+		            				<field name="is_done"/>
+		            				<field name="is_pass"/>
+		            				<field name="notify_ids" widget="many2many_tags" context="{'search_user_group_assistant_pm':1}"/>
+		            			</tree>
+		            		</field>
+		                </group>
+		                <group col='4' colspan='2'>
+		                    <field name="budget_owner" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+		                    <field name="channel" domain="[('budget_id','=',budget_owner)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+			            	<field name="date_from"/> 
+		                    <field name="date_to"/>
+		                	<field name="supplier_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+		                	<field name="description"/>
+		                	<field name="purchasing_group_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+			            </group>
+			            <group string="Procurement Detail">
+							<field name="procurement_detail_line" nolabel="1">
+								<tree editable="top">
+									<field name="product_id"/>
+									<field name="qty"/>
+									<field name="price_unit" sum="Total"/>
+									<field name="amt" sum="Amount" readonle="1"/>
+								</tree>
+							</field>
+			            </group>
+			            <group string="Spending Detail" col='4' colspan='4'>
+			            	<group>
+				            	<div class="oe_right">
+			                		<label for="fx"/>
+				                    <field name="fx" class="oe_inline"/>
+				                </div>
+			                </group>
+			                <group colspan='4'>
+			                	<div col='4' colspan='4' class='oe_green_erp_scroll'>
+									<field name="spending_detail_line" nolabel="1" context="{'channel_id':channel}">
+										<tree string="Spending Detail">
+											<field name="cost_center_id" on_change="onchange_cost(cost_center_id)" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+											<field name="cat" domain="[('parent_id','=',False)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+											<field name="sub_cat" domain="[('parent_id','=',cat)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+											<field name="project_id" invisible='1'/>
+											<field name="product_id" domain="[('master_function_expense_id','=',parent.function),('master_budget_owner_id','=',parent.budget_owner)]" on_change="onchange_product(product_id)" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+											<field name="account_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+											<field name="qty"/>
+											<field name="price_unit"/>
+											<field name="amt" sum="Total"/>
+											<field name="fx_currency" sum="Total"/>
+											<field name="channel_name" invisible='1'/>
+										</tree>
+										<form string="Spending Detail">
+											<sheet>
+												<field name="cat" invisible='1' domain="[('parent_id','=',False)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+												<field name="sub_cat" invisible='1' domain="[('parent_id','=',cat)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+												<field name="project_id" invisible='1'/>
+												<field name="account_id" invisible='1' options="{'no_open': True,'create': false, 'create_edit': false}"/>
+												<field name="amt" invisible='1'/>
+												<field name="fx_currency" invisible='1'/>
+												<group col='4' colspan='2'>
+													<field name="cost_center_id" on_change="onchange_cost(cost_center_id)" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+													<field name="product_id" domain="[('channel_id','in',[parent.channel])]" on_change="onchange_product(product_id)" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+													<field name="qty"/>
+													<field name="price_unit"/>
+												</group>
+												<group string="Allocation">
+													<field name="allocation_id" nolabel="1">
+														<tree string="Spending Detail" editable='bottom' create='false'>
+															<field name="key_account_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+															<field name="allocation"/>
+														</tree>
+													</field>
+												</group>
+											</sheet>
+										</form>
+									</field>
+								</div>
+							</group>
+							<group colspan='4' string="History Comment">
+								<field name="user_comment" nolabel='1' readonly='1'/>
+							</group>
+			            </group>
+		            </sheet>
+	            </form>
+            </field>
+        </record>
+        
+        <record id="view_bdf_purchase_nocreatedit_form" model="ir.ui.view">
+            <field name="name">view.bdf.purchase.form</field>
+            <field name="model">bdf.purchase</field>
+            <field name="type">form</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <form string="Purchase Request" version="7.0" create='false' edit='false'>
+	                <header>
+	                	<button name="print_purchase" string="Print" type="object" groups="pdf_purchase.group_purchase_request,pdf_purchase.group_procurement,pdf_purchase.group_budget_control"/>
+	                	
+	            		<button name="button_request" states="purchase_request,reject" string ="Sumbit For Approval" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_purchase_request"/>
+	            		<button name="button_request" states="category_manager" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_category_manager"/>
+	            		<button name="button_request" states="channel_manager" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_channel_manager"/>
+	            		<button name="button_request" states="product_manager" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_product_manager"/>
+	            		<button name="button_request" states="group_pm" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_group_pm"/>
+	            		<button name="button_request" states="bu_manager" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_bu_manager"/>
+	            		<button name="button_request" states="function_head" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_function_head"/>
+	            		<button name="button_request" states="budget_control" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_budget_control"/>
+	            		<button name="button_request" states="control_manager" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_control_manager"/>
+	            		<button name="button_request" states="fi_function_head" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_fi_function_head"/>
+	            		<button name="button_request" states="country_manager" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_country_manager"/>
+	            		
+	            		<button name="button_reject" states="category_manager" string ="Reject" class="oe_highlight" type ="object" groups="pdf_purchase.group_category_manager"/>
+	            		<button name="button_reject" states="channel_manager" string ="Reject" class="oe_highlight" type ="object" groups="pdf_purchase.group_channel_manager"/>
+	            		<button name="button_reject" states="product_manager" string ="Reject" class="oe_highlight" type ="object" groups="pdf_purchase.group_product_manager"/>
+	            		<button name="button_reject" states="group_pm" string ="Reject" class="oe_highlight" type ="object" groups="pdf_purchase.group_group_pm"/>
+	            		<button name="button_reject" states="bu_manager" string ="Reject" class="oe_highlight" type ="object" groups="pdf_purchase.group_bu_manager"/>
+	            		<button name="button_reject" states="function_head" string ="Reject" class="oe_highlight" type ="object" groups="pdf_purchase.group_function_head"/>
+	            		<button name="button_reject" states="budget_control" string ="Reject" class="oe_highlight" type ="object" groups="pdf_purchase.group_budget_control"/>
+	            		<button name="button_reject" states="control_manager" string ="Reject" class="oe_highlight" type ="object" groups="pdf_purchase.group_control_manager"/>
+	            		<button name="button_reject" states="fi_function_head" string ="Reject" class="oe_highlight" type ="object" groups="pdf_purchase.group_fi_function_head"/>
+	            		<button name="button_reject" states="country_manager" string ="Reject" class="oe_highlight" type ="object" groups="pdf_purchase.group_country_manager"/>
+	            		
+	            		<button name="button_set_to_draft" states="cancel" string ="Set to Draft" class="oe_highlight" type ="object"/>
+	                	<field name="state" widget="statusbar" statusbar_visible="purchase_request,procurement"/>
+	                </header>
+	                <sheet>
+		                <div class="oe_title">
+		                    <h1>
+		                    	<label string="PR No."/>
+		                    	<field name="name" readonly="1" class="oe_inline"/>
+		                    	<label string="Date" class="oe_inline"/>
+		                    	<field name="date" readonly="1" class="oe_inline"/>
+		                    </h1>
+		                </div>
+		                <group invisible='1'>
+		                	<field name="create_uid"/>
+		                	<field name="category_manager_id"/>
+		                	<field name="channel_manager_id"/>
+		                	<field name="product_manager_id"/>
+		                	<field name="group_pm_id"/>
+		                	<field name="bu_manager_id"/>
+		                	<field name="function_head_id"/>
+		                	<field name="budget_control_id"/>
+		                	<field name="control_manager_id"/>
+		                	<field name="fi_function_head_id"/>
+		                	<field name="country_manager_id"/>
+		                </group>
+		                <group invisible='1'>
+		                	<field name="request_by_id"/>
+		                	<field name="category_manager_approve_id"/>
+		                	<field name="channel_manager_approve_id"/>
+		                	<field name="product_manager_approve_id"/>
+		                	<field name="group_pm_approve_id"/>
+		                	<field name="bu_manager_approve_id"/>
+		                	<field name="function_head_approve_id"/>
+		                	<field name="budget_control_approve_id"/>
+		                	<field name="control_manager_approve_id"/>
+		                	<field name="fi_function_head_approve_id"/>
+		                	<field name="country_manager_approve_id"/>
+		                	<field name="notify_ids" widget="many2many_tags"/>
+		                	<field name="history_ids" widget="many2many_tags"/>
+		                </group>
+		                <group invisible='1'>
+		                	<field name="process_line" nolabel="1">
+		            			<tree editable='bottom'>
+		            				<field name="name"/>
+		            				<field name="pr_value_filter"/>
+		            				<field name="amount" attrs="{'invisible':[('pr_value_filter','=',False)],'required':[('pr_value_filter','=',True)]}"/>
+		            				<field name="group_id"/>
+		            				<field name="user_id" context="{'search_user_group_process':1,'group_id':group_id}"/>
+		            				<field name="is_done"/>
+		            				<field name="is_pass"/>
+		            				<field name="notify_ids" widget="many2many_tags" context="{'search_user_group_assistant_pm':1}"/>
+		            			</tree>
+		            		</field>
+		                </group>
+		                <group col='4' colspan='2'>
+		                    <field name="budget_owner" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+		                    <field name="channel" domain="[('budget_id','=',budget_owner)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+			            	<field name="date_from"/> 
+		                    <field name="date_to"/>
+		                	<field name="supplier_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+		                	<field name="description"/>
+		                	<field name="purchasing_group_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+			            </group>
+			            <group string="Procurement Detail">
+							<field name="procurement_detail_line" nolabel="1">
+								<tree editable="top">
+									<field name="product_id"/>
+									<field name="qty"/>
+									<field name="price_unit" sum="Total"/>
+									<field name="amt" sum="Amount" readonle="1"/>
+								</tree>
+							</field>
+			            </group>
+			            <group string="Spending Detail" col='4' colspan='4'>
+			            	<group>
+				            	<div class="oe_right">
+			                		<label for="fx"/>
+				                    <field name="fx" class="oe_inline"/>
+				                </div>
+			                </group>
+			                <group colspan='4'>
+			                	<div col='4' colspan='4' class='oe_green_erp_scroll'>
+									<field name="spending_detail_line" nolabel="1" context="{'channel_id':channel}">
+										<tree string="Spending Detail">
+											<field name="cost_center_id" on_change="onchange_cost(cost_center_id)" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+											<field name="cat" domain="[('parent_id','=',False)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+											<field name="sub_cat" domain="[('parent_id','=',cat)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+											<field name="project_id" invisible='1'/>
+											<field name="product_id" domain="[('master_function_expense_id','=',parent.function),('master_budget_owner_id','=',parent.budget_owner)]" on_change="onchange_product(product_id)" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+											<field name="account_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+											<field name="qty"/>
+											<field name="price_unit"/>
+											<field name="amt" sum="Total"/>
+											<field name="fx_currency" sum="Total"/>
+											<field name="channel_name" invisible='1'/>
+										</tree>
+										<form string="Spending Detail">
+											<sheet>
+												<field name="cat" invisible='1' domain="[('parent_id','=',False)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+												<field name="sub_cat" invisible='1' domain="[('parent_id','=',cat)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+												<field name="project_id" invisible='1'/>
+												<field name="account_id" invisible='1' options="{'no_open': True,'create': false, 'create_edit': false}"/>
+												<field name="amt" invisible='1'/>
+												<field name="fx_currency" invisible='1'/>
+												<group col='4' colspan='2'>
+													<field name="cost_center_id" on_change="onchange_cost(cost_center_id)" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+													<field name="product_id" domain="[('channel_id','in',[parent.channel])]" on_change="onchange_product(product_id)" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+													<field name="qty"/>
+													<field name="price_unit"/>
+												</group>
+												<group string="Allocation">
+													<field name="allocation_id" nolabel="1">
+														<tree string="Spending Detail" editable='bottom' create='false'>
+															<field name="key_account_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+															<field name="allocation"/>
+														</tree>
+													</field>
+												</group>
+											</sheet>
+										</form>
+									</field>
+								</div>
+							</group>
+							<group colspan='4' string="History Comment">
+								<field name="user_comment" nolabel='1' readonly='1'/>
+							</group>
+			            </group>
+		            </sheet>
+	            </form>
+            </field>
+        </record>
+        
+        <record id="view_bdf_purchase_nocreate_form" model="ir.ui.view">
+            <field name="name">view.bdf.purchase.form</field>
+            <field name="model">bdf.purchase</field>
+            <field name="type">form</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <form string="Purchase Request" version="7.0" create='false'>
+	                <header>
+	                	<button name="print_purchase" string="Print" type="object" groups="pdf_purchase.group_purchase_request,pdf_purchase.group_procurement,pdf_purchase.group_budget_control"/>
+	                	
+	            		<button name="button_request" states="purchase_request,reject" string ="Sumbit For Approval" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_purchase_request"/>
+	            		<button name="button_request" states="category_manager" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_category_manager"/>
+	            		<button name="button_request" states="channel_manager" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_channel_manager"/>
+	            		<button name="button_request" states="product_manager" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_product_manager"/>
+	            		<button name="button_request" states="group_pm" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_group_pm"/>
+	            		<button name="button_request" states="bu_manager" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_bu_manager"/>
+	            		<button name="button_request" states="function_head" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_function_head"/>
+	            		<button name="button_request" states="budget_control" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_budget_control"/>
+	            		<button name="button_request" states="control_manager" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_control_manager"/>
+	            		<button name="button_request" states="fi_function_head" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_fi_function_head"/>
+	            		<button name="button_request" states="country_manager" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_country_manager"/>
+	            		
+	            		<button name="button_reject" states="category_manager" string ="Reject" class="oe_highlight" type ="object" groups="pdf_purchase.group_category_manager"/>
+	            		<button name="button_reject" states="channel_manager" string ="Reject" class="oe_highlight" type ="object" groups="pdf_purchase.group_channel_manager"/>
+	            		<button name="button_reject" states="product_manager" string ="Reject" class="oe_highlight" type ="object" groups="pdf_purchase.group_product_manager"/>
+	            		<button name="button_reject" states="group_pm" string ="Reject" class="oe_highlight" type ="object" groups="pdf_purchase.group_group_pm"/>
+	            		<button name="button_reject" states="bu_manager" string ="Reject" class="oe_highlight" type ="object" groups="pdf_purchase.group_bu_manager"/>
+	            		<button name="button_reject" states="function_head" string ="Reject" class="oe_highlight" type ="object" groups="pdf_purchase.group_function_head"/>
+	            		<button name="button_reject" states="budget_control" string ="Reject" class="oe_highlight" type ="object" groups="pdf_purchase.group_budget_control"/>
+	            		<button name="button_reject" states="control_manager" string ="Reject" class="oe_highlight" type ="object" groups="pdf_purchase.group_control_manager"/>
+	            		<button name="button_reject" states="fi_function_head" string ="Reject" class="oe_highlight" type ="object" groups="pdf_purchase.group_fi_function_head"/>
+	            		<button name="button_reject" states="country_manager" string ="Reject" class="oe_highlight" type ="object" groups="pdf_purchase.group_country_manager"/>
+	            		
+	            		<button name="button_set_to_draft" states="cancel" string ="Set to Draft" class="oe_highlight" type ="object"/>
+	                	<field name="state" widget="statusbar" statusbar_visible="purchase_request,procurement"/>
+	                </header>
+	                <sheet>
+		                <div class="oe_title">
+		                    <h1>
+		                    	<label string="PR No."/>
+		                    	<field name="name" readonly="1" class="oe_inline"/>
+		                    	<label string="Date" class="oe_inline"/>
+		                    	<field name="date" readonly="1" class="oe_inline"/>
+		                    </h1>
+		                </div>
+		                <group invisible='1'>
+		                	<field name="create_uid"/>
+		                	<field name="category_manager_id"/>
+		                	<field name="channel_manager_id"/>
+		                	<field name="product_manager_id"/>
+		                	<field name="group_pm_id"/>
+		                	<field name="bu_manager_id"/>
+		                	<field name="function_head_id"/>
+		                	<field name="budget_control_id"/>
+		                	<field name="control_manager_id"/>
+		                	<field name="fi_function_head_id"/>
+		                	<field name="country_manager_id"/>
+		                </group>
+		                <group invisible='1'>
+		                	<field name="request_by_id"/>
+		                	<field name="category_manager_approve_id"/>
+		                	<field name="channel_manager_approve_id"/>
+		                	<field name="product_manager_approve_id"/>
+		                	<field name="group_pm_approve_id"/>
+		                	<field name="bu_manager_approve_id"/>
+		                	<field name="function_head_approve_id"/>
+		                	<field name="budget_control_approve_id"/>
+		                	<field name="control_manager_approve_id"/>
+		                	<field name="fi_function_head_approve_id"/>
+		                	<field name="country_manager_approve_id"/>
+		                	<field name="notify_ids" widget="many2many_tags"/>
+		                	<field name="history_ids" widget="many2many_tags"/>
+		                </group>
+		                <group invisible='1'>
+		                	<field name="process_line" nolabel="1">
+		            			<tree editable='bottom'>
+		            				<field name="name"/>
+		            				<field name="pr_value_filter"/>
+		            				<field name="amount" attrs="{'invisible':[('pr_value_filter','=',False)],'required':[('pr_value_filter','=',True)]}"/>
+		            				<field name="group_id"/>
+		            				<field name="user_id" context="{'search_user_group_process':1,'group_id':group_id}"/>
+		            				<field name="is_done"/>
+		            				<field name="is_pass"/>
+		            				<field name="notify_ids" widget="many2many_tags" context="{'search_user_group_assistant_pm':1}"/>
+		            			</tree>
+		            		</field>
+		                </group>
+		                <group col='4' colspan='2'>
+		                    <field name="budget_owner" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+		                    <field name="channel" domain="[('budget_id','=',budget_owner)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+			            	<field name="date_from"/> 
+		                    <field name="date_to"/>
+		                	<field name="supplier_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+		                	<field name="description"/>
+		                	<field name="purchasing_group_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+			            </group>
+			            <group string="Procurement Detail">
+							<field name="procurement_detail_line" nolabel="1">
+								<tree editable="top">
+									<field name="product_id"/>
+									<field name="qty"/>
+									<field name="price_unit" sum="Total"/>
+									<field name="amt" sum="Amount" readonle="1"/>
+								</tree>
+							</field>
+			            </group>
+			            <group string="Spending Detail" col='4' colspan='4'>
+			            	<group>
+				            	<div class="oe_right">
+			                		<label for="fx"/>
+				                    <field name="fx" class="oe_inline"/>
+				                </div>
+			                </group>
+			                <group colspan='4'>
+			                	<div col='4' colspan='4' class='oe_green_erp_scroll'>
+									<field name="spending_detail_line" nolabel="1" context="{'channel_id':channel}">
+										<tree string="Spending Detail">
+											<field name="cost_center_id" on_change="onchange_cost(cost_center_id)" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+											<field name="cat" domain="[('parent_id','=',False)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+											<field name="sub_cat" domain="[('parent_id','=',cat)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+											<field name="project_id" invisible='1'/>
+											<field name="product_id" domain="[('master_function_expense_id','=',parent.function),('master_budget_owner_id','=',parent.budget_owner)]" on_change="onchange_product(product_id)" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+											<field name="account_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+											<field name="qty"/>
+											<field name="price_unit"/>
+											<field name="amt" sum="Total"/>
+											<field name="fx_currency" sum="Total"/>
+											<field name="channel_name" invisible='1'/>
+										</tree>
+										<form string="Spending Detail">
+											<sheet>
+												<field name="cat" invisible='1' domain="[('parent_id','=',False)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+												<field name="sub_cat" invisible='1' domain="[('parent_id','=',cat)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+												<field name="project_id" invisible='1'/>
+												<field name="account_id" invisible='1' options="{'no_open': True,'create': false, 'create_edit': false}"/>
+												<field name="amt" invisible='1'/>
+												<field name="fx_currency" invisible='1'/>
+												<group col='4' colspan='2'>
+													<field name="cost_center_id" on_change="onchange_cost(cost_center_id)" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+													<field name="product_id" domain="[('channel_id','in',[parent.channel])]" on_change="onchange_product(product_id)" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+													<field name="qty"/>
+													<field name="price_unit"/>
+												</group>
+												<group string="Allocation">
+													<field name="allocation_id" nolabel="1">
+														<tree string="Spending Detail" editable='bottom' create='false'>
+															<field name="key_account_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+															<field name="allocation"/>
+														</tree>
+													</field>
+												</group>
+											</sheet>
+										</form>
+									</field>
+								</div>
+							</group>
+							<group colspan='4' string="History Comment">
+								<field name="user_comment" nolabel='1' readonly='1'/>
+							</group>
+			            </group>
+		            </sheet>
+	            </form>
+            </field>
+        </record>
+        
+        <record id="action_view_bdf_purchase_request" model="ir.actions.act_window">
+            <field name="name">Request</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bdf.purchase</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context" eval="{'states': 'request'}"/>
+            <field name="domain">[('state','in',('purchase_request','functional_manager'))]</field>
+            <field name="search_view_id"/>
+        </record>
+        <record id="action_view_bdf_purchase_request1" model="ir.actions.act_window.view">
+            <field eval="0" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_bdf_purchase_tree"/>
+            <field name="act_window_id" ref="action_view_bdf_purchase_request"/>
+        </record>
+        <record id="action_view_bdf_purchase_request2" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_bdf_purchase_form"/>
+            <field name="act_window_id" ref="action_view_bdf_purchase_request"/>
+        </record>
+        
+        <record id="action_view_bdf_purchase_pending_approval" model="ir.actions.act_window">
+            <field name="name">Pending Approval</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bdf.purchase</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context" eval="{}"/>
+            <field name="domain">[('state','in',['category_manager','channel_manager','product_manager','group_pm','bu_manager','function_head','budget_control','control_manager','fi_function_head','country_manager'])]</field>
+            <field name="search_view_id"/>
+        </record>
+        <record id="action_view_bdf_purchase_pending_approval1" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_bdf_purchase_nocreateeditbutton_tree"/>
+            <field name="act_window_id" ref="action_view_bdf_purchase_pending_approval"/>
+        </record>
+        <record id="action_view_bdf_purchase_pending_approval2" model="ir.actions.act_window.view">
+            <field eval="3" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_bdf_purchase_nocreatedit_form"/>
+            <field name="act_window_id" ref="action_view_bdf_purchase_pending_approval"/>
+        </record>
+        
+        <record id="action_view_bdf_purchase_category_manager" model="ir.actions.act_window">
+            <field name="name">Category Manager</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bdf.purchase</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+            <field name="domain">[('state','=','category_manager')]</field>
+            <field name="search_view_id"/>
+        </record>
+        <record id="action_view_bdf_purchase_category_manager1" model="ir.actions.act_window.view">
+            <field eval="4" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_bdf_purchase_nocreateedit_tree"/>
+            <field name="act_window_id" ref="action_view_bdf_purchase_category_manager"/>
+        </record>
+        <record id="action_view_bdf_purchase_category_manager2" model="ir.actions.act_window.view">
+            <field eval="5" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_bdf_purchase_nocreatedit_form"/>
+            <field name="act_window_id" ref="action_view_bdf_purchase_category_manager"/>
+        </record>
+        
+        
+        <record id="action_view_bdf_purchase_channel_manager" model="ir.actions.act_window">
+            <field name="name">Channel Manager</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bdf.purchase</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+            <field name="domain">[('state','=','channel_manager')]</field>
+            <field name="search_view_id"/>
+        </record>
+        <record id="action_view_bdf_purchase_channel_manager1" model="ir.actions.act_window.view">
+            <field eval="6" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_bdf_purchase_nocreateedit_tree"/>
+            <field name="act_window_id" ref="action_view_bdf_purchase_channel_manager"/>
+        </record>
+        <record id="action_view_bdf_purchase_channel_manager2" model="ir.actions.act_window.view">
+            <field eval="7" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_bdf_purchase_nocreatedit_form"/>
+            <field name="act_window_id" ref="action_view_bdf_purchase_channel_manager"/>
+        </record>
+        
+        
+        <record id="action_view_bdf_purchase_product_manager" model="ir.actions.act_window">
+            <field name="name">Product Manager (PM)</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bdf.purchase</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+            <field name="domain">[('state','=','product_manager')]</field>
+            <field name="search_view_id"/>
+        </record>
+        <record id="action_view_bdf_purchase_product_manager1" model="ir.actions.act_window.view">
+            <field eval="8" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_bdf_purchase_nocreateedit_tree"/>
+            <field name="act_window_id" ref="action_view_bdf_purchase_product_manager"/>
+        </record>
+        <record id="action_view_bdf_purchase_product_manager2" model="ir.actions.act_window.view">
+            <field eval="9" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_bdf_purchase_nocreatedit_form"/>
+            <field name="act_window_id" ref="action_view_bdf_purchase_product_manager"/>
+        </record>
+        
+        <record id="action_view_bdf_purchase_group_pm" model="ir.actions.act_window">
+            <field name="name">Group PM</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bdf.purchase</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+            <field name="domain">[('state','=','group_pm')]</field>
+            <field name="search_view_id"/>
+        </record>
+        <record id="action_view_bdf_purchase_group_pm1" model="ir.actions.act_window.view">
+            <field eval="10" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_bdf_purchase_nocreateedit_tree"/>
+            <field name="act_window_id" ref="action_view_bdf_purchase_group_pm"/>
+        </record>
+        <record id="action_view_bdf_purchase_group_pm2" model="ir.actions.act_window.view">
+            <field eval="11" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_bdf_purchase_nocreatedit_form"/>
+            <field name="act_window_id" ref="action_view_bdf_purchase_group_pm"/>
+        </record>
+        
+        <record id="action_view_bdf_purchase_bu_manager" model="ir.actions.act_window">
+            <field name="name">BU Manager</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bdf.purchase</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+            <field name="domain">[('state','=','bu_manager')]</field>
+            <field name="search_view_id"/>
+        </record>
+        <record id="action_view_bdf_purchase_bu_manager1" model="ir.actions.act_window.view">
+            <field eval="12" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_bdf_purchase_nocreateedit_tree"/>
+            <field name="act_window_id" ref="action_view_bdf_purchase_bu_manager"/>
+        </record>
+        <record id="action_view_bdf_purchase_bu_manager2" model="ir.actions.act_window.view">
+            <field eval="13" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_bdf_purchase_nocreatedit_form"/>
+            <field name="act_window_id" ref="action_view_bdf_purchase_bu_manager"/>
+        </record>
+        
+        <record id="action_view_bdf_purchase_function_head" model="ir.actions.act_window">
+            <field name="name">Function Head</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bdf.purchase</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+            <field name="domain">[('state','=','function_head')]</field>
+            <field name="search_view_id"/>
+        </record>
+        <record id="action_view_bdf_purchase_function_head1" model="ir.actions.act_window.view">
+            <field eval="14" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_bdf_purchase_nocreateedit_tree"/>
+            <field name="act_window_id" ref="action_view_bdf_purchase_function_head"/>
+        </record>
+        <record id="action_view_bdf_purchase_function_head2" model="ir.actions.act_window.view">
+            <field eval="15" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_bdf_purchase_nocreatedit_form"/>
+            <field name="act_window_id" ref="action_view_bdf_purchase_function_head"/>
+        </record>
+        
+        <record id="action_view_bdf_purchase_budget_control" model="ir.actions.act_window">
+            <field name="name">Budget Control</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bdf.purchase</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+            <field name="domain">[('state','=','budget_control')]</field>
+            <field name="search_view_id"/>
+        </record>
+        <record id="action_view_bdf_purchase_budget_control1" model="ir.actions.act_window.view">
+            <field eval="16" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_bdf_purchase_nocreateedit_tree"/>
+            <field name="act_window_id" ref="action_view_bdf_purchase_budget_control"/>
+        </record>
+        <record id="action_view_bdf_purchase_budget_control2" model="ir.actions.act_window.view">
+            <field eval="17" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_bdf_purchase_nocreate_form"/>
+            <field name="act_window_id" ref="action_view_bdf_purchase_budget_control"/>
+        </record>
+        
+        <record id="action_view_bdf_purchase_control_manager" model="ir.actions.act_window">
+            <field name="name">Control Manager</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bdf.purchase</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+            <field name="domain">[('state','=','control_manager')]</field>
+            <field name="search_view_id"/>
+        </record>
+        <record id="action_view_bdf_purchase_control_manager1" model="ir.actions.act_window.view">
+            <field eval="18" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_bdf_purchase_nocreateedit_tree"/>
+            <field name="act_window_id" ref="action_view_bdf_purchase_control_manager"/>
+        </record>
+        <record id="action_view_bdf_purchase_control_manager2" model="ir.actions.act_window.view">
+            <field eval="19" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_bdf_purchase_nocreatedit_form"/>
+            <field name="act_window_id" ref="action_view_bdf_purchase_control_manager"/>
+        </record>
+        
+        <record id="action_view_bdf_purchase_fi_function_head" model="ir.actions.act_window">
+            <field name="name">FI Function Head</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bdf.purchase</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+            <field name="domain">[('state','=','fi_function_head')]</field>
+            <field name="search_view_id"/>
+        </record>
+        <record id="action_view_bdf_purchase_fi_function_head1" model="ir.actions.act_window.view">
+            <field eval="20" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_bdf_purchase_nocreateedit_tree"/>
+            <field name="act_window_id" ref="action_view_bdf_purchase_fi_function_head"/>
+        </record>
+        <record id="action_view_bdf_purchase_fi_function_head2" model="ir.actions.act_window.view">
+            <field eval="21" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_bdf_purchase_nocreatedit_form"/>
+            <field name="act_window_id" ref="action_view_bdf_purchase_fi_function_head"/>
+        </record>
+        
+        <record id="action_view_bdf_purchase_country_manager" model="ir.actions.act_window">
+            <field name="name">Country Manager</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bdf.purchase</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+            <field name="domain">[('state','=','country_manager')]</field>
+            <field name="search_view_id"/>
+        </record>
+        <record id="action_view_bdf_purchase_fi_function_head1" model="ir.actions.act_window.view">
+            <field eval="22" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_bdf_purchase_nocreateedit_tree"/>
+            <field name="act_window_id" ref="action_view_bdf_purchase_fi_function_head"/>
+        </record>
+        <record id="action_view_bdf_purchase_fi_function_head2" model="ir.actions.act_window.view">
+            <field eval="23" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_bdf_purchase_nocreatedit_form"/>
+            <field name="act_window_id" ref="action_view_bdf_purchase_fi_function_head"/>
+        </record>
+        
+        <record id="action_view_bdf_purchase_pending_for_next_level" model="ir.actions.act_window">
+            <field name="name">Pending For Next Level</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bdf.purchase</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context" eval="{}"/>
+            <field name="domain">[('state','in',['category_manager','channel_manager','product_manager','group_pm','bu_manager','function_head','budget_control','control_manager','fi_function_head','country_manager'])]</field>
+            <field name="search_view_id"/>
+        </record>
+        <record id="action_view_bdf_purchase_pending_for_next_level1" model="ir.actions.act_window.view">
+            <field eval="24" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_bdf_purchase_nocreateeditbutton_tree"/>
+            <field name="act_window_id" ref="action_view_bdf_purchase_pending_for_next_level"/>
+        </record>
+        <record id="action_view_bdf_purchase_pending_for_next_level2" model="ir.actions.act_window.view">
+            <field eval="25" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_bdf_purchase_nocreatedit_form"/>
+            <field name="act_window_id" ref="action_view_bdf_purchase_pending_for_next_level"/>
+        </record>
+        
+        <record id="action_view_bdf_purchase_procurement" model="ir.actions.act_window">
+            <field name="name">Procurement</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bdf.purchase</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+            <field name="domain">[('state','=','procurement')]</field>
+            <field name="search_view_id"/>
+        </record>
+        <record id="action_view_bdf_purchase_procurement1" model="ir.actions.act_window.view">
+            <field eval="26" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_bdf_purchase_procurement_tree"/>
+            <field name="act_window_id" ref="action_view_bdf_purchase_procurement"/>
+        </record>
+        <record id="action_view_bdf_purchase_procurement2" model="ir.actions.act_window.view">
+            <field eval="27" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_bdf_purchase_nocreatedit_form"/>
+            <field name="act_window_id" ref="action_view_bdf_purchase_procurement"/>
+        </record>
+        
+    	<record id="action_view_bdf_purchase_for_all" model="ir.actions.act_window">
+            <field name="name">All Purchase Requests</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bdf.purchase</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+            <field name="search_view_id"/>
+        </record>
+        <record id="action_view_bdf_purchase_for_all1" model="ir.actions.act_window.view">
+            <field eval="28" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_bdf_purchase_nocreateeditbutton_tree"/>
+            <field name="act_window_id" ref="action_view_bdf_purchase_for_all"/>
+        </record>
+        <record id="action_view_bdf_purchase_for_all2" model="ir.actions.act_window.view">
+            <field eval="29" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_bdf_purchase_nocreatedit_form"/>
+            <field name="act_window_id" ref="action_view_bdf_purchase_for_all"/>
+        </record>
+        
+        <!-- Kiet: Sua ten cua product_category -->
+        
+        <record id="product.product_category_action_form" model="ir.actions.act_window">
+            <field name="name">Master Catecode</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.category</field>
+            <field name="view_type">form</field>
+            <field name="search_view_id" ref="product.product_category_search_view"/>
+            <field name="view_id" ref="product.product_category_list_view"/>
+        </record>
+        
+        
+        <!-- Kiet: Sua ten cua product_product -->
+        <record id="product.product_normal_action" model="ir.actions.act_window">
+            <field name="name">Master Items</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.product</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="view_id" ref="product.product_product_tree_view"/>
+            <field name="search_view_id" ref="product.product_search_form_view"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to define a new product.
+              </p><p>
+                You must define a product for everything you buy or sell,
+                whether it's a physical product, a consumable or service.
+              </p>
+            </field>
+        </record>
+    	
+    	
+    	<!-- Kiet: Master Function Expense -->
+    	<record id="view_master_function_expense_tree" model="ir.ui.view">
+            <field name="name">master.function.expense.tree</field>
+            <field name="model">master.function.expense</field>
+            <field name="type">tree</field>
+            <field eval="8" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Master Function Expenses" editable="top">
+                	<field name="name"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="action_master_function_expense" model="ir.actions.act_window">
+            <field name="name">Master Function Expenses</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">master.function.expense</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id"/>
+        </record>
+        
+        <!-- Kiet: Master Budget Owner -->
+    	<record id="view_master_budget_owner_tree" model="ir.ui.view">
+            <field name="name">master_budget_owner</field>
+            <field name="model">master.budget.owner</field>
+            <field name="type">tree</field>
+            <field eval="8" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Master Budget Holder" editable="top">
+                	<field name="name"/>
+                	<!--<field name="function_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>-->
+                </tree>
+            </field>
+        </record>
+        
+        <record id="action_master_budget_owner" model="ir.actions.act_window">
+            <field name="name">Master Budget Holder</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">master.budget.owner</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id"/>
+        </record>
+        
+        
+        <!-- Kiet: Master Key Accounts -->
+    	<record id="view_master_key_accounts_tree" model="ir.ui.view">
+            <field name="name">master_key_accounts</field>
+            <field name="model">master.key.accounts</field>
+            <field name="type">tree</field>
+            <field eval="8" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Master Key Account" editable="top">
+                	<field name="name"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="action_master_key_accounts" model="ir.actions.act_window">
+            <field name="name">Master key accounts</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">master.key.accounts</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id"/>
+        </record>
+        
+       
+         <!-- Kiet: Master Regions-->
+    	<record id="view_master_regions_tree" model="ir.ui.view">
+            <field name="name">Master Project</field>
+            <field name="model">master.regions</field>
+            <field name="type">tree</field>
+            <field eval="8" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Master Regions" editable="top">
+                	<field name="channel_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+                	<field name="account_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="action_master_regions" model="ir.actions.act_window">
+            <field name="name">Master Regions</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">master.regions</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id"/>
+        </record>
+        
+        <!-- Kiet: Master Purchasing Group-->
+    	<record id="view_purchasing_group_tree" model="ir.ui.view">
+            <field name="name">Master Project</field>
+            <field name="model">purchasing.group</field>
+            <field name="type">tree</field>
+            <field eval="8" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Purchasing Group" editable="top">
+                	<field name="name"/>
+                	<field name="is_default" on_change="onchang_is_default(is_default)"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="action_purchasing_group" model="ir.actions.act_window">
+            <field name="name">Purchasing Group</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">purchasing.group</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id"/>
+        </record>
+        
+        <!-- Kiet edit product -->
+        <record model="ir.ui.view" id="view_product_add_expense_budget_form">
+            <field name="name">product.add.expense.budget.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view" />
+            <field name="arch" type="xml">
+            	<xpath expr="//label[@for='name']" position="replace">
+	            	 <label for="name" string="Item Name"/>
+	            </xpath>
+	            
+	            <xpath expr="//field[@name='type']" position="after">
+	            	<field name="channel_id" widget="many2many_tags" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+	            	<field name="account_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+	            </xpath>
+            </field>
+        </record>
+        
+        <!-- Kiet Master Projects -->
+        <record id="view_master_project_tree" model="ir.ui.view">
+            <field name="name">master Project</field>
+            <field name="model">master.project</field>
+            <field name="type">tree</field>
+            <field eval="8" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Master Project">
+                	<field name="name"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="view_master_project_form" model="ir.ui.view">
+            <field name="name">Master Project</field>
+            <field name="model">master.project</field>
+            <field name="type">form</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <form string="Master Project" version="7.0">
+                	<group>
+                		<field name="name"/>
+                	</group>
+                	<group col="12" string ="Cat">
+	                		<field name="categ_ids" nolabel="1"/>
+                	</group>
+                </form>
+            </field>
+        </record>
+        
+         <record id="action_master_project" model="ir.actions.act_window">
+            <field name="name">Master Project</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">master.project</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id"/>
+        </record>
+    	
+    	<!-- Phung Master Process -->
+        <record id="view_master_process_tree" model="ir.ui.view">
+            <field name="name">master.process.tree</field>
+            <field name="model">master.process</field>
+            <field name="type">tree</field>
+            <field eval="8" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Master Process">
+                	<field name="name"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="view_master_process_form" model="ir.ui.view">
+            <field name="name">master.process.form</field>
+            <field name="model">master.process</field>
+            <field name="type">form</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <form string="Master Process" version="7.0">
+                	<group>
+                		<field name="name"/>
+                	</group>
+                	<group string ="Process line">
+                		<field name="process_line" nolabel="1">
+                			<tree editable='bottom'>
+                				<field name="name"/>
+                				<field name="pr_value_filter"/>
+                				<field name="amount" attrs="{'invisible':[('pr_value_filter','=',False)],'required':[('pr_value_filter','=',True)]}"/>
+                				<field name="group_id" domain="[('category_id.name','=','BDF'),('name','not in',['Admin','Assistant PM'])]"/>
+                				<field name="user_id" required='1' context="{'search_user_group_process':1,'group_id':group_id}"/>
+	            				<field name="notify_ids" widget="many2many_tags" context="{'search_user_group_assistant_pm':1}"/>
+                			</tree>
+                		</field>
+                	</group>
+                </form>
+            </field>
+        </record>
+        
+         <record id="action_master_process" model="ir.actions.act_window">
+            <field name="name">Master Process</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">master.process</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        
+        <record id="view_bdf_mail_queue_tree" model="ir.ui.view">
+            <field name="name">bdf.mail.queue.tree</field>
+            <field name="model">bdf.mail.queue</field>
+            <field name="type">tree</field>
+            <field eval="8" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Mail Queue">
+                	<field name="mail_id"/>
+                	<field name="state"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="action_bdf_mail_queue" model="ir.actions.act_window">
+            <field name="name">Mail Queue</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bdf.mail.queue</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="domain">[('state','=','draft')]</field>
+        </record>
+        
+        <!-- Phung edit user -->
+        <record model="ir.ui.view" id="view_users_form_bdf_inherit">
+            <field name="name">res.users.bdf.inherit</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form" />
+            <field name="arch" type="xml">
+            	<xpath expr="//field[@name='company_id']" position="after">
+	            	<field name="process_id"/>
+	            </xpath>
+            </field>
+        </record>
+    	
+    	<record id="view_category_property_form_bdf_inherit" model="ir.ui.view">
+            <field name="name">product.category.property.form.inherit</field>
+            <field name="model">product.category</field>
+            <field name="inherit_id" ref="account.view_category_property_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//group[@name='account_property']" position="attributes">
+                    	<attribute name='invisible'>1</attribute>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+    	
+    	<record model="ir.values" id="pr_approve_multi">
+            <field name="model_id" ref="model_bdf_purchase" />
+            <field name="name">Approve</field>
+            <field name="key2">client_action_multi</field>
+            <field name="value" eval="'ir.actions.act_window,' + str(ref('action_pr_approve_multi'))" />
+            <field name="key">action</field>
+            <field name="model">bdf.purchase</field>
+        </record>
+    	
+    	<record model="ir.values" id="pr_reject_multi">
+            <field name="model_id" ref="model_bdf_purchase" />
+            <field name="name">Reject</field>
+            <field name="key2">client_action_multi</field>
+            <field name="value" eval="'ir.actions.act_window,' + str(ref('action_pr_reject_multi'))" />
+            <field name="key">action</field>
+            <field name="model">bdf.purchase</field>
+        </record>
+    	
+    </data>
+</openerp>

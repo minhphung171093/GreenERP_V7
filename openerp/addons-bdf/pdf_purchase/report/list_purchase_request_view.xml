@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+    	<record id="list_purchase_request_report" model="ir.actions.report.xml">
+	        <field name="name">list.purchase.request.report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">bdf.purchase</field>
+	        <field name="report_name">Purchase Request</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">pdf_purchase/report/list_purchase_request.py</field>
+	        <field name="report_rml">pdf_purchase/report/list_purchase_request.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record> 
+    	   
+    	<report 
+			auto="False" 
+			menu="True"
+			id="list_purchase_request_report" 
+			model="bdf.purchase" 
+			name="list_purchase_request_report"
+	        string="Purchase Request"
+	        rml="pdf_purchase/report/list_purchase_request.ods"
+	        groups="pdf_purchase.group_budget_control,pdf_purchase.group_procurement"/>
+	        
+	</data>
+</openerp>

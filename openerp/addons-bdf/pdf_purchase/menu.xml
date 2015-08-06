@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+	     <menuitem name="BDF" id="menu_base_purchase" sequence="1"/>
+         
+         <menuitem
+         	name="BDF Config"
+         	id="menu_purchase_config"
+         	parent="menu_base_purchase" sequence="2"
+         	groups="group_bdf_admin"/>
+         
+         	
+         	<menuitem action="product.product_category_action_form"
+            	id="bdf_menu_product_category_action_form" string="Master Catecode"
+            	parent="menu_purchase_config"
+            	sequence="1"/>
+            
+            <menuitem action="product.product_normal_action" 
+            	id="bdf_menu_stock_products_menu" 
+            	parent="menu_purchase_config" 
+            	sequence="2"/>
+            	
+           <!-- <menuitem action="action_master_function_expense" 
+            	id="menu_action_master_function_expense" 
+            	parent="menu_purchase_config" 
+            	sequence="3"/>-->
+            
+            <menuitem action="action_purchasing_group" 
+            	id="bdf_menu_action_purchasing_group" 
+            	parent="menu_purchase_config" 
+            	sequence="3"/>
+            
+            <menuitem action="action_master_budget_owner" 
+            	id="menu_action_master_budget_owner" 
+            	parent="menu_purchase_config" 
+            	sequence="4"/>
+            	
+            <menuitem action="action_master_key_accounts" 
+            	id="menu_action_master_key_accounts" 
+            	parent="menu_purchase_config" 
+            	sequence="5"/>
+            
+            <menuitem action="action_master_regions" 
+            	id="menu_action_master_regions" 
+            	parent="menu_purchase_config" 
+            	sequence="6"/>
+            	
+            <!--<menuitem action="action_master_project" 
+            	id="menu_action_master_project" 
+            	parent="menu_purchase_config" 
+            	sequence="7"/>-->
+            
+            <menuitem action="action_bdf_mail_queue" 
+            	id="menu_action_bdf_mail_queue" 
+            	parent="menu_purchase_config" 
+            	sequence="10" groups="base.group_erp_manager"/>
+            
+        	<menuitem action="action_master_process" 
+            	id="menu_action_master_process" 
+            	parent="menu_purchase_config" 
+            	sequence="1000"/>
+            	
+            <menuitem action="base.action_res_users"
+            	id="menu_action_bdf_res_users"
+            	parent="menu_purchase_config" sequence="1100"/>
+            
+          	<menuitem action="action_view_bdf_channel_tree" id="menu_action_view_bdf_channel_tree" parent="menu_purchase_config" sequence="8"/>
+          	<menuitem action="action_bdf_cost_center_tree" id="menu_action_bdf_cost_center_tree" parent="menu_purchase_config" sequence="9"/>
+          	<menuitem action="action_bdf_cost_center_tree" id="menu_action_bdf_cost_center_tree" parent="menu_purchase_config" sequence="10"/>
+            
+           <!-- <menuitem id="bdf_menu_account_supplier" name="Suppliers"
+            parent="menu_purchase_config"
+            action="base.action_partner_supplier_form" sequence="100"/>
+            -->
+            
+             <menuitem icon="STOCK_INDENT" action="account.action_account_chart"
+	            id="bdf_menu_action_account_tree2"
+	            parent="menu_purchase_config" sequence="200"/>
+	         
+	       
+	       <menuitem action="account.action_account_form" id="bdf_menu_action_account_form" parent="menu_purchase_config" sequence="300"/>
+          	
+          	
+         <menuitem name="BDF Purchase" id="menu_purchase" parent="menu_base_purchase" sequence="1"/>
+         
+	        <menuitem action="action_view_bdf_purchase_request" id="menu_action_view_bdf_purchase_request" 
+	         			name="Draft" parent="menu_purchase" sequence="2" groups="group_purchase_request"/>
+	         			
+ 			<menuitem action="action_view_bdf_purchase_pending_approval" id="menu_action_view_bdf_purchase_pending_approval" 
+	         			name="Pending Approval" parent="menu_purchase" sequence="2" groups="group_purchase_request"/>
+	         
+	    	<menuitem action="action_view_bdf_purchase_category_manager" id="menu_action_view_bdf_purchase_category_manager" 
+	    	 			name="Waiting Approval" parent="menu_purchase" sequence="3" groups="group_category_manager"/>
+	    	 			
+	    	<menuitem action="action_view_bdf_purchase_channel_manager" id="menu_action_view_bdf_purchase_channel_manager" 
+    	 				name="Waiting Approval" parent="menu_purchase" sequence="4"  groups="group_channel_manager"/>
+    	 	
+    	 	<menuitem action="action_view_bdf_purchase_product_manager" id="menu_action_view_bdf_purchase_product_manager" 
+    	 				name="Waiting Approval" parent="menu_purchase" sequence="5" groups="group_product_manager"/>
+    	 	
+    	 	<menuitem action="action_view_bdf_purchase_group_pm" id="menu_action_view_bdf_purchase_group_pm" 
+    	 				name="Waiting Approval" parent="menu_purchase" sequence="6" groups="group_group_pm"/>
+    	 	
+    	 	<menuitem action="action_view_bdf_purchase_bu_manager" id="menu_action_view_bdf_purchase_bu_manager" 
+    	 				name="Waiting Approval" parent="menu_purchase" sequence="7" groups="group_bu_manager"/>
+    	 	
+    	 	<menuitem action="action_view_bdf_purchase_function_head" id="menu_action_view_bdf_purchase_function_head" 
+    	 				name="Waiting Approval" parent="menu_purchase" sequence="8" groups="group_function_head"/>
+    	 	
+    	 	<menuitem action="action_view_bdf_purchase_budget_control" id="menu_action_view_bdf_purchase_budget_control" 
+    	 				name="Waiting Approval" parent="menu_purchase" sequence="9" groups="group_budget_control"/>
+    	 	
+    	 	<menuitem action="action_view_bdf_purchase_control_manager" id="menu_action_view_bdf_purchase_control_manager" 
+    	 				name="Waiting Approval" parent="menu_purchase" sequence="10" groups="group_control_manager"/>
+    	 	
+    	 	<menuitem action="action_view_bdf_purchase_fi_function_head" id="menu_action_view_bdf_purchase_fi_function_head" 
+    	 				name="Waiting Approval" parent="menu_purchase" sequence="11" groups="group_fi_function_head"/>
+    	 	
+    	 	<menuitem action="action_view_bdf_purchase_country_manager" id="menu_action_view_bdf_purchase_country_manager" 
+    	 				name="Waiting Approval" parent="menu_purchase" sequence="12" groups="group_country_manager"/>
+    	 	
+    	 	<menuitem action="action_view_bdf_purchase_pending_for_next_level" id="menu_action_view_bdf_purchase_pending_for_next_level" 
+    	 				name="Pending For Next Level" parent="menu_purchase" sequence="13"
+    	 				groups="group_category_manager,group_channel_manager,group_product_manager,group_group_pm,group_bu_manager,group_function_head,group_budget_control,group_control_manager,group_fi_function_head"/>
+    	 	
+    	 	<menuitem action="action_view_bdf_purchase_procurement" id="menu_action_view_bdf_purchase_procurement" 
+    	 				name="Full Approval" parent="menu_purchase" sequence="14"/>
+    	 				
+    	 	<menuitem action="action_view_bdf_purchase_for_all" id="menu_action_view_bdf_purchase_for_all" 
+    	 				name="All" parent="menu_purchase" sequence="15"/>
+    	 				
+    	 				
+    </data>
+</openerp>

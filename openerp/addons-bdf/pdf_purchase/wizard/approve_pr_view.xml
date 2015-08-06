@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		<record id="approve_pr_form_view" model="ir.ui.view">
+	        <field name="name">approve.pr.form</field>
+	        <field name="model">approve.pr</field>
+	        <field eval="20" name="priority"/>
+	        <field name="arch" type="xml">
+	            <form string="Approve" version="7.0">
+	            	<group>
+		            	<field name="user_id" options="{'no_open': True,'create': false, 'create_edit': false}" attrs="{'invisible':[('is_done','=',True)],'required':[('is_done','=',False)]}" context="{'search_bdf_user_approve':1,'request_id':request_id}"/>
+		                <field name="message"/>
+		                <field name="request_id" invisible='1'/>
+		                <field name="group_id" invisible='1'/>
+		                <field name="is_done" invisible='1'/>
+	                </group>
+	                <footer>
+	                    <button name="bt_approve" type='object' string="Approve" class="oe_highlight"/>
+	                    or
+	                    <button string="Cancel" special="cancel" />
+	                </footer>
+	            </form>
+	        </field>
+    	</record>
+
+	    <record model="ir.actions.act_window" id="action_approve_pr">
+	        <field name="name">Approve</field>
+	        <field name="res_model">approve.pr</field>
+	        <field name="view_type">form</field>
+	        <field name="view_mode">form</field>
+	        <field name="view_id" ref="approve_pr_form_view" />
+	        <field name="target">new</field>
+	    </record>
+	    
+    </data>
+</openerp>
+

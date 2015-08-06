@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data noupdate="0">
+		
+		<record model="ir.module.category" id="module_category_bdf">
+	        <field name="name">BDF</field>
+	        <field name="sequence">0</field>
+	    </record>
+	    
+	    <record id="group_purchase_request" model="res.groups">
+	        <field name="name">Purchase Request</field>
+	        <field name="category_id" ref="module_category_bdf"/>
+	        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+	    </record>
+	    
+	    <record id="group_category_manager" model="res.groups">
+	        <field name="name">Category Manager</field>
+	        <field name="category_id" ref="module_category_bdf"/>
+	        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+	    </record>
+	    
+	    <record id="group_channel_manager" model="res.groups">
+	        <field name="name">Channel Manager</field>
+	        <field name="category_id" ref="module_category_bdf"/>
+	        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+	    </record>
+	    
+	    <record id="group_product_manager" model="res.groups">
+	        <field name="name">Product Manager (PM)</field>
+	        <field name="category_id" ref="module_category_bdf"/>
+	        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+	    </record>
+	    
+	    <record id="group_group_pm" model="res.groups">
+	        <field name="name">Group PM</field>
+	        <field name="category_id" ref="module_category_bdf"/>
+	        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+	    </record>
+	    
+	     <record id="group_bu_manager" model="res.groups">
+	        <field name="name">BU Manager</field>
+	        <field name="category_id" ref="module_category_bdf"/>
+	        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+	    </record>
+	    
+	    <record id="group_function_head" model="res.groups">
+	        <field name="name">Function Head</field>
+	        <field name="category_id" ref="module_category_bdf"/>
+	        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+	    </record>
+	    
+	    <record id="group_budget_control" model="res.groups">
+	        <field name="name">Budget Control</field>
+	        <field name="category_id" ref="module_category_bdf"/>
+	        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+	    </record>
+	    
+	    
+	     <record id="group_control_manager" model="res.groups">
+	        <field name="name">Control Manager</field>
+	        <field name="category_id" ref="module_category_bdf"/>
+	        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+	        <field name="id_bdf">1</field>
+	    </record>
+	    
+	    <record id="group_fi_function_head" model="res.groups">
+	        <field name="name">FI Function Head</field>
+	        <field name="category_id" ref="module_category_bdf"/>
+	        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+	    </record>
+	    
+	    <record id="group_country_manager" model="res.groups">
+	        <field name="name">Country Manager</field>
+	        <field name="category_id" ref="module_category_bdf"/>
+	        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+	    </record>
+	    
+	    <record id="group_procurement" model="res.groups">
+	        <field name="name">Procurement</field>
+	        <field name="category_id" ref="module_category_bdf"/>
+	        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+	    </record>
+	    
+	    <record id="group_assistant_pm" model="res.groups">
+	        <field name="name">Assistant PM</field>
+	        <field name="category_id" ref="module_category_bdf"/>
+	        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+	    </record>
+	    
+	    <record id="group_bdf_admin" model="res.groups">
+	        <field name="name">Admin</field>
+	        <field name="category_id" ref="module_category_bdf"/>
+	        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+	        <field name="implied_ids" eval="[(4, ref('group_purchase_request')),
+	        								 (4, ref('group_category_manager')),
+	        								 (4, ref('group_channel_manager')),
+	        								 (4, ref('group_product_manager')),
+	        								 (4, ref('group_group_pm')),
+	        								 (4, ref('group_bu_manager')),
+	        								 (4, ref('group_function_head')),
+	        								 (4, ref('group_budget_control')),
+	        								 (4, ref('group_control_manager')),
+	        								 (4, ref('group_fi_function_head')),
+	        								 (4, ref('group_country_manager')),
+	        								 (4, ref('group_assistant_pm')),
+	        								 (4, ref('group_procurement')),
+	        								]"/>
+	        <field name="id_bdf">1</field>
+	    </record>
+	    
+	</data>
+	<data noupdate="0">
+	
+	    <record id="bdf_purchase_request_rule" model="ir.rule">
+	        <field name="name">BDF Purchase Request</field>
+	        <field name="model_id" ref="model_bdf_purchase"/>
+	        <field name="groups" eval="[(4, ref('group_purchase_request'))]"/>
+	        <field name="domain_force">['|','|',('create_uid','=',user.id),('request_by_id','=',user.id),('history_ids','child_of',[user.id])]</field>
+	    </record>
+	    
+	    <record id="bdf_category_manager_rule" model="ir.rule">
+	        <field name="name">BDF Category Manager</field>
+	        <field name="model_id" ref="model_bdf_purchase"/>
+	        <field name="groups" eval="[(4, ref('group_category_manager'))]"/>
+	        <field name="domain_force">['|','|',('category_manager_id','=',user.id),('category_manager_approve_id','=',user.id),('history_ids','child_of',[user.id])]</field>
+	    </record>
+	    
+	    <record id="bdf_channel_manager_rule" model="ir.rule">
+	        <field name="name">BDF Channel Manager</field>
+	        <field name="model_id" ref="model_bdf_purchase"/>
+	        <field name="groups" eval="[(4, ref('group_channel_manager'))]"/>
+	        <field name="domain_force">['|','|',('channel_manager_id','=',user.id),('channel_manager_approve_id','=',user.id),('history_ids','child_of',[user.id])]</field>
+	    </record>
+	    
+	    <record id="bdf_product_manager_rule" model="ir.rule">
+	        <field name="name">BDF Product Manager (PM)</field>
+	        <field name="model_id" ref="model_bdf_purchase"/>
+	        <field name="groups" eval="[(4, ref('group_product_manager'))]"/>
+	        <field name="domain_force">['|','|',('product_manager_id','=',user.id),('product_manager_approve_id','=',user.id),('history_ids','child_of',[user.id])]</field>
+	    </record>
+	    
+	    <record id="bdf_group_pm_rule" model="ir.rule">
+	        <field name="name">BDF Group PM</field>
+	        <field name="model_id" ref="model_bdf_purchase"/>
+	        <field name="groups" eval="[(4, ref('group_group_pm'))]"/>
+	        <field name="domain_force">['|','|',('group_pm_id','=',user.id),('group_pm_approve_id','=',user.id),('history_ids','child_of',[user.id])]</field>
+	    </record>
+	    
+	    <record id="bdf_bu_manager_rule" model="ir.rule">
+	        <field name="name">BDF BU Manager</field>
+	        <field name="model_id" ref="model_bdf_purchase"/>
+	        <field name="groups" eval="[(4, ref('group_bu_manager'))]"/>
+	        <field name="domain_force">['|','|',('bu_manager_id','=',user.id),('bu_manager_approve_id','=',user.id),('history_ids','child_of',[user.id])]</field>
+	    </record>
+	    
+	    <record id="bdf_function_head_rule" model="ir.rule">
+	        <field name="name">BDF Function Head</field>
+	        <field name="model_id" ref="model_bdf_purchase"/>
+	        <field name="groups" eval="[(4, ref('group_function_head'))]"/>
+	        <field name="domain_force">['|','|',('function_head_id','=',user.id),('function_head_approve_id','=',user.id),('history_ids','child_of',[user.id])]</field>
+	    </record>
+	    
+	    <record id="bdf_budget_control_rule" model="ir.rule">
+	        <field name="name">BDF Budget Control</field>
+	        <field name="model_id" ref="model_bdf_purchase"/>
+	        <field name="groups" eval="[(4, ref('group_budget_control'))]"/>
+	        <field name="domain_force">['|','|',('budget_control_id','=',user.id),('budget_control_approve_id','=',user.id),('history_ids','child_of',[user.id])]</field>
+	    </record>
+	    
+	    <record id="bdf_control_manager_rule" model="ir.rule">
+	        <field name="name">BDF Control Manager</field>
+	        <field name="model_id" ref="model_bdf_purchase"/>
+	        <field name="groups" eval="[(4, ref('group_control_manager'))]"/>
+	        <field name="domain_force">['|','|',('control_manager_id','=',user.id),('control_manager_approve_id','=',user.id),('history_ids','child_of',[user.id])]</field>
+	    </record>
+	    
+	    <record id="bdf_fi_function_head_rule" model="ir.rule">
+	        <field name="name">BDF FI Function Head</field>
+	        <field name="model_id" ref="model_bdf_purchase"/>
+	        <field name="groups" eval="[(4, ref('group_fi_function_head'))]"/>
+	        <field name="domain_force">['|','|',('fi_function_head_id','=',user.id),('fi_function_head_approve_id','=',user.id),('history_ids','child_of',[user.id])]</field>
+	    </record>
+	    
+	    <record id="bdf_country_manager_rule" model="ir.rule">
+	        <field name="name">BDF Country Manager</field>
+	        <field name="model_id" ref="model_bdf_purchase"/>
+	        <field name="groups" eval="[(4, ref('group_country_manager'))]"/>
+	        <field name="domain_force">['|','|',('country_manager_id','=',user.id),('country_manager_approve_id','=',user.id),('history_ids','child_of',[user.id])]</field>
+	    </record>
+	    
+	    <record id="bdf_assistant_pm_rule" model="ir.rule">
+	        <field name="name">BDF Assistant PM</field>
+	        <field name="model_id" ref="model_bdf_purchase"/>
+	        <field name="groups" eval="[(4, ref('group_assistant_pm'))]"/>
+	        <field name="domain_force">[('notify_ids','child_of',[user.id])]</field>
+	    </record>
+	    
+	    <record id="bdf_purchase_admin_rule" model="ir.rule">
+	        <field name="name">BDF Purchase Admin</field>
+	        <field name="model_id" ref="model_bdf_purchase"/>
+	        <field name="groups" eval="[(4, ref('group_bdf_admin'))]"/>
+	        <field name="domain_force">[(1,'=',1)]</field>
+	    </record>
+	    
+	    <record id="bdf_user_rule" model="ir.rule">
+	        <field name="name">BDF User</field>
+	        <field name="model_id" ref="model_res_users"/>
+	        <field name="groups" eval="[(4, ref('group_purchase_request')),
+	    								 (4, ref('group_category_manager')),
+	    								 (4, ref('group_channel_manager')),
+	    								 (4, ref('group_product_manager')),
+	    								 (4, ref('group_group_pm')),
+	    								 (4, ref('group_bu_manager')),
+	    								 (4, ref('group_function_head')),
+	    								 (4, ref('group_budget_control')),
+	    								 (4, ref('group_control_manager')),
+	    								 (4, ref('group_fi_function_head')),
+	    								 (4, ref('group_country_manager')),
+	    								 (4, ref('group_assistant_pm')),]"/>
+	        <field name="domain_force">[('id','!=',1)]</field>
+	    </record>
+	    
+	</data>
+</openerp>

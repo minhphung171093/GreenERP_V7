@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record model="ir.cron" id="bdf_mail_queue_send">
+            <field name="name">Mail Queue Send</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="True"/>
+            <field name="model" eval="'bdf.mail.queue'"/>
+            <field name="function" eval="'mail_queue_send'"/>
+            <field name="args" eval="'()'" />
+        </record>
+
+    </data>
+</openerp>
