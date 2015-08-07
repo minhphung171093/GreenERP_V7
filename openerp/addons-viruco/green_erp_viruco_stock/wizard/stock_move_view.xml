@@ -17,7 +17,7 @@
 	                    </div>
 	                    <field name="location_id" invisible="1"/>
 	                    <field name="move_id" invisible="1"/>
-	                    <field name="location_choose_id" domain="[('usage','=','internal'),('chained_location_type','!=','customer')]" on_change="onchange_location_choose_id(location_choose_id,move_id)"/>
+	                    <field name="location_choose_id" domain="[('usage','=','internal'),('chained_location_type','!=','customer')]" on_change="onchange_location_choose_id(location_choose_id,move_id,context)"/>
 	                </group>
 	                <group string="Phân bổ hợp đồng">
 		                <field name="line_ids" required='0' nolabel='1' domain="[('location_id','=',location_choose_id)]">

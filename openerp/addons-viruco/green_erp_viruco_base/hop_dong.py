@@ -277,6 +277,9 @@ hopdong_line()
 class don_ban_hang(osv.osv):
     _name = "don.ban.hang"
     
+    def button_dummy(self, cr, uid, ids, context=None):
+        return True
+    
     def _amount_line_tax(self, cr, uid, line, context=None):
         val = 0.0
         for c in self.pool.get('account.tax').compute_all(cr, uid, line.tax_id, line.price_unit, line.product_qty, line.product_id, line.donbanhang_id.partner_id)['taxes']:
@@ -472,6 +475,9 @@ don_ban_hang_line()
 
 class don_mua_hang(osv.osv):
     _name = "don.mua.hang"
+    
+    def button_dummy(self, cr, uid, ids, context=None):
+        return True
     
     def _amount_line_tax(self, cr, uid, line, context=None):
         val = 0.0

@@ -85,6 +85,16 @@ class split_hop_dong(osv.osv_memory):
     def onchange_location_choose_id(self, cr, uid, ids, location_id=False, move_id=False, context=None):
         vals = {}
         chitiet_tonkho_line = []
+        #Hung giu lai nhung dong da chon
+#         for data in self.browse(cr, uid, ids, context=context):
+#             for wizard_line in data.line_ids:
+#                 if wizard_line.is_choose:
+#                     chitiet_tonkho_line.append((0,0,{
+#                             'location_id': location_id,
+#                             'hd_mua_id': wizard_line.hd_mua_id.id,
+#                             'picking_in_id': wizard_line.picking_in_id.id,
+#                             'quantity_ton': wizard_line.quantity,
+#                         }))
         if location_id and move_id:
             move = self.pool.get('stock.move').browse(cr, uid, move_id, context=context)
             sql = '''
