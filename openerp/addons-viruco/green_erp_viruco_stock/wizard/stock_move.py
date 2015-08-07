@@ -119,6 +119,36 @@ class split_hop_dong(osv.osv_memory):
                         'picking_in_id': line['picking_id'],
                         'quantity_ton': line['product_qty']-product_qty_out,
                     }))
+        if not location_id and move_id:
+            move = self.pool.get('stock.move').browse(cr, uid, move_id, context=context)
+            sql = '''
+                select id from stock_location where usage='internal' and chained_location_type!='customer'
+            '''
+            cr.execute(sql)
+            location_ids = [r[0] for r in cr.fetchall()]
+            for location_id in location_ids:
+                sql = '''
+                    select hop_dong_mua_id,picking_id,sum(product_qty) as product_qty
+                        from stock_move where state='done' and product_id=%s and location_id!=location_dest_id and location_dest_id=%s and hop_dong_mua_id is not null
+                        group by hop_dong_mua_id,picking_id
+                '''%(move.product_id.id,location_id)
+                cr.execute(sql)
+                lines = cr.dictfetchall()
+                for line in lines:
+                    sql = '''
+                        select case when sum(product_qty)!=0 then sum(product_qty) else 0 end product_qty_out
+                            from stock_move
+                            where state!='cancel' and product_id=%s and location_id!=location_dest_id and location_id=%s and picking_in_id=%s and hop_dong_mua_id=%s and id!=%s
+                    '''%(move.product_id.id,location_id,line['picking_id'],line['hop_dong_mua_id'],move.id)
+                    cr.execute(sql)
+                    product_qty_out = cr.fetchone()[0]
+                    if product_qty_out<line['product_qty']:
+                        chitiet_tonkho_line.append((0,0,{
+                            'location_id': location_id,
+                            'hd_mua_id': line['hop_dong_mua_id'],
+                            'picking_in_id': line['picking_id'],
+                            'quantity_ton': line['product_qty']-product_qty_out,
+                        }))
         return {'value': {'line_ids': chitiet_tonkho_line}}
 
     def split_lot(self, cr, uid, ids, context=None):

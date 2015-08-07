@@ -123,6 +123,7 @@ class bang_gia(osv.osv):
         'name':fields.date('Ngày',required=True,readonly=True, states={'moi_tao': [('readonly', False)]}),
         'currency_id': fields.many2one('res.currency', 'Đơn vị tiền tệ', required=True,readonly=True, states={'moi_tao': [('readonly', False)]}),
         'banggia_line': fields.one2many('bang.gia.line', 'banggia_id', 'Chi tiết bảng giá',readonly=True, states={'moi_tao': [('readonly', False)]}),
+        'type': fields.selection([('mua','Mua'),('ban','Bán')],'Loại bảng giá'),
         'state': fields.selection([
             ('moi_tao', 'Mới tạo'),
             ('da_duyet', 'Đã duyệt'),
@@ -134,6 +135,19 @@ class bang_gia(osv.osv):
         'name': time.strftime('%Y-%m-%d'),
         'state': 'moi_tao',
     }
+    
+    def _check_bg(self,cr,uid,ids):
+        bg = self.browse(cr,uid,ids[0])
+        bg_ids = self.search(cr, uid, [('name','=',bg.name),('currency_id','=',bg.currency_id.id)])
+        if bg_ids:
+            if bg.type=='ban':
+                raise osv.except_osv(_('Cảnh báo!'),_('Không thể tạo bảng giá bán cho cùng đơn vị tiền tệ trong cùng một ngày!'))
+            if bg.type=='mua':
+                raise osv.except_osv(_('Cảnh báo!'),_('Không thể tạo bảng giá mua cho cùng đơn vị tiền tệ trong cùng một ngày!'))
+        return True
+    _constraints = [
+        (_check_bg, _(''), ['']),
+    ]
     
     def onchange_name(self, cr, uid, ids, name=False, currency_id=False, context=None):
         vals = {}
@@ -156,30 +170,56 @@ class bang_gia(osv.osv):
         product_pricelist_version_obj = self.pool.get('product.pricelist.version')
         product_pricelist_obj = self.pool.get('product.pricelist')
         for bg in self.browse(cr, uid, ids):
-            product_pricelist_ids = product_pricelist_obj.search(cr, uid, [('currency_id','=',bg.currency_id.id)])
-            if not product_pricelist_ids:
-                product_pricelist_id = product_pricelist_obj.create(cr, uid, {'name': 'Public Pricelist',
-                                                                              'type':'sale',
-                                                                              'currency_id':bg.currency_id.id})
-            else:
-                product_pricelist_id = product_pricelist_ids[0]
-            
-            items = []
-            for line in bg.banggia_line:
-                items.append((0,0,{
-                    'name': line.product_id.name,
-                    'product': line.product_id.id,
-                    'base': 1,
-                    'price_surcharge': line.gia,
-                }))
+            if bg.type=='ban':
+                product_pricelist_ids = product_pricelist_obj.search(cr, uid, [('currency_id','=',bg.currency_id.id),('type','=','sale')])
+                if not product_pricelist_ids:
+                    product_pricelist_id = product_pricelist_obj.create(cr, uid, {'name': 'Public Pricelist',
+                                                                                  'type':'sale',
+                                                                                  'currency_id':bg.currency_id.id})
+                else:
+                    product_pricelist_id = product_pricelist_ids[0]
                 
-            product_pricelist_version_obj.create(cr, uid, {
-                'pricelist_id':product_pricelist_id,
-                'name': 'Bảng giá ngày '+bg.name[8:10]+'/'+bg.name[5:7]+'/'+bg.name[:4],
-                'date_start': bg.name,
-                'date_end': bg.name,
-                'items_id': items,
-            })
+                items = []
+                for line in bg.banggia_line:
+                    items.append((0,0,{
+                        'name': line.product_id.name,
+                        'product_id': line.product_id.id,
+                        'base': 1,
+                        'price_surcharge': line.gia,
+                    }))
+                    
+                product_pricelist_version_obj.create(cr, uid, {
+                    'pricelist_id':product_pricelist_id,
+                    'name': 'Bảng giá ngày '+bg.name[8:10]+'/'+bg.name[5:7]+'/'+bg.name[:4],
+                    'date_start': bg.name,
+                    'date_end': bg.name,
+                    'items_id': items,
+                })
+            if bg.type=='mua':
+                product_pricelist_ids = product_pricelist_obj.search(cr, uid, [('currency_id','=',bg.currency_id.id),('type','=','purchase')])
+                if not product_pricelist_ids:
+                    product_pricelist_id = product_pricelist_obj.create(cr, uid, {'name': 'Public Pricelist',
+                                                                                  'type':'purchase',
+                                                                                  'currency_id':bg.currency_id.id})
+                else:
+                    product_pricelist_id = product_pricelist_ids[0]
+                
+                items = []
+                for line in bg.banggia_line:
+                    items.append((0,0,{
+                        'name': line.product_id.name,
+                        'product_id': line.product_id.id,
+                        'base': 1,
+                        'price_surcharge': line.gia,
+                    }))
+                    
+                product_pricelist_version_obj.create(cr, uid, {
+                    'pricelist_id':product_pricelist_id,
+                    'name': 'Bảng giá ngày '+bg.name[8:10]+'/'+bg.name[5:7]+'/'+bg.name[:4],
+                    'date_start': bg.name,
+                    'date_end': bg.name,
+                    'items_id': items,
+                })
             
         return self.write(cr, uid, ids, {'state': 'da_duyet'})
     
@@ -187,9 +227,14 @@ class bang_gia(osv.osv):
         product_pricelist_version_obj = self.pool.get('product.pricelist.version')
         product_pricelist_obj = self.pool.get('product.pricelist')
         for bg in self.browse(cr, uid, ids):
-            product_pricelist_ids = product_pricelist_obj.search(cr, uid, [('currency_id','=',bg.currency_id.id)])
-            product_pricelist_version_ids = product_pricelist_version_obj.search(cr, uid, [('pricelist_id','in', product_pricelist_ids),('date_start','=', bg.name),('date_end','=', bg.name)])
-            product_pricelist_version_obj.unlink(cr, uid, product_pricelist_version_ids)
+            if bg.type=='ban':
+                product_pricelist_ids = product_pricelist_obj.search(cr, uid, [('currency_id','=',bg.currency_id.id),('type','=','sale')])
+                product_pricelist_version_ids = product_pricelist_version_obj.search(cr, uid, [('pricelist_id','in', product_pricelist_ids),('date_start','=', bg.name),('date_end','=', bg.name)])
+                product_pricelist_version_obj.unlink(cr, uid, product_pricelist_version_ids)
+            if bg.type=='mua':
+                product_pricelist_ids = product_pricelist_obj.search(cr, uid, [('currency_id','=',bg.currency_id.id),('type','=','purchase')])
+                product_pricelist_version_ids = product_pricelist_version_obj.search(cr, uid, [('pricelist_id','in', product_pricelist_ids),('date_start','=', bg.name),('date_end','=', bg.name)])
+                product_pricelist_version_obj.unlink(cr, uid, product_pricelist_version_ids)
         return self.write(cr, uid, ids, {'state': 'huy_bo'})
     
     def chinh_sua_lai(self, cr, uid, ids, context=None):

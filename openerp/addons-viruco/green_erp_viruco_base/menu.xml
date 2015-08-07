@@ -2,9 +2,14 @@
 <openerp>
     <data>
     
-		<menuitem id="menu_action_bang_gia"
-			action="action_bang_gia"
-			name="Bảng giá"
+		<menuitem id="menu_action_bang_gia_mua"
+			action="action_bang_gia_mua"
+			name="Bảng giá mua"
+			parent="menu_config_hopdong" sequence="20"/>
+			
+		<menuitem id="menu_action_bang_gia_ban"
+			action="action_bang_gia_ban"
+			name="Bảng giá bán"
 			parent="menu_config_hopdong" sequence="20"/>
 			
     	<record model="ir.ui.menu" id="base.menu_config_address_book">

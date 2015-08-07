@@ -441,14 +441,15 @@
         </record>
         <menuitem id="menu_action_cang_donghang" action="action_cang_donghang" name="Cảng đóng hàng" parent="stock.menu_stock_configuration" sequence="1"/>
         
-        <record id="bang_gia_tree_view" model="ir.ui.view">
-			<field name="name">bang.gia.tree</field>
+        <record id="bang_gia_mua_tree_view" model="ir.ui.view">
+			<field name="name">bang.gia.mua.tree</field>
 			<field name="model">bang.gia</field>
 			<field name="arch" type="xml">
-				<tree string="Bảng giá">
+				<tree string="Bảng giá mua">
 					<field name="name"/>
 					<field name="currency_id"/>
 					<field name="state"/>
+					<field name="type" invisible='1'/>
 				</tree>
 			</field>
 		</record>
@@ -470,16 +471,17 @@
             </field>
         </record>
 		
-		<record id="bang_gia_form_view" model="ir.ui.view">
-			<field name="name">bang.gia.form</field>
+		<record id="bang_gia_mua_form_view" model="ir.ui.view">
+			<field name="name">bang.gia.mua.form</field>
 			<field name="model">bang.gia</field>
             <field name="arch" type="xml">
-	            <form string="Bảng giá" version="7.0">
+	            <form string="Bảng giá mua" version="7.0">
 	            	<header>
 	            		<button name="duyet" string="Duyệt" states="moi_tao" type="object" class="oe_highlight"/>
 	            		<button name="huy_bo" string="Hủy bỏ" states="da_duyet" type="object" class="oe_highlight"/>
 	            		<button name="chinh_sua_lai" string="Chỉnh sửa lại" states="huy_bo" type="object" class="oe_highlight"/>
 						<field name="state" widget="statusbar" statusbar_visible="moi_tao,da_duyet,huy_bo"/>
+						<field name="type" invisible='1'/>
 	            	</header>
 	            	<sheet>
 	            		<group col='4' colspan='2'>
@@ -501,14 +503,95 @@
 			</field>
 		</record>
           
-		<record id="action_bang_gia" model="ir.actions.act_window">
-            <field name="name">Bảng giá</field>
+		<record id="action_bang_gia_mua" model="ir.actions.act_window">
+            <field name="name">Bảng giá mua</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">bang.gia</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="bang_gia_tree_view"/>
-            <field name="domain">[]</field>
+            <field name="view_id" ref="bang_gia_mua_tree_view"/>
+            <field name="domain">[('type','=','mua')]</field>
+            <field name="context">{'default_type':'mua'}</field>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_bang_gia_mua1">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="bang_gia_mua_tree_view"/>
+            <field name="act_window_id" ref="action_bang_gia_mua"/>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_bang_gia_mua2">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="bang_gia_mua_form_view"/>
+            <field name="act_window_id" ref="action_bang_gia_mua"/>
+        </record>
+        
+        <record id="bang_gia_ban_tree_view" model="ir.ui.view">
+			<field name="name">bang.gia.ban.tree</field>
+			<field name="model">bang.gia</field>
+			<field name="arch" type="xml">
+				<tree string="Bảng giá bán">
+					<field name="name"/>
+					<field name="currency_id"/>
+					<field name="state"/>
+					<field name="type" invisible='1'/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="bang_gia_ban_form_view" model="ir.ui.view">
+			<field name="name">bang.gia.ban.form</field>
+			<field name="model">bang.gia</field>
+            <field name="arch" type="xml">
+	            <form string="Bảng giá bán" version="7.0">
+	            	<header>
+	            		<button name="duyet" string="Duyệt" states="moi_tao" type="object" class="oe_highlight"/>
+	            		<button name="huy_bo" string="Hủy bỏ" states="da_duyet" type="object" class="oe_highlight"/>
+	            		<button name="chinh_sua_lai" string="Chỉnh sửa lại" states="huy_bo" type="object" class="oe_highlight"/>
+						<field name="state" widget="statusbar" statusbar_visible="moi_tao,da_duyet,huy_bo"/>
+						<field name="type" invisible='1'/>
+	            	</header>
+	            	<sheet>
+	            		<group col='4' colspan='2'>
+		                	<field name="name" on_change="onchange_name(name,currency_id)"/>
+							<field name="currency_id" on_change="onchange_name(name,currency_id)"/>
+						</group>
+						<notebook>
+							<page string="Chi tiết bảng giá">
+								<field name="banggia_line" nolabel='1'>
+									<tree editable='bottom'>
+										<field name="product_id"/>
+										<field name="gia"/>
+									</tree>
+								</field>
+							</page>
+						</notebook>
+		         	</sheet>
+		         </form>
+			</field>
+		</record>
+          
+		<record id="action_bang_gia_ban" model="ir.actions.act_window">
+            <field name="name">Bảng giá bán</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bang.gia</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="bang_gia_ban_tree_view"/>
+            <field name="domain">[('type','=','ban')]</field>
+            <field name="context">{'default_type':'ban'}</field>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_bang_gia_ban1">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="bang_gia_ban_tree_view"/>
+            <field name="act_window_id" ref="action_bang_gia_ban"/>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_bang_gia_ban2">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="bang_gia_ban_form_view"/>
+            <field name="act_window_id" ref="action_bang_gia_ban"/>
         </record>
         
     </data>
