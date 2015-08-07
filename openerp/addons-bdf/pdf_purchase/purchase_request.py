@@ -518,6 +518,7 @@ class bdf_purchase(osv.osv):
                 group_id = process.group_id.id
                 user_approve_id = process.user_id and process.user_id.id or False
         else:
+            user_approve_id = uid
             context.update({'is_done':True})
             line_ids = line_obj.search(cr, uid, [('request_id','=',request.id),('is_done','=',True),('is_pass','=',False)],order='name desc')
             process = line_obj.browse(cr, uid, line_ids[0])
