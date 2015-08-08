@@ -1015,7 +1015,7 @@
   background-image: -moz-linear-gradient(top, #646060, #262626);
   background-image: -ms-linear-gradient(top, #646060, #262626);
   background-image: -o-linear-gradient(top, #646060, #262626);
-  background-image: linear-gradient(to bottom, #646060, #262626);
+  background-image: linear-gradient(to bottom, #009441, #009441);
 }
 .openerp .oe_topbar .oe_topbar_anonymous_login {
   background-color: #dc5f59;
