@@ -36,6 +36,12 @@ class hop_dong(osv.osv):
             val += c.get('amount', 0.0)
         return val
     
+    def _amount_line_tax_hh(self, cr, uid, line, context=None):
+        val = 0.0
+        for c in self.pool.get('account.tax').compute_all(cr, uid, line.tax_id, line.price_unit, line.product_qty, line.product_id, line.hopdong_hh_id.partner_id)['taxes']:
+            val += c.get('amount', 0.0)
+        return val
+    
     def _amount_all(self, cr, uid, ids, field_name, arg, context=None):
         cur_obj = self.pool.get('res.currency')
         res = {}
@@ -55,10 +61,35 @@ class hop_dong(osv.osv):
             res[order.id]['amount_total'] = res[order.id]['amount_untaxed'] + res[order.id]['amount_tax']
         return res
     
+    def _amount_all_hh(self, cr, uid, ids, field_name, arg, context=None):
+        cur_obj = self.pool.get('res.currency')
+        res = {}
+        for order in self.browse(cr, uid, ids, context=context):
+            res[order.id] = {
+                'amount_untaxed_hh': 0.0,
+                'amount_tax_hh': 0.0,
+                'amount_total_hh': 0.0,
+            }
+            val = val1 = 0.0
+            cur = order.company_id.currency_id
+            for line in order.hopdong_hoahong_line:
+                val1 += line.price_subtotal
+                val += self._amount_line_tax_hh(cr, uid, line, context=context)
+            res[order.id]['amount_tax_hh'] = cur_obj.round(cr, uid, cur, val)
+            res[order.id]['amount_untaxed_hh'] = cur_obj.round(cr, uid, cur, val1)
+            res[order.id]['amount_total_hh'] = res[order.id]['amount_untaxed_hh'] + res[order.id]['amount_tax_hh']
+        return res
+    
     def _get_order(self, cr, uid, ids, context=None):
         result = {}
         for line in self.pool.get('hopdong.line').browse(cr, uid, ids, context=context):
             result[line.hopdong_id.id] = True
+        return result.keys()
+    
+    def _get_order_hh(self, cr, uid, ids, context=None):
+        result = {}
+        for line in self.pool.get('hopdong.hoahong.line').browse(cr, uid, ids, context=context):
+            result[line.hopdong_hh_id.id] = True
         return result.keys()
     
     def _get_hd_gan_hh(self, cr, uid, ids, name, arg, context=None):        
@@ -99,6 +130,7 @@ class hop_dong(osv.osv):
         'currency_company_id': fields.many2one('res.currency', 'Currency'),
         'partner_id': fields.many2one('res.partner','Khách hàng',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
         'hopdong_line': fields.one2many('hopdong.line','hopdong_id','Line',readonly=True, states={'moi_tao': [('readonly', False)]}),
+        'hopdong_hoahong_line': fields.one2many('hopdong.hoahong.line','hopdong_hh_id','Line',readonly=True, states={'moi_tao': [('readonly', False)]}),
         'pricelist_id': fields.many2one('product.pricelist', 'Bảng giá', required=True, readonly=True, states={'moi_tao': [('readonly', False)]}, help="Pricelist for current sales order."),
         'currency_id': fields.related('pricelist_id', 'currency_id', type="many2one", relation="res.currency", string="Tiền tệ", readonly=True, required=True),
         'donbanhang_id': fields.many2one('don.ban.hang', 'Đơn bán hàng'),
@@ -119,6 +151,25 @@ class hop_dong(osv.osv):
             store={
                 'hop.dong': (lambda self, cr, uid, ids, c={}: ids, ['hopdong_line'], 10),
                 'hopdong.line': (_get_order, ['price_unit', 'tax_id', 'product_qty'], 10),
+            },
+            multi='sums', help="The total amount."),
+                
+        'amount_untaxed_hh': fields.function(_amount_all_hh, digits_compute=dp.get_precision('Account'), string='Cộng',
+            store={
+                'hop.dong': (lambda self, cr, uid, ids, c={}: ids, ['hopdong_hoahong_line'], 10),
+                'hopdong.hoahong.line': (_get_order_hh, ['price_unit', 'tax_id', 'product_qty'], 10),
+            },
+            multi='sums', help="The amount without tax.", track_visibility='always'),
+        'amount_tax_hh': fields.function(_amount_all_hh, digits_compute=dp.get_precision('Account'), string='Thuế GTGT',
+            store={
+                'hop.dong': (lambda self, cr, uid, ids, c={}: ids, ['hopdong_hoahong_line'], 10),
+                'hopdong.hoahong.line': (_get_order_hh, ['price_unit', 'tax_id', 'product_qty'], 10),
+            },
+            multi='sums', help="The tax amount."),
+        'amount_total_hh': fields.function(_amount_all_hh, digits_compute=dp.get_precision('Account'), string='Tổng cộng',
+            store={
+                'hop.dong': (lambda self, cr, uid, ids, c={}: ids, ['hopdong_hoahong_line'], 10),
+                'hopdong.hoahong.line': (_get_order_hh, ['price_unit', 'tax_id', 'product_qty'], 10),
             },
             multi='sums', help="The total amount."),
         'state': fields.selection([
@@ -193,6 +244,7 @@ class hop_dong(osv.osv):
     def onchange_donbanhang_id(self, cr, uid, ids, donbanhang_id=False, context=None):
         vals = {}
         order_line = []
+        hd_hoahong_line = []
         if donbanhang_id:
             dbh_obj = self.pool.get('don.ban.hang')
             dbh = dbh_obj.browse(cr, uid, donbanhang_id)
@@ -206,10 +258,18 @@ class hop_dong(osv.osv):
                     'tax_id': [(6,0,[t.id for t in dbh_line.tax_id])],
                 }
                 order_line.append((0,0,val_line))
+                hd_hh_value={
+                    'product_id': dbh_line.product_id and dbh_line.product_id.id or False,
+                    'product_uom': dbh_line.product_uom and dbh_line.product_uom.id or False,
+                    'product_qty': dbh_line.product_qty,
+                    'tax_id': [(6,0,[t.id for t in dbh_line.tax_id])],
+                }
+                hd_hoahong_line.append((0,0,hd_hh_value))
             vals = {
                 'partner_id': dbh.partner_id.id,
                 'pricelist_id': dbh.pricelist_id.id,
                 'hopdong_line': order_line,
+                'hopdong_hoahong_line': hd_hoahong_line,
             }
         return {'value': vals}
     
@@ -237,6 +297,42 @@ class hop_dong(osv.osv):
         return {'value': vals}
     
 hop_dong()
+
+class hopdong_hoahong_line(osv.osv):
+    _name = 'hopdong.hoahong.line'
+    def _amount_line(self, cr, uid, ids, field_name, arg, context=None):
+        tax_obj = self.pool.get('account.tax')
+        cur_obj = self.pool.get('res.currency')
+        res = {}
+        if context is None:
+            context = {}
+        for line in self.browse(cr, uid, ids, context=context):
+            price = line.price_unit
+            taxes = tax_obj.compute_all(cr, uid, line.tax_id, price, line.product_qty, line.product_id, line.hopdong_hh_id.partner_id)
+            cur = line.hopdong_hh_id.company_id.currency_id
+            res[line.id] = cur_obj.round(cr, uid, cur, taxes['total'])
+        return res
+    
+    _columns = {
+        'hopdong_hh_id': fields.many2one('hop.dong', 'Hợp đồng', required=True, ondelete='cascade', select=True),
+        'product_id': fields.many2one('product.product', 'Product', domain=[('sale_ok', '=', True)], change_default=True,),
+        'product_uom': fields.many2one('product.uom', 'Đơn vị tính'),
+        'product_qty': fields.float('Số lượng', digits_compute= dp.get_precision('Product UoS')),
+        'price_unit': fields.float('Đơn giá', digits_compute= dp.get_precision('Product Price')),
+        'tax_id': fields.many2many('account.tax', 'hopdong_hh_order_tax', 'hopdong_hh_id', 'tax_id', 'Taxes'),
+        'price_subtotal': fields.function(_amount_line, string='Subtotal', digits_compute= dp.get_precision('Account')),
+    }
+    
+    def onchange_product_id(self, cr, uid, ids,product_id=False, context=None):
+        vals = {}
+        if product_id:
+            product = self.pool.get('product.product').browse(cr, uid, product_id)
+            vals = {
+                    'product_uom':product.uom_id.id or False,
+                    'name':product.name,
+                    }
+        return {'value': vals}
+hopdong_hoahong_line()
 
 class hopdong_line(osv.osv):
     _name = 'hopdong.line'
