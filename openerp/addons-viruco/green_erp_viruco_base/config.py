@@ -120,7 +120,8 @@ cang_donghang()
 class bang_gia(osv.osv):
     _name = 'bang.gia'
     _columns = {
-        'name':fields.date('Ngày',required=True,readonly=True, states={'moi_tao': [('readonly', False)]}),
+        'date_start':fields.date('Từ ngày',required=True,readonly=True, states={'moi_tao': [('readonly', False)]}),
+        'date_end':fields.date('Đến ngày',required=True,readonly=True, states={'moi_tao': [('readonly', False)]}),
         'currency_id': fields.many2one('res.currency', 'Đơn vị tiền tệ', required=True,readonly=True, states={'moi_tao': [('readonly', False)]}),
         'banggia_line': fields.one2many('bang.gia.line', 'banggia_id', 'Chi tiết bảng giá',readonly=True, states={'moi_tao': [('readonly', False)]}),
         'type': fields.selection([('mua','Mua'),('ban','Bán')],'Loại bảng giá'),
@@ -132,29 +133,34 @@ class bang_gia(osv.osv):
     }
     
     _defaults = {
-        'name': time.strftime('%Y-%m-%d'),
+        'date_start': time.strftime('%Y-%m-%d'),
+        'date_end': time.strftime('%Y-%m-%d'),
         'state': 'moi_tao',
     }
     
     def _check_bg(self,cr,uid,ids):
         bg = self.browse(cr,uid,ids[0])
-        bg_ids = self.search(cr, uid, [('name','=',bg.name),('currency_id','=',bg.currency_id.id)])
+        sql = '''
+            select id from bang_gia where id!=%s and currency_id=%s and (date_start between '%s' and '%s' or date_end between '%s' and '%s')
+        '''%(bg.id,bg.currency_id.id,bg.date_start,bg.date_end,bg.date_start,bg.date_end)
+        cr.execute(sql)
+        bg_ids = [r[0] for r in cr.fetchall()]
         if bg_ids:
             if bg.type=='ban':
-                raise osv.except_osv(_('Cảnh báo!'),_('Không thể tạo bảng giá bán cho cùng đơn vị tiền tệ trong cùng một ngày!'))
+                raise osv.except_osv(_('Cảnh báo!'),_('Không thể tạo bảng giá bán cho cùng đơn vị tiền tệ có khoảng ngày trùng nhau!'))
             if bg.type=='mua':
-                raise osv.except_osv(_('Cảnh báo!'),_('Không thể tạo bảng giá mua cho cùng đơn vị tiền tệ trong cùng một ngày!'))
+                raise osv.except_osv(_('Cảnh báo!'),_('Không thể tạo bảng giá mua cho cùng đơn vị tiền tệ có khoảng ngày trùng nhau!'))
         return True
     _constraints = [
         (_check_bg, _(''), ['']),
     ]
     
-    def onchange_name(self, cr, uid, ids, name=False, currency_id=False, context=None):
+    def onchange_name(self, cr, uid, ids, date_start=False, date_end=False, currency_id=False, context=None):
         vals = {}
-        if name and currency_id:
+        if date_start and currency_id:
             if ids:
                 cr.execute('delete from bang_gia_line where banggia_id in %s',(tuple(ids),))
-            old_banggia_ids = self.search(cr, uid, [('name','<',name),('currency_id','=',currency_id),('state','=','da_duyet')], order='name desc', limit=1)
+            old_banggia_ids = self.search(cr, uid, [('date_end','<',date_start),('currency_id','=',currency_id),('state','=','da_duyet')], order='date_end desc', limit=1)
             if old_banggia_ids:
                 banggia = self.browse(cr, uid, old_banggia_ids[0])
                 banggia_line = []

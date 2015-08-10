@@ -149,10 +149,10 @@ class account_voucher(osv.osv):
         if context.get('payment_expected_currency') and currency_id != context.get('payment_expected_currency'):
             vals['value']['amount'] = 0
             amount = 0
-        if partner_id:
-            res = self.onchange_partner_id(cr, uid, ids, partner_id, journal_id, amount, currency_id, ttype, date, context)
-            for key in res.keys():
-                vals[key].update(res[key])
+#         if partner_id:
+#             res = self.onchange_partner_id(cr, uid, ids, partner_id, journal_id, amount, currency_id, ttype, date, context)
+#             for key in res.keys():
+#                 vals[key].update(res[key])
                 
         vals['value']['line_dr_ids'] = False
         vals['value']['line_cr_ids'] = False
