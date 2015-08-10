@@ -48,9 +48,9 @@ class split_hop_dong(osv.osv_memory):
             location_ids = [r[0] for r in cr.fetchall()]
             for location_id in location_ids:
                 sql = '''
-                    select hop_dong_mua_id,picking_id,sum(product_qty) as product_qty
+                    select hop_dong_mua_id,picking_id,sum(product_qty) as product_qty,price_unit
                         from stock_move where state='done' and product_id=%s and location_id!=location_dest_id and location_dest_id=%s and hop_dong_mua_id is not null
-                        group by hop_dong_mua_id,picking_id
+                        group by hop_dong_mua_id,picking_id,price_unit
                 '''%(move.product_id.id,location_id)
                 cr.execute(sql)
                 lines = cr.dictfetchall()
@@ -63,10 +63,14 @@ class split_hop_dong(osv.osv_memory):
                     cr.execute(sql)
                     product_qty_out = cr.fetchone()[0]
                     if product_qty_out<line['product_qty']:
+                        picking = self.pool.get('stock.picking').browse(cr, uid, line['picking_id'])
                         chitiet_tonkho_line.append((0,0,{
                             'location_id': location_id,
                             'hd_mua_id': line['hop_dong_mua_id'],
                             'picking_in_id': line['picking_id'],
+                            'partner_id': picking.partner_id and picking.partner_id.id or False,
+                            'ngay_nhaphang': picking.date_done,
+                            'don_gia': line['price_unit'],
                             'quantity_ton': line['product_qty']-product_qty_out,
                         }))
             res.update({'line_ids': chitiet_tonkho_line,'move_id': context['active_id']})
@@ -98,9 +102,9 @@ class split_hop_dong(osv.osv_memory):
         if location_id and move_id:
             move = self.pool.get('stock.move').browse(cr, uid, move_id, context=context)
             sql = '''
-                select hop_dong_mua_id,picking_id,sum(product_qty) as product_qty
+                select hop_dong_mua_id,picking_id,sum(product_qty) as product_qty,price_unit
                     from stock_move where state='done' and product_id=%s and location_id!=location_dest_id and location_dest_id=%s and hop_dong_mua_id is not null
-                    group by hop_dong_mua_id,picking_id
+                    group by hop_dong_mua_id,picking_id,price_unit
             '''%(move.product_id.id,location_id)
             cr.execute(sql)
             lines = cr.dictfetchall()
@@ -113,10 +117,14 @@ class split_hop_dong(osv.osv_memory):
                 cr.execute(sql)
                 product_qty_out = cr.fetchone()[0]
                 if product_qty_out<line['product_qty']:
+                    picking = self.pool.get('stock.picking').browse(cr, uid, line['picking_id'])
                     chitiet_tonkho_line.append((0,0,{
                         'location_id': location_id,
                         'hd_mua_id': line['hop_dong_mua_id'],
                         'picking_in_id': line['picking_id'],
+                        'partner_id': picking.partner_id and picking.partner_id.id or False,
+                        'ngay_nhaphang': picking.date_done,
+                        'don_gia': line['price_unit'],
                         'quantity_ton': line['product_qty']-product_qty_out,
                     }))
         if not location_id and move_id:
@@ -128,9 +136,9 @@ class split_hop_dong(osv.osv_memory):
             location_ids = [r[0] for r in cr.fetchall()]
             for location_id in location_ids:
                 sql = '''
-                    select hop_dong_mua_id,picking_id,sum(product_qty) as product_qty
+                    select hop_dong_mua_id,picking_id,sum(product_qty) as product_qty,price_unit
                         from stock_move where state='done' and product_id=%s and location_id!=location_dest_id and location_dest_id=%s and hop_dong_mua_id is not null
-                        group by hop_dong_mua_id,picking_id
+                        group by hop_dong_mua_id,picking_id,price_unit
                 '''%(move.product_id.id,location_id)
                 cr.execute(sql)
                 lines = cr.dictfetchall()
@@ -143,10 +151,14 @@ class split_hop_dong(osv.osv_memory):
                     cr.execute(sql)
                     product_qty_out = cr.fetchone()[0]
                     if product_qty_out<line['product_qty']:
+                        picking = self.pool.get('stock.picking').browse(cr, uid, line['picking_id'])
                         chitiet_tonkho_line.append((0,0,{
                             'location_id': location_id,
                             'hd_mua_id': line['hop_dong_mua_id'],
                             'picking_in_id': line['picking_id'],
+                            'partner_id': picking.partner_id and picking.partner_id.id or False,
+                            'ngay_nhaphang': picking.date_done,
+                            'don_gia': line['price_unit'],
                             'quantity_ton': line['product_qty']-product_qty_out,
                         }))
         return {'value': {'line_ids': chitiet_tonkho_line}}
@@ -228,6 +240,9 @@ class split_hop_dong_line(osv.osv_memory):
 #         'picking_ids': fields.many2many('stock.picking.in', 'split_hd_picking_ref', 'split_hd_id', 'picking_id', 'Phiếu nhập kho',required=False),
         'picking_in_id': fields.many2one('stock.picking.in', 'Phiếu nhập kho',required=True),
         'is_choose': fields.boolean('Chọn',required=False),
+        'ngay_nhaphang': fields.datetime('Ngày nhập hàng'),
+        'don_gia': fields.float('Đơn giá'),
+        'partner_id': fields.many2one('res.partner','Nhà cung cấp'),
     }
     _defaults = {
         'quantity': 1.0,
