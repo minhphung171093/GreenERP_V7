@@ -321,7 +321,7 @@ purchase_order_line()
 class hop_dong(osv.osv):
     _inherit = "hop.dong"
     
-    def duyet_hd_mua(self, cr, uid, ids, context=None):
+    def duyet_hd_mua_trongnuoc(self, cr, uid, ids, context=None):
         purchase_obj = self.pool.get('purchase.order')
         order_line = []
         vals = {}
@@ -338,7 +338,24 @@ class hop_dong(osv.osv):
             wf_service.trg_validate(uid, 'purchase.order', purchase_id, 'purchase_confirm', cr)
         return self.write(cr, uid, ids, {'state': 'da_duyet'})
     
-    def huy_hd_mua(self, cr, uid, ids, context=None):
+    def duyet_hd_mua_nhapkhau(self, cr, uid, ids, context=None):
+        purchase_obj = self.pool.get('purchase.order')
+        order_line = []
+        vals = {}
+        wf_service = netsvc.LocalService('workflow')
+        for hd in self.browse(cr, uid, ids):
+            warehouse_obj = self.pool.get('stock.warehouse')
+            warehouse_ids = warehouse_obj.search(cr, uid, [('company_id','=',hd.company_id.id)])
+            vals={'warehouse_id': warehouse_ids and warehouse_ids[0] or False,'partner_id':hd.partner_id.id,'hop_dong_id':hd.id,'invoice_method':'picking','state':'draft'}
+            vals.update(purchase_obj.onchange_partner_id(cr, uid, [], hd.partner_id.id)['value'])
+            vals.update(purchase_obj.onchange_hop_dong_id(cr, uid, [], hd.id)['value'])
+            vals.update(purchase_obj.onchange_warehouse_id(cr, uid, [], warehouse_ids and warehouse_ids[0] or False)['value'])
+            vals.update({'pricelist_id':hd.pricelist_id.id,})
+            purchase_id = purchase_obj.create(cr, uid, vals)
+            wf_service.trg_validate(uid, 'purchase.order', purchase_id, 'purchase_confirm', cr)
+        return self.write(cr, uid, ids, {'state': 'da_duyet'})
+    
+    def huy_hd_mua_trongnuoc(self, cr, uid, ids, context=None):
         wf_service = netsvc.LocalService('workflow')
         for huy in self.browse(cr,uid,ids):
             sql = '''
@@ -431,12 +448,268 @@ class hop_dong(osv.osv):
                     cr.execute(sql)
         return self.write(cr, uid, ids, {'state': 'huy_bo'})
     
+    def huy_hd_mua_nhapkhau(self, cr, uid, ids, context=None):
+        wf_service = netsvc.LocalService('workflow')
+        for huy in self.browse(cr,uid,ids):
+            sql = '''
+                select id from account_invoice where hop_dong_id = %s
+            '''%(huy.id)
+            cr.execute(sql)
+            invoice_ids = cr.dictfetchall()
+            if invoice_ids:
+                for invoice in invoice_ids:
+                    wf_service.trg_validate(uid, 'account.invoice', invoice['id'], 'invoice_cancel', cr)
+                    self.pool.get('account.invoice').action_cancel_draft(cr,uid,[invoice['id']])
+                    sql = '''
+                        delete from account_invoice_line where invoice_id = %s
+                    '''%(invoice['id'])
+                    cr.execute(sql)
+                    sql = '''
+                        delete from account_invoice where id = %s
+                    '''%(invoice['id'])
+                    cr.execute(sql)
+            sql = '''
+                 select id from stock_move where hop_dong_mua_id = %s and state = 'done'
+            '''%(huy.id)
+            cr.execute(sql)
+            move_ids = cr.dictfetchall()
+            if move_ids:
+                for move in move_ids:
+                    sql = '''
+                        delete from account_move_line where move_id in (select id from account_move where stock_move_id = %s)
+                    '''%(move['id'])
+                    cr.execute(sql)
+                    sql = '''
+                        delete from account_move where stock_move_id = %s
+                    '''%(move['id'])
+                    cr.execute(sql)
+                    sql = '''
+                        delete from stock_picking where id in (select picking_id from stock_move where id = %s)
+                    '''%(move['id'])
+                    cr.execute(sql)
+                    sql = '''
+                        delete from stock_move where id = %s
+                    '''%(move['id'])
+                    cr.execute(sql)
+            sql = '''
+                 select id,picking_id from stock_move where hop_dong_mua_id = %s and state != 'done'
+            '''%(huy.id)
+            cr.execute(sql)
+            move_state_ids = cr.dictfetchall()
+            if move_state_ids:
+                for move_state in move_state_ids:
+                    wf_service.trg_validate(uid, 'stock.picking', move_state['picking_id'], 'button_cancel', cr)
+                    sql = '''
+                        delete from stock_picking where id in (select picking_id from stock_move where id = %s)
+                    '''%(move_state['id'])
+                    cr.execute(sql)
+                    sql = '''
+                        delete from stock_move where id = %s
+                    '''%(move_state['id']) 
+                    cr.execute(sql)
+                     
+            sql = '''
+                 select id from purchase_order where hop_dong_id = %s and state in ('approved', 'except_picking', 'except_invoice')
+            '''%(huy.id)
+            cr.execute(sql)
+            purchase_ids = cr.dictfetchall()   
+            if purchase_ids:
+                for purchase in purchase_ids:
+                    self.pool.get('purchase.order').action_cancel(cr,uid,[purchase['id']]) 
+                    sql = '''
+                        delete from purchase_order_line where order_id in (select id from purchase_order where id = %s)
+                    '''%(purchase['id'])
+                    cr.execute(sql)
+                    sql = '''
+                        delete from purchase_order where id = %s
+                    '''%(purchase['id']) 
+                     
+            sql = '''
+                 select id from purchase_order where hop_dong_id = %s and state not in ('approved', 'except_picking', 'except_invoice')
+            '''%(huy.id)
+            cr.execute(sql)
+            purchase_2_ids = cr.dictfetchall()   
+            if purchase_2_ids:
+                for purchase_2 in purchase_2_ids:
+                    sql = '''
+                        delete from purchase_order_line where order_id in (select id from purchase_order where id = %s)
+                    '''%(purchase_2['id'])
+                    cr.execute(sql)
+                    sql = '''
+                        delete from purchase_order where id = %s
+                    '''%(purchase_2['id']) 
+                    cr.execute(sql)
+        return self.write(cr, uid, ids, {'state': 'huy_bo'})
 hop_dong()
 
 class phuluc_hop_dong(osv.osv):
     _inherit = "phuluc.hop.dong"
     
-    def duyet_phuluc_hd_mua(self, cr, uid, ids, context=None):
+    def duyet_phuluc_hd_mua_trongnuoc(self, cr, uid, ids, context=None):
+        wf_service = netsvc.LocalService('workflow')
+        hd_line_obj = self.pool.get('hopdong.line')
+        purchase_obj = self.pool.get('purchase.order')
+        stock_move_obj = self.pool.get('stock.move')
+        account_move_obj = self.pool.get('account.move')
+        invoice_line_obj = self.pool.get('account.invoice.line')
+        invoice_obj = self.pool.get('account.invoice')
+        purchase_line_obj = self.pool.get('purchase.order.line')
+        picking_obj = self.pool.get('stock.picking')
+        product_obj = self.pool.get('product.product')
+        for plhd in self.browse(cr, uid, ids):
+            order_line = []
+            for plhp_line in plhd.phuluc_hopdong_line:
+                hd_line_ids = hd_line_obj.search(cr, uid, [('hopdong_id','=',plhp_line.phuluc_hopdong_id.hop_dong_id.id),('product_id','=',plhp_line.product_id.id)])
+                #sua san pham da co trong hop dong
+                if hd_line_ids:
+                    for hd_line in hd_line_obj.browse(cr, uid, hd_line_ids):
+                        
+                        # thay doi so luong tang -> xong
+                        if plhp_line.product_qty>hd_line.product_qty:
+                            val_line={
+                                'product_id': plhp_line.product_id and plhp_line.product_id.id or False,
+                                'name':plhp_line.name,
+                                'chatluong_id':plhp_line.product_id and plhp_line.product_id.chatluong_id and plhp_line.product_id.chatluong_id.id or False,
+                                'quycach_donggoi_id':plhp_line.product_id and plhp_line.product_id.quycach_donggoi_id and plhp_line.product_id.quycach_donggoi_id.id or False,
+                                'product_uom': plhp_line.product_uom and plhp_line.product_uom.id or False,
+                                'product_qty': plhp_line.product_qty-hd_line.product_qty,
+                                'price_unit': plhp_line.price_unit,
+                                'taxes_id': [(6,0,[t.id for t in plhp_line.tax_id])],
+                                'state': 'draft',
+                                'date_planned': time.strftime('%Y-%m-%d'),
+                                'plhd_line_id': plhp_line.id,
+                            }
+                            order_line.append((0,0,val_line))
+                            
+                        # thay doi so luong giam -> xong
+                        if plhp_line.product_qty<hd_line.product_qty:
+                            purchase_line_ids = purchase_line_obj.search(cr, uid, [('hd_line_id','=',hd_line.id)])
+                            purchase_line_obj.write(cr, uid, purchase_line_ids, {'product_uom_qty': plhp_line.product_qty})
+                            stock_move_ids = stock_move_obj.search(cr, uid, [('purchase_line_id','in',purchase_line_ids)],order='product_qty desc')
+                            qty = hd_line.product_qty-plhp_line.product_qty
+                            for stock_move in stock_move_obj.browse(cr, uid, stock_move_ids):
+                                if qty <= 0:
+                                    break
+                                
+                                # kiem tra stock move nay co su dung de phan bo cho phieu xuat chua -> xong
+                                sql = '''
+                                    select picking_id
+                                        from stock_move
+                                        where state!='cancel' and picking_in_id in (select picking_id from stock_move where id=%s) group by picking_id
+                                '''%(stock_move.id)
+                                cr.execute(sql)
+                                picking_ids = [r[0] for r in cr.fetchall()]
+                                picking_name = ''
+                                for picking in picking_obj.browse(cr, uid, picking_ids):
+                                    picking_name+=picking.name+', '
+                                if picking_name:
+                                    picking_name = picking_name[:-2]
+                                    raise osv.except_osv(_('Cảnh báo!'),_("Phiếu nhập của hợp đồng %s đã được phân bổ cho các phiếu xuất %s, vui lòng phân bổ lại sau đó duyệt lại phụ lục hợp đồng!"%(plhd.hop_dong_id.name,picking_name)))
+                                
+                                move_qty = stock_move.product_qty
+                                #xoa stock move neu nhu so luong cua stock move => so luong chenh lech -> xong 
+                                if move_qty<=qty:
+                                    cr.execute(''' delete from account_move_line where move_id in (select id from account_move where stock_move_id = %s ) ''',(stock_move.id,))
+                                    cr.execute(''' delete from account_move where stock_move_id = %s ''',(stock_move.id,))
+                                    sql = '''
+                                        select invoice_id from account_invoice_line where stock_move_id = %s and invoice_id in (select id from account_invoice where hop_dong_id=%s) limit 1
+                                    '''%(stock_move.id,hd_line.hopdong_id.id)
+                                    cr.execute(sql)
+                                    invoice = cr.fetchone()
+                                    if invoice and invoice_obj.browse(cr, uid, invoice[0]).state not in ['draft','cancel']:
+                                        raise osv.except_osv(_('Cảnh báo!'),_("Vui lòng hủy hóa đơn để chỉnh sửa!")) 
+                                    cr.execute(''' delete from account_invoice_line where stock_move_id = %s and invoice_id in (select id from account_invoice where hop_dong_id=%s) ''',(stock_move.id,hd_line.hopdong_id.id,))
+                                    cr.execute(''' delete from stock_move where id = %s ''',(stock_move.id,))
+                                # sua lai so luong cua stock move -> xong
+                                else:
+                                    product_obj.write(cr, uid, [move.product_id.id], {'standard_price':stock_move.purchase_line_id.price_unit})
+                                    stock_move_obj.write(cr, uid, [stock_move.id], {'product_qty': stock_move.product_qty-qty})
+                                    cr.execute(''' delete from account_move where stock_move_id = %s ''',(stock_move.id,))
+                                    stock_move_obj._create_product_valuation_moves(cr, uid, stock_move)
+                                    sql = '''
+                                        select invoice_id from account_invoice_line where stock_move_id = %s and invoice_id in (select id from account_invoice where hop_dong_id=%s) limit 1
+                                    '''%(stock_move.id,hd_line.hopdong_id.id)
+                                    cr.execute(sql)
+                                    invoice = cr.fetchone()
+                                    if invoice and invoice_obj.browse(cr, uid, invoice[0]).state not in ['draft','cancel']:
+                                        raise osv.except_osv(_('Cảnh báo!'),_("Vui lòng hủy hóa đơn để chỉnh sửa!")) 
+                                    invoice_line_ids = invoice_line_obj.search(cr, uid, [('stock_move_id','=',stock_move.id)])
+                                    invoice_line_obj.write(cr, uid, invoice_line_ids, {'quantity': stock_move.product_qty-qty})
+                                qty -= move_qty
+                        
+                        # thay doi don gia -> xong
+                        if plhp_line.price_unit!=hd_line.price_unit:
+                            purchase_line_ids = purchase_line_obj.search(cr, uid, [('hd_line_id','=',hd_line.id)])
+                            purchase_line_obj.write(cr, uid, purchase_line_ids, {'price_unit': plhp_line.price_unit})
+                            stock_move_ids = stock_move_obj.search(cr, uid, [('purchase_line_id','in',purchase_line_ids)])
+                            
+                            #tim nhung phieu nhap xua PO chinh lai but toan -> xong
+                            cr.execute(''' delete from account_move_line where move_id in (select id from account_move where stock_move_id in %s ) ''',(tuple(stock_move_ids),))
+                            cr.execute(''' delete from account_move where stock_move_id in %s ''',(tuple(stock_move_ids),))
+                            for st in stock_move_obj.browse(cr, uid, stock_move_ids):
+                                product_obj.write(cr, uid, [st.product_id.id], {'standard_price':st.purchase_line_id.price_unit})
+                                stock_move_obj._create_product_valuation_moves(cr, uid, st)
+                            
+                            #tim nhung phieu xuat lien quan den phieu nhap cua PO chinh lai but toan -> xong
+                            cr.execute('''
+                                select id
+                                    from stock_move
+                                    where state!='cancel' and picking_in_id in (select picking_id from stock_move where id in %s)
+                            ''',(tuple(stock_move_ids),))
+                            sm_ids = [r[0] for r in cr.fetchall()]
+                            for sm in stock_move_obj.browse(cr, uid, sm_ids):
+                                move_in_ids = stock_move_obj.search(cr, uid, [('picking_id','=',sm.picking_in_id.id),('product_id','=',sm.product_id.id)])
+                                if move_in_ids:
+                                    move_in = stock_move_obj.browse(cr, uid, move_in_ids[0])
+                                    product_obj.write(cr, uid, [sm.product_id.id], {'standard_price':move_in.purchase_line_id.price_unit})
+                                cr.execute(''' delete from account_move where stock_move_id = %s ''',(sm.id,))
+                                stock_move_obj._create_product_valuation_moves(cr, uid, sm)
+                            
+                            cr.execute('''
+                                select invoice_id from account_invoice_line where stock_move_id in %s and invoice_id in (select id from account_invoice where hop_dong_id=%s)
+                            ''',(tuple(stock_move_ids),hd_line.hopdong_id.id,))
+                            invoices = cr.fetchall()
+                            for invoice in invoices:
+                                if invoice and invoice_obj  .browse(cr, uid, invoice[0]).state not in ['draft','cancel']:
+                                    raise osv.except_osv(_('Cảnh báo!'),_("Vui lòng hủy hóa đơn để chỉnh sửa!")) 
+                            invoice_line_ids = invoice_line_obj.search(cr, uid, [('stock_move_id','in',stock_move_ids)])
+                            invoice_line_obj.write(cr, uid, invoice_line_ids, {'price_unit': plhp_line.price_unit})
+                            
+                #them moi san pham chua co trong hop dong -> xong   
+                else:
+                    val_line={
+                        'product_id': hd_line.product_id and hd_line.product_id.id or False,
+                        'name':hd_line.name,
+                        'chatluong_id':hd_line.product_id and hd_line.product_id.chatluong_id and hd_line.product_id.chatluong_id.id or False,
+                        'quycach_donggoi_id':hd_line.product_id and hd_line.product_id.quycach_donggoi_id and hd_line.product_id.quycach_donggoi_id.id or False,
+                        'product_uom': hd_line.product_uom and hd_line.product_uom.id or False,
+                        'product_qty': hd_line.product_qty-quantity,
+                        'price_unit': hd_line.price_unit,
+                        'taxes_id': [(6,0,[t.id for t in hd_line.tax_id])],
+                        'hd_line_id': hd_line.id,
+                        'state': 'draft',
+                        'date_planned': time.strftime('%Y-%m-%d'),
+                        'plhd_line_id': plhp_line.id,
+                    }
+                    order_line.append((0,0,val_line))
+            if order_line:
+                warehouse_obj = self.pool.get('stock.warehouse')
+                warehouse_ids = warehouse_obj.search(cr, uid, [('company_id','=',plhd.hop_dong_id.company_id.id)])
+                create_sale_vals={'warehouse_id': warehouse_ids and warehouse_ids[0] or False,
+                                  'partner_id':plhd.hop_dong_id.partner_id.id,
+                                  'hop_dong_id':plhd.hop_dong_id.id,
+                                  'invoice_method':'picking',
+                                  'plhd_id': plhd.id,
+                                  'state':'draft'}
+                create_sale_vals.update(purchase_obj.onchange_partner_id(cr, uid, [], plhd.hop_dong_id.partner_id.id)['value'])
+                create_sale_vals.update(purchase_obj.onchange_warehouse_id(cr, uid, [], warehouse_ids and warehouse_ids[0] or False)['value'])
+                create_sale_vals.update({'pricelist_id':plhd.hop_dong_id.pricelist_id.id,
+                                         'order_line': order_line})
+                purchase_id = purchase_obj.create(cr, uid, create_sale_vals)
+                wf_service.trg_validate(uid, 'purchase.order', purchase_id, 'purchase_confirm', cr)
+        return self.write(cr, uid, ids, {'state': 'da_duyet'})
+    
+    def duyet_phuluc_hd_mua_nhapkhau(self, cr, uid, ids, context=None):
         wf_service = netsvc.LocalService('workflow')
         hd_line_obj = self.pool.get('hopdong.line')
         purchase_obj = self.pool.get('purchase.order')

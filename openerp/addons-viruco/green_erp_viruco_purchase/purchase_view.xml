@@ -22,7 +22,7 @@
             <field name="inherit_id" ref="purchase.purchase_order_form"/>
             <field name="arch" type="xml">
             	<field name="partner_ref" position="after">
-            		<field name="hop_dong_id" on_change="onchange_hop_dong_id(hop_dong_id)" domain="[('type','=','hd_mua'),('partner_id','=',partner_id),('state','=','da_duyet')]"/>
+            		<field name="hop_dong_id" on_change="onchange_hop_dong_id(hop_dong_id)" domain="[('type','in',['hd_mua_trongnuoc','hd_mua_nhapkhau']),('partner_id','=',partner_id),('state','=','da_duyet')]"/>
             	</field>
             	<field name="dest_address_id" position="after">
             		<field name="user_id"/>

@@ -50,7 +50,7 @@ class phuluc_hop_dong(osv.osv):
     _columns = {
             'name':fields.char('Số', size = 1024,required = True),
             'hop_dong_id': fields.many2one('hop.dong','Hợp đồng',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
-            'type':fields.selection([('hd_noi','Hợp đồng nội'),('hd_ngoai','Hợp đồng ngoại'),('hd_mua','Hợp đồng mua')],'Loại hợp đồng' ,required=True,readonly=True, states={'moi_tao': [('readonly', False)]}),
+            'type':fields.selection([('hd_noi','Hợp đồng nội'),('hd_ngoai','Hợp đồng ngoại'),('hd_mua_trongnuoc','Hợp đồng mua trong nước'),('hd_mua_nhapkhau','Hợp đồng mua nhập khẩu')],'Loại hợp đồng' ,required=True,readonly=True, states={'moi_tao': [('readonly', False)]}),
             'tu_ngay':fields.date('Từ ngày',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
             'den_ngay':fields.date('Đến ngày'),
             'phuluc_hopdong_line': fields.one2many('phuluc.hopdong.line','phuluc_hopdong_id','Line',readonly=True, states={'moi_tao': [('readonly', False)]}),
@@ -100,7 +100,12 @@ class phuluc_hop_dong(osv.osv):
                 'type': 'ir.actions.report.xml',
                 'report_name': 'hopdong_noi_report',
                 }
-        elif phuluc_hopdong.type=='hd_mua':
+        elif phuluc_hopdong.type=='hd_mua_trongnuoc':
+            return {
+                'type': 'ir.actions.report.xml',
+                'report_name': 'hopdong_mua_report',
+            }
+        elif phuluc_hopdong.type=='hd_mua_nhapkhau':
             return {
                 'type': 'ir.actions.report.xml',
                 'report_name': 'hopdong_mua_report',

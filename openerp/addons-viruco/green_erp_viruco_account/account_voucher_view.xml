@@ -8,7 +8,7 @@
             <field name="inherit_id" ref="account_voucher.view_vendor_receipt_form"/>
             <field name="arch" type="xml">
             	<field name="partner_id" position="before">
-            		<field name="hop_dong_id" on_change="onchange_hopdong_id(hop_dong_id)" domain="[('type','!=','hd_mua'),('state','=','da_duyet')]"/>
+            		<field name="hop_dong_id" on_change="onchange_hopdong_id(hop_dong_id)" domain="[('type','in',['hd_noi','hd_ngoai']),('state','=','da_duyet')]"/>
             	</field>
             	<xpath expr="//page[@string='Payment Information']" position="before">
           			<page string='Các đợt thanh toán'>
@@ -33,7 +33,7 @@
             <field name="inherit_id" ref="account_voucher.view_vendor_payment_form"/>
             <field name="arch" type="xml">
             	<field name="partner_id" position="before">
-            		<field name="hop_dong_id" on_change="onchange_hopdong_id(hop_dong_id)" domain="[('type','=','hd_mua'),('state','=','da_duyet')]"/>
+            		<field name="hop_dong_id" on_change="onchange_hopdong_id(hop_dong_id)" domain="[('type','in',['hd_mua_trongnuoc','hd_mua_nhapkhau']),('state','=','da_duyet')]"/>
             	</field>
             	<xpath expr="//page[@string='Payment Information']" position="before">
           			<page string='Các đợt thanh toán'>

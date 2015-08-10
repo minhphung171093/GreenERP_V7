@@ -330,8 +330,6 @@
             <field name="domain">[]</field>
         </record>
         
-        <menuitem id="hop_dong" name="Hợp đồng" sequence="0"/>        
-
     	<record id="lo_trinh_tree_view" model="ir.ui.view">
 			<field name="name">lo.trinh.tree</field>
 			<field name="model">lo.trinh</field>
@@ -435,7 +433,8 @@
 			<field name="model">bang.gia</field>
 			<field name="arch" type="xml">
 				<tree string="Bảng giá mua">
-					<field name="name"/>
+					<field name="date_start"/>
+					<field name="date_end"/>
 					<field name="currency_id"/>
 					<field name="state"/>
 					<field name="type" invisible='1'/>
@@ -448,7 +447,8 @@
 			<field name="model">bang.gia</field>
             <field name="arch" type="xml">
                 <search string="Bảng giá">
-                    <field name="name"/>
+                    <field name="date_start"/>
+					<field name="date_end"/>
                     <field name="currency_id"/>
                     <field name="state"/>
                     <group expand="0" string="Group By...">
@@ -474,8 +474,9 @@
 	            	</header>
 	            	<sheet>
 	            		<group col='4' colspan='2'>
-		                	<field name="name" on_change="onchange_name(name,currency_id)"/>
-							<field name="currency_id" on_change="onchange_name(name,currency_id)"/>
+	            			<field name="date_start" on_change="onchange_name(date_start,date_end,currency_id)"/>
+							<field name="date_end" on_change="onchange_name(date_start,date_end,currency_id)"/>
+							<field name="currency_id" on_change="onchange_name(date_start,date_end,currency_id)"/>
 						</group>
 						<notebook>
 							<page string="Chi tiết bảng giá">
@@ -520,7 +521,8 @@
 			<field name="model">bang.gia</field>
 			<field name="arch" type="xml">
 				<tree string="Bảng giá bán">
-					<field name="name"/>
+					<field name="date_start"/>
+					<field name="date_end"/>
 					<field name="currency_id"/>
 					<field name="state"/>
 					<field name="type" invisible='1'/>
@@ -542,8 +544,9 @@
 	            	</header>
 	            	<sheet>
 	            		<group col='4' colspan='2'>
-		                	<field name="name" on_change="onchange_name(name,currency_id)"/>
-							<field name="currency_id" on_change="onchange_name(name,currency_id)"/>
+		                	<field name="date_start" on_change="onchange_name(date_start,date_end,currency_id)"/>
+							<field name="date_end" on_change="onchange_name(date_start,date_end,currency_id)"/>
+							<field name="currency_id" on_change="onchange_name(date_start,date_end,currency_id)"/>
 						</group>
 						<notebook>
 							<page string="Chi tiết bảng giá">

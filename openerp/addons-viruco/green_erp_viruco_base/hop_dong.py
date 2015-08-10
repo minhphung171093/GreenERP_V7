@@ -110,7 +110,7 @@ class hop_dong(osv.osv):
     
     _columns = {
         'name':fields.char('Số', size = 1024,required = True),
-        'type':fields.selection([('hd_noi','Hợp đồng nội'),('hd_ngoai','Hợp đồng ngoại'),('hd_mua','Hợp đồng mua')],'Loại hợp đồng' ,required=True,readonly=True, states={'moi_tao': [('readonly', False)]}),
+        'type':fields.selection([('hd_noi','Hợp đồng nội'),('hd_ngoai','Hợp đồng ngoại'),('hd_mua_trongnuoc','Hợp đồng mua trong nước'),('hd_mua_nhapkhau','Hợp đồng mua nhập khẩu')],'Loại hợp đồng' ,required=True,readonly=True, states={'moi_tao': [('readonly', False)]}),
         'tu_ngay':fields.date('Từ ngày',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
         'den_ngay':fields.date('Đến ngày'),
         'ngay_nhanhang':fields.char('Ngày nhận hàng', size=1024),
@@ -202,7 +202,14 @@ class hop_dong(osv.osv):
 #                 'datas': datas,
 #                 'nodestroy' : True
                 }
-        elif hopdong.type=='hd_mua':
+        elif hopdong.type=='hd_mua_trongnuoc':
+            return {
+                'type': 'ir.actions.report.xml',
+                'report_name': 'hopdong_mua_report',
+#                 'datas': datas,
+#                 'nodestroy' : True
+            }
+        elif hopdong.type=='hd_mua_nhapkhau':
             return {
                 'type': 'ir.actions.report.xml',
                 'report_name': 'hopdong_mua_report',
@@ -608,7 +615,7 @@ class don_mua_hang(osv.osv):
     
     _columns = {
         'name':fields.char('Số', size = 1024,required = True),
-        'type':fields.selection([('dbh_noi','Đơn bán hàng nội'),('dbh_ngoai','Đơn bán hàng ngoại')],'Loại đơn bán hàng'),
+        'type':fields.selection([('dmh_trongnuoc','Đơn mua hàng trong nước'),('dmh_nhapkhau','Đơn mua hàng nhập khẩu')],'Loại đơn bán hàng'),
         'ngay':fields.date('Ngày',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
         'company_id': fields.many2one('res.company','Công ty',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
         'partner_id': fields.many2one('res.partner','Khách hàng',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
