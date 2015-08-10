@@ -124,6 +124,7 @@ class hop_dong(osv.osv):
         'state': fields.selection([
             ('moi_tao', 'Mới tạo'),
             ('da_duyet', 'Đã duyệt'),
+            ('thuc_hien', 'Thực hiện'),
             ('het_han', 'Hết hạn'),
             ('huy_bo', 'Hủy bỏ'),
             ], 'Trạng thái',readonly=True, states={'moi_tao': [('readonly', False)]}),
@@ -175,6 +176,9 @@ class hop_dong(osv.osv):
     
     def het_han(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids, {'state': 'het_han'})
+    
+    def duyet(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {'state': 'da_duyet'})
     
     def huy_bo(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids, {'state': 'huy_bo'})

@@ -321,7 +321,7 @@ purchase_order_line()
 class hop_dong(osv.osv):
     _inherit = "hop.dong"
     
-    def duyet_hd_mua_trongnuoc(self, cr, uid, ids, context=None):
+    def thuchien_hd_mua_trongnuoc(self, cr, uid, ids, context=None):
         purchase_obj = self.pool.get('purchase.order')
         order_line = []
         vals = {}
@@ -336,9 +336,9 @@ class hop_dong(osv.osv):
             vals.update({'pricelist_id':hd.pricelist_id.id,})
             purchase_id = purchase_obj.create(cr, uid, vals)
             wf_service.trg_validate(uid, 'purchase.order', purchase_id, 'purchase_confirm', cr)
-        return self.write(cr, uid, ids, {'state': 'da_duyet'})
+        return self.write(cr, uid, ids, {'state': 'thuc_hien'})
     
-    def duyet_hd_mua_nhapkhau(self, cr, uid, ids, context=None):
+    def thuchien_hd_mua_nhapkhau(self, cr, uid, ids, context=None):
         purchase_obj = self.pool.get('purchase.order')
         order_line = []
         vals = {}
@@ -353,7 +353,7 @@ class hop_dong(osv.osv):
             vals.update({'pricelist_id':hd.pricelist_id.id,})
             purchase_id = purchase_obj.create(cr, uid, vals)
             wf_service.trg_validate(uid, 'purchase.order', purchase_id, 'purchase_confirm', cr)
-        return self.write(cr, uid, ids, {'state': 'da_duyet'})
+        return self.write(cr, uid, ids, {'state': 'thuc_hien'})
     
     def huy_hd_mua_trongnuoc(self, cr, uid, ids, context=None):
         wf_service = netsvc.LocalService('workflow')

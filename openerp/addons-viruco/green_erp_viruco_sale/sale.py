@@ -314,7 +314,7 @@ sale_order_line()
 class hop_dong(osv.osv):
     _inherit = "hop.dong"
     
-    def duyet_hd_noi(self, cr, uid, ids, context=None):
+    def thuchien_hd_noi(self, cr, uid, ids, context=None):
         sale_obj = self.pool.get('sale.order')
         order_line = []
         vals = {}
@@ -325,7 +325,7 @@ class hop_dong(osv.osv):
             vals.update({'pricelist_id':hd.pricelist_id.id,})
             sale_id = sale_obj.create(cr, uid, vals)
             sale_obj.action_button_confirm(cr, uid, [sale_id])
-        return self.write(cr, uid, ids, {'state': 'da_duyet'})
+        return self.write(cr, uid, ids, {'state': 'thuc_hien'})
     
     def huy_hd_noi(self, cr, uid, ids, context=None):
         wf_service = netsvc.LocalService('workflow')
@@ -513,7 +513,7 @@ class hop_dong(osv.osv):
                     cr.execute(sql)
         return self.write(cr, uid, ids, {'state': 'huy_bo'})
         
-    def duyet_hd_ngoai(self, cr, uid, ids, context=None):
+    def thuchien_hd_ngoai(self, cr, uid, ids, context=None):
         sale_obj = self.pool.get('sale.order')
         order_line = []
         vals = {}
@@ -524,7 +524,7 @@ class hop_dong(osv.osv):
             vals.update({'pricelist_id':hd.pricelist_id.id,})
             sale_id = sale_obj.create(cr, uid, vals)
             sale_obj.action_button_confirm(cr, uid, [sale_id])
-        return self.write(cr, uid, ids, {'state': 'da_duyet'})
+        return self.write(cr, uid, ids, {'state': 'thuc_hien'})
     
 hop_dong()
 
