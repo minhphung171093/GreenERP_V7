@@ -2,15 +2,95 @@
 <openerp>
     <data>
     
-		<menuitem id="menu_action_bang_gia_mua"
-			action="action_bang_gia_mua"
-			name="Bảng giá mua"
-			parent="menu_config_hopdong" sequence="20"/>
+    	<menuitem id="menu_quantri"
+			name="Quản trị"
+			sequence="175"/>
+		
+			<menuitem id="menu_cac_danh_muc"
+				name="Các danh mục"
+				parent="menu_quantri"
+				sequence="10"/>
+				
+				<menuitem id="base.menu_partner_form"
+					name="Khách hàng"
+					parent="menu_cac_danh_muc" sequence="10"/>
+					
+				<menuitem id="base.menu_procurement_management_supplier_name"
+					name="Các nhà cung cấp"
+					parent="menu_cac_danh_muc" sequence="20"/>
+				
+				<menuitem id="product.menu_products"
+					name="Sản phẩm"
+					parent="menu_cac_danh_muc" sequence="30"/>
+					
+				<menuitem id="product.menu_product_category_action_form"
+					name="Danh mục sản phẩm"
+					parent="menu_cac_danh_muc" sequence="40"/>
+					
+				<menuitem id="menu_action_sale_arbitration" action="action_sale_arbitration" name="Luật định" parent="menu_cac_danh_muc" sequence="50"/>
+		    	<menuitem id="menu_action_chatluong_sanpham" action="action_chatluong_sanpham" name="Chất lượng sản phẩm" parent="menu_cac_danh_muc" sequence="60"/>
+		    	<menuitem id="menu_action_quycach_donggoi" action="action_quycach_donggoi" name="Quy cách đóng gói" parent="menu_cac_danh_muc" sequence="70"/>
+		    	<menuitem id="menu_action_quycach_baobi" action="action_quycach_baobi" name="Quy cách bao bì" parent="menu_cac_danh_muc" sequence="80"/>
+		    	<menuitem id="menu_action_nha_sanxuat" action="action_nha_sanxuat" name="Nhà sản xuất" parent="menu_cac_danh_muc" sequence="90"/>
+		    	<menuitem id="menu_action_dieukien_giaohang" action="action_dieukien_giaohang" name="Điều kiện giao hàng" parent="menu_cac_danh_muc" sequence="100"/>
+		    	<menuitem id="menu_action_hinhthuc_giaohang" action="action_hinhthuc_giaohang" name="Hình thức giao hàng" parent="menu_cac_danh_muc" sequence="110"/>
+				<menuitem id="menu_cauhinh_dieukhoan"
+		    		action="properties.action_model_admin_properties"
+		    		name="Cấu hình điều khoản"
+		    		parent="menu_cac_danh_muc"
+					sequence="120"/>
+				
+				<menuitem id="product.menu_product_uom_categ_form_action"
+					name="Danh mục đơn vị qui đổi"
+					parent="menu_cac_danh_muc" sequence="130"/>
+					
+				<menuitem id="product.menu_product_uom_form_action"
+					name="Đơn vị qui đổi"
+					parent="menu_cac_danh_muc" sequence="140"/>
+					
+				<menuitem id="sale_stock.menu_action_shop_form"
+					name="Chi nhánh"
+					parent="menu_cac_danh_muc" sequence="150"/>
+					
+				<menuitem id="base.menu_config_address_book"
+					name="Sổ địa chỉ"
+					parent="menu_cac_danh_muc" sequence="160"/>
+				
+				<menuitem id="menu_action_lo_trinh" action="action_lo_trinh" name="Lộ trình" parent="menu_cac_danh_muc" sequence="170"/>
+				<menuitem id="menu_action_cang_donghang" action="action_cang_donghang" name="Cảng đóng hàng" parent="menu_cac_danh_muc" sequence="180"/>
+				
+				<menuitem id="stock.menu_action_warehouse_form"
+					name="Các kho hàng"
+					parent="menu_cac_danh_muc" sequence="190"/>
+					
+				<menuitem id="stock.menu_action_location_form"
+					name="Các địa điểm"
+					parent="menu_cac_danh_muc" sequence="200"/>
+				
+			<menuitem id="menu_bang_gia"
+				name="Bảng giá"
+				parent="menu_quantri"
+				sequence="20"/>
+	    
+				<menuitem id="menu_action_bang_gia_mua"
+					action="action_bang_gia_mua"
+					name="Bảng giá mua"
+					parent="menu_bang_gia" sequence="10"/>
+					
+				<menuitem id="menu_action_bang_gia_ban"
+					action="action_bang_gia_ban"
+					name="Bảng giá bán"
+					parent="menu_bang_gia" sequence="20"/>
 			
-		<menuitem id="menu_action_bang_gia_ban"
-			action="action_bang_gia_ban"
-			name="Bảng giá bán"
-			parent="menu_config_hopdong" sequence="20"/>
+			<menuitem id="stock.menu_traceability"
+				name="Theo dõi hàng hóa"
+				parent="menu_quantri"
+				sequence="30"/>
+				
+			<menuitem id="stock.menu_warehouse_config"
+				name="Quản lý kho"
+				parent="menu_quantri"
+				sequence="40"/>
 			
     	<record model="ir.ui.menu" id="base.menu_config_address_book">
 	    	<field name="groups_id" eval="[(4, ref('green_erp_viruco_base.group_viruco_admin'))]"/>
@@ -23,6 +103,70 @@
 		</record>
 		<record model="ir.ui.menu" id="base.menu_localisation">
 	    	<field name="groups_id" eval="[(4, ref('green_erp_viruco_base.group_viruco_admin'))]"/>
+		</record>
+		
+		<record model="ir.ui.menu" id="mail.mail_feeds_main">
+	    	<field name="active" eval="False"/>
+		</record>
+		
+		<record model="ir.ui.menu" id="account.menu_account_customer">
+	    	<field name="active" eval="False"/>
+		</record>
+		
+		<record model="ir.ui.menu" id="account.menu_account_supplier">
+	    	<field name="active" eval="False"/>
+		</record>
+		
+		<record model="ir.ui.menu" id="base.menu_product">
+	    	<field name="active" eval="False"/>
+		</record>
+		
+		<record model="ir.ui.menu" id="purchase.menu_procurement_management_product">
+	    	<field name="active" eval="False"/>
+		</record>
+		
+		<record model="ir.ui.menu" id="base.menu_base_config">
+	    	<field name="active" eval="False"/>
+		</record>
+		
+		<record model="ir.ui.menu" id="purchase.menu_purchase_config_purchase">
+	    	<field name="active" eval="False"/>
+		</record>
+		
+		<record model="ir.ui.menu" id="purchase.menu_action_picking_tree_in_move">
+	    	<field name="active" eval="False"/>
+		</record>
+		
+		<record model="ir.ui.menu" id="purchase.menu_purchase_line_order_draft">
+	    	<field name="active" eval="False"/>
+		</record>
+		
+		<record model="ir.ui.menu" id="sale.menu_invoicing_sales_order_lines">
+	    	<field name="active" eval="False"/>
+		</record>
+		
+		<record model="ir.ui.menu" id="stock.menu_stock_products_moves">
+	    	<field name="active" eval="False"/>
+		</record>
+		
+		<record model="ir.ui.menu" id="procurement.menu_stock_sched">
+	    	<field name="active" eval="False"/>
+		</record>
+		
+		<record model="ir.ui.menu" id="stock.menu_stock_product">
+	    	<field name="active" eval="False"/>
+		</record>
+		
+		<record model="ir.ui.menu" id="stock.menu_stock_configuration">
+	    	<field name="active" eval="False"/>
+		</record>
+		
+		<record model="ir.ui.menu" id="base.menu_reporting_dashboard">
+	    	<field name="active" eval="False"/>
+		</record>
+		
+		<record model="ir.ui.menu" id="base.menu_reporting_config">
+	    	<field name="active" eval="False"/>
 		</record>
     </data>
 </openerp>

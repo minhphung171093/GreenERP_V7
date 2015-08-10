@@ -2,12 +2,6 @@
 <openerp>
     <data>
     	
-    	<menuitem id="menu_cauhinh_dieukhoan"
-    		action="properties.action_model_admin_properties"
-    		name="Cấu hình điều khoản"
-    		parent="green_erp_viruco_base.menu_config_hopdong"
-			sequence="1"/>
-			
 		<record model="ir.ui.menu" id="sale.menu_sale_quotations">
 	    	<field name="active" eval="False"/>
 		</record>
@@ -27,6 +21,60 @@
     		name="Đơn bán hàng ngoại"
     		parent="base.menu_sales"
 			sequence="0"/>
+			
+		<record id="action_sale_invoice_pending" model="ir.actions.act_window">
+	        <field name="name">Hóa đơn chờ xác nhận</field>
+	        <field name="res_model">account.invoice</field>
+	        <field name="view_type">form</field>
+	        <field name="view_mode">tree,form,calendar,graph</field>
+	        <field eval="False" name="view_id"/>
+	        <field name="domain">[('type','=','out_invoice')]</field>
+	        <field name="context">{'default_type':'out_invoice', 'type':'out_invoice', 'journal_type': 'sale', 'search_default_draft': 1}</field>
+	        <field name="search_view_id" ref="account.view_account_invoice_filter"/>
+	        <field name="help" type="html">
+	          <p class="oe_view_nocontent_create">
+	            Click to create a draft invoice.
+	          </p><p>
+	            Use this menu to control the invoices to be received from your
+	            supplier. OpenERP generates draft invoices from your purchase
+	            orders or receptions, according to your settings.
+	          </p><p>
+	            Once you receive a supplier invoice, you can match it with the
+	            draft invoice and validate it.
+	          </p>
+	        </field>
+	    </record>
+	
+	     <menuitem
+	          id="menu_action_sale_invoice_pending"
+	          action="action_sale_invoice_pending"
+	          parent="base.menu_invoiced"
+	          sequence="10"/>
+    	
+    	<record id="action_picking_tree4_picking_out_to_invoice" model="ir.actions.act_window">
+            <field name="name">Phiếu xuất kho chờ hóa đơn</field>
+            <field name="res_model">stock.picking.out</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar</field>
+            <field name="domain">[('type','=','out'),('sale_id.order_policy','=','picking')]</field>
+            <field name="context">{"default_type": "out", "contact_display": "partner_address", "search_default_done": 1, "search_default_to_invoice": 1}</field>
+            <field name="search_view_id" ref="stock.view_picking_in_search"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a new incoming shipment.
+              </p><p> 
+                Here you can track all the product receptions of purchase
+                orders where the invoicing is "Based on Incoming Shipments",
+                and for which you have not received a supplier invoice yet.
+                You can generate a supplier invoice based on those receptions.
+              </p>
+            </field>
+       </record>
+
+        <menuitem action="action_picking_tree4_picking_out_to_invoice"
+            id="menu_action_picking_tree4_picking_out_to_invoice"
+            parent="base.menu_invoiced" sequence="20"/>
     	
     </data>
 </openerp>

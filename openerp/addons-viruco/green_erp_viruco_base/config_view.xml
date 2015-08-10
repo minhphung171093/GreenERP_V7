@@ -331,15 +331,7 @@
         </record>
         
         <menuitem id="hop_dong" name="Hợp đồng" sequence="0"/>        
-        <menuitem id="menu_config_hopdong" parent="hop_dong" name="Cấu Hình" sequence="100"/>
-    	<menuitem id="menu_action_sale_arbitration" action="action_sale_arbitration" name="Luật định" parent="menu_config_hopdong" sequence="0"/>
-    	<menuitem id="menu_action_chatluong_sanpham" action="action_chatluong_sanpham" name="Chất lượng sản phẩm" parent="base.menu_base_config" sequence="0"/>
-    	<menuitem id="menu_action_quycach_donggoi" action="action_quycach_donggoi" name="Quy cách đóng gói" parent="base.menu_base_config" sequence="1"/>
-    	<menuitem id="menu_action_quycach_baobi" action="action_quycach_baobi" name="Quy cách bao bì" parent="base.menu_base_config" sequence="2"/>
-    	<menuitem id="menu_action_nha_sanxuat" action="action_nha_sanxuat" name="Nhà sản xuất" parent="base.menu_base_config" sequence="3"/>
-    	<menuitem id="menu_action_dieukien_giaohang" action="action_dieukien_giaohang" name="Điều kiện giao hàng" parent="base.menu_base_config" sequence="4"/>
-    	<menuitem id="menu_action_hinhthuc_giaohang" action="action_hinhthuc_giaohang" name="Hình thức giao hàng" parent="base.menu_base_config" sequence="4"/>
-    	
+
     	<record id="lo_trinh_tree_view" model="ir.ui.view">
 			<field name="name">lo.trinh.tree</field>
 			<field name="model">lo.trinh</field>
@@ -392,8 +384,6 @@
             <field name="domain">[]</field>
         </record>
 	        
-    	<menuitem id="menu_action_lo_trinh" action="action_lo_trinh" name="Lộ trình" parent="stock.menu_stock_configuration" sequence="0"/>
-    	
     	<record id="cang_donghang_tree_view" model="ir.ui.view">
 			<field name="name">cang.donghang.tree</field>
 			<field name="model">cang.donghang</field>
@@ -439,7 +429,6 @@
             <field name="view_id" ref="cang_donghang_tree_view"/>
             <field name="domain">[]</field>
         </record>
-        <menuitem id="menu_action_cang_donghang" action="action_cang_donghang" name="Cảng đóng hàng" parent="stock.menu_stock_configuration" sequence="1"/>
         
         <record id="bang_gia_mua_tree_view" model="ir.ui.view">
 			<field name="name">bang.gia.mua.tree</field>
