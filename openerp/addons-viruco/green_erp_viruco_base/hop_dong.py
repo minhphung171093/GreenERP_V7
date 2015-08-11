@@ -198,10 +198,10 @@ class hop_dong(osv.osv):
             cr.execute(sql)
             phieuxuat_ids = [row[0] for row in cr.fetchall()]
         if phieuxuat_ids:    
-            form_view = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'green_erp_viruco_stock', 'view_picking_out_form_inherit')
+            form_view = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'stock', 'view_picking_out_form')
             tree_view = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'stock', 'view_picking_out_tree')
             return {
-                        'name': 'Phiếu Xuất',
+                        'name': 'Phiếu xuất hàng bán',
                         'view_type': 'form',
                         'view_mode': 'tree, form',
                         'view_id': False,
@@ -225,10 +225,10 @@ class hop_dong(osv.osv):
             cr.execute(sql)
             phieunhap_ids = [row[0] for row in cr.fetchall()]
         if phieunhap_ids:    
-            form_view = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'green_erp_viruco_stock', 'view_picking_in_form_inherit')
+            form_view = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'stock', 'view_picking_in_form')
             tree_view = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'stock', 'view_picking_in_tree')
             return {
-                        'name': 'Phiếu nhập',
+                        'name': 'Phiếu nhập hàng mua',
                         'view_type': 'form',
                         'view_mode': 'tree, form',
                         'view_id': False,
