@@ -189,6 +189,61 @@ class hop_dong(osv.osv):
         'currency_company_id': lambda self, cr, uid, c: self.pool.get('res.users').browse(cr, uid, uid).company_id.currency_id.id,
     }
     
+    def bt_list_phieuxuat(self, cr, uid, ids, context=None):
+        for hd in self.browse(cr,uid,ids):
+            sql = '''
+                select picking_id from stock_move where hop_dong_ban_id = %s and picking_id is not null 
+                and picking_id in (select id from stock_picking where type = 'out')
+            '''%(hd.id)
+            cr.execute(sql)
+            phieuxuat_ids = [row[0] for row in cr.fetchall()]
+        if phieuxuat_ids:    
+            form_view = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'green_erp_viruco_stock', 'view_picking_out_form_inherit')
+            tree_view = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'stock', 'view_picking_out_tree')
+            return {
+                        'name': 'Phiếu Xuất',
+                        'view_type': 'form',
+                        'view_mode': 'tree, form',
+                        'view_id': False,
+                        'res_model': 'stock.picking.out',
+                        'domain':[('id', 'in', phieuxuat_ids)],
+                        'target': 'current',
+                        'views': [(tree_view and tree_view[1] or False, 'tree'),
+                                  (form_view and form_view[1] or False, 'form')],
+                        'type': 'ir.actions.act_window',
+                        'res_id': phieuxuat_ids,
+                    }
+        else:
+            raise osv.except_osv(_('Warning!'),_('Không có phiếu xuất hàng bán nào thuộc hợp đồng số  %s')%(hd.name))  
+        
+    def bt_list_phieunhap(self, cr, uid, ids, context=None):
+        for hd in self.browse(cr,uid,ids):
+            sql = '''
+                select picking_id from stock_move where hop_dong_mua_id = %s and picking_id is not null 
+                and picking_id in (select id from stock_picking where type = 'in')
+            '''%(hd.id)
+            cr.execute(sql)
+            phieunhap_ids = [row[0] for row in cr.fetchall()]
+        if phieunhap_ids:    
+            form_view = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'green_erp_viruco_stock', 'view_picking_in_form_inherit')
+            tree_view = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'stock', 'view_picking_in_tree')
+            return {
+                        'name': 'Phiếu nhập',
+                        'view_type': 'form',
+                        'view_mode': 'tree, form',
+                        'view_id': False,
+                        'res_model': 'stock.picking.in',
+                        'domain':[('id', 'in', phieunhap_ids)],
+                        'target': 'current',
+                        'views': [(tree_view and tree_view[1] or False, 'tree'),
+                                  (form_view and form_view[1] or False, 'form')],
+                        'type': 'ir.actions.act_window',
+                        'res_id': phieunhap_ids,
+                    }
+        else:
+            raise osv.except_osv(_('Warning!'),_('Không có phiếu nhập hàng mua nào thuộc hợp đồng số  %s')%(hd.name))  
+        
+        
     def print_hopdong(self, cr, uid, ids, context=None):
         hopdong = self.browse(cr, uid, ids[0])
         datas = {

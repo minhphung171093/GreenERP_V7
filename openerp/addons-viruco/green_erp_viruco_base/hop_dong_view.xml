@@ -52,6 +52,7 @@
 	                    <h1>
 	                    	<label string="Số"/>
 	                        <field name="name" class="oe_inline" nolabel="1" />
+	                        <button name="bt_list_phieuxuat" string="Danh Sách Phiếu Xuất" type="object" class="oe_highlight, oe_inline, oe_right"/>
 	                    </h1>
 	                    <group col='4' colspan='2'>
 	                    	<field name="type" invisible='1'/>
@@ -194,6 +195,7 @@
 	                    <h1>
 	                    	<label string="No."/>
 	                        <field name="name" class="oe_inline" nolabel="1" />
+	                        <button name="bt_list_phieuxuat" string="Danh Sách Phiếu Xuất" type="object" class="oe_highlight, oe_inline, oe_right"/>
 	                    </h1>
 	                    <group col='4' colspan='2'>
 	                    	<field name="type" invisible='1'/>
@@ -338,6 +340,7 @@
 	                    <h1>
 	                    	<label string="Số"/>
 	                        <field name="name" class="oe_inline" nolabel="1" />
+	                        <button name="bt_list_phieunhap" string="Danh Sách Phiếu Nhập" type="object" class="oe_highlight, oe_inline, oe_right"/>
 	                    </h1>
 	                    <group col='4' colspan='2'>
 	                    	<field name="type" invisible='1'/>
@@ -454,6 +457,7 @@
 	                    <h1>
 	                    	<label string="Số"/>
 	                        <field name="name" class="oe_inline" nolabel="1" />
+	                        <button name="bt_list_phieunhap" string="Danh Sách Phiếu Nhập" type="object" class="oe_highlight, oe_inline, oe_right"/>
 	                    </h1>
 	                    <group col='4' colspan='2'>
 	                    	<field name="type" invisible='1'/>
