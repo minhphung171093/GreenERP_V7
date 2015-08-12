@@ -77,6 +77,26 @@
 									<newline/>
 									<field name="quycachdonggoi_chatluong" colspan='4'/>
 								</group>
+								<group col='4' colspan='2'>
+									<field name="thanhtoan" />
+									<field name="ngay_thanhtoan" attrs="{'invisible':[('thanhtoan','=',False)]}"/>
+								</group>
+								<group col='4' colspan='2'>
+									<field name="dagui_nganhang" />
+									<field name="ngaygui_nganhang" attrs="{'invisible':[('dagui_nganhang','=',False)]}"/>
+								</group>
+								<group col='4' colspan='2'>
+									<field name="dagui_hopdong" />
+									<field name="ngaygui_hopdong" attrs="{'invisible':[('dagui_hopdong','=',False)]}"/>
+								</group>
+								<group col='4' colspan='2'>
+									<field name="dagui_hoadon" />
+									<field name="ngaygui_hoadon" attrs="{'invisible':[('dagui_hoadon','=',False)]}"/>
+								</group>
+								<group col='4' colspan='2'>
+									<field name="dagui_chungtugoc" />
+									<field name="ngaygui_chungtugoc" attrs="{'invisible':[('dagui_chungtugoc','=',False)]}"/>
+								</group>
 							</page>
 							<page string="Thông tin mặt hàng" >
 								<field name="hopdong_line">
@@ -222,6 +242,26 @@
 									<field name="partial_shipment" />
 									<field name="transshipment" />
 									<field name="arbitration_id" />
+								</group>
+								<group col='4' colspan='2'>
+									<field name="thanhtoan" />
+									<field name="ngay_thanhtoan" attrs="{'invisible':[('thanhtoan','=',False)]}"/>
+								</group>
+								<group col='4' colspan='2'>
+									<field name="dagui_nganhang" />
+									<field name="ngaygui_nganhang" attrs="{'invisible':[('dagui_nganhang','=',False)]}"/>
+								</group>
+								<group col='4' colspan='2'>
+									<field name="dagui_hopdong" />
+									<field name="ngaygui_hopdong" attrs="{'invisible':[('dagui_hopdong','=',False)]}"/>
+								</group>
+								<group col='4' colspan='2'>
+									<field name="dagui_hoadon" />
+									<field name="ngaygui_hoadon" attrs="{'invisible':[('dagui_hoadon','=',False)]}"/>
+								</group>
+								<group col='4' colspan='2'>
+									<field name="dagui_chungtugoc" />
+									<field name="ngaygui_chungtugoc" attrs="{'invisible':[('dagui_chungtugoc','=',False)]}"/>
 								</group>
 							</page>
 							<page string="Product line" >
