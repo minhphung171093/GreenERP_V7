@@ -2,7 +2,9 @@
 <openerp>
     <data>
     	<menuitem id="co_cau" name="Quản lý cơ cấu đàn"/>
-    	<menuitem id="menu_thong_tin" parent="co_cau" name="Thông tin đàn vật nuôi"/>
-    	<menuitem id="thong_tin_dan" parent="menu_thong_tin" name="Thông tin đàn vật nuôi" action="action_co_cau"/>
+    	<menuitem id="menu_thong_tin" parent="co_cau" name="Thông tin"/> 
+    		<menuitem id="thong_tin_dan" parent="menu_thong_tin" name="Thông tin đàn vật nuôi" action="action_co_cau"/>
+    		
+    	
     </data>
 </openerp>

@@ -35,15 +35,15 @@ class tiem_phong(osv.osv):
         'can_bo_tiem': fields.boolean('Cán bộ thú y tiêm'),
         'so_luong_tiem': fields.integer('số lượng con được tiêm'),
         'hinh_thuc_tiem':fields.selection([('tu_tiem','Tự tiêm'),('can_bo','Cán bộ thú y tiêm')]),
-        'ngay_tiem': fields.date('Ngày tiêm'),
-        'don_vi_id': fields.many2one( 'don.vi','Đơn vị)'),
-        'can_bo_id': fields.many2one( 'can.bo','Cán bộ thú y thực hiện tiêm',domain="[('don_vi_id','=',don_vi_id)]"),
-        'loai_vaccine_id': fields.many2one('loai.vaccine','Loại vaccine'),
+        'name': fields.date('Ngày tiêm', required = True),
+        'tram_id': fields.many2one( 'tram.thu.y','Trạm thú y', required = True),
+        'can_bo_id': fields.many2one( 'can.bo','Cán bộ thú y thực hiện tiêm'),
+        'loai_vaccine_id': fields.many2one('loai.vacxin','Loại vaccine'),
         'loai_vat_id': fields.many2one('loai.vat','Loài vật được tiêm'),
-        'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)',domain="[('quan_huyen_id','=',quan_huyen_id)]"),
-        'khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)',domain="[('phuong_xa_id','=',phuong_xa_id)]"),
+        'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)'),
+        'khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)'),
         'quan_huyen_id': fields.many2one( 'quan.huyen','Quận (huyện)'),
-        'ho_chan_nuoi_id': fields.many2one( 'chan.nuoi','Hộ chăn nuôi',domain="[('khu_pho_id','=',khu_pho_id)]"),
+        'ho_chan_nuoi_id': fields.many2one( 'chan.nuoi','Hộ chăn nuôi'),
                 }
 
 

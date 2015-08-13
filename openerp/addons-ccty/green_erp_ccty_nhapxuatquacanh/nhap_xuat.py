@@ -21,8 +21,8 @@ base_path = os.path.dirname(modules.get_module_path('green_erp_ccty_base'))
 class nhap_xuat(osv.osv):
     _name = "nhap.xuat"
     _columns = {
-        'so_giay_kiem_dich': fields.char('Giấy kiểm dịch',size = 50),
-        'chu_hang': fields.char('Họ tên chủ cơ sở',size = 50),
+        'name': fields.char('Giấy kiểm dịch',size = 50, required = True),
+        'chu_hang': fields.char('Họ tên chủ cơ sở',size = 50, required = True),
         'loai_hinh': fields.selection((('a','Nhập'), ('b','Xuất'), ('c','quá cảnh')),'Loại hình'),
         'loai_hang': fields.many2one('loai.hang','Loại hàng'),
         'ngay_nhap_xuat': fields.date('Ngày nhập xuất'),

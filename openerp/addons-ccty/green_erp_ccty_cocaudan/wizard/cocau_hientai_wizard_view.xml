@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		<record id="cocau_hientai_form_view" model="ir.ui.view">
+	        <field name="name">cocau.hientai.form.view</field>
+	        <field name="model">cocau.hientai.form</field>
+	        <field name="arch" type="xml">
+	            <form string="Cơ cấu hiện tại report" version="7.0">
+	            	<group colspan = '2' col = '4'>
+	                <field name="ten_ho_id" />
+	                <field name="tu_ngay" />
+	                <field name="den_ngay" />
+	                </group>
+	                <footer>
+	                    <button name="print_report" type='object' string="OK" class="oe_highlight"/>
+	                    or
+	                    <button string="Cancel" class="oe_highlight" special="cancel" />
+	                </footer>
+	            </form>
+	        </field>
+    	</record>
+
+	    <record model="ir.actions.act_window" id="action_cocau_hientai_form">
+	        <field name="name">Thống kê cơ cấu hiện tại</field>
+	        <field name="res_model">cocau.hientai.form</field>
+	        <field name="view_type">form</field>
+	        <field name="view_mode">form</field>
+	        <field name="view_id" ref="cocau_hientai_form_view" />
+	        <field name="target">new</field>
+	    </record>
+	    
+	    <menuitem id="co_cau" name="Quản lý cơ cấu đàn"/>
+	    <menuitem id="thongke_baocao" parent="co_cau" name="Thống kê báo cáo" />
+    		<menuitem action="action_cocau_hientai_form" id="menu_action_cocau_hientai_form" parent="thongke_baocao"/>
+        
+	 
+	    
+    </data>
+</openerp>
+

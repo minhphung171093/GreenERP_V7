@@ -12,7 +12,7 @@
 	            <search string="Cán bộ">
 	                <group>
 	                    <field name="name" />
-	                    <field name="don_vi_id" />                    
+	                    <field name="tram_id" />                    
 	                    <field name="email" />
 	                    <field name="dien_thoai" />
 	                </group>
@@ -27,7 +27,7 @@
             <field name="arch" type="xml">
                 <tree string="Tree cán bộ">
                     <field name="name" />
-                    <field name="don_vi_id" />                    
+                    <field name="tram_id" />                    
                     <field name="email" />
                     <field name="dien_thoai" />
                 </tree>
@@ -43,7 +43,7 @@
 	                <sheet>
                 		<group>
 		            		<field name="name" />
-		                    <field name="don_vi_id" />                    
+		                    <field name="tram_id" />                    
 		                    <field name="email" />
 		                    <field name="dien_thoai" />
                 		</group>
@@ -179,6 +179,15 @@
 		                    <field name="thuoc_loai" />                    
 		                    <field name="thoi_gian" />
                 		</group>
+                		<notebook>
+							<page string = "Thông tin chi tiết">
+								<field name="chitiet_loaivat" nolabel='1'>
+									<tree editable='bottom'>
+										<field name="name" />
+									</tree>
+								</field>
+							</page>
+						</notebook>
 	                </sheet>
                 </form>
             </field>
@@ -191,46 +200,46 @@
             <field name="view_mode">tree,form</field>
         </record>
         					
-        					
-        					
-        					
         					<!--hộ chăn nuôi-->   
 
-
-    <record id="chan_nuoi_search" model="ir.ui.view">
-	        <field name="name">chan.nuoi.search</field>
-	        <field name="model">chan.nuoi</field>
-	        <field name="type">search</field>
-	        <field name="arch" type="xml">
-	            <search string="Hộ chăn nuôi">
-	                <group>
-	                    <field name="name" />
-	                    <field name="ho_ten" />
-	                    <field name="dia_chi" />                    
-	                    <field name="ma_so" />
-	                    <field name="ngay_lap" />
-	                    <field name="phuong_xa_id" />
-	                    <field name="khu_pho_id" />
-	                    <field name="quan_huyen_id" />
-	                </group>
-	            </search>	
-	        </field>
-	    </record>
+	    <record id="chan_nuoi_search" model="ir.ui.view">
+            <field name="name">chan.nuoi.search</field>
+            <field name="model">chan.nuoi</field>
+            <field name="arch" type="xml">
+                <search string="Hộ chăn nuôi">
+                	<field name="name" />
+                    <field name="ma_ho" />
+                    <field name="so_nha" />                    
+                    <field name="ngay_cap" />
+                    <field name="quan_huyen_id" />
+                    <field name="phuong_xa_id" />
+                    <field name="khu_pho_id" />
+                    <field name="dien_tich" />
+                    <separator/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Quận (huyện)" domain="[]" context="{'group_by':'quan_huyen_id'}"/>
+                        <filter string="Phường (xã)" domain="[]"  context="{'group_by':'phuong_xa_id'}"/>
+                        <filter string="Khu phố (ấp)" domain="[]" context="{'group_by':'khu_pho_id'}"/>
+                        <filter string="Thời gian cấp" domain="[]"  context="{'group_by':'ngay_cap'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>
     
         <record model="ir.ui.view" id="chan_nuoi_tree">
             <field name="name">chan.nuoi.tree</field>
             <field name="model">chan.nuoi</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="Tree Hộ chăn nuôi">
+                <tree string="Hộ chăn nuôi">
                     <field name="name" />
-                    <field name="ho_ten" />
-                    <field name="dia_chi" />                    
-                    <field name="ma_so" />
-                    <field name="ngay_lap" />
-                    <field name="phuong_xa_id" />
-                    <field name="khu_pho_id" />
+                    <field name="ma_ho" />
+                    <field name="so_nha" />                    
+                    <field name="ngay_cap" />
                     <field name="quan_huyen_id" />
+                    <field name="phuong_xa_id" domain="[('quan_huyen_id','=',quan_huyen_id)]"/>
+                    <field name="khu_pho_id" domain="[('phuong_xa_id','=',phuong_xa_id)]"/>
+                    <field name="dien_tich" />
                 </tree>
             </field>
         </record>
@@ -240,17 +249,17 @@
             <field name="model">chan.nuoi</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
-                <form string="form Hộ chăn nuôi" version="7.0">
+                <form string="Hộ chăn nuôi" version="7.0">
 	                <sheet>
                 		<group col="4"  string="Thông tin hộ chăn nuôi">
 		            		<field name="name" />
-		                    <field name="ho_ten" />
-		                    <field name="dia_chi" /> 
-		                    <field name="quan_huyen_id" />                   
-		                    <field name="ngay_lap" />
+		                    <field name="ma_ho" />
+		                    <field name="so_nha" />                    
+		                    <field name="ngay_cap" />
+		                    <field name="quan_huyen_id" />
 		                    <field name="phuong_xa_id" />
-		                    <field name="ma_so" /> 
 		                    <field name="khu_pho_id" />
+		                    <field name="dien_tich" />
                 		</group>
 	                </sheet>
                 </form>
@@ -262,6 +271,8 @@
             <field name="res_model">chan.nuoi</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
+            <field eval="False" name="view_id" ref="chan_nuoi_tree"/>
+            <field name="search_view_id" ref="chan_nuoi_search"/>
         </record>
 
         					

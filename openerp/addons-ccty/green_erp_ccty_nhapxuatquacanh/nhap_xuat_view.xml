@@ -8,6 +8,7 @@
 	        <field name="arch" type="xml">
 	            <search string="Nhập xuất">
 	                <group>
+	                	<field name="name" />
 	                    <field name="chu_hang" />
 	            		<field name="loai_hinh" />
 	                    <field name="loai_hang" />
@@ -27,6 +28,7 @@
             <field name="type">tree</field>
             <field name="arch" type="xml">
                 <tree string="Tree Nhập xuất">
+                	<field name="name" />
                 	<field name="chu_hang" />
             		<field name="loai_hinh" />
                     <field name="loai_hang" />
@@ -47,6 +49,7 @@
                 <form string="form nhập xuất" version="7.0">
 	                <sheet>
                 		<group col="4"  string="Thông tin nhập xuất quá cảnh">
+                			<field name="name" />
 		            		<field name="chu_hang" />
 		            		<field name="loai_hinh" />
 		                    <field name="loai_hang" />

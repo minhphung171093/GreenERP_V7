@@ -1,2 +1,2 @@
 # -*- coding: utf-8 -*-
-import danhmuc
+import ql_vaccine

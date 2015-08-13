@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		<record model="ir.ui.view" id="nhap_vaccine_tree">
+            <field name="name">nhap.vaccine.tree</field>
+            <field name="model">nhap.vaccine</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Tree Nhập Vaccine">
+                	<field name="can_bo_id" />
+                	<field name="name" />
+                	<field name="ngay_nhap" />
+            		<field name="soluong" />
+            		<field name="state" widget="statusbar" statusbar_visible="draft,done" statusbar_colors='{"done":"blue"}'/>
+                </tree>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="nhap_vaccine_form">
+            <field name="name">nhap.vaccine.form</field>
+            <field name="model">nhap.vaccine</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="form nhập vaccine" version="7.0">
+                <header>
+	            		<button name="bt_duyet" states='draft' string="Duyệt" type="object" class="oe_highlight" />
+	                    <field name="state" widget="statusbar" statusbar_visible="draft,done" statusbar_colors='{"done":"blue"}'/>
+	            </header> 
+	                <sheet>
+                		<group col="4"  string="Nhập Vaccine">
+                			<field name="can_bo_id" />
+                			<field name="name" />
+			            	<field name="ngay_nhap" />
+			        		<field name="soluong" />
+                		</group>
+	                </sheet>
+                </form>
+            </field>
+        </record>
+       
+        <record model="ir.actions.act_window" id="action_nhap_vaccine">
+            <field name="name">Nhập Vaccine</field>
+            <field name="res_model">nhap.vaccine</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</openerp>

@@ -21,7 +21,7 @@ class can_bo(osv.osv):
     _name = "can.bo"
     _columns = {
         'name': fields.char('Họ tên', size=30,required = True),
-        'don_vi_id': fields.many2one( 'don.vi','Đơn vị'),
+        'tram_id': fields.many2one( 'tram.thu.y','Đơn vị'),
         'email': fields.char( 'Email',size = 50),
         'dien_thoai': fields.char( 'Điện thoại',size = 50),
                 }
@@ -30,7 +30,6 @@ class don_vi(osv.osv):
     _name = "don.vi"
     _columns = {
         'name': fields.char('Đơn vị', size=30,required = True),
-        
                 }
 don_vi()
 class tram_thu_y(osv.osv):
@@ -49,62 +48,72 @@ tram_thu_y()
 class tinh_tp(osv.osv):
     _name = "tinh.tp"
     _columns = {
-        'name': fields.char('Thành Phố',size = 50),
+        'name': fields.char('Thành Phố',size = 50, required = True),
                 }
 tinh_tp()
 class loai_vat(osv.osv):
     _name = "loai.vat"
     _columns = {
-        'ma_loai': fields.char('Mã loài',size = 50),
+        'ma_loai': fields.char('Mã loài',size = 50, required = True),
         'name': fields.char('Tên loài',size = 50),
         'thuoc_loai': fields.selection((('a','Động vật thường'), ('b','Động vật hoang dã')),'Thuộc',required = True),
         'thoi_gian': fields.integer('thời gian nuôi (tháng)'),
+        'chitiet_loaivat':fields.one2many('chi.tiet.loai.vat','loai_id','Chi tiet'),
                 }
 loai_vat()
+
+class chi_tiet_loai_vat(osv.osv):
+    _name = "chi.tiet.loai.vat"
+    _columns = {
+        'loai_id': fields.many2one('loai.vat','Loai vat',ondelete = 'cascade'),
+        'name': fields.char('Thông tin',size = 50),
+                }
+chi_tiet_loai_vat()
+
 class chan_nuoi(osv.osv):
     _name = "chan.nuoi"
     _columns = {
-        'name': fields.char('Tên cơ sở',size = 50),
-        'ho_ten': fields.char('Họ tên chủ cơ sở',size = 50),
-        'ma_so': fields.char('Mã số',size = 50),
-        'dia_chi': fields.char('Địa chỉ',size = 50),
-        'ngay_lap': fields.date('Ngày lập sổ'),
-        'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)',domain="[('quan_huyen_id','=',quan_huyen_id)]"),
-        'khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)',domain="[('phuong_xa_id','=',phuong_xa_id)]"),
-        'quan_huyen_id': fields.many2one( 'quan.huyen','Quận (huyện)'),
+        'ma_ho': fields.char('Mã hộ',size = 50, required = True),
+        'name': fields.char('Tên hộ',size = 50, required = True),
+        'so_nha': fields.char('Số nhà',size = 50),
+        'ngay_cap': fields.date('Thời gian cấp'),
+        'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)'),
+        'khu_pho_id': fields.many2one('khu.pho','Khu phố (ấp)'),
+        'quan_huyen_id': fields.many2one('quan.huyen','Quận (huyện)'),
+        'dien_tich': fields.char('Diện tích đất'),
                 }
 chan_nuoi()
 class phuong_xa(osv.osv):
     _name = "phuong.xa"
     _columns = {
-        'name': fields.char('Phường (xã)',size = 50),
+        'name': fields.char('Phường (xã)',size = 50, required = True),
          'quan_huyen_id': fields.many2one( 'quan.huyen','Quận (huyện)'),
                 }
 phuong_xa()
 class quan_huyen(osv.osv):
     _name = "quan.huyen"
     _columns = {
-        'name': fields.char('Quận (huyện)',size = 50),
+        'name': fields.char('Quận (huyện)',size = 50, required = True),
                 }
 quan_huyen()
 class khu_pho(osv.osv):
     _name = "khu.pho"
     _columns = {
-        'name': fields.char('Khu phố (ấp)',size = 50),
+        'name': fields.char('Khu phố (ấp)',size = 50, required = True),
         'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)'),
                 }
 khu_pho()
 class loai_hang(osv.osv):
     _name = "loai.hang"
     _columns = {
-        'name': fields.char('Loại hàng',size = 50),
+        'name': fields.char('Loại hàng',size = 50, required = True),
         'don_vi': fields.char('Đơn vị tính',size = 50),
                 }
 loai_hang()
 class loai_vacxin(osv.osv):
     _name = "loai.vacxin"
     _columns = {
-        'ma_loai': fields.char('Mã loại vacxin',size = 50),
+        'ma_loai': fields.char('Mã loại vacxin',size = 50, required = True),
         'name': fields.char('Tên loại vacxin',size = 50),
                 }
 loai_hang()

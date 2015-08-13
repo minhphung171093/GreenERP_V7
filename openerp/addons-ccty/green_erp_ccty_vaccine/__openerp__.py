@@ -28,7 +28,7 @@
     'website' : 'http://incomtech.com/',
     'depends': ['green_erp_ccty_base'],
     'data': [
-            'danhmuc_view.xml',
+            'ql_vaccine_view.xml',
             'menu.xml',
     ],
     'css' : [
