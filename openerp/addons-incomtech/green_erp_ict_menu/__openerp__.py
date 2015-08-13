@@ -20,22 +20,20 @@
 ##############################################################################
 
 {
-    'name': 'GreenERP ICT BASE',
+    'name': 'GreenERP ICT MENU',
     'version': '1.0',
     'category': 'GreenERP',
     'sequence': 14,
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',
-    'depends': ['web','green_erp_ict_menu','web_group_expand'],
+    'depends': ['web'],
     'data': [
-        'security/ict_base_security.xml',
-        'ict_base_view.xml',
-        'menu.xml',
+        'ir_ui_menu_view.xml',
     ],
     'css' : [
-        "static/src/css/base.css",
     ],
-    'qweb': ['static/src/xml/base.xml'],
+    'qweb': [
+    ],
     'installable': True,
     'auto_install': False,
     'application': True,

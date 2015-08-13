@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ict_project_1,project.phase.type,green_erp_ict_project.model_project_phase_type,project.group_project_user,True,True,True,True
+access_ict_project_2,file.state,green_erp_ict_project.model_file_state,project.group_project_user,True,True,True,True
+access_ict_project_3,phase.type,green_erp_ict_project.model_phase_type,project.group_project_user,True,True,True,True
+access_ict_project_4,phase.type.line,green_erp_ict_project.model_phase_type_line,project.group_project_user,True,True,True,True
+access_ict_project_5,mail.alias,mail.model_mail_alias,project.group_project_user,True,True,True,True

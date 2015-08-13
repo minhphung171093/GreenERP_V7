@@ -2,7 +2,8 @@
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
+#    Copyright (C) 2004-2009 Tiny SPRL (<http://tiny.be>).
+#    Copyright (C) 2010-2012 OpenERP SA (<http://openerp.com>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,25 +20,24 @@
 #
 ##############################################################################
 
-{
-    'name': 'GreenERP ICT BASE',
-    'version': '1.0',
-    'category': 'GreenERP',
-    'sequence': 14,
-    'author': 'nguyentoanit@gmail.com',
-    'website' : 'http://incomtech.com/',
-    'depends': ['web','green_erp_ict_menu','web_group_expand'],
-    'data': [
-        'security/ict_base_security.xml',
-        'ict_base_view.xml',
-        'menu.xml',
-    ],
-    'css' : [
-        "static/src/css/base.css",
-    ],
-    'qweb': ['static/src/xml/base.xml'],
-    'installable': True,
-    'auto_install': False,
-    'application': True,
-}
+import base64
+import re
+import threading
+from openerp.tools.safe_eval import safe_eval as eval
+from openerp import tools
+import openerp.modules
+from openerp.osv import fields, osv
+from openerp.tools.translate import _
+from openerp import SUPERUSER_ID
+
+class ir_ui_menu(osv.osv):
+    _inherit = 'ir.ui.menu'
+
+    _columns = {
+        'active': fields.boolean('Active'),
+    }
+    _defaults = {
+        'active': True,
+    }
+ir_ui_menu()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

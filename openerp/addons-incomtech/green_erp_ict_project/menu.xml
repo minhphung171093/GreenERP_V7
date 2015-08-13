@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+        <menuitem action="open_phase_type_form"
+        	name="Phase Stages"
+        	id="menu_phase_types_view"
+        	parent="base.menu_project_config_project" sequence="1"/>
+        	
+        <menuitem action="action_file_state"
+        	name="File Stages"
+        	id="menu_action_file_state"
+        	parent="base.menu_project_config_project" sequence="5"/>
+		
+		<menuitem action="phase_type_form"
+        	name="Phase Type"
+        	id="menu_phase_type_form"
+        	parent="base.menu_definitions" sequence="1"/>
+		
+		<record model="ir.ui.menu" id="base.menu_project_config_project">
+	    	<field name="groups_id" eval="[(6,0,[])]"/>
+		</record>
+		
+		<record model="ir.ui.menu" id="project.menu_project_category_act">
+	    	<field name="groups_id" eval="[(6,0,[])]"/>
+		</record>
+		
+    </data>
+</openerp>

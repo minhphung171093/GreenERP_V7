@@ -1,5 +1,414 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
+    	
+    	<record id="project.open_view_project_all" model="ir.actions.act_window">
+            <field name="name">Projects</field>
+            <field name="res_model">project.project</field>
+            <field name="view_type">form</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">tree,form,kanban,gantt</field>
+            <field name="view_id" ref="project.view_project"/>
+            <field name="search_view_id" ref="project.view_project_project_filter"/>
+            <field name="context">{'search_default_Current': 1}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                  Click to start a new project.
+                </p><p>
+                  Projects are used to organize your activities; plan
+                  tasks, track issues, invoice timesheets. You can define
+                  internal projects (R&amp;D, Improve Sales Process),
+                  private projects (My Todos) or customer ones.
+                </p><p>
+                  You will be able collaborate with internal users on
+                  projects or invite customers to share your activities.
+                </p>
+            </field>
+        </record>
+    	
+    	<record id="project.action_view_task" model="ir.actions.act_window">
+            <field name="name">Tasks</field>
+            <field name="res_model">project.task</field>
+            <field name="view_mode">tree,form,kanban,calendar,gantt,graph</field>
+            <field name="search_view_id" ref="project.view_task_search_form"/>
+            <field name="view_id" ref="project.view_task_tree2"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a new task.
+              </p><p>
+                OpenERP's project management allows you to manage the pipeline
+                of tasks in order to get things done efficiently. You can
+                track progress, discuss on tasks, attach documents, etc.
+              </p>
+            </field>
+        </record>
+        <record id="project.open_view_task_list_kanban" model="ir.actions.act_window.view">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">kanban</field>
+            <field name="act_window_id" ref="project.action_view_task"/>
+        </record>
+        <record id="project.open_view_task_list_tree" model="ir.actions.act_window.view">
+            <field name="sequence" eval="0"/>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="project.action_view_task"/>
+        </record>
+        <record id="open_view_task_list_form" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="project.action_view_task"/>
+        </record>
+        
+        <record id="project.act_project_project_2_project_task_all" model="ir.actions.act_window">
+            <field name="name">Tasks</field>
+            <field name="res_model">project.task</field>
+            <field name="view_mode">tree,form,kanban,calendar,gantt,graph</field>
+            <field name="context">{'search_default_project_id': [active_id], 'default_project_id': active_id, 'active_test': False}</field>
+            <field name="search_view_id" ref="project.view_task_search_form"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a new task.
+              </p><p>
+                OpenERP's project management allows you to manage the pipeline
+                of tasks in order to get things done efficiently. You can
+                track progress, discuss on tasks, attach documents, etc.
+              </p>
+            </field>
+        </record>
+        
+        <!-- Phase Stages -->
+        <record id="project_phase_type_search" model="ir.ui.view">
+            <field name="name">project.phase.type.search</field>
+            <field name="model">project.phase.type</field>
+            <field name="arch" type="xml">
+                <search string="Tasks Stages">
+                   <field name="name" string="Phase Stages"/>
+                   <filter icon="terp-check" string="Common" name="common" domain="[('case_default', '=', 1)]" help="Stages common to all projects"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="project_phase_type_edit" model="ir.ui.view">
+            <field name="name">project.phase.type.form</field>
+            <field name="model">project.phase.type</field>
+            <field name="arch" type="xml">
+                <form string="Phase Stage" version="7.0">
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="state"/>
+                            <field name="sequence"/>
+                            <field name="fold"/>
+                        </group>
+                    </group>
+                    <field name="description" placeholder="Add a description..."/>
+                </form>
+            </field>
+        </record>
+
+        <record id="project_phase_type_tree" model="ir.ui.view">
+            <field name="name">project.phase.type.tree</field>
+            <field name="model">project.phase.type</field>
+            <field name="arch" type="xml">
+                <tree string="Phase Stage">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="open_phase_type_form" model="ir.actions.act_window">
+            <field name="name">Phase Stage</field>
+            <field name="res_model">project.phase.type</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="project_phase_type_tree"/>
+        </record>
+        
+        <!-- Phase types -->
+        <record id="phase_type_search" model="ir.ui.view">
+            <field name="name">phase.type.search</field>
+            <field name="model">phase.type</field>
+            <field name="arch" type="xml">
+                <search string="Phase Type">
+                   <field name="name"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="phase_type_edit" model="ir.ui.view">
+            <field name="name">phase.type.form</field>
+            <field name="model">phase.type</field>
+            <field name="arch" type="xml">
+                <form string="Phase Type" version="7.0">
+                    <group col="4" colspan="2">
+	                    <field name="name"/>
+                    </group>
+                    <notebook>
+	                    <page string="Task of Phase">
+	                    	<field name="task_of_phase" nolable='1'>
+	                    		<tree  editable='bottom'>
+		                    		<field name="name"/>
+		                    		<field name="implementers"/>
+		                    		<field name="sequence"/>
+		                    	</tree>
+	                    	</field>
+	                    </page>
+	                    <page string="Phase Stages">
+                        	<field name="stage_ids" nolable='1'/>
+                    	</page>
+                	</notebook>
+                </form>
+            </field>
+        </record>
+        
+        <record id="phase_type_tree" model="ir.ui.view">
+            <field name="name">phase.type.tree</field>
+            <field name="model">phase.type</field>
+            <field name="arch" type="xml">
+                <tree string="File Stages">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="phase_type_form" model="ir.actions.act_window">
+            <field name="name">Phase Type</field>
+            <field name="res_model">phase.type</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="phase_type_tree"/>
+        </record>
+
+        <record id="file_state_tree" model="ir.ui.view">
+            <field name="name">file.state.tree</field>
+            <field name="model">file.state</field>
+            <field name="arch" type="xml">
+                <tree string="File Stages" editable='bottom'>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_file_state" model="ir.actions.act_window">
+            <field name="name">File Stages</field>
+            <field name="res_model">file.state</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="file_state_tree"/>
+        </record>
+        
+        <record id="view_project_project_filter_inherit" model="ir.ui.view">
+		    <field name="name">project.project.filter.inherit</field>
+		    <field name="model">project.project</field>
+		    <field name="inherit_id" ref="project.view_project_project_filter"/>
+		    <field name="arch" type="xml">
+		        <xpath expr="//filter[@name='Parent']" position="attributes">
+                	<attribute name="invisible">1</attribute>
+		        </xpath>
+		    </field>
+		</record>
+        
+        <record id="view_project_inherit" model="ir.ui.view">
+		    <field name="name">project.project.tree.inherit</field>
+		    <field name="model">project.project</field>
+		    <field name="inherit_id" ref="project.view_project"/>
+		    <field name="arch" type="xml">
+		        <xpath expr="//field[@name='planned_hours']" position="attributes">
+                	<attribute name="invisible">1</attribute>
+		        </xpath>
+		        <xpath expr="//field[@name='total_hours']" position="attributes">
+                	<attribute name="invisible">1</attribute>
+		        </xpath>
+		        <xpath expr="//field[@name='effective_hours']" position="attributes">
+                	<attribute name="invisible">1</attribute>
+		        </xpath>
+		        <xpath expr="//field[@name='progress_rate']" position="attributes">
+                	<attribute name="invisible">1</attribute>
+		        </xpath>
+		        <xpath expr="//field[@name='partner_id']" position="after">
+                	<field name="date_start"/>
+		        	<field name="date" string="End Date"/>
+		        </xpath>
+		    </field>
+		</record>
+		
+		<record id="edit_project_inherit" model="ir.ui.view">
+		    <field name="name">project.project.form.inherit</field>
+		    <field name="model">project.project</field>
+		    <field name="inherit_id" ref="project.edit_project"/>
+		    <field name="arch" type="xml">
+		        <xpath expr="//p[@colspan='2']" position="attributes">
+                	<attribute name="invisible">1</attribute>
+		        </xpath>
+		        <xpath expr="//field[@name='date_start']" position="replace">
+		        </xpath>
+		        <xpath expr="//field[@name='date']" position="replace">
+		        </xpath>
+		        <xpath expr="//field[@name='user_id']" position="after">
+		        	<field name="date_start"/>
+		        	<field name="date" string="End Date"/>
+		        </xpath>
+		        <xpath expr="//page[@string='Other Info']" position="attributes">
+                	<attribute name="invisible">1</attribute>
+		        </xpath>
+		    </field>
+		</record>
+		
+		<record id="view_project_phase_search_inherit" model="ir.ui.view">
+		    <field name="name">project.phase.search.inherit</field>
+		    <field name="model">project.phase</field>
+		    <field name="inherit_id" ref="project_long_term.view_project_phase_search"/>
+		    <field name="arch" type="xml">
+		        <xpath expr="//filter[@string='Status']" position="replace">
+                    <filter string="Status" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'stage_id'}"/>
+		        </xpath>
+		        <xpath expr="//filter[@string='New']" position="replace">
+		        </xpath>
+		        <xpath expr="//filter[@string='In Progress']" position="replace">
+		        </xpath>
+		        <xpath expr="//filter[@string='Pending']" position="replace">
+		        </xpath>
+		        <xpath expr="//filter[@string='My Projects']" position="after">
+		        	<filter string="My Phases" domain="[('user_id','=',uid)]" help="My Phases" icon="terp-folder-violet"/>
+		        </xpath>
+		    </field>
+		</record>
+		
+		<record id="view_project_phase_list_inherit" model="ir.ui.view">
+		    <field name="name">project.phase.tree.inherit</field>
+		    <field name="model">project.phase</field>
+		    <field name="inherit_id" ref="project_long_term.view_project_phase_list"/>
+		    <field name="arch" type="xml">
+		        <xpath expr="//field[@name='state']" position="replace">
+                    <field name="stage_id"/>
+                    <field name="state" invisible='1'/>
+		        </xpath>
+		        <xpath expr="//field[@name='project_id']" position="after">
+                    <field name="user_id"/>
+		        </xpath>
+		        <xpath expr="//field[@name='duration']" position="attributes">
+                	<attribute name="invisible">1</attribute>
+		        </xpath>
+		    </field>
+		</record>
+    	
+    	<record id="view_project_phase_form_inherit" model="ir.ui.view">
+		    <field name="name">project.phase.form.inherit</field>
+		    <field name="model">project.phase</field>
+		    <field name="inherit_id" ref="project_long_term.view_project_phase_form"/>
+		    <field name="arch" type="xml">
+		        <xpath expr="//page[@string='Constraints']" position="after">
+                	<page string="Phase Stages" name="phase_stages">
+                         <field name="type_ids"/>
+                    </page>
+		        </xpath>
+		        <xpath expr="//field[@name='state']" position="replace">
+                	<field name="stage_id" widget="statusbar" clickable="True"/>
+                	<field name="is_task_generated" invisible='1'/>
+		        </xpath>
+		        <xpath expr="//button[@string='Start Phase']" position="replace">
+		        	<button string="Generate Task" name="generate_task" type="object" attrs="{'invisible':['|',('is_task_generated','=',True),('phase_type_id','=',False)]}" class="oe_highlight"/>
+		        </xpath>
+		        <xpath expr="//button[@string='Done']" position="replace">
+		        </xpath>
+		        <xpath expr="//button[@string='Pending']" position="replace">
+		        </xpath>
+		        <xpath expr="//button[@string='Draft']" position="replace">
+		        </xpath>
+		        <xpath expr="//button[@string='Cancel Phase']" position="replace">
+		        </xpath>
+		        <xpath expr="//page[@string='Team Planning']" position="replace">
+		        </xpath>
+		        <xpath expr="//page[@string='Tasks Details']" position="replace">
+		        </xpath>
+		        <xpath expr="//page[@string='Constraints']" position="replace">
+		        </xpath>
+		        <xpath expr="//sheet/group" position="replace">
+		        	<group>
+			        	<group>
+			        		<field name="project_id"/>
+			        		<field name="user_id"/>
+			        		<field name="phase_type_id" on_change="onchange_phase_type(phase_type_id)"/>
+			        	</group>
+			        	<group>
+			        		<field name="date_start"/>
+			        		<field name="date_end"/>
+		        		</group>
+		        	</group>
+		        </xpath>
+		        <xpath expr="//sheet" position="after">
+		        	<div class="oe_chatter">
+	                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+	                    <field name="message_ids" widget="mail_thread"/>
+	                </div>
+		        </xpath>
+		    </field>
+		</record>
+		
+		<record id="view_task_tree2_inherit" model="ir.ui.view">
+		    <field name="name">project.task.tree.inherit</field>
+		    <field name="model">project.task</field>
+		    <field name="inherit_id" ref="project.view_task_tree2"/>
+		    <field name="arch" type="xml">
+		        <xpath expr="//field[@name='progress']" position="attributes">
+                	<attribute name="invisible">1</attribute>
+		        </xpath>
+		        <xpath expr="//field[@name='stage_id']" position="replace">
+		        </xpath>
+		        <xpath expr="//field[@name='date_end']" position="after">
+		        	<field name="date_deadline"/>
+                    <field name="stage_id" invisible="context.get('set_visible',False)"/>
+		        </xpath>
+		        <xpath expr="//field[@name='name']" position="after">
+		        	<field name="implementers"/>
+		        </xpath>
+		    </field>
+		</record>
+		
+		<record id="view_task_form2_inherit" model="ir.ui.view">
+		    <field name="name">project.task.form.inherit</field>
+		    <field name="model">project.task</field>
+		    <field name="inherit_id" ref="project.view_task_form2"/>
+		    <field name="arch" type="xml">
+		        <xpath expr="//field[@name='categ_ids']" position="after">
+		        	<field name="implementers"/>
+                	<field name="soft_file_id" context="{'default_res_model': 'project.task','default_res_id': active_id}"/>
+                	<field name="file_state_id"/>
+                	<field name="hard_copy_file_id"/>
+		        </xpath>
+		        <xpath expr="//page[@string='Extra Info']" position="replace">
+		        </xpath>
+		    </field>
+		</record>
+		
+		<record id="view_task_form2_phase_inherit" model="ir.ui.view">
+		    <field name="name">project.task.form.inherit</field>
+		    <field name="model">project.task</field>
+		    <field name="inherit_id" ref="project_long_term.view_phase_task_form2"/>
+		    <field name="arch" type="xml">
+		        <xpath expr="//field[@name='phase_id']" position="after">
+                	<field name="date_start"/>
+                	<field name="date_end"/>
+                	<field name="priority"/>
+                	<field name="sequence"/>
+                	<field name="state" invisible="1"/>
+		        </xpath>
+		    </field>
+		</record>
+		
+		<record id="view_attachment_form_inherit" model="ir.ui.view">
+		    <field name="name">ir.attachment.form.inherit</field>
+		    <field name="model">ir.attachment</field>
+		    <field name="inherit_id" ref="base.view_attachment_form"/>
+		    <field name="arch" type="xml">
+		        <xpath expr="//field[@name='datas_fname']" position="replace">
+                	<field name="datas_fname" on_change="onchange_datas_fname(datas_fname)" invisible="1" attrs="{'invisible':[('type','=','url')]}" class="oe_inline oe_right"/>
+		        </xpath>
+		    </field>
+		</record>
+		
     </data>
 </openerp>

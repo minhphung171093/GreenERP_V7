@@ -26,10 +26,12 @@
     'sequence': 14,
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',
-    'depends': ['green_erp_ict_base','project'],
+    'depends': ['green_erp_ict_base','project','project_long_term','document'],
     'data': [
         'security/ict_project_security.xml',
+        'security/ir.model.access.csv',
         'project_view.xml',
+        'menu.xml',
     ],
     'css' : [
     ],
