@@ -4,5 +4,6 @@
     	<menuitem id="nhap_xuat" name="Nhập - Xuất - Quá cảnh"/>
     	<menuitem id="menu_nhap_xuat" parent="nhap_xuat" name="Thông tin nhập - Xuất - Quá cảnh"/>
     	<menuitem id="thong_tin_nhap_xuat" parent="menu_nhap_xuat" name="Thông tin nhập - Xuất - Quá cảnh" action="action_nhap_xuat"/>
+		<menuitem id="xuat_nhap_canh_giasuc" parent="menu_nhap_xuat" name="Xuất/Nhập cảnh gia súc" action="action_nhap_canh_giasuc"/>    
     </data>
 </openerp>

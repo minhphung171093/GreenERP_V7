@@ -72,6 +72,99 @@
         </record>
 
 
+    	<record id="nhap_xuat_canh_giasuc_search" model="ir.ui.view">
+	        <field name="name">nhap.xuat.canh.giasuc.search</field>
+	        <field name="model">nhap.xuat.canh.giasuc</field>
+	        <field name="type">search</field>
+	        <field name="arch" type="xml">
+	            <search string="Xuất/Nhập cảnh gia súc">
+	                <group>
+	                	<field name="name" />
+	                    <field name="loai_id" />
+	            		<field name="ngay_cap" />
+	                    <field name="ten_ho_id" />
+	                    <field name="phuong_xa_id" />
+	                    <field name="khu_pho_id" />                    
+	                    <field name="quan_huyen_id" />
+	                    <field name="loai" />
+	                </group>
+	                <separator/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Quận (huyện)" domain="[]" context="{'group_by':'quan_huyen_id'}"/>
+                        <filter string="Phường (xã)" domain="[]"  context="{'group_by':'phuong_xa_id'}"/>
+                        <filter string="Khu phố (ấp)" domain="[]" context="{'group_by':'khu_pho_id'}"/>
+                        <filter string="Loài" domain="[]"  context="{'group_by':'loai_id'}"/>
+                        <filter string="Hộ" domain="[]"  context="{'group_by':'ten_ho_id'}"/>
+                        <filter string="Ngày cấp" domain="[]"  context="{'group_by':'ngay_cap'}"/>
+                    </group>
+	            </search>	
+	        </field>
+	    </record>
+    
+        <record model="ir.ui.view" id="nhap_xuat_canh_giasuc_tree">
+            <field name="name">nhap.xuat.canh.giasuc.tree</field>
+            <field name="model">nhap.xuat.canh.giasuc</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Xuất/Nhập cảnh gia súc">
+                	<field name="name" />
+                	<field name="loai_id" />
+            		<field name="ngay_cap" />
+                    <field name="quan_huyen_id" />
+                    <field name="phuong_xa_id" />
+                    <field name="khu_pho_id" />                    
+                    <field name="ten_ho_id" />
+                    <field name="loai" />
+                </tree>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="nhap_xuat_canh_giasuc_form">
+            <field name="name">nhap.xuat.canh.giasuc.form</field>
+            <field name="model">nhap.xuat.canh.giasuc</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Xuất/Nhập cảnh gia súc" version="7.0">
+	                <sheet>
+                		<group col="4" >
+                			<field name="name" />
+		                	<field name="loai_id" />
+		            		<field name="ngay_cap" />
+		                    <field name="quan_huyen_id" />
+		                    <field name="phuong_xa_id" domain="[('quan_huyen_id','=',quan_huyen_id)]"/>
+		                    <field name="khu_pho_id" domain="[('phuong_xa_id','=',phuong_xa_id)]"/>
+		                    <field name="ten_ho_id" domain="[('quan_huyen_id','=',quan_huyen_id), ('phuong_xa_id','=',phuong_xa_id), ('khu_pho_id','=',khu_pho_id)]"/>
+		                    <field name="loai" />
+                		</group>
+                		<notebook>
+							<page string = "Thông tin chi tiết nhập/xuất gia súc">
+								<field name="chitiet_loai_nx" nolabel='1'>
+									<tree editable='bottom' create = 'false'>
+										<field name="name"/>
+										<field name="so_luong" sum = 'Total'/>
+									</tree>
+								</field>
+							</page>
+							<page string = "Đã tiêm phòng">
+								<field name="chitiet_da_tiem_phong" nolabel='1'>
+									<tree editable='bottom' create = 'false'>
+										<field name="name"/>
+										<field name="so_luong" sum = 'Total'/>
+									</tree>
+								</field>
+							</page>
+						</notebook>
+	                </sheet>
+                </form>
+            </field>
+        </record>
+       
+        <record model="ir.actions.act_window" id="action_nhap_canh_giasuc">
+            <field name="name">Thông tin xuất/nhập cảnh gia súc</field>
+            <field name="res_model">nhap.xuat.canh.giasuc</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
         			
     </data>
 </openerp>
