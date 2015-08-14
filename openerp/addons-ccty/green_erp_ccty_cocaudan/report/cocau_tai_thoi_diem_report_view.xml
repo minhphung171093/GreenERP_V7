@@ -4,7 +4,7 @@
 		<record id="cocau_tai_thoi_diem_report" model="ir.actions.report.xml">
 	        <field name="name">cocau_tai_thoi_diem_report</field>
 	        <field name="type">ir.actions.report.xml</field>
-	        <field name="model">cocau.hientai.form</field>
+	        <field name="model">cocau.tai.thoi.diem.form</field>
 	        <field name="report_name">cocau_tai_thoi_diem_report</field>
 	        <field name="report_type">aeroo</field>
 	        <field name="in_format">oo-ods</field>
@@ -20,7 +20,7 @@
 			auto="True" 
 			menu="False"
 			id="cocau_tai_thoi_diem_report" 
-			model="cocau.hientai.form" 
+			model="cocau.tai.thoi.diem.form" 
 			name="cocau_tai_thoi_diem_report"
 	        string="Theo dõi cơ cấu đàn gia súc tại thời điểm"
 	        rml="green_erp_ccty_cocaudan/report/cocau_tai_thoi_diem_report.ods"/>	

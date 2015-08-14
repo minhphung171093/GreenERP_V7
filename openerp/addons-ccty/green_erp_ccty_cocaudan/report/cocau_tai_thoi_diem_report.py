@@ -40,9 +40,15 @@ class Parser(report_sxw.rml_parse):
             'get_cocau': self.get_cocau,
             'get_cell': self.get_cell,
             'get_col': self.get_col,
-            'get_col_loai': self.get_col_loai,
             'get_ho_row': self.get_ho_row,
+            'get_tenho':self.get_tenho,
         })
+
+    def get_tenho(self):
+        wizard_data = self.localcontext['data']['form']
+        ten_ho_id = wizard_data['ten_ho_id']
+        ten = self.pool.get('chan.nuoi').browse(self.cr,self.uid,ten_ho_id[0])
+        return ten.name
         
     def get_cocau(self):
         return {}
@@ -51,90 +57,43 @@ class Parser(report_sxw.rml_parse):
         wizard_data = self.localcontext['data']['form']
         ten_ho_id = wizard_data['ten_ho_id']
         sql='''
-            select * from co_cau where ten_ho_id = %s 
+            select ngay_ghi_so from co_cau where ten_ho_id = %s group by ngay_ghi_so order by ngay_ghi_so
         '''%(ten_ho_id[0])
         self.cr.execute(sql)
         return self.cr.dictfetchall()
     
     def get_col(self):
         res = []
+        context={}
+        duc_lam_viec_model, duc_lam_viec_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_duc_lammviec')
+        self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [duc_lam_viec_id], 'read', context = context)
         sql = '''
-            select * from chi_tiet_loai_vat where loai_id in (select id from loai_vat where name = 'Đực làm việc')
-        '''
+            select * from chi_tiet_loai_vat where loai_id in (select id from loai_vat where id = %s)
+        '''%(duc_lam_viec_id)
+        self.cr.execute(sql)
+        for ct in self.cr.dictfetchall():
+            res.append((0,0,{
+                             'loaivat':ct['name'],'ct':''
+                            }
+                    ))
+            
+        heo_haubi_model, haubi_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_heo_haubi')
+        self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [haubi_id], 'read', context = context)
+        sql = '''
+            select * from chi_tiet_loai_vat where loai_id in (select id from loai_vat where id = %s)
+        '''%(haubi_id)
         self.cr.execute(sql)
         
         for ct in self.cr.dictfetchall():
             res.append((0,0,{
-                             'loaivat':'Đực làm việc','ct': ct['name']
+                             'loaivat':'Heo hệu bị','ct': ct['name']
                             }
                     ))
-        sql = '''
-            select * from chi_tiet_loai_vat where loai_id in (select id from loai_vat where name = 'Bò ta')
-        '''
-        self.cr.execute(sql)
-        for ct in self.cr.dictfetchall():
-            res.append((0,0,{
-                             'loaivat':'Bò Ta','ct': ct['name']
-                            }
-                    ))
-        res.append((0,0,{
-                             'loaivat':'','ct': 'Cộng bò ta'
-                            }
-                    ))   
-        sql = '''
-            select * from chi_tiet_loai_vat where loai_id in (select id from loai_vat where name = 'Bò lai sind')
-        '''
-        self.cr.execute(sql)
-        for ct in self.cr.dictfetchall():
-            res.append((0,0,{
-                             'loaivat':'Bò lai sind','ct': ct['name']
-                            }
-                    ))
-        res.append((0,0,{
-                             'loaivat':'','ct': 'Cộng bò lai sind'
-                            }
-                    )) 
-        sql = '''
-            select * from chi_tiet_loai_vat where loai_id in (select id from loai_vat where name = 'Trâu')
-        '''
-        self.cr.execute(sql)
-        for ct in self.cr.dictfetchall():
-            res.append((0,0,{
-                             'loaivat':'Trâu','ct': ct['name']
-                            }
-                    ))
-        res.append((0,0,{
-                             'loaivat':'','ct': 'Cộng trâu'
-                            }
-                    )) 
         return res
-#         {'loaivat': 'trau',
-#          'ct': 'duc',
-#          }
-#         return  [{'loaivat':'bo sua','ct':'bo sua duc','ct_hon':''},
-#                 {'loaivat':'', 'ct':'bo sua cai','ct_hon':'< 6 thang'},
-#                 {'loaivat':'', 'ct':'','ct_hon':'to'},
-#                 {'loaivat':'', 'ct':'','ct_hon':'sinh san'},
-#         
-#                 {'loaivat':'bo ta','ct':'< 6 thang','ct_hon':''},
-#                 {'loaivat':'', 'ct':'> 6 thang', 'ct_hon':''}
-#                 ]
     
-    def get_col_loai(self):
-        
-        {'loaivat': 'trau',
-         'ct': 'duc',
-         }
-        return [{'loaivat': 'bo sua',},
-                {'loaivat': 'bo ta',}
-                ]
-                
     
-#     def get_row(self):
-#         
-#         return [1,2,3,4,5,6]
-    
-    def get_cell(self,row,col):
+    def get_cell(self,row,col,loai):
+        context = {}
         soluong = 0
         sum = 0
         wizard_data = self.localcontext['data']['form']
@@ -146,14 +105,14 @@ class Parser(report_sxw.rml_parse):
         sl = self.cr.dictfetchone()
         if sl:
             soluong = sl['so_luong']
-        else:
-            if col == "Cộng bò sữa":
-                sql = '''
-                    select sum(so_luong) as sum from chi_tiet_loai_line where
-                    co_cau_id in (select id from co_cau where ten_ho_id = %s and chon_loai in (select id from loai_vat where name = 'Bò sữa'))
-                '''%(row)
-                self.cr.execute(sql)
-                soluong = self.cr.dictfetchone()['sum']
+#         else:
+#             if col == "Cộng bò sữa":
+#                 sql = '''
+#                     select sum(so_luong) as sum from chi_tiet_loai_line where
+#                     co_cau_id in (select id from co_cau where ten_ho_id = %s and chon_loai in (select id from loai_vat where name = 'Bò sữa'))
+#                 '''%(row)
+#                 self.cr.execute(sql)
+#                 soluong = self.cr.dictfetchone()['sum']
         return soluong
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
 
