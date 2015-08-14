@@ -58,10 +58,12 @@ class Parser(report_sxw.rml_parse):
     
     def get_col(self):
         res = []
-        # phai xac dinh nhieu truong hop bo sua, BO SUA ....
+        context = {}
+        bosua_model, bosua_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_bosua')
+        self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [bosua_id], 'read', context = context)
         sql = '''
-            select * from chi_tiet_loai_vat where loai_id in (select id from loai_vat where name = 'Bò sữa')
-        '''
+            select * from chi_tiet_loai_vat where loai_id in (select id from loai_vat where id = %s)
+        '''%(bosua_id)
         self.cr.execute(sql)
         
         for ct in self.cr.dictfetchall():
@@ -129,47 +131,51 @@ class Parser(report_sxw.rml_parse):
 #         return [1,2,3,4,5,6]
     
     def get_cell(self,row,col):
+        context = {}
         soluong = 0
         sum = 0
         wizard_data = self.localcontext['data']['form']
         ten_ho_id = wizard_data['ten_ho_id']
-        sql = '''
-            select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong from chi_tiet_loai_line 
-            where name = '%s' and co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so = '%s')
-        '''%(col, ten_ho_id[0], row)
-        self.cr.execute(sql)
-        sl = self.cr.dictfetchone()
-        if sl['so_luong']!=0:
-            soluong = sl['so_luong']
-        else:
-            if col == "Cộng bò sữa":
-                sql = '''
-                    select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_trong_ngay from chi_tiet_loai_line where
-                    co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so = '%s' and chon_loai in (select id from loai_vat where name = 'Bò sữa'))
-                '''%(ten_ho_id[0], row)
-                self.cr.execute(sql)
-                soluong = self.cr.dictfetchone()['sl_trong_ngay']
-            if col == "Cộng bò ta":
-                sql = '''
-                    select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_trong_ngay from chi_tiet_loai_line where
-                    co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so = '%s' and chon_loai in (select id from loai_vat where name = 'Bò ta'))
-                '''%(ten_ho_id[0], row)
-                self.cr.execute(sql)
-                soluong = self.cr.dictfetchone()['sl_trong_ngay']
-            if col == "Cộng bò lai sind":
-                sql = '''
-                    select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_trong_ngay from chi_tiet_loai_line where
-                    co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so = '%s' and chon_loai in (select id from loai_vat where name = 'Bò lai sind'))
-                '''%(ten_ho_id[0], row)
-                self.cr.execute(sql)
-                soluong = self.cr.dictfetchone()['sl_trong_ngay']
-            if col == "Cộng trâu":
-                sql = '''
-                    select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_trong_ngay from chi_tiet_loai_line where
-                    co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so = '%s' and chon_loai in (select id from loai_vat where name = 'Trâu'))
-                '''%(ten_ho_id[0], row)
-                self.cr.execute(sql)
-                soluong = self.cr.dictfetchone()['sl_trong_ngay']
+        if row:
+            sql = '''
+                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong from chi_tiet_loai_line 
+                where name = '%s' and co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so = '%s')
+            '''%(col, ten_ho_id[0], row)
+            self.cr.execute(sql)
+            sl = self.cr.dictfetchone()
+            if sl['so_luong']!=0:
+                soluong = sl['so_luong']
+            else:
+                if col == "Cộng bò sữa":
+                    bosua_model, bosua_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_bosua')
+                    self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [bosua_id], 'read', context = context)
+                    sql = '''
+                        select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_trong_ngay from chi_tiet_loai_line where
+                        co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so = '%s' and chon_loai = %s)
+                    '''%(ten_ho_id[0], row, bosua_id)
+                    self.cr.execute(sql)
+                    soluong = self.cr.dictfetchone()['sl_trong_ngay']
+                if col == "Cộng bò ta":
+                    sql = '''
+                        select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_trong_ngay from chi_tiet_loai_line where
+                        co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so = '%s' and chon_loai in (select id from loai_vat where name = 'Bò ta'))
+                    '''%(ten_ho_id[0], row)
+                    self.cr.execute(sql)
+                    soluong = self.cr.dictfetchone()['sl_trong_ngay']
+                if col == "Cộng bò lai sind":
+                    sql = '''
+                        select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_trong_ngay from chi_tiet_loai_line where
+                        co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so = '%s' and chon_loai in (select id from loai_vat where name = 'Bò lai sind'))
+                    '''%(ten_ho_id[0], row)
+                    self.cr.execute(sql)
+                    soluong = self.cr.dictfetchone()['sl_trong_ngay']
+                if col == "Cộng trâu":
+                    sql = '''
+                        select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_trong_ngay from chi_tiet_loai_line where
+                        co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so = '%s' and chon_loai in (select id from loai_vat where name = 'Trâu'))
+                    '''%(ten_ho_id[0], row)
+                    self.cr.execute(sql)
+                    soluong = self.cr.dictfetchone()['sl_trong_ngay']
         return soluong
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
 

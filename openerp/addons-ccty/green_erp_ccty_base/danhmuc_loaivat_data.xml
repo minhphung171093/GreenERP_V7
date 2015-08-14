@@ -26,6 +26,5 @@
             <field name="loai_id" ref="loaivat_bosua"/>
         </record>
         
-        
     </data>
 </openerp>
