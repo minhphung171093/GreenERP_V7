@@ -113,17 +113,6 @@ class Parser(report_sxw.rml_parse):
                             }
                     )) 
         return res
-#         {'loaivat': 'trau',
-#          'ct': 'duc',
-#          }
-#         return  [{'loaivat':'bo sua','ct':'bo sua duc','ct_hon':''},
-#                 {'loaivat':'', 'ct':'bo sua cai','ct_hon':'< 6 thang'},
-#                 {'loaivat':'', 'ct':'','ct_hon':'to'},
-#                 {'loaivat':'', 'ct':'','ct_hon':'sinh san'},
-#         
-#                 {'loaivat':'bo ta','ct':'< 6 thang','ct_hon':''},
-#                 {'loaivat':'', 'ct':'> 6 thang', 'ct_hon':''}
-#                 ]
     
     def get_col_loai(self):
         

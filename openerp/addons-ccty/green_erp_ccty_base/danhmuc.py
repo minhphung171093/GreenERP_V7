@@ -55,8 +55,8 @@ class loai_vat(osv.osv):
     _name = "loai.vat"
     _columns = {
         'ma_loai': fields.char('Mã loài',size = 50, required = True),
-        'name': fields.char('Tên loài',size = 50),
-        'thuoc_loai': fields.selection((('a','Động vật thường'), ('b','Động vật hoang dã')),'Thuộc',required = True),
+        'name': fields.char('Tên loài',size = 50, required = True),
+        'thuoc_loai': fields.selection((('a','Động vật thường'), ('b','Động vật hoang dã')),'Thuộc'),
         'thoi_gian': fields.integer('thời gian nuôi (tháng)'),
         'chitiet_loaivat':fields.one2many('chi.tiet.loai.vat','loai_id','Chi tiet'),
                 }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate='1'>
+		<record id="loaivat_bosua" model="loai.vat">
+            <field name="name">Bò Sữa</field>
+            <field name="ma_loai">bo_sua</field>
+             <field name="thuoc_loai">a</field>
+        </record>
+        
+        <record id="chitiet_bosua_duc" model="chi.tiet.loai.vat">
+            <field name="name">Bò sữa đực</field>
+            <field name="loai_id" ref="loaivat_bosua"/>
+        </record>
+        
+        <record id="chitiet_bosua_cai_6_thang" model="chi.tiet.loai.vat">
+            <field name="name">Bò sữa cái 6 tháng</field>
+            <field name="loai_id" ref="loaivat_bosua"/>
+        </record>
+        
+        <record id="chitiet_bosua_cai_to" model="chi.tiet.loai.vat">
+            <field name="name">Bò sữa cái tơ</field>
+            <field name="loai_id" ref="loaivat_bosua"/>
+        </record>
+        
+        <record id="chitiet_bosua_cai_sinhsan" model="chi.tiet.loai.vat">
+            <field name="name">Bò sữa cái sinh sản</field>
+            <field name="loai_id" ref="loaivat_bosua"/>
+        </record>
+        
+        
+    </data>
+</openerp>

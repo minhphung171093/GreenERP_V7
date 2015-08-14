@@ -30,6 +30,7 @@
     'data': [
             'danhmuc_view.xml',
             'menu.xml',
+            'danhmuc_loaivat_data.xml',
             ],
     'css' : [
     ],
