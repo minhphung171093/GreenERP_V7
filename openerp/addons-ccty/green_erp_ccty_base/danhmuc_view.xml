@@ -187,6 +187,13 @@
 									</tree>
 								</field>
 							</page>
+							<page string = "Thông tin chi tiết loại bệnh">
+								<field name="chitiet_loaibenh" nolabel='1'>
+									<tree editable='bottom'>
+										<field name="name" />
+									</tree>
+								</field>
+							</page>
 						</notebook>
 	                </sheet>
                 </form>

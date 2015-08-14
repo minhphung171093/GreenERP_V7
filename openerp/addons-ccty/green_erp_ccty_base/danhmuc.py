@@ -59,6 +59,7 @@ class loai_vat(osv.osv):
         'thuoc_loai': fields.selection((('a','Động vật thường'), ('b','Động vật hoang dã')),'Thuộc'),
         'thoi_gian': fields.integer('thời gian nuôi (tháng)'),
         'chitiet_loaivat':fields.one2many('chi.tiet.loai.vat','loai_id','Chi tiet'),
+        'chitiet_loaibenh':fields.one2many('chi.tiet.loai.benh','loai_id','Chi tiet'),
                 }
 loai_vat()
 
@@ -69,6 +70,14 @@ class chi_tiet_loai_vat(osv.osv):
         'name': fields.char('Thông tin',size = 50),
                 }
 chi_tiet_loai_vat()
+
+class chi_tiet_loai_benh(osv.osv):
+    _name = "chi.tiet.loai.benh"
+    _columns = {
+        'loai_id': fields.many2one('loai.vat','Loai vat',ondelete = 'cascade'),
+        'name': fields.char('Loại bệnh',size = 50),
+                }
+chi_tiet_loai_benh()
 
 class chan_nuoi(osv.osv):
     _name = "chan.nuoi"
