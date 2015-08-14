@@ -4,7 +4,6 @@
 		<record id="loaivat_bosua" model="loai.vat">
             <field name="name">Bò Sữa</field>
             <field name="ma_loai">bo_sua</field>
-             <field name="thuoc_loai">a</field>
         </record>
         
         <record id="chitiet_bosua_duc" model="chi.tiet.loai.vat">
