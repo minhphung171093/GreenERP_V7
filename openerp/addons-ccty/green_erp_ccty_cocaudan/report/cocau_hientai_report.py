@@ -37,15 +37,18 @@ class Parser(report_sxw.rml_parse):
         super(Parser, self).__init__(cr, uid, name, context=context)
         pool = pooler.get_pool(self.cr.dbname)
         self.localcontext.update({
-            'get_cocau': self.get_cocau,
+            'get_tenho': self.get_tenho,
             'get_cell': self.get_cell,
             'get_col': self.get_col,
             'get_col_loai': self.get_col_loai,
             'get_ho_row': self.get_ho_row,
         })
         
-    def get_cocau(self):
-        return {}
+    def get_tenho(self):
+        wizard_data = self.localcontext['data']['form']
+        ten_ho_id = wizard_data['ten_ho_id']
+        ten = self.pool.get('chan.nuoi').browse(self.cr,self.uid,ten_ho_id[0])
+        return ten.name
 
     def get_ho_row(self):
         wizard_data = self.localcontext['data']['form']
@@ -122,7 +125,33 @@ class Parser(report_sxw.rml_parse):
                              'loaivat':'','ct': 'Cộng trâu'
                             }
                     )) 
+        
+        de_model, de_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_de')
+        self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [de_id], 'read', context = context)
+        sql = '''
+            select * from chi_tiet_loai_vat where loai_id in (select id from loai_vat where id = %s)
+        '''%(de_id)
+        self.cr.execute(sql)
+        for ct in self.cr.dictfetchall():
+            res.append((0,0,{
+                             'loaivat':ct['name'],'ct':''
+                            }
+                    ))
+            
+        cuu_model, cuu_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_cuu')
+        self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [cuu_id], 'read', context = context)
+        sql = '''
+            select * from chi_tiet_loai_vat where loai_id in (select id from loai_vat where id = %s)
+        '''%(cuu_id)
+        self.cr.execute(sql)
+        for ct in self.cr.dictfetchall():
+            res.append((0,0,{
+                             'loaivat':ct['name'],'ct':''
+                            }
+                    ))
         return res
+    
+    
     
     def get_col_loai(self):
         
@@ -138,7 +167,7 @@ class Parser(report_sxw.rml_parse):
 #         
 #         return [1,2,3,4,5,6]
     
-    def get_cell(self,row,col):
+    def get_cell(self,row,col,loai):
         context = {}
         soluong = 0
         sum = 0
@@ -190,6 +219,24 @@ class Parser(report_sxw.rml_parse):
                     '''%(ten_ho_id[0], row, trau_id)
                     self.cr.execute(sql)
                     soluong = self.cr.dictfetchone()['sl_trong_ngay']
+            if loai == "Dê":
+                de_model, de_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_de')
+                self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [de_id], 'read', context = context)
+                sql = '''
+                    select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_trong_ngay from chi_tiet_loai_line where
+                    co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so = '%s' and chon_loai = %s)
+                '''%(ten_ho_id[0], row, de_id)
+                self.cr.execute(sql)
+                soluong = self.cr.dictfetchone()['sl_trong_ngay']
+            if loai == "Cừu":
+                cuu_model, cuu_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_cuu')
+                self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [cuu_id], 'read', context = context)
+                sql = '''
+                    select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_trong_ngay from chi_tiet_loai_line where
+                    co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so = '%s' and chon_loai = %s)
+                '''%(ten_ho_id[0], row, cuu_id)
+                self.cr.execute(sql)
+                soluong = self.cr.dictfetchone()['sl_trong_ngay']
         return soluong
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
 

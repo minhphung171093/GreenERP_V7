@@ -25,7 +25,7 @@ class co_cau(osv.osv):
         'ngay_ghi_so': fields.date('Ngày ghi sổ'),
         'tang_giam': fields.selection((('a','Tăng'), ('b','Giảm')),'Tăng/Giảm'),
         'ly_do': fields.char('Lý do tăng giảm',size = 50),
-        'ten_ho_id': fields.many2one('chan.nuoi','Chọn hộ'),
+        'ten_ho_id': fields.many2one('chan.nuoi','Hộ'),
         'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)'),
         'khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)'),
         'quan_huyen_id': fields.many2one( 'quan.huyen','Quận (huyện)'),
