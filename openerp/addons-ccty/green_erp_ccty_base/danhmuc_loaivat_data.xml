@@ -86,6 +86,11 @@
             <field name="ma_loai">duc_lamviec</field>
         </record>
         
+        <record id="chitiet_duc_lammviec" model="chi.tiet.loai.vat">
+            <field name="name">Đực làm việc</field>
+            <field name="loai_id" ref="loaivat_duc_lammviec"/>
+        </record>        
+        
 		<record id="loaivat_heo_haubi" model="loai.vat">
             <field name="name">Heo hậu bị</field>
             <field name="ma_loai">heo_haubi</field>
@@ -140,6 +145,11 @@
             <field name="name">Heo Thịt</field>
             <field name="ma_loai">heo_thit</field>
         </record> 
+
+        <record id="chitiet_heo_thit" model="chi.tiet.loai.vat">
+            <field name="name">Heo thịt</field>
+            <field name="loai_id" ref="loaivat_heo_thit"/>
+        </record>
         
     </data>
 </openerp>

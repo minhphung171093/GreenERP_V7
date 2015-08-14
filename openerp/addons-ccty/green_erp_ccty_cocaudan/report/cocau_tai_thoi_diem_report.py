@@ -59,19 +59,15 @@ class Parser(report_sxw.rml_parse):
     def get_col(self):
         res = []
         sql = '''
-            select * from chi_tiet_loai_vat where loai_id in (select id from loai_vat where name = 'Bò sữa')
+            select * from chi_tiet_loai_vat where loai_id in (select id from loai_vat where name = 'Đực làm việc')
         '''
         self.cr.execute(sql)
         
         for ct in self.cr.dictfetchall():
             res.append((0,0,{
-                             'loaivat':'Bò Sữa','ct': ct['name']
+                             'loaivat':'Đực làm việc','ct': ct['name']
                             }
                     ))
-        res.append((0,0,{
-                             'loaivat':'','ct': 'Cộng bò sữa'
-                            }
-                    ))    
         sql = '''
             select * from chi_tiet_loai_vat where loai_id in (select id from loai_vat where name = 'Bò ta')
         '''
