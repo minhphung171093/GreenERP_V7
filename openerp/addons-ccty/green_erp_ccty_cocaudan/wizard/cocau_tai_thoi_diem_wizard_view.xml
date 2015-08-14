@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		<record id="cocau_tai_thoi_diem_form_view" model="ir.ui.view">
+	        <field name="name">cocau.tai.thoi.diem.form.view</field>
+	        <field name="model">cocau.hientai.form</field>
+	        <field name="arch" type="xml">
+	            <form string="Theo dõi cơ cấu đàn gia súc tại thời điểm" version="7.0">
+	            	<group colspan = '2' col = '4'>
+	                <field name="ten_ho_id" />
+	                <field name="tu_ngay" />
+	                <field name="den_ngay" />
+	                </group>
+	                <footer>
+	                    <button name="print_report" type='object' string="OK" class="oe_highlight"/>
+	                    or
+	                    <button string="Cancel" class="oe_highlight" special="cancel" />
+	                </footer>
+	            </form>
+	        </field>
+    	</record>
+
+	    <record model="ir.actions.act_window" id="action_cocau_tai_thoi_diem_form">
+	        <field name="name">Theo dõi cơ cấu đàn gia súc tại thời điểm</field>
+	        <field name="res_model">cocau.hientai.form</field>
+	        <field name="view_type">form</field>
+	        <field name="view_mode">form</field>
+	        <field name="view_id" ref="cocau_tai_thoi_diem_form_view" />
+	        <field name="target">new</field>
+	    </record>
+	    
+
+    		<menuitem action="action_cocau_tai_thoi_diem_form" id="menu_action_cocau_tai_thoi_diem_form" parent="thongke_baocao"/>
+        
+	 
+	    
+    </data>
+</openerp>
+

@@ -31,7 +31,9 @@
             'cocau_view.xml',
             'menu.xml',
             'wizard/cocau_hientai_wizard_view.xml',
+            'wizard/cocau_tai_thoi_diem_wizard_view.xml',
             'report/cocau_hientai_report_view.xml',
+            'report/cocau_tai_thoi_diem_report_view.xml',
     ],
     'css' : [
     ],
