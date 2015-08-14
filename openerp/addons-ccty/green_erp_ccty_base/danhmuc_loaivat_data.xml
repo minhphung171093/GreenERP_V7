@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data noupdate='0'>
+    
+ <!--  BÒ SỮA-->
 		<record id="loaivat_bosua" model="loai.vat">
             <field name="name">Bò Sữa</field>
             <field name="ma_loai">bo_sua</field>
         </record>
+        
+ <!-- TAB CHI TIẾT BÒ SỮA-->       
         
         <record id="chitiet_bosua_duc" model="chi.tiet.loai.vat">
             <field name="name">Bò sữa đực</field>
@@ -25,11 +29,31 @@
             <field name="name">Bò sữa cái sinh sản</field>
             <field name="loai_id" ref="loaivat_bosua"/>
         </record>
+        
+ <!-- TAB LOẠI BỆNH BÒ SỮA-->
  
+        <record id="chitiet_bosua_loaibenh_LMLM" model="chi.tiet.loai.benh">
+            <field name="name">LMLM</field>
+            <field name="loai_id" ref="loaivat_bosua"/>
+        </record>
+        
+        <record id="chitiet_bosua_loaibenh_THT" model="chi.tiet.loai.benh">
+            <field name="name">THT</field>
+            <field name="loai_id" ref="loaivat_bosua"/>
+        </record>
+        
+        <record id="chitiet_bosua_loaibenh_khac" model="chi.tiet.loai.benh">
+            <field name="name">Bệnh khác</field>
+            <field name="loai_id" ref="loaivat_bosua"/>
+        </record>
+ 
+ <!-- BÒ TA -->
  		<record id="loaivat_bota" model="loai.vat">
             <field name="name">Bò Ta</field>
             <field name="ma_loai">bo_ta</field>
         </record>
+        
+  <!-- TAB CHI TIẾT BÒ TA -->   
         
         <record id="chitiet_bota_duoi_6thang" model="chi.tiet.loai.vat">
             <field name="name">Bò ta &lt; 6 tháng</field>
@@ -41,11 +65,32 @@
             <field name="loai_id" ref="loaivat_bota"/>
         </record>
         
+<!-- TAB LOẠI BỆNH BÒ TA-->
+ 
+        <record id="chitiet_bota_loaibenh_LMLM" model="chi.tiet.loai.benh">
+            <field name="name">LMLM</field>
+            <field name="loai_id" ref="loaivat_bota"/>
+        </record>
+        
+        <record id="chitiet_bota_loaibenh_THT" model="chi.tiet.loai.benh">
+            <field name="name">THT</field>
+            <field name="loai_id" ref="loaivat_bota"/>
+        </record>
+        
+        <record id="chitiet_bota_loaibenh_khac" model="chi.tiet.loai.benh">
+            <field name="name">Bệnh khác</field>
+            <field name="loai_id" ref="loaivat_bota"/>
+        </record>
+        
+<!-- BÒ LAI SIND -->
+        
  		<record id="loaivat_bolai" model="loai.vat">
             <field name="name">Bò lai sind</field>
             <field name="ma_loai">bo_lai_sind</field>
         </record>
         
+  <!-- TAB CHI TIẾT BÒ LAI SIND --> 
+         
         <record id="chitiet_bolai_duoi_6thang" model="chi.tiet.loai.vat">
             <field name="name">Bò lai sind &lt; 6 tháng</field>
             <field name="loai_id" ref="loaivat_bolai"/>
@@ -56,10 +101,31 @@
             <field name="loai_id" ref="loaivat_bolai"/>
         </record>
         
+ <!-- TAB LOẠI BỆNH BÒ LAI SIND -->
+ 
+        <record id="chitiet_bolai_loaibenh_LMLM" model="chi.tiet.loai.benh">
+            <field name="name">LMLM</field>
+            <field name="loai_id" ref="loaivat_bolai"/>
+        </record>
+        
+        <record id="chitiet_bolai_loaibenh_THT" model="chi.tiet.loai.benh">
+            <field name="name">THT</field>
+            <field name="loai_id" ref="loaivat_bolai"/>
+        </record>
+        
+        <record id="chitiet_bolai_loaibenh_khac" model="chi.tiet.loai.benh">
+            <field name="name">Bệnh khác</field>
+            <field name="loai_id" ref="loaivat_bolai"/>
+        </record>
+  
+<!-- TRÂU -->
+        
  		<record id="loaivat_trau" model="loai.vat">
             <field name="name">Trâu</field>
             <field name="ma_loai">trau</field>
         </record>
+        
+  <!-- TAB CHI TIẾT TRÂU -->         
         
         <record id="chitiet_trau_duoi_6thang" model="chi.tiet.loai.vat">
             <field name="name">Trâu &lt; 6 tháng</field>
@@ -71,40 +137,124 @@
             <field name="loai_id" ref="loaivat_trau"/>
         </record>       
 
+<!-- TAB LOẠI BỆNH TRÂU -->
+ 
+        <record id="chitiet_trau_loaibenh_LMLM" model="chi.tiet.loai.benh">
+            <field name="name">LMLM</field>
+            <field name="loai_id" ref="loaivat_trau"/>
+        </record>
+        
+        <record id="chitiet_trau_loaibenh_THT" model="chi.tiet.loai.benh">
+            <field name="name">THT</field>
+            <field name="loai_id" ref="loaivat_trau"/>
+        </record>
+        
+        <record id="chitiet_trau_loaibenh_khac" model="chi.tiet.loai.benh">
+            <field name="name">Bệnh khác</field>
+            <field name="loai_id" ref="loaivat_trau"/>
+        </record>
+
+<!-- DÊ -->
+
  		<record id="loaivat_de" model="loai.vat">
             <field name="name">Dê</field>
             <field name="ma_loai">de</field>
         </record>
         
+ <!-- TAB CHI TIẾT DÊ -->         
+        
         <record id="loaivat_de_sl" model="chi.tiet.loai.vat">
             <field name="name">Dê</field>
             <field name="loai_id" ref="loaivat_de"/>
         </record>
+       
+<!-- TAB LOẠI BỆNH DÊ -->
+ 
+        <record id="chitiet_de_loaibenh_LMLM" model="chi.tiet.loai.benh">
+            <field name="name">LMLM</field>
+            <field name="loai_id" ref="loaivat_de"/>
+        </record>
+        
+        <record id="chitiet_de_loaibenh_THT" model="chi.tiet.loai.benh">
+            <field name="name">THT</field>
+            <field name="loai_id" ref="loaivat_de"/>
+        </record>
+        
+        <record id="chitiet_de_loaibenh_khac" model="chi.tiet.loai.benh">
+            <field name="name">Bệnh khác</field>
+            <field name="loai_id" ref="loaivat_de"/>
+        </record>
+                
+<!-- CỪU -->        
         
  		<record id="loaivat_cuu" model="loai.vat">
             <field name="name">Cừu</field>
             <field name="ma_loai">cuu</field>
         </record>    
+ 
+  <!-- TAB CHI TIẾT CỪU -->
         
         <record id="loaivat_cuu_sl" model="chi.tiet.loai.vat">
             <field name="name">Cừu</field>
             <field name="loai_id" ref="loaivat_cuu"/>
         </record>    
         
+<!-- TAB LOẠI BỆNH CỪU -->
+ 
+        <record id="chitiet_cuu_loaibenh_LMLM" model="chi.tiet.loai.benh">
+            <field name="name">LMLM</field>
+            <field name="loai_id" ref="loaivat_cuu"/>
+        </record>
+        
+        <record id="chitiet_cuu_loaibenh_THT" model="chi.tiet.loai.benh">
+            <field name="name">THT</field>
+            <field name="loai_id" ref="loaivat_cuu"/>
+        </record>
+        
+        <record id="chitiet_cuu_loaibenh_khac" model="chi.tiet.loai.benh">
+            <field name="name">Bệnh khác</field>
+            <field name="loai_id" ref="loaivat_cuu"/>
+        </record>
+        
+<!-- ĐỰC LÀM VIỆC -->
+        
 		<record id="loaivat_duc_lammviec" model="loai.vat">
             <field name="name">Đực làm việc</field>
             <field name="ma_loai">duc_lamviec</field>
         </record>
         
+<!-- TAB CHI TIẾT ĐỰC LÀM VIỆC -->        
+        
         <record id="chitiet_duc_lammviec" model="chi.tiet.loai.vat">
             <field name="name">Đực làm việc</field>
             <field name="loai_id" ref="loaivat_duc_lammviec"/>
-        </record>        
+        </record>     
+        
+ <!-- TAB LOẠI BỆNH ĐỰC LÀM VIỆC -->
+ 
+        <record id="chitiet_duclamviec_loaibenh_LMLM" model="chi.tiet.loai.benh">
+            <field name="name">LMLM</field>
+            <field name="loai_id" ref="loaivat_duc_lammviec"/>
+        </record>
+        
+        <record id="chitiet_duclamviec_loaibenh_dichta" model="chi.tiet.loai.benh">
+            <field name="name">Dịch tả</field>
+            <field name="loai_id" ref="loaivat_duc_lammviec"/>
+        </record>
+        
+        <record id="chitiet_duclamviec_loaibenh_khac" model="chi.tiet.loai.benh">
+            <field name="name">Bệnh khác</field>
+            <field name="loai_id" ref="loaivat_duc_lammviec"/>
+        </record>   
+        
+<!-- HEO HẬU BỊ -->        
         
 		<record id="loaivat_heo_haubi" model="loai.vat">
             <field name="name">Heo hậu bị</field>
             <field name="ma_loai">heo_haubi</field>
         </record>        
+        
+ <!-- TAB CHI TIẾT HEO HẬU BỊ -->       
         
         <record id="chitiet_heo_haubi_duc" model="chi.tiet.loai.vat">
             <field name="name">Đực</field>
@@ -115,11 +265,32 @@
             <field name="name">Cái</field>
             <field name="loai_id" ref="loaivat_heo_haubi"/>
         </record>
+        
+<!-- TAB LOẠI BỆNH HEO HẬU BỊ -->
+ 
+        <record id="chitiet_heohaubi_loaibenh_LMLM" model="chi.tiet.loai.benh">
+            <field name="name">LMLM</field>
+            <field name="loai_id" ref="loaivat_heo_haubi"/>
+        </record>
+        
+        <record id="chitiet_heohaubi_loaibenh_dichta" model="chi.tiet.loai.benh">
+            <field name="name">Dịch tả</field>
+            <field name="loai_id" ref="loaivat_heo_haubi"/>
+        </record>
+        
+        <record id="chitiet_heohaubi_loaibenh_khac" model="chi.tiet.loai.benh">
+            <field name="name">Bệnh khác</field>
+            <field name="loai_id" ref="loaivat_heo_haubi"/>
+        </record>   
+
+<!-- NÁI SINH SẢN -->
 
 		<record id="loaivat_nai_sinhsan" model="loai.vat">
             <field name="name">Nái sinh sản</field>
             <field name="ma_loai">nai_sinhsan</field>
         </record>        
+        
+<!-- TAB CHI TIẾT NÁI SINH SẢN -->   
         
         <record id="chitiet_nai_kho" model="chi.tiet.loai.vat">
             <field name="name">Kho</field>
@@ -136,10 +307,31 @@
             <field name="loai_id" ref="loaivat_nai_sinhsan"/>
         </record>
 
+<!-- TAB LOẠI BỆNH NÁI SINH SẢN -->
+ 
+        <record id="chitiet_nai_loaibenh_LMLM" model="chi.tiet.loai.benh">
+            <field name="name">LMLM</field>
+            <field name="loai_id" ref="loaivat_nai_sinhsan"/>
+        </record>
+        
+        <record id="chitiet_nai_loaibenh_dichta" model="chi.tiet.loai.benh">
+            <field name="name">Dịch tả</field>
+            <field name="loai_id" ref="loaivat_nai_sinhsan"/>
+        </record>
+        
+        <record id="chitiet_nai_loaibenh_khac" model="chi.tiet.loai.benh">
+            <field name="name">Bệnh khác</field>
+            <field name="loai_id" ref="loaivat_nai_sinhsan"/>
+        </record> 
+
+<!-- HEO CON -->
+
 		<record id="loaivat_heo_con" model="loai.vat">
             <field name="name">Heo con</field>
             <field name="ma_loai">heo_con</field>
         </record>        
+        
+<!-- TAB CHI TIẾT HEO CON -->           
         
         <record id="chitiet_heocon_theome" model="chi.tiet.loai.vat">
             <field name="name">Theo mẹ</field>
@@ -150,16 +342,54 @@
             <field name="name">Cai sữa</field>
             <field name="loai_id" ref="loaivat_heo_con"/>
         </record>
+        
+<!-- TAB LOẠI BỆNH HEO CON -->
+ 
+        <record id="chitiet_heocon_loaibenh_LMLM" model="chi.tiet.loai.benh">
+            <field name="name">LMLM</field>
+            <field name="loai_id" ref="loaivat_heo_con"/>
+        </record>
+        
+        <record id="chitiet_heocon_loaibenh_dichta" model="chi.tiet.loai.benh">
+            <field name="name">Dịch tả</field>
+            <field name="loai_id" ref="loaivat_heo_con"/>
+        </record>
+        
+        <record id="chitiet_heocon_loaibenh_khac" model="chi.tiet.loai.benh">
+            <field name="name">Bệnh khác</field>
+            <field name="loai_id" ref="loaivat_heo_con"/>
+        </record> 
+
+<!-- HEO THỊT -->
 
 		<record id="loaivat_heo_thit" model="loai.vat">
             <field name="name">Heo Thịt</field>
             <field name="ma_loai">heo_thit</field>
         </record> 
 
+<!-- TAB CHI TIẾT HEO THỊT --> 
+
         <record id="chitiet_heo_thit" model="chi.tiet.loai.vat">
             <field name="name">Heo thịt</field>
             <field name="loai_id" ref="loaivat_heo_thit"/>
         </record>
+ 
+<!-- TAB LOẠI BỆNH HEO THỊT -->
+ 
+        <record id="chitiet_heothit_loaibenh_LMLM" model="chi.tiet.loai.benh">
+            <field name="name">LMLM</field>
+            <field name="loai_id" ref="loaivat_heo_thit"/>
+        </record>
+        
+        <record id="chitiet_heothit_loaibenh_dichta" model="chi.tiet.loai.benh">
+            <field name="name">Dịch tả</field>
+            <field name="loai_id" ref="loaivat_heo_thit"/>
+        </record>
+        
+        <record id="chitiet_heothit_loaibenh_khac" model="chi.tiet.loai.benh">
+            <field name="name">Bệnh khác</field>
+            <field name="loai_id" ref="loaivat_heo_thit"/>
+        </record>  
         
     </data>
 </openerp>
