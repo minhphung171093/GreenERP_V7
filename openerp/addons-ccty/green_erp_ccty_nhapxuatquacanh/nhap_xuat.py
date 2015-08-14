@@ -37,14 +37,36 @@ class nhap_xuat_canh_giasuc(osv.osv):
     _name = "nhap.xuat.canh.giasuc"
     _columns = {
         'name': fields.char('Số Giấy kiểm dịch',size = 50, required = True),
-        'loai_id': fields.many2one('loai.vat','Loài vật'),
+        'loai_id': fields.many2one('loai.vat','Loài vật', required = True),
         'ngay_cap': fields.date('Ngày cấp'),
         'ten_ho_id': fields.many2one('chan.nuoi','Hộ'),
         'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)'),
         'khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)'),
         'quan_huyen_id': fields.many2one( 'quan.huyen','Quận (huyện)'),
         'loai':fields.selection([('nhap', 'Nhập'),('xuất', 'Xuất')],'Loại', readonly=True),
+        'chitiet_loai_nx':fields.one2many('chi.tiet.loai.nhap.xuat','nhap_xuat_loai_id','Chi tiet'),
+        'chitiet_da_tiem_phong':fields.one2many('chi.tiet.da.tiem.phong','nhap_xuat_tiemphong_id','Chi tiet'),
                 }
 nhap_xuat_canh_giasuc()
+
+class chi_tiet_loai_nhap_xuat(osv.osv):
+    _name = "chi.tiet.loai.nhap.xuat"
+    _columns = {
+        'nhap_xuat_loai_id': fields.many2one('nhap.xuat.canh.giasuc','Nhap Xuat', ondelete = 'cascade'),
+        'name': fields.char('Thông tin', readonly = True),
+        'so_luong': fields.float('Số lượng'),
+                }
+chi_tiet_loai_nhap_xuat()
+
+class chitiet_da_tiem_phong(osv.osv):
+    _name = "chi.tiet.da.tiem.phong"
+    _columns = {
+        'nhap_xuat_tiemphong_id': fields.many2one('nhap.xuat.canh.giasuc','Nhap Xuat', ondelete = 'cascade'),
+        'name': fields.char('Loại bệnh', readonly = True),
+        'so_luong': fields.float('Số lượng'),
+                }
+chitiet_da_tiem_phong()
+
+
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

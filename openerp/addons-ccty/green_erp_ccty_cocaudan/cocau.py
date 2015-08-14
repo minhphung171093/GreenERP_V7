@@ -50,21 +50,10 @@ co_cau()
 
 class chi_tiet_loai_line(osv.osv):
     _name = "chi.tiet.loai.line"
-    def amount_all_line(self, cr, uid, ids, field_name, args, context=None):
-        res = {}
-        for line in self.browse(cr,uid,ids,context=context):
-            res[line.id] = {
-                'tong_so': 0.0,
-            }
-            sum=0.0
-            sum += line.sinh_san + line.thit + line.nghe + line.bo_sua + line.be + line.nai + line.noc + line.theo_me
-            res[line.id]['tong_so'] = sum
-        return res
     _columns = {
         'co_cau_id': fields.many2one( 'co.cau','Co cau', ondelete = 'cascade'),
         'name': fields.char('Thông tin', readonly = True),
         'so_luong': fields.float('Số lượng'),
-#         'tong_so': fields.function(amount_all_line, multi='sums',string='Tổng số')
                 }
 chi_tiet_loai_line()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
