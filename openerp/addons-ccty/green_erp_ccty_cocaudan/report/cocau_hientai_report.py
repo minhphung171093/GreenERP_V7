@@ -53,10 +53,28 @@ class Parser(report_sxw.rml_parse):
     def get_ho_row(self):
         wizard_data = self.localcontext['data']['form']
         ten_ho_id = wizard_data['ten_ho_id']
-        sql='''
-            select ngay_ghi_so from co_cau where ten_ho_id = %s group by ngay_ghi_so order by ngay_ghi_so
-        '''%(ten_ho_id[0])
-        self.cr.execute(sql)
+        tu_ngay = wizard_data['tu_ngay']
+        den_ngay = wizard_data['den_ngay']
+        if tu_ngay and not den_ngay:
+            sql='''
+                select ngay_ghi_so from co_cau where ten_ho_id = %s and ngay_ghi_so >= '%s' group by ngay_ghi_so order by ngay_ghi_so
+            '''%(ten_ho_id[0], tu_ngay)
+            self.cr.execute(sql)
+        elif den_ngay and not tu_ngay:
+            sql='''
+                select ngay_ghi_so from co_cau where ten_ho_id = %s and ngay_ghi_so <= '%s' group by ngay_ghi_so order by ngay_ghi_so
+            '''%(ten_ho_id[0], den_ngay)
+            self.cr.execute(sql)
+        elif den_ngay and tu_ngay:
+            sql='''
+                select ngay_ghi_so from co_cau where ten_ho_id = %s and ngay_ghi_so between '%s' and '%s' group by ngay_ghi_so order by ngay_ghi_so
+            '''%(ten_ho_id[0], tu_ngay, den_ngay)
+            self.cr.execute(sql)
+        else:
+            sql='''
+                select ngay_ghi_so from co_cau where ten_ho_id = %s group by ngay_ghi_so order by ngay_ghi_so
+            '''%(ten_ho_id[0])
+            self.cr.execute(sql)
         return self.cr.dictfetchall()
     
     def get_col(self):
