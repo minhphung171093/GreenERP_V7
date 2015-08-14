@@ -103,11 +103,17 @@ class Parser(report_sxw.rml_parse):
         '''%(heo_haubi_id)
         self.cr.execute(sql)
         
-        for ct in self.cr.dictfetchall():
-            res.append((0,0,{
-                             'loaivat':'Heo hậu bị','ct': ct['name']
-                            }
-                    ))
+        for seq,ct in enumerate(self.cr.dictfetchall()):
+            if seq == 0:
+                res.append((0,0,{
+                                 'loaivat':'Heo hậu bị','ct': ct['name']
+                                }
+                        ))
+            else:
+                res.append((0,0,{
+                                 'loaivat':'','ct': ct['name']
+                                }
+                        ))
         
         nai_sinhsan_model, sinhsan_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_nai_sinhsan')
         self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [sinhsan_id], 'read', context = context)
@@ -115,11 +121,17 @@ class Parser(report_sxw.rml_parse):
             select * from chi_tiet_loai_vat where loai_id in (select id from loai_vat where id = %s)
         '''%(sinhsan_id)
         self.cr.execute(sql)
-        for ct in self.cr.dictfetchall():
-            res.append((0,0,{
-                             'loaivat':'Nái sinh sản','ct': ct['name']
-                            }
-                    ))
+        for seq,ct in enumerate(self.cr.dictfetchall()):
+            if seq == 0:
+                res.append((0,0,{
+                                 'loaivat':'Nái sinh sản','ct': ct['name']
+                                }
+                        ))
+            else:
+                res.append((0,0,{
+                                 'loaivat':'','ct': ct['name']
+                                }
+                        ))
         
         heo_con_model, heo_con_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_heo_con')
         self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [heo_con_id], 'read', context = context)
@@ -127,11 +139,17 @@ class Parser(report_sxw.rml_parse):
             select * from chi_tiet_loai_vat where loai_id in (select id from loai_vat where id = %s)
         '''%(heo_con_id)
         self.cr.execute(sql)
-        for ct in self.cr.dictfetchall():
-            res.append((0,0,{
-                             'loaivat':'Heo con','ct': ct['name']
-                            }
-                    ))
+        for seq,ct in enumerate(self.cr.dictfetchall()):
+            if seq == 0:
+                res.append((0,0,{
+                                 'loaivat':'Heo con','ct': ct['name']
+                                }
+                        ))
+            else:
+                res.append((0,0,{
+                                 'loaivat':'','ct': ct['name']
+                                }
+                        ))
         heo_thit_model, thit_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_heo_thit')
         self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [thit_id], 'read', context = context)
         sql = '''
@@ -161,61 +179,8 @@ class Parser(report_sxw.rml_parse):
             sl = self.cr.dictfetchone()
             if sl['so_luong']!=0:
                 soluong = sl['so_luong']
-#             else:
-#                 if col == "Cộng bò sữa":
-#                     bosua_model, bosua_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_bosua')
-#                     self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [bosua_id], 'read', context = context)
-#                     sql = '''
-#                         select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_trong_ngay from chi_tiet_loai_line where
-#                         co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so = '%s' and chon_loai = %s)
-#                     '''%(ten_ho_id[0], row, bosua_id)
-#                     self.cr.execute(sql)
-#                     soluong = self.cr.dictfetchone()['sl_trong_ngay']
-#                 if col == "Cộng bò ta":
-#                     bota_model, bota_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_bota')
-#                     self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [bota_id], 'read', context = context)
-#                     sql = '''
-#                         select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_trong_ngay from chi_tiet_loai_line where
-#                         co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so = '%s' and chon_loai = %s)
-#                     '''%(ten_ho_id[0], row, bota_id)
-#                     self.cr.execute(sql)
-#                     soluong = self.cr.dictfetchone()['sl_trong_ngay']
-#                 if col == "Cộng bò lai sind":
-#                     bolai_model, bolai_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_bolai')
-#                     self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [bolai_id], 'read', context = context)
-#                     sql = '''
-#                         select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_trong_ngay from chi_tiet_loai_line where
-#                         co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so = '%s' and chon_loai = %s)
-#                     '''%(ten_ho_id[0], row, bolai_id)
-#                     self.cr.execute(sql)
-#                     soluong = self.cr.dictfetchone()['sl_trong_ngay']
-#                 if col == "Cộng trâu":
-#                     trau_model, trau_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_trau')
-#                     self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [trau_id], 'read', context = context)
-#                     sql = '''
-#                         select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_trong_ngay from chi_tiet_loai_line where
-#                         co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so = '%s' and chon_loai = %s)
-#                     '''%(ten_ho_id[0], row, trau_id)
-#                     self.cr.execute(sql)
-#                     soluong = self.cr.dictfetchone()['sl_trong_ngay']
-#             if loai == "Dê":
-#                 de_model, de_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_de')
-#                 self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [de_id], 'read', context = context)
-#                 sql = '''
-#                     select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_trong_ngay from chi_tiet_loai_line where
-#                     co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so = '%s' and chon_loai = %s)
-#                 '''%(ten_ho_id[0], row, de_id)
-#                 self.cr.execute(sql)
-#                 soluong = self.cr.dictfetchone()['sl_trong_ngay']
-#             if loai == "Cừu":
-#                 cuu_model, cuu_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_cuu')
-#                 self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [cuu_id], 'read', context = context)
-#                 sql = '''
-#                     select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_trong_ngay from chi_tiet_loai_line where
-#                     co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so = '%s' and chon_loai = %s)
-#                 '''%(ten_ho_id[0], row, cuu_id)
-#                 self.cr.execute(sql)
-#                 soluong = self.cr.dictfetchone()['sl_trong_ngay']
         return soluong
+    def get_sum(self,):
+        return sum
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
 
