@@ -81,6 +81,65 @@
             <field name="ma_loai">cuu</field>
         </record>        
         
+		<record id="loaivat_duc_lammviec" model="loai.vat">
+            <field name="name">Đực làm việc</field>
+            <field name="ma_loai">duc_lamviec</field>
+        </record>
+        
+		<record id="loaivat_heo_haubi" model="loai.vat">
+            <field name="name">Heo hậu bị</field>
+            <field name="ma_loai">heo_haubi</field>
+        </record>        
+        
+        <record id="chitiet_heo_haubi_duc" model="chi.tiet.loai.vat">
+            <field name="name">Đực</field>
+            <field name="loai_id" ref="loaivat_heo_haubi"/>
+        </record>
+        
+        <record id="chitiet_heo_haubi_cai" model="chi.tiet.loai.vat">
+            <field name="name">Cái</field>
+            <field name="loai_id" ref="loaivat_heo_haubi"/>
+        </record>
+
+		<record id="loaivat_nai_sinhsan" model="loai.vat">
+            <field name="name">Nái sinh sản</field>
+            <field name="ma_loai">nai_sinhsan</field>
+        </record>        
+        
+        <record id="chitiet_nai_kho" model="chi.tiet.loai.vat">
+            <field name="name">Kho</field>
+            <field name="loai_id" ref="loaivat_nai_sinhsan"/>
+        </record>
+        
+        <record id="chitiet_nai_mangthai" model="chi.tiet.loai.vat">
+            <field name="name">Mang thai</field>
+            <field name="loai_id" ref="loaivat_nai_sinhsan"/>
+        </record>
+
+        <record id="chitiet_nai_nuoicon" model="chi.tiet.loai.vat">
+            <field name="name">Nuôi con</field>
+            <field name="loai_id" ref="loaivat_nai_sinhsan"/>
+        </record>
+
+		<record id="loaivat_heo_con" model="loai.vat">
+            <field name="name">Heo con</field>
+            <field name="ma_loai">heo_con</field>
+        </record>        
+        
+        <record id="chitiet_heocon_theome" model="chi.tiet.loai.vat">
+            <field name="name">Theo mẹ</field>
+            <field name="loai_id" ref="loaivat_heo_con"/>
+        </record>
+        
+        <record id="chitiet_heocon_caisua" model="chi.tiet.loai.vat">
+            <field name="name">Cai sữa</field>
+            <field name="loai_id" ref="loaivat_heo_con"/>
+        </record>
+
+		<record id="loaivat_heo_thit" model="loai.vat">
+            <field name="name">Heo Thịt</field>
+            <field name="ma_loai">heo_thit</field>
+        </record> 
         
     </data>
 </openerp>
