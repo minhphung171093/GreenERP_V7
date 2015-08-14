@@ -116,6 +116,6 @@ class loai_vacxin(osv.osv):
         'ma_loai': fields.char('Mã loại vacxin',size = 50, required = True),
         'name': fields.char('Tên loại vacxin',size = 50),
                 }
-loai_hang()
+loai_vacxin()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -42,6 +42,7 @@ class Parser(report_sxw.rml_parse):
             'get_col': self.get_col,
             'get_ho_row': self.get_ho_row,
             'get_tenho':self.get_tenho,
+            'get_sum':self.get_sum,
         })
 
     def get_tenho(self):
@@ -180,7 +181,28 @@ class Parser(report_sxw.rml_parse):
             if sl['so_luong']!=0:
                 soluong = sl['so_luong']
         return soluong
-    def get_sum(self,):
+    def get_sum(self,row):
+        context = {}
+        sum = 0
+        wizard_data = self.localcontext['data']['form']
+        ten_ho_id = wizard_data['ten_ho_id']
+        duc_lamviec_model, duc_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_duc_lammviec')
+        self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [duc_id], 'read', context = context)
+        heo_haubi_model, heo_haubi_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_heo_haubi')
+        self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [heo_haubi_id], 'read', context = context)
+        nai_sinhsan_model, sinhsan_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_nai_sinhsan')
+        self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [sinhsan_id], 'read', context = context)
+        heo_con_model, heo_con_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_heo_con')
+        self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [heo_con_id], 'read', context = context)
+        heo_thit_model, thit_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_heo_thit')
+        self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [thit_id], 'read', context = context)
+        if row:
+            sql = '''
+                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_trong_ngay from chi_tiet_loai_line where
+                            co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so = '%s' and chon_loai in (%s,%s,%s,%s,%s))
+            '''%(ten_ho_id[0],row,duc_id,heo_haubi_id,sinhsan_id,heo_con_id,thit_id)
+            self.cr.execute(sql)
+            sum = self.cr.dictfetchone()['sl_trong_ngay']
         return sum
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
 

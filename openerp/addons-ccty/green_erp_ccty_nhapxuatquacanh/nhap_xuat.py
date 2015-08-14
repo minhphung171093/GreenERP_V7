@@ -33,4 +33,17 @@ class nhap_xuat(osv.osv):
                 }
 nhap_xuat()
 
+class nhap_canh_giasuc(osv.osv):
+    _name = "nhap.canh.giasuc"
+    _columns = {
+        'name': fields.char('Số Giấy kiểm dịch',size = 50, required = True),
+        'loai_id': fields.many2one('loai.vat','Loài vật'),
+        'ngay_cap': fields.date('Ngày cấp'),
+        'ten_ho_id': fields.many2one('chan.nuoi','Hộ'),
+        'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)'),
+        'khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)'),
+        'quan_huyen_id': fields.many2one( 'quan.huyen','Quận (huyện)'),
+                }
+nhap_canh_giasuc()
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
