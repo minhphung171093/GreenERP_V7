@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-    <data noupdate='1'>
+    <data noupdate='0'>
 		<record id="loaivat_bosua" model="loai.vat">
             <field name="name">Bò Sữa</field>
             <field name="ma_loai">bo_sua</field>
@@ -76,10 +76,20 @@
             <field name="ma_loai">de</field>
         </record>
         
+        <record id="loaivat_de_sl" model="chi.tiet.loai.vat">
+            <field name="name">Dê</field>
+            <field name="loai_id" ref="loaivat_de"/>
+        </record>
+        
  		<record id="loaivat_cuu" model="loai.vat">
             <field name="name">Cừu</field>
             <field name="ma_loai">cuu</field>
-        </record>        
+        </record>    
+        
+        <record id="loaivat_cuu_sl" model="chi.tiet.loai.vat">
+            <field name="name">Cừu</field>
+            <field name="loai_id" ref="loaivat_cuu"/>
+        </record>    
         
     </data>
 </openerp>
