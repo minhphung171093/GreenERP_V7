@@ -4,3 +4,10 @@ access_ict_project_2,file.state,green_erp_ict_project.model_file_state,project.g
 access_ict_project_3,phase.type,green_erp_ict_project.model_phase_type,project.group_project_user,True,True,True,True
 access_ict_project_4,phase.type.line,green_erp_ict_project.model_phase_type_line,project.group_project_user,True,True,True,True
 access_ict_project_5,mail.alias,mail.model_mail_alias,project.group_project_user,True,True,True,True
+access_ict_project_6,ict.template,green_erp_ict_project.model_ict_template,project.group_project_user,True,True,True,True
+access_ict_project_7,giai.doan,green_erp_ict_project.model_giai_doan,project.group_project_user,True,True,True,True
+access_ict_project_8,giai.doan.type,green_erp_ict_project.model_giai_doan_type,project.group_project_user,True,True,True,True
+access_ict_project_9,goi.thau.con,green_erp_ict_project.model_goi_thau_con,project.group_project_user,True,True,True,True
+access_ict_project_10,goi.thau.con.type,green_erp_ict_project.model_goi_thau_con_type,project.group_project_user,True,True,True,True
+access_ict_project_11,phase.category,green_erp_ict_project.model_phase_category,project.group_project_user,True,True,True,True
+access_ict_project_12,phase.category.line,green_erp_ict_project.model_phase_category_line,project.group_project_user,True,True,True,True

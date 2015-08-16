@@ -2,20 +2,57 @@
 <openerp>
     <data>
     
+    	<menuitem action="project_long_term.act_project_phase_list"
+    		name="Các gói thầu"
+            id="project_long_term.menu_project_phase_list" parent="project.menu_project_management" sequence="2"/>
+            
+        <menuitem action="action_giai_doan"
+    		name="Các giai đoạn"
+            id="menu_action_giai_doan" parent="project.menu_project_management" sequence="2"/>
+            
+        <menuitem action="action_goi_thau_con"
+    		name="Các gói thầu con"
+            id="menu_action_goi_thau_con" parent="project.menu_project_management" sequence="2"/>
+    
         <menuitem action="open_phase_type_form"
-        	name="Phase Stages"
+        	name="Trạng thái của gói thầu"
         	id="menu_phase_types_view"
         	parent="base.menu_project_config_project" sequence="1"/>
         	
+    	<menuitem action="action_giai_doan_type"
+        	name="Trạng thái của giai đoạn"
+        	id="menu_action_giai_doan_type"
+        	parent="base.menu_project_config_project" sequence="2"/>
+        	
+    	<menuitem action="action_goi_thau_con_type"
+        	name="Trạng thái của gói thầu con"
+        	id="menu_action_goi_thau_con_type"
+        	parent="base.menu_project_config_project" sequence="2"/>
+        	
         <menuitem action="action_file_state"
-        	name="File Stages"
+        	name="Trạng thái của file"
         	id="menu_action_file_state"
         	parent="base.menu_project_config_project" sequence="5"/>
 		
 		<menuitem action="phase_type_form"
-        	name="Phase Type"
+        	name="Hình thức lực chọn nhà thầu"
         	id="menu_phase_type_form"
         	parent="base.menu_definitions" sequence="1"/>
+        	
+    	<menuitem action="action_phase_category"
+        	name="Loại gói thầu"
+        	id="menu_action_phase_category"
+        	parent="base.menu_definitions" sequence="1"/>
+        
+        <menuitem id="menu_customer"
+        	name="Khách hàng" 
+        	parent="base.menu_definitions"
+        	action="base.action_partner_form" sequence="2"/>
+        	
+    	<menuitem id="menu_action_ict_template"
+    		name="Templates"
+        	parent="base.menu_definitions"
+        	action="action_ict_template" sequence="2"/>
 		
 		<record model="ir.ui.menu" id="base.menu_project_config_project">
 	    	<field name="groups_id" eval="[(6,0,[])]"/>

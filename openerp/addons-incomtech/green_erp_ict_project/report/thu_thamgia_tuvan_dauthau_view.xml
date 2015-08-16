@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    	<record id="thu_thamgia_tuvan_dauthau_report" model="ir.actions.report.xml">
+	        <field name="name">thu_thamgia_tuvan_dauthau</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">thu.thamgia.tuvan.dauthau</field>
+	        <field name="report_name">thu_thamgia_tuvan_dauthau</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls')]"/>
+	        <field name="parser_loc">green_erp_ict_project/report/thu_thamgia_tuvan_dauthau.py</field>
+	        <field name="report_rml">green_erp_ict_project/report/thu_thamgia_tuvan_dauthau.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record>		    
+		
+		<report 
+			auto="True" 
+			menu="False"
+			id="thu_thamgia_tuvan_dauthau_report" 
+			model="thu.thamgia.tuvan.dauthau" 
+			name="thu_thamgia_tuvan_dauthau_report"
+	        string="Thư tham gia tư vấn đấu thầu"
+	        rml="green_erp_ict_project/report/thu_thamgia_tuvan_dauthau.ods"/>	
+    </data>
+</openerp>

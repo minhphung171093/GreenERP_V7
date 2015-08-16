@@ -5,7 +5,7 @@
         <div class="oe_login_bottom"> </div>
         <div class="oe_login_error_message"/>
         <div class="oe_login_pane">
-            <div class="oe_login_logo"><img src='/green_erp_ict_base/static/src/img/logo2.png'/></div>
+            <div class="oe_login_logo"><img src='/green_erp_ict_base/static/src/img/logo.png'/></div>
             <form action="" method="post">
                 <div class="oe_login_dbpane" >
                     Database:

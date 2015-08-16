@@ -39,5 +39,22 @@ class ir_ui_menu(osv.osv):
     _defaults = {
         'active': True,
     }
+    
+    def _auto_init(self, cr, context=None):
+        super(ir_ui_menu, self)._auto_init(cr, context)
+        #Thanh: Update Menu Parent Left and Right for module Accounting
+        def browse_rec(root, pos=0):
+            cr.execute("SELECT id FROM ir_ui_menu WHERE parent_id=%s order by sequence"%(root))
+            pos2 = pos + 1
+            for id in cr.fetchall():
+                pos2 = browse_rec(id[0], pos2)
+            cr.execute('update ir_ui_menu set parent_left=%s, parent_right=%s where id=%s', (pos, pos2, root))
+            return pos2 + 1  
+        query = "SELECT id FROM ir_ui_menu WHERE parent_id IS NULL order by sequence"
+        pos = 0
+        cr.execute(query)
+        for (root,) in cr.fetchall():
+            pos = browse_rec(root, pos)
+    
 ir_ui_menu()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

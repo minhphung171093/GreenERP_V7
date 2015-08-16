@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+		<record id="thu_thamgia_tuvan_dauthau_form_view" model="ir.ui.view">
+	        <field name="name">thu.thamgia.tuvan.dauthau.view</field>
+	        <field name="model">thu.thamgia.tuvan.dauthau</field>
+	        <field name="arch" type="xml">
+	            <form string="Thư tham gia tư vấn đấu thầu" version="7.0">
+	            	<group>
+	                	<field name="date_from" />
+	                </group>
+	                <footer>
+	                    <button name="print_report" type='object' string="Print" class="oe_highlight"/>
+	                    or
+	                    <button string="Cancel" class="oe_highlight" special="cancel" />
+	                </footer>
+	            </form>
+	        </field>
+    	</record>
+    	<record id="ict_template_1" model="ict.template">
+		    <field name="name">Thư tham gia tư vấn đấu thầu</field>
+		    <field name="object">thu.thamgia.tuvan.dauthau</field>
+		    <field name="form_view_id">thu_thamgia_tuvan_dauthau_form_view</field>
+	    </record>
+
+    </data>
+</openerp>
+

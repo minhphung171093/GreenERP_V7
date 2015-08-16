@@ -26,38 +26,6 @@
             </field>
         </record>
     	
-    	<record id="project.action_view_task" model="ir.actions.act_window">
-            <field name="name">Tasks</field>
-            <field name="res_model">project.task</field>
-            <field name="view_mode">tree,form,kanban,calendar,gantt,graph</field>
-            <field name="search_view_id" ref="project.view_task_search_form"/>
-            <field name="view_id" ref="project.view_task_tree2"/>
-            <field name="help" type="html">
-              <p class="oe_view_nocontent_create">
-                Click to create a new task.
-              </p><p>
-                OpenERP's project management allows you to manage the pipeline
-                of tasks in order to get things done efficiently. You can
-                track progress, discuss on tasks, attach documents, etc.
-              </p>
-            </field>
-        </record>
-        <record id="project.open_view_task_list_kanban" model="ir.actions.act_window.view">
-            <field name="sequence" eval="2"/>
-            <field name="view_mode">kanban</field>
-            <field name="act_window_id" ref="project.action_view_task"/>
-        </record>
-        <record id="project.open_view_task_list_tree" model="ir.actions.act_window.view">
-            <field name="sequence" eval="0"/>
-            <field name="view_mode">tree</field>
-            <field name="act_window_id" ref="project.action_view_task"/>
-        </record>
-        <record id="open_view_task_list_form" model="ir.actions.act_window.view">
-            <field name="sequence" eval="1"/>
-            <field name="view_mode">form</field>
-            <field name="act_window_id" ref="project.action_view_task"/>
-        </record>
-        
         <record id="project.act_project_project_2_project_task_all" model="ir.actions.act_window">
             <field name="name">Tasks</field>
             <field name="res_model">project.task</field>
@@ -95,6 +63,7 @@
                     <group>
                         <group>
                             <field name="name"/>
+                            <field name="case_default"/>
                         </group>
                         <group>
                             <field name="state"/>
@@ -127,6 +96,324 @@
             <field name="view_id" ref="project_phase_type_tree"/>
         </record>
         
+        <!-- Giai đoạn Stages -->
+        <record id="giai_doan_type_search" model="ir.ui.view">
+            <field name="name">giai.doan.type.search</field>
+            <field name="model">giai.doan.type</field>
+            <field name="arch" type="xml">
+                <search string="Trạng thái của giai đoạn">
+                   <field name="name" string="Phase Stages"/>
+                   <filter icon="terp-check" string="Common" name="common" domain="[('case_default', '=', 1)]" help="Stages common to all projects"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="giai_doan_type_edit" model="ir.ui.view">
+            <field name="name">giai.doan.type.form</field>
+            <field name="model">giai.doan.type</field>
+            <field name="arch" type="xml">
+                <form string="Trạng thái của giai đoạn" version="7.0">
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="case_default"/>
+                        </group>
+                        <group>
+                            <field name="state"/>
+                            <field name="sequence"/>
+                            <field name="fold"/>
+                        </group>
+                    </group>
+                    <field name="description" placeholder="Add a description..."/>
+                </form>
+            </field>
+        </record>
+
+        <record id="giai_doan_type_tree" model="ir.ui.view">
+            <field name="name">giai.doan.type.tree</field>
+            <field name="model">giai.doan.type</field>
+            <field name="arch" type="xml">
+                <tree string="Trạng thái của giai đoạn">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_giai_doan_type" model="ir.actions.act_window">
+            <field name="name">Trạng thái của giai đoạn</field>
+            <field name="res_model">giai.doan.type</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="giai_doan_type_tree"/>
+        </record>
+        
+        <!-- Gói thầu con Stages -->
+        <record id="goi_thau_con_type_search" model="ir.ui.view">
+            <field name="name">goi.thau.con.type.search</field>
+            <field name="model">goi.thau.con.type</field>
+            <field name="arch" type="xml">
+                <search string="Trạng thái của gói thầu con">
+                   <field name="name" string="Phase Stages"/>
+                   <filter icon="terp-check" string="Common" name="common" domain="[('case_default', '=', 1)]" help="Stages common to all projects"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="goi_thau_con_type_edit" model="ir.ui.view">
+            <field name="name">goi.thau.con.type.form</field>
+            <field name="model">goi.thau.con.type</field>
+            <field name="arch" type="xml">
+                <form string="Trạng thái của gói thầu con" version="7.0">
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="case_default"/>
+                        </group>
+                        <group>
+                            <field name="state"/>
+                            <field name="sequence"/>
+                            <field name="fold"/>
+                        </group>
+                    </group>
+                    <field name="description" placeholder="Add a description..."/>
+                </form>
+            </field>
+        </record>
+
+        <record id="goi_thau_con_type_tree" model="ir.ui.view">
+            <field name="name">goi.thau.con.type.tree</field>
+            <field name="model">goi.thau.con.type</field>
+            <field name="arch" type="xml">
+                <tree string="Trạng thái của gói thầu con">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_goi_thau_con_type" model="ir.actions.act_window">
+            <field name="name">Trạng thái của gói thầu con</field>
+            <field name="res_model">goi.thau.con.type</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="goi_thau_con_type_tree"/>
+        </record>
+        
+        <!-- Goi thau con Tasks-->
+        <record id="goithaucon_task_list" model="ir.actions.act_window">
+            <field name="res_model">project.task</field>
+            <field name="view_type">form</field>
+            <field name="name">Tasks</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_gtc_id': [active_id], 'default_gtc_id' : active_id}</field>
+        </record>
+        
+        <!-- Goi thau con -->
+        <record id="goi_thau_con_search" model="ir.ui.view">
+            <field name="name">goi.thau.con.search</field>
+            <field name="model">goi.thau.con</field>
+            <field name="arch" type="xml">
+                <search string="Gói thầu con">
+                   	<field name="name"/>
+                    <field name="project_id"/>
+                    <field name="phase_id"/>
+                    <field name="giai_doan_id"/>
+                    <field name="user_id"/>
+                   	<filter icon="terp-check" string="Gói thầu con của tôi" name="my_gtc" domain="[('user_id', '=', uid)]"/>
+                   	<group expand="0" string="Group By...">
+                        <filter string="Dự án" icon="terp-folder-violet" domain="[]" context="{'group_by':'project_id'}" name="project"/>
+                        <filter string="Gói thầu" icon="terp-folder-violet" domain="[]" context="{'group_by':'phase_id'}" name="phase"/>
+                        <filter string="Giai đoạn" icon="terp-folder-violet" domain="[]" context="{'group_by':'giai_doan_id'}" name="giaidoan"/>
+                        <filter string="Người thực hiện" icon="terp-folder-violet" domain="[]" context="{'group_by':'user_id'}" name="user"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="goi_thau_con_edit" model="ir.ui.view">
+            <field name="name">goi.thau.con.form</field>
+            <field name="model">goi.thau.con</field>
+            <field name="arch" type="xml">
+                <form string="Gói thầu con" version="7.0">
+                	<header>
+                		<button string="Generate Task" name="generate_task" type="object" attrs="{'invisible':['|',('is_task_generated','=',True),('phase_category_id','=',False)]}" class="oe_highlight"/>
+                		<field name="stage_id" widget="statusbar" clickable="True"/>
+	                	<field name="is_task_generated" invisible='1'/>
+                	</header>
+                	<sheet>
+                		<button name="%(goithaucon_task_list)d" string="Các công việc" type="action" class="oe_right"/>
+	                    <div class="oe_title">
+	                        <label for="name" class="oe_edit_only"/>
+	                        <h1><field name="name"/></h1>
+	                    </div>
+	                    <group>
+	                        <group>
+	                            <field name="project_id"/>
+	                            <field name="phase_id"/>
+	                            <field name="giai_doan_id"/>
+	                            <field name="user_id"/>
+	                        </group>
+	                        <group>
+	                            <field name="phase_category_id" on_change="onchange_phase_category(phase_category_id)"/>
+	                        </group>
+	                    </group>
+	                    <notebook>
+	                    	<page string="Mô tả">
+								<field name="description" nolabel='1'/>	                    	
+	                    	</page>
+	                    	<page string="Phase Stages" name="phase_stages">
+		                         <field name="type_ids"/>
+		                    </page>
+	                    </notebook>
+	            	</sheet>
+	            	<div class="oe_chatter">
+	                    <field name="message_follower_ids" widget="mail_followers" help="Follow this project to automatically track the events associated to tasks and issues of this project." groups="base.group_user"/>
+	                    <field name="message_ids" widget="mail_thread"/>
+	                </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="goi_thau_con_tree" model="ir.ui.view">
+            <field name="name">goi.thau.con.tree</field>
+            <field name="model">goi.thau.con</field>
+            <field name="arch" type="xml">
+                <tree string="Gói thầu con">
+                    <field name="name"/>
+                    <field name="project_id"/>
+                    <field name="phase_id"/>
+                    <field name="giai_doan_id"/>
+                    <field name="user_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_goi_thau_con" model="ir.actions.act_window">
+            <field name="name">Gói thầu con</field>
+            <field name="res_model">goi.thau.con</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="goi_thau_con_tree"/>
+            <field name="context">{'search_default_project':1,'search_default_phase':1,'search_default_giaidoan':1}</field>
+        </record>
+        
+        <record id="action_goi_thau_con_list" model="ir.actions.act_window">
+            <field name="name">Gói thầu con</field>
+            <field name="res_model">goi.thau.con</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="goi_thau_con_tree"/>
+            <field name="context">{'search_default_giai_doan_id': [active_id], 'default_giai_doan_id' : active_id}</field>
+        </record>
+        
+        <!-- Action Task -->
+        <record id="giai_doan_task_list" model="ir.actions.act_window">
+            <field name="res_model">project.task</field>
+            <field name="view_type">form</field>
+            <field name="name">Tasks</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_giai_doan_id': [active_id], 'default_giai_doan_id' : active_id}</field>
+        </record>
+        
+        <!-- Giai doan -->
+        <record id="giai_doan_search" model="ir.ui.view">
+            <field name="name">giai.doan.search</field>
+            <field name="model">giai.doan</field>
+            <field name="arch" type="xml">
+                <search string="Giai đoạn">
+                   	<field name="name"/>
+                    <field name="project_id"/>
+                    <field name="phase_id"/>
+                    <field name="user_id"/>
+                   	<filter icon="terp-check" string="Giai đoạn của tôi" name="my_giaidoan" domain="[('user_id', '=', uid)]"/>
+                   	<group expand="0" string="Group By...">
+                        <filter string="Dự án" icon="terp-folder-violet" domain="[]" context="{'group_by':'project_id'}" name="project"/>
+                        <filter string="Gói thầu" icon="terp-folder-violet" domain="[]" context="{'group_by':'phase_id'}" name="phase"/>
+                        <filter string="Người thực hiện" icon="terp-folder-violet" domain="[]" context="{'group_by':'user_id'}" name="user"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="giai_doan_edit" model="ir.ui.view">
+            <field name="name">giai.doan.form</field>
+            <field name="model">giai.doan</field>
+            <field name="arch" type="xml">
+                <form string="Giai đoạn" version="7.0">
+                	<header>
+                		<button string="Generate Task" name="generate_task" type="object" attrs="{'invisible':['|','|',('is_task_generated','=',True),('is_goithau_con','=',True),('phase_type_id','=',False)]}" class="oe_highlight"/>
+                		<field name="stage_id" widget="statusbar" clickable="True"/>
+	                	<field name="is_task_generated" invisible='1'/>
+                	</header>
+                	<sheet>
+                		<button name="%(giai_doan_task_list)d" string="Các công việc" type="action" class="oe_right" attrs="{'invisible': [('is_goithau_con','=',True)]}"/>
+                		<button name="%(action_goi_thau_con_list)d" string="Các gói thầu con" type="action" class="oe_right" attrs="{'invisible': ['|',('is_goithau_con','=',False),('is_task_generated','=',True)]}"/>
+	                    <div class="oe_title">
+	                        <label for="name" class="oe_edit_only"/>
+	                        <h1><field name="name"/></h1>
+	                    </div>
+	                    <group>
+	                        <group>
+	                            <field name="project_id"/>
+	                            <field name="phase_id"/>
+	                            <field name="user_id"/>
+	                        </group>
+	                        <group>
+	                            <field name="is_goithau_con"/>
+	                            <field name="phase_type_id" on_change="onchange_phase_type(phase_type_id)" attrs="{'invisible': [('is_goithau_con','=',True)]}"/>
+	                        </group>
+	                    </group>
+	                    <notebook>
+	                    	<page string="Mô tả">
+								<field name="description" nolabel='1'/>	                    	
+	                    	</page>
+	                    	<page string="Phase Stages" name="phase_stages">
+		                         <field name="type_ids"/>
+		                    </page>
+	                    </notebook>
+	            	</sheet>
+	            	<div class="oe_chatter">
+	                    <field name="message_follower_ids" widget="mail_followers" help="Follow this project to automatically track the events associated to tasks and issues of this project." groups="base.group_user"/>
+	                    <field name="message_ids" widget="mail_thread"/>
+	                </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="giai_doan_tree" model="ir.ui.view">
+            <field name="name">giai.doan.tree</field>
+            <field name="model">giai.doan</field>
+            <field name="arch" type="xml">
+                <tree string="Giai đoạn">
+                    <field name="name"/>
+                    <field name="project_id"/>
+                    <field name="phase_id"/>
+                    <field name="user_id"/>
+                    <field name="is_goithau_con"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_giai_doan" model="ir.actions.act_window">
+            <field name="name">Giai đoạn</field>
+            <field name="res_model">giai.doan</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="giai_doan_tree"/>
+            <field name="context">{'search_default_project':1,'search_default_phase':1'}</field>
+        </record>
+        
+        <record id="action_giai_doan_list" model="ir.actions.act_window">
+            <field name="name">Giai đoạn</field>
+            <field name="res_model">giai.doan</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="giai_doan_tree"/>
+        </record>
+        
         <!-- Phase types -->
         <record id="phase_type_search" model="ir.ui.view">
             <field name="name">phase.type.search</field>
@@ -152,6 +439,7 @@
 	                    		<tree  editable='bottom'>
 		                    		<field name="name"/>
 		                    		<field name="implementers"/>
+		                    		<field name="template_id" widget="selection"/>
 		                    		<field name="sequence"/>
 		                    	</tree>
 	                    	</field>
@@ -168,7 +456,7 @@
             <field name="name">phase.type.tree</field>
             <field name="model">phase.type</field>
             <field name="arch" type="xml">
-                <tree string="File Stages">
+                <tree string="Phase Type">
                     <field name="name"/>
                 </tree>
             </field>
@@ -181,13 +469,71 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="phase_type_tree"/>
         </record>
+        
+        <!-- Phase Category -->
+        <record id="phase_category_search" model="ir.ui.view">
+            <field name="name">phase.category.search</field>
+            <field name="model">phase.category</field>
+            <field name="arch" type="xml">
+                <search string="Phase Category">
+                   <field name="name"/>
+                </search>
+            </field>
+        </record>
 
+        <record id="phase_category_edit" model="ir.ui.view">
+            <field name="name">phase.category.form</field>
+            <field name="model">phase.category</field>
+            <field name="arch" type="xml">
+                <form string="Phase Category" version="7.0">
+                    <group col="4" colspan="2">
+	                    <field name="name"/>
+                    </group>
+                    <notebook>
+	                    <page string="Task of Phase Category">
+	                    	<field name="task_of_phase" nolable='1'>
+	                    		<tree  editable='bottom'>
+		                    		<field name="name"/>
+		                    		<field name="implementers"/>
+		                    		<field name="template_id" widget="selection"/>
+		                    		<field name="sequence"/>
+		                    	</tree>
+	                    	</field>
+	                    </page>
+	                    <page string="Phase Stages">
+                        	<field name="stage_ids" nolable='1'/>
+                    	</page>
+                	</notebook>
+                </form>
+            </field>
+        </record>
+        
+        <record id="phase_category_tree" model="ir.ui.view">
+            <field name="name">phase.category.tree</field>
+            <field name="model">phase.category</field>
+            <field name="arch" type="xml">
+                <tree string="Phase Category">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_phase_category" model="ir.actions.act_window">
+            <field name="name">Phase Category</field>
+            <field name="res_model">phase.category</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="phase_category_tree"/>
+        </record>
+
+		<!-- File Stages -->
         <record id="file_state_tree" model="ir.ui.view">
             <field name="name">file.state.tree</field>
             <field name="model">file.state</field>
             <field name="arch" type="xml">
                 <tree string="File Stages" editable='bottom'>
                     <field name="name"/>
+                    <field name="sequence"/>
                 </tree>
             </field>
         </record>
@@ -200,6 +546,28 @@
             <field name="view_id" ref="file_state_tree"/>
         </record>
         
+        <!-- Template -->
+        <record id="ict_template_tree" model="ir.ui.view">
+            <field name="name">ict.template.tree</field>
+            <field name="model">ict.template</field>
+            <field name="arch" type="xml">
+                <tree string="Templates" create='false' edit='false' delete='false'>
+                    <field name="name"/>
+                    <field name="object"/>
+                    <field name="form_view_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_ict_template" model="ir.actions.act_window">
+            <field name="name">Templates</field>
+            <field name="res_model">ict.template</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="ict_template_tree"/>
+        </record>
+        
+		<!-- Project -->        
         <record id="view_project_project_filter_inherit" model="ir.ui.view">
 		    <field name="name">project.project.filter.inherit</field>
 		    <field name="model">project.project</field>
@@ -254,9 +622,16 @@
 		        <xpath expr="//page[@string='Other Info']" position="attributes">
                 	<attribute name="invisible">1</attribute>
 		        </xpath>
+		        <xpath expr="//button[@name='attachment_tree_view']" position="attributes">
+                	<attribute name="invisible">1</attribute>
+		        </xpath>
+		        <xpath expr="//button[@name='%(project.act_project_project_2_project_task_all)d']" position="attributes">
+                	<attribute name="invisible">1</attribute>
+		        </xpath>
 		    </field>
 		</record>
 		
+		<!-- Phases -->
 		<record id="view_project_phase_search_inherit" model="ir.ui.view">
 		    <field name="name">project.phase.search.inherit</field>
 		    <field name="model">project.phase</field>
@@ -272,7 +647,7 @@
 		        <xpath expr="//filter[@string='Pending']" position="replace">
 		        </xpath>
 		        <xpath expr="//filter[@string='My Projects']" position="after">
-		        	<filter string="My Phases" domain="[('user_id','=',uid)]" help="My Phases" icon="terp-folder-violet"/>
+		        	<filter name="my_phase" string="My Phases" domain="[('user_id','=',uid)]" help="My Phases" icon="terp-folder-violet"/>
 		        </xpath>
 		    </field>
 		</record>
@@ -310,7 +685,7 @@
                 	<field name="is_task_generated" invisible='1'/>
 		        </xpath>
 		        <xpath expr="//button[@string='Start Phase']" position="replace">
-		        	<button string="Generate Task" name="generate_task" type="object" attrs="{'invisible':['|',('is_task_generated','=',True),('phase_type_id','=',False)]}" class="oe_highlight"/>
+		        	<!-- <button string="Generate Task" name="generate_task" type="object" attrs="{'invisible':['|',('is_task_generated','=',True),('phase_type_id','=',False),('phase_category_id','=',False)]}" class="oe_highlight"/> -->
 		        </xpath>
 		        <xpath expr="//button[@string='Done']" position="replace">
 		        </xpath>
@@ -331,7 +706,8 @@
 			        	<group>
 			        		<field name="project_id"/>
 			        		<field name="user_id"/>
-			        		<field name="phase_type_id" on_change="onchange_phase_type(phase_type_id)"/>
+			        		<!-- <field name="phase_type_id"/>
+			        		<field name="phase_category_id" on_change="onchange_phase_category(phase_category_id)"/> -->
 			        	</group>
 			        	<group>
 			        		<field name="date_start"/>
@@ -345,8 +721,40 @@
 	                    <field name="message_ids" widget="mail_thread"/>
 	                </div>
 		        </xpath>
+		        <xpath expr="//button[@name='%(project_long_term.project_phase_task_list)d']" position="replace">
+		        	<button name="%(action_giai_doan_list)d" string="Các giai đoạn" type="action" class="oe_right" context="{'search_default_phase_id': [active_id], 'default_phase_id' : active_id}"/>
+		        </xpath>
 		    </field>
 		</record>
+		
+    	<record id="project_long_term.act_project_phase_list" model="ir.actions.act_window">
+            <field name="name">Project Phases</field>
+            <field name="res_model">project.phase</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar</field>
+             <field name="context">{'search_default_my_phase': 1, 'search_default_project':1}</field>
+            <field name="search_view_id" ref="project_long_term.view_project_phase_search"/>
+        </record>
+		
+		<!-- Tasks -->
+		<record id="view_phase_task_search_form_inherit" model="ir.ui.view">
+            <field name="name">phase.task.search.form.inherit</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_search_form"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//filter[@string='My Tasks']" position="attributes">
+                	<attribute name="name">my_tasks</attribute>
+		        </xpath>
+		        <xpath expr="//field[@name='user_id']" position="after">
+                	<field name="giai_doan_id"/>
+                	<field name="gtc_id"/>
+		        </xpath>
+		        <xpath expr="//filter[@name='group_stage_id']" position="before">
+                    <filter string="Giai đoạn" name="group_giaidoan_id" icon="terp-stage" domain="[]" context="{'group_by':'giai_doan_id'}"/>
+                    <filter string="Gói thầu con" name="group_gtc_id" icon="terp-stage" domain="[]" context="{'group_by':'gtc_id'}"/>
+		        </xpath>
+            </field>
+        </record>
 		
 		<record id="view_task_tree2_inherit" model="ir.ui.view">
 		    <field name="name">project.task.tree.inherit</field>
@@ -358,11 +766,20 @@
 		        </xpath>
 		        <xpath expr="//field[@name='stage_id']" position="replace">
 		        </xpath>
-		        <xpath expr="//field[@name='date_end']" position="after">
+		        <xpath expr="//field[@name='date_start']" position="replace">
+		        	<field name="date_start" invisible='1'/>
+		        	<field name="sohieu_hoso"/>
+		        </xpath>
+		        <xpath expr="//field[@name='date_end']" position="replace">
+		        	<field name="date_end" invisible='1'/>
+		        	<field name="ngay_ky"/>
 		        	<field name="date_deadline"/>
                     <field name="stage_id" invisible="context.get('set_visible',False)"/>
 		        </xpath>
-		        <xpath expr="//field[@name='name']" position="after">
+		        <xpath expr="//field[@name='project_id']" position="after">
+		        	<field name="phase_id"/>
+		        	<field name="giai_doan_id"/>
+		        	<field name="gtc_id"/>
 		        	<field name="implementers"/>
 		        </xpath>
 		    </field>
@@ -378,8 +795,12 @@
                 	<field name="soft_file_id" context="{'default_res_model': 'project.task','default_res_id': active_id}"/>
                 	<field name="file_state_id"/>
                 	<field name="hard_copy_file_id"/>
+                	<field name="template_id" widget="selection"/>
 		        </xpath>
 		        <xpath expr="//page[@string='Extra Info']" position="replace">
+		        </xpath>
+		        <xpath expr="//field[@name='name']" position="after">
+		        	<button name="bt_print" string="Print" attrs="{'invisible':[('template_id','=',False)]}" type="object" class="oe_right"/>
 		        </xpath>
 		    </field>
 		</record>
@@ -390,8 +811,10 @@
 		    <field name="inherit_id" ref="project_long_term.view_phase_task_form2"/>
 		    <field name="arch" type="xml">
 		        <xpath expr="//field[@name='phase_id']" position="after">
-                	<field name="date_start"/>
-                	<field name="date_end"/>
+		        	<field name="giai_doan_id"/>
+		        	<field name="gtc_id"/>
+                	<field name="sohieu_hoso"/>
+                	<field name="ngay_ky"/>
                 	<field name="priority"/>
                 	<field name="sequence"/>
                 	<field name="state" invisible="1"/>
@@ -399,6 +822,40 @@
 		    </field>
 		</record>
 		
+		<record id="project.action_view_task" model="ir.actions.act_window">
+            <field name="name">Tasks</field>
+            <field name="res_model">project.task</field>
+            <field name="view_mode">tree,form,kanban,calendar,gantt,graph</field>
+            <field name="search_view_id" ref="project.view_task_search_form"/>
+            <field name="view_id" ref="project.view_task_tree2"/>
+            <field name="context">{'search_default_my_tasks':1,'search_default_group_project_id':1,'search_default_group_project_id_phase':1}</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a new task.
+              </p><p>
+                OpenERP's project management allows you to manage the pipeline
+                of tasks in order to get things done efficiently. You can
+                track progress, discuss on tasks, attach documents, etc.
+              </p>
+            </field>
+        </record>
+        <record id="project.open_view_task_list_kanban" model="ir.actions.act_window.view">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">kanban</field>
+            <field name="act_window_id" ref="project.action_view_task"/>
+        </record>
+        <record id="project.open_view_task_list_tree" model="ir.actions.act_window.view">
+            <field name="sequence" eval="0"/>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="project.action_view_task"/>
+        </record>
+        <record id="open_view_task_list_form" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="project.action_view_task"/>
+        </record>
+		
+		<!-- Attachment -->
 		<record id="view_attachment_form_inherit" model="ir.ui.view">
 		    <field name="name">ir.attachment.form.inherit</field>
 		    <field name="model">ir.attachment</field>
