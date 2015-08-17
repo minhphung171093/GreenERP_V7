@@ -20,22 +20,15 @@
 ##############################################################################
 
 {
-    'name': 'Chi Cuc Thu Y Co cau Dan',
+    'name': 'Chi Cuc Thu Y Tiem Phong',
     'version': '1.0',
     'category': 'GreenERP',
     'sequence': 14,
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',
-    'depends': ['report_aeroo','report_aeroo_ooo','green_erp_ccty_base',],
+    'depends': ['green_erp_ccty_base'],
     'data': [
-            'security/cocaudan_security.xml',
-            'wizard/cocau_hientai_wizard_view.xml',
-            'wizard/cocau_tai_thoi_diem_wizard_view.xml',
-            'report/cocau_hientai_report_view.xml',
-            'report/cocau_tai_thoi_diem_report_view.xml',
-            'cocau_view.xml',
             'menu.xml',
-            
     ],
     'css' : [
     ],

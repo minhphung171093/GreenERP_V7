@@ -37,7 +37,7 @@ class tiem_phong(osv.osv):
         'hinh_thuc_tiem':fields.selection([('tu_tiem','Tự tiêm'),('can_bo','Cán bộ thú y tiêm')]),
         'name': fields.date('Ngày tiêm', required = True),
         'tram_id': fields.many2one( 'tram.thu.y','Trạm thú y', required = True),
-        'can_bo_id': fields.many2one( 'can.bo','Cán bộ thú y thực hiện tiêm'),
+        'can_bo_id': fields.many2one( 'res.users','Cán bộ thú y thực hiện tiêm'),
         'loai_vaccine_id': fields.many2one('loai.vacxin','Loại vaccine'),
         'loai_vat_id': fields.many2one('loai.vat','Loài vật được tiêm'),
         'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)'),

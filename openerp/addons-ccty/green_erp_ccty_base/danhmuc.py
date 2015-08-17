@@ -21,17 +21,20 @@ class can_bo(osv.osv):
     _name = "can.bo"
     _columns = {
         'name': fields.char('Họ tên', size=30,required = True),
-        'tram_id': fields.many2one( 'tram.thu.y','Đơn vị'),
+        'tram_id': fields.many2one( 'tram.thu.y','Trạm'),
         'email': fields.char( 'Email',size = 50),
         'dien_thoai': fields.char( 'Điện thoại',size = 50),
+        'user_id': fields.many2one( 'res.users','Người dùng',required = True),
                 }
 can_bo()
-class don_vi(osv.osv):
-    _name = "don.vi"
+
+class res_users(osv.osv):
+    _inherit = "res.users"
     _columns = {
-        'name': fields.char('Đơn vị', size=30,required = True),
+        'dien_thoai': fields.char( 'Điện thoại',size = 50),
                 }
-don_vi()
+res_users()
+
 class tram_thu_y(osv.osv):
     _name = "tram.thu.y"
     _columns = {
@@ -43,8 +46,10 @@ class tram_thu_y(osv.osv):
         'tram_truong_id': fields.many2one( 'can.bo','Trạm trưởng'),
         'toa_do_x': fields.char( 'Tọa độ X',size = 10),
         'toa_do_y': fields.char( 'Tọa độ Y',size = 10),
+        'ds_canbo_line':fields.one2many('can.bo','tram_id','Chi tiet'),
                 }
 tram_thu_y()
+
 class tinh_tp(osv.osv):
     _name = "tinh.tp"
     _columns = {

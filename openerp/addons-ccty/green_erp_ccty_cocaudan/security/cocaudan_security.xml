@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data noupdate="1">
+		<record id="co_cau_rule" model="ir.rule">
+            <field name="name">multi_company_co_cau_rule</field>
+            <field model="ir.model" name="model_id" ref="model_co_cau"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id','child_of',[user.company_id.id])]</field>
+        </record>
+	</data>
+</openerp>

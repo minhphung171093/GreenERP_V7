@@ -27,7 +27,7 @@
             <field name="model">nhap.xuat</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="Tree Nhập xuất">
+                <tree string="Nhập xuất">
                 	<field name="name" />
                 	<field name="chu_hang" />
             		<field name="loai_hinh" />
@@ -46,7 +46,7 @@
             <field name="model">nhap.xuat</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
-                <form string="form nhập xuất" version="7.0">
+                <form string="Nhập xuất" version="7.0">
 	                <sheet>
                 		<group col="4"  string="Thông tin nhập xuất quá cảnh">
                 			<field name="name" />
@@ -77,7 +77,7 @@
 	        <field name="model">nhap.xuat.canh.giasuc</field>
 	        <field name="type">search</field>
 	        <field name="arch" type="xml">
-	            <search string="Xuất/Nhập cảnh gia súc">
+	            <search string="Nhập Xuất gia súc">
 	                <group>
 	                	<field name="name" />
 	                    <field name="loai_id" />
@@ -87,6 +87,8 @@
 	                    <field name="khu_pho_id" />                    
 	                    <field name="quan_huyen_id" />
 	                    <field name="loai" />
+	                    <field name="company_id" />
+	                    <field name="can_bo_id" />
 	                </group>
 	                <separator/>
                     <group expand="0" string="Group By...">
@@ -96,48 +98,56 @@
                         <filter string="Loài" domain="[]"  context="{'group_by':'loai_id'}"/>
                         <filter string="Hộ" domain="[]"  context="{'group_by':'ten_ho_id'}"/>
                         <filter string="Ngày cấp" domain="[]"  context="{'group_by':'ngay_cap'}"/>
+                        <filter string="Cán bộ" domain="[]"  context="{'group_by':'can_bo_id'}"/>
+                        <filter string="Trạm" domain="[]"  context="{'group_by':'company_id'}"/>
                     </group>
 	            </search>	
 	        </field>
 	    </record>
     
-        <record model="ir.ui.view" id="nhap_xuat_canh_giasuc_tree">
-            <field name="name">nhap.xuat.canh.giasuc.tree</field>
+        <record model="ir.ui.view" id="nhap_canh_giasuc_tree">
+            <field name="name">nhap.canh.giasuc.tree</field>
             <field name="model">nhap.xuat.canh.giasuc</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="Xuất/Nhập cảnh gia súc">
+                <tree string="Nhập gia súc">
                 	<field name="name" />
                 	<field name="loai_id" />
-            		<field name="ngay_cap" />
+                	<field name="ngay_cap" />
+                	<field name="can_bo_id" />
+                	<field name="company_id" string = 'Trạm'/>
+                	<field name="ngay_kiem_tra" />
                     <field name="quan_huyen_id" />
                     <field name="phuong_xa_id" />
                     <field name="khu_pho_id" />                    
                     <field name="ten_ho_id" />
-                    <field name="loai" />
+                    <field name="loai" invisible = '1'/>
                 </tree>
             </field>
         </record>
         
-        <record model="ir.ui.view" id="nhap_xuat_canh_giasuc_form">
-            <field name="name">nhap.xuat.canh.giasuc.form</field>
+        <record model="ir.ui.view" id="nhap_canh_giasuc_form">
+            <field name="name">nhap.canh.giasuc.form</field>
             <field name="model">nhap.xuat.canh.giasuc</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
-                <form string="Xuất/Nhập cảnh gia súc" version="7.0">
+                <form string="Nhập gia súc" version="7.0">
 	                <sheet>
                 		<group col="4" >
                 			<field name="name" />
-		                	<field name="loai_id" />
+		                	<field name="loai_id" on_change = "onchange_chon_loai(loai_id)"/>
 		            		<field name="ngay_cap" />
+		                	<field name="company_id" string = 'Trạm'/>
+		                	<field name="can_bo_id" domain="[('company_id','=',company_id)]"/>
+		                	<field name="ngay_kiem_tra" />
 		                    <field name="quan_huyen_id" />
 		                    <field name="phuong_xa_id" domain="[('quan_huyen_id','=',quan_huyen_id)]"/>
 		                    <field name="khu_pho_id" domain="[('phuong_xa_id','=',phuong_xa_id)]"/>
 		                    <field name="ten_ho_id" domain="[('quan_huyen_id','=',quan_huyen_id), ('phuong_xa_id','=',phuong_xa_id), ('khu_pho_id','=',khu_pho_id)]"/>
-		                    <field name="loai" />
+		                    <field name="loai" invisible = '1'/>
                 		</group>
                 		<notebook>
-							<page string = "Thông tin chi tiết nhập/xuất gia súc">
+							<page string = "Thông tin chi tiết nhập gia súc">
 								<field name="chitiet_loai_nx" nolabel='1'>
 									<tree editable='bottom' create = 'false'>
 										<field name="name"/>
@@ -160,10 +170,113 @@
         </record>
        
         <record model="ir.actions.act_window" id="action_nhap_canh_giasuc">
-            <field name="name">Thông tin xuất/nhập cảnh gia súc</field>
+            <field name="name">Nhập gia súc</field>
             <field name="res_model">nhap.xuat.canh.giasuc</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
+            <field name="domain">[('loai', '=', 'nhap')]</field>
+            <field name="context">{'default_loai':'nhap'}</field>
+            <field eval="False" name="view_id" ref="nhap_canh_giasuc_tree"/>
+        </record>
+        
+        <record id="action_nhap_canh_giasuc1" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="nhap_canh_giasuc_tree"/>
+            <field name="act_window_id" ref="action_nhap_canh_giasuc"/>
+        </record>
+        <record id="action_nhap_canh_giasuc2" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="nhap_canh_giasuc_form"/>
+            <field name="act_window_id" ref="action_nhap_canh_giasuc"/>
+        </record>
+        
+        <record model="ir.ui.view" id="xuat_canh_giasuc_tree">
+            <field name="name">xuat.canh.giasuc.tree</field>
+            <field name="model">nhap.xuat.canh.giasuc</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Xuất gia súc">
+                	<field name="name" />
+                	<field name="loai_id" />
+            		<field name="ngay_cap" />
+            		<field name="company_id" string = 'Trạm'/>
+		            <field name="can_bo_id" domain="[('tram_id','=',tram_id)]"/>
+                	<field name="ngay_kiem_tra" />
+                    <field name="quan_huyen_id" />
+                    <field name="phuong_xa_id" />
+                    <field name="khu_pho_id" />                    
+                    <field name="ten_ho_id" />
+                    <field name="loai" invisible = '1'/>
+                </tree>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="xuat_canh_giasuc_form">
+            <field name="name">xuat.canh.giasuc.form</field>
+            <field name="model">nhap.xuat.canh.giasuc</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Xuất gia súc" version="7.0">
+	                <sheet>
+                		<group col="4" >
+                			<field name="name" />
+		                	<field name="loai_id" on_change = "onchange_chon_loai(loai_id)"/>
+		            		<field name="ngay_cap" />
+		            		<field name="company_id" string = 'Trạm'/>
+		                	<field name="can_bo_id" domain="[('company_id','=',company_id)]"/>
+		                	<field name="ngay_kiem_tra" />
+		                    <field name="quan_huyen_id" />
+		                    <field name="phuong_xa_id" domain="[('quan_huyen_id','=',quan_huyen_id)]"/>
+		                    <field name="khu_pho_id" domain="[('phuong_xa_id','=',phuong_xa_id)]"/>
+		                    <field name="ten_ho_id" domain="[('quan_huyen_id','=',quan_huyen_id), ('phuong_xa_id','=',phuong_xa_id), ('khu_pho_id','=',khu_pho_id)]"/>
+		                    <field name="loai" invisible = '1'/>
+                		</group>
+                		<notebook>
+							<page string = "Thông tin chi tiết xuất gia súc">
+								<field name="chitiet_loai_nx" nolabel='1'>
+									<tree editable='bottom' create = 'false'>
+										<field name="name"/>
+										<field name="so_luong" sum = 'Total'/>
+									</tree>
+								</field>
+							</page>
+							<page string = "Đã tiêm phòng">
+								<field name="chitiet_da_tiem_phong" nolabel='1'>
+									<tree editable='bottom' create = 'false'>
+										<field name="name"/>
+										<field name="so_luong" sum = 'Total'/>
+									</tree>
+								</field>
+							</page>
+						</notebook>
+	                </sheet>
+                </form>
+            </field>
+        </record>
+       
+        <record model="ir.actions.act_window" id="action_xuat_canh_giasuc">
+            <field name="name">Xuất gia súc</field>
+            <field name="res_model">nhap.xuat.canh.giasuc</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('loai', '=', 'xuat')]</field>
+            <field name="context">{'default_loai':'xuat'}</field>
+            <field eval="False" name="view_id" ref="xuat_canh_giasuc_tree"/>
+        </record>
+        
+        <record id="action_xuat_canh_giasuc1" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="xuat_canh_giasuc_tree"/>
+            <field name="act_window_id" ref="action_xuat_canh_giasuc"/>
+        </record>
+        <record id="action_xuat_canh_giasuc2" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="xuat_canh_giasuc_form"/>
+            <field name="act_window_id" ref="action_xuat_canh_giasuc"/>
         </record>
         			
     </data>

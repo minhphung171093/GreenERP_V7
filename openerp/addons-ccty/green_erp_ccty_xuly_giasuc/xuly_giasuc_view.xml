@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    	<record id="xuly_giasuc_search" model="ir.ui.view">
+	        <field name="name">xuly.giasuc.search</field>
+	        <field name="model">xuly.giasuc</field>
+	        <field name="type">search</field>
+	        <field name="arch" type="xml">
+	            <search string="Xử lý gia súc">
+	                <group>
+   						<field name="name" />
+	                	<field name="loai_id" />
+	                    <field name="ngay" />
+	                   	<field name="company_id" />                   
+	                    <field name="can_bo_id" />
+	                    <field name="quan_huyen_id" />
+	                    <field name="phuong_xa_id" />
+	                    <field name="khu_pho_id" />
+	                    <field name="ten_ho_id" />  
+	                </group>
+	                <separator/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Quận (huyện)" domain="[]" context="{'group_by':'quan_huyen_id'}"/>
+                        <filter string="Phường (xã)" domain="[]"  context="{'group_by':'phuong_xa_id'}"/>
+                        <filter string="Khu phố (ấp)" domain="[]" context="{'group_by':'khu_pho_id'}"/>
+                        <filter string="Loài" domain="[]"  context="{'group_by':'loai_id'}"/>
+                        <filter string="Hộ" domain="[]"  context="{'group_by':'ten_ho_id'}"/>
+                        <filter string="Ngày cấp" domain="[]"  context="{'group_by':'ngay_cap'}"/>
+                        <filter string="Cán bộ" domain="[]"  context="{'group_by':'can_bo_id'}"/>
+                        <filter string="Trạm" domain="[]"  context="{'group_by':'company_id'}"/>
+                    </group>
+	            </search>	
+	        </field>
+	    </record>
+    
+        <record model="ir.ui.view" id="tiem_phong_tree">
+            <field name="name">tiem.phong.tree</field>
+            <field name="model">tiem.phong</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Tree Tiêm phòng">
+                	<field name="tu_tiem" />
+                	<field name="can_bo_tiem" />
+                    <field name="so_luong_tiem" />
+                    <field name="name" />                    
+                    <field name="tram_id" />
+                    <field name="can_bo_id" />
+                    <field name="loai_vat_id" />
+                    <field name="quan_huyen_id" />
+                    <field name="phuong_xa_id" />
+                    <field name="khu_pho_id" />
+                    <field name="ho_chan_nuoi_id" />
+                    <field name="loai_vaccine_id" />
+                </tree>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="tiem_phong_form">
+            <field name="name">tiem.phong.form</field>
+            <field name="model">tiem.phong</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="form Tiêm phòng" version="7.0">
+	                <sheet>
+	                	<group  string="Quản Lý Tiêm Phòng">
+		                	<field name="hinh_thuc_tiem" widget="radio" nolabel='1'/>
+	                	</group>
+	            			<group col="4">
+			                    <field name="tram_id" attrs="{'invisible':[('hinh_thuc_tiem', '=', 'tu_tiem')]}"/>
+			                    <field name="can_bo_id" domain="[('tram_id','=',tram_id)]" attrs="{'invisible':[('hinh_thuc_tiem', '=', 'tu_tiem')]}"/>
+			                    <field name="so_luong_tiem" />
+			                    <field name="name" />                    
+			                    <field name="loai_vat_id" />
+			                    <field name="loai_vaccine_id" />
+			                    <field name="quan_huyen_id" on_change="onchange_quan_huyen()"/>
+			                    <field name="phuong_xa_id" on_change="onchange_phuong_xa()" domain="[('quan_huyen_id','=',quan_huyen_id)]"/>
+			                    <field name="khu_pho_id" domain="[('phuong_xa_id','=',phuong_xa_id)]"/>
+			                    <field name="ho_chan_nuoi_id" domain="[('quan_huyen_id','=',quan_huyen_id), ('phuong_xa_id','=',phuong_xa_id), ('khu_pho_id','=',khu_pho_id)]"/>
+	                		</group>
+                		
+	                </sheet>
+                </form>
+            </field>
+        </record>
+       
+        <record model="ir.actions.act_window" id="action_tiem_phong">
+            <field name="name">Quản Lý Tiêm Phòng</field>
+            <field name="res_model">tiem.phong</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        			
+    </data>
+</openerp>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		<record id="tinhhinh_xuat_giasuc_form_view" model="ir.ui.view">
+	        <field name="name">tinhhinh.xuat.giasuc.form.view</field>
+	        <field name="model">tinhhinh.xuat.giasuc.form</field>
+	        <field name="arch" type="xml">
+	            <form string="Tình hình xuất gia súc report" version="7.0">
+	            	<group colspan = '2' col = '4'>
+	                <field name="ten_ho_id" />
+	                <field name="tu_ngay" />
+	                <field name="den_ngay" />
+	                </group>
+	                <footer>
+	                    <button name="print_report" type='object' string="OK" class="oe_highlight"/>
+	                    or
+	                    <button string="Cancel" class="oe_highlight" special="cancel" />
+	                </footer>
+	            </form>
+	        </field>
+    	</record>
+
+	    <record model="ir.actions.act_window" id="action_tinhhinh_xuat_giasuc_form">
+	        <field name="name">Tình hình xuất gia súc</field>
+	        <field name="res_model">tinhhinh.xuat.giasuc.form</field>
+	        <field name="view_type">form</field>
+	        <field name="view_mode">form</field>
+	        <field name="view_id" ref="tinhhinh_xuat_giasuc_form_view" />
+	        <field name="target">new</field>
+	    </record>
+	    
+	    <menuitem id="nhap_xuat" name="Nhập - Xuất - Quá cảnh"/>
+        <menuitem id="menu_thong_ke_nhap_xuat" parent="nhap_xuat" name="Thống kê tình hình nhập/xuất gia súc"/>
+	    	<menuitem id="menu_tinh_hinh_xuat" parent="menu_thong_ke_nhap_xuat" name="Tình hình xuất gia súc" action="action_tinhhinh_xuat_giasuc_form"/>
+	 
+	    
+    </data>
+</openerp>
+

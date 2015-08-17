@@ -4,124 +4,44 @@
     
     						 <!--cán bộ-->        
     
-    <record id="can_bo_search" model="ir.ui.view">
-	        <field name="name">can.bo.search</field>
-	        <field name="model">can.bo</field>
-	        <field name="type">search</field>
-	        <field name="arch" type="xml">
-	            <search string="Cán bộ">
-	                <group>
-	                    <field name="name" />
-	                    <field name="tram_id" />                    
-	                    <field name="email" />
-	                    <field name="dien_thoai" />
-	                </group>
-	            </search>	
-	        </field>
-	    </record>
-    
-        <record model="ir.ui.view" id="can_bo_tree">
-            <field name="name">can.bo.tree</field>
-            <field name="model">can.bo</field>
-            <field name="type">tree</field>
+        <record id="res_users_canbo_form_inherit" model="ir.ui.view">
+            <field name="name">res.users.canbo.form.inherit</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
             <field name="arch" type="xml">
-                <tree string="Tree cán bộ">
-                    <field name="name" />
-                    <field name="tram_id" />                    
-                    <field name="email" />
-                    <field name="dien_thoai" />
-                </tree>
-            </field>
-        </record>
-        
-        <record model="ir.ui.view" id="can_bo_form">
-            <field name="name">can.bo.form</field>
-            <field name="model">can.bo</field>
-            <field name="type">form</field>
-            <field name="arch" type="xml">
-                <form string="form cán bộ" version="7.0">
-	                <sheet>
-                		<group>
-		            		<field name="name" />
-		                    <field name="tram_id" />                    
-		                    <field name="email" />
-		                    <field name="dien_thoai" />
-                		</group>
-	                </sheet>
-                </form>
-            </field>
-        </record>
+            	<xpath expr="//field[@name='company_id']" position="after">
+					<field name="dien_thoai"/>
+				</xpath>
+				<xpath expr="//field[@name='company_id']" position="attributes">
+					<attribute name='string'>Trạm</attribute>
+				</xpath>
+				<xpath expr="//label[@for='name']" position="attributes">
+					<attribute name='string'>Tên cán bộ</attribute>
+				</xpath>
+				<xpath expr="//label[@for='login']" position="attributes">
+					<attribute name='string'>Tên đăng nhập</attribute>
+				</xpath>
+				
+			</field>
+		</record>
        
-        <record model="ir.actions.act_window" id="action_can_bo">
-            <field name="name">Danh Mục Cán Bộ</field>
-            <field name="res_model">can.bo</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
-        </record>
-        
-        
         					<!--Trạm thú y-->  
         					
    
-    <record id="tram_thu_y_search" model="ir.ui.view">
-	        <field name="name">tram.thu.y.search</field>
-	        <field name="model">tram.thu.y</field>
-	        <field name="type">search</field>
-	        <field name="arch" type="xml">
-	            <search string="Trạm thú y">
-	                <group>
-	                    <field name="name" />
-	                    <field name="thanh_pho_id" />
-	                    <field name="dia_chi" />                    
-	                    <field name="email" />
-	                    <field name="dien_thoai" />
-	                    <field name="tram_truong_id" />
-	                    <field name="toa_do_x" />
-	                    <field name="toa_do_y" />
-	                </group>
-	            </search>	
-	        </field>
-	    </record>
-    
-        <record model="ir.ui.view" id="tram_thu_y_tree">
-            <field name="name">tram.thu.y.tree</field>
-            <field name="model">tram.thu.y</field>
-            <field name="type">tree</field>
+    <record id="res_company_form_inherit" model="ir.ui.view">
+            <field name="name">res.company.form.inherit</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
             <field name="arch" type="xml">
-                <tree string="Tree trạm thú y">
-                	<field name="name" />
-                    <field name="thanh_pho_id" />
-                    <field name="dia_chi" />                    
-                    <field name="email" />
-                    <field name="dien_thoai" />
-                    <field name="tram_truong_id" />
-                    <field name="toa_do_x" />
-                    <field name="toa_do_y" />
-                </tree>
-            </field>
-        </record>
-        
-        <record model="ir.ui.view" id="tram_thu_y_form">
-            <field name="name">tram.thu.y.form</field>
-            <field name="model">tram.thu.y</field>
-            <field name="type">form</field>
-            <field name="arch" type="xml">
-                <form string="form trạm thú y" version="7.0">
-	                <sheet>
-                		<group col="4"  string="Thông tin trạm thú y">
-			            		<field name="name" />
-			            		<field name="email" />
-			                    <field name="thanh_pho_id" />
-			                    <field name="dien_thoai" />
-			                    <field name="dia_chi" />                    
-			                    <field name="tram_truong_id" />
-			                    <field name="toa_do_x" />
-			                    <field name="toa_do_y" />
-                		</group>
-	                </sheet>
-                </form>
-            </field>
-        </record>
+				<xpath expr="//label[@for='name']" position="attributes">
+					<attribute name='string'>Tên trạm</attribute>
+				</xpath>
+				<xpath expr="//field[@name='parent_id']" position="attributes">
+					<attribute name='string'>Trạm cha</attribute>
+				</xpath>
+				
+			</field>
+		</record>
        
         <record model="ir.actions.act_window" id="action_tram_thu_y">
             <field name="name">Danh Mục Trạm Thú Y</field>

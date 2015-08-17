@@ -21,7 +21,7 @@ class nhap_vaccine(osv.osv):
     _name = "nhap.vaccine"
     _columns = {
         'name': fields.many2one('loai.vacxin','Loại vaccine', required = True, states={ 'done':[('readonly', True)]}),
-        'can_bo_id': fields.many2one('can.bo','Cán bộ nhập máy', required = True, states={ 'done':[('readonly', True)]}),
+        'can_bo_id': fields.many2one('res.users','Cán bộ nhập máy', required = True, states={ 'done':[('readonly', True)]}),
         'ngay_nhap': fields.date('Ngày nhập xuất', states={ 'done':[('readonly', True)]}),
         'soluong': fields.char('Số lượng',size = 50, states={ 'done':[('readonly', True)]}),
         'state':fields.selection([('draft', 'Nháp'),('done', 'Duyệt')],'Status', readonly=True),

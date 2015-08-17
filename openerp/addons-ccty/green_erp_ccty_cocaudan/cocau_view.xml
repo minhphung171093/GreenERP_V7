@@ -17,6 +17,7 @@
 	                    <field name="quan_huyen_id" />
 	                    <field name="phuong_xa_id" />
 	                    <field name="khu_pho_id" />
+	                    <field name="company_id"/>
 	                </group>
 	                <separator/>
                     <group expand="0" string="Group By...">
@@ -46,6 +47,7 @@
                     <field name="quan_huyen_id" />
                     <field name="phuong_xa_id" />
                     <field name="khu_pho_id" />
+                    <field name="company_id" string = 'Trạm'/>
                 </tree>
             </field>
         </record>
@@ -67,6 +69,7 @@
 		                    <field name="phuong_xa_id" domain="[('quan_huyen_id','=',quan_huyen_id)]"/>
 		                    <field name="khu_pho_id" domain="[('phuong_xa_id','=',phuong_xa_id)]"/>
 		                    <field name="ten_ho_id" domain="[('quan_huyen_id','=',quan_huyen_id), ('phuong_xa_id','=',phuong_xa_id), ('khu_pho_id','=',khu_pho_id)]"/>
+                			<field name="company_id" string = 'Trạm'/>
                 		</group>
                 		<notebook>
 							<page string = "Thông tin chi tiết loài vật">

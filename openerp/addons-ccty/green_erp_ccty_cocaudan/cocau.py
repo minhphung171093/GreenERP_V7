@@ -19,9 +19,12 @@ base_path = os.path.dirname(modules.get_module_path('green_erp_ccty_base'))
 
 class co_cau(osv.osv):
     _name = "co.cau"
+    def _get_company(self, cr, uid, ids, context=None):
+        user = self.pool.get('res.users').browse(cr,uid,uid)
+        return user.company_id.id or False
     _columns = {
         'chon_loai': fields.many2one('loai.vat','Chọn loài', required = True),
-        'can_bo_ghi_so_id': fields.many2one( 'can.bo','Cán bộ ghi sổ'),
+        'can_bo_ghi_so_id': fields.many2one('res.users','Cán bộ ghi sổ'),
         'ngay_ghi_so': fields.date('Ngày ghi sổ'),
         'tang_giam': fields.selection((('a','Tăng'), ('b','Giảm')),'Tăng/Giảm'),
         'ly_do': fields.char('Lý do tăng giảm',size = 50),
@@ -30,7 +33,11 @@ class co_cau(osv.osv):
         'khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)'),
         'quan_huyen_id': fields.many2one( 'quan.huyen','Quận (huyện)'),
         'chitiet_loai':fields.one2many('chi.tiet.loai.line','co_cau_id','Co Cau'),
+        'company_id': fields.many2one( 'res.company','Company'),
                 }
+    _defaults = {
+        'company_id': _get_company
+                 }
     
     def onchange_chon_loai(self, cr, uid, ids, chon_loai = False, context=None):
         chi_tiet= []
