@@ -242,8 +242,10 @@
                 		<button string="Generate Task" name="generate_task" type="object" attrs="{'invisible':['|',('is_task_generated','=',True),('phase_category_id','=',False)]}" class="oe_highlight"/>
                 		<field name="stage_id" widget="statusbar" clickable="True"/>
 	                	<field name="is_task_generated" invisible='1'/>
+	                	<field name="is_mail_send" invisible='1'/>
                 	</header>
                 	<sheet>
+                		<button name="action_send_mail" string="Gửi mail" type="object" class="oe_right" attrs="{'invisible': [('is_mail_send','=',True)]}"/>
                 		<button name="%(goithaucon_task_list)d" string="Các công việc" type="action" class="oe_right"/>
 	                    <div class="oe_title">
 	                        <label for="name" class="oe_edit_only"/>
@@ -347,9 +349,11 @@
                 		<button string="Generate Task" name="generate_task" type="object" attrs="{'invisible':['|','|',('is_task_generated','=',True),('is_goithau_con','=',True),('phase_type_id','=',False)]}" class="oe_highlight"/>
                 		<field name="stage_id" widget="statusbar" clickable="True"/>
 	                	<field name="is_task_generated" invisible='1'/>
+	                	<field name="is_mail_send" invisible='1'/>
                 	</header>
                 	<sheet>
                 		<button name="%(giai_doan_task_list)d" string="Các công việc" type="action" class="oe_right" attrs="{'invisible': [('is_goithau_con','=',True)]}"/>
+                		<button name="action_send_mail" string="Gửi mail" type="object" class="oe_right" attrs="{'invisible': ['|',('is_goithau_con','=',True),('is_mail_send','=',True)]}"/>
                 		<button name="%(action_goi_thau_con_list)d" string="Các gói thầu con" type="action" class="oe_right" attrs="{'invisible': ['|',('is_goithau_con','=',False),('is_task_generated','=',True)]}"/>
 	                    <div class="oe_title">
 	                        <label for="name" class="oe_edit_only"/>

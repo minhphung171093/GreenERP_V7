@@ -30,6 +30,8 @@ from openerp.tools.translate import _
 
 from openerp.addons.base_status.base_stage import base_stage
 from openerp.addons.resource.faces import task as Task
+from openerp.tools import append_content_to_html
+
 
 _TASK_STATE = [('draft', 'New'),('open', 'In Progress'),('pending', 'Pending'), ('done', 'Done'), ('cancelled', 'Cancelled')]
 
@@ -160,6 +162,7 @@ class giai_doan(osv.osv):
         'description': fields.text('Description'),
         'type_ids': fields.many2many('giai.doan.type', 'giai_doan_type_rel', 'giai_doan_id', 'type_id', 'Trạng thái của giai đoạn'),
         'is_task_generated': fields.boolean('Task Generated'),
+        'is_mail_send': fields.boolean('Mail Send'),
         'stage_id': fields.many2one('giai.doan.type', 'Stage', select=True,
                         domain="['&', ('fold', '=', False), ('giai_doan_ids', '=', id)]"),
         'state': fields.related('stage_id', 'state', type="selection", store=True,
@@ -197,6 +200,69 @@ class giai_doan(osv.osv):
             stage_ids = [p.id for p in phase_type.stage_ids]
             vals['type_ids'] = [(6,0,stage_ids)]
         return {'value': vals}
+    
+    def send_mail(self, cr, uid, lead_email, msg_id,context=None):
+        mail_message_pool = self.pool.get('mail.message')
+        mail_mail = self.pool.get('mail.mail')
+        msg = mail_message_pool.browse(cr, SUPERUSER_ID, msg_id, context=context)
+        body_html = msg.body
+        if msg.author_id and msg.author_id.user_ids and msg.author_id.user_ids[0].alias_domain and msg.author_id.user_ids[0].alias_name:
+            email_from = '%s <%s@%s>' % (msg.author_id.name, msg.author_id.user_ids[0].alias_name, msg.author_id.user_ids[0].alias_domain)
+        elif msg.author_id:
+            email_from = '%s <%s>' % (msg.author_id.name, msg.author_id.email)
+        else:
+            email_from = msg.email_from
+
+        references = False
+        if msg.parent_id:
+            references = msg.parent_id.message_id
+
+        mail_values = {
+            'mail_message_id': msg.id,
+            'auto_delete': True,
+            'body_html': body_html,
+            'email_from': email_from,
+            'email_to' : lead_email,
+            'references': references,
+        }
+        email_notif_id = mail_mail.create(cr, uid, mail_values, context=context)
+        try:
+            mail_mail.send(cr, uid, [email_notif_id], context=context)
+        except Exception:
+            a = 1
+        return True
+    
+    def action_send_mail(self, cr, uid, ids, context=None):
+        giaidoan = self.browse(cr, uid, ids[0])
+        task_obj = self.pool.get('project.task')
+        user_obj = self.pool.get('res.users')
+        sql = '''
+            select user_id from project_task where user_id is not null and giai_doan_id=%s group by user_id
+        '''%(giaidoan.id)
+        cr.execute(sql)
+        user_ids = [r[0] for r in cr.fetchall()]
+        for user in user_obj.browse(cr, uid, user_ids):
+            task_ids = task_obj.search(cr, uid, [('user_id','=',user.id),('giai_doan_id','=',giaidoan.id)])
+            body = '''
+                <p>Danh sách công việc mới cần thực hiện của %s <br>
+                Cho [%s][%s][%s]</p>
+            '''%(user.name,giaidoan.project_id and giaidoan.project_id.name or '',giaidoan.phase_id and giaidoan.phase_id.name or '',giaidoan.name)
+            partner = user.partner_id
+            partner.signup_prepare()
+            action = 'project.action_view_task'
+            for task in task_obj.browse(cr, uid, task_ids):
+                url = partner._get_signup_url_for_action(action=action,view_type='form',res_id=task.id)[partner.id]
+                body += ''' <p>%s, <i><a href="%s">Open in VSIS</a></i></p> '''%(task.name,url)
+            post_values = {
+                'subject': 'Công việc mới cho [%s][%s]'%(giaidoan.project_id and giaidoan.project_id.name or '',giaidoan.phase_id and giaidoan.phase_id.name or ''),
+                'body': body,
+                'partner_ids': [],
+            }
+            lead_email = user.email
+            msg_id = self.message_post(cr, uid, [giaidoan.id], type='comment', subtype=False, context=context, **post_values)
+            self.send_mail(cr, uid, lead_email, msg_id, context)
+        
+        return self.write(cr, uid, ids, {'is_mail_send': True})
     
 giai_doan()
 
@@ -249,6 +315,7 @@ class goi_thau_con(osv.osv):
         'description': fields.text('Description'),
         'type_ids': fields.many2many('goi.thau.con.type', 'goithau_con_type_rel', 'goithau_con_id', 'type_id', 'Trạng thái'),
         'is_task_generated': fields.boolean('Task Generated'),
+        'is_mail_send': fields.boolean('Mail Send'),
         'stage_id': fields.many2one('goi.thau.con.type', 'Stage', select=True,
                         domain="['&', ('fold', '=', False), ('goithaucon_ids', '=', id)]"),
         'state': fields.related('stage_id', 'state', type="selection", store=True,
@@ -286,6 +353,69 @@ class goi_thau_con(osv.osv):
             stage_ids = [p.id for p in phase_category.stage_ids]
             vals['type_ids'] = [(6,0,stage_ids)]
         return {'value': vals}
+    
+    def send_mail(self, cr, uid, lead_email, msg_id,context=None):
+        mail_message_pool = self.pool.get('mail.message')
+        mail_mail = self.pool.get('mail.mail')
+        msg = mail_message_pool.browse(cr, SUPERUSER_ID, msg_id, context=context)
+        body_html = msg.body
+        if msg.author_id and msg.author_id.user_ids and msg.author_id.user_ids[0].alias_domain and msg.author_id.user_ids[0].alias_name:
+            email_from = '%s <%s@%s>' % (msg.author_id.name, msg.author_id.user_ids[0].alias_name, msg.author_id.user_ids[0].alias_domain)
+        elif msg.author_id:
+            email_from = '%s <%s>' % (msg.author_id.name, msg.author_id.email)
+        else:
+            email_from = msg.email_from
+
+        references = False
+        if msg.parent_id:
+            references = msg.parent_id.message_id
+
+        mail_values = {
+            'mail_message_id': msg.id,
+            'auto_delete': True,
+            'body_html': body_html,
+            'email_from': email_from,
+            'email_to' : lead_email,
+            'references': references,
+        }
+        email_notif_id = mail_mail.create(cr, uid, mail_values, context=context)
+        try:
+            mail_mail.send(cr, uid, [email_notif_id], context=context)
+        except Exception:
+            a = 1
+        return True
+    
+    def action_send_mail(self, cr, uid, ids, context=None):
+        goithaucon = self.browse(cr, uid, ids[0])
+        task_obj = self.pool.get('project.task')
+        user_obj = self.pool.get('res.users')
+        sql = '''
+            select user_id from project_task where user_id is not null and gtc_id=%s group by user_id
+        '''%(goithaucon.id)
+        cr.execute(sql)
+        user_ids = [r[0] for r in cr.fetchall()]
+        for user in user_obj.browse(cr, uid, user_ids):
+            task_ids = task_obj.search(cr, uid, [('user_id','=',user.id),('gtc_id','=',goithaucon.id)])
+            body = '''
+                <p>Danh sách công việc mới cần thực hiện của %s <br>
+                Cho [%s][%s][%s][%s]</p>
+            '''%(user.name,goithaucon.project_id and goithaucon.project_id.name or '',goithaucon.phase_id and goithaucon.phase_id.name or '',goithaucon.giai_doan_id and goithaucon.giai_doan_id.name or '',goithaucon.name)
+            partner = user.partner_id
+            partner.signup_prepare()
+            action = 'project.action_view_task'
+            for task in task_obj.browse(cr, uid, task_ids):
+                url = partner._get_signup_url_for_action(action=action,view_type='form',res_id=task.id)[partner.id]
+                body += ''' <p>%s, <i><a href="%s">Open in VSIS</a></i></p> '''%(task.name,url)
+            post_values = {
+                'subject': 'Công việc mới cho [%s][%s]'%(goithaucon.project_id and goithaucon.project_id.name or '',goithaucon.phase_id and goithaucon.phase_id.name or ''),
+                'body': body,
+                'partner_ids': [],
+            }
+            lead_email = user.email
+            msg_id = self.message_post(cr, uid, [goithaucon.id], type='comment', subtype=False, context=context, **post_values)
+            self.send_mail(cr, uid, lead_email, msg_id, context)
+        
+        return self.write(cr, uid, ids, {'is_mail_send': True})
     
 goi_thau_con()
 
