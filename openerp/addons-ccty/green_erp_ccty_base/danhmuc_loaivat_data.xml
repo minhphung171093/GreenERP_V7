@@ -257,12 +257,12 @@
  <!-- TAB CHI TIẾT HEO HẬU BỊ -->       
         
         <record id="chitiet_heo_haubi_duc" model="chi.tiet.loai.vat">
-            <field name="name">Đực</field>
+            <field name="name">Heo hậu bị Đực</field>
             <field name="loai_id" ref="loaivat_heo_haubi"/>
         </record>
         
         <record id="chitiet_heo_haubi_cai" model="chi.tiet.loai.vat">
-            <field name="name">Cái</field>
+            <field name="name">Heo hậu bị Cái</field>
             <field name="loai_id" ref="loaivat_heo_haubi"/>
         </record>
         
@@ -293,17 +293,17 @@
 <!-- TAB CHI TIẾT NÁI SINH SẢN -->   
         
         <record id="chitiet_nai_kho" model="chi.tiet.loai.vat">
-            <field name="name">Kho</field>
+            <field name="name">Nái sinh sản Khô</field>
             <field name="loai_id" ref="loaivat_nai_sinhsan"/>
         </record>
         
         <record id="chitiet_nai_mangthai" model="chi.tiet.loai.vat">
-            <field name="name">Mang thai</field>
+            <field name="name">Nái sinh sản Mang thai</field>
             <field name="loai_id" ref="loaivat_nai_sinhsan"/>
         </record>
 
         <record id="chitiet_nai_nuoicon" model="chi.tiet.loai.vat">
-            <field name="name">Nuôi con</field>
+            <field name="name">Nái sinh sản Nuôi con</field>
             <field name="loai_id" ref="loaivat_nai_sinhsan"/>
         </record>
 
@@ -334,12 +334,12 @@
 <!-- TAB CHI TIẾT HEO CON -->           
         
         <record id="chitiet_heocon_theome" model="chi.tiet.loai.vat">
-            <field name="name">Theo mẹ</field>
+            <field name="name">Heo con Theo mẹ</field>
             <field name="loai_id" ref="loaivat_heo_con"/>
         </record>
         
         <record id="chitiet_heocon_caisua" model="chi.tiet.loai.vat">
-            <field name="name">Cai sữa</field>
+            <field name="name">Heo con Cai sữa</field>
             <field name="loai_id" ref="loaivat_heo_con"/>
         </record>
         

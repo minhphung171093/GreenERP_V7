@@ -6,11 +6,13 @@
             <field name="model">nhap.vaccine</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="Tree Nhập Vaccine">
+                <tree string="Nhập Vaccine">
                 	<field name="can_bo_id" />
                 	<field name="name" />
                 	<field name="ngay_nhap" />
             		<field name="soluong" />
+            		<field name="so_lo_id" />
+            		<field name="han_su_dung" />
             		<field name="state" widget="statusbar" statusbar_visible="draft,done" statusbar_colors='{"done":"blue"}'/>
                 </tree>
             </field>
@@ -21,7 +23,7 @@
             <field name="model">nhap.vaccine</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
-                <form string="form nhập vaccine" version="7.0">
+                <form string="Nhập vaccine" version="7.0">
                 <header>
 	            		<button name="bt_duyet" states='draft' string="Duyệt" type="object" class="oe_highlight" />
 	                    <field name="state" widget="statusbar" statusbar_visible="draft,done" statusbar_colors='{"done":"blue"}'/>
@@ -32,6 +34,8 @@
                 			<field name="name" />
 			            	<field name="ngay_nhap" />
 			        		<field name="soluong" />
+			        		<field name="so_lo_id" domain="[('vacxin_id','=',name)]"  />
+            				<field name="han_su_dung" readonly = "1"/>
                 		</group>
 	                </sheet>
                 </form>
@@ -41,6 +45,43 @@
         <record model="ir.actions.act_window" id="action_nhap_vaccine">
             <field name="name">Nhập Vaccine</field>
             <field name="res_model">nhap.vaccine</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        
+        <record model="ir.ui.view" id="so_lo_tree">
+            <field name="name">so.lo.tree</field>
+            <field name="model">so.lo</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Số lô">
+                	<field name="name" />
+            		<field name="han_su_dung" />
+            		<field name="vacxin_id" />
+                </tree>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="so_lo_form">
+            <field name="name">so.lo.form</field>
+            <field name="model">so.lo</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Số lô" version="7.0">
+	                <sheet>
+                		<group col="4"  string="Số lô">
+                			<field name="name" />
+            				<field name="han_su_dung" />
+            				<field name="vacxin_id" />
+                		</group>
+	                </sheet>
+                </form>
+            </field>
+        </record>
+       
+        <record model="ir.actions.act_window" id="action_so_lo">
+            <field name="name">Số lô</field>
+            <field name="res_model">so.lo</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
         </record>

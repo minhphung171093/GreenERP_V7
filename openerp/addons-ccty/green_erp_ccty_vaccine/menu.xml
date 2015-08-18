@@ -4,6 +4,7 @@
     	<menuitem id="vaccine" name="Quản lý Vaccine"/>
     	<menuitem id="canbo_thuy" parent="vaccine" name="Dành cho cán bộ thú y"/> 
     		<menuitem id="menu_action_nhap_vaccine" parent="canbo_thuy" name="Nhập vaccine" action="action_nhap_vaccine"/>
+    		<menuitem id="menu_action_so_lo" parent="canbo_thuy" name="Số lô" action="action_so_lo"/>
     		
     </data>
 </openerp>
