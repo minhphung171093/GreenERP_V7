@@ -35,7 +35,6 @@ Collects web application usage with Google Analytics.
     'data': [],
     'installable': True,
     'active': False,
-    'auto_install': True,
     'js': ['static/src/js/web_analytics.js'],
 }
 
