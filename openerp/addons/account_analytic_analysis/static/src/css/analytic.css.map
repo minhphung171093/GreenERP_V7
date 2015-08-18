@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": "AAIQ,mDAAE;EACE,MAAM,EAAE,IAAI;EACZ,8GAAK;IACD,cAAc,EAAE,MAAM;IACtB,wJAAoB;MAChB,KAAK,EAAE,KAAK;MACZ,KAAK,EAAE,eAAe;EAC9B,0EAAsB;IAClB,KAAK,EAAE,KAAK;IACZ,YAAY,EAAE,GAAG;AACzB,mEAAkB;EACd,gBAAgB,EAAE,OAAO;EACzB,KAAK,EAAE,OAAO",
-"sources": ["analytic.sass"],
-"names": [],
-"file": "analytic.css"
-}

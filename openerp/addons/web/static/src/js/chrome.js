@@ -274,7 +274,7 @@ instance.web.CrashManager = instance.web.Class.extend({
             return;
         }
         instance.web.dialog($('<div>' + QWeb.render('CrashManager.warning', {error: error}) + '</div>'), {
-            title: "OpenERP " + _.str.capitalize(error.type),
+            title: "GreenERP " + _.str.capitalize(error.type),
             buttons: [
                 {text: _t("Ok"), click: function() { $(this).dialog("close"); }}
             ]
@@ -289,7 +289,7 @@ instance.web.CrashManager = instance.web.Class.extend({
             $(this).dialog("close");
         };
         var dialog = new instance.web.Dialog(this, {
-            title: "OpenERP " + _.str.capitalize(error.type),
+            title: "GreenERP " + _.str.capitalize(error.type),
             width: '80%',
             height: '50%',
             min_width: '800px',
@@ -874,9 +874,6 @@ instance.web.Menu =  instance.web.Widget.extend({
             if (!_.isEmpty(menu_data.all_menu_ids)) {
                 this.do_load_needaction(menu_data.all_menu_ids);
             }
-
-            this.$secondary_menus = this.getParent().$el.find('.oe_secondary_menus_container');
-            this.$secondary_menus.on('click', '.dropdown-toggle', this.on_secondary_menu_sections_click);
         });
         var lazyreflow = _.debounce(this.reflow.bind(this), 200);
         instance.web.bus.on('resize', this, function() {
@@ -969,7 +966,7 @@ instance.web.Menu =  instance.web.Widget.extend({
     open_menu: function (id) {
         this.current_menu = id;
         this.session.active_id = id;
-        var $clicked_menu, $sub_menu, $main_menu, $clicked_menu_secion, $page_wrapper;
+        var $clicked_menu, $sub_menu, $main_menu;
         $clicked_menu = this.$el.add(this.$secondary_menus).find('a[data-menu=' + id + ']');
         this.trigger('open_menu', id, $clicked_menu);
 
@@ -988,17 +985,6 @@ instance.web.Menu =  instance.web.Widget.extend({
         // Show current sub menu
         this.$secondary_menus.find('.oe_secondary_menu').hide();
         $sub_menu.show();
-        $page_wrapper = $('#page-wrapper');
-
-        if (!$page_wrapper.hasClass('nav-small')) {
-            $clicked_menu_secion = $clicked_menu.parents('.oe_secondary_menu_section');
-            if (!$clicked_menu_secion.hasClass('open')) {
-                $sub_menu.find('.open .submenu').slideUp('fast');
-                $sub_menu.find('.open').toggleClass('open');
-                $clicked_menu_secion.toggleClass('open');
-                $clicked_menu_secion.children('.submenu').slideDown('fast');
-            }
-        }
 
         // Hide/Show the leftbar menu depending of the presence of sub-items
         this.$secondary_menus.parent('.oe_leftbar').toggle(!!$sub_menu.children().length);
@@ -1006,7 +992,7 @@ instance.web.Menu =  instance.web.Widget.extend({
         // Activate current menu item and show parents
         this.$secondary_menus.find('.oe_active').removeClass('oe_active');
         if ($main_menu !== $clicked_menu) {
-            //$clicked_menu.parents().show();
+            $clicked_menu.parents().show();
             if ($clicked_menu.is('.oe_menu_toggler')) {
                 $clicked_menu.toggleClass('oe_menu_opened').siblings('.oe_secondary_submenu:first').toggle();
             } else {
@@ -1099,26 +1085,6 @@ instance.web.Menu =  instance.web.Widget.extend({
         var needaction = $(ev.target).is('div.oe_menu_counter');
         this.menu_click($(ev.currentTarget).data('menu'), needaction);
     },
-
-    on_secondary_menu_sections_click: function (ev) {
-        ev.preventDefault();
-        var $target = ev.currentTarget;
-        var $item = $($target).parent();
-
-        if (!$item.hasClass('open')) {
-            $item.parent().find('.open .submenu').slideUp('fast');
-            $item.parent().find('.open').toggleClass('open');
-        }
-
-        $item.toggleClass('open');
-
-        if ($item.hasClass('open')) {
-            $item.children('.submenu').slideDown('fast');
-        }
-        else {
-            $item.children('.submenu').slideUp('fast');
-        }
-    }
 });
 
 instance.web.UserMenu =  instance.web.Widget.extend({
@@ -1195,7 +1161,7 @@ instance.web.UserMenu =  instance.web.Widget.extend({
                 instance.web.redirect('https://accounts.odoo.com/oauth2/auth?'+$.param(params));
             }).fail(function(result, ev){
                 ev.preventDefault();
-                instance.web.redirect('https://accounts.odoo.com/web');
+                instance.web.redirect('https://accounts.odoo.com/account');
             });
         }
     },
@@ -1210,7 +1176,7 @@ instance.web.UserMenu =  instance.web.Widget.extend({
             instance.web.dialog($help, {autoOpen: true,
                 modal: true, width: 507, height: 290, resizable: false, title: _t("About")});
         });
-    }
+    },
 });
 
 instance.web.Client = instance.web.Widget.extend({
@@ -1255,65 +1221,6 @@ instance.web.Client = instance.web.Widget.extend({
                 }
             }, 0);
         });
-        this.$el.on('click', '#make-small-nav', function (e) {
-            var $page_wrapper = $('#page-wrapper'),
-                $sidebar_nav = $('#sidebar-nav'),
-                $active_secondary_menu_section;
-
-            if ($page_wrapper.hasClass('nav-small')) {
-
-                $active_secondary_menu_section = $sidebar_nav.find('li.oe_active').parents('li.oe_secondary_menu_section');
-                $active_secondary_menu_section.addClass('open');
-                $active_secondary_menu_section.children('.submenu').slideDown('fast');
-            } else {
-                //$sidebar_nav.find('.open .submenu').slideUp('fast');
-                $sidebar_nav.find('.open .submenu').hide();
-                $sidebar_nav.find('.open').removeClass('open');
-            }
-            $page_wrapper.toggleClass('nav-small');
-        });
-
-        this.$el.on('mouseenter', '#page-wrapper.nav-small #sidebar-nav .dropdown-toggle', function (e) {
-            if ($( document ).width() >= 992) {
-                var $item = $(e.target).parent();
-
-                if ($('body').hasClass('fixed-leftmenu')) {
-                    var topPosition = $item.position().top;
-
-                    if ((topPosition + 4*$(this).outerHeight()) >= $(window).height()) {
-                        topPosition -= 6*$(this).outerHeight();
-                    }
-
-                    $('#nav-col-submenu').html($item.children('.submenu').clone());
-                    $('#nav-col-submenu > .submenu').css({'top' : topPosition});
-                }
-
-                $item.addClass('open');
-                $item.children('.submenu').slideDown('fast');
-            }
-        });
-        this.$el.on('mouseleave', '#page-wrapper.nav-small #sidebar-nav > .oe_secondary_menus_container > .nav-pills > li', function (e) {
-            if ($( document ).width() >= 992) {
-                var $item = $(e.target).parents('li.oe_secondary_menu_section');
-                if ($item.hasClass('open')) {
-                    $item.find('.open .submenu').slideUp('fast');
-                    $item.find('.open').removeClass('open');
-                    $item.children('.submenu').slideUp('fast');
-                }
-
-                $item.removeClass('open');
-            }
-        });
-        this.$el.on('mouseenter', '#page-wrapper.nav-small #sidebar-nav a:not(.dropdown-toggle)', function (e) {
-            if ($('body').hasClass('fixed-leftmenu')) {
-                $('#nav-col-submenu').html('');
-            }
-        });
-        this.$el.on('mouseleave', '#page-wrapper.nav-small #nav-col', function (e) {
-            if ($('body').hasClass('fixed-leftmenu')) {
-                $('#nav-col-submenu').html('');
-            }
-        });
         instance.web.bus.on('click', this, function(ev) {
             $.fn.tipsy.clear();
             if (!$(ev.target).is('input[type=file]')) {
@@ -1354,8 +1261,6 @@ instance.web.WebClient = instance.web.Client.extend({
     start: function() {
         var self = this;
         return $.when(this._super()).then(function() {
-            $("body").addClass("custom-theme");
-            $("body").addClass("theme-white");
             if (jQuery.param !== undefined && jQuery.deparam(jQuery.param.querystring()).kitten !== undefined) {
                 $("body").addClass("kitten-mode-activated");
                 $("body").css("background-image", "url(" + instance.session.origin + "/web/static/src/img/back-enable.jpg" + ")");
@@ -1373,7 +1278,7 @@ instance.web.WebClient = instance.web.Client.extend({
     set_title: function(title) {
         title = _.str.clean(title);
         var sep = _.isEmpty(title) ? '' : ' - ';
-        document.title = title + sep + 'OpenERP';
+        document.title = title + sep + 'GreenERP';
     },
     show_common: function() {
         var self = this;

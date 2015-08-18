@@ -68,11 +68,6 @@ This module provides the core of the OpenERP Web Client.
         "static/src/css/base.css",
         "static/src/css/data_export.css",
         "static/lib/cleditor/jquery.cleditor.css",
-        "static/lib/bootstrap/bootstrap.min.css",
-        "static/lib/font-awesome/font-awesome.css",
-        "static/lib/theme/calendar.css",
-        "static/lib/theme/theme_styles.css",
-        "static/lib/theme/theme_override.css"
     ],
     'qweb' : [
         "static/src/xml/*.xml",
