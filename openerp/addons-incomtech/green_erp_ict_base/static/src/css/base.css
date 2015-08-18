@@ -274,7 +274,7 @@
   top: 50%;
   left: 50%;
   margin: -160px -166px;
-  border: solid 2px #2E8824;
+  border: solid 2.5px #2E8824;
   background: #1e1e1e;
   background: rgba(210, 249, 208, 0.94);
   padding: 22px 32px;
@@ -305,10 +305,16 @@
   right: 8px;
   padding: 5px 10px;
   color: #000;
-  border: solid 2px #2E8824;
+  border: solid 1.5px #2E8824;
   background: #1e1e1e;
   background: rgba(210, 249, 208, 0.94);
   -moz-border-radius: 0 0 8px 8px;
   -webkit-border-radius: 0 0 8px 8px;
   border-radius: 0 0 8px 8px;
 }
+
+.openerp .oe_list_content th.oe_sortable, .openerp .oe_list_content th.oe_sortable div {
+  cursor: pointer;
+  vertical-align: text-top;
+}
+
