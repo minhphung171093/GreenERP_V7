@@ -70,12 +70,14 @@
 		                    <field name="khu_pho_id" domain="[('phuong_xa_id','=',phuong_xa_id)]"/>
 		                    <field name="ten_ho_id" domain="[('quan_huyen_id','=',quan_huyen_id), ('phuong_xa_id','=',phuong_xa_id), ('khu_pho_id','=',khu_pho_id)]"/>
                 			<field name="company_id" string = 'Trạm'/>
+                			<field name="trang_thai"/>
                 		</group>
                 		<notebook>
 							<page string = "Thông tin chi tiết loài vật">
 								<field name="chitiet_loai" nolabel='1'>
 									<tree editable='bottom' create = 'false'>
 										<field name="name"/>
+										<field name="tong_sl" sum = 'Total'/>
 										<field name="so_luong" sum = 'Total'/>
 									</tree>
 								</field>

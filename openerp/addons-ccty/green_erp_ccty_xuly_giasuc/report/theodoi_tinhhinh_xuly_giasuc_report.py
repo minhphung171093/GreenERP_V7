@@ -41,8 +41,8 @@ class Parser(report_sxw.rml_parse):
             'get_cell': self.get_cell,
             'get_col': self.get_col,
             'get_ho_row': self.get_ho_row,
-            'get_noicap': self.get_noicap,
             'get_loaivat': self.get_loaivat,
+            'get_ngay': self.get_ngay,
         })
         
     def get_tenho(self):
@@ -50,6 +50,10 @@ class Parser(report_sxw.rml_parse):
         ten_ho_id = wizard_data['ten_ho_id']
         ten = self.pool.get('chan.nuoi').browse(self.cr,self.uid,ten_ho_id[0])
         return ten.name
+    
+    def get_ngay(self, xuly_giasuc_id):
+        xuly = self.pool.get('xuly.giasuc').browse(self.cr,self.uid,xuly_giasuc_id)
+        return xuly.ngay
     
     def get_loaivat(self):
         loaivat = []
@@ -66,49 +70,37 @@ class Parser(report_sxw.rml_parse):
         self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [thit_id], 'read', context = context)
         loaivat = [duc_id, heo_haubi_id, sinhsan_id, heo_con_id, thit_id]
         return loaivat
-    
-    def get_noicap(self, tram_id):
-        return self.pool.get('tram.thu.y').browse(self.cr,self.uid,tram_id).name
 
     def get_ho_row(self):
         wizard_data = self.localcontext['data']['form']
         ten_ho_id = wizard_data['ten_ho_id']
         tu_ngay = wizard_data['tu_ngay']
         den_ngay = wizard_data['den_ngay']
-        ho = self.pool.get('chan.nuoi').browse(self.cr,self.uid,ten_ho_id[0])
         if tu_ngay and not den_ngay:
             sql='''
-                select * from nhap_xuat_canh_giasuc 
-                where ten_ho_id = %s and ngay_kiem_tra >= '%s' and ngay_kiem_tra is not null and loai = 'nhap'
-                and loai_id in %s
+                select * from chitiet_loai_xuly where xuly_giasuc_id in (select id from xuly_giasuc 
+                where ten_ho_id = %s and ngay >= '%s' and loai_id in %s) and so_luong !=0
             '''%(ten_ho_id[0], tu_ngay, tuple(self.get_loaivat()),)
             self.cr.execute(sql)
         elif den_ngay and not tu_ngay:
             sql='''
-                select * from nhap_xuat_canh_giasuc 
-                where ten_ho_id = %s and ngay_kiem_tra <= '%s' and ngay_kiem_tra is not null and loai = 'nhap'
-                and loai_id in %s
+                select * from chitiet_loai_xuly where xuly_giasuc_id in (select id from xuly_giasuc 
+                where ten_ho_id = %s and ngay <= '%s' and loai_id in %s) and so_luong !=0
             '''%(ten_ho_id[0], den_ngay, tuple(self.get_loaivat()),)
             self.cr.execute(sql)
         elif den_ngay and tu_ngay:
             sql='''
-                select * from nhap_xuat_canh_giasuc 
-                where ten_ho_id = %s and ngay_kiem_tra between '%s' and '%s' and ngay_kiem_tra is not null and loai = 'nhap'
-                and loai_id in %s
+                select * from chitiet_loai_xuly where xuly_giasuc_id in (select id from xuly_giasuc 
+                where ten_ho_id = %s and ngay between '%s' and '%s' and loai_id in %s) and so_luong !=0
             '''%(ten_ho_id[0], tu_ngay, den_ngay, tuple(self.get_loaivat()),)
             self.cr.execute(sql)
         else:
             sql='''
-                select * from nhap_xuat_canh_giasuc 
-                where ten_ho_id = %s and ngay_kiem_tra is not null and loai = 'nhap'
-                and loai_id in %s
+                select * from chitiet_loai_xuly where xuly_giasuc_id in (select id from xuly_giasuc 
+                where ten_ho_id = %s and loai_id in %s) and so_luong != 0
             '''%(ten_ho_id[0], tuple(self.get_loaivat()),)
             self.cr.execute(sql)
-        tt_ho = self.cr.dictfetchall()
-        if tt_ho:
-            return tt_ho
-        else:
-            raise osv.except_osv(_('Warning!'),_('Không có thông tin nhập nào từ hộ %s')%(ho.name))
+        return self.cr.dictfetchall()
     
     def get_col(self):
         res = []
@@ -193,64 +185,23 @@ class Parser(report_sxw.rml_parse):
                              'loaivat':'Tổng cộng','ct': ''
                             }
                     ))
-            
-        sql = '''
-            select * from chi_tiet_loai_benh where loai_id in (select id from loai_vat where id = %s)
-        '''%(thit_id)
-        self.cr.execute(sql)
-        for seq,ct in enumerate(self.cr.dictfetchall()):
-            if seq == 0:
-                res.append((0,0,{
-                                 'loaivat':'ĐÃ TIÊM PHÒNG','ct': ct['name']
-                                }
-                        ))
-            else:
-                res.append((0,0,{
-                                 'loaivat':'','ct': ct['name']
-                                }
-                        ))
         return res
     
-    def get_cell(self,row,col,so_giay,loai):
+    def get_cell(self,row_id,row_name, col):
         context = {}
         soluong = False
         sum = 0
         wizard_data = self.localcontext['data']['form']
         ten_ho_id = wizard_data['ten_ho_id']
-        if row:
+        if row_name:
             sql = '''
-                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong from chi_tiet_loai_nhap_xuat 
-                where name = '%s' and nhap_xuat_loai_id in (select id from nhap_xuat_canh_giasuc 
-                where ten_ho_id = %s and ngay_kiem_tra = '%s' and name = '%s')
-            '''%(col, ten_ho_id[0], row, so_giay)
+                select so_luong from chitiet_loai_xuly 
+                where name = '%s' and name = '%s' and xuly_giasuc_id = %s
+            '''%(col, row_name, row_id)
             self.cr.execute(sql)
             sl = self.cr.dictfetchone()
-            if sl['so_luong']!=0:
+            if sl:
                 soluong = sl and sl['so_luong'] or False
-                
-            sql = '''
-                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong from chi_tiet_da_tiem_phong
-                where name = '%s' and nhap_xuat_tiemphong_id in (select id from nhap_xuat_canh_giasuc 
-                where ten_ho_id = %s and ngay_kiem_tra = '%s' and name = '%s')
-            '''%(col, ten_ho_id[0], row, so_giay)
-            self.cr.execute(sql)
-            sl = self.cr.dictfetchone()
-            if sl['so_luong']!=0:
-                soluong = sl and sl['so_luong'] or False
-                
-            if loai == "Tổng cộng":
-                context = {}
-                sum = 0
-                wizard_data = self.localcontext['data']['form']
-                ten_ho_id = wizard_data['ten_ho_id']
-                if row:
-                    sql = '''
-                        select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl from chi_tiet_loai_nhap_xuat 
-                        where nhap_xuat_loai_id in (select id from nhap_xuat_canh_giasuc 
-                        where ten_ho_id = %s and ngay_kiem_tra = '%s' and name = '%s' and loai_id in %s)
-                    '''%(ten_ho_id[0], row, so_giay, tuple(self.get_loaivat()),)
-                    self.cr.execute(sql)
-                    soluong = self.cr.dictfetchone()['sl']
         return soluong
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
 

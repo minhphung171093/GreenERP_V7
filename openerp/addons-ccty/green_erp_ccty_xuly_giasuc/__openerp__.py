@@ -20,7 +20,7 @@
 ##############################################################################
 
 {
-    'name': 'Chi Cuc Thu Y Tiem Phong',
+    'name': 'Chi Cuc Thu Y Xu Ly Gia Suc',
     'version': '1.0',
     'category': 'GreenERP',
     'sequence': 14,
@@ -28,6 +28,11 @@
     'website' : 'http://incomtech.com/',
     'depends': ['green_erp_ccty_base'],
     'data': [
+            'wizard/theodoi_xuly_giasuc_wizard_view.xml',
+            'wizard/theodoi_tinhhinh_xuly_giasuc_wizard_view.xml',
+            'report/theodoi_xuly_giasuc_report_view.xml',
+            'report/theodoi_tinhhinh_xuly_giasuc_report_view.xml',
+            'xuly_giasuc_view.xml',
             'menu.xml',
     ],
     'css' : [

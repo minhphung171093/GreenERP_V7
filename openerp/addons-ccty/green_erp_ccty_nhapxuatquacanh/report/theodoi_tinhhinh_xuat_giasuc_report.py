@@ -213,7 +213,7 @@ class Parser(report_sxw.rml_parse):
     
     def get_cell(self,row,col,so_giay,loai):
         context = {}
-        soluong = 0
+        soluong = False
         sum = 0
         wizard_data = self.localcontext['data']['form']
         ten_ho_id = wizard_data['ten_ho_id']
@@ -226,7 +226,7 @@ class Parser(report_sxw.rml_parse):
             self.cr.execute(sql)
             sl = self.cr.dictfetchone()
             if sl['so_luong']!=0:
-                soluong = sl['so_luong']
+                soluong = sl and sl['so_luong'] or False
                 
             sql = '''
                 select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong from chi_tiet_da_tiem_phong
@@ -236,7 +236,7 @@ class Parser(report_sxw.rml_parse):
             self.cr.execute(sql)
             sl = self.cr.dictfetchone()
             if sl['so_luong']!=0:
-                soluong = sl['so_luong']
+                soluong = sl and sl['so_luong'] or False
                 
             if loai == "Tổng cộng":
                 context = {}

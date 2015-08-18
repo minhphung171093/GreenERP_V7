@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		<record id="theodoi_xuly_giasuc_form_view" model="ir.ui.view">
+	        <field name="name">theodoi.xuly.giasuc.form.view</field>
+	        <field name="model">theodoi.xuly.giasuc.form</field>
+	        <field name="arch" type="xml">
+	            <form string="Theo dõi xử lý gia súc report" version="7.0">
+	            	<group colspan = '2' col = '4'>
+	                <field name="ten_ho_id" />
+	                <field name="tu_ngay" />
+	                <field name="den_ngay" />
+	                </group>
+	                <footer>
+	                    <button name="print_report" type='object' string="OK" class="oe_highlight"/>
+	                    or
+	                    <button string="Cancel" class="oe_highlight" special="cancel" />
+	                </footer>
+	            </form>
+	        </field>
+    	</record>
+
+	    <record model="ir.actions.act_window" id="action_theodoi_xuly_giasuc_form">
+	        <field name="name">Theo dõi xử lý gia súc</field>
+	        <field name="res_model">theodoi.xuly.giasuc.form</field>
+	        <field name="view_type">form</field>
+	        <field name="view_mode">form</field>
+	        <field name="view_id" ref="theodoi_xuly_giasuc_form_view" />
+	        <field name="target">new</field>
+	    </record>
+	    
+	    <menuitem id="xuly_giasuc" name="Tình hình xử lý gia súc"/>
+        <menuitem id="menu_thongke_xuly_giasuc" parent="xuly_giasuc" name="Thống kê xử lý gia súc"/>
+	    	<menuitem id="menu_action_theodoi_xuly_giasuc_form" parent="menu_thongke_xuly_giasuc" action="action_theodoi_xuly_giasuc_form"/>
+	 
+	    
+    </data>
+</openerp>
+
