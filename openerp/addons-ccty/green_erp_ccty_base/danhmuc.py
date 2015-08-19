@@ -66,6 +66,25 @@ class loai_vat(osv.osv):
         'chitiet_loaivat':fields.one2many('chi.tiet.loai.vat','loai_id','Chi tiet'),
         'chitiet_loaibenh':fields.one2many('chi.tiet.loai.benh','loai_id','Chi tiet'),
                 }
+    
+    def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
+        if context is None:
+            context = {}
+        if context.get('search_loai_id'):
+            bosua_model, bosua_id = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'green_erp_ccty_base', 'loaivat_bosua')
+            self.pool.get('loai.vat').check_access_rule(cr, uid, [bosua_id], 'read', context = context)
+            sql = '''
+                select id from loai_vat
+                where id != %s
+            '''%(bosua_id)
+            cr.execute(sql)
+            loaivat_ids = [row[0] for row in cr.fetchall()]
+            args += [('id','in',loaivat_ids)]
+        return super(loai_vat, self).search(cr, uid, args, offset=offset, limit=limit, order=order, context=context, count=count)
+    
+    def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
+       ids = self.search(cr, user, args, context=context, limit=limit)
+       return self.name_get(cr, user, ids, context=context)
 loai_vat()
 
 class chi_tiet_loai_vat(osv.osv):

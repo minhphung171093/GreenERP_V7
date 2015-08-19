@@ -61,7 +61,8 @@ class tiem_phong_lmlm(osv.osv):
         return {'value': vals}
 
     _columns = {
-        'name': fields.date('Ngày tiêm', required = True, states={ 'done':[('readonly', True)]}),
+        'name': fields.datetime('Ngày tiêm', required = True, states={ 'done':[('readonly', True)]}),
+        'loai_id': fields.many2one('loai.vat','Loài vật', required = True , states={ 'done':[('readonly', True)]}),
         'tram_id': fields.many2one( 'res.company','Trạm', required = True, states={ 'done':[('readonly', True)]}),
         'can_bo_id': fields.many2one( 'res.users','Cán bộ thú y thực hiện tiêm', states={ 'done':[('readonly', True)]}),
         'loai_vaccine_id': fields.many2one('loai.vacxin','Loại vaccine', states={ 'done':[('readonly', True)]}),
@@ -80,17 +81,18 @@ class tiem_phong_lmlm(osv.osv):
     def bt_duyet(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids,{'state':'done'})
     
-    def onchange_ho_chan_nuoi_id(self, cr, uid, ids, ho_chan_nuoi_id = False, context=None):
+    def onchange_ho_chan_nuoi_id(self, cr, uid, ids, ho_chan_nuoi_id = False, loai_id = False, context=None):
         chi_tiet= []
         for lmlm in self.browse(cr,uid,ids):
             sql = '''
                 delete from ct_tiem_phong_lmlm_line where tp_lmlm_id = %s
             '''%(lmlm.id)
             cr.execute(sql)
-        if ho_chan_nuoi_id:
+        if ho_chan_nuoi_id and loai_id:
             sql = '''
-                select * from chi_tiet_loai_line where co_cau_id in (select id from co_cau where ten_ho_id = %s and trang_thai = 'new')
-            '''%(ho_chan_nuoi_id)
+                select * from chi_tiet_loai_line where co_cau_id in (select id from co_cau 
+                where ten_ho_id = %s and chon_loai = %s and trang_thai = 'new')
+            '''%(ho_chan_nuoi_id, loai_id)
             cr.execute(sql)
             for line in cr.dictfetchall():
                 chi_tiet.append((0,0,{
@@ -104,20 +106,6 @@ tiem_phong_lmlm()
 class ct_tiem_phong_lmlm_line(osv.osv):
     _name = "ct.tiem.phong.lmlm.line"
     
-#     def sum_so_luong(self, cr, uid, ids, name, args, context=None):
-#         res = {}
-#         for line in self.browse(cr, uid, ids, context=context):
-#             amount = 0
-#             sql = '''
-#                 select case when sum(so_luong)!=0 then sum(so_luong) else 0 end tong_sl from chi_tiet_loai_line
-#                 where co_cau_id in (select id from co_cau where chon_loai = %s and ten_ho_id = %s and ngay_ghi_so <= '%s')
-#                 and name = '%s'
-#             '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.co_cau_id.ngay_ghi_so, line.name)
-#             cr.execute(sql)
-#             tong_sl = cr.dictfetchone()['tong_sl']
-#             res[line.id] = tong_sl
-#         return res
-    
     _columns = {
         'tp_lmlm_id': fields.many2one( 'tiem.phong.lmlm','tiem phong lmlm', ondelete = 'cascade'),
         'name': fields.char('Thông tin', readonly = True),
@@ -126,6 +114,18 @@ class ct_tiem_phong_lmlm_line(osv.osv):
         'sl_mien_dich': fields.float('Tiêm phòng còn Miễn dịch'),
         'sl_thuc_tiem': fields.float('Số lượng thực tiêm'),
                 }
+    
+    def _check_so_luong(self, cr, uid, ids, context=None):
+        tong_sl = 0
+        for line in self.browse(cr, uid, ids, context=context):
+            tong_sl = line.sl_ngoai_dien + line.sl_mien_dich + line.sl_thuc_tiem
+            if tong_sl > line.so_luong:
+                raise osv.except_osv(_('Warning!'),_('Tổng số lượng của ngoại diện, tiêm phòng còn miễn dịch, số lượng thực tiêm không được lớn hơn số lượng tổng đàn'))
+                return False
+        return True
+    _constraints = [
+        (_check_so_luong, 'Identical Data', []),
+    ]
 ct_tiem_phong_lmlm_line()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

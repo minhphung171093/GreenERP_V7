@@ -21,7 +21,7 @@
     	</record>
 
 	    <record model="ir.actions.act_window" id="action_cocau_hientai_form">
-	        <field name="name">Thống kê cơ cấu hiện tại</field>
+	        <field name="name">Thống kê cơ cấu đàn từng thời điểm</field>
 	        <field name="res_model">cocau.hientai.form</field>
 	        <field name="view_type">form</field>
 	        <field name="view_mode">form</field>

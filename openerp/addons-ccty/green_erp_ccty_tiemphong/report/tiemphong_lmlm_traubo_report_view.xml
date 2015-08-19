@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		<record id="tiemphong_lmlm_traubo_report" model="ir.actions.report.xml">
+	        <field name="name">tiemphong_lmlm_traubo_report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">tiemphong.lmlm.traubo.form</field>
+	        <field name="report_name">tiemphong_lmlm_traubo_report</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls')]"/>
+	        <field name="parser_loc">green_erp_ccty_tiemphong/report/tiemphong_lmlm_traubo_report.py</field>
+	        <field name="report_rml">green_erp_ccty_tiemphong/report/tiemphong_lmlm_traubo_report.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record>		    
+		
+		<report 
+			auto="True" 
+			menu="False"
+			id="tiemphong_lmlm_traubo_report" 
+			model="tiemphong.lmlm.traubo.form" 
+			name="tiemphong_lmlm_traubo_report"
+	        string="Quản lý tiêm phòng lở mồm long móng trâu, bò, dê, cừu"
+	        rml="green_erp_ccty_tiemphong/report/tiemphong_lmlm_traubo_report.ods"/>	
+    </data>
+</openerp>
+
