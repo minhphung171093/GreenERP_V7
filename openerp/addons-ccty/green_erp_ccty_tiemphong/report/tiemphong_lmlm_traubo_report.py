@@ -43,7 +43,9 @@ class Parser(report_sxw.rml_parse):
             'get_ho_row': self.get_ho_row,
             'get_loaivat': self.get_loaivat,
             'get_ngay': self.get_ngay,
-            
+            'get_cell_ngoaidien': self.get_cell_ngoaidien,
+            'get_cell_miendich': self.get_cell_miendich,
+            'get_cell_thuctiem': self.get_cell_thuctiem,
         })
         
     def get_tenho(self):
@@ -213,39 +215,39 @@ class Parser(report_sxw.rml_parse):
         self.cr.execute(sql)
         sl = self.cr.dictfetchone()
         if sl:
-            soluong = sl and sl['so_luong'] or False
+            soluong = sl and sl['sl_ngoai_dien'] or False
         return soluong
     
-    def get_cell_tongdan(self,row_id,col):
+    def get_cell_miendich(self,row_id,col):
         context = {}
         soluong = False
         sum = 0
         wizard_data = self.localcontext['data']['form']
         ten_ho_id = wizard_data['ten_ho_id']
         sql = '''
-            select so_luong from ct_tiem_phong_lmlm_line where name = '%s' and id = %s 
+            select sl_mien_dich from ct_tiem_phong_lmlm_line where name = '%s' and id = %s 
             and tp_lmlm_id in (select id from tiem_phong_lmlm where ho_chan_nuoi_id = %s)
         '''%(col, row_id, ten_ho_id[0])
         self.cr.execute(sql)
         sl = self.cr.dictfetchone()
         if sl:
-            soluong = sl and sl['so_luong'] or False
+            soluong = sl and sl['sl_mien_dich'] or False
         return soluong
     
-    def get_cell_tongdan(self,row_id,col):
+    def get_cell_thuctiem(self,row_id,col):
         context = {}
         soluong = False
         sum = 0
         wizard_data = self.localcontext['data']['form']
         ten_ho_id = wizard_data['ten_ho_id']
         sql = '''
-            select so_luong from ct_tiem_phong_lmlm_line where name = '%s' and id = %s 
+            select sl_thuc_tiem from ct_tiem_phong_lmlm_line where name = '%s' and id = %s 
             and tp_lmlm_id in (select id from tiem_phong_lmlm where ho_chan_nuoi_id = %s)
         '''%(col, row_id, ten_ho_id[0])
         self.cr.execute(sql)
         sl = self.cr.dictfetchone()
         if sl:
-            soluong = sl and sl['so_luong'] or False
+            soluong = sl and sl['sl_thuc_tiem'] or False
         return soluong
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
 
