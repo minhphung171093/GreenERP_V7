@@ -122,6 +122,7 @@
                     <field name="khu_pho_id" />                    
                     <field name="ten_ho_id" />
                     <field name="loai" invisible = '1'/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done" statusbar_colors='{"done":"blue"}'/>
                 </tree>
             </field>
         </record>
