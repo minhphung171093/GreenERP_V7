@@ -344,3 +344,11 @@
   vertical-align: text-top;
 }
 
+
+.openerp .oe_view_manager table.oe_view_manager_header .oe_button_group .active {
+  background: #009441;
+  -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3) inset;
+  -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3) inset;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3) inset;
+}
+
