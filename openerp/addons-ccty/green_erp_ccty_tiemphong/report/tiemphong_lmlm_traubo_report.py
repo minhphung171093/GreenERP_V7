@@ -55,8 +55,11 @@ class Parser(report_sxw.rml_parse):
         return ten.name
     
     def get_ngay(self, tp_lmlm_id):
+        lmlm_ids = []
         lmlm = self.pool.get('tiem.phong.lmlm').browse(self.cr,self.uid,tp_lmlm_id)
-        return lmlm.name
+        lmlm_ids = [lmlm.name, lmlm.loai_vaccine_id.name, lmlm.so_lo_id.name, lmlm.han_su_dung_rel]
+        return lmlm_ids
+    
     
     def get_loaivat(self):
         loaivat = []
@@ -101,6 +104,7 @@ class Parser(report_sxw.rml_parse):
             sql='''
                 select * from ct_tiem_phong_lmlm_line where tp_lmlm_id in (select id from tiem_phong_lmlm 
                 where ho_chan_nuoi_id = %s and loai_id in %s) and so_luong !=0
+                
             '''%(ten_ho_id[0], tuple(self.get_loaivat()),)
             self.cr.execute(sql)
         return self.cr.dictfetchall()
