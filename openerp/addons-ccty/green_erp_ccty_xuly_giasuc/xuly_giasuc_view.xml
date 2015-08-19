@@ -79,7 +79,7 @@
 										<field name="ly_do" /> 
 					                    <field name="ket_qua_xn" /> 
 					                    <field name="bien_phap" /> 
-					                    <field name="thuoc" /> 
+					                    <field name="vacxin_id" /> 
 					                    <field name="lieu_luong" /> 
 					                    <field name="lieu_trinh" /> 
 					                    <field name="ket_qua_dieu_tri" />  

@@ -67,7 +67,7 @@ class chitiet_loai_xuly(osv.osv):
         'ly_do': fields.char('Lý do bệnh',size = 200),
         'ket_qua_xn': fields.char('Kết quả xét nghiệm',size = 200),
         'bien_phap': fields.char('Biện pháp xử lý',size = 200),
-        'thuoc': fields.char('Thuốc sử dụng',size = 200),
+        'vacxin_id': fields.many2one('loai.vacxin','Thuốc sử dụng'),
         'lieu_luong': fields.float('Liều lượng'),
         'lieu_trinh': fields.char('Liệu trình',size = 200),
         'ket_qua_dieu_tri': fields.char('Kết quả điều trị',size = 200),
