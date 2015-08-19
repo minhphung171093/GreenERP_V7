@@ -36,7 +36,7 @@ class tiem_phong(osv.osv):
         'so_luong_tiem': fields.integer('số lượng con được tiêm'),
         'hinh_thuc_tiem':fields.selection([('tu_tiem','Tự tiêm'),('can_bo','Cán bộ thú y tiêm')]),
         'name': fields.date('Ngày tiêm', required = True),
-        'tram_id': fields.many2one( 'tram.thu.y','Trạm thú y', required = True),
+        'tram_id': fields.many2one( 'res.company','Trạm', required = True),
         'can_bo_id': fields.many2one( 'res.users','Cán bộ thú y thực hiện tiêm'),
         'loai_vaccine_id': fields.many2one('loai.vacxin','Loại vaccine'),
         'loai_vat_id': fields.many2one('loai.vat','Loài vật được tiêm'),
@@ -48,4 +48,84 @@ class tiem_phong(osv.osv):
 
 
 tiem_phong()
+
+class tiem_phong_lmlm(osv.osv):
+    _name = "tiem.phong.lmlm"
+    def onchange_quan_huyen(self, cr, uid, ids, context=None):
+        vals = {}
+        vals = {'phuong_xa_id':False}
+        return {'value': vals}
+    def onchange_phuong_xa(self, cr, uid, ids, context=None):
+        vals = {}
+        vals = {'khu_pho_id':False}
+        return {'value': vals}
+
+    _columns = {
+        'name': fields.date('Ngày tiêm', required = True, states={ 'done':[('readonly', True)]}),
+        'tram_id': fields.many2one( 'res.company','Trạm', required = True, states={ 'done':[('readonly', True)]}),
+        'can_bo_id': fields.many2one( 'res.users','Cán bộ thú y thực hiện tiêm', states={ 'done':[('readonly', True)]}),
+        'loai_vaccine_id': fields.many2one('loai.vacxin','Loại vaccine', states={ 'done':[('readonly', True)]}),
+        'so_lo_id':fields.many2one('so.lo','Số lô', states={ 'done':[('readonly', True)]}),
+        'han_su_dung_rel':fields.related('so_lo_id','han_su_dung',type='date',string='HSD đến', states={ 'done':[('readonly', True)]}),
+        'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)', states={ 'done':[('readonly', True)]}),
+        'khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)', states={ 'done':[('readonly', True)]}),
+        'quan_huyen_id': fields.many2one( 'quan.huyen','Quận (huyện)', states={ 'done':[('readonly', True)]}),
+        'ho_chan_nuoi_id': fields.many2one( 'chan.nuoi','Hộ chăn nuôi', states={ 'done':[('readonly', True)]}),
+        'chi_tiet_tp_line':fields.one2many( 'ct.tiem.phong.lmlm.line','tp_lmlm_id','Chi tiết tiêm phòng', states={ 'done':[('readonly', True)]}),
+        'state':fields.selection([('draft', 'Nháp'),('done', 'Duyệt')],'Status', readonly=True),
+                }
+    _defaults = {
+        'state': 'draft',
+                 }
+    def bt_duyet(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids,{'state':'done'})
+    
+    def onchange_ho_chan_nuoi_id(self, cr, uid, ids, ho_chan_nuoi_id = False, context=None):
+        chi_tiet= []
+        for lmlm in self.browse(cr,uid,ids):
+            sql = '''
+                delete from ct_tiem_phong_lmlm_line where tp_lmlm_id = %s
+            '''%(lmlm.id)
+            cr.execute(sql)
+        if ho_chan_nuoi_id:
+            sql = '''
+                select * from chi_tiet_loai_line where co_cau_id in (select id from co_cau where ten_ho_id = %s and trang_thai = 'new')
+            '''%(ho_chan_nuoi_id)
+            cr.execute(sql)
+            for line in cr.dictfetchall():
+                chi_tiet.append((0,0,{
+                                      'name': line['name'],
+                                      'so_luong': line['tong_sl']
+                                      }))
+        return {'value': {'chi_tiet_tp_line': chi_tiet}}
+
+tiem_phong_lmlm()
+
+class ct_tiem_phong_lmlm_line(osv.osv):
+    _name = "ct.tiem.phong.lmlm.line"
+    
+#     def sum_so_luong(self, cr, uid, ids, name, args, context=None):
+#         res = {}
+#         for line in self.browse(cr, uid, ids, context=context):
+#             amount = 0
+#             sql = '''
+#                 select case when sum(so_luong)!=0 then sum(so_luong) else 0 end tong_sl from chi_tiet_loai_line
+#                 where co_cau_id in (select id from co_cau where chon_loai = %s and ten_ho_id = %s and ngay_ghi_so <= '%s')
+#                 and name = '%s'
+#             '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.co_cau_id.ngay_ghi_so, line.name)
+#             cr.execute(sql)
+#             tong_sl = cr.dictfetchone()['tong_sl']
+#             res[line.id] = tong_sl
+#         return res
+    
+    _columns = {
+        'tp_lmlm_id': fields.many2one( 'tiem.phong.lmlm','tiem phong lmlm', ondelete = 'cascade'),
+        'name': fields.char('Thông tin', readonly = True),
+        'so_luong': fields.float('Tổng đàn', readonly = True),
+        'sl_ngoai_dien': fields.float('Ngoại diện'),
+        'sl_mien_dich': fields.float('Tiêm phòng còn Miễn dịch'),
+        'sl_thuc_tiem': fields.float('Số lượng thực tiêm'),
+                }
+ct_tiem_phong_lmlm_line()
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

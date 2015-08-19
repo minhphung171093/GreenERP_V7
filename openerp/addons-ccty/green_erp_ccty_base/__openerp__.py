@@ -33,8 +33,10 @@
             'danhmuc_loaivat_data.xml',
             ],
     'css' : [
+        'static/src/css/base.css'
     ],
     'qweb': [
+        'static/src/xml/base.xml'
     ],
     'installable': True,
     'auto_install': False,
