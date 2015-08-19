@@ -41,23 +41,25 @@ class nhap_xuat_canh_giasuc(osv.osv):
         return user.company_id.id or False
     
     _columns = {
-        'name': fields.char('Số Giấy kiểm dịch',size = 50, required = True),
-        'loai_id': fields.many2one('loai.vat','Loài vật', required = True),
-        'ngay_cap': fields.date('Ngày cấp'),
-        'ngay_kiem_tra': fields.date('Ngày', required = True),
-        'ten_ho_id': fields.many2one('chan.nuoi','Hộ'),
-        'can_bo_id': fields.many2one('res.users','Cán bộ'),
+        'name': fields.char('Số Giấy kiểm dịch',size = 50, required = True, states={ 'done':[('readonly', True)]}),
+        'loai_id': fields.many2one('loai.vat','Loài vật', required = True, states={ 'done':[('readonly', True)]}),
+        'ngay_cap': fields.date('Ngày cấp', states={ 'done':[('readonly', True)]}),
+        'ngay_kiem_tra': fields.date('Ngày', required = True, states={ 'done':[('readonly', True)]}),
+        'ten_ho_id': fields.many2one('chan.nuoi','Hộ', states={ 'done':[('readonly', True)]}),
+        'can_bo_id': fields.many2one('res.users','Cán bộ', states={ 'done':[('readonly', True)]}),
         'tram_id': fields.many2one('tram.thu.y','Trạm'),
-        'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)'),
-        'khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)'),
-        'quan_huyen_id': fields.many2one( 'quan.huyen','Quận (huyện)'),
-        'loai':fields.selection([('nhap', 'Nhập'),('xuat', 'Xuất')],'Loại', readonly=True),
-        'chitiet_loai_nx':fields.one2many('chi.tiet.loai.nhap.xuat','nhap_xuat_loai_id','Chi tiet'),
-        'chitiet_da_tiem_phong':fields.one2many('chi.tiet.da.tiem.phong','nhap_xuat_tiemphong_id','Chi tiet'),
-        'company_id': fields.many2one( 'res.company','Company'),
+        'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)', states={ 'done':[('readonly', True)]}),
+        'khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)', states={ 'done':[('readonly', True)]}),
+        'quan_huyen_id': fields.many2one( 'quan.huyen','Quận (huyện)', states={ 'done':[('readonly', True)]}),
+        'loai':fields.selection([('nhap', 'Nhập'),('xuat', 'Xuất')],'Loại', readonly=True, states={ 'done':[('readonly', True)]}),
+        'chitiet_loai_nx':fields.one2many('chi.tiet.loai.nhap.xuat','nhap_xuat_loai_id','Chi tiet', states={ 'done':[('readonly', True)]}),
+        'chitiet_da_tiem_phong':fields.one2many('chi.tiet.da.tiem.phong','nhap_xuat_tiemphong_id','Chi tiet', states={ 'done':[('readonly', True)]}),
+        'company_id': fields.many2one( 'res.company','Company', states={ 'done':[('readonly', True)]}),
+        'state':fields.selection([('draft', 'Nháp'),('done', 'Duyệt')],'Status', readonly=True),
                 }
     _defaults = {
-        'company_id': _get_company
+        'company_id': _get_company,
+        'state':'draft',
                  }
                 
     
@@ -88,6 +90,31 @@ class nhap_xuat_canh_giasuc(osv.osv):
         (_check_so_luong, 'Identical Data', []),
     ]   
     
+    def bt_duyet(self, cr, uid, ids, context=None):
+        chi_tiet_loai =[]
+        co_cau_obj = self.pool.get('co.cau')
+        for line in self.browse(cr, uid, ids, context=context):
+            for loai in line.chitiet_loai_nx:
+                chi_tiet_loai.append((0,0,{
+                'name':loai.name,
+                'so_luong':loai.so_luong,                           
+                                           }))
+            value ={
+            'chon_loai':line.loai_id.id,
+            'can_bo_ghi_so_id':line.can_bo_id and line.can_bo_id.id or False,
+            'ngay_ghi_so':line.ngay_cap or False,
+            'tang_giam':'a',
+            'ly_do':'Nhập từ số giấy kiểm dịch'+' '+ line.name,
+            'quan_huyen_id':line.quan_huyen_id and line.quan_huyen_id.id or False,
+            'phuong_xa_id':line.phuong_xa_id and line.phuong_xa_id.id or False,
+            'khu_pho_id':line.khu_pho_id and line.khu_pho_id.id or False,
+            'ten_ho_id':line.ten_ho_id and line.ten_ho_id.id or False,
+            'chitiet_loai':chi_tiet_loai,
+            'trang_thai':'new',
+            'company_id':line.company_id.id,
+                    }
+        co_cau_obj.create(cr,uid,value)
+        return self.write(cr, uid, ids,{'state':'done'})
     def onchange_chon_loai(self, cr, uid, ids, loai_id = False, context=None):
         chi_tiet= []
         tiem_phong = []

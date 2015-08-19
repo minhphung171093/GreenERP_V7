@@ -132,6 +132,10 @@
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <form string="Nhập gia súc" version="7.0">
+                	<header>
+	            		<button name="bt_duyet" states='draft' string="Duyệt" type="object" class="oe_highlight" />
+	                    <field name="state" widget="statusbar" statusbar_visible="draft,done" statusbar_colors='{"done":"blue"}'/>
+	            	</header> 
 	                <sheet>
                 		<group col="4" >
                 			<field name="name" />
