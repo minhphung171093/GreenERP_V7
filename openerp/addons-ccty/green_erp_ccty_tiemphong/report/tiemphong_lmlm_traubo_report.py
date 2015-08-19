@@ -46,7 +46,13 @@ class Parser(report_sxw.rml_parse):
             'get_cell_ngoaidien': self.get_cell_ngoaidien,
             'get_cell_miendich': self.get_cell_miendich,
             'get_cell_thuctiem': self.get_cell_thuctiem,
+            'convert_date':self.convert_date,
         })
+        
+    def convert_date(self, date):
+        if date:
+            date = datetime.strptime(date, DATE_FORMAT)
+            return date.strftime('%d/%m/%Y')  
         
     def get_tenho(self):
         wizard_data = self.localcontext['data']['form']
