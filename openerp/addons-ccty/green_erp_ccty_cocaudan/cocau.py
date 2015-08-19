@@ -26,9 +26,9 @@ class co_cau(osv.osv):
         'chon_loai': fields.many2one('loai.vat','Chọn loài', required = True),
         'can_bo_ghi_so_id': fields.many2one('res.users','Cán bộ ghi sổ'),
         'ngay_ghi_so': fields.date('Ngày ghi sổ', required = True),
-        'tang_giam': fields.selection((('a','Tăng'), ('b','Giảm')),'Tăng/Giảm'),
+        'tang_giam': fields.selection((('a','Tăng'), ('b','Giảm')),'Tăng/Giảm', required = True),
         'ly_do': fields.char('Lý do tăng giảm',size = 50),
-        'ten_ho_id': fields.many2one('chan.nuoi','Hộ'),
+        'ten_ho_id': fields.many2one('chan.nuoi','Hộ', required = True),
         'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)'),
         'khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)'),
         'quan_huyen_id': fields.many2one( 'quan.huyen','Quận (huyện)'),
@@ -52,18 +52,33 @@ class co_cau(osv.osv):
         new_id = super(co_cau, self).create(cr, uid, vals, context)
         return new_id  
     
-    def onchange_chon_loai(self, cr, uid, ids, chon_loai = False, context=None):
+    def onchange_chon_loai(self, cr, uid, ids, chon_loai = False, ten_ho_id = False, context=None):
         chi_tiet= []
         for co_cau in self.browse(cr,uid,ids):
             sql = '''
                 delete from chi_tiet_loai_line where co_cau_id = %s
             '''%(co_cau.id)
             cr.execute(sql)
-        if chon_loai:
+        if chon_loai and ten_ho_id:
             loai = self.pool.get('loai.vat').browse(cr,uid,chon_loai)    
             for line in loai.chitiet_loaivat:
+                sql = '''
+                    select case when sum(so_luong)!=0 then sum(so_luong) else 0 end tong_sl from chi_tiet_loai_line
+                    where co_cau_id in (select id from co_cau where chon_loai = %s and ten_ho_id = %s and tang_giam = 'a')
+                    and name = '%s'
+                '''%(chon_loai, ten_ho_id, line.name)
+                cr.execute(sql)
+                tong_sl = cr.dictfetchone()['tong_sl']
+                sql = '''
+                    select case when sum(so_luong)!=0 then sum(so_luong) else 0 end tong_sl_giam from chi_tiet_loai_line
+                    where co_cau_id in (select id from co_cau where chon_loai = %s and ten_ho_id = %s and tang_giam = 'b')
+                    and name = '%s'
+                '''%(chon_loai, ten_ho_id, line.name)
+                cr.execute(sql)
+                tong_sl_giam = cr.dictfetchone()['tong_sl_giam']
                 chi_tiet.append((0,0,{
-                                      'name': line.name
+                                      'name': line.name,
+                                      'tong_sl': tong_sl-tong_sl_giam,
                                       }))
         return {'value': {'chitiet_loai': chi_tiet}}
 co_cau()
@@ -74,15 +89,21 @@ class chi_tiet_loai_line(osv.osv):
     def sum_so_luong(self, cr, uid, ids, name, args, context=None):
         res = {}
         for line in self.browse(cr, uid, ids, context=context):
-            amount = 0
             sql = '''
                 select case when sum(so_luong)!=0 then sum(so_luong) else 0 end tong_sl from chi_tiet_loai_line
-                where co_cau_id in (select id from co_cau where chon_loai = %s and ten_ho_id = %s and ngay_ghi_so <= '%s')
+                where co_cau_id in (select id from co_cau where chon_loai = %s and ten_ho_id = %s and tang_giam = 'a')
                 and name = '%s'
-            '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.co_cau_id.ngay_ghi_so, line.name)
+            '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name)
             cr.execute(sql)
             tong_sl = cr.dictfetchone()['tong_sl']
-            res[line.id] = tong_sl
+            sql = '''
+                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end tong_sl_giam from chi_tiet_loai_line
+                where co_cau_id in (select id from co_cau where chon_loai = %s and ten_ho_id = %s and tang_giam = 'b')
+                and name = '%s'
+            '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name)
+            cr.execute(sql)
+            tong_sl_giam = cr.dictfetchone()['tong_sl_giam']
+            res[line.id] = tong_sl - tong_sl_giam
         return res
     
     _columns = {

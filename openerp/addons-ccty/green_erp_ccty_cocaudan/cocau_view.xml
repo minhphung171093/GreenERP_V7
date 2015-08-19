@@ -60,7 +60,7 @@
                 <form string="form Thông tin đàn vật nuôi" version="7.0">
 	                <sheet>
                 		<group col="4"  string="Thông tin đàn vật nuôi">
-		            		<field name="chon_loai" on_change = "onchange_chon_loai(chon_loai)"/>
+		            		<field name="chon_loai" on_change = "onchange_chon_loai(chon_loai, ten_ho_id)"/>
 		            		<field name="ngay_ghi_so" />          
 		                    <field name="can_bo_ghi_so_id" />
 		                    <field name="tang_giam" />
@@ -68,7 +68,7 @@
 		                    <field name="quan_huyen_id" />
 		                    <field name="phuong_xa_id" domain="[('quan_huyen_id','=',quan_huyen_id)]"/>
 		                    <field name="khu_pho_id" domain="[('phuong_xa_id','=',phuong_xa_id)]"/>
-		                    <field name="ten_ho_id" domain="[('quan_huyen_id','=',quan_huyen_id), ('phuong_xa_id','=',phuong_xa_id), ('khu_pho_id','=',khu_pho_id)]"/>
+		                    <field name="ten_ho_id" on_change = "onchange_chon_loai(chon_loai, ten_ho_id)" domain="[('quan_huyen_id','=',quan_huyen_id), ('phuong_xa_id','=',phuong_xa_id), ('khu_pho_id','=',khu_pho_id)]"/>
                 			<field name="company_id" string = 'Trạm'/>
                 			<field name="trang_thai"/>
                 		</group>

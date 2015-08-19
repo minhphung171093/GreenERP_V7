@@ -178,13 +178,28 @@ class Parser(report_sxw.rml_parse):
         ten_ho_id = wizard_data['ten_ho_id']
         if row:
             sql = '''
-                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong from chi_tiet_loai_line 
+                select so_luong from chi_tiet_loai_line 
                 where name = '%s' and co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so = '%s')
             '''%(col, ten_ho_id[0], row)
             self.cr.execute(sql)
-            sl = self.cr.dictfetchone()
-            if sl['so_luong']!=0:
-                soluong = sl and sl['so_luong'] or False
+            test = self.cr.dictfetchone()
+            co_sl = test and test['so_luong'] or False
+            if co_sl:
+                sql = '''
+                    select case when sum(so_luong)!=0 then sum(so_luong) else 0 end tong_sl from chi_tiet_loai_line
+                        where name = '%s' and co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so <= '%s' and tang_giam = 'a')
+                '''%(col, ten_ho_id[0], row)
+                self.cr.execute(sql)
+                sl = self.cr.dictfetchone()
+                soluong_tang = sl and sl['tong_sl'] or False
+                sql = '''
+                    select case when sum(so_luong)!=0 then sum(so_luong) else 0 end tong_sl_giam from chi_tiet_loai_line
+                        where name = '%s' and co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so <= '%s' and tang_giam = 'b')
+                '''%(col, ten_ho_id[0], row)
+                self.cr.execute(sql)
+                sl = self.cr.dictfetchone()
+                soluong_giam = sl and sl['tong_sl_giam'] or False
+                soluong = soluong_tang - soluong_giam
         return soluong
     
     def get_loaivat(self):
@@ -205,16 +220,117 @@ class Parser(report_sxw.rml_parse):
     
     def get_sum(self,row):
         context = {}
-        sum = 0
+        soluong = 0
+        soluong_tang = 0
+        soluong_giam = 0
         wizard_data = self.localcontext['data']['form']
         ten_ho_id = wizard_data['ten_ho_id']
         if row:
             sql = '''
                 select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_trong_ngay from chi_tiet_loai_line where
-                            co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so = '%s' and chon_loai in %s)
-            '''%(ten_ho_id[0],row,tuple(self.get_loaivat()),)
+                    co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so = '%s' and chon_loai = %s)
+            '''%(ten_ho_id[0], row, self.get_loaivat()[0])
             self.cr.execute(sql)
-            sum = self.cr.dictfetchone()['sl_trong_ngay']
-        return sum
+            test = self.cr.dictfetchone()
+            co_sl = test and test['sl_trong_ngay'] or False
+            if co_sl:
+                sql = '''
+                    select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_trong_ngay from chi_tiet_loai_line where
+                    co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so <= '%s' and chon_loai = %s and tang_giam = 'a')
+                '''%(ten_ho_id[0], row, self.get_loaivat()[0])
+                self.cr.execute(sql)
+                soluong_tang += self.cr.dictfetchone()['sl_trong_ngay']
+                sql = '''
+                    select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_trong_ngay_giam from chi_tiet_loai_line where
+                    co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so <= '%s' and chon_loai = %s and tang_giam = 'b')
+                '''%(ten_ho_id[0], row, self.get_loaivat()[0])
+                self.cr.execute(sql)
+                soluong_giam += self.cr.dictfetchone()['sl_trong_ngay_giam']
+                
+            sql = '''
+                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_trong_ngay from chi_tiet_loai_line where
+                    co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so = '%s' and chon_loai = %s)
+            '''%(ten_ho_id[0], row, self.get_loaivat()[1])
+            self.cr.execute(sql)
+            test = self.cr.dictfetchone()
+            co_sl = test and test['sl_trong_ngay'] or False
+            if co_sl:
+                sql = '''
+                    select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_trong_ngay from chi_tiet_loai_line where
+                    co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so <= '%s' and chon_loai = %s and tang_giam = 'a')
+                '''%(ten_ho_id[0], row, self.get_loaivat()[1])
+                self.cr.execute(sql)
+                soluong_tang += self.cr.dictfetchone()['sl_trong_ngay']
+                sql = '''
+                    select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_trong_ngay_giam from chi_tiet_loai_line where
+                    co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so <= '%s' and chon_loai = %s and tang_giam = 'b')
+                '''%(ten_ho_id[0], row, self.get_loaivat()[1])
+                self.cr.execute(sql)
+                soluong_giam += self.cr.dictfetchone()['sl_trong_ngay_giam']
+            
+            sql = '''
+                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_trong_ngay from chi_tiet_loai_line where
+                    co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so = '%s' and chon_loai = %s)
+            '''%(ten_ho_id[0], row, self.get_loaivat()[2])
+            self.cr.execute(sql)
+            test = self.cr.dictfetchone()
+            co_sl = test and test['sl_trong_ngay'] or False
+            if co_sl:
+                sql = '''
+                    select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_trong_ngay from chi_tiet_loai_line where
+                    co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so <= '%s' and chon_loai = %s and tang_giam = 'a')
+                '''%(ten_ho_id[0], row, self.get_loaivat()[2])
+                self.cr.execute(sql)
+                soluong_tang += self.cr.dictfetchone()['sl_trong_ngay']
+                sql = '''
+                    select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_trong_ngay_giam from chi_tiet_loai_line where
+                    co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so <= '%s' and chon_loai = %s and tang_giam = 'b')
+                '''%(ten_ho_id[0], row, self.get_loaivat()[2])
+                self.cr.execute(sql)
+                soluong_giam += self.cr.dictfetchone()['sl_trong_ngay_giam']
+            
+            sql = '''
+                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_trong_ngay from chi_tiet_loai_line where
+                    co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so = '%s' and chon_loai = %s)
+            '''%(ten_ho_id[0], row, self.get_loaivat()[3])
+            self.cr.execute(sql)
+            test = self.cr.dictfetchone()
+            co_sl = test and test['sl_trong_ngay'] or False
+            if co_sl:
+                sql = '''
+                    select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_trong_ngay from chi_tiet_loai_line where
+                    co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so <= '%s' and chon_loai = %s and tang_giam = 'a')
+                '''%(ten_ho_id[0], row, self.get_loaivat()[3])
+                self.cr.execute(sql)
+                soluong_tang += self.cr.dictfetchone()['sl_trong_ngay']
+                sql = '''
+                    select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_trong_ngay_giam from chi_tiet_loai_line where
+                    co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so <= '%s' and chon_loai = %s and tang_giam = 'b')
+                '''%(ten_ho_id[0], row, self.get_loaivat()[3])
+                self.cr.execute(sql)
+                soluong_giam += self.cr.dictfetchone()['sl_trong_ngay_giam']
+                
+            sql = '''
+                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_trong_ngay from chi_tiet_loai_line where
+                    co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so = '%s' and chon_loai = %s)
+            '''%(ten_ho_id[0], row, self.get_loaivat()[4])
+            self.cr.execute(sql)
+            test = self.cr.dictfetchone()
+            co_sl = test and test['sl_trong_ngay'] or False
+            if co_sl:
+                sql = '''
+                    select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_trong_ngay from chi_tiet_loai_line where
+                    co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so <= '%s' and chon_loai = %s and tang_giam = 'a')
+                '''%(ten_ho_id[0], row, self.get_loaivat()[4])
+                self.cr.execute(sql)
+                soluong_tang += self.cr.dictfetchone()['sl_trong_ngay']
+                sql = '''
+                    select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_trong_ngay_giam from chi_tiet_loai_line where
+                    co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so <= '%s' and chon_loai = %s and tang_giam = 'b')
+                '''%(ten_ho_id[0], row, self.get_loaivat()[4])
+                self.cr.execute(sql)
+                soluong_giam += self.cr.dictfetchone()['sl_trong_ngay_giam']
+        soluong = soluong_tang - soluong_giam
+        return soluong
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
 
