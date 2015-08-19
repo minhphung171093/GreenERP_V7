@@ -187,7 +187,7 @@ class Parser(report_sxw.rml_parse):
                     ))
         return res
     
-    def get_cell(self,row_id,row_name, col):
+    def get_cell(self,row_id,row_name, col,col_tongcong):
         context = {}
         soluong = False
         sum = 0
@@ -202,6 +202,16 @@ class Parser(report_sxw.rml_parse):
             sl = self.cr.dictfetchone()
             if sl:
                 soluong = sl and sl['so_luong'] or False
+            if col_tongcong == 'Tổng cộng':
+                sql = '''
+                    select so_luong from chitiet_loai_xuly 
+                    where name = '%s' and xuly_giasuc_id = %s
+                '''%(row_name, row_id)
+                self.cr.execute(sql)
+                sl = self.cr.dictfetchone()
+                if sl:
+                    soluong = sl and sl['so_luong'] or False
         return soluong
+    
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
 
