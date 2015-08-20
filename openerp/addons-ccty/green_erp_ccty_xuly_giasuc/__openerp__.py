@@ -29,6 +29,7 @@
     'depends': ['green_erp_ccty_base'],
     'data': [
             'security/xuly_giasuc_security.xml',
+            'security/ir.model.access.csv', 
             'wizard/theodoi_xuly_giasuc_wizard_view.xml',
             'wizard/theodoi_tinhhinh_xuly_giasuc_wizard_view.xml',
             'report/theodoi_xuly_giasuc_report_view.xml',

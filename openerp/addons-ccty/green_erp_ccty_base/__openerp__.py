@@ -29,6 +29,7 @@
     'depends': ['report_aeroo','report_aeroo_ooo','web_m2x_options','web_widget_radio'],
     'data': [
             'security/base_security.xml', 
+            'security/ir.model.access.csv', 
             'danhmuc_view.xml',
             'menu.xml',
             'danhmuc_loaivat_data.xml',

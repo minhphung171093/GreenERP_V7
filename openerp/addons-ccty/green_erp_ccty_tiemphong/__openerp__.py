@@ -29,6 +29,7 @@
     'depends': ['green_erp_ccty_base','green_erp_ccty_vaccine'],
     'data': [
             'security/tiem_phong_security.xml', 
+            'security/ir.model.access.csv', 
             'wizard/tiemphong_lmlm_traubo_wizard_view.xml',
             'wizard/tiemphong_lmlm_heo_wizard_view.xml',
             'report/tiemphong_lmlm_traubo_report_view.xml',

@@ -29,6 +29,7 @@
     'depends': ['green_erp_ccty_base'],
     'data': [
             'security/nhap_xuat_security.xml',
+            'security/ir.model.access.csv', 
             'wizard/tinhhinh_nhap_giasuc_wizard_view.xml',
             'wizard/tinhhinh_xuat_giasuc_wizard_view.xml',
             'wizard/theodoi_tinhhinh_nhap_giasuc_wizard_view.xml',

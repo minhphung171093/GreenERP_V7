@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-    <data noupdate='0'>
+    <data noupdate='1'>
+    
+ <!--  TRẠNG THÁI-->
+		<record id="trangthai_nhap" model="trang.thai">
+            <field name="name">Nháp</field>
+            <field name="stt">1</field>
+        </record>
+        
+        <record id="trangthai_cap_huyen" model="trang.thai">
+            <field name="name">Cấp Huyện Duyệt</field>
+            <field name="stt">2</field>
+        </record>
+        
+        <record id="trangthai_chi_cuc" model="trang.thai">
+            <field name="name">Chi Cục Duyệt</field>
+            <field name="stt">3</field>
+        </record>
     
  <!--  BÒ SỮA-->
 		<record id="loaivat_bosua" model="loai.vat">

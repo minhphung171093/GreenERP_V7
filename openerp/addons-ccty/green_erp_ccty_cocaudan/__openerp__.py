@@ -29,6 +29,7 @@
     'depends': ['report_aeroo','report_aeroo_ooo','green_erp_ccty_base',],
     'data': [
             'security/cocaudan_security.xml',
+            'security/ir.model.access.csv', 
             'wizard/cocau_hientai_wizard_view.xml',
             'wizard/cocau_tai_thoi_diem_wizard_view.xml',
             'report/cocau_hientai_report_view.xml',
