@@ -13,5 +13,6 @@
     	<menuitem id="menu_quan_huyen" parent="menu_danh_muc" name="Quận (Huyện)" action="action_quan_huyen"/>
     	<menuitem id="menu_phuong_xa" parent="menu_danh_muc" name="Phường (xã)" action="action_phuong_xa"/>
     	<menuitem id="menu_khu_pho" parent="menu_danh_muc" name="Khu phố (Ấp)" action="action_khu_pho"/>
+    	<menuitem id="menu_trang_thai" parent="menu_danh_muc" name="Trạng thái" action="action_trang_thai"/>
     </data>
 </openerp>

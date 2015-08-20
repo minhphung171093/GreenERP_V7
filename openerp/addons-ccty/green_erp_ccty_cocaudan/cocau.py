@@ -22,6 +22,26 @@ class co_cau(osv.osv):
     def _get_company(self, cr, uid, ids, context=None):
         user = self.pool.get('res.users').browse(cr,uid,uid)
         return user.company_id.id or False
+    
+    def get_trangthai_nhap(self, cr, uid, ids, context=None):
+        sql = '''
+            select id from trang_thai where stt = 1
+        '''
+        cr.execute(sql)
+        trang = cr.dictfetchone()['id'] or False
+        return trang
+    
+    def _get_hien_an(self, cr, uid, ids, name, arg, context=None):        
+        result = {}
+        user = self.pool.get('res.users').browse(cr,uid,uid)
+        for nhap_xuat in self.browse(cr,uid,ids):
+            result[nhap_xuat.id] = False  
+            if nhap_xuat.trang_thai_id.stt == 1 and user.company_id.cap in ['huyen', 'chi_cuc']:
+                result[nhap_xuat.id] = True
+            elif nhap_xuat.trang_thai_id.stt == 2 and user.company_id.cap in ['chi_cuc']:
+                result[nhap_xuat.id] = True    
+        return result
+    
     _columns = {
         'chon_loai': fields.many2one('loai.vat','Chọn loài', required = True),
         'can_bo_ghi_so_id': fields.many2one('res.users','Cán bộ ghi sổ'),
@@ -35,11 +55,44 @@ class co_cau(osv.osv):
         'chitiet_loai':fields.one2many('chi.tiet.loai.line','co_cau_id','Co Cau'),
         'company_id': fields.many2one( 'res.company','Company'),
         'trang_thai': fields.selection((('old','Old'), ('new','New')),'Trang thai'),
+        'trang_thai_id': fields.many2one('trang.thai','Trạng thái', readonly=True),
+        'hien_an': fields.function(_get_hien_an, type='boolean', string='Hien/An'),
                 }
     _defaults = {
         'company_id': _get_company,
         'trang_thai': 'new',
+        'trang_thai_id': get_trangthai_nhap,
                  }
+    
+    def bt_duyet(self, cr, uid, ids, context=None):
+        user = self.pool.get('res.users').browse(cr,uid,uid)
+        for line in self.browse(cr, uid, ids, context=context):
+            if line.trang_thai_id.stt == 1 and user.company_id.cap == 'huyen':
+                sql = '''
+                    select id from trang_thai where stt = 2
+                '''
+                cr.execute(sql)
+                self.write(cr,uid,ids,{
+                                       'trang_thai_id': cr.dictfetchone()['id'] or False
+                                       })
+            elif line.trang_thai_id.stt == 1 and user.company_id.cap == 'chi_cuc':
+                sql = '''
+                    select id from trang_thai where stt = 3
+                '''
+                cr.execute(sql)
+                self.write(cr,uid,ids,{
+                                       'trang_thai_id': cr.dictfetchone()['id'] or False
+                                       })
+                
+            elif line.trang_thai_id.stt == 2 and user.company_id.cap == 'chi_cuc':
+                sql = '''
+                    select id from trang_thai where stt = 3
+                '''
+                cr.execute(sql)
+                self.write(cr,uid,ids,{
+                                       'trang_thai_id': cr.dictfetchone()['id'] or False
+                                       })
+        return True
     
     def create(self, cr, uid, vals, context=None):
         sql = '''

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data noupdate="1">
+		<record id="tiem_phong_rule" model="ir.rule">
+            <field name="name">multi_company_tiem_phong_rule</field>
+            <field model="ir.model" name="model_id" ref="model_tiem_phong"/>
+            <field name="domain_force">['|',('tram_id','=',False),('tram_id','child_of',[user.company_id.id])]</field>
+        </record>
+        
+        <record id="tiem_phong_lmlm_rule" model="ir.rule">
+            <field name="name">multi_company_tiem_phong_lmlm_rule</field>
+            <field model="ir.model" name="model_id" ref="model_tiem_phong_lmlm"/>
+            <field name="domain_force">['|',('tram_id','=',False),('tram_id','child_of',[user.company_id.id])]</field>
+        </record>
+	</data>
+</openerp>

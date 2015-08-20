@@ -19,20 +19,70 @@ base_path = os.path.dirname(modules.get_module_path('green_erp_ccty_base'))
 
 class nhap_vaccine(osv.osv):
     _name = "nhap.vaccine"
+    
+    def get_trangthai_nhap(self, cr, uid, ids, context=None):
+        sql = '''
+            select id from trang_thai where stt = 1
+        '''
+        cr.execute(sql)
+        trang = cr.dictfetchone()['id'] or False
+        return trang
+    
+    def _get_hien_an(self, cr, uid, ids, name, arg, context=None):        
+        result = {}
+        
+        user = self.pool.get('res.users').browse(cr,uid,uid)
+        for nhap_xuat in self.browse(cr,uid,ids):
+            result[nhap_xuat.id] = False  
+            if nhap_xuat.trang_thai_id.stt == 1 and user.company_id.cap in ['huyen', 'chi_cuc']:
+                result[nhap_xuat.id] = True
+            elif nhap_xuat.trang_thai_id.stt == 2 and user.company_id.cap in ['chi_cuc']:
+                result[nhap_xuat.id] = True    
+        return result
+    
     _columns = {
-        'name': fields.many2one('loai.vacxin','Loại vaccine', required = True, states={ 'done':[('readonly', True)]}),
-        'can_bo_id': fields.many2one('res.users','Cán bộ nhập máy', required = True, states={ 'done':[('readonly', True)]}),
-        'ngay_nhap': fields.date('Ngày nhập', states={ 'done':[('readonly', True)]}),
-        'soluong': fields.char('Số lượng',size = 50, states={ 'done':[('readonly', True)]}),
-        'so_lo_id':fields.many2one('so.lo','Số lô', required = True, states={ 'done':[('readonly', True)]}),
+        'name': fields.many2one('loai.vacxin','Loại vaccine', required = True),
+        'can_bo_id': fields.many2one('res.users','Cán bộ nhập máy', required = True),
+        'ngay_nhap': fields.date('Ngày nhập'),
+        'soluong': fields.char('Số lượng',size = 50),
+        'so_lo_id':fields.many2one('so.lo','Số lô', required = True),
         'han_su_dung':fields.related('so_lo_id','han_su_dung',type='date',string='HSD đến'),
         'state':fields.selection([('draft', 'Nháp'),('done', 'Duyệt')],'Status', readonly=True),
+        'trang_thai_id': fields.many2one('trang.thai','Trạng thái', readonly=True),
+        'hien_an': fields.function(_get_hien_an, type='boolean', string='Hien/An'),
                 }
     _defaults = {
-        'state': 'draft',
+        'trang_thai_id': get_trangthai_nhap,
                  }
     def bt_duyet(self, cr, uid, ids, context=None):
-        return self.write(cr, uid, ids,{'state':'done'})
+        user = self.pool.get('res.users').browse(cr,uid,uid)
+        for line in self.browse(cr, uid, ids, context=context):
+            if line.trang_thai_id.stt == 1 and user.company_id.cap == 'huyen':
+                sql = '''
+                    select id from trang_thai where stt = 2
+                '''
+                cr.execute(sql)
+                self.write(cr,uid,ids,{
+                                       'trang_thai_id': cr.dictfetchone()['id'] or False
+                                       })
+            elif line.trang_thai_id.stt == 1 and user.company_id.cap == 'chi_cuc':
+                sql = '''
+                    select id from trang_thai where stt = 3
+                '''
+                cr.execute(sql)
+                self.write(cr,uid,ids,{
+                                       'trang_thai_id': cr.dictfetchone()['id'] or False
+                                       })
+                
+            elif line.trang_thai_id.stt == 2 and user.company_id.cap == 'chi_cuc':
+                sql = '''
+                    select id from trang_thai where stt = 3
+                '''
+                cr.execute(sql)
+                self.write(cr,uid,ids,{
+                                       'trang_thai_id': cr.dictfetchone()['id'] or False
+                                       })
+        return True
     
 nhap_vaccine()
 

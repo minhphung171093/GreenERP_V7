@@ -21,12 +21,21 @@ class can_bo(osv.osv):
     _name = "can.bo"
     _columns = {
         'name': fields.char('Họ tên', size=30,required = True),
-        'tram_id': fields.many2one( 'tram.thu.y','Trạm'),
+        'tram_id': fields.many2one('res.company','Trạm'),
         'email': fields.char( 'Email',size = 50),
         'dien_thoai': fields.char( 'Điện thoại',size = 50),
         'user_id': fields.many2one( 'res.users','Người dùng',required = True),
                 }
 can_bo()
+
+class trang_thai(osv.osv):
+    _name = "trang.thai"
+    _order = "stt"
+    _columns = {
+        'name': fields.char('Trạng thái', size=100,required = True),
+        'stt': fields.integer('STT',required = True),
+                }
+trang_thai()
 
 class res_users(osv.osv):
     _inherit = "res.users"
@@ -34,6 +43,13 @@ class res_users(osv.osv):
         'dien_thoai': fields.char( 'Điện thoại',size = 50),
                 }
 res_users()
+
+class res_company(osv.osv):
+    _inherit = "res.company"
+    _columns = {
+        'cap': fields.selection([('xa', 'Xã'),('huyen', 'Huyện'), ('chi_cuc', 'Chi Cục')],'Cấp'),
+                }
+res_company()
 
 class tram_thu_y(osv.osv):
     _name = "tram.thu.y"

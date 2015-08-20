@@ -1,0 +1,16 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ccty_cocaudan_1,co.cau,green_erp_ccty_cocaudan.model_co_cau,green_erp_ccty_base.group_base_ccty,True,True,True,True
+access_ccty_cocaudan_2,chi.tiet.loai.line,green_erp_ccty_cocaudan.model_chi_tiet_loai_line,green_erp_ccty_base.group_base_ccty,True,True,True,True
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -28,8 +28,11 @@
     'website' : 'http://incomtech.com/',
     'depends': ['green_erp_ccty_base','green_erp_ccty_vaccine'],
     'data': [
+            'security/tiem_phong_security.xml', 
             'wizard/tiemphong_lmlm_traubo_wizard_view.xml',
+            'wizard/tiemphong_lmlm_heo_wizard_view.xml',
             'report/tiemphong_lmlm_traubo_report_view.xml',
+            'report/tiemphong_lmlm_heo_report_view.xml',
             'tiem_phong_view.xml',
             'menu.xml',
     ],

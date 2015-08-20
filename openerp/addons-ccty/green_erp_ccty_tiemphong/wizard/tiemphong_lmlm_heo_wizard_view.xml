@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-		<record id="tiemphong_lmlm_traubo_form_view" model="ir.ui.view">
-	        <field name="name">tiemphong.lmlm.traubo.form.view</field>
-	        <field name="model">tiemphong.lmlm.traubo.form</field>
+		<record id="tiemphong_lmlm_heo_form_view" model="ir.ui.view">
+	        <field name="name">tiemphong.lmlm.heo.form.view</field>
+	        <field name="model">tiemphong.lmlm.heo.form</field>
 	        <field name="arch" type="xml">
-	            <form string="Tiêm phòng bệnh lmlm trâu bò" version="7.0">
+	            <form string="Tiêm phòng bệnh lmlm heo" version="7.0">
 	            	<group colspan = '2' col = '4'>
 	                <field name="ten_ho_id" />
 	                <field name="tu_ngay" />
@@ -20,18 +20,18 @@
 	        </field>
     	</record>
 
-	    <record model="ir.actions.act_window" id="action_tiemphong_lmlm_traubo_form">
+	    <record model="ir.actions.act_window" id="action_tiemphong_lmlm_heo_form">
 	        <field name="name">Theo dõi tình hình tiêm phòng bệnh lở mồm long móng</field>
-	        <field name="res_model">tiemphong.lmlm.traubo.form</field>
+	        <field name="res_model">tiemphong.lmlm.heo.form</field>
 	        <field name="view_type">form</field>
 	        <field name="view_mode">form</field>
-	        <field name="view_id" ref="tiemphong_lmlm_traubo_form_view" />
+	        <field name="view_id" ref="tiemphong_lmlm_heo_form_view" />
 	        <field name="target">new</field>
 	    </record>
 	    
 	    <menuitem id="tiem_phong" name="Quản lý tiêm phòng"/>
         <menuitem id="menu_thong_ke_tiem_phong_lmlm" parent="tiem_phong" name="Thống kê quản lý tiêm phòng lở mồm long móng"/>
-	    	<menuitem id="menu_action_tiemphong_lmlm_traubo_form" parent="menu_thong_ke_tiem_phong_lmlm" name="Thống kê quản lý tiêm phòng lở mồm long móng trâu, bò, dê, cừu" action="action_tiemphong_lmlm_traubo_form"/>
+	    	<menuitem id="menu_action_tiemphong_lmlm_heo_form" parent="menu_thong_ke_tiem_phong_lmlm" name="Thống kê quản lý tiêm phòng lở mồm long móng heo" action="action_tiemphong_lmlm_heo_form"/>
 	 
 	    
     </data>

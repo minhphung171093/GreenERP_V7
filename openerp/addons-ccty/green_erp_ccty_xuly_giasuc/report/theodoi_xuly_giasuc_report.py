@@ -43,7 +43,13 @@ class Parser(report_sxw.rml_parse):
             'get_ho_row': self.get_ho_row,
             'get_loaivat': self.get_loaivat,
             'get_ngay': self.get_ngay,
+            'convert_date':self.convert_date,
         })
+        
+    def convert_date(self, date):
+        if date:
+            date = datetime.strptime(date, DATE_FORMAT)
+            return date.strftime('%d/%m/%Y')  
         
     def get_tenho(self):
         wizard_data = self.localcontext['data']['form']

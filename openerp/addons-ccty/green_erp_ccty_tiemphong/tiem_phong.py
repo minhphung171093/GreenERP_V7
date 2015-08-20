@@ -59,27 +59,81 @@ class tiem_phong_lmlm(osv.osv):
         vals = {}
         vals = {'khu_pho_id':False}
         return {'value': vals}
+    
+    def _get_company(self, cr, uid, ids, context=None):
+        user = self.pool.get('res.users').browse(cr,uid,uid)
+        return user.company_id.id or False
+    
+    def get_trangthai_nhap(self, cr, uid, ids, context=None):
+        sql = '''
+            select id from trang_thai where stt = 1
+        '''
+        cr.execute(sql)
+        trang = cr.dictfetchone()['id'] or False
+        return trang
+    
+    def _get_hien_an(self, cr, uid, ids, name, arg, context=None):        
+        result = {}
+        
+        user = self.pool.get('res.users').browse(cr,uid,uid)
+        for nhap_xuat in self.browse(cr,uid,ids):
+            result[nhap_xuat.id] = False  
+            if nhap_xuat.trang_thai_id.stt == 1 and user.company_id.cap in ['huyen', 'chi_cuc']:
+                result[nhap_xuat.id] = True
+            elif nhap_xuat.trang_thai_id.stt == 2 and user.company_id.cap in ['chi_cuc']:
+                result[nhap_xuat.id] = True    
+        return result
 
     _columns = {
-        'name': fields.datetime('Ngày tiêm', required = True, states={ 'done':[('readonly', True)]}),
-        'loai_id': fields.many2one('loai.vat','Loài vật', required = True , states={ 'done':[('readonly', True)]}),
-        'tram_id': fields.many2one( 'res.company','Trạm', required = True, states={ 'done':[('readonly', True)]}),
-        'can_bo_id': fields.many2one( 'res.users','Cán bộ thú y thực hiện tiêm', states={ 'done':[('readonly', True)]}),
-        'loai_vaccine_id': fields.many2one('loai.vacxin','Loại vaccine', states={ 'done':[('readonly', True)]}),
-        'so_lo_id':fields.many2one('so.lo','Số lô', states={ 'done':[('readonly', True)]}),
-        'han_su_dung_rel':fields.related('so_lo_id','han_su_dung',type='date',string='HSD đến', states={ 'done':[('readonly', True)]}),
-        'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)', states={ 'done':[('readonly', True)]}),
-        'khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)', states={ 'done':[('readonly', True)]}),
-        'quan_huyen_id': fields.many2one( 'quan.huyen','Quận (huyện)', states={ 'done':[('readonly', True)]}),
-        'ho_chan_nuoi_id': fields.many2one( 'chan.nuoi','Hộ chăn nuôi', states={ 'done':[('readonly', True)]}),
-        'chi_tiet_tp_line':fields.one2many( 'ct.tiem.phong.lmlm.line','tp_lmlm_id','Chi tiết tiêm phòng', states={ 'done':[('readonly', True)]}),
+        'name': fields.datetime('Ngày tiêm', required = True),
+        'loai_id': fields.many2one('loai.vat','Loài vật', required = True ),
+        'tram_id': fields.many2one( 'res.company','Trạm', required = True),
+        'can_bo_id': fields.many2one( 'res.users','Cán bộ thú y thực hiện tiêm'),
+        'loai_vaccine_id': fields.many2one('loai.vacxin','Loại vaccine'),
+        'so_lo_id':fields.many2one('so.lo','Số lô'),
+        'han_su_dung_rel':fields.related('so_lo_id','han_su_dung',type='date',string='HSD đến'),
+        'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)'),
+        'khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)'),
+        'quan_huyen_id': fields.many2one( 'quan.huyen','Quận (huyện)'),
+        'ho_chan_nuoi_id': fields.many2one( 'chan.nuoi','Hộ chăn nuôi'),
+        'chi_tiet_tp_line':fields.one2many( 'ct.tiem.phong.lmlm.line','tp_lmlm_id','Chi tiết tiêm phòng'),
         'state':fields.selection([('draft', 'Nháp'),('done', 'Duyệt')],'Status', readonly=True),
+        'trang_thai_id': fields.many2one('trang.thai','Trạng thái', readonly=True),
+        'hien_an': fields.function(_get_hien_an, type='boolean', string='Hien/An'),
                 }
     _defaults = {
-        'state': 'draft',
+        'tram_id': _get_company,
+        'trang_thai_id': get_trangthai_nhap,
                  }
     def bt_duyet(self, cr, uid, ids, context=None):
-        return self.write(cr, uid, ids,{'state':'done'})
+        user = self.pool.get('res.users').browse(cr,uid,uid)
+        for line in self.browse(cr, uid, ids, context=context):
+            if line.trang_thai_id.stt == 1 and user.company_id.cap == 'huyen':
+                sql = '''
+                    select id from trang_thai where stt = 2
+                '''
+                cr.execute(sql)
+                self.write(cr,uid,ids,{
+                                       'trang_thai_id': cr.dictfetchone()['id'] or False
+                                       })
+            elif line.trang_thai_id.stt == 1 and user.company_id.cap == 'chi_cuc':
+                sql = '''
+                    select id from trang_thai where stt = 3
+                '''
+                cr.execute(sql)
+                self.write(cr,uid,ids,{
+                                       'trang_thai_id': cr.dictfetchone()['id'] or False
+                                       })
+                
+            elif line.trang_thai_id.stt == 2 and user.company_id.cap == 'chi_cuc':
+                sql = '''
+                    select id from trang_thai where stt = 3
+                '''
+                cr.execute(sql)
+                self.write(cr,uid,ids,{
+                                       'trang_thai_id': cr.dictfetchone()['id'] or False
+                                       })
+        return True
     
     def onchange_ho_chan_nuoi_id(self, cr, uid, ids, ho_chan_nuoi_id = False, loai_id = False, context=None):
         chi_tiet= []

@@ -40,6 +40,10 @@
 					<attribute name='string'>Trạm cha</attribute>
 				</xpath>
 				
+				<xpath expr="//field[@name='parent_id']" position="after">
+					<field name="cap" required = '1'/>
+				</xpath>
+				
 			</field>
 		</record>
        
@@ -403,7 +407,42 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
         </record>
+       <!-- trang thai -->
        
+       <record model="ir.ui.view" id="trang_thai_tree">
+            <field name="name">trang.thai.tree</field>
+            <field name="model">trang.thai</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Trạng thái">
+                    <field name="stt" />
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="trang_thai_form">
+            <field name="name">trang.thai.form</field>
+            <field name="model">trang.thai</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Trạng thái" version="7.0">
+	                <sheet>
+                		<group>
+			            	<field name="stt" />
+		                    <field name="name" />
+                		</group>
+	                </sheet>
+                </form>
+            </field>
+        </record>
+       
+        <record model="ir.actions.act_window" id="action_trang_thai">
+            <field name="name">Trạng thái</field>
+            <field name="res_model">trang.thai</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
 		
     </data>
 </openerp>

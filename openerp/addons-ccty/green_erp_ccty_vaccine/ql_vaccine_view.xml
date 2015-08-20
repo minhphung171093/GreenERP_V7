@@ -13,7 +13,8 @@
             		<field name="soluong" />
             		<field name="so_lo_id" />
             		<field name="han_su_dung" />
-            		<field name="state" widget="statusbar" statusbar_visible="draft,done" statusbar_colors='{"done":"blue"}'/>
+            		<field name="trang_thai_id"/>
+            		<field name="hien_an" invisible = '1'/>
                 </tree>
             </field>
         </record>
@@ -25,9 +26,9 @@
             <field name="arch" type="xml">
                 <form string="Nhập vaccine" version="7.0">
                 <header>
-	            		<button name="bt_duyet" states='draft' string="Duyệt" type="object" class="oe_highlight" />
-	                    <field name="state" widget="statusbar" statusbar_visible="draft,done" statusbar_colors='{"done":"blue"}'/>
-	            </header> 
+	            		<button name="bt_duyet" attrs="{'invisible': [('hien_an', '!=', True)]}" string="Duyệt" type="object" class="oe_highlight" />
+	                    <field name="trang_thai_id" widget="statusbar"/>
+	            	</header> 
 	                <sheet>
                 		<group col="4"  string="Nhập Vaccine">
                 			<field name="can_bo_id" />
@@ -36,6 +37,7 @@
 			        		<field name="soluong" />
 			        		<field name="so_lo_id" domain="[('vacxin_id','=',name)]"  />
             				<field name="han_su_dung" readonly = "1"/>
+            				<field name="hien_an" invisible = '1'/>
                 		</group>
 	                </sheet>
                 </form>

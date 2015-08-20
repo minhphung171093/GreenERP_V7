@@ -40,26 +40,48 @@ class nhap_xuat_canh_giasuc(osv.osv):
         user = self.pool.get('res.users').browse(cr,uid,uid)
         return user.company_id.id or False
     
+    def get_trangthai_nhap(self, cr, uid, ids, context=None):
+        sql = '''
+            select id from trang_thai where stt = 1
+        '''
+        cr.execute(sql)
+        trang = cr.dictfetchone()['id'] or False
+        return trang
+    
+    def _get_hien_an(self, cr, uid, ids, name, arg, context=None):        
+        result = {}
+        
+        user = self.pool.get('res.users').browse(cr,uid,uid)
+        for nhap_xuat in self.browse(cr,uid,ids):
+            result[nhap_xuat.id] = False  
+            if nhap_xuat.trang_thai_id.stt == 1 and user.company_id.cap in ['huyen', 'chi_cuc']:
+                result[nhap_xuat.id] = True
+            elif nhap_xuat.trang_thai_id.stt == 2 and user.company_id.cap in ['chi_cuc']:
+                result[nhap_xuat.id] = True    
+        return result
+    
     _columns = {
-        'name': fields.char('Số Giấy kiểm dịch',size = 50, required = True, states={ 'done':[('readonly', True)]}),
-        'loai_id': fields.many2one('loai.vat','Loài vật', required = True, states={ 'done':[('readonly', True)]}),
-        'ngay_cap': fields.date('Ngày cấp', states={ 'done':[('readonly', True)]}),
-        'ngay_kiem_tra': fields.date('Ngày', required = True, states={ 'done':[('readonly', True)]}),
-        'ten_ho_id': fields.many2one('chan.nuoi','Hộ', states={ 'done':[('readonly', True)]}),
-        'can_bo_id': fields.many2one('res.users','Cán bộ', states={ 'done':[('readonly', True)]}),
+        'name': fields.char('Số Giấy kiểm dịch',size = 50, required = True),
+        'loai_id': fields.many2one('loai.vat','Loài vật', required = True),
+        'ngay_cap': fields.date('Ngày cấp', required = True),
+        'ngay_kiem_tra': fields.date('Ngày', required = True),
+        'ten_ho_id': fields.many2one('chan.nuoi','Hộ', required = True),
+        'can_bo_id': fields.many2one('res.users','Cán bộ'),
         'tram_id': fields.many2one('tram.thu.y','Trạm'),
-        'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)', states={ 'done':[('readonly', True)]}),
-        'khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)', states={ 'done':[('readonly', True)]}),
-        'quan_huyen_id': fields.many2one( 'quan.huyen','Quận (huyện)', states={ 'done':[('readonly', True)]}),
-        'loai':fields.selection([('nhap', 'Nhập'),('xuat', 'Xuất')],'Loại', readonly=True, states={ 'done':[('readonly', True)]}),
-        'chitiet_loai_nx':fields.one2many('chi.tiet.loai.nhap.xuat','nhap_xuat_loai_id','Chi tiet', states={ 'done':[('readonly', True)]}),
-        'chitiet_da_tiem_phong':fields.one2many('chi.tiet.da.tiem.phong','nhap_xuat_tiemphong_id','Chi tiet', states={ 'done':[('readonly', True)]}),
-        'company_id': fields.many2one( 'res.company','Company', states={ 'done':[('readonly', True)]}),
+        'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)'),
+        'khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)'),
+        'quan_huyen_id': fields.many2one( 'quan.huyen','Quận (huyện)'),
+        'loai':fields.selection([('nhap', 'Nhập'),('xuat', 'Xuất')],'Loại', readonly=True),
+        'chitiet_loai_nx':fields.one2many('chi.tiet.loai.nhap.xuat','nhap_xuat_loai_id','Chi tiet'),
+        'chitiet_da_tiem_phong':fields.one2many('chi.tiet.da.tiem.phong','nhap_xuat_tiemphong_id','Chi tiet'),
+        'company_id': fields.many2one( 'res.company','Company'),
         'state':fields.selection([('draft', 'Nháp'),('done', 'Duyệt')],'Status', readonly=True),
+        'trang_thai_id': fields.many2one('trang.thai','Trạng thái', readonly=True),
+        'hien_an': fields.function(_get_hien_an, type='boolean', string='Hien/An'),
                 }
     _defaults = {
         'company_id': _get_company,
-        'state':'draft',
+        'trang_thai_id': get_trangthai_nhap,
                  }
                 
     
@@ -93,6 +115,7 @@ class nhap_xuat_canh_giasuc(osv.osv):
     def bt_duyet(self, cr, uid, ids, context=None):
         chi_tiet_loai =[]
         co_cau_obj = self.pool.get('co.cau')
+        user = self.pool.get('res.users').browse(cr,uid,uid)
         for line in self.browse(cr, uid, ids, context=context):
             for loai in line.chitiet_loai_nx:
                 chi_tiet_loai.append((0,0,{
@@ -113,8 +136,32 @@ class nhap_xuat_canh_giasuc(osv.osv):
             'trang_thai':'new',
             'company_id':line.company_id.id,
                     }
-        co_cau_obj.create(cr,uid,value)
-        return self.write(cr, uid, ids,{'state':'done'})
+            if line.trang_thai_id.stt == 1 and user.company_id.cap == 'huyen':
+                sql = '''
+                    select id from trang_thai where stt = 2
+                '''
+                cr.execute(sql)
+                self.write(cr,uid,ids,{
+                                       'trang_thai_id': cr.dictfetchone()['id'] or False
+                                       })
+            elif line.trang_thai_id.stt == 1 and user.company_id.cap == 'chi_cuc':
+                sql = '''
+                    select id from trang_thai where stt = 3
+                '''
+                cr.execute(sql)
+                self.write(cr,uid,ids,{
+                                       'trang_thai_id': cr.dictfetchone()['id'] or False
+                                       })
+                
+            elif line.trang_thai_id.stt == 2 and user.company_id.cap == 'chi_cuc':
+                sql = '''
+                    select id from trang_thai where stt = 3
+                '''
+                cr.execute(sql)
+                self.write(cr,uid,ids,{
+                                       'trang_thai_id': cr.dictfetchone()['id'] or False
+                                       })
+        return co_cau_obj.create(cr,uid,value)
     def onchange_chon_loai(self, cr, uid, ids, loai_id = False, context=None):
         chi_tiet= []
         tiem_phong = []
