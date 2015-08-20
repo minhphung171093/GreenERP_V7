@@ -174,7 +174,7 @@ class nhap_xuat_canh_giasuc(osv.osv):
                 'can_bo_ghi_so_id':line.can_bo_id and line.can_bo_id.id or False,
                 'ngay_ghi_so':line.ngay_cap or False,
                 'tang_giam':'b',
-                'ly_do':'Nhập từ số giấy kiểm dịch'+' '+ line.name,
+                'ly_do':'Xuất từ số giấy kiểm dịch'+' '+ line.name,
                 'quan_huyen_id':line.quan_huyen_id and line.quan_huyen_id.id or False,
                 'phuong_xa_id':line.phuong_xa_id and line.phuong_xa_id.id or False,
                 'khu_pho_id':line.khu_pho_id and line.khu_pho_id.id or False,
