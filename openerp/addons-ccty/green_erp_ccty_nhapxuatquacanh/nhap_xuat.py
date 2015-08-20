@@ -116,51 +116,98 @@ class nhap_xuat_canh_giasuc(osv.osv):
         chi_tiet_loai =[]
         co_cau_obj = self.pool.get('co.cau')
         user = self.pool.get('res.users').browse(cr,uid,uid)
+        
         for line in self.browse(cr, uid, ids, context=context):
-            for loai in line.chitiet_loai_nx:
-                chi_tiet_loai.append((0,0,{
-                'name':loai.name,
-                'so_luong':loai.so_luong,                           
-                                           }))
-            value ={
-            'chon_loai':line.loai_id.id,
-            'can_bo_ghi_so_id':line.can_bo_id and line.can_bo_id.id or False,
-            'ngay_ghi_so':line.ngay_cap or False,
-            'tang_giam':'a',
-            'ly_do':'Nhập từ số giấy kiểm dịch'+' '+ line.name,
-            'quan_huyen_id':line.quan_huyen_id and line.quan_huyen_id.id or False,
-            'phuong_xa_id':line.phuong_xa_id and line.phuong_xa_id.id or False,
-            'khu_pho_id':line.khu_pho_id and line.khu_pho_id.id or False,
-            'ten_ho_id':line.ten_ho_id and line.ten_ho_id.id or False,
-            'chitiet_loai':chi_tiet_loai,
-            'trang_thai':'new',
-            'company_id':line.company_id.id,
-                    }
-            if line.trang_thai_id.stt == 1 and user.company_id.cap == 'huyen':
-                sql = '''
-                    select id from trang_thai where stt = 2
-                '''
-                cr.execute(sql)
-                self.write(cr,uid,ids,{
-                                       'trang_thai_id': cr.dictfetchone()['id'] or False
-                                       })
-            elif line.trang_thai_id.stt == 1 and user.company_id.cap == 'chi_cuc':
-                sql = '''
-                    select id from trang_thai where stt = 3
-                '''
-                cr.execute(sql)
-                self.write(cr,uid,ids,{
-                                       'trang_thai_id': cr.dictfetchone()['id'] or False
-                                       })
-                
-            elif line.trang_thai_id.stt == 2 and user.company_id.cap == 'chi_cuc':
-                sql = '''
-                    select id from trang_thai where stt = 3
-                '''
-                cr.execute(sql)
-                self.write(cr,uid,ids,{
-                                       'trang_thai_id': cr.dictfetchone()['id'] or False
-                                       })
+            if line.loai == 'nhap':
+                for loai in line.chitiet_loai_nx:
+                    chi_tiet_loai.append((0,0,{
+                    'name':loai.name,
+                    'so_luong':loai.so_luong,                           
+                                               }))
+                value ={
+                'chon_loai':line.loai_id.id,
+                'can_bo_ghi_so_id':line.can_bo_id and line.can_bo_id.id or False,
+                'ngay_ghi_so':line.ngay_cap or False,
+                'tang_giam':'a',
+                'ly_do':'Nhập từ số giấy kiểm dịch'+' '+ line.name,
+                'quan_huyen_id':line.quan_huyen_id and line.quan_huyen_id.id or False,
+                'phuong_xa_id':line.phuong_xa_id and line.phuong_xa_id.id or False,
+                'khu_pho_id':line.khu_pho_id and line.khu_pho_id.id or False,
+                'ten_ho_id':line.ten_ho_id and line.ten_ho_id.id or False,
+                'chitiet_loai':chi_tiet_loai,
+                'trang_thai':'new',
+                'company_id':line.company_id.id,
+                        }
+                if line.trang_thai_id.stt == 1 and user.company_id.cap == 'huyen':
+                    sql = '''
+                        select id from trang_thai where stt = 2
+                    '''
+                    cr.execute(sql)
+                    self.write(cr,uid,ids,{
+                                           'trang_thai_id': cr.dictfetchone()['id'] or False
+                                           })
+                elif line.trang_thai_id.stt == 1 and user.company_id.cap == 'chi_cuc':
+                    sql = '''
+                        select id from trang_thai where stt = 3
+                    '''
+                    cr.execute(sql)
+                    self.write(cr,uid,ids,{
+                                           'trang_thai_id': cr.dictfetchone()['id'] or False
+                                           })
+                    
+                elif line.trang_thai_id.stt == 2 and user.company_id.cap == 'chi_cuc':
+                    sql = '''
+                        select id from trang_thai where stt = 3
+                    '''
+                    cr.execute(sql)
+                    self.write(cr,uid,ids,{
+                                           'trang_thai_id': cr.dictfetchone()['id'] or False
+                                           })
+            elif line.loai == 'xuat':
+                for loai in line.chitiet_loai_nx:
+                    chi_tiet_loai.append((0,0,{
+                    'name':loai.name,
+                    'so_luong':loai.so_luong,                           
+                                               }))
+                value ={
+                'chon_loai':line.loai_id.id,
+                'can_bo_ghi_so_id':line.can_bo_id and line.can_bo_id.id or False,
+                'ngay_ghi_so':line.ngay_cap or False,
+                'tang_giam':'b',
+                'ly_do':'Nhập từ số giấy kiểm dịch'+' '+ line.name,
+                'quan_huyen_id':line.quan_huyen_id and line.quan_huyen_id.id or False,
+                'phuong_xa_id':line.phuong_xa_id and line.phuong_xa_id.id or False,
+                'khu_pho_id':line.khu_pho_id and line.khu_pho_id.id or False,
+                'ten_ho_id':line.ten_ho_id and line.ten_ho_id.id or False,
+                'chitiet_loai':chi_tiet_loai,
+                'trang_thai':'new',
+                'company_id':line.company_id.id,
+                        }
+                if line.trang_thai_id.stt == 1 and user.company_id.cap == 'huyen':
+                    sql = '''
+                        select id from trang_thai where stt = 2
+                    '''
+                    cr.execute(sql)
+                    self.write(cr,uid,ids,{
+                                           'trang_thai_id': cr.dictfetchone()['id'] or False
+                                           })
+                elif line.trang_thai_id.stt == 1 and user.company_id.cap == 'chi_cuc':
+                    sql = '''
+                        select id from trang_thai where stt = 3
+                    '''
+                    cr.execute(sql)
+                    self.write(cr,uid,ids,{
+                                           'trang_thai_id': cr.dictfetchone()['id'] or False
+                                           })
+                    
+                elif line.trang_thai_id.stt == 2 and user.company_id.cap == 'chi_cuc':
+                    sql = '''
+                        select id from trang_thai where stt = 3
+                    '''
+                    cr.execute(sql)
+                    self.write(cr,uid,ids,{
+                                           'trang_thai_id': cr.dictfetchone()['id'] or False
+                                           })
         return co_cau_obj.create(cr,uid,value)
     def onchange_chon_loai(self, cr, uid, ids, loai_id = False, context=None):
         chi_tiet= []
