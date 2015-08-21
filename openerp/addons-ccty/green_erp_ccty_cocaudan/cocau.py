@@ -23,6 +23,9 @@ class co_cau(osv.osv):
         user = self.pool.get('res.users').browse(cr,uid,uid)
         return user.company_id.id or False
     
+    def _get_user(self, cr, uid, ids, context=None):
+        return uid
+    
     def get_trangthai_nhap(self, cr, uid, ids, context=None):
         sql = '''
             select id from trang_thai where stt = 1
@@ -44,7 +47,8 @@ class co_cau(osv.osv):
     
     _columns = {
         'chon_loai': fields.many2one('loai.vat','Chọn loài', required = True),
-        'can_bo_ghi_so_id': fields.many2one('res.users','Cán bộ ghi sổ'),
+        'can_bo_id': fields.many2one( 'res.users','Cán bộ thú y nhập', readonly = True),
+        'can_bo_ghi_so': fields.char('Cán bộ ghi sổ'),
         'ngay_ghi_so': fields.date('Ngày ghi sổ', required = True),
         'tang_giam': fields.selection((('a','Tăng'), ('b','Giảm')),'Tăng/Giảm', required = True),
         'ly_do': fields.char('Lý do tăng giảm',size = 50),
@@ -53,12 +57,13 @@ class co_cau(osv.osv):
         'khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)'),
         'quan_huyen_id': fields.many2one( 'quan.huyen','Quận (huyện)'),
         'chitiet_loai':fields.one2many('chi.tiet.loai.line','co_cau_id','Co Cau'),
-        'company_id': fields.many2one( 'res.company','Company'),
+        'company_id': fields.many2one( 'res.company','Company', readonly = True),
         'trang_thai': fields.selection((('old','Old'), ('new','New')),'Trang thai'),
         'trang_thai_id': fields.many2one('trang.thai','Trạng thái', readonly=True),
         'hien_an': fields.function(_get_hien_an, type='boolean', string='Hien/An'),
                 }
     _defaults = {
+        'can_bo_id': _get_user,
         'company_id': _get_company,
         'trang_thai': 'new',
         'trang_thai_id': get_trangthai_nhap,

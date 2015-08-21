@@ -33,6 +33,9 @@ class xuly_giasuc(osv.osv):
         trang = cr.dictfetchone()['id'] or False
         return trang
     
+    def _get_user(self, cr, uid, ids, context=None):
+        return uid
+    
     def _get_hien_an(self, cr, uid, ids, name, arg, context=None):        
         result = {}
         
@@ -50,16 +53,18 @@ class xuly_giasuc(osv.osv):
         'loai_id': fields.many2one('loai.vat','Loài vật', required = True),
         'ngay': fields.date('Ngày', required = True),
         'ten_ho_id': fields.many2one('chan.nuoi','Hộ', required = True),
-        'can_bo_id': fields.many2one('res.users','Cán bộ'),
+        'can_bo_ghi_so': fields.char('Cán bộ ghi sổ'),
+        'can_bo_id': fields.many2one('res.users','Cán bộ nhập máy', readonly = True),
         'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)'),
         'khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)'),
         'quan_huyen_id': fields.many2one('quan.huyen','Quận (huyện)'),
         'chitiet_loai_xuly':fields.one2many('chitiet.loai.xuly','xuly_giasuc_id','Chi tiet'),
-        'company_id': fields.many2one('res.company','Trạm'),
+        'company_id': fields.many2one('res.company','Trạm', readonly = True),
         'trang_thai_id': fields.many2one('trang.thai','Trạng thái', readonly=True),
         'hien_an': fields.function(_get_hien_an, type='boolean', string='Hien/An'),
                 }
     _defaults = {
+        'can_bo_id': _get_user,
         'company_id': _get_company,
         'trang_thai_id': get_trangthai_nhap,
                  }

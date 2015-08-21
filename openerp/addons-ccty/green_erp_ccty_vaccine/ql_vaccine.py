@@ -28,6 +28,9 @@ class nhap_vaccine(osv.osv):
         trang = cr.dictfetchone()['id'] or False
         return trang
     
+    def _get_user(self, cr, uid, ids, context=None):
+        return uid
+    
     def _get_hien_an(self, cr, uid, ids, name, arg, context=None):        
         result = {}
         
@@ -42,7 +45,7 @@ class nhap_vaccine(osv.osv):
     
     _columns = {
         'name': fields.many2one('loai.vacxin','Loại vaccine', required = True),
-        'can_bo_id': fields.many2one('res.users','Cán bộ nhập máy', required = True),
+        'can_bo_id': fields.many2one('res.users','Cán bộ nhập máy', readonly = True),
         'ngay_nhap': fields.date('Ngày nhập'),
         'soluong': fields.char('Số lượng',size = 50),
         'so_lo_id':fields.many2one('so.lo','Số lô', required = True),
@@ -52,6 +55,7 @@ class nhap_vaccine(osv.osv):
         'hien_an': fields.function(_get_hien_an, type='boolean', string='Hien/An'),
                 }
     _defaults = {
+        'can_bo_id': _get_user,
         'trang_thai_id': get_trangthai_nhap,
                  }
     def bt_duyet(self, cr, uid, ids, context=None):

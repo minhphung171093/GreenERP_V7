@@ -171,6 +171,8 @@
                     <field name="phuong_xa_id" domain="[('quan_huyen_id','=',quan_huyen_id)]"/>
                     <field name="khu_pho_id" domain="[('phuong_xa_id','=',phuong_xa_id)]"/>
                     <field name="dien_tich" />
+                    <field name="trang_thai_id" />
+                    <field name="hien_an" invisible = '1'/>
                 </tree>
             </field>
         </record>
@@ -182,6 +184,10 @@
             <field name="arch" type="xml">
                 <form string="Hộ chăn nuôi" version="7.0">
 	                <sheet>
+	                <header>
+	            		<button name="bt_duyet" groups = "green_erp_ccty_base.group_base_admin_ccty" attrs="{'invisible': [('hien_an', '!=', True)]}" string="Duyệt" type="object" class="oe_highlight" />
+	                    <field name="trang_thai_id" widget="statusbar"/>
+	            	</header> 
                 		<group col="4"  string="Thông tin hộ chăn nuôi">
 		            		<field name="name" />
 		                    <field name="ma_ho" />
@@ -191,6 +197,7 @@
 		                    <field name="phuong_xa_id" />
 		                    <field name="khu_pho_id" />
 		                    <field name="dien_tich" />
+		                    <field name="hien_an" invisible = '1'/>
                 		</group>
 	                </sheet>
                 </form>

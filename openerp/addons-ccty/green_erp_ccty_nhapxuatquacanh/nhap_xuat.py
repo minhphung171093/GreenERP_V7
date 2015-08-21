@@ -40,13 +40,16 @@ class nhap_xuat_canh_giasuc(osv.osv):
         user = self.pool.get('res.users').browse(cr,uid,uid)
         return user.company_id.id or False
     
+    def _get_user(self, cr, uid, ids, context=None):
+        return uid
+    
     def get_trangthai_nhap(self, cr, uid, ids, context=None):
         sql = '''
             select id from trang_thai where stt = 1
         '''
         cr.execute(sql)
-        trang = cr.dictfetchone()['id'] or False
-        return trang
+        trang = cr.dictfetchone()
+        return trang and trang['id'] or False
     
     def _get_hien_an(self, cr, uid, ids, name, arg, context=None):        
         result = {}
@@ -66,7 +69,8 @@ class nhap_xuat_canh_giasuc(osv.osv):
         'ngay_cap': fields.date('Ngày cấp', required = True),
         'ngay_kiem_tra': fields.date('Ngày', required = True),
         'ten_ho_id': fields.many2one('chan.nuoi','Hộ', required = True),
-        'can_bo_id': fields.many2one('res.users','Cán bộ'),
+        'can_bo_id': fields.many2one('res.users','Cán bộ', readonly = True),
+        'can_bo_ghi_so': fields.char('Cán bộ ghi sổ'),
         'tram_id': fields.many2one('tram.thu.y','Trạm'),
         'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)'),
         'khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)'),
@@ -74,12 +78,13 @@ class nhap_xuat_canh_giasuc(osv.osv):
         'loai':fields.selection([('nhap', 'Nhập'),('xuat', 'Xuất')],'Loại', readonly=True),
         'chitiet_loai_nx':fields.one2many('chi.tiet.loai.nhap.xuat','nhap_xuat_loai_id','Chi tiet'),
         'chitiet_da_tiem_phong':fields.one2many('chi.tiet.da.tiem.phong','nhap_xuat_tiemphong_id','Chi tiet'),
-        'company_id': fields.many2one( 'res.company','Company'),
+        'company_id': fields.many2one('res.company','Company', readonly = True),
         'state':fields.selection([('draft', 'Nháp'),('done', 'Duyệt')],'Status', readonly=True),
         'trang_thai_id': fields.many2one('trang.thai','Trạng thái', readonly=True),
         'hien_an': fields.function(_get_hien_an, type='boolean', string='Hien/An'),
                 }
     _defaults = {
+        'can_bo_id': _get_user,
         'company_id': _get_company,
         'trang_thai_id': get_trangthai_nhap,
                  }

@@ -26,7 +26,7 @@
             <field name="arch" type="xml">
                 <form string="Nhập vaccine" version="7.0">
                 <header>
-	            		<button name="bt_duyet" attrs="{'invisible': [('hien_an', '!=', True)]}" string="Duyệt" type="object" class="oe_highlight" />
+	            		<button name="bt_duyet" groups = "green_erp_ccty_vaccine.group_vaccine_manager" attrs="{'invisible': [('hien_an', '!=', True)]}" string="Duyệt" type="object" class="oe_highlight" />
 	                    <field name="trang_thai_id" widget="statusbar"/>
 	            	</header> 
 	                <sheet>

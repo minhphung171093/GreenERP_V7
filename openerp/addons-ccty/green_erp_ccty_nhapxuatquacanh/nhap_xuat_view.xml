@@ -89,6 +89,7 @@
 	                    <field name="loai" />
 	                    <field name="company_id" />
 	                    <field name="can_bo_id" />
+	                    <field name="can_bo_ghi_so" />
 	                </group>
 	                <separator/>
                     <group expand="0" string="Group By...">
@@ -114,6 +115,7 @@
                 	<field name="name" />
                 	<field name="loai_id" />
                 	<field name="ngay_cap" />
+                	<field name="can_bo_ghi_so" />
                 	<field name="can_bo_id" />
                 	<field name="company_id" string = 'Trạm'/>
                 	<field name="ngay_kiem_tra" />
@@ -135,7 +137,7 @@
             <field name="arch" type="xml">
                 <form string="Nhập gia súc" version="7.0">
                 	<header>
-	            		<button name="bt_duyet" attrs="{'invisible': [('hien_an', '!=', True)]}" string="Duyệt" type="object" class="oe_highlight" />
+	            		<button name="bt_duyet" groups = "green_erp_ccty_nhapxuatquacanh.group_nhapxuat_manager" attrs="{'invisible': [('hien_an', '!=', True)]}" string="Duyệt" type="object" class="oe_highlight" />
 	                    <field name="trang_thai_id" widget="statusbar"/>
 	            	</header> 
 	                <sheet>
@@ -143,6 +145,7 @@
                 			<field name="name" />
 		                	<field name="loai_id" on_change = "onchange_chon_loai(loai_id)"/>
 		            		<field name="ngay_cap" />
+		            		<field name="can_bo_ghi_so" />
 		                	<field name="company_id" string = 'Trạm'/>
 		                	<field name="can_bo_id" domain="[('company_id','=',company_id)]"/>
 		                	<field name="ngay_kiem_tra" />
@@ -208,6 +211,7 @@
                 	<field name="name" />
                 	<field name="loai_id" />
             		<field name="ngay_cap" />
+            		<field name="can_bo_ghi_so" />
             		<field name="company_id" string = 'Trạm'/>
 		            <field name="can_bo_id" domain="[('tram_id','=',tram_id)]"/>
                 	<field name="ngay_kiem_tra" />
@@ -229,7 +233,7 @@
             <field name="arch" type="xml">
                 <form string="Xuất gia súc" version="7.0">
                 	<header>
-	            		<button name="bt_duyet" attrs="{'invisible': [('hien_an', '!=', True)]}" string="Duyệt" type="object" class="oe_highlight" />
+	            		<button name="bt_duyet" groups = "green_erp_ccty_nhapxuatquacanh.group_nhapxuat_manager" attrs="{'invisible': [('hien_an', '!=', True)]}" string="Duyệt" type="object" class="oe_highlight" />
 	                    <field name="trang_thai_id" widget="statusbar"/>
 	            	</header> 
 	                <sheet>
@@ -237,6 +241,7 @@
                 			<field name="name" />
 		                	<field name="loai_id" on_change = "onchange_chon_loai(loai_id)"/>
 		            		<field name="ngay_cap" />
+		            		<field name="can_bo_ghi_so" />
 		            		<field name="company_id" string = 'Trạm'/>
 		                	<field name="can_bo_id" domain="[('company_id','=',company_id)]"/>
 		                	<field name="ngay_kiem_tra" />

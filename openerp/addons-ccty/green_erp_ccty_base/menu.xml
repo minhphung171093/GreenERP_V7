@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-    	<menuitem id="cau_hinh" name="Cấu hình"/>
+    	<menuitem id="cau_hinh" name="Cấu hình" groups = "green_erp_ccty_base.group_base_admin_ccty"/>
     	<menuitem id="menu_danh_muc" parent="cau_hinh" icon="STOCK_OPEN" name="Các danh mục"/>
     	<menuitem id="base.menu_action_res_users" parent="menu_danh_muc" name="Danh mục cán bộ" action="base.action_res_users"/>
     	<menuitem id="base.menu_action_res_company_form" parent="menu_danh_muc" name="Danh mục trạm"  action="base.action_res_company_form"/>

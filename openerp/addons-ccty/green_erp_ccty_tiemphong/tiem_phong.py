@@ -72,6 +72,9 @@ class tiem_phong_lmlm(osv.osv):
         trang = cr.dictfetchone()['id'] or False
         return trang
     
+    def _get_user(self, cr, uid, ids, context=None):
+        return uid
+    
     def _get_hien_an(self, cr, uid, ids, name, arg, context=None):        
         result = {}
         
@@ -88,7 +91,8 @@ class tiem_phong_lmlm(osv.osv):
         'name': fields.datetime('Ngày tiêm', required = True),
         'loai_id': fields.many2one('loai.vat','Loài vật', required = True ),
         'tram_id': fields.many2one( 'res.company','Trạm', required = True),
-        'can_bo_id': fields.many2one( 'res.users','Cán bộ thú y thực hiện tiêm'),
+        'can_bo_id': fields.many2one( 'res.users','Cán bộ thú y nhập', readonly = True),
+        'can_bo_tiem': fields.char('Cán bộ thú y thực hiện tiêm', size = 100),
         'loai_vaccine_id': fields.many2one('loai.vacxin','Loại vaccine'),
         'so_lo_id':fields.many2one('so.lo','Số lô'),
         'han_su_dung_rel':fields.related('so_lo_id','han_su_dung',type='date',string='HSD đến'),
@@ -102,6 +106,7 @@ class tiem_phong_lmlm(osv.osv):
         'hien_an': fields.function(_get_hien_an, type='boolean', string='Hien/An'),
                 }
     _defaults = {
+        'can_bo_id': _get_user,
         'tram_id': _get_company,
         'trang_thai_id': get_trangthai_nhap,
                  }

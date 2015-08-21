@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-    	<menuitem id="nhap_xuat" name="Nhập - Xuất - Quá cảnh"/>
+    	<menuitem id="nhap_xuat" name="Nhập - Xuất - Quá cảnh" groups = "green_erp_ccty_base.group_base_admin_ccty,group_nhapxuat_user"/>
     	<menuitem id="menu_nhap_xuat" parent="nhap_xuat" name="Thông tin nhập - Xuất - Quá cảnh"/>
 	    	<menuitem id="thong_tin_nhap_xuat" parent="menu_nhap_xuat" name="Thông tin nhập - Xuất - Quá cảnh" action="action_nhap_xuat"/>
 			<menuitem id="menu_action_nhap_canh_giasuc" parent="menu_nhap_xuat" name="Nhập gia súc" action="action_nhap_canh_giasuc"/> 

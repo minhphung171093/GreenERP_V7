@@ -1,6 +1,21 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_ccty_vaccine_1,so.lo,green_erp_ccty_vaccine.model_so_lo,green_erp_ccty_base.group_base_ccty,True,True,True,True
-access_ccty_vaccine_2,nhap.vaccine,green_erp_ccty_vaccine.model_nhap_vaccine,green_erp_ccty_base.group_base_ccty,True,True,True,True
+access_ccty_vaccine_1,so.lo,green_erp_ccty_vaccine.model_so_lo,green_erp_ccty_vaccine.group_vaccine_user,True,True,True,False
+access_ccty_vaccine_2,nhap.vaccine,green_erp_ccty_vaccine.model_nhap_vaccine,green_erp_ccty_vaccine.group_vaccine_user,True,True,True,False
+
+access_ccty_vaccine_3,khu.pho,green_erp_ccty_base.model_khu_pho,green_erp_ccty_vaccine.group_vaccine_user,True,True,True,False
+access_ccty_vaccine_4,quan.huyen,green_erp_ccty_base.model_quan_huyen,green_erp_ccty_vaccine.group_vaccine_user,True,True,True,False
+access_ccty_vaccine_5,phuong.xa,green_erp_ccty_base.model_phuong_xa,green_erp_ccty_vaccine.group_vaccine_user,True,True,True,False
+access_ccty_vaccine_6,chan.nuoi,green_erp_ccty_base.model_chan_nuoi,green_erp_ccty_vaccine.group_vaccine_user,True,True,True,False
+access_ccty_vaccine_7,chi.tiet.loai.benh,green_erp_ccty_base.model_chi_tiet_loai_benh,green_erp_ccty_vaccine.group_vaccine_user,True,True,True,True
+access_ccty_vaccine_8,chi.tiet.loai.vat,green_erp_ccty_base.model_chi_tiet_loai_vat,green_erp_ccty_vaccine.group_vaccine_user,True,True,True,True
+access_ccty_vaccine_9,loai.vat,green_erp_ccty_base.model_loai_vat,green_erp_ccty_vaccine.group_vaccine_user,True,True,True,False
+access_ccty_vaccine_10,tinh.tp,green_erp_ccty_base.model_tinh_tp,green_erp_ccty_vaccine.group_vaccine_user,True,True,True,False
+access_ccty_vaccine_11,loai.vacxin,green_erp_ccty_base.model_loai_vacxin,green_erp_ccty_vaccine.group_vaccine_user,True,True,True,False
+access_ccty_vaccine_12,trang.thai,green_erp_ccty_base.model_trang_thai,green_erp_ccty_vaccine.group_vaccine_user,True,True,True,False
+access_ccty_vaccine_13,loai.hang,green_erp_ccty_base.model_loai_hang,green_erp_ccty_vaccine.group_vaccine_user,True,True,True,False
+
+access_ccty_vaccine_14,so.lo,green_erp_ccty_vaccine.model_so_lo,green_erp_ccty_vaccine.group_vaccine_manager,True,True,True,True
+access_ccty_vaccine_15,nhap.vaccine,green_erp_ccty_vaccine.model_nhap_vaccine,green_erp_ccty_vaccine.group_vaccine_manager,True,True,True,True
 
 
 

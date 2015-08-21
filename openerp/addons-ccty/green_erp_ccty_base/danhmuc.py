@@ -121,6 +121,25 @@ chi_tiet_loai_benh()
 
 class chan_nuoi(osv.osv):
     _name = "chan.nuoi"
+    def get_trangthai_nhap(self, cr, uid, ids, context=None):
+        sql = '''
+            select id from trang_thai where stt = 1
+        '''
+        cr.execute(sql)
+        trang = cr.dictfetchone()['id'] or False
+        return trang
+    
+    def _get_hien_an(self, cr, uid, ids, name, arg, context=None):        
+        result = {}
+        
+        user = self.pool.get('res.users').browse(cr,uid,uid)
+        for nhap_xuat in self.browse(cr,uid,ids):
+            result[nhap_xuat.id] = False  
+            if nhap_xuat.trang_thai_id.stt == 1 and user.company_id.cap in ['huyen', 'chi_cuc']:
+                result[nhap_xuat.id] = True
+            elif nhap_xuat.trang_thai_id.stt == 2 and user.company_id.cap in ['chi_cuc']:
+                result[nhap_xuat.id] = True    
+        return result
     _columns = {
         'ma_ho': fields.char('Mã hộ',size = 50, required = True),
         'name': fields.char('Tên hộ',size = 50, required = True),
@@ -130,7 +149,41 @@ class chan_nuoi(osv.osv):
         'khu_pho_id': fields.many2one('khu.pho','Khu phố (ấp)'),
         'quan_huyen_id': fields.many2one('quan.huyen','Quận (huyện)'),
         'dien_tich': fields.char('Diện tích đất'),
+        'trang_thai_id': fields.many2one('trang.thai','Trạng thái', readonly=True),
+        'hien_an': fields.function(_get_hien_an, type='boolean', string='Hien/An'),
                 }
+    _defaults = {
+        'trang_thai_id': get_trangthai_nhap,
+                 }
+    def bt_duyet(self, cr, uid, ids, context=None):
+        user = self.pool.get('res.users').browse(cr,uid,uid)
+        for line in self.browse(cr, uid, ids, context=context):
+            if line.trang_thai_id.stt == 1 and user.company_id.cap == 'huyen':
+                sql = '''
+                    select id from trang_thai where stt = 2
+                '''
+                cr.execute(sql)
+                self.write(cr,uid,ids,{
+                                       'trang_thai_id': cr.dictfetchone()['id'] or False
+                                       })
+            elif line.trang_thai_id.stt == 1 and user.company_id.cap == 'chi_cuc':
+                sql = '''
+                    select id from trang_thai where stt = 3
+                '''
+                cr.execute(sql)
+                self.write(cr,uid,ids,{
+                                       'trang_thai_id': cr.dictfetchone()['id'] or False
+                                       })
+                
+            elif line.trang_thai_id.stt == 2 and user.company_id.cap == 'chi_cuc':
+                sql = '''
+                    select id from trang_thai where stt = 3
+                '''
+                cr.execute(sql)
+                self.write(cr,uid,ids,{
+                                       'trang_thai_id': cr.dictfetchone()['id'] or False
+                                       })
+        return True
 chan_nuoi()
 class phuong_xa(osv.osv):
     _name = "phuong.xa"
