@@ -2,10 +2,8 @@
 <openerp>
     <data>
     	<menuitem
-            action="base.action_partner_category_form" id="menu_partner_categories_in_form" name="Partner Categories" 
-            parent="green_erp_sale.address_book" 
-            groups="base.group_no_one" sequence="80"/>
-       
+            action="base.action_partner_category_form" id="menu_partner_categories_in_form" name="Partner Categories" parent="green_erp_sale.address_book" groups="base.group_no_one" sequence="80"/>
+            
 
     </data>
 </openerp>
