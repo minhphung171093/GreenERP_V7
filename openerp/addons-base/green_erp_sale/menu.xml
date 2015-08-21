@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-    	<menuitem id="cau_hinh" name="Aministrator" sequence="50"/>
+    	<menuitem id="cau_hinh" name="Administrator" sequence="50"/>
     		<menuitem id="menu_items" name="Menu Items" parent="cau_hinh" sequence="10"/>
 		    	<menuitem id="products" name="Products" parent="menu_items" sequence="10"/>
+		    		<menuitem action="product.product_normal_action_sell" id="product.menu_products" parent="products" sequence="5"/>
 		    		<menuitem action="product.product_category_action_form" id="menu_product_category_action_form" parent="products" sequence="10"/>
 		    		<menuitem action="product.product_category_action" id="product.menu_products_category" parent="products" sequence="20" groups="base.group_no_one"/>
-	            <menuitem id="khach_hang" name="Customers" parent="menu_items" sequence="20"/>
-	            	<menuitem id="menu_partner_form" parent="khach_hang" action="base.action_partner_form" sequence="10"/>
+	            <menuitem id="khach_hang" name="Customers" parent="menu_items" sequence="20" action="base.action_partner_form" />
 				<menuitem id="address_book" name="Address Book" parent="menu_items" sequence="30"/>
 					<menuitem id="menu_localisation" name="Localization" parent="address_book" sequence="10" />
 						<menuitem action="base.action_country" id="menu_country_partner" parent="menu_localisation" sequence="0"/>
@@ -18,6 +18,21 @@
 					<menuitem action="base.action_res_partner_bank_account_form" id="menu_action_res_partner_bank_form" parent="address_book" groups="base.group_no_one" sequence="50"/>
 					<menuitem action="base.action_res_bank_form" id="menu_action_res_bank_form" parent="address_book" sequence="60" groups="base.group_no_one"/>
 					<menuitem action="base.action_res_partner_bank_type_form" id="menu_action_res_partner_bank_typeform" parent="address_book" groups="base.group_no_one" sequence="70"/>
+		
+		
+		<record model="ir.ui.menu" id="base.menu_base_config">
+			<field name="active" eval="False"/>
+		</record>
+		<record model="ir.ui.menu" id="mail.mail_feeds_main">
+			<field name="active" eval="False"/>
+		</record>
+		
+		<record model="ir.ui.menu" id="base.menu_partner_form">
+			<field name="active" eval="False"/>
+		</record>
+		
+					
+					
 						
 										
     </data>
