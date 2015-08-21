@@ -147,6 +147,32 @@ class duan_phanmem(osv.osv):
             res[task.duan_id.id] += 1
         return res
     
+    def _sotien_giam(self, cr, uid, ids, field_name, arg, context=None):
+        if context is None:
+            context = {}
+        res = {}
+        for duan in self.browse(cr, uid, ids, context):
+            sotien_giam = 0
+            if not duan.ngay_ht:
+                ngay_ht = time.strftime('%Y-%m-%d')
+            else:
+                ngay_ht = duan.ngay_ht
+            if duan.han_chot and duan.han_chot<ngay_ht:
+                date_format = '%Y-%m-%d'
+                a = datetime.strptime(ngay_ht, date_format)
+                b = datetime.strptime(duan.han_chot, date_format)
+                songay_tre = (a-b).days
+                trehan_obj = self.pool.get('duan.trehan')
+                trehan_ids = trehan_obj.search(cr, uid, [],order='name')
+                phantram_giam = 0
+                for line in trehan_obj.browse(cr, uid, trehan_ids):
+                    if songay_tre >= line.name:
+                        phantram_giam = line.phantram_giam
+                if phantram_giam:
+                    sotien_giam = duan.muc_thuong*phantram_giam/100
+            res[duan.id] = sotien_giam
+        return res
+    
     _columns = {
         'name': fields.char('Tên dự án', required=True, size=1024, track_visibility='onchange'),
         'user_id': fields.many2one('res.users', 'Người quản lý', track_visibility='onchange',required=True),
@@ -160,13 +186,23 @@ class duan_phanmem(osv.osv):
         'nhom_congviec_count': fields.function(_nhom_congviec_count, type='integer', string="Nhóm công việc"),
         'trangthai_duan_ids': fields.many2many('trangthai.duan', 'duan_trangthai_duan_rel', 'duan_id', 'trangthai_id', 'Trạng thái của dự án'),
         'trangthai_congviec_ids': fields.many2many('trangthai.congviec', 'duan_trangthai_congviec_rel', 'duan_id', 'trangthai_id', 'Trạng thái của công việc'),
-        'stage_id': fields.many2one('trangthai.duan', 'Stage', select=True,
+        'stage_id': fields.many2one('trangthai.duan', 'Stage', select=True, track_visibility='onchange',
                         domain="['&', ('fold', '=', False), ('duan_ids', '=', id)]"),
         'state': fields.related('stage_id', 'state', type="selection", store=True,
                 selection=_TASK_STATE, string="Status", readonly=True, select=True),
         'team_line': fields.one2many('duan.team','duan_id', 'Team'),
         'members':fields.function(_get_members, type='many2many', relation='res.users', string='Members'),
+        'sotien_giam': fields.function(_sotien_giam, type='float', string="Số tiền giảm"),
+        'ngay_ht': fields.date('Ngày hoàn thành', track_visibility='onchange', readonly=True),
     }
+    
+    def write(self, cr, uid, ids, vals, context=None):
+        if vals.get('stage_id', False):
+            trangthai_obj = self.pool.get('trangthai.duan')
+            trangthai = trangthai_obj.browse(cr, uid, vals['stage_id'])
+            if trangthai.state=='done':
+                vals.update({'ngay_ht': time.strftime('%Y-%m-%d')})
+        return super(duan_phanmem, self).write(cr, uid, ids, vals, context)
     
     def _get_trangthai_duan(self, cr, uid, context):
         ids = self.pool.get('trangthai.duan').search(cr, uid, [('case_default','=',1)], context=context)
@@ -203,7 +239,7 @@ class duan_team(osv.osv):
             cr.execute(sql)
             tong_he_so = cr.fetchone()[0]
             if tong_he_so:
-                thanhtien = team.duan_id.muc_thuong*team.he_so/tong_he_so
+                thanhtien = (team.duan_id.muc_thuong-team.duan_id.sotien_giam)*team.he_so/tong_he_so
             res[team.id] = thanhtien
         return res
     
@@ -215,6 +251,16 @@ class duan_team(osv.osv):
     }
     
 duan_team()
+
+class duan_trehan(osv.osv):
+    _name = 'duan.trehan'
+    _order = 'name'
+    _columns = {
+        'name': fields.integer('Số ngày trễ',required=True),
+        'phantram_giam': fields.integer('Giảm (%)',required=True),
+    }
+    
+duan_trehan()
 
 class nhom_congviec(osv.osv):
     _name = 'nhom.congviec'
@@ -230,7 +276,7 @@ class nhom_congviec(osv.osv):
         'han_chot': fields.date('Hạn chót', track_visibility='onchange'),
         'color': fields.integer('Color Index'),
         'trangthai_nhom_congviec_ids': fields.many2many('trangthai.nhom.congviec', 'nhom_congviec_trangthai_rel', 'nhom_congviecs_id', 'trangthai_id', 'Trạng thái của công việc'),
-        'stage_id': fields.many2one('trangthai.nhom.congviec', 'Stage', select=True,
+        'stage_id': fields.many2one('trangthai.nhom.congviec', 'Stage', select=True, track_visibility='onchange',
                         domain="['&', ('fold', '=', False), ('nhom_congviec_ids', '=', id)]"),
         'state': fields.related('stage_id', 'state', type="selection", store=True,
                 selection=_TASK_STATE, string="Status", readonly=True, select=True),
@@ -272,11 +318,12 @@ class cong_viec(osv.osv):
         'description': fields.text('Description'),
         'ngay_bd': fields.datetime('Ngày bắt đầu', track_visibility='onchange'),
         'ngay_kt': fields.datetime('Ngày kết thúc', track_visibility='onchange'),
+        'ngay_ht': fields.date('Ngày hoàn thành', track_visibility='onchange', readonly=True),
         'han_chot': fields.date('Hạn chót', track_visibility='onchange'),
         'color': fields.integer('Color Index'),
         'priority': fields.selection([('4','Very Low'), ('3','Low'), ('2','Medium'), ('1','Important'), ('0','Very important')], 'Priority', select=True),
         'sequence': fields.integer('Sequence', select=True, help="Gives the sequence order when displaying a list of tasks."),
-        'stage_id': fields.many2one('trangthai.congviec', 'Stage', select=True,
+        'stage_id': fields.many2one('trangthai.congviec', 'Stage', select=True, track_visibility='onchange',
                         domain="['&', ('fold', '=', False), ('duan_ids', '=', duan_id)]"),
         'state': fields.related('stage_id', 'state', type="selection", store=True,
                 selection=_TASK_STATE, string="Status", readonly=True, select=True),
@@ -338,6 +385,13 @@ class cong_viec(osv.osv):
         """
         return self.write(cr, uid, ids, {'priority' : '2'})
 
+    def write(self, cr, uid, ids, vals, context=None):
+        if vals.get('stage_id', False):
+            trangthai_obj = self.pool.get('trangthai.congviec')
+            trangthai = trangthai_obj.browse(cr, uid, vals['stage_id'])
+            if trangthai.state=='done':
+                vals.update({'ngay_ht': time.strftime('%Y-%m-%d')})
+        return super(cong_viec, self).write(cr, uid, ids, vals, context)
     
 cong_viec()
 

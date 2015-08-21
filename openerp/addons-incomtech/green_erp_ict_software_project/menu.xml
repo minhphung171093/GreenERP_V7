@@ -44,12 +44,18 @@
 		    		name="Trạng thái nhóm công việc"
 		    		action="action_trangthai_nhom_congviec"
 		    		parent="menu_duan_cauhinh"
-		            sequence="10"/>
+		            sequence="20"/>
 		            
 	            <menuitem id="menu_action_trangthai_congviec"
 		    		name="Trạng thái công việc"
 		    		action="action_trangthai_congviec"
 		    		parent="menu_duan_cauhinh"
-		            sequence="10"/>
+		            sequence="30"/>
+		            
+	            <menuitem id="menu_action_duan_trehan"
+		    		name="Trễ hạn"
+		    		action="action_duan_trehan"
+		    		parent="menu_duan_cauhinh"
+		            sequence="40"/>
     </data>
 </openerp>

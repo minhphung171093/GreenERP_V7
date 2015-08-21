@@ -191,6 +191,7 @@
                         <group>
                         	<field name="ngay_bd"/>
                         	<field name="ngay_kt"/>
+                        	<field name="ngay_ht"/>
                         	<field name="han_chot"/>
                         </group>
                     </group>
@@ -490,10 +491,12 @@
                             <field name="user_id" context="{'search_user_for_project': 1}"/>
                             <field name="ngay_bd"/>
                         	<field name="ngay_kt"/>
+                        	<field name="ngay_ht"/>
                         </group>
                         <group>
                         	<field name="han_chot"/>
                         	<field name="muc_thuong"/>
+                        	<field name="sotien_giam"/>
                         </group>
                     </group>
                     <notebook>
@@ -502,7 +505,7 @@
                             	<tree editable='1'>
                             		<field name="user_id"/>
                         			<field name="he_so"/>
-                        			<field name="thanhtien"/>
+                        			<field name="thanhtien" sum="Tổng tiền"/>
                             	</tree>
                             </field>
                             <field name="members" invisible='1'/>
@@ -646,8 +649,43 @@
 		        <field name='han_chot' position="attributes">
 		            <attribute name="readonly">0</attribute>
 		        </field>
+		        <field name='ngay_ht' position="attributes">
+		            <attribute name="readonly">0</attribute>
+		        </field>
 		    </field>
 		</record>
+		
+		<record id="congviec_form_view_readonly" model="ir.ui.view">
+		    <field name="name">cong.viec.form.readonly.cust</field>
+		    <field name="model">cong.viec</field>
+		    <field name="inherit_id" ref="congviec_form_view"/>
+		    <field name="groups_id" eval="[(6, 0, [ref('group_software_project_leader') ])]"/>
+		    <field name="arch" type="xml">
+		        <field name='ngay_ht' position="attributes">
+		            <attribute name="readonly">0</attribute>
+		        </field>
+		    </field>
+		</record>
+		
+		<!-- Tre han -->
+		<record id="duan_trehan_tree_view" model="ir.ui.view">
+            <field name="name">duan.trehan.tree</field>
+            <field name="model">duan.trehan</field>
+            <field name="arch" type="xml">
+                <tree string="Trễ hạn" editable='bottom'>
+                    <field name="name"/>
+                    <field name="phantram_giam"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="action_duan_trehan" model="ir.actions.act_window">
+            <field name="name">Trễ hạn</field>
+            <field name="res_model">duan.trehan</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="duan_trehan_tree_view"/>
+        </record>
 		
     </data>
 </openerp>
