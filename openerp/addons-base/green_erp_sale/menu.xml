@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-    	<menuitem id="cau_hinh" name="Administrator" sequence="50"/>
-    		<menuitem id="menu_items" name="Menu Items" parent="cau_hinh" sequence="10"/>
+    	
+    		<menuitem id="menu_items" name="Menu Items" parent="green_erp_base.admin" sequence="10"/>
 		    	<menuitem id="products" name="Products" parent="menu_items" sequence="10"/>
 		    		<menuitem action="product.product_normal_action_sell" id="product.menu_products" parent="products" sequence="5"/>
 		    		<menuitem action="product.product_category_action_form" id="menu_product_category_action_form" parent="products" sequence="10"/>
