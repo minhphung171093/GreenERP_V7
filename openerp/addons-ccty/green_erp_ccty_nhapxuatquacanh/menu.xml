@@ -3,7 +3,7 @@
     <data>
     	<menuitem id="nhap_xuat" name="Nhập - Xuất - Quá cảnh"/>
     	<menuitem id="menu_nhap_xuat" parent="nhap_xuat" name="Thông tin nhập - Xuất - Quá cảnh"/>
-	    	<menuitem id="thong_tin_nhap_xuat" parent="menu_nhap_xuat" name="Thông tin nhập - Xuất - Quá cảnh" action="action_nhap_xuat"/>
+	 <!--  	<menuitem id="thong_tin_nhap_xuat" parent="menu_nhap_xuat" name="Thông tin nhập - Xuất - Quá cảnh" action="action_nhap_xuat"/> -->
 			<menuitem id="menu_action_nhap_canh_giasuc" parent="menu_nhap_xuat" name="Nhập gia súc" action="action_nhap_canh_giasuc"/> 
 			<menuitem id="menu_action_xuat_canh_giasuc" parent="menu_nhap_xuat" name="Xuất gia súc" action="action_xuat_canh_giasuc"/> 
 		
