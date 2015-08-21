@@ -47,7 +47,7 @@ class co_cau(osv.osv):
     
     _columns = {
         'chon_loai': fields.many2one('loai.vat','Chọn loài', required = True),
-        'can_bo_id': fields.many2one( 'res.users','Cán bộ thú y nhập', readonly = True),
+        'can_bo_id': fields.many2one( 'res.users','Cán bộ thú y nhập'),
         'can_bo_ghi_so': fields.char('Cán bộ ghi sổ'),
         'ngay_ghi_so': fields.date('Ngày ghi sổ', required = True),
         'tang_giam': fields.selection((('a','Tăng'), ('b','Giảm')),'Tăng/Giảm', required = True),
@@ -57,10 +57,14 @@ class co_cau(osv.osv):
         'khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)'),
         'quan_huyen_id': fields.many2one( 'quan.huyen','Quận (huyện)'),
         'chitiet_loai':fields.one2many('chi.tiet.loai.line','co_cau_id','Co Cau'),
-        'company_id': fields.many2one( 'res.company','Company', readonly = True),
+        'company_id': fields.many2one( 'res.company','Company'),
         'trang_thai': fields.selection((('old','Old'), ('new','New')),'Trang thai'),
         'trang_thai_id': fields.many2one('trang.thai','Trạng thái', readonly=True),
         'hien_an': fields.function(_get_hien_an, type='boolean', string='Hien/An'),
+        'chinh_sua_rel': fields.related('trang_thai_id', 'chinh_sua', type="selection",
+                selection=[('nhap', 'Nháp'),('in', 'Đang xử lý'), ('duyet', 'Duyệt'), ('huy', 'Hủy bỏ')], 
+                string="Chinh Sua", readonly=True, select=True),
+                
                 }
     _defaults = {
         'can_bo_id': _get_user,

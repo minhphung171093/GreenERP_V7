@@ -173,6 +173,7 @@
                     <field name="dien_tich" />
                     <field name="trang_thai_id" />
                     <field name="hien_an" invisible = '1'/>
+                    <field name="chinh_sua_rel" invisible = '1'/>
                 </tree>
             </field>
         </record>
@@ -189,15 +190,16 @@
 	                    <field name="trang_thai_id" widget="statusbar"/>
 	            	</header> 
                 		<group col="4"  string="Thông tin hộ chăn nuôi">
-		            		<field name="name" />
-		                    <field name="ma_ho" />
-		                    <field name="so_nha" />                    
-		                    <field name="ngay_cap" />
-		                    <field name="quan_huyen_id" />
-		                    <field name="phuong_xa_id" />
-		                    <field name="khu_pho_id" />
-		                    <field name="dien_tich" />
+		            		<field name="name" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+		                    <field name="ma_ho" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+		                    <field name="so_nha" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>                    
+		                    <field name="ngay_cap" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+		                    <field name="quan_huyen_id" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+		                    <field name="phuong_xa_id" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+		                    <field name="khu_pho_id" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+		                    <field name="dien_tich" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 		                    <field name="hien_an" invisible = '1'/>
+		                    <field name="chinh_sua_rel" invisible = '1' />
                 		</group>
 	                </sheet>
                 </form>
@@ -438,6 +440,7 @@
                 		<group>
 			            	<field name="stt" />
 		                    <field name="name" />
+		                    <field name="chinh_sua" />
                 		</group>
 	                </sheet>
                 </form>

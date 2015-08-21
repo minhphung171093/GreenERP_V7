@@ -90,8 +90,8 @@ class tiem_phong_lmlm(osv.osv):
     _columns = {
         'name': fields.datetime('Ngày tiêm', required = True),
         'loai_id': fields.many2one('loai.vat','Loài vật', required = True ),
-        'tram_id': fields.many2one( 'res.company','Trạm', required = True),
-        'can_bo_id': fields.many2one( 'res.users','Cán bộ thú y nhập', readonly = True),
+        'tram_id': fields.many2one( 'res.company','Trạm'),
+        'can_bo_id': fields.many2one( 'res.users','Cán bộ thú y nhập'),
         'can_bo_tiem': fields.char('Cán bộ thú y thực hiện tiêm', size = 100),
         'loai_vaccine_id': fields.many2one('loai.vacxin','Loại vaccine'),
         'so_lo_id':fields.many2one('so.lo','Số lô'),
@@ -102,8 +102,11 @@ class tiem_phong_lmlm(osv.osv):
         'ho_chan_nuoi_id': fields.many2one( 'chan.nuoi','Hộ chăn nuôi'),
         'chi_tiet_tp_line':fields.one2many( 'ct.tiem.phong.lmlm.line','tp_lmlm_id','Chi tiết tiêm phòng'),
         'state':fields.selection([('draft', 'Nháp'),('done', 'Duyệt')],'Status', readonly=True),
-        'trang_thai_id': fields.many2one('trang.thai','Trạng thái', readonly=True),
+        'trang_thai_id': fields.many2one('trang.thai','Trạng thái'),
         'hien_an': fields.function(_get_hien_an, type='boolean', string='Hien/An'),
+        'chinh_sua_rel': fields.related('trang_thai_id', 'chinh_sua', type="selection",
+                selection=[('nhap', 'Nháp'),('in', 'Đang xử lý'), ('duyet', 'Duyệt'), ('huy', 'Hủy bỏ')], 
+                string="Chinh Sua", readonly=True, select=True),
                 }
     _defaults = {
         'can_bo_id': _get_user,

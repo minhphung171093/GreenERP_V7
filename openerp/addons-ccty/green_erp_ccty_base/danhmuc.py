@@ -34,6 +34,7 @@ class trang_thai(osv.osv):
     _columns = {
         'name': fields.char('Trạng thái', size=100,required = True),
         'stt': fields.integer('STT',required = True),
+        'chinh_sua': fields.selection([('nhap', 'Nháp'),('in', 'Đang xử lý'), ('duyet', 'Duyệt'), ('huy', 'Hủy bỏ')],'Chinh Sua'),
                 }
 trang_thai()
 
@@ -126,8 +127,8 @@ class chan_nuoi(osv.osv):
             select id from trang_thai where stt = 1
         '''
         cr.execute(sql)
-        trang = cr.dictfetchone()['id'] or False
-        return trang
+        trang = cr.dictfetchone()
+        return trang and trang['id'] or False
     
     def _get_hien_an(self, cr, uid, ids, name, arg, context=None):        
         result = {}
@@ -151,6 +152,9 @@ class chan_nuoi(osv.osv):
         'dien_tich': fields.char('Diện tích đất'),
         'trang_thai_id': fields.many2one('trang.thai','Trạng thái', readonly=True),
         'hien_an': fields.function(_get_hien_an, type='boolean', string='Hien/An'),
+        'chinh_sua_rel': fields.related('trang_thai_id', 'chinh_sua', type="selection",
+                selection=[('nhap', 'Nháp'),('in', 'Đang xử lý'), ('duyet', 'Duyệt'), ('huy', 'Hủy bỏ')], 
+                string="Chinh Sua", readonly=True, select=True),
                 }
     _defaults = {
         'trang_thai_id': get_trangthai_nhap,

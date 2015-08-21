@@ -100,6 +100,7 @@
 	                    <field name="phuong_xa_id" />
 	                    <field name="khu_pho_id" />
 	                    <field name="ho_chan_nuoi_id" />
+	                    <field name="can_bo_tiem" />
 	                </group>
 	            </search>	
 	        </field>
@@ -112,7 +113,8 @@
             <field name="arch" type="xml">
                 <tree string="Quản lý Tiêm phòng bệnh Lỡ mồm long móng">
  						<field name="name" />      
- 						<field name="loai_id" />              
+ 						<field name="loai_id" />    
+ 						<field name="can_bo_tiem" />          
 	                    <field name="tram_id" />
 	                    <field name="can_bo_id" />
 	                    <field name="loai_vaccine_id" />
@@ -124,6 +126,7 @@
 	                    <field name="ho_chan_nuoi_id" />
 	                    <field name="trang_thai_id" />
                 		<field name="hien_an" invisible = '1'/>
+                		<field name="chinh_sua_rel" invisible = '1'/>
                 </tree>
             </field>
         </record>
@@ -140,22 +143,24 @@
 	            	</header> 
 	                <sheet>
 	                		<group col="4">
-		                		<field name="name"/>
-		                		<field name="loai_id" context="{'search_loai_id':True}" on_change = "onchange_ho_chan_nuoi_id(ho_chan_nuoi_id, loai_id)"/>
-			                    <field name="tram_id" />
-			                    <field name="can_bo_id" domain="[('company_id','=',tram_id)]" />
-			                    <field name="loai_vaccine_id" />
-			                   	<field name="so_lo_id" domain="[('vacxin_id','=',loai_vaccine_id)]" />
-			                   	<field name="han_su_dung_rel" readonly = "1" />
-			                    <field name="quan_huyen_id" on_change="onchange_quan_huyen()"/>
-			                    <field name="phuong_xa_id" on_change="onchange_phuong_xa()" domain="[('quan_huyen_id','=',quan_huyen_id)]"/>
-			                    <field name="khu_pho_id" domain="[('phuong_xa_id','=',phuong_xa_id)]"/>
-			                    <field name="ho_chan_nuoi_id" on_change = "onchange_ho_chan_nuoi_id(ho_chan_nuoi_id, loai_id)" domain="[('quan_huyen_id','=',quan_huyen_id), ('phuong_xa_id','=',phuong_xa_id), ('khu_pho_id','=',khu_pho_id)]"/>
+		                		<field name="name" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+		                		<field name="loai_id" context="{'search_loai_id':True}" on_change = "onchange_ho_chan_nuoi_id(ho_chan_nuoi_id, loai_id)" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+			                    <field name="can_bo_tiem" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+			                    <field name="tram_id" readonly = "1" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+			                    <field name="can_bo_id" readonly = "1" domain="[('company_id','=',tram_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+			                    <field name="loai_vaccine_id" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+			                   	<field name="so_lo_id" domain="[('vacxin_id','=',loai_vaccine_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+			                   	<field name="han_su_dung_rel" readonly = "1" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+			                    <field name="quan_huyen_id" on_change="onchange_quan_huyen()" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+			                    <field name="phuong_xa_id" on_change="onchange_phuong_xa()" domain="[('quan_huyen_id','=',quan_huyen_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+			                    <field name="khu_pho_id" domain="[('phuong_xa_id','=',phuong_xa_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+			                    <field name="ho_chan_nuoi_id" on_change = "onchange_ho_chan_nuoi_id(ho_chan_nuoi_id, loai_id)" domain="[('quan_huyen_id','=',quan_huyen_id), ('phuong_xa_id','=',phuong_xa_id), ('khu_pho_id','=',khu_pho_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
                 				<field name="hien_an" invisible = '1'/>
+                				<field name="chinh_sua_rel" invisible = '1'/>
 	                		</group>
                 			<notebook>
 								<page string = "Thông tin chi tiết tiêm phòng">
-									<field name="chi_tiet_tp_line" nolabel='1'>
+									<field name="chi_tiet_tp_line" nolabel='1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}">
 										<tree editable='bottom' create = 'false'>
 											<field name="name"/>
 											<field name="so_luong" sum = 'Total'/>

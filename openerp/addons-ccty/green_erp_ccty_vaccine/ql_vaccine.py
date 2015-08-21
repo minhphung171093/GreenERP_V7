@@ -45,7 +45,7 @@ class nhap_vaccine(osv.osv):
     
     _columns = {
         'name': fields.many2one('loai.vacxin','Loại vaccine', required = True),
-        'can_bo_id': fields.many2one('res.users','Cán bộ nhập máy', readonly = True),
+        'can_bo_id': fields.many2one('res.users','Cán bộ nhập máy'),
         'ngay_nhap': fields.date('Ngày nhập'),
         'soluong': fields.char('Số lượng',size = 50),
         'so_lo_id':fields.many2one('so.lo','Số lô', required = True),
@@ -53,6 +53,9 @@ class nhap_vaccine(osv.osv):
         'state':fields.selection([('draft', 'Nháp'),('done', 'Duyệt')],'Status', readonly=True),
         'trang_thai_id': fields.many2one('trang.thai','Trạng thái', readonly=True),
         'hien_an': fields.function(_get_hien_an, type='boolean', string='Hien/An'),
+        'chinh_sua_rel': fields.related('trang_thai_id', 'chinh_sua', type="selection",
+                selection=[('nhap', 'Nháp'),('in', 'Đang xử lý'), ('duyet', 'Duyệt'), ('huy', 'Hủy bỏ')], 
+                string="Chinh Sua", readonly=True, select=True),
                 }
     _defaults = {
         'can_bo_id': _get_user,

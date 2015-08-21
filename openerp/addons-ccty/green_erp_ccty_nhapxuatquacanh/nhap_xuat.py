@@ -69,7 +69,7 @@ class nhap_xuat_canh_giasuc(osv.osv):
         'ngay_cap': fields.date('Ngày cấp', required = True),
         'ngay_kiem_tra': fields.date('Ngày', required = True),
         'ten_ho_id': fields.many2one('chan.nuoi','Hộ', required = True),
-        'can_bo_id': fields.many2one('res.users','Cán bộ', readonly = True),
+        'can_bo_id': fields.many2one('res.users','Cán bộ'),
         'can_bo_ghi_so': fields.char('Cán bộ ghi sổ'),
         'tram_id': fields.many2one('tram.thu.y','Trạm'),
         'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)'),
@@ -78,10 +78,13 @@ class nhap_xuat_canh_giasuc(osv.osv):
         'loai':fields.selection([('nhap', 'Nhập'),('xuat', 'Xuất')],'Loại', readonly=True),
         'chitiet_loai_nx':fields.one2many('chi.tiet.loai.nhap.xuat','nhap_xuat_loai_id','Chi tiet'),
         'chitiet_da_tiem_phong':fields.one2many('chi.tiet.da.tiem.phong','nhap_xuat_tiemphong_id','Chi tiet'),
-        'company_id': fields.many2one('res.company','Company', readonly = True),
+        'company_id': fields.many2one('res.company','Company'),
         'state':fields.selection([('draft', 'Nháp'),('done', 'Duyệt')],'Status', readonly=True),
         'trang_thai_id': fields.many2one('trang.thai','Trạng thái', readonly=True),
         'hien_an': fields.function(_get_hien_an, type='boolean', string='Hien/An'),
+        'chinh_sua_rel': fields.related('trang_thai_id', 'chinh_sua', type="selection",
+                selection=[('nhap', 'Nháp'),('in', 'Đang xử lý'), ('duyet', 'Duyệt'), ('huy', 'Hủy bỏ')], 
+                string="Chinh Sua", readonly=True, select=True),
                 }
     _defaults = {
         'can_bo_id': _get_user,

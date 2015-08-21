@@ -15,6 +15,7 @@
             		<field name="han_su_dung" />
             		<field name="trang_thai_id"/>
             		<field name="hien_an" invisible = '1'/>
+            		<field name="chinh_sua_rel" invisible = '1'/>
                 </tree>
             </field>
         </record>
@@ -31,13 +32,14 @@
 	            	</header> 
 	                <sheet>
                 		<group col="4"  string="Nhập Vaccine">
-                			<field name="can_bo_id" />
-                			<field name="name" />
-			            	<field name="ngay_nhap" />
-			        		<field name="soluong" />
-			        		<field name="so_lo_id" domain="[('vacxin_id','=',name)]"  />
-            				<field name="han_su_dung" readonly = "1"/>
+                			<field name="can_bo_id" readonly = '1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+                			<field name="name" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+			            	<field name="ngay_nhap" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+			        		<field name="soluong" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+			        		<field name="so_lo_id" domain="[('vacxin_id','=',name)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+            				<field name="han_su_dung" readonly = "1" />
             				<field name="hien_an" invisible = '1'/>
+            				<field name="chinh_sua_rel" invisible = '1'/>
                 		</group>
 	                </sheet>
                 </form>
