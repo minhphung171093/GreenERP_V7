@@ -3,11 +3,11 @@
     <data>
     	
     		<menuitem id="menu_items" name="Menu Items" parent="green_erp_base.admin" sequence="10"/>
-		    	<menuitem id="products" name="Products" parent="menu_items" sequence="10"/>
+		    	<menuitem id="products" name="Products" parent="menu_items" sequence="30"/>
 		    		<menuitem action="product.product_normal_action_sell" id="product.menu_products" parent="products" sequence="5"/>
 		    		<menuitem action="product.product_category_action_form" id="menu_product_category_action_form" parent="products" sequence="10"/>
 		    		<menuitem action="product.product_category_action" id="product.menu_products_category" parent="products" sequence="20" groups="base.group_no_one"/>
-	            <menuitem id="khach_hang" name="Customers" parent="menu_items" sequence="20" action="base.action_partner_form" />
+	            <menuitem id="khach_hang" name="Customers" parent="menu_items" sequence="10" action="base.action_partner_form" />
 				<menuitem id="address_book" name="Address Book" parent="menu_items" sequence="30"/>
 					<menuitem id="menu_localisation" name="Localization" parent="address_book" sequence="10" />
 						<menuitem action="base.action_country" id="menu_country_partner" parent="menu_localisation" sequence="0"/>

@@ -5,14 +5,14 @@
             action="base.action_partner_category_form" id="menu_partner_categories_in_form" name="Partner Categories" parent="green_erp_sale.address_book" groups="base.group_no_one" sequence="80"/>
         <menuitem id="base.menu_procurement_management_supplier_name" name="Suppliers"
 	        parent="green_erp_sale.menu_items"
-	        action="base.action_partner_supplier_form" sequence="21"/>
+	        action="base.action_partner_supplier_form" sequence="20"/>
         <menuitem
              action="product.product_uom_categ_form_action" id="menu_purchase_uom_categ_form_action"
-             parent="green_erp_sale.products" sequence="30" />
+             parent="green_erp_sale.products" sequence="40" />
         <menuitem
              action="product.product_uom_form_action" id="menu_purchase_uom_form_action"
-             parent="green_erp_sale.products" sequence="40"/>
-        <menuitem id="menu_finance_bank_and_cash" name="Bank and Cash" parent="green_erp_sale.menu_items" sequence="40"/>
+             parent="green_erp_sale.products" sequence="30"/>
+        
 		
 		
 		
