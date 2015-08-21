@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+    	<menuitem id="software_project_root"
+    		name="Dự án phần mềm"
+            sequence="41"/>
+		
+			<menuitem id="menu_duan"
+	    		name="Dự án"
+	    		parent="software_project_root"
+	            sequence="10"/>
+	            
+	            <menuitem id="menu_action_duan"
+	            	action="action_duan"
+		    		name="Dự án"
+		    		parent="menu_duan"
+		            sequence="10"/>
+				
+				<menuitem id="menu_action_nhom_congviec"
+	            	action="action_nhom_congviec"
+		    		name="Nhóm công việc"
+		    		parent="menu_duan"
+		            sequence="20"/>
+		            
+		        <menuitem id="menu_action_congviec"
+	            	action="action_congviec"
+		    		name="Công việc"
+		    		parent="menu_duan"
+		            sequence="30"/>
+				
+			<menuitem id="menu_duan_cauhinh"
+	    		name="Cấu hình"
+	    		parent="software_project_root"
+	            sequence="100" groups="green_erp_ict_software_project.group_software_project_manager"/>
+	            
+	            <menuitem id="menu_action_trangthai_duan"
+		    		name="Trạng thái dự án"
+		    		action="action_trangthai_duan"
+		    		parent="menu_duan_cauhinh"
+		            sequence="10"/>
+		            
+	            <menuitem id="menu_action_trangthai_nhom_congviec"
+		    		name="Trạng thái nhóm công việc"
+		    		action="action_trangthai_nhom_congviec"
+		    		parent="menu_duan_cauhinh"
+		            sequence="10"/>
+		            
+	            <menuitem id="menu_action_trangthai_congviec"
+		    		name="Trạng thái công việc"
+		    		action="action_trangthai_congviec"
+		    		parent="menu_duan_cauhinh"
+		            sequence="10"/>
+    </data>
+</openerp>

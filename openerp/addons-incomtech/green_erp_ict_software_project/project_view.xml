@@ -1,0 +1,653 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    	
+    	<!-- Trạng thái của dự án -->
+        <record id="trangthai_duan_search" model="ir.ui.view">
+            <field name="name">trangthai.duan.search</field>
+            <field name="model">trangthai.duan</field>
+            <field name="arch" type="xml">
+                <search string="Trạng thái của dự án">
+                   <field name="name" string="Project Stages"/>
+                   <filter icon="terp-check" string="Common" name="common" domain="[('case_default', '=', 1)]" help="Stages common to all projects"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="trangthai_duan_edit" model="ir.ui.view">
+            <field name="name">trangthai.duan.form</field>
+            <field name="model">trangthai.duan</field>
+            <field name="arch" type="xml">
+                <form string="Trạng thái của dự án" version="7.0">
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="case_default"/>
+                        </group>
+                        <group>
+                            <field name="state"/>
+                            <field name="sequence"/>
+                            <field name="fold"/>
+                        </group>
+                    </group>
+                    <field name="description" placeholder="Add a description..."/>
+                </form>
+            </field>
+        </record>
+
+        <record id="trangthai_duan_tree" model="ir.ui.view">
+            <field name="name">trangthai.duan.tree</field>
+            <field name="model">trangthai.duan</field>
+            <field name="arch" type="xml">
+                <tree string="Trạng thái của dự án">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_trangthai_duan" model="ir.actions.act_window">
+            <field name="name">Trạng thái của dự án</field>
+            <field name="res_model">trangthai.duan</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="trangthai_duan_tree"/>
+        </record>
+        
+        <!-- Trạng thái của nhóm công việc -->
+        <record id="trangthai_nhom_congviec_search" model="ir.ui.view">
+            <field name="name">trangthai.nhom.congviec.search</field>
+            <field name="model">trangthai.nhom.congviec</field>
+            <field name="arch" type="xml">
+                <search string="Trạng thái của nhóm công việc">
+                   <field name="name" string="Project Stages"/>
+                   <filter icon="terp-check" string="Common" name="common" domain="[('case_default', '=', 1)]" help="Stages common to all projects"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="trangthai_nhom_congviec_edit" model="ir.ui.view">
+            <field name="name">trangthai.nhom.congviec.form</field>
+            <field name="model">trangthai.nhom.congviec</field>
+            <field name="arch" type="xml">
+                <form string="Trạng thái của nhóm công việc" version="7.0">
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="case_default"/>
+                        </group>
+                        <group>
+                            <field name="state"/>
+                            <field name="sequence"/>
+                            <field name="fold"/>
+                        </group>
+                    </group>
+                    <field name="description" placeholder="Add a description..."/>
+                </form>
+            </field>
+        </record>
+
+        <record id="trangthai_nhom_congviec_tree" model="ir.ui.view">
+            <field name="name">trangthai.nhom.congviec.tree</field>
+            <field name="model">trangthai.nhom.congviec</field>
+            <field name="arch" type="xml">
+                <tree string="Trạng thái của nhóm công việc">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_trangthai_nhom_congviec" model="ir.actions.act_window">
+            <field name="name">Trạng thái của nhóm công việc</field>
+            <field name="res_model">trangthai.nhom.congviec</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="trangthai_nhom_congviec_tree"/>
+        </record>
+        
+        <!-- Trạng thái của công việc -->
+        <record id="trangthai_congviec_search" model="ir.ui.view">
+            <field name="name">trangthai.congviec.search</field>
+            <field name="model">trangthai.congviec</field>
+            <field name="arch" type="xml">
+                <search string="Trạng thái của công việc">
+                   <field name="name" string="Project Stages"/>
+                   <filter icon="terp-check" string="Common" name="common" domain="[('case_default', '=', 1)]" help="Stages common to all projects"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="trangthai_congviec_edit" model="ir.ui.view">
+            <field name="name">trangthai.congviec.form</field>
+            <field name="model">trangthai.congviec</field>
+            <field name="arch" type="xml">
+                <form string="Trạng thái của công việc" version="7.0">
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="case_default"/>
+                        </group>
+                        <group>
+                            <field name="state"/>
+                            <field name="sequence"/>
+                            <field name="fold"/>
+                        </group>
+                    </group>
+                    <field name="description" placeholder="Add a description..."/>
+                </form>
+            </field>
+        </record>
+
+        <record id="trangthai_congviec_tree" model="ir.ui.view">
+            <field name="name">trangthai.congviec.tree</field>
+            <field name="model">trangthai.congviec</field>
+            <field name="arch" type="xml">
+                <tree string="Trạng thái của công việc">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_trangthai_congviec" model="ir.actions.act_window">
+            <field name="name">Trạng thái của công việc</field>
+            <field name="res_model">trangthai.congviec</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="trangthai_congviec_tree"/>
+        </record>
+    	
+    	<!-- Công việc -->
+		<record id="congviec_form_view" model="ir.ui.view">
+            <field name="name">cong.viec.form</field>
+            <field name="model">cong.viec</field>
+            <field name="arch" type="xml">
+                <form string="Công việc" version="7.0">
+                <header>
+                    <field name="stage_id" widget="statusbar" clickable="True"/>
+                </header>
+                <sheet string="Công việc">
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <div class="oe_right oe_button_box" name="buttons" groups="base.group_user">
+                        <!--<button name="attachment_tree_view" string="Documents" type="object"/>-->
+                    </div>
+                    <group>
+                        <group>
+                            <field name="duan_id"/>
+                            <field name="nhom_congviec_id" domain="[('duan_id','=',duan_id)]"/>
+                            <field name="user_id" context="{'search_user_with_project': duan_id}"/>
+                            <field name="priority"/>
+                   			<field name="sequence"/>
+                        </group>
+                        <group>
+                        	<field name="ngay_bd"/>
+                        	<field name="ngay_kt"/>
+                        	<field name="han_chot"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Mô tả">
+                            <field name="description" nolabel='1'/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="congviec_search_view" model="ir.ui.view">
+            <field name="name">cong.viec.search</field>
+            <field name="model">cong.viec</field>
+            <field name="arch" type="xml">
+                <search string="Công việc">
+                    <field name="name"/>
+                    <filter icon="terp-mail-message-new" string="Unread Messages" name="message_unread" domain="[('message_unread','=',True)]"/>
+                    <separator/>
+                    <filter string="Công việc của tôi" name="my_congviec" domain="[('user_id','=',uid)]"/>
+                    <field name="duan_id"/>
+                    <field name="nhom_congviec_id"/>
+                    <field name="user_id"/>
+                    <field name="ngay_bd"/>
+                    <field name="ngay_kt"/>
+                    <field name="han_chot"/>
+                    <field name="priority"/>
+                    <field name="sequence"/>
+                    <field name="stage_id"/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Dự án" name="duan" icon="terp-personal" domain="[]" context="{'group_by':'duan_id'}"/>
+                        <filter string="Nhóm công việc" name="nhom_congviec" icon="terp-personal" domain="[]" context="{'group_by':'nhom_congviec_id'}"/>
+                        <filter string="Người thực hiện" name="manager" icon="terp-personal" domain="[]" context="{'group_by':'user_id'}"/>
+                        <filter string="Trạng thái" name="trangthai" icon="terp-personal" domain="[]" context="{'group_by':'stage_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="congviec_tree_view" model="ir.ui.view">
+            <field name="name">cong.viec.tree</field>
+            <field name="model">cong.viec</field>
+            <field name="arch" type="xml">
+                <tree string="Công việc">
+                    <field name="message_unread" invisible="1"/>
+                    <field name="name"/>
+                    <field name="duan_id"/>
+                    <field name="nhom_congviec_id"/>
+                    <field name="user_id"/>
+                    <field name="ngay_bd"/>
+                    <field name="ngay_kt"/>
+                    <field name="han_chot"/>
+                    <field name="priority"/>
+                    <field name="sequence"/>
+                    <field name="stage_id"/>
+                </tree>
+            </field>
+        </record>
+        
+    	<record id="congviec_calendar_view" model="ir.ui.view">
+            <field name="name">cong.viec.calendar</field>
+            <field name="model">cong.viec</field>
+            <field name="arch" type="xml">
+                <calendar color="user_id" date_start="ngay_bd" date_stop="ngay_kt" string="Công việc">
+                    <field name="name"/>
+                    <field name="duan_id"/>
+                    <field name="nhom_congviec_id"/>
+                </calendar>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="congviec_kanban_view">
+            <field name="name">cong.viec.kanban</field>
+            <field name="model">cong.viec</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="stage_id">
+                    <field name="name"/>
+                    <field name="duan_id"/>
+                    <field name="nhom_congviec_id"/>
+                    <field name="user_id"/>
+                    <field name="ngay_bd"/>
+                    <field name="ngay_kt"/>
+                    <field name="han_chot"/>
+                    <field name="color"/>
+                    <field name="priority"/>
+                    <field name="sequence"/>
+                    <field name="stage_id"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_project oe_kanban_global_click">
+                                <div class="oe_dropdown_toggle oe_dropdown_kanban" groups="base.group_user">
+                                    <span class="oe_e">í</span>
+                                    <ul class="oe_dropdown_menu">
+                                        <t t-if="widget.view.is_action_enabled('edit')"><li><a type="edit">Tasks Settings</a></li></t>
+                                        <t t-if="widget.view.is_action_enabled('delete')"><li><a type="delete">Delete</a></li></t>
+                                        <li><ul class="oe_kanban_colorpicker" data-field="color"/></li>
+                                    </ul>
+                                </div>
+                                <div class="oe_kanban_content">
+                                    <div><b><field name="name"/></b></div>
+                                    <div>
+	                                    <field name="duan_id"/><br/>
+	                                    <t t-if="record.han_chot.raw_value and record.han_chot.raw_value lt (new Date())" t-set="red">oe_kanban_text_red</t>
+	                                    <span t-attf-class="#{red || ''}"><i><field name="han_chot"/></i></span>
+	                                </div>
+	                                <div class="oe_kanban_bottom_right">
+	                                	<t groups="base.group_user">
+	                                        <a t-if="record.priority.raw_value > 0" type="object" string="Normal" name="set_high_priority" class="oe_e oe_star_off">7</a>
+	                                        <a t-if="record.priority.raw_value == 0" type="object" string="Very Important" name="set_normal_priority" class="oe_e oe_star_on">7</a>
+	                                    </t>
+                                    	<img t-att-src="kanban_image('res.users', 'image_small', record.user_id.raw_value)" t-att-title="record.user_id.value" width="24" height="24" class="oe_kanban_avatar"/>
+                                	</div>
+                                </div>
+                                <div class="oe_clear"></div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        
+        <record id="action_congviec" model="ir.actions.act_window">
+            <field name="name">Công việc</field>
+            <field name="res_model">cong.viec</field>
+            <field name="view_type">form</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">calendar,kanban,tree,form</field>
+            <field name="view_id" ref="congviec_calendar_view"/>
+            <field name="search_view_id" ref="congviec_search_view"/>
+            <field name="context">{'search_default_my_congviec': 1,'active_test': False}</field>
+        </record>
+        
+        <record id="action_project_congviec" model="ir.actions.act_window">
+            <field name="name">Công việc</field>
+            <field name="res_model">cong.viec</field>
+            <field name="view_type">form</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">calendar,kanban,tree,form</field>
+            <field name="view_id" ref="congviec_calendar_view"/>
+            <field name="search_view_id" ref="congviec_search_view"/>
+            <field name="context">{'search_default_duan_id': [active_id], 'default_duan_id' : active_id,'active_test': False}</field>
+        </record>
+        
+        <record id="action_project_nhomcongviec" model="ir.actions.act_window">
+            <field name="name">Công việc</field>
+            <field name="res_model">cong.viec</field>
+            <field name="view_type">form</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">calendar,kanban,tree,form</field>
+            <field name="view_id" ref="congviec_calendar_view"/>
+            <field name="search_view_id" ref="congviec_search_view"/>
+            <field name="context">{'search_default_nhom_congviec_id': [active_id], 'default_nhom_congviec_id' : active_id,'active_test': False}</field>
+        </record>
+    	
+    	<!-- Nhóm công việc -->
+		<record id="nhom_congviec_form_view" model="ir.ui.view">
+            <field name="name">nhom.congviec.form</field>
+            <field name="model">nhom.congviec</field>
+            <field name="arch" type="xml">
+                <form string="Nhóm công việc" version="7.0">
+                <header>
+                    <field name="stage_id" widget="statusbar" clickable="True"/>
+                </header>
+                <sheet string="Nhóm công việc">
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <div class="oe_right oe_button_box" name="buttons" groups="base.group_user">
+                        <button name="%(action_project_nhomcongviec)d" string="Công việc"
+                            type="action"/>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="duan_id"/>
+                            <field name="user_id" context="{'search_user_with_project': duan_id}"/>
+                        </group>
+                        <group>
+                        	<field name="ngay_bd"/>
+                        	<field name="ngay_kt"/>
+                        	<field name="han_chot"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Mô tả">
+                            <field name="description" nolabel='1'/>
+                        </page>
+                        <page string="Trạng thái của nhóm công việc">
+                            <field name="trangthai_nhom_congviec_ids" nolabel='1'/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="nhom_congviec_search_view" model="ir.ui.view">
+            <field name="name">nhom.congviec.search</field>
+            <field name="model">nhom.congviec</field>
+            <field name="arch" type="xml">
+                <search string="Nhóm công việc">
+                    <field name="name"/>
+                    <filter icon="terp-mail-message-new" string="Unread Messages" name="message_unread" domain="[('message_unread','=',True)]"/>
+                    <separator/>
+                    <filter string="Nhóm công việc của tôi" name="my_nhom_congviec" domain="[('user_id','=',uid)]"/>
+                    <field name="duan_id"/>
+                    <field name="user_id"/>
+                    <field name="ngay_bd"/>
+                    <field name="ngay_kt"/>
+                    <field name="han_chot"/>
+                    <field name="stage_id"/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Dự án" name="duan" icon="terp-personal" domain="[]" context="{'group_by':'duan_id'}"/>
+                        <filter string="Quản lý" name="manager" icon="terp-personal" domain="[]" context="{'group_by':'user_id'}"/>
+                        <filter string="Trạng thái" name="trangthai" icon="terp-personal" domain="[]" context="{'group_by':'stage_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="nhom_congviec_tree_view" model="ir.ui.view">
+            <field name="name">nhom.congviec.tree</field>
+            <field name="model">nhom.congviec</field>
+            <field name="field_parent">child_ids</field>
+            <field name="arch" type="xml">
+                <tree string="Nhóm công việc">
+                    <field name="message_unread" invisible="1"/>
+                    <field name="name"/>
+                    <field name="duan_id"/>
+                    <field name="user_id"/>
+                    <field name="ngay_bd"/>
+                    <field name="ngay_kt"/>
+                    <field name="han_chot"/>
+                    <field name="stage_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_nhom_congviec" model="ir.actions.act_window">
+            <field name="name">Nhóm công việc</field>
+            <field name="res_model">nhom.congviec</field>
+            <field name="view_type">form</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="nhom_congviec_tree_view"/>
+            <field name="search_view_id" ref="nhom_congviec_search_view"/>
+            <field name="context">{'search_default_my_nhom_congviec': 1,'search_default_duan': 1}</field>
+        </record>
+        
+        <record id="action_project_nhom_congviec" model="ir.actions.act_window">
+            <field name="name">Nhóm công việc</field>
+            <field name="res_model">nhom.congviec</field>
+            <field name="view_type">form</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="nhom_congviec_tree_view"/>
+            <field name="search_view_id" ref="nhom_congviec_search_view"/>
+            <field name="context">{'search_default_duan_id': [active_id], 'default_duan_id' : active_id}</field>
+        </record>
+		
+		<!-- Dự án -->
+		<record id="duan_form_view" model="ir.ui.view">
+            <field name="name">duan.phanmem.form</field>
+            <field name="model">duan.phanmem</field>
+            <field name="arch" type="xml">
+                <form string="Dự án" version="7.0">
+                <header>
+                    <field name="stage_id" widget="statusbar" clickable="True"/>
+                </header>
+                <sheet string="Dự án">
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <div class="oe_right oe_button_box" name="buttons" groups="base.group_user">
+                        <button name="%(action_project_nhom_congviec)d" string="Nhóm công việc"
+                            type="action"/>
+                        <button name="%(action_project_congviec)d" string="Công việc"
+                            type="action"/>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="user_id" context="{'search_user_for_project': 1}"/>
+                            <field name="ngay_bd"/>
+                        	<field name="ngay_kt"/>
+                        </group>
+                        <group>
+                        	<field name="han_chot"/>
+                        	<field name="muc_thuong"/>
+                        </group>
+                    </group>
+                    <notebook>
+                    	<page string="Nhóm">
+                            <field name="team_line" nolabel='1'>
+                            	<tree editable='1'>
+                            		<field name="user_id"/>
+                        			<field name="he_so"/>
+                        			<field name="thanhtien"/>
+                            	</tree>
+                            </field>
+                            <field name="members" invisible='1'/>
+                        </page>
+                        <page string="Mô tả">
+                            <field name="description" nolabel='1'/>
+                        </page>
+                        <page string="Trạng thái của dự án">
+                            <field name="trangthai_duan_ids" nolabel='1'/>
+                        </page>
+                        <page string="Trạng thái của công việc">
+                            <field name="trangthai_congviec_ids" nolabel='1'/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="duan_search_view" model="ir.ui.view">
+            <field name="name">duan.phanmem.search</field>
+            <field name="model">duan.phanmem</field>
+            <field name="arch" type="xml">
+                <search string="Dự án">
+                    <field name="name"/>
+                    <filter icon="terp-mail-message-new" string="Unread Messages" name="message_unread" domain="[('message_unread','=',True)]"/>
+                    <separator/>
+                    <filter string="Dự án của tôi" name="my_project" domain="[('user_id','=',uid)]"/>
+                    <field name="user_id"/>
+                    <field name="ngay_bd"/>
+                    <field name="ngay_kt"/>
+                    <field name="han_chot"/>
+                    <field name="stage_id"/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Quản lý" name="manager" icon="terp-personal" domain="[]" context="{'group_by':'user_id'}"/>
+                        <filter string="Trạng thái" name="trangthai" icon="terp-personal" domain="[]" context="{'group_by':'stage_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="duan_tree_view" model="ir.ui.view">
+            <field name="name">duan.phanmem.tree</field>
+            <field name="model">duan.phanmem</field>
+            <field name="field_parent">child_ids</field>
+            <field name="arch" type="xml">
+                <tree string="Dự án">
+                    <field name="message_unread" invisible="1"/>
+                    <field name="name"/>
+                    <field name="user_id"/>
+                    <field name="ngay_bd"/>
+                    <field name="ngay_kt"/>
+                    <field name="han_chot"/>
+                    <field name="muc_thuong"/>
+                    <field name="stage_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="duan_kanban_view">
+            <field name="name">duan.phanmem.kanban</field>
+            <field name="model">duan.phanmem</field>
+            <field name="arch" type="xml">
+                <kanban version="7.0" class="oe_background_grey">
+                    <field name="name"/>
+                    <field name="user_id"/>
+                    <field name="ngay_bd"/>
+                    <field name="ngay_kt"/>
+                    <field name="han_chot"/>
+                    <field name="color"/>
+                    <field name="muc_thuong"/>
+                    <field name="stage_id"/>
+                    <field name="members"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_project oe_kanban_global_click">
+                                <div class="oe_dropdown_toggle oe_dropdown_kanban" groups="base.group_user">
+                                    <span class="oe_e">í</span>
+                                    <ul class="oe_dropdown_menu">
+                                        <t t-if="widget.view.is_action_enabled('edit')"><li><a type="edit">Project Settings</a></li></t>
+                                        <t t-if="widget.view.is_action_enabled('delete')"><li><a type="delete">Delete</a></li></t>
+                                        <li><ul class="oe_kanban_colorpicker" data-field="color"/></li>
+                                    </ul>
+                                </div>
+                                <div class="oe_kanban_content">
+                                    <h4><field name="name"/></h4>
+                                    <div class="oe_kanban_project_list">
+                                    	<a name="%(action_project_nhom_congviec)d" type="action" style="margin-right: 10px"> 
+                                            <span><field name="nhom_congviec_count"/> Nhóm công việc</span>
+                                        </a>
+                                        <a name="%(action_project_congviec)d" type="action" style="margin-right: 10px"> 
+                                            <span><field name="congviec_count"/> Công việc</span>
+                                        </a>
+                                    </div>
+                                    <div class="oe_kanban_footer_left">
+                                        <span t-if="record.han_chot.raw_value">
+                                            <span class="oe_e">N</span>
+                                            <field name="han_chot"/>
+                                        </span>
+                                        <span t-if="record.muc_thuong.raw_value">
+                                            <field name="muc_thuong"/>
+                                        </span>
+                                    </div>
+                                    <div class="oe_kanban_project_avatars">
+                                    	<t t-foreach="record.members.raw_value.slice(0,11)" t-as="member">
+                                            <img t-att-src="kanban_image('res.users', 'image_small', member)" t-att-data-member_id="member"/>
+                                        </t>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="action_duan" model="ir.actions.act_window">
+            <field name="name">Dự án</field>
+            <field name="res_model">duan.phanmem</field>
+            <field name="view_type">form</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="view_id" ref="duan_kanban_view"/>
+            <field name="search_view_id" ref="duan_search_view"/>
+            <field name="context">{'search_default_my_project': 1}</field>
+        </record>
+        
+        <record id="duan_form_view_readonly" model="ir.ui.view">
+		    <field name="name">duan.phanmem.form.readonly.cust</field>
+		    <field name="model">duan.phanmem</field>
+		    <field name="inherit_id" ref="duan_form_view"/>
+		    <field name="groups_id" eval="[(6, 0, [ref('group_software_project_manager') ])]"/>
+		    <field name="arch" type="xml">
+		        <field name='muc_thuong' position="attributes">
+		            <attribute name="readonly">0</attribute>
+		        </field>
+		        <field name='han_chot' position="attributes">
+		            <attribute name="readonly">0</attribute>
+		        </field>
+		    </field>
+		</record>
+		
+    </data>
+</openerp>

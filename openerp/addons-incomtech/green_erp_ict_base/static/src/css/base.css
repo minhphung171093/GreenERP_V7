@@ -318,3 +318,51 @@
   vertical-align: text-top;
 }
 
+.openerp .oe_view_manager table.oe_view_manager_header .oe_button_group .active {
+  background: #009441;
+  -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3) inset;
+  -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3) inset;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3) inset;
+}
+
+.openerp ul.oe_form_status_clickable li.oe_active:hover .arrow span {
+  background-color: #05C559;
+  background: -moz-linear-gradient(135deg, #05C559, #05C559);
+  background: -o-linear-gradient(135deg, #05C559, #05C559);
+  background: -webkit-gradient(linear, left top, right bottom, from(#05C559), to(#05C559));
+  background: -ms-linear-gradient(top, #05C559, #05C559);
+}
+
+.openerp ul.oe_form_status_clickable li.oe_active:hover {
+  background-color: #05C559;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#05C559), to(#05C559));
+  background-image: -webkit-linear-gradient(top, #05C559, #05C559);
+  background-image: -moz-linear-gradient(top, #05C559, #05C559);
+  background-image: -ms-linear-gradient(top, #05C559, #05C559);
+  background-image: -o-linear-gradient(top, #05C559, #05C559);
+  background-image: linear-gradient(to bottom, #05C559, #05C559);
+}
+
+.openerp ul.oe_form_status_clickable li:hover {
+  background-color: #05C559;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#05C559), to(#05C559));
+  background-image: -webkit-linear-gradient(top, #05C559, #05C559);
+  background-image: -moz-linear-gradient(top, #05C559, #05C559);
+  background-image: -ms-linear-gradient(top, #05C559, #05C559);
+  background-image: -o-linear-gradient(top, #05C559, #05C559);
+  background-image: linear-gradient(to bottom, #05C559, #05C559);
+}
+
+.openerp ul.oe_form_status_clickable li:hover .arrow span {
+  background-color: #05C559;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#05C559), to(#05C559));
+  background-image: -webkit-linear-gradient(top, #05C559, #05C559);
+  background-image: -moz-linear-gradient(top, #05C559, #05C559);
+  background-image: -ms-linear-gradient(top, #05C559, #05C559);
+  background-image: -o-linear-gradient(top, #05C559, #05C559);
+  background-image: linear-gradient(to bottom, #05C559, #05C559);
+}
+.openerp ul.oe_form_status_clickable li:hover .label {
+  color: #ffffff;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
