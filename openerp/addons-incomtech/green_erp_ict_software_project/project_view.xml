@@ -227,6 +227,10 @@
                     <field name="priority"/>
                     <field name="sequence"/>
                     <field name="stage_id"/>
+                    <separator/>
+                    <filter name="draft" string="New" domain="[('state','=','draft')]" help="New Tasks" icon="terp-check"/>
+                    <filter name="open" string="In Progress" domain="[('state','=','open')]" help="In Progress Tasks" icon="terp-camera_test"/>
+                    <filter string="Pending" domain="[('state','=','pending')]" context="{'show_delegated':False}" help="Pending Tasks" icon="terp-gtk-media-pause"/>
                     <group expand="0" string="Group By...">
                         <filter string="Dự án" name="duan" icon="terp-personal" domain="[]" context="{'group_by':'duan_id'}"/>
                         <filter string="Nhóm công việc" name="nhom_congviec" icon="terp-personal" domain="[]" context="{'group_by':'nhom_congviec_id'}"/>
@@ -327,7 +331,7 @@
             <field name="view_mode">calendar,kanban,tree,form</field>
             <field name="view_id" ref="congviec_calendar_view"/>
             <field name="search_view_id" ref="congviec_search_view"/>
-            <field name="context">{'search_default_my_congviec': 1,'active_test': False}</field>
+            <field name="context">{'search_default_my_congviec': 1,'active_test': False,'search_default_draft': 1,'search_default_open': 1}</field>
         </record>
         
         <record id="action_project_congviec" model="ir.actions.act_window">
@@ -338,7 +342,7 @@
             <field name="view_mode">calendar,kanban,tree,form</field>
             <field name="view_id" ref="congviec_calendar_view"/>
             <field name="search_view_id" ref="congviec_search_view"/>
-            <field name="context">{'search_default_duan_id': [active_id], 'default_duan_id' : active_id,'active_test': False}</field>
+            <field name="context">{'search_default_duan_id': [active_id], 'default_duan_id' : active_id,'active_test': False,'search_default_draft': 1,'search_default_open': 1}</field>
         </record>
         
         <record id="action_project_nhomcongviec" model="ir.actions.act_window">
@@ -349,7 +353,7 @@
             <field name="view_mode">calendar,kanban,tree,form</field>
             <field name="view_id" ref="congviec_calendar_view"/>
             <field name="search_view_id" ref="congviec_search_view"/>
-            <field name="context">{'search_default_nhom_congviec_id': [active_id], 'default_nhom_congviec_id' : active_id,'active_test': False}</field>
+            <field name="context">{'search_default_nhom_congviec_id': [active_id], 'default_nhom_congviec_id' : active_id,'active_test': False,'search_default_draft': 1,'search_default_open': 1}</field>
         </record>
     	
     	<!-- Nhóm công việc -->
