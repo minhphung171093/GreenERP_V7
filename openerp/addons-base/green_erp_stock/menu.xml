@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-
+		<record model="ir.ui.menu" id="procurement.menu_stock_sched">
+		<field name="active" eval="False"/>
+		</record>
+		<record model="ir.ui.menu" id="stock.menu_stock_product">
+		<field name="active" eval="False"/>
+		</record>
+		<menuitem id="menu_warehouse_ad" name="Warehouse Management" parent="green_erp_base.admin" sequence="12" groups="base.group_no_one"/>
+		<menuitem id="stock.menu_action_incoterm_open" name="Incoterms" parent="menu_warehouse_ad" sequence="1" groups="base.group_no_one"/>
+		<menuitem id="stock.menu_action_stock_journal_form" name="Stock Journals" parent="menu_warehouse_ad" sequence="2" groups="base.group_no_one"/>
+		<record model="ir.ui.menu" id="stock.menu_stock_configuration">
+		<field name="active" eval="False"/>
+		</record>    
     </data>
 </openerp>
