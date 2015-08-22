@@ -20,15 +20,15 @@
 ##############################################################################
 
 {
-    'name': 'GreenERP SALE',
+    'name': 'GreenERP ACCOUNT',
     'version': '1.0',
     'category': 'GreenERP',
     'sequence': 14,
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',
-    'depends': ['green_erp_base','green_erp_stock','sale'],
+    'depends': ['green_erp_base','account','account_accountant'],
     'data': [
-        'sale_view.xml',
+        'account_view.xml',
         'menu.xml',
     ],
     'css' : [
