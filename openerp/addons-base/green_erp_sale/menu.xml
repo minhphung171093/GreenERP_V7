@@ -2,6 +2,9 @@
 <openerp>
     <data>
     	
+    	<menuitem action="sale.action_shop_form"
+    		id="sale_stock.menu_action_shop_form" parent="green_erp_base.menu_items"
+    		sequence="23" groups="stock.group_locations"/>
 				
     </data>
 </openerp>

@@ -24,7 +24,10 @@
 			<menuitem action="base.action_res_partner_bank_account_form" id="menu_action_res_partner_bank_form" parent="address_book" groups="base.group_no_one" sequence="50"/>
 			<menuitem action="base.action_res_bank_form" id="menu_action_res_bank_form" parent="address_book" sequence="60" groups="base.group_no_one"/>
 			<menuitem action="base.action_res_partner_bank_type_form" id="menu_action_res_partner_bank_typeform" parent="address_book" groups="base.group_no_one" sequence="70"/>
-
+		
+		<menuitem id="product.menu_product_pricelist_main" name="Pricelists" 
+            parent="menu_items" groups="product.group_sale_pricelist" sequence="40"/>
+		
 		<menuitem
              action="product.product_uom_categ_form_action" id="product.menu_purchase_uom_categ_form_action"
              parent="products" sequence="40" />
