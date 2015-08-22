@@ -34,6 +34,7 @@
             'report/don_mua_hang_view.xml',
             'config_view.xml',
             'hop_dong_view.xml',
+            'draft_bl_view.xml',
             'phuluc_hop_dong_view.xml',
             'menu.xml',
     ],
