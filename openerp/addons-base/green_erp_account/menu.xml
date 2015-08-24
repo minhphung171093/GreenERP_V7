@@ -1,5 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
+    
+    	<record model="ir.ui.menu" id="account.menu_account_customer">
+			<field name="active" eval="False"/>
+		</record>
+		
+		<record model="ir.ui.menu" id="account.menu_account_supplier">
+			<field name="active" eval="False"/>
+		</record>
+		
+		<record model="ir.ui.menu" id="account.menu_finance_legal_statement">
+			<field name="active" eval="False"/>
+		</record>
+		
+		<record model="ir.ui.menu" id="account.menu_finance_generic_reporting">
+			<field name="active" eval="False"/>
+		</record>
+    	
+    	<!-- New VN Taxes Reports menu -->
+		<menuitem id="menu_report_taxes" 
+	    	name="Vietnamese Taxes Reports" 
+	      	sequence="5"
+	      	parent="account.menu_finance_reports"/>
+	      		
+			<menuitem id="menu_action_report_tax_vat_input" 
+				name="Taxes VAT INPUT"
+				action="action_report_tax_vat_input" 
+				icon="terp-graph"  
+				parent="menu_report_taxes" sequence="1"/>
+			  
+			<menuitem id="menu_action_report_tax_vat_output" 
+				name="Taxes VAT OUTPUT"
+				action="action_report_tax_vat_output" 
+				icon="terp-graph"  
+				parent="menu_report_taxes" sequence="5"/>
+    	
     </data>
 </openerp>

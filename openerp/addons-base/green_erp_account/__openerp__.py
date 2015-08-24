@@ -26,9 +26,11 @@
     'sequence': 14,
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',
-    'depends': ['green_erp_base','account','account_accountant'],
+    'depends': ['green_erp_base','account','account_accountant','report_aeroo','report_aeroo_ooo'],
     'data': [
         'account_view.xml',
+        'report/report_view.xml',
+        'wizard/print_report.xml',
         'menu.xml',
     ],
     'css' : [

@@ -5,6 +5,23 @@
     	<menuitem action="sale.action_shop_form"
     		id="sale_stock.menu_action_shop_form" parent="green_erp_base.menu_items"
     		sequence="23" groups="stock.group_locations"/>
-				
+	
+	     <menuitem
+	          id="menu_action_sale_invoice_pending"
+	          action="action_sale_invoice_pending"
+	          parent="base.menu_invoiced"
+	          sequence="10"/>
+	          
+		<menuitem name="Delivery Products"
+	          id="menu_delivery_products"
+	          parent="base.menu_base_partner"
+	          sequence="4"/>
+	          
+	    <menuitem name="Delivery Orders"
+	    	  action="stock.action_picking_tree"
+	          id="menu_action_picking_delivery_orders"
+	          parent="menu_delivery_products"
+	          sequence="4"/>
+		
     </data>
 </openerp>

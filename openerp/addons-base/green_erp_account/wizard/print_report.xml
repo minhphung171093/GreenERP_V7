@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+ <!--  ========================= Create General Account VAT IN Report ================= -->     
+         <record id="report_tax_vat_input" model="ir.ui.view">
+            <field name="name">report.tax.vat.input</field>
+            <field name="model">report.account.in.out.tax</field>
+            <field name="arch" type="xml">
+                <form string="Tax VAT INPUT" version="7.0">
+                	<group col="4" colspan="2">
+                		<field name="times"/>
+                		<field name="company_id" groups="base.group_multi_company"/>
+                		<field name="filter_type"/>
+                		<newline/>
+                		<field name="period_id_start" domain="[('company_id','=',company_id)]" attrs="{'invisible':[('times', 'in', ['dates','years'])],'required':[('times', 'not in', ['dates','years'])]}"/>
+                		<field name="period_id_end" domain="[('company_id','=',company_id)]" attrs="{'invisible':[('times', 'in', ['dates','years'])],'required':[('times', 'not in', ['dates','years'])]}"/>
+                		<field name="fiscalyear_start" domain="[('company_id','=',company_id)]" attrs="{'invisible':[('times', 'in', ['dates','periods'])],'required':[('times','not in', ['dates','periods'])]}"/>
+                		<field name="fiscalyear_stop" domain="[('company_id','=',company_id)]" attrs="{'invisible':[('times', 'in', ['dates','periods'])], 'required':[('times','not in', ['dates','periods'])]}"/>
+                		<field name="date_start" attrs="{'invisible':[('times', 'in', ['periods','years'])],'required':[('times','not in', ['periods','years'])]}"/>
+                		<field name="date_end" attrs="{'invisible':[('times', 'in', ['periods','years'])],'required':[('times','not in', ['periods','years'])] }"/>
+                		
+                    </group>
+                    <group col="4" colspan="2">
+                    	<field name="shop_ids" widget="many2many_tags"/>
+                    </group>
+	                <footer>
+                        <button string="Print" type="object" name="finance_report" context="{'type_report':'tax_vat_input'}" icon='gtk-execute'/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_report_tax_vat_input" model="ir.actions.act_window">
+            <field name="name">Taxes VAT INPUT</field>
+            <field name="res_model">report.account.in.out.tax</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="report_tax_vat_input"/>
+        </record>
+   
+<!--  ========================= Create General Account VAT OUT Report ================= -->
+        <record id="report_tax_vat_output" model="ir.ui.view">
+            <field name="name">report.tax.vat.output</field>
+            <field name="model">report.account.in.out.tax</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Tax VAT OUTPUT" version="7.0">
+                	<group col="4" colspan="2">
+                		<field name="times"/>
+                		<field name="company_id" groups="base.group_multi_company"/>
+                		<field name="filter_type"/>
+                		<newline/>
+                		<field name="period_id_start" domain="[('company_id','=',company_id)]" attrs="{'invisible':[('times', 'in', ['dates','years'])],'required':[('times', 'not in', ['dates','years'])]}"/>
+                		<field name="period_id_end" domain="[('company_id','=',company_id)]" attrs="{'invisible':[('times', 'in', ['dates','years'])],'required':[('times', 'not in', ['dates','years'])]}"/>
+                		<field name="fiscalyear_start" domain="[('company_id','=',company_id)]" attrs="{'invisible':[('times', 'in', ['dates','periods'])],'required':[('times','not in', ['dates','periods'])]}"/>
+                		<field name="fiscalyear_stop" domain="[('company_id','=',company_id)]" attrs="{'invisible':[('times', 'in', ['dates','periods'])], 'required':[('times','not in', ['dates','periods'])]}"/>
+                		<field name="date_start" attrs="{'invisible':[('times', 'in', ['periods','years'])],'required':[('times','not in', ['periods','years'])]}"/>
+                		<field name="date_end" attrs="{'invisible':[('times', 'in', ['periods','years'])],'required':[('times','not in', ['periods','years'])] }"/>
+                    </group>
+                      <group col="4" colspan="2">
+                    	<field name="shop_ids" widget="many2many_tags"/>
+                    </group>
+	                <footer>
+                        <button string="Print" type="object" name="finance_report" context="{'type_report':'tax_vat_output'}" icon='gtk-execute'/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_report_tax_vat_output" model="ir.actions.act_window">
+            <field name="name">Taxes VAT OUTPUT</field>
+            <field name="res_model">report.account.in.out.tax</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="report_tax_vat_output"/>
+        </record>
+        
+   </data>
+</openerp>
+        
+        

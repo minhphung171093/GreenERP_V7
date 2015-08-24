@@ -46,6 +46,8 @@ class sale_order(osv.osv):
             for implied_group in implied_group:
                 implied_group_id = implied_group[0]
                 self.pool.get('res.groups').write(cr, SUPERUSER_ID, [group_id], {'implied_ids': [(4, implied_group_id)]})
+        ir_values = self.pool.get('ir.values')
+        ir_values.set_default(cr, SUPERUSER_ID, 'sale.order', 'order_policy', 'picking')
         return True
     
 sale_order()

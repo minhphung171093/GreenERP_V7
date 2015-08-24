@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+<!--  ========================= Create General Account VAT IN Report ================= -->
+    	<record id="tax_vat_input" model="ir.actions.report.xml">
+	        <field name="name">tax_vat_input</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">report.account.in.out.tax</field>
+	        <field name="report_name">tax_vat_input</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">green_erp_account/report/tax_vat_input.py</field>
+	        <field name="report_rml">green_erp_account/report/tax_vat_input.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record>		    
+		
+		<report 
+			auto="False" 
+			menu="False"
+			id="tax_vat_input" 
+			model="report.account.in.out.tax" 
+			name="tax_vat_input"
+	        string="Bảng kê mua vào"
+	        rml="green_erp_account/report/tax_vat_input.ods"/>
+	        
+<!--  ========================= Create General Account VAT OUT Report ================= -->
+    	<record id="tax_vat_output" model="ir.actions.report.xml">
+	        <field name="name">tax_vat_output</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">report.account.in.out.tax</field>
+	        <field name="report_name">tax_vat_output</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">green_erp_account/report/tax_vat_output.py</field>
+	        <field name="report_rml">green_erp_account/report/tax_vat_output.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record>		    
+		
+		<report 
+			auto="False" 
+			menu="False"
+			id="tax_vat_output" 
+			model="report.account.in.out.tax" 
+			name="tax_vat_output"
+	        string="Bảng kê bán ra"
+	        rml="green_erp_account/report/tax_vat_output.ods"/>
+		
+	</data>
+</openerp>

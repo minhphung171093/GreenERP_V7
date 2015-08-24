@@ -12,6 +12,10 @@
 		<record model="ir.ui.menu" id="purchase.menu_purchase_config_purchase">
 			<field name="active" eval="False"/>
 		</record>
+		
+		<record model="ir.ui.menu" id="purchase.menu_purchase_line_order_draft">
+			<field name="active" eval="False"/>
+		</record>
 
     </data>
 </openerp>

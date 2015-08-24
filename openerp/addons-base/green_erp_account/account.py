@@ -30,4 +30,13 @@ from openerp.osv import fields, osv
 from openerp.tools.translate import _
 from openerp import SUPERUSER_ID
 
+class account_invoice(osv.osv):
+    _inherit = "account.invoice"
+    
+    _columns = {
+        'reference_number': fields.char('Reference Number', size=64, readonly=True, states={'draft':[('readonly',False)]}),
+    }
+    
+account_invoice()
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
