@@ -87,25 +87,28 @@ class Parser(report_sxw.rml_parse):
         if tu_ngay and not den_ngay:
             sql='''
                 select * from chitiet_loai_xuly where xuly_giasuc_id in (select id from xuly_giasuc 
-                where ten_ho_id = %s and ngay >= '%s' and loai_id in %s) and so_luong !=0
+                where ten_ho_id = %s and ngay >= '%s' and loai_id in %s and trang_thai_id in (select id from trang_thai where stt = 3)) 
+                and so_luong !=0
             '''%(ten_ho_id[0], tu_ngay, tuple(self.get_loaivat()),)
             self.cr.execute(sql)
         elif den_ngay and not tu_ngay:
             sql='''
                 select * from chitiet_loai_xuly where xuly_giasuc_id in (select id from xuly_giasuc 
-                where ten_ho_id = %s and ngay <= '%s' and loai_id in %s) and so_luong !=0
+                where ten_ho_id = %s and ngay <= '%s' and loai_id in %s and trang_thai_id in (select id from trang_thai where stt = 3)) 
+                and so_luong !=0
             '''%(ten_ho_id[0], den_ngay, tuple(self.get_loaivat()),)
             self.cr.execute(sql)
         elif den_ngay and tu_ngay:
             sql='''
                 select * from chitiet_loai_xuly where xuly_giasuc_id in (select id from xuly_giasuc 
-                where ten_ho_id = %s and ngay between '%s' and '%s' and loai_id in %s) and so_luong !=0
+                where ten_ho_id = %s and ngay between '%s' and '%s' and loai_id in %s and trang_thai_id in (select id from trang_thai where stt = 3)) 
+                and so_luong !=0
             '''%(ten_ho_id[0], tu_ngay, den_ngay, tuple(self.get_loaivat()),)
             self.cr.execute(sql)
         else:
             sql='''
                 select * from chitiet_loai_xuly where xuly_giasuc_id in (select id from xuly_giasuc 
-                where ten_ho_id = %s and loai_id in %s) and so_luong != 0
+                where ten_ho_id = %s and loai_id in %s and trang_thai_id in (select id from trang_thai where stt = 3)) and so_luong != 0
             '''%(ten_ho_id[0], tuple(self.get_loaivat()),)
             self.cr.execute(sql)
         return self.cr.dictfetchall()

@@ -34,7 +34,7 @@ class trang_thai(osv.osv):
     _columns = {
         'name': fields.char('Trạng thái', size=100,required = True),
         'stt': fields.integer('STT',required = True),
-        'chinh_sua': fields.selection([('nhap', 'Nháp'),('in', 'Đang xử lý'), ('duyet', 'Duyệt'), ('huy', 'Hủy bỏ')],'Chinh Sua'),
+        'chinh_sua': fields.selection([('nhap', 'Nháp'),('in', 'Đang xử lý'), ('ch_duyet', 'Cấp Huyện Duyệt'), ('cc_duyet', 'Chi Cục Duyệt'), ('huy', 'Hủy bỏ')],'Chinh Sua'),
                 }
 trang_thai()
 
@@ -153,12 +153,30 @@ class chan_nuoi(osv.osv):
         'trang_thai_id': fields.many2one('trang.thai','Trạng thái', readonly=True),
         'hien_an': fields.function(_get_hien_an, type='boolean', string='Hien/An'),
         'chinh_sua_rel': fields.related('trang_thai_id', 'chinh_sua', type="selection",
-                selection=[('nhap', 'Nháp'),('in', 'Đang xử lý'), ('duyet', 'Duyệt'), ('huy', 'Hủy bỏ')], 
+                selection=[('nhap', 'Nháp'),('in', 'Đang xử lý'), ('ch_duyet', 'Cấp Huyện Duyệt'), ('cc_duyet', 'Chi Cục Duyệt'), ('huy', 'Hủy bỏ')], 
                 string="Chinh Sua", readonly=True, select=True),
                 }
     _defaults = {
         'trang_thai_id': get_trangthai_nhap,
                  }
+    
+    def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
+        if context is None:
+            context = {}
+        if context.get('search_ten_ho_id'):
+            sql = '''
+                select id from chan_nuoi
+                where trang_thai_id in (select id from trang_thai where stt = 3)
+            '''
+            cr.execute(sql)
+            chan_nuoi_ids = [row[0] for row in cr.fetchall()]
+            args += [('id','in',chan_nuoi_ids)]
+        return super(chan_nuoi, self).search(cr, uid, args, offset=offset, limit=limit, order=order, context=context, count=count)
+    
+    def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
+       ids = self.search(cr, user, args, context=context, limit=limit)
+       return self.name_get(cr, user, ids, context=context)
+    
     def bt_duyet(self, cr, uid, ids, context=None):
         user = self.pool.get('res.users').browse(cr,uid,uid)
         for line in self.browse(cr, uid, ids, context=context):
@@ -193,7 +211,7 @@ class phuong_xa(osv.osv):
     _name = "phuong.xa"
     _columns = {
         'name': fields.char('Phường (xã)',size = 50, required = True),
-         'quan_huyen_id': fields.many2one( 'quan.huyen','Quận (huyện)'),
+         'quan_huyen_id': fields.many2one( 'quan.huyen','Quận (huyện)', required = True),
                 }
 phuong_xa()
 class quan_huyen(osv.osv):
@@ -206,7 +224,8 @@ class khu_pho(osv.osv):
     _name = "khu.pho"
     _columns = {
         'name': fields.char('Khu phố (ấp)',size = 50, required = True),
-        'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)'),
+        'quan_huyen_id': fields.many2one( 'quan.huyen','Quận (huyện)', required = True),
+        'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)', required = True),
                 }
 khu_pho()
 class loai_hang(osv.osv):

@@ -26,7 +26,7 @@
     'sequence': 14,
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',
-    'depends': ['green_erp_ccty_base'],
+    'depends': ['green_erp_ccty_base', 'green_erp_ccty_vaccine'],
     'data': [
             'security/xuly_giasuc_security.xml',
             'security/ir.model.access.csv', 

@@ -6,13 +6,16 @@
             <field model="ir.model" name="model_id" ref="model_tiem_phong"/>
             <field name="domain_force">['|',('tram_id','=',False),('tram_id','child_of',[user.company_id.id])]</field>
         </record>
-        
+    
         <record id="tiem_phong_lmlm_rule" model="ir.rule">
             <field name="name">multi_company_tiem_phong_lmlm_rule</field>
             <field model="ir.model" name="model_id" ref="model_tiem_phong_lmlm"/>
             <field name="domain_force">['|',('tram_id','=',False),('tram_id','child_of',[user.company_id.id])]</field>
         </record>
         
+    </data>
+        
+    <data noupdate="0">    
         <record model="ir.module.category" id="module_category_tiemphong">
 	        <field name="name">Tiêm Phòng</field>
 	        <field name="sequence">0</field>

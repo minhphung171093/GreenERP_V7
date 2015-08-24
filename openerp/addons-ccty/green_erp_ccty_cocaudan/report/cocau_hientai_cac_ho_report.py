@@ -40,27 +40,27 @@ class Parser(report_sxw.rml_parse):
             'get_tenho': self.get_tenho,
             'get_cell': self.get_cell,
             'get_col': self.get_col,
-            'get_col_loai': self.get_col_loai,
             'get_ho_row': self.get_ho_row,
-            'get_noicap': self.get_noicap,
             'get_loaivat': self.get_loaivat,
             'convert_date':self.convert_date,
         })
-        
-    def convert_date(self, date):
+
+    def convert_date(self, ten_ho_id):
+        sql = '''
+            select ngay_ghi_so from co_cau where ten_ho_id = %s and trang_thai_id in (select id from trang_thai where stt = 3)
+            group by ngay_ghi_so
+            order by ngay_ghi_so desc
+        '''%(ten_ho_id)
+        self.cr.execute(sql)
+        date = self.cr.dictfetchone()['ngay_ghi_so']
         if date:
             date = datetime.strptime(date, DATE_FORMAT)
-            return date.strftime('%d/%m/%Y')  
+        return date.strftime('%d/%m/%Y')
         
-    def get_tenho(self):
-        wizard_data = self.localcontext['data']['form']
-        ten_ho_id = wizard_data['ten_ho_id']
-        ten = self.pool.get('chan.nuoi').browse(self.cr,self.uid,ten_ho_id[0])
+    def get_tenho(self,ten_ho_id):
+        ten = self.pool.get('chan.nuoi').browse(self.cr,self.uid,ten_ho_id)
         return ten.name
     
-    def get_noicap(self, tram_id):
-        return self.pool.get('tram.thu.y').browse(self.cr,self.uid,tram_id).name
-
     def get_loaivat(self):
         loaivat = []
         context = {}
@@ -81,43 +81,37 @@ class Parser(report_sxw.rml_parse):
 
     def get_ho_row(self):
         wizard_data = self.localcontext['data']['form']
+        quan_huyen_id = wizard_data['quan_huyen_id']
+        phuong_xa_id = wizard_data['phuong_xa_id']
+        khu_pho_id = wizard_data['khu_pho_id']
         ten_ho_id = wizard_data['ten_ho_id']
-        tu_ngay = wizard_data['tu_ngay']
-        den_ngay = wizard_data['den_ngay']
-        ho = self.pool.get('chan.nuoi').browse(self.cr,self.uid,ten_ho_id[0])
-        if tu_ngay and not den_ngay:
-            sql='''
-                select * from nhap_xuat_canh_giasuc 
-                where ten_ho_id = %s and ngay_kiem_tra >= '%s' and ngay_kiem_tra is not null and loai = 'nhap'
-                and loai_id in %s and trang_thai_id in (select id from trang_thai where stt = 3)
-            '''%(ten_ho_id[0], tu_ngay, tuple(self.get_loaivat()),)
-            self.cr.execute(sql)
-        elif den_ngay and not tu_ngay:
-            sql='''
-                select * from nhap_xuat_canh_giasuc 
-                where ten_ho_id = %s and ngay_kiem_tra <= '%s' and ngay_kiem_tra is not null and loai = 'nhap'
-                and loai_id in %s and trang_thai_id in (select id from trang_thai where stt = 3)
-            '''%(ten_ho_id[0], den_ngay, tuple(self.get_loaivat()),)
-            self.cr.execute(sql)
-        elif den_ngay and tu_ngay:
-            sql='''
-                select * from nhap_xuat_canh_giasuc 
-                where ten_ho_id = %s and ngay_kiem_tra between '%s' and '%s' and ngay_kiem_tra is not null and loai = 'nhap'
-                and loai_id in %s and trang_thai_id in (select id from trang_thai where stt = 3)
-            '''%(ten_ho_id[0], tu_ngay, den_ngay, tuple(self.get_loaivat()),)
-            self.cr.execute(sql)
-        else:
-            sql='''
-                select * from nhap_xuat_canh_giasuc 
-                where ten_ho_id = %s and ngay_kiem_tra is not null and loai = 'nhap'
-                and loai_id in %s and trang_thai_id in (select id from trang_thai where stt = 3)
-            '''%(ten_ho_id[0], tuple(self.get_loaivat()),)
-            self.cr.execute(sql)
-        tt_ho = self.cr.dictfetchall()
-        if tt_ho:
-            return tt_ho
-        else:
-            raise osv.except_osv(_('Warning!'),_('Không có thông tin nhập nào từ hộ %s')%(ho.name))
+        sql='''
+            select ten_ho_id from co_cau where trang_thai = 'new' and chon_loai in %s
+            and trang_thai_id in (select id from trang_thai where stt = 3)
+            
+        '''%(tuple(self.get_loaivat()),)
+        if quan_huyen_id:
+            sql+='''
+                and quan_huyen_id = %s
+            '''%(quan_huyen_id[0])
+        if quan_huyen_id and phuong_xa_id:
+            sql+='''
+                and quan_huyen_id = %s and phuong_xa_id = %s
+            '''%(quan_huyen_id[0],phuong_xa_id[0])
+        if quan_huyen_id and phuong_xa_id and khu_pho_id:
+            sql+='''
+                and quan_huyen_id = %s and phuong_xa_id = %s and khu_pho_id = %s
+            '''%(quan_huyen_id[0],phuong_xa_id[0], khu_pho_id[0])
+        if quan_huyen_id and phuong_xa_id and khu_pho_id and ten_ho_id:
+            sql+='''
+                and quan_huyen_id = %s and phuong_xa_id = %s and khu_pho_id = %s and ten_ho_id = %s
+            '''%(quan_huyen_id[0],phuong_xa_id[0], khu_pho_id[0], ten_ho_id[0])
+        sql+='''
+             group by ten_ho_id
+            order by ten_ho_id 
+        '''
+        self.cr.execute(sql)
+        return self.cr.dictfetchall()
     
     def get_col(self):
         res = []
@@ -140,6 +134,10 @@ class Parser(report_sxw.rml_parse):
                                  'loaivat':'','ct': ct['name']
                                 }
                         ))
+        res.append((0,0,{
+                             'loaivat':'','ct': 'Cộng bò sữa'
+                            }
+                    ))    
         
         bota_model, bota_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_bota')
         self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [bota_id], 'read', context = context)
@@ -158,6 +156,10 @@ class Parser(report_sxw.rml_parse):
                                  'loaivat':'','ct': ct['name']
                                 }
                         ))
+        res.append((0,0,{
+                             'loaivat':'','ct': 'Cộng bò ta'
+                            }
+                    ))   
         
         bolai_model, bolai_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_bolai')
         self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [bolai_id], 'read', context = context)
@@ -176,7 +178,10 @@ class Parser(report_sxw.rml_parse):
                                  'loaivat':'','ct': ct['name']
                                 }
                         ))
-                
+        res.append((0,0,{
+                             'loaivat':'','ct': 'Cộng bò lai sind'
+                            }
+                    )) 
         trau_model, trau_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_trau')
         self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [trau_id], 'read', context = context)
         sql = '''
@@ -194,6 +199,10 @@ class Parser(report_sxw.rml_parse):
                                  'loaivat':'','ct': ct['name']
                                 }
                         ))
+        res.append((0,0,{
+                             'loaivat':'','ct': 'Cộng trâu'
+                            }
+                    )) 
         
         de_model, de_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_de')
         self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [de_id], 'read', context = context)
@@ -218,66 +227,63 @@ class Parser(report_sxw.rml_parse):
                              'loaivat':ct['name'],'ct':ct['name']
                             }
                     ))
-            
-        sql = '''
-            select * from chi_tiet_loai_benh where loai_id in (select id from loai_vat where id = %s)
-        '''%(trau_id)
-        self.cr.execute(sql)
-        for seq,ct in enumerate(self.cr.dictfetchall()):
-            if seq == 0:
-                res.append((0,0,{
-                                 'loaivat':'ĐÃ TIÊM PHÒNG','ct': ct['name']
-                                }
-                        ))
-            else:
-                res.append((0,0,{
-                                 'loaivat':'','ct': ct['name']
-                                }
-                        ))
         return res
     
-    
-    
-    def get_col_loai(self):
-        
-        {'loaivat': 'trau',
-         'ct': 'duc',
-         }
-        return [{'loaivat': 'bo sua',},
-                {'loaivat': 'bo ta',}
-                ]
-                
-    
-#     def get_row(self):
-#         
-#         return [1,2,3,4,5,6]
-    
-    def get_cell(self,row,col,so_giay):
+    def get_cell(self,row,col):
         context = {}
         soluong = False
-        sum = 0
+        sum_bosua = 0
+        sum_bota = 0
         wizard_data = self.localcontext['data']['form']
-        ten_ho_id = wizard_data['ten_ho_id']
         if row:
+            co_sl = False
             sql = '''
-                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong from chi_tiet_loai_nhap_xuat 
-                where name = '%s' and nhap_xuat_loai_id in (select id from nhap_xuat_canh_giasuc 
-                where ten_ho_id = %s and ngay_kiem_tra = '%s' and name = '%s' and trang_thai_id in (select id from trang_thai where stt = 3))
-            '''%(col, ten_ho_id[0], row, so_giay)
+                select tong_sl from chi_tiet_loai_line
+                where name = '%s' and co_cau_id in (select id from co_cau where ten_ho_id = %s and trang_thai = 'new' and trang_thai_id in (select id from trang_thai where stt = 3))
+            '''%(col, row)
             self.cr.execute(sql)
-            sl = self.cr.dictfetchone()
-            if sl['so_luong']!=0:
-                soluong = sl and sl['so_luong'] or False
-                
-            sql = '''
-                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong from chi_tiet_da_tiem_phong
-                where name = '%s' and nhap_xuat_tiemphong_id in (select id from nhap_xuat_canh_giasuc 
-                where ten_ho_id = %s and ngay_kiem_tra = '%s' and name = '%s' and trang_thai_id in (select id from trang_thai where stt = 3))
-            '''%(col, ten_ho_id[0], row, so_giay)
-            self.cr.execute(sql)
-            sl = self.cr.dictfetchone()
-            if sl['so_luong']!=0:
-                soluong = sl and sl['so_luong'] or False
+            tong_sl = self.cr.dictfetchone()
+            soluong = tong_sl and tong_sl['tong_sl'] or False
+            if col == "Cộng bò sữa":
+                bosua_model, bosua_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_bosua')
+                self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [bosua_id], 'read', context = context)
+                sql = '''
+                    select case when sum(tong_sl)!=0 then sum(tong_sl) else 0 end sl_bosua from chi_tiet_loai_line where
+                        co_cau_id in (select id from co_cau where ten_ho_id = %s and trang_thai = 'new' and chon_loai = %s
+                        and trang_thai_id in (select id from trang_thai where stt = 3))
+                '''%(row, bosua_id)
+                self.cr.execute(sql)
+                soluong = self.cr.dictfetchone()['sl_bosua']
+            if col == "Cộng bò ta":
+                bota_model, bota_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_bota')
+                self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [bota_id], 'read', context = context)
+                sql = '''
+                    select case when sum(tong_sl)!=0 then sum(tong_sl) else 0 end sl_bota from chi_tiet_loai_line where
+                        co_cau_id in (select id from co_cau where ten_ho_id = %s and trang_thai = 'new' and chon_loai = %s
+                        and trang_thai_id in (select id from trang_thai where stt = 3))
+                '''%(row, bota_id)
+                self.cr.execute(sql)
+                soluong = self.cr.dictfetchone()['sl_bota']
+            if col == "Cộng bò lai sind":
+                bolai_model, bolai_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_bolai')
+                self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [bolai_id], 'read', context = context)
+                sql = '''
+                    select case when sum(tong_sl)!=0 then sum(tong_sl) else 0 end sl_bolai from chi_tiet_loai_line where
+                        co_cau_id in (select id from co_cau where ten_ho_id = %s and trang_thai = 'new' and chon_loai = %s
+                        and trang_thai_id in (select id from trang_thai where stt = 3))
+                '''%(row, bolai_id)
+                self.cr.execute(sql)
+                soluong = self.cr.dictfetchone()['sl_bolai']
+            if col == "Cộng trâu":
+                trau_model, trau_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_trau')
+                self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [trau_id], 'read', context = context)
+                sql = '''
+                    select case when sum(tong_sl)!=0 then sum(tong_sl) else 0 end sl_trau from chi_tiet_loai_line where
+                        co_cau_id in (select id from co_cau where ten_ho_id = %s and trang_thai = 'new' and chon_loai = %s
+                        and trang_thai_id in (select id from trang_thai where stt = 3))
+                '''%(row, trau_id)
+                self.cr.execute(sql)
+                soluong = self.cr.dictfetchone()['sl_trau']
         return soluong
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
 

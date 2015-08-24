@@ -86,28 +86,28 @@ class Parser(report_sxw.rml_parse):
             sql='''
                 select * from nhap_xuat_canh_giasuc 
                 where ten_ho_id = %s and ngay_kiem_tra >= '%s' and ngay_kiem_tra is not null and loai = 'nhap'
-                and loai_id in %s
+                and loai_id in %s and trang_thai_id in (select id from trang_thai where stt = 3)
             '''%(ten_ho_id[0], tu_ngay, tuple(self.get_loaivat()),)
             self.cr.execute(sql)
         elif den_ngay and not tu_ngay:
             sql='''
                 select * from nhap_xuat_canh_giasuc 
                 where ten_ho_id = %s and ngay_kiem_tra <= '%s' and ngay_kiem_tra is not null and loai = 'nhap'
-                and loai_id in %s
+                and loai_id in %s and trang_thai_id in (select id from trang_thai where stt = 3)
             '''%(ten_ho_id[0], den_ngay, tuple(self.get_loaivat()),)
             self.cr.execute(sql)
         elif den_ngay and tu_ngay:
             sql='''
                 select * from nhap_xuat_canh_giasuc 
                 where ten_ho_id = %s and ngay_kiem_tra between '%s' and '%s' and ngay_kiem_tra is not null and loai = 'nhap'
-                and loai_id in %s
+                and loai_id in %s and trang_thai_id in (select id from trang_thai where stt = 3)
             '''%(ten_ho_id[0], tu_ngay, den_ngay, tuple(self.get_loaivat()),)
             self.cr.execute(sql)
         else:
             sql='''
                 select * from nhap_xuat_canh_giasuc 
                 where ten_ho_id = %s and ngay_kiem_tra is not null and loai = 'nhap'
-                and loai_id in %s
+                and loai_id in %s and trang_thai_id in (select id from trang_thai where stt = 3)
             '''%(ten_ho_id[0], tuple(self.get_loaivat()),)
             self.cr.execute(sql)
         tt_ho = self.cr.dictfetchall()
@@ -227,7 +227,7 @@ class Parser(report_sxw.rml_parse):
             sql = '''
                 select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong from chi_tiet_loai_nhap_xuat 
                 where name = '%s' and nhap_xuat_loai_id in (select id from nhap_xuat_canh_giasuc 
-                where ten_ho_id = %s and ngay_kiem_tra = '%s' and name = '%s')
+                where ten_ho_id = %s and ngay_kiem_tra = '%s' and name = '%s' and trang_thai_id in (select id from trang_thai where stt = 3))
             '''%(col, ten_ho_id[0], row, so_giay)
             self.cr.execute(sql)
             sl = self.cr.dictfetchone()
@@ -237,7 +237,7 @@ class Parser(report_sxw.rml_parse):
             sql = '''
                 select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong from chi_tiet_da_tiem_phong
                 where name = '%s' and nhap_xuat_tiemphong_id in (select id from nhap_xuat_canh_giasuc 
-                where ten_ho_id = %s and ngay_kiem_tra = '%s' and name = '%s')
+                where ten_ho_id = %s and ngay_kiem_tra = '%s' and name = '%s' and trang_thai_id in (select id from trang_thai where stt = 3))
             '''%(col, ten_ho_id[0], row, so_giay)
             self.cr.execute(sql)
             sl = self.cr.dictfetchone()
@@ -253,7 +253,7 @@ class Parser(report_sxw.rml_parse):
                     sql = '''
                         select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl from chi_tiet_loai_nhap_xuat 
                         where nhap_xuat_loai_id in (select id from nhap_xuat_canh_giasuc 
-                        where ten_ho_id = %s and ngay_kiem_tra = '%s' and name = '%s' and loai_id in %s)
+                        where ten_ho_id = %s and ngay_kiem_tra = '%s' and name = '%s' and loai_id in %s and trang_thai_id in (select id from trang_thai where stt = 3))
                     '''%(ten_ho_id[0], row, so_giay, tuple(self.get_loaivat()),)
                     self.cr.execute(sql)
                     soluong = self.cr.dictfetchone()['sl']

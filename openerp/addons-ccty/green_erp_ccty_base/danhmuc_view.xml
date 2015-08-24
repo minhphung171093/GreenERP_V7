@@ -24,6 +24,30 @@
 				
 			</field>
 		</record>
+		
+		<record id="action_res_users_canbo" model="ir.actions.act_window">
+            <field name="name">Cán Bộ</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.users</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="base.view_users_tree"/>
+            <field name="domain">[('id','!=',1)]</field>
+            <field name="context">{}</field>
+            <field name="search_view_id" ref="base.view_users_search"/>
+            <field name="help">Create and manage users that will connect to the system. Users can be deactivated should there be a period of time during which they will/should not connect to the system. You can assign them groups in order to give them specific access to the applications they need to use in the system.</field>
+        </record>
+        <record id="action_res_users_canbo1" model="ir.actions.act_window.view">
+            <field eval="10" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="base.view_users_tree"/>
+            <field name="act_window_id" ref="action_res_users_canbo"/>
+        </record>
+        <record id="action_res_users_canbo2" model="ir.actions.act_window.view">
+            <field eval="20" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="res_users_canbo_form_inherit"/>
+            <field name="act_window_id" ref="action_res_users_canbo"/>
+        </record>
        
         					<!--Trạm thú y-->  
         					
@@ -167,11 +191,11 @@
                     <field name="ma_ho" />
                     <field name="so_nha" />                    
                     <field name="ngay_cap" />
-                    <field name="quan_huyen_id" />
-                    <field name="phuong_xa_id" domain="[('quan_huyen_id','=',quan_huyen_id)]"/>
-                    <field name="khu_pho_id" domain="[('phuong_xa_id','=',phuong_xa_id)]"/>
+                    <field name="quan_huyen_id" options="{'create': false, 'create_edit': false}"/>
+                    <field name="phuong_xa_id" domain="[('quan_huyen_id','=',quan_huyen_id)]" options="{'create': false, 'create_edit': false}"/>
+                    <field name="khu_pho_id" domain="[('phuong_xa_id','=',phuong_xa_id)]" options="{'create': false, 'create_edit': false}"/>
                     <field name="dien_tich" />
-                    <field name="trang_thai_id" />
+                    <field name="trang_thai_id" options="{'create': false, 'create_edit': false}"/>
                     <field name="hien_an" invisible = '1'/>
                     <field name="chinh_sua_rel" invisible = '1'/>
                 </tree>
@@ -194,9 +218,9 @@
 		                    <field name="ma_ho" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 		                    <field name="so_nha" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>                    
 		                    <field name="ngay_cap" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-		                    <field name="quan_huyen_id" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-		                    <field name="phuong_xa_id" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-		                    <field name="khu_pho_id" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+		                    <field name="quan_huyen_id" options="{'create': false, 'create_edit': false}" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+		                    <field name="phuong_xa_id" options="{'create': false, 'create_edit': false}" domain="[('quan_huyen_id','=',quan_huyen_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+		                    <field name="khu_pho_id" options="{'create': false, 'create_edit': false}" domain="[('phuong_xa_id','=',phuong_xa_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 		                    <field name="dien_tich" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 		                    <field name="hien_an" invisible = '1'/>
 		                    <field name="chinh_sua_rel" invisible = '1' />
@@ -328,7 +352,7 @@
             <field name="arch" type="xml">
                 <tree string="Phường (Xã)" editable='top'>
                     <field name="name" />
-                    <field name="quan_huyen_id" />
+                    <field name="quan_huyen_id" options="{'create': false, 'create_edit': false}"/>
                 </tree>
             </field>
         </record>  
@@ -351,7 +375,8 @@
             <field name="arch" type="xml">
                 <tree string="Khu phố (Ấp)" editable='top'>
                     <field name="name" />
-                    <field name="phuong_xa_id" />
+                    <field name="quan_huyen_id" options="{'create': false, 'create_edit': false}"/>
+                    <field name="phuong_xa_id" options="{'create': false, 'create_edit': false}"/>
                 </tree>
             </field>
         </record>  
@@ -416,6 +441,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
         </record>
+        
        <!-- trang thai -->
        
        <record model="ir.ui.view" id="trang_thai_tree">
@@ -423,7 +449,7 @@
             <field name="model">trang.thai</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="Trạng thái">
+                <tree string="Trạng thái" create = 'false' edit = 'false'>
                     <field name="stt" />
                     <field name="name" />
                 </tree>
@@ -435,7 +461,7 @@
             <field name="model">trang.thai</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
-                <form string="Trạng thái" version="7.0">
+                <form string="Trạng thái" version="7.0" >
 	                <sheet>
                 		<group>
 			            	<field name="stt" />

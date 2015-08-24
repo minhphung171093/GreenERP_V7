@@ -16,7 +16,6 @@ import os
 from openerp import modules
 base_path = os.path.dirname(modules.get_module_path('green_erp_ccty_base'))
 
-
 class co_cau(osv.osv):
     _name = "co.cau"
     def _get_company(self, cr, uid, ids, context=None):
@@ -31,8 +30,8 @@ class co_cau(osv.osv):
             select id from trang_thai where stt = 1
         '''
         cr.execute(sql)
-        trang = cr.dictfetchone()['id'] or False
-        return trang
+        trang = cr.dictfetchone()
+        return trang and trang['id'] or False
     
     def _get_hien_an(self, cr, uid, ids, name, arg, context=None):        
         result = {}
@@ -62,16 +61,36 @@ class co_cau(osv.osv):
         'trang_thai_id': fields.many2one('trang.thai','Trạng thái', readonly=True),
         'hien_an': fields.function(_get_hien_an, type='boolean', string='Hien/An'),
         'chinh_sua_rel': fields.related('trang_thai_id', 'chinh_sua', type="selection",
-                selection=[('nhap', 'Nháp'),('in', 'Đang xử lý'), ('duyet', 'Duyệt'), ('huy', 'Hủy bỏ')], 
+                selection=[('nhap', 'Nháp'),('in', 'Đang xử lý'), ('ch_duyet', 'Cấp Huyện Duyệt'), ('cc_duyet', 'Chi Cục Duyệt'), ('huy', 'Hủy bỏ')], 
                 string="Chinh Sua", readonly=True, select=True),
+        'nhap_xuat_id': fields.many2one('nhap.xuat.canh.giasuc','Nhap Xuat'),
                 
                 }
     _defaults = {
         'can_bo_id': _get_user,
         'company_id': _get_company,
-        'trang_thai': 'new',
         'trang_thai_id': get_trangthai_nhap,
                  }
+    def onchange_quan_huyen(self, cr, uid, ids, context=None):
+        vals = {}
+        vals = {'phuong_xa_id':False}
+        return {'value': vals}
+    def onchange_phuong_xa(self, cr, uid, ids, context=None):
+        vals = {}
+        vals = {'khu_pho_id':False}
+        return {'value': vals}
+    def onchange_khu_pho(self, cr, uid, ids, context=None):
+        vals = {}
+        vals = {'ten_ho_id':False}
+        return {'value': vals}
+    def name_get(self, cr, uid, ids, context=None):
+        res = []
+        if not ids:
+            return res
+        for line in self.browse(cr,uid,ids):
+            cate_name = line.chon_loai.name
+            res.append((line.id,cate_name))
+        return res  
     
     def bt_duyet(self, cr, uid, ids, context=None):
         user = self.pool.get('res.users').browse(cr,uid,uid)
@@ -81,38 +100,56 @@ class co_cau(osv.osv):
                     select id from trang_thai where stt = 2
                 '''
                 cr.execute(sql)
+                trang = cr.dictfetchone()
                 self.write(cr,uid,ids,{
-                                       'trang_thai_id': cr.dictfetchone()['id'] or False
+                                       'trang_thai_id': trang and trang['id'] or False
                                        })
             elif line.trang_thai_id.stt == 1 and user.company_id.cap == 'chi_cuc':
                 sql = '''
                     select id from trang_thai where stt = 3
                 '''
                 cr.execute(sql)
+                trang = cr.dictfetchone()
                 self.write(cr,uid,ids,{
-                                       'trang_thai_id': cr.dictfetchone()['id'] or False
+                                       'trang_thai_id': trang and trang['id'] or False,
+                                       'trang_thai': 'new',
                                        })
-                
+                sql = '''
+                    select id from co_cau where chon_loai = %s and ten_ho_id = %s and id != %s
+                    and trang_thai_id in (select id from trang_thai where stt = 3)
+                '''%(line.chon_loai.id, line.ten_ho_id.id, line.id)
+                cr.execute(sql)
+                co_cau_ids = cr.fetchall()
+                if co_cau_ids:
+                    cr.execute("update co_cau set trang_thai = 'old' where id in %s",(tuple(co_cau_ids),))
             elif line.trang_thai_id.stt == 2 and user.company_id.cap == 'chi_cuc':
                 sql = '''
                     select id from trang_thai where stt = 3
                 '''
                 cr.execute(sql)
+                trang = cr.dictfetchone()
                 self.write(cr,uid,ids,{
-                                       'trang_thai_id': cr.dictfetchone()['id'] or False
+                                       'trang_thai_id': trang and trang['id'] or False,
+                                       'trang_thai': 'new',
                                        })
+                sql = '''
+                    select id from co_cau where chon_loai = %s and ten_ho_id = %s and id != %s
+                    and trang_thai_id in (select id from trang_thai where stt = 3)
+                '''%(line.chon_loai.id, line.ten_ho_id.id, line.id)
+                cr.execute(sql)
+                co_cau_ids = cr.fetchall()
+                if co_cau_ids:
+                    cr.execute("update co_cau set trang_thai = 'old' where id in %s",(tuple(co_cau_ids),))
+            elif line.trang_thai_id.stt == 3 and user.company_id.cap == 'chi_cuc':
+                sql = '''
+                    select id from co_cau where chon_loai = %s and ten_ho_id = %s and id != %s
+                    and trang_thai_id in (select id from trang_thai where stt = 3)
+                '''%(line.chon_loai.id, line.ten_ho_id.id, line.id)
+                cr.execute(sql)
+                co_cau_ids = cr.fetchall()
+                if co_cau_ids:
+                    cr.execute("update co_cau set trang_thai = 'old' where id in %s",(tuple(co_cau_ids),))
         return True
-    
-    def create(self, cr, uid, vals, context=None):
-        sql = '''
-            select id from co_cau where chon_loai = %s and ten_ho_id = %s
-        '''%(vals['chon_loai'], vals['ten_ho_id'])
-        cr.execute(sql)
-        co_cau_ids = cr.fetchall()
-        if co_cau_ids:
-            cr.execute("update co_cau set trang_thai = 'old' where id in %s",(tuple(co_cau_ids),))
-        new_id = super(co_cau, self).create(cr, uid, vals, context)
-        return new_id  
     
     def onchange_chon_loai(self, cr, uid, ids, chon_loai = False, ten_ho_id = False, context=None):
         chi_tiet= []
@@ -126,14 +163,14 @@ class co_cau(osv.osv):
             for line in loai.chitiet_loaivat:
                 sql = '''
                     select case when sum(so_luong)!=0 then sum(so_luong) else 0 end tong_sl from chi_tiet_loai_line
-                    where co_cau_id in (select id from co_cau where chon_loai = %s and ten_ho_id = %s and tang_giam = 'a')
+                    where co_cau_id in (select id from co_cau where chon_loai = %s and ten_ho_id = %s and tang_giam = 'a' and trang_thai_id in (select id from trang_thai where stt = 3))
                     and name = '%s'
                 '''%(chon_loai, ten_ho_id, line.name)
                 cr.execute(sql)
                 tong_sl = cr.dictfetchone()['tong_sl']
                 sql = '''
                     select case when sum(so_luong)!=0 then sum(so_luong) else 0 end tong_sl_giam from chi_tiet_loai_line
-                    where co_cau_id in (select id from co_cau where chon_loai = %s and ten_ho_id = %s and tang_giam = 'b')
+                    where co_cau_id in (select id from co_cau where chon_loai = %s and ten_ho_id = %s and tang_giam = 'b' and trang_thai_id in (select id from trang_thai where stt = 3))
                     and name = '%s'
                 '''%(chon_loai, ten_ho_id, line.name)
                 cr.execute(sql)
@@ -153,18 +190,38 @@ class chi_tiet_loai_line(osv.osv):
         for line in self.browse(cr, uid, ids, context=context):
             sql = '''
                 select case when sum(so_luong)!=0 then sum(so_luong) else 0 end tong_sl from chi_tiet_loai_line
-                where co_cau_id in (select id from co_cau where chon_loai = %s and ten_ho_id = %s and tang_giam = 'a')
+                where co_cau_id in (select id from co_cau where chon_loai = %s and ten_ho_id = %s and tang_giam = 'a' and trang_thai_id in (select id from trang_thai where stt = 3))
                 and name = '%s'
             '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name)
             cr.execute(sql)
             tong_sl = cr.dictfetchone()['tong_sl']
             sql = '''
                 select case when sum(so_luong)!=0 then sum(so_luong) else 0 end tong_sl_giam from chi_tiet_loai_line
-                where co_cau_id in (select id from co_cau where chon_loai = %s and ten_ho_id = %s and tang_giam = 'b')
+                where co_cau_id in (select id from co_cau where chon_loai = %s and ten_ho_id = %s and tang_giam = 'b' and trang_thai_id in (select id from trang_thai where stt = 3))
                 and name = '%s'
             '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name)
             cr.execute(sql)
             tong_sl_giam = cr.dictfetchone()['tong_sl_giam']
+            
+            sql = '''
+                select so_luong from chi_tiet_loai_line
+                where co_cau_id in (select id from co_cau where chon_loai = %s and ten_ho_id = %s and tang_giam = 'a'
+                and nhap_xuat_id is null)
+                and name = '%s' and id = %s
+            '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name, line.id)
+            cr.execute(sql)
+            sl_tang_hientai = cr.dictfetchone()
+            tong_sl += sl_tang_hientai and sl_tang_hientai['so_luong'] or 0
+            sql = '''
+                select so_luong from chi_tiet_loai_line
+                where co_cau_id in (select id from co_cau where chon_loai = %s and ten_ho_id = %s and tang_giam = 'b'
+                and nhap_xuat_id is null)
+                and name = '%s' and id = %s
+            '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name, line.id)
+            cr.execute(sql)
+            sl_giam_hientai = cr.dictfetchone()
+            tong_sl_giam += sl_giam_hientai and sl_giam_hientai['so_luong'] or 0
+            
             res[line.id] = tong_sl - tong_sl_giam
         return res
     

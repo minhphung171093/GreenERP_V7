@@ -54,13 +54,15 @@ class nhap_vaccine(osv.osv):
         'trang_thai_id': fields.many2one('trang.thai','Trạng thái', readonly=True),
         'hien_an': fields.function(_get_hien_an, type='boolean', string='Hien/An'),
         'chinh_sua_rel': fields.related('trang_thai_id', 'chinh_sua', type="selection",
-                selection=[('nhap', 'Nháp'),('in', 'Đang xử lý'), ('duyet', 'Duyệt'), ('huy', 'Hủy bỏ')], 
+                selection=[('nhap', 'Nháp'),('in', 'Đang xử lý'), ('ch_duyet', 'Cấp Huyện Duyệt'), ('cc_duyet', 'Chi Cục Duyệt'), ('huy', 'Hủy bỏ')], 
                 string="Chinh Sua", readonly=True, select=True),
                 }
     _defaults = {
         'can_bo_id': _get_user,
         'trang_thai_id': get_trangthai_nhap,
                  }
+    
+    
     def bt_duyet(self, cr, uid, ids, context=None):
         user = self.pool.get('res.users').browse(cr,uid,uid)
         for line in self.browse(cr, uid, ids, context=context):
@@ -80,6 +82,14 @@ class nhap_vaccine(osv.osv):
                 self.write(cr,uid,ids,{
                                        'trang_thai_id': cr.dictfetchone()['id'] or False
                                        })
+                self.pool.get('ton.vaccine').create(cr,uid, {
+                                                          'vaccine_id': line.name.id,
+                                                          'so_lo_id': line.so_lo_id.id,
+                                                          'so_luong': line.soluong,
+                                                          'loai': 'nhap',
+                                                          'nhap_vaccine_id': line.id,
+                                                          'ngay': line.ngay_nhap,
+                                                             })
                 
             elif line.trang_thai_id.stt == 2 and user.company_id.cap == 'chi_cuc':
                 sql = '''
@@ -89,6 +99,14 @@ class nhap_vaccine(osv.osv):
                 self.write(cr,uid,ids,{
                                        'trang_thai_id': cr.dictfetchone()['id'] or False
                                        })
+                self.pool.get('ton.vaccine').create(cr,uid, {
+                                                          'vaccine_id': line.name.id,
+                                                          'so_lo_id': line.so_lo_id.id,
+                                                          'so_luong': line.soluong,
+                                                          'loai': 'nhap',
+                                                          'nhap_vaccine_id': line.id,
+                                                          'ngay': line.ngay_nhap,
+                                                             })
         return True
     
 nhap_vaccine()
@@ -101,5 +119,40 @@ class so_lo(osv.osv):
         'vacxin_id': fields.many2one('loai.vacxin','Loại vaccine', required = True),
                 }
 so_lo()   
+
+class ton_vaccine(osv.osv):
+    _name = "ton.vaccine"
+    _columns = {
+        'vaccine_id': fields.many2one('loai.vacxin','Loại vaccine'),
+        'so_lo_id': fields.many2one('so.lo','Số lô'),
+        'ngay': fields.date('Ngày'),
+        'so_luong':fields.float('Số lượng'),
+        'loai': fields.selection([('nhap', 'Nhập'),('xuat', 'Xuất')],'Loại', readonly=True),
+        'nhap_vaccine_id': fields.many2one('nhap.vaccine','Nhap vaccine'),
+                }
+    def init(self, cr):
+        tools.drop_view_if_exists(cr, 'ton_vaccine_view')
+        cr.execute("""
+            create or replace view ton_vaccine_view as (
+                select
+                   min(t_vc.id) as id,
+                    t_vc.vaccine_id as vaccine_id,
+                    t_vc.so_lo_id as so_lo_id,
+                    t_vc.so_luong as so_luong,
+                    t_vc.ngay as ngay
+  
+                from
+                    ton_vaccine t_vc
+                      
+                  
+              
+                group by
+                    t_vc.vaccine_id,
+                    t_vc.so_lo_id,
+                    t_vc.so_luong,
+                    t_vc.ngay
+            )
+        """)
+ton_vaccine() 
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

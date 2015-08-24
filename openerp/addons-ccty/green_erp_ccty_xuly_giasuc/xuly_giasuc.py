@@ -59,11 +59,12 @@ class xuly_giasuc(osv.osv):
         'khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)'),
         'quan_huyen_id': fields.many2one('quan.huyen','Quận (huyện)'),
         'chitiet_loai_xuly':fields.one2many('chitiet.loai.xuly','xuly_giasuc_id','Chi tiet'),
+        'chi_tiet_vaccine_line':fields.one2many('ct.xuly.giasuc.vaccine.line','xuly_giasuc_id','Chi tiết Vaccine'),
         'company_id': fields.many2one('res.company','Trạm'),
         'trang_thai_id': fields.many2one('trang.thai','Trạng thái', readonly=True),
         'hien_an': fields.function(_get_hien_an, type='boolean', string='Hien/An'),
         'chinh_sua_rel': fields.related('trang_thai_id', 'chinh_sua', type="selection",
-                selection=[('nhap', 'Nháp'),('in', 'Đang xử lý'), ('duyet', 'Duyệt'), ('huy', 'Hủy bỏ')], 
+                selection=[('nhap', 'Nháp'),('in', 'Đang xử lý'), ('ch_duyet', 'Cấp Huyện Duyệt'), ('cc_duyet', 'Chi Cục Duyệt'), ('huy', 'Hủy bỏ')], 
                 string="Chinh Sua", readonly=True, select=True),
                 }
     _defaults = {
@@ -71,6 +72,37 @@ class xuly_giasuc(osv.osv):
         'company_id': _get_company,
         'trang_thai_id': get_trangthai_nhap,
                  }
+    
+    def _check_sl_ton_vaccine(self, cr, uid, ids, context=None):
+        for xl_gs in self.browse(cr, uid, ids, context=context):
+            for vaccine in xl_gs.chi_tiet_vaccine_line:
+                sql = '''
+                    select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong from ton_vaccine
+                    where vaccine_id = %s and so_lo_id = %s
+                '''%(vaccine.loai_vaccine_id.id, vaccine.so_lo_id.id)
+                cr.execute(sql)
+                ton_vaccine = cr.dictfetchone()['so_luong']
+                if vaccine.so_luong_vc > ton_vaccine:
+                    raise osv.except_osv(_('Warning!'),_('Bạn nhập %s vaccine nhưng chỉ  còn %s vaccine trong lô %s của loại %s')%(vaccine.so_luong_vc, ton_vaccine, vaccine.so_lo_id.name, vaccine.loai_vaccine_id.name))
+                    return False
+        return True
+         
+    _constraints = [
+        (_check_sl_ton_vaccine, 'Identical Data', []),
+    ]   
+    def onchange_quan_huyen(self, cr, uid, ids, context=None):
+        vals = {}
+        vals = {'phuong_xa_id':False}
+        return {'value': vals}
+    def onchange_phuong_xa(self, cr, uid, ids, context=None):
+        vals = {}
+        vals = {'khu_pho_id':False}
+        return {'value': vals}
+    def onchange_khu_pho(self, cr, uid, ids, context=None):
+        vals = {}
+        vals = {'ten_ho_id':False}
+        return {'value': vals} 
+    
     def bt_duyet(self, cr, uid, ids, context=None):
         user = self.pool.get('res.users').browse(cr,uid,uid)
         for line in self.browse(cr, uid, ids, context=context):
@@ -90,7 +122,15 @@ class xuly_giasuc(osv.osv):
                 self.write(cr,uid,ids,{
                                        'trang_thai_id': cr.dictfetchone()['id'] or False
                                        })
-                
+                for vaccine in line.chi_tiet_vaccine_line:
+                    self.pool.get('ton.vaccine').create(cr,uid, {
+                                                              'vaccine_id': vaccine.loai_vaccine_id.id,
+                                                              'so_lo_id': vaccine.so_lo_id.id,
+                                                              'so_luong': -(vaccine.so_luong_vc),
+                                                              'loai': 'xuat',
+                                                              'xuly_giasuc_id': vaccine.xuly_giasuc_id.id,
+                                                              'ngay': vaccine.xuly_giasuc_id.ngay,
+                                                                 })
             elif line.trang_thai_id.stt == 2 and user.company_id.cap == 'chi_cuc':
                 sql = '''
                     select id from trang_thai where stt = 3
@@ -99,6 +139,15 @@ class xuly_giasuc(osv.osv):
                 self.write(cr,uid,ids,{
                                        'trang_thai_id': cr.dictfetchone()['id'] or False
                                        })
+                for vaccine in line.chi_tiet_vaccine_line:
+                    self.pool.get('ton.vaccine').create(cr,uid, {
+                                                              'vaccine_id': vaccine.loai_vaccine_id.id,
+                                                              'so_lo_id': vaccine.so_lo_id.id,
+                                                              'so_luong': -(vaccine.so_luong_vc),
+                                                              'loai': 'xuat',
+                                                              'xuly_giasuc_id': vaccine.xuly_giasuc_id.id,
+                                                              'ngay': vaccine.xuly_giasuc_id.ngay,
+                                                                 })
         return True
     
     def onchange_chon_loai(self, cr, uid, ids, loai_id = False, context=None):
@@ -127,10 +176,31 @@ class chitiet_loai_xuly(osv.osv):
         'ly_do': fields.char('Lý do bệnh',size = 200),
         'ket_qua_xn': fields.char('Kết quả xét nghiệm',size = 200),
         'bien_phap': fields.char('Biện pháp xử lý',size = 200),
-        'vacxin_id': fields.many2one('loai.vacxin','Thuốc sử dụng'),
-        'lieu_luong': fields.float('Liều lượng'),
-        'lieu_trinh': fields.char('Liệu trình',size = 200),
-        'ket_qua_dieu_tri': fields.char('Kết quả điều trị',size = 200),
+#         'vacxin_id': fields.many2one('loai.vacxin','Thuốc sử dụng'),
+#         'lieu_luong': fields.float('Liều lượng'),
+#         'lieu_trinh': fields.char('Liệu trình',size = 200),
+#         'ket_qua_dieu_tri': fields.char('Kết quả điều trị',size = 200),
                 }
 chitiet_loai_xuly()
+
+class ct_xuly_giasuc_vaccine_line(osv.osv):
+    _name = "ct.xuly.giasuc.vaccine.line"
+    _columns = {
+        'xuly_giasuc_id': fields.many2one( 'xuly.giasuc','Xu ly gia suc', ondelete = 'cascade'),
+        'loai_vaccine_id': fields.many2one('loai.vacxin','Loại vaccine'),
+        'so_lo_id':fields.many2one('so.lo','Số lô'),
+        'han_su_dung_rel':fields.related('so_lo_id','han_su_dung',type='date',string='HSD đến'),
+        'so_luong_vc': fields.float('Số lượng Vaccine'),
+        'lieu_trinh': fields.char('Liệu trình',size = 200),
+                }
+ct_xuly_giasuc_vaccine_line()
+
+class ton_vaccine(osv.osv):
+    _inherit = "ton.vaccine"
+    
+    _columns = {
+        'xuly_giasuc_id': fields.many2one('xuly.giasuc','XLGS'),
+                }
+    
+ton_vaccine()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

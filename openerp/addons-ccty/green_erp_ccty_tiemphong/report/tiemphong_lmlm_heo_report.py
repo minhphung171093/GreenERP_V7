@@ -30,6 +30,7 @@ DATE_FORMAT = "%Y-%m-%d"
 from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT, float_compare
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
+import datetime
 
 class Parser(report_sxw.rml_parse):
     
@@ -55,8 +56,8 @@ class Parser(report_sxw.rml_parse):
         
     def convert_datetime(self, date):
         if date:
-            date = datetime.strptime(date, DATETIME_FORMAT)
-            return date.strftime('%d/%m/%Y %H:%M:%S')  
+            date_time = datetime.datetime.strptime(date, DATETIME_FORMAT) + timedelta(hours=7)
+            return date_time.strftime('%d/%m/%Y %H:%M:%S')
         
     def convert_date(self, date):
         if date:
@@ -144,27 +145,27 @@ class Parser(report_sxw.rml_parse):
         if tu_ngay and not den_ngay:
             sql='''
                 select * from tiem_phong_lmlm where ho_chan_nuoi_id = %s 
-                and to_char(name, 'YYYY-MM-DD') >= '%s' and loai_id in %s
-                order by name
+                and to_char(name, 'YYYY-MM-DD') >= '%s' and loai_id in %s and trang_thai_id in (select id from trang_thai where stt = 3)
+                order by name 
             '''%(ten_ho_id[0], tu_ngay, tuple(self.get_loaivat()),)
             self.cr.execute(sql)
         elif den_ngay and not tu_ngay:
             sql='''
                 select * from tiem_phong_lmlm where ho_chan_nuoi_id = %s 
-                and to_char(name, 'YYYY-MM-DD') <= '%s' and loai_id in %s
+                and to_char(name, 'YYYY-MM-DD') <= '%s' and loai_id in %s and trang_thai_id in (select id from trang_thai where stt = 3)
                 order by name
             '''%(ten_ho_id[0], den_ngay, tuple(self.get_loaivat()),)
             self.cr.execute(sql)
         elif den_ngay and tu_ngay:
             sql='''
                 select * from tiem_phong_lmlm where ho_chan_nuoi_id = %s 
-                and to_char(name, 'YYYY-MM-DD') between '%s' and '%s' and loai_id in %s
+                and to_char(name, 'YYYY-MM-DD') between '%s' and '%s' and loai_id in %s and trang_thai_id in (select id from trang_thai where stt = 3)
                 order by name
             '''%(ten_ho_id[0], tu_ngay, den_ngay, tuple(self.get_loaivat()),)
             self.cr.execute(sql)
         else:
             sql='''
-                select * from tiem_phong_lmlm where ho_chan_nuoi_id = %s and loai_id in %s
+                select * from tiem_phong_lmlm where ho_chan_nuoi_id = %s and loai_id in %s and trang_thai_id in (select id from trang_thai where stt = 3)
                 order by name
             '''%(ten_ho_id[0], tuple(self.get_loaivat()),)
             self.cr.execute(sql)

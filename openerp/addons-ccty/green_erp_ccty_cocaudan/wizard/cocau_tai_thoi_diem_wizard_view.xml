@@ -21,7 +21,7 @@
     	</record>
 
 	    <record model="ir.actions.act_window" id="action_cocau_tai_thoi_diem_form">
-	        <field name="name">Theo dõi cơ cấu đàn gia súc tại thời điểm</field>
+	        <field name="name">Theo hộ (heo)</field>
 	        <field name="res_model">cocau.tai.thoi.diem.form</field>
 	        <field name="view_type">form</field>
 	        <field name="view_mode">form</field>
@@ -29,7 +29,8 @@
 	        <field name="target">new</field>
 	    </record>
 	    
-
+		<menuitem id="co_cau" name="Quản lý cơ cấu đàn"/>
+	    <menuitem id="thongke_baocao" parent="co_cau" name="Thống kê báo cáo cơ cấu đàn" />
     		<menuitem action="action_cocau_tai_thoi_diem_form" id="menu_action_cocau_tai_thoi_diem_form" parent="thongke_baocao"/>
         
 	 

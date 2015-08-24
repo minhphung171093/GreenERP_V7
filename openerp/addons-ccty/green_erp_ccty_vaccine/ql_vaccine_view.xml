@@ -33,10 +33,10 @@
 	                <sheet>
                 		<group col="4"  string="Nhập Vaccine">
                 			<field name="can_bo_id" readonly = '1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-                			<field name="name" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+                			<field name="name" options="{'create': false, 'create_edit': false}" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 			            	<field name="ngay_nhap" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 			        		<field name="soluong" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-			        		<field name="so_lo_id" domain="[('vacxin_id','=',name)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+			        		<field name="so_lo_id" options="{'create': false, 'create_edit': false}" domain="[('vacxin_id','=',name)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
             				<field name="han_su_dung" readonly = "1" />
             				<field name="hien_an" invisible = '1'/>
             				<field name="chinh_sua_rel" invisible = '1'/>
@@ -76,7 +76,7 @@
                 		<group col="4"  string="Số lô">
                 			<field name="name" />
             				<field name="han_su_dung" />
-            				<field name="vacxin_id" />
+            				<field name="vacxin_id" options="{'create': false, 'create_edit': false}"/>
                 		</group>
 	                </sheet>
                 </form>
@@ -89,5 +89,50 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
         </record>
+        
+   	<record id="view_ton_vaccine_report_tree" model="ir.ui.view">
+        <field eval="1" name="priority"/>
+        <field name="name">ton.vaccine.report.tree</field>
+        <field name="model">ton.vaccine</field>
+        <field name="arch" type="xml">
+            <tree string="Ton Vaccine" create="false">
+                
+               	<field name="vaccine_id"/>
+	            <field name="so_lo_id"/>
+	            <field name="ngay"/>
+	            <field name="loai"/>  
+             	<field name="so_luong"/>  
+                
+            </tree>
+        </field>     
+	</record>
+    <record id="view_ton_vaccine_report_search" model="ir.ui.view">
+        <field name="name">ton.vaccine.report.search</field>
+        <field name="model">ton.vaccine</field>
+        <field name="arch" type="xml">
+            <search string="Ton Vaccine">
+            
+                <field name="vaccine_id"/>
+                <field name="so_lo_id"/>
+                <field name="loai"/>    
+               
+                <group expand="1" string="Group By...">
+                    <filter string="Loại Vaccine" icon="terp-personal" name = "vaccine_id" context="{'group_by':'vaccine_id'}"/>
+                    <filter string="Số lô" icon="terp-partner" name = "lo_id"  context="{'group_by':'so_lo_id'}"/>
+                    <filter string="Loại" name="order_month" context="{'group_by':'loai'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_ton_vaccine_report" model="ir.actions.act_window">
+        <field name="name">Thống kê tồn Vaccine</field>
+        <field name="res_model">ton.vaccine</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree</field>
+        <field name="search_view_id" ref="view_ton_vaccine_report_search"/>
+        <field name="view_id" ref="view_ton_vaccine_report_tree"/>
+        <field name="context">{'search_default_vaccine_id':1,'search_default_lo_id':1}</field>
+    </record> 
     </data>
 </openerp>

@@ -59,6 +59,10 @@ class tiem_phong_lmlm(osv.osv):
         vals = {}
         vals = {'khu_pho_id':False}
         return {'value': vals}
+    def onchange_khu_pho(self, cr, uid, ids, context=None):
+        vals = {}
+        vals = {'ho_chan_nuoi_id':False}
+        return {'value': vals}
     
     def _get_company(self, cr, uid, ids, context=None):
         user = self.pool.get('res.users').browse(cr,uid,uid)
@@ -93,19 +97,17 @@ class tiem_phong_lmlm(osv.osv):
         'tram_id': fields.many2one( 'res.company','Trạm'),
         'can_bo_id': fields.many2one( 'res.users','Cán bộ thú y nhập'),
         'can_bo_tiem': fields.char('Cán bộ thú y thực hiện tiêm', size = 100),
-        'loai_vaccine_id': fields.many2one('loai.vacxin','Loại vaccine'),
-        'so_lo_id':fields.many2one('so.lo','Số lô'),
-        'han_su_dung_rel':fields.related('so_lo_id','han_su_dung',type='date',string='HSD đến'),
         'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)'),
         'khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)'),
         'quan_huyen_id': fields.many2one( 'quan.huyen','Quận (huyện)'),
         'ho_chan_nuoi_id': fields.many2one( 'chan.nuoi','Hộ chăn nuôi'),
-        'chi_tiet_tp_line':fields.one2many( 'ct.tiem.phong.lmlm.line','tp_lmlm_id','Chi tiết tiêm phòng'),
+        'chi_tiet_tp_line':fields.one2many('ct.tiem.phong.lmlm.line','tp_lmlm_id','Chi tiết tiêm phòng'),
+        'chi_tiet_vaccine_line':fields.one2many('ct.tiem.phong.vaccine.line','tp_lmlm_id','Chi tiết Vaccine'),
         'state':fields.selection([('draft', 'Nháp'),('done', 'Duyệt')],'Status', readonly=True),
         'trang_thai_id': fields.many2one('trang.thai','Trạng thái'),
         'hien_an': fields.function(_get_hien_an, type='boolean', string='Hien/An'),
         'chinh_sua_rel': fields.related('trang_thai_id', 'chinh_sua', type="selection",
-                selection=[('nhap', 'Nháp'),('in', 'Đang xử lý'), ('duyet', 'Duyệt'), ('huy', 'Hủy bỏ')], 
+                selection=[('nhap', 'Nháp'),('in', 'Đang xử lý'), ('ch_duyet', 'Cấp Huyện Duyệt'), ('cc_duyet', 'Chi Cục Duyệt'), ('huy', 'Hủy bỏ')], 
                 string="Chinh Sua", readonly=True, select=True),
                 }
     _defaults = {
@@ -113,6 +115,25 @@ class tiem_phong_lmlm(osv.osv):
         'tram_id': _get_company,
         'trang_thai_id': get_trangthai_nhap,
                  }
+    
+    def _check_sl_ton_vaccine(self, cr, uid, ids, context=None):
+        for tiem_phong in self.browse(cr, uid, ids, context=context):
+            for vaccine in tiem_phong.chi_tiet_vaccine_line:
+                sql = '''
+                    select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong from ton_vaccine
+                    where vaccine_id = %s and so_lo_id = %s
+                '''%(vaccine.loai_vaccine_id.id, vaccine.so_lo_id.id)
+                cr.execute(sql)
+                ton_vaccine = cr.dictfetchone()['so_luong']
+                if vaccine.so_luong_vc > ton_vaccine:
+                    raise osv.except_osv(_('Warning!'),_('Bạn nhập %s vaccine nhưng chỉ  còn %s vaccine trong lô %s của loại %s')%(vaccine.so_luong_vc, ton_vaccine, vaccine.so_lo_id.name, vaccine.loai_vaccine_id.name))
+                    return False
+        return True
+         
+    _constraints = [
+        (_check_sl_ton_vaccine, 'Identical Data', []),
+    ]   
+    
     def bt_duyet(self, cr, uid, ids, context=None):
         user = self.pool.get('res.users').browse(cr,uid,uid)
         for line in self.browse(cr, uid, ids, context=context):
@@ -132,6 +153,15 @@ class tiem_phong_lmlm(osv.osv):
                 self.write(cr,uid,ids,{
                                        'trang_thai_id': cr.dictfetchone()['id'] or False
                                        })
+                for vaccine in line.chi_tiet_vaccine_line:
+                    self.pool.get('ton.vaccine').create(cr,uid, {
+                                                              'vaccine_id': vaccine.loai_vaccine_id.id,
+                                                              'so_lo_id': vaccine.so_lo_id.id,
+                                                              'so_luong': -(vaccine.so_luong_vc),
+                                                              'loai': 'xuat',
+                                                              'lmlm_id': vaccine.tp_lmlm_id.id,
+                                                              'ngay': vaccine.tp_lmlm_id.name,
+                                                                 })
                 
             elif line.trang_thai_id.stt == 2 and user.company_id.cap == 'chi_cuc':
                 sql = '''
@@ -141,6 +171,15 @@ class tiem_phong_lmlm(osv.osv):
                 self.write(cr,uid,ids,{
                                        'trang_thai_id': cr.dictfetchone()['id'] or False
                                        })
+                for vaccine in line.chi_tiet_vaccine_line:
+                    self.pool.get('ton.vaccine').create(cr,uid, {
+                                                              'vaccine_id': vaccine.loai_vaccine_id.id,
+                                                              'so_lo_id': vaccine.so_lo_id.id,
+                                                              'so_luong': -(vaccine.so_luong_vc),
+                                                              'loai': 'xuat',
+                                                              'lmlm_id': vaccine.tp_lmlm_id.id,
+                                                              'ngay': vaccine.tp_lmlm_id.name,
+                                                                 })
         return True
     
     def onchange_ho_chan_nuoi_id(self, cr, uid, ids, ho_chan_nuoi_id = False, loai_id = False, context=None):
@@ -189,5 +228,27 @@ class ct_tiem_phong_lmlm_line(osv.osv):
         (_check_so_luong, 'Identical Data', []),
     ]
 ct_tiem_phong_lmlm_line()
+
+class ct_tiem_phong_vaccine_line(osv.osv):
+    _name = "ct.tiem.phong.vaccine.line"
+    
+    _columns = {
+        'tp_lmlm_id': fields.many2one( 'tiem.phong.lmlm','tiem phong lmlm', ondelete = 'cascade'),
+        'loai_vaccine_id': fields.many2one('loai.vacxin','Loại vaccine'),
+        'so_lo_id':fields.many2one('so.lo','Số lô'),
+        'han_su_dung_rel':fields.related('so_lo_id','han_su_dung',type='date',string='HSD đến'),
+        'so_luong_vc': fields.float('Số lượng Vaccine'),
+                }
+    
+ct_tiem_phong_vaccine_line()
+
+class ton_vaccine(osv.osv):
+    _inherit = "ton.vaccine"
+    
+    _columns = {
+        'lmlm_id': fields.many2one('tiem.phong.lmlm','LMLM'),
+                }
+    
+ton_vaccine()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

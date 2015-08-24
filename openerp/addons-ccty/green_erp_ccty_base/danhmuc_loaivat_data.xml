@@ -1,21 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-    <data noupdate='1'>
+    <data noupdate='0'>
     
+ <!--  VACCINE-->
+		<record id="loai_vacxin_lmlm" model="loai.vacxin">
+            <field name="name">Vaccine Lở Mồm Long Móng</field>
+            <field name="ma_loai">vc_lmlm</field>
+        </record>
+        
  <!--  TRẠNG THÁI-->
 		<record id="trangthai_nhap" model="trang.thai">
             <field name="name">Nháp</field>
             <field name="stt">1</field>
+            <field name="chinh_sua">nhap</field>
         </record>
         
         <record id="trangthai_cap_huyen" model="trang.thai">
             <field name="name">Cấp Huyện Duyệt</field>
             <field name="stt">2</field>
+            <field name="chinh_sua">ch_duyet</field>
         </record>
         
         <record id="trangthai_chi_cuc" model="trang.thai">
             <field name="name">Chi Cục Duyệt</field>
             <field name="stt">3</field>
+            <field name="chinh_sua">cc_duyet</field>
         </record>
     
  <!--  BÒ SỮA-->
