@@ -367,7 +367,7 @@ class mail_thread(osv.AbstractModel):
             if message_description:
                 message = '<span>%s</span>' % message_description
             for name, change in tracked_values.items():
-                message += '<div> &nbsp; &nbsp; &bull; <b>%s</b>: ' % change.get('col_info')
+                message += unicode('<div> &nbsp; &nbsp; &bull; <b>%s</b>: ' % change.get('col_info'),'utf-8')
                 if change.get('old_value'):
                     message += '%s &rarr; ' % change.get('old_value')
                 message += '%s</div>' % change.get('new_value')
