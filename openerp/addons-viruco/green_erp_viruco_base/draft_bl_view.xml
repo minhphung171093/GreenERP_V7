@@ -34,7 +34,7 @@
 	                    </h1>
 	                    <group>
 	                    	<group>
-	                    		<field name="hopdong_id" domain="[('type','=','hd_ngoai')]"/>
+	                    		<field name="hopdong_id" domain="[('type','=','hd_ngoai')]" on_change="onchange_hopdong_id(hopdong_id)"/>
 	                    		<field name="company_id"/>
 	                    		<field name="consignee_id"/>
 	                    		<field name="ocean_vessel" />
@@ -50,6 +50,7 @@
 	                    		<field name="quantity_kind_of_packages"/>
 	                    		<field name="port_of_loading"/>
 	                    		<field name="place_of_delivery" />
+	                    		<field name="meansurement" />
 	                    	</group>
 	                    </group>
 	                    <group>

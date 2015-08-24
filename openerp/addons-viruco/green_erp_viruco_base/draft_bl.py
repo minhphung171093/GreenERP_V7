@@ -15,6 +15,29 @@ import codecs
 
 class draft_bl(osv.osv):
     _name = "draft.bl"
+    
+    def onchange_hopdong_id(self, cr, uid, ids, hopdong_id=False, context=None):
+        vals = {}
+        draft_bl_line = []
+        if hopdong_id:
+            hd_obj = self.pool.get('hop.dong')
+            hd = hd_obj.browse(cr, uid, hopdong_id)
+            for hd_line in hd.hopdong_line:
+                val_line={
+                    'product_id': hd_line.product_id and hd_line.product_id.id or False,
+                    'product_uom': hd_line.product_uom and hd_line.product_uom.id or False,
+                    'product_qty': hd_line.product_qty,
+                    'net_weight': hd_line.product_qty,
+                }   
+                draft_bl_line.append((0,0,val_line))
+            vals = {
+                'port_of_loading': hd.port_of_loading,
+                'port_of_charge': hd.port_of_charge,
+                'place_of_delivery': hd.diadiem_nhanhang,
+                'draft_bl_line': draft_bl_line,
+            }
+        return {'value': vals}
+    
     _columns = {
         'name':fields.char('Booking No', size = 1024,required = True),
         'hopdong_id':fields.many2one('hop.dong','Contract',required = True),
@@ -30,6 +53,7 @@ class draft_bl(osv.osv):
         'container_no_seal':fields.char('Container No/Seal No',required=True),
         'quantity_kind_of_packages': fields.char('Quantity and Kind of Packages'),
         'note':fields.text('Note'),
+        'meansurement':fields.char('Meansurement'),  
         'freight':fields.selection([('prepaid', 'Prepaid'),('collect', 'Collect')], 'Freight'),
         'bl_no':fields.char('B/L No',required=True),  
         'draft_bl_line': fields.one2many('draft.bl.line','draft_bl_id','Line'),
@@ -39,6 +63,12 @@ class draft_bl(osv.osv):
         'date': time.strftime('%Y-%m-%d'),
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'draft.bl', context=c),
     }
+    
+    def print_draft_bl(self, cr, uid, ids, context=None):
+        return {
+            'type': 'ir.actions.report.xml',
+            'report_name': 'draft_bl_report',
+        }
     
 draft_bl()
 
