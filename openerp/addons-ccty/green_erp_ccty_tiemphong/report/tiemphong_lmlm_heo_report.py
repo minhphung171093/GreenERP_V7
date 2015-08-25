@@ -52,6 +52,7 @@ class Parser(report_sxw.rml_parse):
             'get_ten_vaccine': self.get_ten_vaccine,
             'get_ten_solo': self.get_ten_solo,
             'get_han_su_dung': self.get_han_su_dung,
+            'get_vaccine': self.get_vaccine,
         })
         
     def convert_datetime(self, date):
@@ -61,7 +62,7 @@ class Parser(report_sxw.rml_parse):
         
     def convert_date(self, date):
         if date:
-            date = datetime.strptime(date, DATE_FORMAT)
+            date = datetime.datetime.strptime(date, DATE_FORMAT)
             return date.strftime('%d/%m/%Y')  
         
     def get_ten_vaccine(self, lmlm_id):
@@ -97,6 +98,14 @@ class Parser(report_sxw.rml_parse):
         lmlm_ids = [lmlm.name, lmlm.loai_vaccine_id.name, lmlm.so_lo_id.name, lmlm.han_su_dung_rel]
         return lmlm_ids
     
+    def get_vaccine(self, lmlm_id):
+        name = ''
+        lmlm = self.pool.get('tiem.phong.lmlm').browse(self.cr,self.uid,lmlm_id)
+        for line in lmlm.chi_tiet_vaccine_line:
+            ten = self.pool.get('loai.vacxin').browse(self.cr,self.uid, line.loai_vaccine_id.id).name
+            so_lo = self.pool.get('so.lo').browse(self.cr,self.uid, line.so_lo_id.id).name
+            name += 'Tên Vaccine: ' +  ten + '\n' + 'Số lô: ' + so_lo + ', HSD: ' + self.convert_date(line.han_su_dung_rel) + '\n'
+        return name
     
     def get_loaivat(self):
         loaivat = []
