@@ -7,7 +7,7 @@
 	        <field name="arch" type="xml">
 	            <form string="Cơ cấu hiện tại report" version="7.0">
 	            	<group colspan = '2' col = '4'>
-	                <field name="ten_ho_id" />
+	                <field name="ten_ho_id" options="{'create': false, 'create_edit': false}" />
 	                <field name="tu_ngay" />
 	                <field name="den_ngay" />
 	                </group>

@@ -126,16 +126,16 @@ class Parser(report_sxw.rml_parse):
         for seq,ct in enumerate(self.cr.dictfetchall()):
             if seq==0:
                 res.append((0,0,{
-                                 'loaivat':'Bò Sữa','ct': ct['name']
+                                 'loaivat': unicode('Bò Sữa','utf-8'),'ct': unicode(ct['name'],'utf-8'),
                                 }
                         ))
             else:
                 res.append((0,0,{
-                                 'loaivat':'','ct': ct['name']
+                                 'loaivat':'','ct': unicode(ct['name'],'utf-8')
                                 }
                         ))
         res.append((0,0,{
-                             'loaivat':'','ct': 'Cộng bò sữa'
+                             'loaivat':'','ct': unicode('Cộng bò sữa','utf-8')
                             }
                     ))    
         
@@ -148,16 +148,16 @@ class Parser(report_sxw.rml_parse):
         for seq,ct in enumerate(self.cr.dictfetchall()):
             if seq == 0:
                 res.append((0,0,{
-                                 'loaivat':'Bò Ta','ct': ct['name']
+                                 'loaivat':unicode('Bò Ta','utf-8'),'ct': unicode(ct['name'],'utf-8')
                                 }
                         ))
             else:
                 res.append((0,0,{
-                                 'loaivat':'','ct': ct['name']
+                                 'loaivat':'','ct': unicode(ct['name'],'utf-8')
                                 }
                         ))
         res.append((0,0,{
-                             'loaivat':'','ct': 'Cộng bò ta'
+                             'loaivat':'','ct': unicode('Cộng bò ta','utf-8')
                             }
                     ))   
         
@@ -170,16 +170,16 @@ class Parser(report_sxw.rml_parse):
         for seq,ct in enumerate(self.cr.dictfetchall()):
             if seq == 0:
                 res.append((0,0,{
-                                 'loaivat':'Bò lai sind','ct': ct['name']
+                                 'loaivat':unicode('Bò lai sind','utf-8'),'ct': unicode(ct['name'],'utf-8')
                                 }
                         ))
             else:
                 res.append((0,0,{
-                                 'loaivat':'','ct': ct['name']
+                                 'loaivat':'','ct': unicode(ct['name'],'utf-8')
                                 }
                         ))
         res.append((0,0,{
-                             'loaivat':'','ct': 'Cộng bò lai sind'
+                             'loaivat':'','ct': unicode('Cộng bò lai sind','utf-8')
                             }
                     )) 
         trau_model, trau_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_trau')
@@ -191,16 +191,16 @@ class Parser(report_sxw.rml_parse):
         for seq,ct in enumerate(self.cr.dictfetchall()):
             if seq == 0:
                 res.append((0,0,{
-                                 'loaivat':'Trâu','ct': ct['name']
+                                 'loaivat':unicode('Trâu','utf-8'),'ct': unicode(ct['name'],'utf-8')
                                 }
                         ))
             else:
                 res.append((0,0,{
-                                 'loaivat':'','ct': ct['name']
+                                 'loaivat':'','ct': unicode(ct['name'],'utf-8')
                                 }
                         ))
         res.append((0,0,{
-                             'loaivat':'','ct': 'Cộng trâu'
+                             'loaivat':'','ct': unicode('Cộng trâu','utf-8')
                             }
                     )) 
         
@@ -212,7 +212,7 @@ class Parser(report_sxw.rml_parse):
         self.cr.execute(sql)
         for ct in self.cr.dictfetchall():
             res.append((0,0,{
-                             'loaivat':ct['name'],'ct':ct['name']
+                             'loaivat':unicode(ct['name'],'utf-8'),'ct':unicode(ct['name'],'utf-8')
                             }
                     ))
             
@@ -224,7 +224,7 @@ class Parser(report_sxw.rml_parse):
         self.cr.execute(sql)
         for ct in self.cr.dictfetchall():
             res.append((0,0,{
-                             'loaivat':ct['name'],'ct':ct['name']
+                             'loaivat':unicode(ct['name'],'utf-8'),'ct':unicode(ct['name'],'utf-8')
                             }
                     ))
         return res

@@ -68,6 +68,30 @@
 					<field name="cap" required = '1'/>
 				</xpath>
 				
+				<xpath expr="//group[@string='Bank Accounts']" position="attributes">
+					<attribute name='invisible'>1</attribute>
+				</xpath>
+				
+				<xpath expr="//group[@string='Report Footer Configuration']" position="attributes">
+					<attribute name='invisible'>1</attribute>
+				</xpath>
+				
+				<xpath expr="//page[@string='Header/Footer']" position="attributes">
+					<attribute name='invisible'>1</attribute>
+				</xpath>
+				
+				<xpath expr="//page[@string='Configuration']" position="attributes">
+					<attribute name='invisible'>1</attribute>
+				</xpath>
+				
+				<xpath expr="//page[@string='General Information']/group/group/field[@name='vat']" position="attributes">
+					<attribute name='invisible'>1</attribute>
+				</xpath>
+				
+				<xpath expr="//page[@string='General Information']/group/group/field[@name='company_registry']" position="attributes">
+					<attribute name='invisible'>1</attribute>
+				</xpath>
+				
 			</field>
 		</record>
        
