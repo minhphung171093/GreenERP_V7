@@ -2,7 +2,7 @@
 <openerp>
     <data>
     	<menuitem id="xuly_giasuc" name="Tình hình xử lý gia súc" groups = "green_erp_ccty_base.group_base_admin_ccty,group_xuly_giasuc_user"/>
-    	<menuitem id="menu_xuly_giasuc" parent="xuly_giasuc" name="Thông tin xử lý gia súc"/>
-	    	<menuitem id="menu_action_xuly_giasuc" parent="menu_xuly_giasuc" action="action_xuly_giasuc"/>
+    	<menuitem id="menu_xuly_giasuc" parent="xuly_giasuc" name="Thông tin xử lý gia súc" sequence = '1'/>
+	    	<menuitem id="menu_action_xuly_giasuc" parent="menu_xuly_giasuc" action="action_xuly_giasuc" sequence = '1'/>
     </data>
 </openerp>

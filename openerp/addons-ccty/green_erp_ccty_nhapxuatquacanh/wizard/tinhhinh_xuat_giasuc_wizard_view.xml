@@ -30,8 +30,8 @@
 	    </record>
 	    
 	    <menuitem id="nhap_xuat" name="Nhập - Xuất - Quá cảnh"/>
-        <menuitem id="menu_thong_ke_nhap_xuat" parent="nhap_xuat" name="Thống kê tình hình nhập/xuất gia súc"/>
-	    	<menuitem id="menu_tinh_hinh_xuat" parent="menu_thong_ke_nhap_xuat" name="Tình hình xuất gia súc" action="action_tinhhinh_xuat_giasuc_form"/>
+        <menuitem id="menu_thong_ke_nhap_xuat" parent="nhap_xuat" name="Thống kê tình hình nhập/xuất gia súc" sequence = '2'/>
+	    	<menuitem id="menu_tinh_hinh_xuat" parent="menu_thong_ke_nhap_xuat" name="Tình hình xuất gia súc" action="action_tinhhinh_xuat_giasuc_form" sequence = '2'/>
 	 
 	    
     </data>

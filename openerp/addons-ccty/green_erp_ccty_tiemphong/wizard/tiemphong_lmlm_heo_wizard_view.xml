@@ -30,8 +30,8 @@
 	    </record>
 	    
 	    <menuitem id="tiem_phong" name="Quản lý tiêm phòng"/>
-        <menuitem id="menu_thong_ke_tiem_phong_lmlm" parent="tiem_phong" name="Thống kê tiêm phòng lở mồm long móng"/>
-	    	<menuitem id="menu_action_tiemphong_lmlm_heo_form" parent="menu_thong_ke_tiem_phong_lmlm" name="Lở mồm long móng ở heo" action="action_tiemphong_lmlm_heo_form"/>
+        <menuitem id="menu_thong_ke_tiem_phong_lmlm" parent="tiem_phong" name="Thống kê tiêm phòng lở mồm long móng" sequence = '2'/>
+	    	<menuitem id="menu_action_tiemphong_lmlm_heo_form" parent="menu_thong_ke_tiem_phong_lmlm" name="Lở mồm long móng ở heo" action="action_tiemphong_lmlm_heo_form" sequence = '2'/>
 	 
 	    
     </data>

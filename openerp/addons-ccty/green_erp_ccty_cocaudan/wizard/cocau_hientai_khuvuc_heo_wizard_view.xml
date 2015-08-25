@@ -31,8 +31,8 @@
 	    </record>
 	    
 	    <menuitem id="co_cau" name="Quản lý cơ cấu đàn"/>
-	    <menuitem id="thongke_baocao" parent="co_cau" name="Thống kê báo cáo cơ cấu đàn" />
-    		<menuitem action="action_cocau_hientai_khuvuc_heo_form" id="menu_action_cocau_hientai_khuvuc_heo_form" parent="thongke_baocao"/>
+	    <menuitem id="thongke_baocao" parent="co_cau" name="Thống kê báo cáo cơ cấu đàn" sequence = '2'/>
+    		<menuitem action="action_cocau_hientai_khuvuc_heo_form" id="menu_action_cocau_hientai_khuvuc_heo_form" parent="thongke_baocao" sequence = '4'/>
         
 	 
 	    

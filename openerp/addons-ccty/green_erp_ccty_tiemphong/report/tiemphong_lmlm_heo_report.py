@@ -64,17 +64,26 @@ class Parser(report_sxw.rml_parse):
             date = datetime.strptime(date, DATE_FORMAT)
             return date.strftime('%d/%m/%Y')  
         
-    def get_ten_vaccine(self, loai_vaccine_id):
-        if loai_vaccine_id:
-            return self.pool.get('loai.vacxin').browse(self.cr,self.uid,loai_vaccine_id).name
-        
-    def get_ten_solo(self, so_lo_id):
-        if so_lo_id:
-            return self.pool.get('so.lo').browse(self.cr,self.uid,so_lo_id).name
+    def get_ten_vaccine(self, lmlm_id):
+        if lmlm_id:
+            lmlm = self.pool.get('tiem.phong.lmlm').browse(self.cr,self.uid,lmlm_id)
+            if lmlm.chi_tiet_vaccine_line:
+                line = lmlm.chi_tiet_vaccine_line[0]
+                return self.pool.get('loai.vacxin').browse(self.cr,self.uid, line.loai_vaccine_id.id).name
+            
+    def get_ten_solo(self, lmlm_id):
+        if lmlm_id:
+            lmlm = self.pool.get('tiem.phong.lmlm').browse(self.cr,self.uid,lmlm_id)
+            if lmlm.chi_tiet_vaccine_line:
+                line = lmlm.chi_tiet_vaccine_line[0]
+                return self.pool.get('so.lo').browse(self.cr,self.uid, line.so_lo_id.id).name
         
     def get_han_su_dung(self, lmlm_id):
         if lmlm_id:
-            return self.pool.get('tiem.phong.lmlm').browse(self.cr,self.uid,lmlm_id).han_su_dung_rel
+            lmlm = self.pool.get('tiem.phong.lmlm').browse(self.cr,self.uid,lmlm_id)
+            if lmlm.chi_tiet_vaccine_line:
+                hsd = lmlm.chi_tiet_vaccine_line[0]
+                return hsd.han_su_dung_rel
                 
     def get_tenho(self):
         wizard_data = self.localcontext['data']['form']
