@@ -126,7 +126,7 @@ class Parser(report_sxw.rml_parse):
         for seq,ct in enumerate(self.cr.dictfetchall()):
             if seq==0:
                 res.append((0,0,{
-                                 'loaivat':'Bò Sữa','ct': ct['name']
+                                 'loaivat':u'Bò Sữa','ct': ct['name']
                                 }
                         ))
             else:
@@ -135,7 +135,7 @@ class Parser(report_sxw.rml_parse):
                                 }
                         ))
         res.append((0,0,{
-                             'loaivat':'','ct': 'Cộng bò sữa'
+                             'loaivat':'','ct': u'Cộng bò sữa'
                             }
                     ))    
         
@@ -148,7 +148,7 @@ class Parser(report_sxw.rml_parse):
         for seq,ct in enumerate(self.cr.dictfetchall()):
             if seq == 0:
                 res.append((0,0,{
-                                 'loaivat':'Bò Ta','ct': ct['name']
+                                 'loaivat':u'Bò Ta','ct': ct['name']
                                 }
                         ))
             else:
@@ -157,7 +157,7 @@ class Parser(report_sxw.rml_parse):
                                 }
                         ))
         res.append((0,0,{
-                             'loaivat':'','ct': 'Cộng bò ta'
+                             'loaivat':'','ct': u'Cộng bò ta'
                             }
                     ))   
         
@@ -170,7 +170,7 @@ class Parser(report_sxw.rml_parse):
         for seq,ct in enumerate(self.cr.dictfetchall()):
             if seq == 0:
                 res.append((0,0,{
-                                 'loaivat':'Bò lai sind','ct': ct['name']
+                                 'loaivat':u'Bò lai sind','ct': ct['name']
                                 }
                         ))
             else:
@@ -179,7 +179,7 @@ class Parser(report_sxw.rml_parse):
                                 }
                         ))
         res.append((0,0,{
-                             'loaivat':'','ct': 'Cộng bò lai sind'
+                             'loaivat':'','ct': u'Cộng bò lai sind'
                             }
                     )) 
         trau_model, trau_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_trau')
@@ -191,7 +191,7 @@ class Parser(report_sxw.rml_parse):
         for seq,ct in enumerate(self.cr.dictfetchall()):
             if seq == 0:
                 res.append((0,0,{
-                                 'loaivat':'Trâu','ct': ct['name']
+                                 'loaivat':u'Trâu','ct': ct['name']
                                 }
                         ))
             else:
@@ -200,7 +200,7 @@ class Parser(report_sxw.rml_parse):
                                 }
                         ))
         res.append((0,0,{
-                             'loaivat':'','ct': 'Cộng trâu'
+                             'loaivat':'','ct': u'Cộng trâu'
                             }
                     )) 
         
