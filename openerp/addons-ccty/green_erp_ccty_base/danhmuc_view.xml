@@ -11,6 +11,7 @@
             <field name="arch" type="xml">
             	<xpath expr="//field[@name='company_id']" position="after">
 					<field name="dien_thoai"/>
+					<field name="email"/>
 				</xpath>
 				<xpath expr="//field[@name='company_id']" position="attributes">
 					<attribute name='string'>Trạm</attribute>
@@ -20,6 +21,9 @@
 				</xpath>
 				<xpath expr="//label[@for='login']" position="attributes">
 					<attribute name='string'>Tên đăng nhập</attribute>
+				</xpath>
+				
+				<xpath expr="//page[@string='Preferences']/group/field[@name='email']" position="replace">
 				</xpath>
 				
 				<xpath expr="//page[@string='Preferences']" position="attributes">
@@ -96,6 +100,19 @@
 					<attribute name='invisible'>1</attribute>
 				</xpath>
 				
+				<xpath expr="//button[@name='%(base.preview_report)d']" position="attributes">
+					<attribute name='invisible'>1</attribute>
+				</xpath>
+				
+				<xpath expr="//label[@for='rml_header1']" position="replace">
+				</xpath>
+				<xpath expr="//field[@name='rml_header1']" position="replace">
+				</xpath>
+				<xpath expr="//field[@name='website']" position="replace">
+				</xpath>
+				<xpath expr="//field[@name='email']" position="after">
+					<field name="website" widget="url" placeholder="e.g. www.openerp.com" on_change="onchange_footer(custom_footer, phone, fax, email, website, vat, company_registry, bank_ids)"/>
+				</xpath>
 			</field>
 		</record>
        

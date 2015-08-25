@@ -40,6 +40,9 @@
     'qweb': [
         'static/src/xml/base.xml'
     ],
+    'js' : [
+        "static/src/js/view_form.js",
+    ],
     'installable': True,
     'auto_install': False,
     'application': True,

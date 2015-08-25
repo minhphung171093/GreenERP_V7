@@ -17,8 +17,8 @@
 	    <record id="group_base_admin_ccty" model="res.groups">
 	        <field name="name">Quản Trị</field>
 	        <field name="category_id" ref="module_category_ccty"/>
-	        <field name="users" eval="[(4, ref('base.user_root'))]"/>
-	        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+	        <field name="users" eval="[(4, ref('base.user_root'))]"/> 
+	        <field name="implied_ids" eval="[(4, ref('base.group_user')), (4, ref('base.group_erp_manager'))]"/>
 	    </record>
 	</data>
 </openerp>
