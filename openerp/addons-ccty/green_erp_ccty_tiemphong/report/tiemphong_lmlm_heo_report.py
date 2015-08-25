@@ -212,7 +212,7 @@ class Parser(report_sxw.rml_parse):
         for seq,ct in enumerate(self.cr.dictfetchall()):
             if seq == 0:
                 res.append((0,0,{
-                                 'loaivat':'Heo hậu bị','ct': ct['name']
+                                 'loaivat':u'Heo hậu bị','ct': ct['name']
                                 }
                         ))
             else:
@@ -230,7 +230,7 @@ class Parser(report_sxw.rml_parse):
         for seq,ct in enumerate(self.cr.dictfetchall()):
             if seq == 0:
                 res.append((0,0,{
-                                 'loaivat':'Nái sinh sản','ct': ct['name']
+                                 'loaivat':u'Nái sinh sản','ct': ct['name']
                                 }
                         ))
             else:
@@ -248,7 +248,7 @@ class Parser(report_sxw.rml_parse):
         for seq,ct in enumerate(self.cr.dictfetchall()):
             if seq == 0:
                 res.append((0,0,{
-                                 'loaivat':'Heo con','ct': ct['name']
+                                 'loaivat':u'Heo con','ct': ct['name']
                                 }
                         ))
             else:
@@ -269,7 +269,7 @@ class Parser(report_sxw.rml_parse):
                     ))
         
         res.append((0,0,{
-                             'loaivat':'Tổng cộng','ct': ''
+                             'loaivat':u'Tổng cộng','ct': ''
                             }
                     ))
         return res
