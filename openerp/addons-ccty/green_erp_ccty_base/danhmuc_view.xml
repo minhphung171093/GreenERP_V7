@@ -22,6 +22,10 @@
 					<attribute name='string'>Tên đăng nhập</attribute>
 				</xpath>
 				
+				<xpath expr="//page[@string='Preferences']" position="attributes">
+					<attribute name='invisible'>1</attribute>
+				</xpath>
+				
 			</field>
 		</record>
 		
@@ -129,8 +133,8 @@
             <field name="model">loai.vat</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="Tree Loài vật">
-                    <field name="ma_loai" />
+                <tree string="Tree Loài vật" create = 'false'>
+                    <field name="ma_loai" invisible = '1'/>
                     <field name="name" />
                     <field name="thuoc_loai" />                    
                     <field name="thoi_gian" />
@@ -143,24 +147,24 @@
             <field name="model">loai.vat</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
-                <form string="form Loài vật" version="7.0">
+                <form string="form Loài vật" version="7.0" create = 'false'>
 	                <sheet>
                 		<group>
-			            	<field name="ma_loai" />
-		                    <field name="name" />
+			            	<field name="ma_loai" readonly = '1' invisible = '1'/>
+		                    <field name="name" readonly = '1' />
 		                    <field name="thuoc_loai" />                    
 		                    <field name="thoi_gian" />
                 		</group>
                 		<notebook>
 							<page string = "Thông tin chi tiết">
-								<field name="chitiet_loaivat" nolabel='1'>
+								<field name="chitiet_loaivat" nolabel='1' readonly = '1' >
 									<tree editable='bottom'>
 										<field name="name" />
 									</tree>
 								</field>
 							</page>
 							<page string = "Thông tin chi tiết loại bệnh">
-								<field name="chitiet_loaibenh" nolabel='1'>
+								<field name="chitiet_loaibenh" nolabel='1' readonly = '1' >
 									<tree editable='bottom'>
 										<field name="name" />
 									</tree>
@@ -485,7 +489,7 @@
             <field name="model">trang.thai</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
-                <form string="Trạng thái" version="7.0" >
+                <form string="Trạng thái" version="7.0" create = 'false' edit = 'false'>
 	                <sheet>
                 		<group>
 			            	<field name="stt" />

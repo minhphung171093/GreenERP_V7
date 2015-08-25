@@ -9,7 +9,7 @@
     	<menuitem id="menu_ho_chan_nuoi" parent="menu_danh_muc" name="Danh mục hộ chăn nuôi" action="action_chan_nuoi"/>
     	<menuitem id="menu_loai_hang" parent="menu_danh_muc" name="Danh mục loại hàng" action="action_loai_hang"/>
  <!--   	<menuitem id="menu_loai_vacxin" parent="menu_danh_muc" name="Danh mục vacxin" action="action_loai_vacxin"/> -->
-    	<menuitem id="menu_tinh_tp" parent="menu_danh_muc" name="Tỉnh/Thành phố" action="action_tinh_tp"/>
+ <!--   	<menuitem id="menu_tinh_tp" parent="menu_danh_muc" name="Tỉnh/Thành phố" action="action_tinh_tp"/>  -->
     	<menuitem id="menu_quan_huyen" parent="menu_danh_muc" name="Quận (Huyện)" action="action_quan_huyen"/>
     	<menuitem id="menu_phuong_xa" parent="menu_danh_muc" name="Phường (xã)" action="action_phuong_xa"/>
     	<menuitem id="menu_khu_pho" parent="menu_danh_muc" name="Khu phố (Ấp)" action="action_khu_pho"/>
