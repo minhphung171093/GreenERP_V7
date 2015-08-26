@@ -95,7 +95,7 @@
                 		<notebook>
 							<page string = "Thông tin chi tiết loài vật">
 								<field name="chitiet_loai" nolabel='1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}">
-									<tree editable='bottom' create = 'false' >
+									<tree editable='bottom' create = 'false' delete = 'false'>
 										<field name="name"/>
 										<field name="tong_sl" sum = 'Total'/>
 										<field name="so_luong" sum = 'Total'/>
@@ -134,7 +134,7 @@
             <field name="model">co.cau</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="Thông tin đàn vật nuôi" create = 'false' edit = 'false'>
+                <tree string="Thông tin đàn vật nuôi" create = 'false' edit = 'false' delete = 'false'>
                     <field name="chon_loai" />
                     <field name="can_bo_ghi_so" />
                     <field name="ngay_ghi_so" />                    
@@ -160,7 +160,7 @@
             <field name="model">co.cau</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
-                <form string="form Thông tin đàn vật nuôi" version="7.0" create = 'false' edit = 'false'>
+                <form string="form Thông tin đàn vật nuôi" version="7.0" create = 'false' edit = 'false' delete = 'false'>
                 	<header>
 	            		<button name="bt_duyet" groups = "green_erp_ccty_cocaudan.group_cocaudan_manager" attrs="{'invisible': [('hien_an', '!=', True)]}" string="Duyệt" type="object" class="oe_highlight" />
 	                    <field name="trang_thai_id" widget="statusbar"/>
@@ -186,7 +186,7 @@
                 		<notebook>
 							<page string = "Thông tin chi tiết loài vật">
 								<field name="chitiet_loai" nolabel='1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}">
-									<tree editable='bottom' create = 'false' >
+									<tree editable='bottom' create = 'false' delete = 'false'>
 										<field name="name"/>
 										<field name="tong_sl" sum = 'Total'/>
 										<field name="so_luong" sum = 'Total'/>
@@ -225,7 +225,7 @@
             <field name="model">co.cau</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="Thông tin đàn vật nuôi" create = 'false' edit = 'false'>
+                <tree string="Thông tin đàn vật nuôi" create = 'false' edit = 'false' delete = 'false'>
                     <field name="chon_loai" />
                     <field name="can_bo_ghi_so" />
                     <field name="ngay_ghi_so" />                    
@@ -251,7 +251,7 @@
             <field name="model">co.cau</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
-                <form string="form Thông tin đàn vật nuôi" version="7.0" create = 'false' edit = 'false'>
+                <form string="form Thông tin đàn vật nuôi" version="7.0" create = 'false' edit = 'false' delete = 'false'>
                 	<header>
 	            		<button name="bt_duyet" groups = "green_erp_ccty_cocaudan.group_cocaudan_manager" attrs="{'invisible': [('hien_an', '!=', True)]}" string="Duyệt" type="object" class="oe_highlight" />
 	                    <field name="trang_thai_id" widget="statusbar"/>
@@ -316,7 +316,7 @@
             <field name="model">co.cau</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="Thông tin đàn vật nuôi" create = 'false' edit = 'false'>
+                <tree string="Thông tin đàn vật nuôi" create = 'false' edit = 'false' delete = 'false'>
                     <field name="chon_loai" />
                     <field name="can_bo_ghi_so" />
                     <field name="ngay_ghi_so" />                    
@@ -342,7 +342,7 @@
             <field name="model">co.cau</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
-                <form string="form Thông tin đàn vật nuôi" version="7.0" create = 'false' edit = 'false'>
+                <form string="form Thông tin đàn vật nuôi" version="7.0" create = 'false' edit = 'false' delete = 'false'>
                 	<header>
 	            		<button name="bt_duyet" groups = "green_erp_ccty_cocaudan.group_cocaudan_manager" attrs="{'invisible': [('hien_an', '!=', True)]}" string="Duyệt" type="object" class="oe_highlight" />
 	                    <field name="trang_thai_id" widget="statusbar"/>
@@ -368,7 +368,7 @@
                 		<notebook>
 							<page string = "Thông tin chi tiết loài vật">
 								<field name="chitiet_loai" nolabel='1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}">
-									<tree editable='bottom' create = 'false' >
+									<tree editable='bottom' create = 'false' delete = 'false'>
 										<field name="name"/>
 										<field name="tong_sl" sum = 'Total'/>
 										<field name="so_luong" sum = 'Total'/>
