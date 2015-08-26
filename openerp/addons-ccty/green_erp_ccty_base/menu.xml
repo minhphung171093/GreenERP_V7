@@ -7,7 +7,7 @@
     	<menuitem id="base.menu_action_res_company_form" parent="menu_danh_muc" name="Danh mục trạm"  action="base.action_res_company_form" sequence = '2'/>
     	<menuitem id="menu_loai" parent="menu_danh_muc" name="Danh mục loài vật" action="action_loai_vat"/>
     	<menuitem id="menu_ho_chan_nuoi" parent="menu_danh_muc" name="Danh mục hộ chăn nuôi" action="action_chan_nuoi"/>
-    	<menuitem id="menu_loai_hang" parent="menu_danh_muc" name="Danh mục loại hàng" action="action_loai_hang"/>
+ <!--   	<menuitem id="menu_loai_hang" parent="menu_danh_muc" name="Danh mục loại hàng" action="action_loai_hang"/>  -->
  <!--   	<menuitem id="menu_loai_vacxin" parent="menu_danh_muc" name="Danh mục vacxin" action="action_loai_vacxin"/> -->
  <!--   	<menuitem id="menu_tinh_tp" parent="menu_danh_muc" name="Tỉnh/Thành phố" action="action_tinh_tp"/>  -->
     	<menuitem id="menu_quan_huyen" parent="menu_danh_muc" name="Quận (Huyện)" action="action_quan_huyen"/>
