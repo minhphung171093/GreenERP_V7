@@ -113,19 +113,14 @@ class nhap_xuat_canh_giasuc(osv.osv):
             '''%(nhap_xuat.id)
             cr.execute(sql)
             sl_loai = cr.dictfetchone()['sl_loai']
-            sql = '''
-                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_tiemphong from chi_tiet_da_tiem_phong
-                where nhap_xuat_tiemphong_id = %s
-            '''%(nhap_xuat.id)
-            cr.execute(sql)
-            sl_tiemphong = cr.dictfetchone()['sl_tiemphong']
-            if sl_tiemphong>sl_loai:
-                if nhap_xuat.loai == 'nhap':
-                    raise osv.except_osv(_('Warning!'),_('Số lượng loài %s đã tiêm phòng không được nhiều hơn số lượng loài %s nhập vào')%(nhap_xuat.loai_id.name, nhap_xuat.loai_id.name))
-                    return False
-                if nhap_xuat.loai == 'xuat':
-                    raise osv.except_osv(_('Warning!'),_('Số lượng loài %s đã tiêm phòng không được nhiều hơn số lượng loài %s xuất ra')%(nhap_xuat.loai_id.name, nhap_xuat.loai_id.name))
-                    return False
+            for tiem in nhap_xuat.chitiet_da_tiem_phong:
+                if tiem.so_luong>sl_loai:
+                    if nhap_xuat.loai == 'nhap':
+                        raise osv.except_osv(_('Warning!'),_('Số lượng loài %s đã tiêm phòng với loại bệnh %s không được nhiều hơn số lượng loài %s nhập vào')%(nhap_xuat.loai_id.name, tiem.name, nhap_xuat.loai_id.name))
+                        return False
+                    if nhap_xuat.loai == 'xuat':
+                        raise osv.except_osv(_('Warning!'),_('Số lượng loài %s đã tiêm phòng với loại bệnh %s không được nhiều hơn số lượng loài %s xuất ra')%(nhap_xuat.loai_id.name, tiem.name, nhap_xuat.loai_id.name))
+                        return False
         return True
         
     def _check_so_luong_xuat(self, cr, uid, ids, context=None):
@@ -193,7 +188,7 @@ class nhap_xuat_canh_giasuc(osv.osv):
                     'can_bo_ghi_so_id':line.can_bo_id and line.can_bo_id.id or False,
                     'ngay_ghi_so':line.ngay_cap or False,
                     'tang_giam':'a',
-                    'ly_do':'Nhập từ số giấy kiểm dịch'+' '+ line.name,
+                    'ly_do':u'Nhập từ số giấy kiểm dịch'+' '+ line.name,
                     'quan_huyen_id':line.quan_huyen_id and line.quan_huyen_id.id or False,
                     'phuong_xa_id':line.phuong_xa_id and line.phuong_xa_id.id or False,
                     'khu_pho_id':line.khu_pho_id and line.khu_pho_id.id or False,
@@ -220,7 +215,7 @@ class nhap_xuat_canh_giasuc(osv.osv):
                     'can_bo_ghi_so_id':line.can_bo_id and line.can_bo_id.id or False,
                     'ngay_ghi_so':line.ngay_cap or False,
                     'tang_giam':'a',
-                    'ly_do':'Nhập từ số giấy kiểm dịch'+' '+ line.name,
+                    'ly_do':u'Nhập từ số giấy kiểm dịch'+' '+ line.name,
                     'quan_huyen_id':line.quan_huyen_id and line.quan_huyen_id.id or False,
                     'phuong_xa_id':line.phuong_xa_id and line.phuong_xa_id.id or False,
                     'khu_pho_id':line.khu_pho_id and line.khu_pho_id.id or False,
@@ -263,7 +258,7 @@ class nhap_xuat_canh_giasuc(osv.osv):
                     'can_bo_ghi_so_id':line.can_bo_id and line.can_bo_id.id or False,
                     'ngay_ghi_so':line.ngay_cap or False,
                     'tang_giam':'b',
-                    'ly_do':'Xuất từ số giấy kiểm dịch'+' '+ line.name,
+                    'ly_do':u'Xuất từ số giấy kiểm dịch'+' '+ line.name,
                     'quan_huyen_id':line.quan_huyen_id and line.quan_huyen_id.id or False,
                     'phuong_xa_id':line.phuong_xa_id and line.phuong_xa_id.id or False,
                     'khu_pho_id':line.khu_pho_id and line.khu_pho_id.id or False,
@@ -290,7 +285,7 @@ class nhap_xuat_canh_giasuc(osv.osv):
                     'can_bo_ghi_so_id':line.can_bo_id and line.can_bo_id.id or False,
                     'ngay_ghi_so':line.ngay_cap or False,
                     'tang_giam':'b',
-                    'ly_do':'Xuất từ số giấy kiểm dịch'+' '+ line.name,
+                    'ly_do':u'Xuất từ số giấy kiểm dịch'+' '+ line.name,
                     'quan_huyen_id':line.quan_huyen_id and line.quan_huyen_id.id or False,
                     'phuong_xa_id':line.phuong_xa_id and line.phuong_xa_id.id or False,
                     'khu_pho_id':line.khu_pho_id and line.khu_pho_id.id or False,
