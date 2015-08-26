@@ -150,21 +150,25 @@ class xuly_giasuc(osv.osv):
                                                                  })
         return True
     
-    def onchange_chon_loai(self, cr, uid, ids, loai_id = False, context=None):
+    def onchange_chon_loai(self, cr, uid, ids, ten_ho_id = False, loai_id = False, context=None):
         chi_tiet= []
-        for xu_ly in self.browse(cr,uid,ids):
+        for lmlm in self.browse(cr,uid,ids):
             sql = '''
-                delete from chitiet_loai_xuly where xuly_giasuc_id = %s
-            '''%(xu_ly.id)
+                delete from ct_tiem_phong_lmlm_line where tp_lmlm_id = %s
+            '''%(lmlm.id)
             cr.execute(sql)
-        if loai_id:
-            loai = self.pool.get('loai.vat').browse(cr,uid,loai_id)    
-            for line_loaivat in loai.chitiet_loaivat:
+        if ten_ho_id and loai_id:
+            sql = '''
+                select * from chi_tiet_loai_line where co_cau_id in (select id from co_cau 
+                where ten_ho_id = %s and chon_loai = %s and trang_thai = 'new')
+            '''%(ten_ho_id, loai_id)
+            cr.execute(sql)
+            for line in cr.dictfetchall():
                 chi_tiet.append((0,0,{
-                                      'name': line_loaivat.name
+                                      'name': line['name'],
+                                      'tong_dan': line['tong_sl']
                                       }))
-        return {'value': {'chitiet_loai_xuly': chi_tiet,
-                          }}
+        return {'value': {'chitiet_loai_xuly': chi_tiet}}
 xuly_giasuc()
 
 class chitiet_loai_xuly(osv.osv):
@@ -172,7 +176,8 @@ class chitiet_loai_xuly(osv.osv):
     _columns = {
         'xuly_giasuc_id': fields.many2one('xuly.giasuc','Xu ly gia suc', ondelete = 'cascade'),
         'name': fields.char('Thông tin', readonly = True),
-        'so_luong': fields.float('Số lượng'),
+        'tong_dan': fields.float('Tổng đàn', readonly = True),
+        'so_luong': fields.float('Số lượng xử lý'),
         'ly_do': fields.char('Lý do bệnh',size = 200),
         'ket_qua_xn': fields.char('Kết quả xét nghiệm',size = 200),
         'bien_phap': fields.char('Biện pháp xử lý',size = 200),
