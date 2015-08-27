@@ -18,4 +18,6 @@ access_viruco_base_16,bang.gia,green_erp_viruco_base.model_bang_gia,green_erp_vi
 access_viruco_base_17,cang.donghang,green_erp_viruco_base.model_cang_donghang,green_erp_viruco_base.group_viruco_admin,True,True,True,True
 access_viruco_base_18,bang.gia.line,green_erp_viruco_base.model_bang_gia_line,green_erp_viruco_base.group_viruco_admin,True,True,True,True
 access_viruco_base_19,phuluc.hopdong.line,green_erp_viruco_base.model_phuluc_hopdong_line,green_erp_viruco_base.group_viruco_admin,True,True,True,True
+access_viruco_base_20,draft.bl,green_erp_viruco_base.model_draft_bl,green_erp_viruco_base.group_viruco_admin,True,True,True,True
+access_viruco_base_21,draft.bl.line,green_erp_viruco_base.model_draft_bl_line,green_erp_viruco_base.group_viruco_admin,True,True,True,True
 

@@ -25,7 +25,7 @@
             <field name="arch" type="xml">
 	            <form string="Draft BL" version="7.0">
 					<header>
-						<button name="print_draft_bl" string="Print Draft BL" type="object" class="oe_highlight"/>
+						<!--<button name="print_draft_bl" string="Print Draft BL" type="object" class="oe_highlight"/>-->
 					</header>
 	            	<sheet>
 	                    <h1>
@@ -41,6 +41,7 @@
 	                    		<field name="container_no_seal"/>
 	                    		<field name="freight"/>
 	                    		<field name="port_of_charge"/>
+	                    		<field name="country_id"/>
 	                    	</group>
 	                    	<group>
 	                    		<field name="date"/>
@@ -51,6 +52,7 @@
 	                    		<field name="port_of_loading"/>
 	                    		<field name="place_of_delivery" />
 	                    		<field name="meansurement" />
+	                    		<field name="customs_declaration" />
 	                    	</group>
 	                    </group>
 	                    <group>

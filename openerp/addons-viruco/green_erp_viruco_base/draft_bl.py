@@ -28,6 +28,7 @@ class draft_bl(osv.osv):
                     'product_uom': hd_line.product_uom and hd_line.product_uom.id or False,
                     'product_qty': hd_line.product_qty,
                     'net_weight': hd_line.product_qty,
+                    'hopdong_line_id': hd_line.id,
                 }   
                 draft_bl_line.append((0,0,val_line))
             vals = {
@@ -57,6 +58,8 @@ class draft_bl(osv.osv):
         'freight':fields.selection([('prepaid', 'Prepaid'),('collect', 'Collect')], 'Freight'),
         'bl_no':fields.char('B/L No',required=True),  
         'draft_bl_line': fields.one2many('draft.bl.line','draft_bl_id','Line'),
+        'country_id': fields.many2one('res.country','The Country Of Origin'),
+        'customs_declaration': fields.char('Customs Declaration', size=1024),
     }
     
     _defaults = {
@@ -80,6 +83,7 @@ class draft_bl_line(osv.osv):
         'draft_bl_id': fields.many2one('draft.bl', 'Draft bl', required=True, ondelete='cascade', select=True),
         'product_id': fields.many2one('product.product', 'Product'),
         'product_uom': fields.many2one('product.uom', 'Unit'),
+        'hopdong_line_id': fields.many2one('hopdong.line', 'Hop Dong Line'),
         'product_qty': fields.float('Quantity'),
         'packages_qty': fields.float('Packages Qty'),
         'packages_id':fields.many2one('quycach.donggoi','Packages'),

@@ -36,17 +36,17 @@ class Parser(report_sxw.rml_parse):
     def get_consignee(self,draft_bl):
         consignee = ''
         if draft_bl.consignee_id:
-            consignee = draft_bl.consignee_id.name
+            consignee = draft_bl.consignee_id.name or ''
         elif draft_bl.consignee_text:
-            consignee =  draft_bl.consignee_text
+            consignee =  draft_bl.consignee_text or ''
         else:
             consignee = 'To Order'
         return consignee
     
     def get_packages(self,line):
-        packages = 'PACKING IN' +' '+ str(line.packages_qty)
+        packages = 'PACKING IN' +' '+ str(line.packages_qty or '')
         if line.packages_id:
-            packages +=' ' + line.packages_id.name
-        packages +=' '+line.packages_weight
+            packages +=' ' + (line.packages_id.name or '')
+        packages +=' '+ (line.packages_weight or '')
         return packages
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

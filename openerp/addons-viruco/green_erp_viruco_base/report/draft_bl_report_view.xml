@@ -25,5 +25,102 @@
 	        string="Draft BL"
 	        rml="green_erp_viruco_base/report/draft_bl_report.odt"/> 
 	        
+	        
+	    <record id="commercial_invoice_report" model="ir.actions.report.xml">
+	        <field name="name">draft_bl_report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">draft.bl</field>
+	        <field name="report_name">Commercial Invoice</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">green_erp_viruco_base/report/commercial_invoice_report.py</field>
+	        <field name="report_rml">green_erp_viruco_base/report/commercial_invoice.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record> 
+    	   
+    	<report 
+			auto="False" 
+			menu="True"
+			id="commercial_invoice_report" 
+			model="draft.bl" 
+			name="commercial_invoice_report"
+	        string="Commercial Invoice"
+	        rml="green_erp_viruco_base/report/commercial_invoice.ods"/> 
+	        
+	   <record id="packing_list_report" model="ir.actions.report.xml">
+	        <field name="name">packing_list_report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">draft.bl</field>
+	        <field name="report_name">Packing List</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">green_erp_viruco_base/report/commercial_invoice_report.py</field>
+	        <field name="report_rml">green_erp_viruco_base/report/packing_list.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record> 
+    	   
+    	<report 
+			auto="False" 
+			menu="True"
+			id="packing_list_report" 
+			model="draft.bl" 
+			name="packing_list_report"
+	        string="Packing List"
+	        rml="green_erp_viruco_base/report/packing_list.ods"/>
+	        
+        <record id="certificate_report" model="ir.actions.report.xml">
+	        <field name="name">certificate_report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">draft.bl</field>
+	        <field name="report_name">Certificate</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">green_erp_viruco_base/report/commercial_invoice_report.py</field>
+	        <field name="report_rml">green_erp_viruco_base/report/certificate.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record> 
+    	   
+    	<report 
+			auto="False" 
+			menu="True"
+			id="certificate_report" 
+			model="draft.bl" 
+			name="certificate_report"
+	        string="Certificate"
+	        rml="green_erp_viruco_base/report/certificate.ods"/>
+	    
+	    <record id="certificate_of_origin_report" model="ir.actions.report.xml">
+	        <field name="name">certificate_of_origin_report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">draft.bl</field>
+	        <field name="report_name">Certificate of origin</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">green_erp_viruco_base/report/commercial_invoice_report.py</field>
+	        <field name="report_rml">green_erp_viruco_base/report/co_vpt.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record> 
+    	   
+    	<report 
+			auto="False" 
+			menu="True"
+			id="certificate_of_origin_report" 
+			model="draft.bl" 
+			name="certificate_of_origin_report"
+	        string="Certificate of origin"
+	        rml="green_erp_viruco_base/report/co_vpt.ods"/>
+	    
 	</data>
 </openerp>
