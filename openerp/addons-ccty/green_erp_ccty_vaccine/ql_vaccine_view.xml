@@ -95,7 +95,7 @@
         <field name="name">ton.vaccine.report.tree</field>
         <field name="model">ton.vaccine</field>
         <field name="arch" type="xml">
-            <tree string="Ton Vaccine" create="false">
+            <tree string="Ton Vaccine" create="false" edit="false" delete="false">
                 
                	<field name="vaccine_id"/>
 	            <field name="so_lo_id"/>
