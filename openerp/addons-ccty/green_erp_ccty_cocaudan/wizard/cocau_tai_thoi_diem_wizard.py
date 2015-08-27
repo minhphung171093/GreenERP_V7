@@ -22,6 +22,18 @@ class cocau_tai_thoi_diem_form(osv.osv_memory):
         'tu_ngay': time.strftime('%Y-%m-01'),
         'den_ngay': lambda *a: str(datetime.now() + relativedelta(months=+1, day=1, days=-1))[:10]
         }
+    def onchange_quan_huyen(self, cr, uid, ids, context=None):
+        vals = {}
+        vals = {'phuong_xa_id':False}
+        return {'value': vals}
+    def onchange_phuong_xa(self, cr, uid, ids, context=None):
+        vals = {}
+        vals = {'khu_pho_id':False}
+        return {'value': vals}
+    def onchange_khu_pho(self, cr, uid, ids, context=None):
+        vals = {}
+        vals = {'ho_chan_nuoi_id':False}
+        return {'value': vals}
     def print_report(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
