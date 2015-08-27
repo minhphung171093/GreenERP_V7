@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		<record id="product_normal_form_view_general_modify" model="ir.ui.view">
+            <field name="name">product.normal.form.view.general.modify</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+            	<label for="warranty" position="before">
+                    <field name="shop_ids" widget="many2many_tags"/>
+            	</label>
+            </field>
+        </record>
+    </data>
+</openerp>

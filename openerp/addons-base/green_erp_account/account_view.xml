@@ -25,5 +25,171 @@
         	</field>
         </record>
     
+    	<!-- Modify Account Journal -->
+        <record id="view_account_journal_form_general_modify" model="ir.ui.view">
+            <field name="name">view.account.journal.form.general.modify</field>
+            <field name="model">account.journal</field>
+            <field name="inherit_id" ref="account.view_account_journal_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='type']" position="after">
+                	<field name="shop_ids" widget="many2many_tags"/>
+                </xpath>
+            </field>
+        </record>
+        
+<!-- Modify Account move line -->
+		<record id="view_move_line_tree_inherit" model="ir.ui.view">
+            <field name="name">account.move.line.tree.general.modify</field>
+            <field name="model">account.move.line</field>
+            <field name="inherit_id" ref="account.view_move_line_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="before">
+                    <field name="shop_id"/>
+                </xpath>
+            </field>
+        </record>
+
+    	<record id="view_account_move_line_filter_general_modify" model="ir.ui.view">
+            <field name="name">account.move.line.filter.general.modify</field>
+            <field name="model">account.move.line</field>
+            <field name="inherit_id" ref="account.view_account_move_line_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="before">
+                    <field name="shop_id"/>
+                </xpath>
+                <xpath expr="//filter[@string='Partner']" position="before">
+                	<filter string="Shop" icon="terp-accessories-archiver" domain="[]" context="{'group_by':'shop_id'}"/>
+                </xpath>
+            </field>
+        </record>
+        
+<!-- Modify Account Move -->
+        <record id="view_account_move_filter_general_modify" model="ir.ui.view">
+            <field name="name">account.move.filter.general.modify</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_account_move_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='date']" position="after">
+                    <field name="shop_id"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <record id="view_account_move_tree_general_modify" model="ir.ui.view">
+            <field name="name">account.move.tree.general.modify</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_tree"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//field[@name='name']" position="before">
+                    <field name="shop_id"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <record id="view_account_move_form_general_modify" model="ir.ui.view">
+            <field name="name">account.move.form.general.modify</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//field[@name='journal_id']" position="before">
+                    <field name="shop_id" required='1'/>
+                </xpath>
+            </field>
+        </record>
+        
+<!-- Modify Invoice Payment Form Dialog -->
+		<record model="ir.ui.view" id="view_vendor_receipt_dialog_form_inherit_add_shop">
+	        <field name="name">view.vendor.receipt.dialog.form.inherit.add.shop</field>
+	        <field name="model">account.voucher</field>
+	        <field name="inherit_id" ref="account_voucher.view_vendor_receipt_dialog_form"/>
+	        <field name="arch" type="xml">
+	        	<xpath expr="//field[@name='date']" position="before">
+	        		<field name="shop_id"/>
+	        	</xpath>
+	        </field>
+    	</record>
+		  	
+<!-- Modify Customer / Supplier Payment -->
+		<record model="ir.ui.view" id="view_voucher_tree_general_modify">
+	        <field name="name">view.vendor.tree.general.modify</field>
+	        <field name="model">account.voucher</field>
+	        <field name="inherit_id" ref="account_voucher.view_voucher_tree"/>
+	        <field name="arch" type="xml">
+	        	<xpath expr="//field[@name='date']" position="before">
+	        		<field name="shop_id"/>
+	        	</xpath>
+	        </field>
+    	</record>
+    	
+    	<record model="ir.ui.view" id="view_vendor_receipt_form_general_modify">
+	        <field name="name">view.vendor.receipt.form.general.modify</field>
+	        <field name="model">account.voucher</field>
+	        <field name="inherit_id" ref="account_voucher.view_vendor_receipt_form"/>
+	        <field name="arch" type="xml">
+	        	<xpath expr="//field[@name='date']" position="before">
+	        		<field name="shop_id"/>
+	        	</xpath>
+	        </field>
+    	</record>
+	    
+	    <record model="ir.ui.view" id="view_vendor_payment_form_general_modify">
+	        <field name="name">view.vendor.payment.form.general.modify</field>
+	        <field name="model">account.voucher</field>
+	        <field name="inherit_id" ref="account_voucher.view_vendor_payment_form"/>
+	        <field name="arch" type="xml">
+	        	<xpath expr="//field[@name='date']" position="before">
+	        		<field name="shop_id"/>
+	        	</xpath>
+	        </field>
+    	</record>
+
+<!-- Modify Sales / Purchase Receipt -->
+		<record model="ir.ui.view" id="view_purchase_receipt_form_general_modify">
+	        <field name="name">view.purchase.receipt.form.general.modify</field>
+	        <field name="model">account.voucher</field>
+	        <field name="inherit_id" ref="account_voucher.view_purchase_receipt_form"/>
+	        <field name="arch" type="xml">
+	        	<xpath expr="//field[@name='date']" position="before">
+	        		<field name="shop_id"/>
+	        	</xpath>
+	        </field>
+    	</record>
+    	
+    	<record model="ir.ui.view" id="view_sale_receipt_form_general_modify">
+	        <field name="name">view.sale.receipt.form.general.modify</field>
+	        <field name="model">account.voucher</field>
+	        <field name="inherit_id" ref="account_voucher.view_sale_receipt_form"/>
+	        <field name="arch" type="xml">
+	        	<xpath expr="//field[@name='date']" position="before">
+	        		<field name="shop_id"/>
+	        	</xpath>
+	        </field>
+    	</record>
+
+<!-- Chinh sua Hoa don khach hang -->
+        <record model="ir.ui.view" id="view_invoice_form_remove_editable">
+	        <field name="name">view.invoice.form.remove.editable</field>
+	        <field name="model">account.invoice</field>
+	        <field name="inherit_id" ref="account.invoice_form"/>
+	        <field name="arch" type="xml">
+	        	<xpath expr="//field[@name='date_invoice']" position="before">
+	        		<field name="shop_id" required="1"/>
+	        	</xpath>
+        	</field>
+    	</record>
+	    	
+    	<!-- Chinh sua Hoa don NCC -->
+        <record model="ir.ui.view" id="view_invoice_supplier_form_remove_editable">
+	        <field name="name">view.invoice.supplier.form.remove.editable</field>
+	        <field name="model">account.invoice</field>
+	        <field name="inherit_id" ref="account.invoice_supplier_form"/>
+	        <field name="arch" type="xml">
+	        <label for="reference_type"/>
+	        	<xpath expr="//field[@name='date_invoice']" position="before">
+	        		<field name="shop_id" required="1"/>
+	        	</xpath>
+	        </field>
+    	</record>
+
     </data>
 </openerp>

@@ -26,10 +26,12 @@
     'sequence': 14,
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',
-    'depends': ['web'],
+    'depends': ['web','sale'],
     'data': [
         'ir_ui_menu_view.xml',
         'base_view.xml',
+        'res_users_view.xml',
+        'product_view.xml',
         'menu.xml',
     ],
     'css' : [

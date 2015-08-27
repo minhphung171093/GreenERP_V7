@@ -1,5 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
+    
+<!-- Modify Location and Warehouse -->
+	    	<!-- Add location_return in stock_location-->
+	    	<record id="view_location_tree2_general_modify" model="ir.ui.view">
+	            <field name="name">view.location.tree2.general.modify</field>
+	            <field name="model">stock.location</field>
+	            <field name="inherit_id" ref="stock.view_location_tree2"/>
+	            <field name="arch" type="xml">
+	                <xpath expr="//field[@name='complete_name']" position="before">
+	                    <field name="warehouse_id"/>
+	                </xpath>
+	            </field>
+	        </record>
+	        
+	        <record id="view_internal_location_return" model="ir.ui.view">
+	            <field name="name">stock.location.bool.return</field>
+	            <field name="model">stock.location</field>
+	            <field name="inherit_id" ref="stock.view_location_form"/>
+	            <field name="arch" type="xml">
+	            	<xpath expr="//label[@for='name']" position="before">
+	                    <label for="warehouse_id" class="oe_edit_only"/>
+                    	<h1><field name="warehouse_id" attrs="{'required': [('usage', '=', 'internal')]}"/></h1>
+	                </xpath>
+	            </field>
+	        </record>
+    
     </data>
 </openerp>
