@@ -188,7 +188,7 @@ class Parser(report_sxw.rml_parse):
         ten_ho_id = wizard_data['ten_ho_id']
         if row:
             sql = '''
-                select so_luong from chi_tiet_loai_line 
+                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong from chi_tiet_loai_line 
                 where name = '%s' and co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so = '%s'
                 and trang_thai_id in (select id from trang_thai where stt = 3))
             '''%(col, ten_ho_id[0], row)
