@@ -67,12 +67,6 @@ class draft_bl(osv.osv):
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'draft.bl', context=c),
     }
     
-    def print_draft_bl(self, cr, uid, ids, context=None):
-        return {
-            'type': 'ir.actions.report.xml',
-            'report_name': 'draft_bl_report',
-        }
-    
 draft_bl()
 
 

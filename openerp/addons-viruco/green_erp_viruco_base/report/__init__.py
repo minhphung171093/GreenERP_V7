@@ -28,4 +28,6 @@ import don_ban_hang_ngoai
 import don_mua_hang
 import draft_bl_report
 import commercial_invoice_report
+import fumi_report
+import phyto_report
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
