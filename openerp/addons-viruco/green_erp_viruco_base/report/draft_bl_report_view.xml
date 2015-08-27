@@ -24,6 +24,53 @@
 			name="draft_bl_report"
 	        string="Draft BL"
 	        rml="green_erp_viruco_base/report/draft_bl_report.odt"/> 
+	   
+	   <record id="fumi_report" model="ir.actions.report.xml">
+	        <field name="name">fumi_report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">draft.bl</field>
+	        <field name="report_name">FUMI</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-odt</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-doc'),('compatible_types','=','oo-odt')]"/>
+	        <field name="parser_loc">green_erp_viruco_base/report/fumi_report.py</field>
+	        <field name="report_rml">green_erp_viruco_base/report/fumi_report.odt</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record> 
+    	   
+    	<report 
+			auto="False" 
+			menu="True"
+			id="fumi_report" 
+			model="draft.bl" 
+			name="fumi_report"
+	        string="FUMI"
+	        rml="green_erp_viruco_base/report/fumi_report.odt"/>   
 	        
+	    <record id="phyto_report" model="ir.actions.report.xml">
+	        <field name="name">phyto_report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">draft.bl</field>
+	        <field name="report_name">PHYTO</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-odt</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-doc'),('compatible_types','=','oo-odt')]"/>
+	        <field name="parser_loc">green_erp_viruco_base/report/phyto_report.py</field>
+	        <field name="report_rml">green_erp_viruco_base/report/phyto_report.odt</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record> 
+    	   
+    	<report 
+			auto="False" 
+			menu="True"
+			id="phyto_report" 
+			model="draft.bl" 
+			name="phyto_report"
+	        string="PHYTO"
+	        rml="green_erp_viruco_base/report/phyto_report.odt"/>   
 	</data>
 </openerp>

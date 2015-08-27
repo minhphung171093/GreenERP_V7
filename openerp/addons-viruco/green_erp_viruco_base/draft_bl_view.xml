@@ -19,14 +19,28 @@
 			</field>
 		</record>
 		
+		<record id="view_draft_bl_filter" model="ir.ui.view">
+            <field name="name">draft.bl.select</field>
+            <field name="model">draft.bl</field>
+            <field name="arch" type="xml">
+                <search string="Search Draft BL">
+                    <field name="name"/>
+                    <field name="hopdong_id"/>
+                    <field name="notify_party_id"/>
+                    <field name="container_no_seal"/>
+                    <field name="bl_no"/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Contract" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'hopdong_id'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>
+        
 		<record id="draft_bl_form_view" model="ir.ui.view">
             <field name="name">draft.bl.form</field>
             <field name="model">draft.bl</field>
             <field name="arch" type="xml">
 	            <form string="Draft BL" version="7.0">
-					<header>
-						<button name="print_draft_bl" string="Print Draft BL" type="object" class="oe_highlight"/>
-					</header>
 	            	<sheet>
 	                    <h1>
 	                    	<label string="Booking No."/>
