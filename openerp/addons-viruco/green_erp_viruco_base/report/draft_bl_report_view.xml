@@ -122,11 +122,11 @@
 	        string="Packing List"
 	        rml="green_erp_viruco_base/report/packing_list.ods"/>
 	        
-        <record id="certificate_report" model="ir.actions.report.xml">
-	        <field name="name">certificate_report</field>
+        <record id="other_report" model="ir.actions.report.xml">
+	        <field name="name">other_report</field>
 	        <field name="type">ir.actions.report.xml</field>
 	        <field name="model">draft.bl</field>
-	        <field name="report_name">Certificate</field>
+	        <field name="report_name">Other</field>
 	        <field name="report_type">aeroo</field>
 	        <field name="in_format">oo-ods</field>
 	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
@@ -140,10 +140,10 @@
     	<report 
 			auto="False" 
 			menu="True"
-			id="certificate_report" 
+			id="other_report" 
 			model="draft.bl" 
-			name="certificate_report"
-	        string="Certificate"
+			name="other_report"
+	        string="Other"
 	        rml="green_erp_viruco_base/report/certificate.ods"/>
 	    
 	    <record id="certificate_of_origin_report" model="ir.actions.report.xml">

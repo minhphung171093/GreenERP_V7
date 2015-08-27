@@ -100,7 +100,7 @@ class Parser(report_sxw.rml_parse):
     def sum_price_subtotal(self,o):
         sum = 0
         for line in o.draft_bl_line:
-            sum += line.hopdong_line_id.price_subtotal
+            sum += line.hopdong_line_id.price_subtotal and line.hopdong_line_id.price_subtotal or 0.0 
         return sum
     
     def sum_packages(self,o):
