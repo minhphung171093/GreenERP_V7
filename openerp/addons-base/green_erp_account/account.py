@@ -337,7 +337,7 @@ class account_voucher(osv.osv):
             'date': voucher.date,
             'ref': ref,
             'period_id': voucher.period_id.id,
-            'shop_id': voucher_brw.shop_id.id or False,
+            'shop_id': voucher.shop_id.id or False,
         }
         return move
 

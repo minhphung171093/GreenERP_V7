@@ -39,6 +39,32 @@ class stock_location(osv.osv):
     
 stock_location()
 
+class stock_journal(osv.osv):
+    _inherit = "stock.journal"
+    _columns = {
+        'name': fields.char('Stock Journal', size=32, required=True),
+        'user_id': fields.many2one('res.users', 'Responsible'),
+        'source_type': fields.selection([
+                                        ('in', 'Getting Goods'), 
+                                        ('out', 'Sending Goods'),
+                                        ('return_customer', 'Return from customer'), 
+                                        ('return_supplier', 'Return to supplier'), 
+                                        ('internal', 'Internal'),
+                                        ('production', 'Production'),
+                                        ('phys_adj', 'Physical Adjustment'),], 'Source Type', size=16, required=True),
+        'sequence_id': fields.many2one('ir.sequence', 'Sequence'),
+        
+        'from_location_id':fields.many2many('stock.location','stock_journal_from_location_ref', 
+                                                 'journal_id','location_id','From Location',required = True), 
+        'to_location_id':fields.many2many('stock.location','stock_journal_to_location_ref', 
+                                                 'journal_id','location_id','From Location',required = True), 
+    }
+    _defaults = {
+        'user_id': lambda s, c, u, ctx: u
+    }
+    
+stock_journal()
+
 class stock_picking(osv.osv):
     _inherit = 'stock.picking'
 
@@ -96,7 +122,31 @@ class stock_picking(osv.osv):
             store={
                 'stock.picking': (lambda self, cr, uid, ids, c={}: ids, ['location_id','location_dest_id'], 10),
             }, readonly=True, multi='lo_info'),
+                
+        'stock_journal_id': fields.many2one('stock.journal','Stock Journal', required=True, select=True, states={'done':[('readonly', True)], 'cancel':[('readonly',True)]}, track_visibility='onchange'),
     }
+    
+#     def _get_journal(self, cr, uid, context=None):
+#         journal_domain = []
+#         if context.get('default_type',False) and context.get('default_return',False):
+#             default_type = context['default_type']
+#             default_return = context['default_return']
+#             if default_type == 'in':
+#                 journal_domain = [('source_type', '=', 'in')]
+#                 if default_return == 'customer':
+#                     journal_domain = [('source_type', '=', 'return_customer')]
+#             if default_type == 'out':
+#                 journal_domain = [('source_type', '=', 'out')]
+#                 if default_return == 'supplier':
+#                     journal_domain = [('source_type', '=', 'return_supplier')]
+#         else:
+#             journal_domain = [('source_type', '=', 'internal')]
+#         journal_ids = self.pool.get('stock.journal').search(cr, uid, journal_domain)
+#         return journal_ids and journal_ids[0] or False
+#     
+#     _defaults = {    
+#         'stock_journal_id': _get_journal,
+#     }
     
     def _prepare_invoice(self, cr, uid, picking, partner, inv_type, journal_id, context=None):
         """ Builds the dict containing the values for the invoice
@@ -115,6 +165,11 @@ class stock_picking(osv.osv):
             account_id = partner.property_account_payable.id
             payment_term = partner.property_supplier_payment_term.id or False
         comment = self._get_comment_invoice(cr, uid, picking)
+        
+        warehouse_id = picking.location_id.warehouse_id and picking.location_id.warehouse_id.id or False
+        if not warehouse_id:
+            warehouse_id = picking.location_dest_id.warehouse_id.id or False
+        shop_ids = self.pool.get('sale.shop').search(cr, uid, [('warehouse_id','=',warehouse_id)])
         invoice_vals = {
             'name': picking.name,
             'origin': (picking.name or '') + (picking.origin and (':' + picking.origin) or ''),

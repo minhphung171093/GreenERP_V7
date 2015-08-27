@@ -114,5 +114,25 @@ class purchase_order(osv.osv):
             res = inv_id
         return res
     
+    def _prepare_order_picking(self, cr, uid, order, context=None):
+        journal_ids = self.pool.get('stock.journal').search(cr,uid,[('source_type','=','in')])
+        if not journal_ids:
+            raise osv.except_osv(_('Warning!'), _('Please define Stock Journal for Incomming Order.'))
+        return {
+            'name': self.pool.get('ir.sequence').get(cr, uid, 'stock.picking.in'),
+            'origin': order.name + ((order.origin and (':' + order.origin)) or ''),
+            'date': self.date_to_datetime(cr, uid, order.date_order, context),
+            'partner_id': order.partner_id.id,
+            'invoice_state': '2binvoiced' if order.invoice_method == 'picking' else 'none',
+            'type': 'in',
+            'purchase_id': order.id,
+            'company_id': order.company_id.id,
+            'move_lines' : [],
+            
+            'stock_journal_id':journal_ids and journal_ids[0] or False,
+            'location_id': order.partner_id.property_stock_supplier.id,
+            'location_dest_id': order.location_id.id,
+        }
+    
 purchase_order()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

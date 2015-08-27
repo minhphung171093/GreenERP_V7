@@ -51,6 +51,11 @@ class sale_order(osv.osv):
         return True
     
     def _prepare_order_picking(self, cr, uid, order, context=None):
+        location_id = order.shop_id.warehouse_id.lot_stock_id.id
+        output_id = order.shop_id.warehouse_id.lot_output_id.id
+        journal_ids = self.pool.get('stock.journal').search(cr,uid,[('source_type','=','out')])
+        if not journal_ids:
+            raise osv.except_osv(_('Warning!'), _('Please define Stock Journal for Delivery Order.'))
         pick_name = self.pool.get('ir.sequence').get(cr, uid, 'stock.picking.out')
         return {
             'name': pick_name,
@@ -64,6 +69,9 @@ class sale_order(osv.osv):
             'note': order.note,
             'invoice_state': (order.order_policy=='picking' and '2binvoiced') or 'none',
             'company_id': order.company_id.id,
+            'stock_journal_id':journal_ids and journal_ids[0] or False,
+            'location_id': location_id,
+            'location_dest_id': output_id,
             'shop_id':order.shop_id and order.shop_id.id or False,
         }
     
@@ -87,10 +95,6 @@ class sale_order(osv.osv):
             raise osv.except_osv(_('Error!'),
                 _('Please define sales journal for this company: "%s" (id:%d).') % (order.company_id.name, order.company_id.id))
             
-        warehouse_id = picking.location_id.warehouse_id.id or False
-        if not warehouse_id:
-            warehouse_id = picking.location_dest_id.warehouse_id.id or False
-        shop_ids = self.pool.get('sale.shop').search(cr, uid, [('warehouse_id','=',warehouse_id)])
         invoice_vals = {
             'name': order.client_order_ref or '',
             'origin': order.name,
