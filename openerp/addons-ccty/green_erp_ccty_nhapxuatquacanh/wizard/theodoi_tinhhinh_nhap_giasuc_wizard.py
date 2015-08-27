@@ -15,7 +15,10 @@ class theodoi_tinhhinh_nhap_giasuc_form(osv.osv_memory):
                 'tu_ngay': fields.date('Từ ngày'),
                 'den_ngay': fields.date('Đến ngày'),
                 }
-    
+    _defaults = {
+        'tu_ngay': time.strftime('%Y-%m-01'),
+        'den_ngay': lambda *a: str(datetime.now() + relativedelta(months=+1, day=1, days=-1))[:10]
+        }
     def print_report(self, cr, uid, ids, context=None):
         if context is None:
             context = {}

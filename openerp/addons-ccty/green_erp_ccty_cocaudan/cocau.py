@@ -185,9 +185,10 @@ class co_cau(osv.osv):
         for co_cau in self.browse(cr, uid, ids, context=context):
             if co_cau.tang_giam == 'b':
                 for line in co_cau.chitiet_loai:
-                    if line.so_luong > line.tong_sl:
-                        raise osv.except_osv(_('Warning!'),_('Số lượng giảm %s trong hộ %s vượt quá tổng số đàn hiện có')%(line.name, co_cau.ten_ho_id.name))
-                        return False
+                    if not co_cau.nhap_xuat_id:
+                        if line.so_luong > line.tong_sl:
+                            raise osv.except_osv(_('Warning!'),_('Số lượng giảm %s trong hộ %s vượt quá tổng số đàn hiện có')%(line.name, co_cau.ten_ho_id.name))
+                            return False
         return True
     _constraints = [
         (_check_so_luong_giam, 'Identical Data', []),
