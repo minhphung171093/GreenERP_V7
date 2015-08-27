@@ -143,6 +143,7 @@
 			                    <field name="can_bo_tiem" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 			                    <field name="tram_id" readonly = "1" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 			                    <field name="can_bo_id" readonly = "1" domain="[('company_id','=',tram_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+			                    <newline/>
 			                    <field name="quan_huyen_id" options="{'create': false, 'create_edit': false}" on_change="onchange_quan_huyen()" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 			                    <field name="phuong_xa_id" options="{'create': false, 'create_edit': false}" on_change="onchange_phuong_xa()" domain="[('quan_huyen_id','=',quan_huyen_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 			                    <field name="khu_pho_id" options="{'create': false, 'create_edit': false}" on_change="onchange_khu_pho()" domain="[('phuong_xa_id','=',phuong_xa_id), ('quan_huyen_id','=',quan_huyen_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>

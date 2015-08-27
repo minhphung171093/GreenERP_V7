@@ -411,7 +411,23 @@
         					
         					<!--khu phố-->   
         					
-        					
+        <record id="khu_pho_search" model="ir.ui.view">
+	        <field name="name">khu.pho.search</field>
+	        <field name="model">khu.pho</field>
+	        <field name="type">search</field>
+	        <field name="arch" type="xml">
+	            <search string="Khu phố (Ấp)">
+                    <field name="name" />
+                    <field name="quan_huyen_id" />
+                    <field name="phuong_xa_id" />      
+                    <group expand="1" string="Group By...">
+	                    <filter string="Khu phố (Ấp)" icon="terp-personal" context="{'group_by':'name'}"/>
+	                    <filter string="Quận (huyện)" icon="terp-partner" context="{'group_by':'quan_huyen_id'}"/>
+	                    <filter string="Phường (Xã)" context="{'group_by':'phuong_xa_id'}" />
+               	 	</group>              
+	            </search>	
+	        </field>
+	    </record>					
         					
         <record model="ir.ui.view" id="khu_pho_tree">
             <field name="name">khu.pho.tree</field>
@@ -430,6 +446,7 @@
             <field name="res_model">khu.pho</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="khu_pho_search"/>
         </record>      					
         	
         	

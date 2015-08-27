@@ -118,6 +118,18 @@ class so_lo(osv.osv):
         'han_su_dung':fields.date('HSD đến ngày'),
         'vacxin_id': fields.many2one('loai.vacxin','Loại vaccine', required = True),
                 }
+    
+    def _check_so_lo(self, cr, uid, ids, context=None):
+        for so_lo in self.browse(cr, uid, ids, context=context):
+            so_lo_ids = self.search(cr,uid,[('id', '!=', so_lo.id), ('name', '=', so_lo.name), ('vacxin_id', '=', so_lo.vacxin_id.id)])
+            if so_lo_ids:
+                raise osv.except_osv(_('Warning!'),_('Số lô không được trùng nhau'))
+                return False
+        return True
+         
+    _constraints = [
+        (_check_so_lo, 'Identical Data', []),
+    ]   
 so_lo()   
 
 class ton_vaccine(osv.osv):

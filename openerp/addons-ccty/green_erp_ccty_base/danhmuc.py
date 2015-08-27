@@ -160,6 +160,17 @@ class chan_nuoi(osv.osv):
         'trang_thai_id': get_trangthai_nhap,
                  }
     
+    def _check_ma_ho(self, cr, uid, ids, context=None):
+        for ho in self.browse(cr, uid, ids, context=context):
+            ho_ids = self.search(cr,uid,[('id', '!=', ho.id), ('ma_ho', '=', ho.ma_ho)])
+            if ho_ids:
+                raise osv.except_osv(_('Warning!'),_('Mã hộ không được trùng nhau'))
+                return False
+        return True
+         
+    _constraints = [
+        (_check_ma_ho, 'Identical Data', []),
+    ]   
     def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
         if context is None:
             context = {}

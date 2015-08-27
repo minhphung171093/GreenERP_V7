@@ -86,9 +86,18 @@ class xuly_giasuc(osv.osv):
                     raise osv.except_osv(_('Warning!'),_('Bạn nhập %s vaccine nhưng chỉ  còn %s vaccine trong lô %s của loại %s')%(vaccine.so_luong_vc, ton_vaccine, vaccine.so_lo_id.name, vaccine.loai_vaccine_id.name))
                     return False
         return True
+    
+    def _check_xuly_giasuc(self, cr, uid, ids, context=None):
+        for giasuc in self.browse(cr, uid, ids, context=context):
+            giasuc_ids = self.search(cr,uid,[('id', '!=', giasuc.id), ('name', '=', giasuc.name)])
+            if giasuc_ids:
+                raise osv.except_osv(_('Warning!'),_('Mã số gia súc nhiễm bệnh không được trùng nhau'))
+                return False
+        return True
          
     _constraints = [
         (_check_sl_ton_vaccine, 'Identical Data', []),
+        (_check_xuly_giasuc, 'Identical Data', []),
     ]   
     def onchange_quan_huyen(self, cr, uid, ids, context=None):
         vals = {}
