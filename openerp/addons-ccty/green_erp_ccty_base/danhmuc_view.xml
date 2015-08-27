@@ -253,11 +253,11 @@
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <form string="Hộ chăn nuôi" version="7.0">
-	                <sheet>
-	                <header>
+                	<header>
 	            		<button name="bt_duyet" groups = "green_erp_ccty_base.group_base_admin_ccty" attrs="{'invisible': [('hien_an', '!=', True)]}" string="Duyệt" type="object" class="oe_highlight" />
 	                    <field name="trang_thai_id" widget="statusbar"/>
 	            	</header> 
+	                <sheet>
                 		<group col="4"  string="Thông tin hộ chăn nuôi">
 		            		<field name="name" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 		                    <field name="ma_ho" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
@@ -421,7 +421,6 @@
                     <field name="quan_huyen_id" />
                     <field name="phuong_xa_id" />      
                     <group expand="1" string="Group By...">
-	                    <filter string="Khu phố (Ấp)" icon="terp-personal" context="{'group_by':'name'}"/>
 	                    <filter string="Quận (huyện)" icon="terp-partner" context="{'group_by':'quan_huyen_id'}"/>
 	                    <filter string="Phường (Xã)" context="{'group_by':'phuong_xa_id'}" />
                	 	</group>              
@@ -437,7 +436,7 @@
                 <tree string="Khu phố (Ấp)" editable='top'>
                     <field name="name" />
                     <field name="quan_huyen_id" options="{'create': false, 'create_edit': false}"/>
-                    <field name="phuong_xa_id" options="{'create': false, 'create_edit': false}"/>
+                    <field name="phuong_xa_id" domain="[('quan_huyen_id','=',quan_huyen_id)]" options="{'create': false, 'create_edit': false}"/>
                 </tree>
             </field>
         </record>  

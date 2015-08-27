@@ -244,7 +244,7 @@ class Parser(report_sxw.rml_parse):
             self.cr.execute(sql)
             tong_sl = self.cr.dictfetchone()
             soluong = tong_sl and tong_sl['tong_sl'] or False
-            if col == "Cộng bò sữa":
+            if col == u'Cộng bò sữa':
                 bosua_model, bosua_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_bosua')
                 self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [bosua_id], 'read', context = context)
                 sql = '''
@@ -254,7 +254,7 @@ class Parser(report_sxw.rml_parse):
                 '''%(row, bosua_id)
                 self.cr.execute(sql)
                 soluong = self.cr.dictfetchone()['sl_bosua']
-            if col == "Cộng bò ta":
+            if col == u'Cộng bò ta':
                 bota_model, bota_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_bota')
                 self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [bota_id], 'read', context = context)
                 sql = '''
@@ -264,7 +264,7 @@ class Parser(report_sxw.rml_parse):
                 '''%(row, bota_id)
                 self.cr.execute(sql)
                 soluong = self.cr.dictfetchone()['sl_bota']
-            if col == "Cộng bò lai sind":
+            if col == u'Cộng bò lai sind':
                 bolai_model, bolai_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_bolai')
                 self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [bolai_id], 'read', context = context)
                 sql = '''
@@ -274,7 +274,7 @@ class Parser(report_sxw.rml_parse):
                 '''%(row, bolai_id)
                 self.cr.execute(sql)
                 soluong = self.cr.dictfetchone()['sl_bolai']
-            if col == "Cộng trâu":
+            if col == u'Cộng trâu':
                 trau_model, trau_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_trau')
                 self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [trau_id], 'read', context = context)
                 sql = '''

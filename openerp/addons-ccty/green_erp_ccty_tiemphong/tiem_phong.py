@@ -97,10 +97,10 @@ class tiem_phong_lmlm(osv.osv):
         'tram_id': fields.many2one( 'res.company','Trạm'),
         'can_bo_id': fields.many2one( 'res.users','Cán bộ thú y nhập'),
         'can_bo_tiem': fields.char('Cán bộ thú y thực hiện tiêm', size = 100),
-        'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)'),
-        'khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)'),
-        'quan_huyen_id': fields.many2one( 'quan.huyen','Quận (huyện)'),
-        'ho_chan_nuoi_id': fields.many2one( 'chan.nuoi','Hộ chăn nuôi'),
+        'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)', required = True),
+        'khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)', required = True),
+        'quan_huyen_id': fields.many2one( 'quan.huyen','Quận (huyện)', required = True),
+        'ho_chan_nuoi_id': fields.many2one( 'chan.nuoi','Hộ chăn nuôi', required = True),
         'chi_tiet_tp_line':fields.one2many('ct.tiem.phong.lmlm.line','tp_lmlm_id','Chi tiết tiêm phòng'),
         'chi_tiet_vaccine_line':fields.one2many('ct.tiem.phong.vaccine.line','tp_lmlm_id','Chi tiết Vaccine'),
         'state':fields.selection([('draft', 'Nháp'),('done', 'Duyệt')],'Status', readonly=True),
@@ -112,7 +112,7 @@ class tiem_phong_lmlm(osv.osv):
         'loai_vaccine_id': fields.many2one('loai.vacxin','Loại vaccine'),
         'so_lo_id':fields.many2one('so.lo','Số lô'),
         'han_su_dung_rel':fields.related('so_lo_id','han_su_dung',type='date',string='HSD đến'),
-        'so_luong_vc': fields.float('Số lượng Vaccine'),
+        'so_luong_vc': fields.integer('Số lượng Vaccine'),
                 }
         
     _defaults = {
@@ -215,10 +215,10 @@ class ct_tiem_phong_lmlm_line(osv.osv):
     _columns = {
         'tp_lmlm_id': fields.many2one( 'tiem.phong.lmlm','tiem phong lmlm', ondelete = 'cascade'),
         'name': fields.char('Thông tin', readonly = True),
-        'so_luong': fields.float('Tổng đàn', readonly = True),
-        'sl_ngoai_dien': fields.float('Ngoại diện'),
-        'sl_mien_dich': fields.float('Tiêm phòng còn Miễn dịch'),
-        'sl_thuc_tiem': fields.float('Số lượng thực tiêm'),
+        'so_luong': fields.integer('Tổng đàn', readonly = True),
+        'sl_ngoai_dien': fields.integer('Ngoại diện'),
+        'sl_mien_dich': fields.integer('Tiêm phòng còn Miễn dịch'),
+        'sl_thuc_tiem': fields.integer('Số lượng thực tiêm'),
                 }
     
     def _check_so_luong(self, cr, uid, ids, context=None):
@@ -242,7 +242,7 @@ class ct_tiem_phong_vaccine_line(osv.osv):
         'loai_vaccine_id': fields.many2one('loai.vacxin','Loại vaccine'),
         'so_lo_id':fields.many2one('so.lo','Số lô'),
         'han_su_dung_rel':fields.related('so_lo_id','han_su_dung',type='date',string='HSD đến'),
-        'so_luong_vc': fields.float('Số lượng Vaccine'),
+        'so_luong_vc': fields.integer('Số lượng Vaccine'),
                 }
     
 ct_tiem_phong_vaccine_line()

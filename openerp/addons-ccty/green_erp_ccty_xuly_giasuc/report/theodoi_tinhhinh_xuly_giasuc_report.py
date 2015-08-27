@@ -212,7 +212,7 @@ class Parser(report_sxw.rml_parse):
             sl = self.cr.dictfetchone()
             if sl:
                 soluong = sl and sl['so_luong'] or False
-            if col_tongcong == 'Tổng cộng':
+            if col_tongcong == u'Tổng cộng':
                 sql = '''
                     select so_luong from chitiet_loai_xuly 
                     where name = '%s' and xuly_giasuc_id = %s

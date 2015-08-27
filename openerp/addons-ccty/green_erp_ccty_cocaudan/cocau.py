@@ -52,9 +52,9 @@ class co_cau(osv.osv):
         'tang_giam': fields.selection((('a','Tăng'), ('b','Giảm')),'Tăng/Giảm', required = True),
         'ly_do': fields.char('Lý do tăng giảm',size = 50),
         'ten_ho_id': fields.many2one('chan.nuoi','Hộ', required = True),
-        'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)'),
-        'khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)'),
-        'quan_huyen_id': fields.many2one( 'quan.huyen','Quận (huyện)'),
+        'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)', required = True),
+        'khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)', required = True),
+        'quan_huyen_id': fields.many2one( 'quan.huyen','Quận (huyện)', required = True),
         'chitiet_loai':fields.one2many('chi.tiet.loai.line','co_cau_id','Co Cau'),
         'company_id': fields.many2one( 'res.company','Company'),
         'trang_thai': fields.selection((('old','Old'), ('new','New')),'Trang thai'),
@@ -241,8 +241,8 @@ class chi_tiet_loai_line(osv.osv):
     _columns = {
         'co_cau_id': fields.many2one( 'co.cau','Co cau', ondelete = 'cascade'),
         'name': fields.char('Thông tin', readonly = True),
-        'tong_sl':fields.function(sum_so_luong,type='float',string='Tổng số lượng(hiện có)', store = True),
-        'so_luong': fields.float('Số lượng'),
+        'tong_sl':fields.function(sum_so_luong,type='integer',string='Tổng số lượng(hiện có)', store = True),
+        'so_luong': fields.integer('Số lượng'),
                 }
 chi_tiet_loai_line()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -72,9 +72,9 @@ class nhap_xuat_canh_giasuc(osv.osv):
         'can_bo_id': fields.many2one('res.users','Cán bộ nhập máy'),
         'can_bo_ghi_so': fields.char('Cán bộ ghi sổ'),
         'tram_id': fields.many2one('tram.thu.y','Trạm'),
-        'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)'),
-        'khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)'),
-        'quan_huyen_id': fields.many2one( 'quan.huyen','Quận (huyện)'),
+        'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)', required = True),
+        'khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)', required = True),
+        'quan_huyen_id': fields.many2one( 'quan.huyen','Quận (huyện)', required = True),
         'loai':fields.selection([('nhap', 'Nhập'),('xuat', 'Xuất')],'Loại', readonly=True),
         'chitiet_loai_nx':fields.one2many('chi.tiet.loai.nhap.xuat','nhap_xuat_loai_id','Chi tiet'),
         'chitiet_da_tiem_phong':fields.one2many('chi.tiet.da.tiem.phong','nhap_xuat_tiemphong_id','Chi tiet'),
@@ -332,7 +332,7 @@ class chi_tiet_loai_nhap_xuat(osv.osv):
     _columns = {
         'nhap_xuat_loai_id': fields.many2one('nhap.xuat.canh.giasuc','Nhap Xuat', ondelete = 'cascade'),
         'name': fields.char('Thông tin', readonly = True),
-        'so_luong': fields.float('Số lượng'),
+        'so_luong': fields.integer('Số lượng'),
                 }
 chi_tiet_loai_nhap_xuat()
 
@@ -341,7 +341,7 @@ class chi_tiet_da_tiem_phong(osv.osv):
     _columns = {
         'nhap_xuat_tiemphong_id': fields.many2one('nhap.xuat.canh.giasuc','Nhap Xuat', ondelete = 'cascade'),
         'name': fields.char('Loại bệnh', readonly = True),
-        'so_luong': fields.float('Số lượng'),
+        'so_luong': fields.integer('Số lượng'),
                 }
 chi_tiet_da_tiem_phong()
 

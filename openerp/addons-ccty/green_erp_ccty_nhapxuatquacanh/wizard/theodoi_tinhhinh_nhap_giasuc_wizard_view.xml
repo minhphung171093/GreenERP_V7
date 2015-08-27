@@ -10,7 +10,7 @@
 	                <field name="quan_huyen_id" options="{'create': false, 'create_edit': false}" on_change="onchange_quan_huyen()"/>
 	            	<field name="phuong_xa_id" options="{'create': false, 'create_edit': false}" on_change="onchange_phuong_xa()" domain="[('quan_huyen_id','=',quan_huyen_id)]" />
 	            	<field name="khu_pho_id" options="{'create': false, 'create_edit': false}" on_change="onchange_khu_pho()" domain="[('phuong_xa_id','=',phuong_xa_id)]"/>
-	                <field name="ten_ho_id" options="{'create': false, 'create_edit': false}" domain="[('quan_huyen_id','=',quan_huyen_id), ('phuong_xa_id','=',phuong_xa_id), ('khu_pho_id','=',khu_pho_id)]"/>
+	                <field name="ten_ho_id" options="{'create': false, 'create_edit': false}" context="{'search_ten_ho_id_wizard':1, 'quan_huyen_id': quan_huyen_id, 'phuong_xa_id': phuong_xa_id, 'khu_pho_id': khu_pho_id}"/>
 	                <field name="tu_ngay" />
 	                <field name="den_ngay" />
 	                </group>
@@ -34,7 +34,7 @@
 	    
 	    <menuitem id="nhap_xuat" name="Nhập - Xuất - Quá cảnh"/>
         <menuitem id="menu_thong_ke_nhap_xuat" parent="nhap_xuat" name="Thống kê tình hình nhập/xuất gia súc" sequence = '2'/>
-	    	<menuitem id="menu_theo_doi_tinh_hinh_nhap" parent="menu_thong_ke_nhap_xuat" name="Theo dõi tình hình nhập gia súc" action="action_theodoi_tinhhinh_nhap_giasuc_form" sequence = '3'/>
+	    	<menuitem id="menu_theo_doi_tinh_hinh_nhap" parent="menu_thong_ke_nhap_xuat" name="Nhập gia súc (heo)" action="action_theodoi_tinhhinh_nhap_giasuc_form" sequence = '3'/>
 	 
 	    
     </data>

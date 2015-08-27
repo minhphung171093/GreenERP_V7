@@ -287,7 +287,7 @@ class Parser(report_sxw.rml_parse):
         sl = self.cr.dictfetchone()
         if sl:
             soluong = sl and sl['so_luong'] or False
-        if col_tongcong == 'Tổng cộng':
+        if col_tongcong == u'Tổng cộng':
             sql = '''
                 select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sum_sl 
                 from ct_tiem_phong_lmlm_line where tp_lmlm_id = %s 
@@ -309,7 +309,7 @@ class Parser(report_sxw.rml_parse):
         sl = self.cr.dictfetchone()
         if sl:
             soluong = sl and sl['sl_ngoai_dien'] or False
-        if col_tongcong == 'Tổng cộng':
+        if col_tongcong == u'Tổng cộng':
             sql = '''
                 select case when sum(sl_ngoai_dien)!=0 then sum(sl_ngoai_dien) else 0 end sum_sl_ngoai_dien
                 from ct_tiem_phong_lmlm_line where tp_lmlm_id = %s 
@@ -331,7 +331,7 @@ class Parser(report_sxw.rml_parse):
         sl = self.cr.dictfetchone()
         if sl:
             soluong = sl and sl['sl_mien_dich'] or False
-        if col_tongcong == 'Tổng cộng':
+        if col_tongcong == u'Tổng cộng':
             sql = '''
                 select case when sum(sl_mien_dich)!=0 then sum(sl_mien_dich) else 0 end sum_sl_mien_dich
                 from ct_tiem_phong_lmlm_line where tp_lmlm_id = %s 
@@ -353,7 +353,7 @@ class Parser(report_sxw.rml_parse):
         sl = self.cr.dictfetchone()
         if sl:
             soluong = sl and sl['sl_thuc_tiem'] or False
-        if col_tongcong == 'Tổng cộng':
+        if col_tongcong == u'Tổng cộng':
             sql = '''
                 select case when sum(sl_thuc_tiem)!=0 then sum(sl_thuc_tiem) else 0 end sum_sl_thuc_tiem
                 from ct_tiem_phong_lmlm_line where tp_lmlm_id = %s 

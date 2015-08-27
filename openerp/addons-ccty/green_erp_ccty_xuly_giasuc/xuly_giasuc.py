@@ -55,9 +55,9 @@ class xuly_giasuc(osv.osv):
         'ten_ho_id': fields.many2one('chan.nuoi','Hộ', required = True),
         'can_bo_ghi_so': fields.char('Cán bộ ghi sổ'),
         'can_bo_id': fields.many2one('res.users','Cán bộ nhập máy'),
-        'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)'),
-        'khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)'),
-        'quan_huyen_id': fields.many2one('quan.huyen','Quận (huyện)'),
+        'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)', required = True),
+        'khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)', required = True),
+        'quan_huyen_id': fields.many2one('quan.huyen','Quận (huyện)', required = True),
         'chitiet_loai_xuly':fields.one2many('chitiet.loai.xuly','xuly_giasuc_id','Chi tiet'),
         'chi_tiet_vaccine_line':fields.one2many('ct.xuly.giasuc.vaccine.line','xuly_giasuc_id','Chi tiết Vaccine'),
         'company_id': fields.many2one('res.company','Trạm'),
@@ -185,13 +185,13 @@ class chitiet_loai_xuly(osv.osv):
     _columns = {
         'xuly_giasuc_id': fields.many2one('xuly.giasuc','Xu ly gia suc', ondelete = 'cascade'),
         'name': fields.char('Thông tin', readonly = True),
-        'tong_dan': fields.float('Tổng đàn', readonly = True),
-        'so_luong': fields.float('Số lượng xử lý'),
+        'tong_dan': fields.integer('Tổng đàn', readonly = True),
+        'so_luong': fields.integer('Số lượng xử lý'),
         'ly_do': fields.char('Lý do bệnh',size = 200),
         'ket_qua_xn': fields.char('Kết quả xét nghiệm',size = 200),
         'bien_phap': fields.char('Biện pháp xử lý',size = 200),
 #         'vacxin_id': fields.many2one('loai.vacxin','Thuốc sử dụng'),
-#         'lieu_luong': fields.float('Liều lượng'),
+#         'lieu_luong': fields.integer('Liều lượng'),
 #         'lieu_trinh': fields.char('Liệu trình',size = 200),
 #         'ket_qua_dieu_tri': fields.char('Kết quả điều trị',size = 200),
                 }
@@ -204,7 +204,7 @@ class ct_xuly_giasuc_vaccine_line(osv.osv):
         'loai_vaccine_id': fields.many2one('loai.vacxin','Loại vaccine'),
         'so_lo_id':fields.many2one('so.lo','Số lô'),
         'han_su_dung_rel':fields.related('so_lo_id','han_su_dung',type='date',string='HSD đến'),
-        'so_luong_vc': fields.float('Số lượng Vaccine'),
+        'so_luong_vc': fields.integer('Số lượng Vaccine'),
         'lieu_trinh': fields.char('Liệu trình',size = 200),
                 }
 ct_xuly_giasuc_vaccine_line()

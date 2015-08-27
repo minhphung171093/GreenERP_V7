@@ -138,7 +138,7 @@ class ton_vaccine(osv.osv):
         'vaccine_id': fields.many2one('loai.vacxin','Loại vaccine'),
         'so_lo_id': fields.many2one('so.lo','Số lô'),
         'ngay': fields.date('Ngày'),
-        'so_luong':fields.float('Số lượng'),
+        'so_luong':fields.integer('Số lượng'),
         'loai': fields.selection([('nhap', 'Nhập'),('xuat', 'Xuất')],'Loại', readonly=True),
         'nhap_vaccine_id': fields.many2one('nhap.vaccine','Nhap vaccine'),
                 }

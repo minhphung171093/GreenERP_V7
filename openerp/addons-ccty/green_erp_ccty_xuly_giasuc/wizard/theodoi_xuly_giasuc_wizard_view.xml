@@ -10,7 +10,7 @@
 	                <field name="quan_huyen_id" options="{'create': false, 'create_edit': false}" on_change="onchange_quan_huyen()"/>
 	            	<field name="phuong_xa_id" options="{'create': false, 'create_edit': false}" on_change="onchange_phuong_xa()" domain="[('quan_huyen_id','=',quan_huyen_id)]" />
 	            	<field name="khu_pho_id" options="{'create': false, 'create_edit': false}" on_change="onchange_khu_pho()" domain="[('phuong_xa_id','=',phuong_xa_id)]"/>
-	                <field name="ten_ho_id" options="{'create': false, 'create_edit': false}" domain="[('quan_huyen_id','=',quan_huyen_id), ('phuong_xa_id','=',phuong_xa_id), ('khu_pho_id','=',khu_pho_id)]"/>
+	                <field name="ten_ho_id" options="{'create': false, 'create_edit': false}" context="{'search_ten_ho_id_wizard':1, 'quan_huyen_id': quan_huyen_id, 'phuong_xa_id': phuong_xa_id, 'khu_pho_id': khu_pho_id}"/>
 	                <field name="tu_ngay" />
 	                <field name="den_ngay" />
 	                </group>
@@ -34,7 +34,7 @@
 	    
 	    <menuitem id="xuly_giasuc" name="Tình hình xử lý gia súc"/>
         <menuitem id="menu_thongke_xuly_giasuc" parent="xuly_giasuc" name="Thống kê xử lý gia súc" sequence = '2'/>
-	    	<menuitem id="menu_action_theodoi_xuly_giasuc_form" parent="menu_thongke_xuly_giasuc" action="action_theodoi_xuly_giasuc_form" sequence = '1'/>
+	    	<menuitem id="menu_action_theodoi_xuly_giasuc_form" parent="menu_thongke_xuly_giasuc" name="Xử lý gia súc (trâu, bò, dê, cừu)" action="action_theodoi_xuly_giasuc_form" sequence = '1'/>
 	 
 	    
     </data>

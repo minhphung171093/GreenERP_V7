@@ -259,7 +259,7 @@ class Parser(report_sxw.rml_parse):
                 sl = self.cr.dictfetchone()
                 soluong_giam = sl and sl['tong_sl_giam'] or False
                 soluong = soluong_tang - soluong_giam
-            if col == "Cộng bò sữa":
+            if col == u'Cộng bò sữa':
                 bosua_model, bosua_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_bosua')
                 self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [bosua_id], 'read', context = context)
                 sql = '''
@@ -286,7 +286,7 @@ class Parser(report_sxw.rml_parse):
                     self.cr.execute(sql)
                     soluong_giam = self.cr.dictfetchone()['sl_trong_ngay_giam']
                     soluong = soluong_tang - soluong_giam
-            if col == "Cộng bò ta":
+            if col == u'Cộng bò ta':
                 bota_model, bota_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_bota')
                 self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [bota_id], 'read', context = context)
                 sql = '''
@@ -313,7 +313,7 @@ class Parser(report_sxw.rml_parse):
                     self.cr.execute(sql)
                     soluong_giam = self.cr.dictfetchone()['sl_trong_ngay_giam']
                     soluong = soluong_tang - soluong_giam
-            if col == "Cộng bò lai sind":
+            if col == u'Cộng bò lai sind':
                 bolai_model, bolai_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_bolai')
                 self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [bolai_id], 'read', context = context)
                 sql = '''
@@ -340,7 +340,7 @@ class Parser(report_sxw.rml_parse):
                     self.cr.execute(sql)
                     soluong_giam = self.cr.dictfetchone()['sl_trong_ngay_giam']
                     soluong = soluong_tang - soluong_giam
-            if col == "Cộng trâu":
+            if col == u'Cộng trâu':
                 trau_model, trau_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_trau')
                 self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [trau_id], 'read', context = context)
                 sql = '''

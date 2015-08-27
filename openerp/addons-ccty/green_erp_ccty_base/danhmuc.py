@@ -144,11 +144,11 @@ class chan_nuoi(osv.osv):
     _columns = {
         'ma_ho': fields.char('Mã hộ',size = 50, required = True),
         'name': fields.char('Tên hộ',size = 50, required = True),
-        'so_nha': fields.char('Số nhà',size = 50),
-        'ngay_cap': fields.date('Thời gian cấp'),
-        'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)'),
-        'khu_pho_id': fields.many2one('khu.pho','Khu phố (ấp)'),
-        'quan_huyen_id': fields.many2one('quan.huyen','Quận (huyện)'),
+        'so_nha': fields.char('Số nhà',size = 50, required = True),
+        'ngay_cap': fields.date('Thời gian cấp', required = True),
+        'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)', required = True),
+        'khu_pho_id': fields.many2one('khu.pho','Khu phố (ấp)', required = True),
+        'quan_huyen_id': fields.many2one('quan.huyen','Quận (huyện)', required = True),
         'dien_tich': fields.char('Diện tích đất'),
         'trang_thai_id': fields.many2one('trang.thai','Trạng thái', readonly=True),
         'hien_an': fields.function(_get_hien_an, type='boolean', string='Hien/An'),
@@ -182,6 +182,43 @@ class chan_nuoi(osv.osv):
             cr.execute(sql)
             chan_nuoi_ids = [row[0] for row in cr.fetchall()]
             args += [('id','in',chan_nuoi_ids)]
+        
+        if context.get('search_ten_ho_id_wizard'):
+            if context.get('quan_huyen_id') and not context.get('phuong_xa_id') and not context.get('khu_pho_id'):
+                sql = '''
+                    select id from chan_nuoi
+                    where trang_thai_id in (select id from trang_thai where stt = 3) and quan_huyen_id = %s
+                '''%(context.get('quan_huyen_id'))
+                cr.execute(sql)
+                chan_nuoi_ids = [row[0] for row in cr.fetchall()]
+              
+            elif context.get('quan_huyen_id') and context.get('phuong_xa_id') and not context.get('khu_pho_id'):
+                sql = '''
+                    select id from chan_nuoi
+                    where trang_thai_id in (select id from trang_thai where stt = 3) and quan_huyen_id = %s and phuong_xa_id = %s
+                '''%(context.get('quan_huyen_id'), context.get('phuong_xa_id'))
+                cr.execute(sql)
+                chan_nuoi_ids = [row[0] for row in cr.fetchall()]
+                  
+            elif context.get('quan_huyen_id') and context.get('phuong_xa_id') and context.get('khu_pho_id'):
+                sql = '''
+                    select id from chan_nuoi
+                    where trang_thai_id in (select id from trang_thai where stt = 3) and quan_huyen_id = %s and phuong_xa_id = %s and khu_pho_id = %s
+                '''%(context.get('quan_huyen_id'), context.get('phuong_xa_id'), context.get('khu_pho_id'))
+                cr.execute(sql)
+                chan_nuoi_ids = [row[0] for row in cr.fetchall()]
+             
+            elif not context.get('quan_huyen_id') and not context.get('phuong_xa_id') and not context.get('khu_pho_id'):
+                sql = '''
+                    select id from chan_nuoi
+                    where trang_thai_id in (select id from trang_thai where stt = 3)
+                '''
+                cr.execute(sql)
+                chan_nuoi_ids = [row[0] for row in cr.fetchall()]
+            
+            args += [('id','in',chan_nuoi_ids)]
+            
+            
         return super(chan_nuoi, self).search(cr, uid, args, offset=offset, limit=limit, order=order, context=context, count=count)
     
     def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):

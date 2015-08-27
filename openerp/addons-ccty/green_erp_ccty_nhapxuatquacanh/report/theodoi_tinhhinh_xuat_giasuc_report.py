@@ -244,7 +244,7 @@ class Parser(report_sxw.rml_parse):
             if sl['so_luong']!=0:
                 soluong = sl and sl['so_luong'] or False
                 
-            if loai == "Tổng cộng":
+            if loai == u'Tổng cộng':
                 context = {}
                 sum = 0
                 wizard_data = self.localcontext['data']['form']
