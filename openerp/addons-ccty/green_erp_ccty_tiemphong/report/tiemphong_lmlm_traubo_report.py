@@ -94,7 +94,7 @@ class Parser(report_sxw.rml_parse):
         for line in lmlm.chi_tiet_vaccine_line:
             ten = self.pool.get('loai.vacxin').browse(self.cr,self.uid, line.loai_vaccine_id.id).name
             so_lo = self.pool.get('so.lo').browse(self.cr,self.uid, line.so_lo_id.id).name
-            name += 'Tên Vaccine: ' +  ten + '\n' + 'Số lô: ' + so_lo + ', HSD: ' + self.convert_date(line.han_su_dung_rel) + '\n'
+            name += u'Tên Vaccine: ' +  ten + '\n' + u'Số lô: ' + so_lo + u', HSD: ' + self.convert_date(line.han_su_dung_rel) + u'\n'
         return name
         
     def get_tenho(self):
