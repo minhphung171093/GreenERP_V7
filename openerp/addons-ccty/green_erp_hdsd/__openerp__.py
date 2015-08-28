@@ -31,7 +31,10 @@
     "description": """
         This module is used for added multi image widget in product.
     """,
-    'update_xml': ['hdsd_view.xml'],
+    'update_xml': [
+        'security/ir.model.access.csv',
+        'hdsd_view.xml'
+    ],
     'installable': True,
     'auto_install': False,
 }

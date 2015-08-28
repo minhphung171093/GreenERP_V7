@@ -22,8 +22,13 @@
 	                <sheet>
                 		<group>
                 			<h1>
-            					<field name="name"/>
+                				<label for="name"/>
+            					<field name="name" class="oe_inline"/>
             				</h1>
+                		</group>
+                		<group>
+        					<field name="datas" filename="datas_fname" string="File mềm"/>
+                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
                 		</group>
                 		<notebook>
 		                    <page string="Các bước thực hiện">
