@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
-#
+#    
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
+#    Copyright (C) 2004-2010 OpenERP SA (<http://www.openerp.com>)
+#    Copyright (C) 2011-2013 Serpent Consulting Services Pvt. Ltd. (<http://www.serpentcs.com>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -20,31 +21,30 @@
 ##############################################################################
 
 {
-    'name': 'Chi Cuc Thu Y BASE',
-    'version': '1.0',
-    'category': 'GreenERP',
-    'sequence': 14,
-    'author': 'nguyentoanit@gmail.com',
-    'website' : 'http://incomtech.com/',
-    'depends': ['report_aeroo','report_aeroo_ooo','web_m2x_options','web_widget_radio','green_erp_hdsd'],
-    'data': [
-            'security/base_security.xml', 
-            'security/ir.model.access.csv', 
-            'danhmuc_view.xml',
-            'menu.xml',
-            'danhmuc_loaivat_data.xml',
-            ],
-    'css' : [
-        'static/src/css/base.css'
+    "name" : "Multi Image",
+    "version" : "1.0",
+    "author" : "nguyentoanit@gmail.com",
+    "category": 'GreenERP',
+    'complexity': "easy",
+    'depends': ['web'],
+    "description": """
+        This module provides the functionality to store multiple images for one record.
+        All images store in server directory. so database size doesnot increase.
+    """,
+    'update_xml': [
     ],
-    'qweb': [
-        'static/src/xml/base.xml'
+    'js':[
+          "static/lib/lightbox/js/jquery.lightbox.js",
+          "static/src/js/multi_image.js"
     ],
-    'js' : [
-        "static/src/js/view_form.js",
+    'css':[
+           "static/src/css/hoverbox.css",
+           "static/lib/lightbox/css/lightbox.css",
     ],
+    'website': 'http://incomtech.com/',
+    'qweb': ['static/src/xml/image_multi.xml'],
     'installable': True,
     'auto_install': False,
-    'application': True,
 }
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
