@@ -77,6 +77,7 @@ class nhap_xuat_canh_giasuc(osv.osv):
         'nguon_phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)', required = True),
         'nguon_khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)', required = True),
         'nguon_quan_huyen_id': fields.many2one( 'quan.huyen','Quận (huyện)', required = True),
+        'bien_so_xe': fields.char('Biển số xe',size = 50),
         'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)', required = True),
         'khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)', required = True),
         'quan_huyen_id': fields.many2one( 'quan.huyen','Quận (huyện)', required = True),
