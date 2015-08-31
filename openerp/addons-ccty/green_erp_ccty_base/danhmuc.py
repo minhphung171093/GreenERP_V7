@@ -149,6 +149,7 @@ class chan_nuoi(osv.osv):
         'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)', required = True),
         'khu_pho_id': fields.many2one('khu.pho','Khu phố (ấp)', required = True),
         'quan_huyen_id': fields.many2one('quan.huyen','Quận (huyện)', required = True),
+        'an_toan_dich':fields.boolean('Được cấp An toàn dịch'),
         'dien_tich': fields.char('Diện tích đất'),
         'trang_thai_id': fields.many2one('trang.thai','Trạng thái', readonly=True),
         'hien_an': fields.function(_get_hien_an, type='boolean', string='Hien/An'),
@@ -158,6 +159,8 @@ class chan_nuoi(osv.osv):
                 }
     _defaults = {
         'trang_thai_id': get_trangthai_nhap,
+        'an_toan_dich':False,
+        
                  }
     
     def _check_ma_ho(self, cr, uid, ids, context=None):
@@ -224,6 +227,13 @@ class chan_nuoi(osv.osv):
     def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
        ids = self.search(cr, user, args, context=context, limit=limit)
        return self.name_get(cr, user, ids, context=context)
+
+    def bt_an_toan_dich(self, cr, uid, ids, context=None):
+        user = self.pool.get('res.users').browse(cr,uid,uid)
+        for line in self.browse(cr, uid, ids, context=context):
+           if line.an_toan_dich == False:
+               line.an_toan_dich == True
+        return True
     
     def bt_duyet(self, cr, uid, ids, context=None):
         user = self.pool.get('res.users').browse(cr,uid,uid)
