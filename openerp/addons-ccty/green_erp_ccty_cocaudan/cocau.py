@@ -58,6 +58,7 @@ class co_cau(osv.osv):
         'chitiet_loai':fields.one2many('chi.tiet.loai.line','co_cau_id','Co Cau'),
         'company_id': fields.many2one( 'res.company','Company'),
         'trang_thai': fields.selection((('old','Old'), ('new','New')),'Trang thai'),
+        'loai_ho_id': fields.many2one('loai.ho','Loại hộ', readonly = True),
         'trang_thai_id': fields.many2one('trang.thai','Trạng thái', readonly=True),
         'hien_an': fields.function(_get_hien_an, type='boolean', string='Hien/An'),
         'chinh_sua_rel': fields.related('trang_thai_id', 'chinh_sua', type="selection",
@@ -160,6 +161,7 @@ class co_cau(osv.osv):
             cr.execute(sql)
         if chon_loai and ten_ho_id:
             loai = self.pool.get('loai.vat').browse(cr,uid,chon_loai)    
+            ho = self.pool.get('chan.nuoi').browse(cr,uid,ten_ho_id)    
             for line in loai.chitiet_loaivat:
                 sql = '''
                     select case when sum(so_luong)!=0 then sum(so_luong) else 0 end tong_sl from chi_tiet_loai_line
@@ -179,7 +181,8 @@ class co_cau(osv.osv):
                                       'name': line.name,
                                       'tong_sl': tong_sl-tong_sl_giam,
                                       }))
-        return {'value': {'chitiet_loai': chi_tiet}}
+        return {'value': {'chitiet_loai': chi_tiet,
+                          'loai_ho_id': ho.loai_ho_id.id}}
     
     def _check_so_luong_giam(self, cr, uid, ids, context=None):
         for co_cau in self.browse(cr, uid, ids, context=context):
@@ -241,6 +244,7 @@ class chi_tiet_loai_line(osv.osv):
     _columns = {
         'co_cau_id': fields.many2one( 'co.cau','Co cau', ondelete = 'cascade'),
         'name': fields.char('Thông tin', readonly = True),
+        'tiem_phong':fields.boolean('Có được tiêm phòng?'),
         'tong_sl':fields.function(sum_so_luong,type='integer',string='Tổng số lượng(hiện có)', store = True),
         'so_luong': fields.integer('Số lượng'),
                 }

@@ -92,11 +92,14 @@ class tiem_phong_lmlm(osv.osv):
         return result
 
     _columns = {
-        'name': fields.datetime('Ngày tiêm', required = True),
+        'ngay_tiem': fields.datetime('Ngày tiêm', required = True),
         'loai_id': fields.many2one('loai.vat','Loài vật', required = True ),
         'tram_id': fields.many2one( 'res.company','Trạm'),
         'can_bo_id': fields.many2one( 'res.users','Cán bộ thú y nhập'),
         'can_bo_tiem': fields.char('Cán bộ thú y thực hiện tiêm', size = 100),
+        'loai_giay_tp_id': fields.many2one('loai.giay.tiem.phong','Loại giấy tiêm phòng'),
+        'name': fields.char('Số giấy tiêm phòng', size = 100,required = True),
+        'so_quyen': fields.char('Số quyển tiêm phòng', size = 100),
         'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)', required = True),
         'khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)', required = True),
         'quan_huyen_id': fields.many2one( 'quan.huyen','Quận (huyện)', required = True),
@@ -196,14 +199,15 @@ class tiem_phong_lmlm(osv.osv):
             cr.execute(sql)
         if ho_chan_nuoi_id and loai_id:
             sql = '''
-                select * from chi_tiet_loai_line where co_cau_id in (select id from co_cau 
+                select * from chi_tiet_loai_line where tiem_phong='true' and co_cau_id in (select id from co_cau 
                 where ten_ho_id = %s and chon_loai = %s and trang_thai = 'new')
             '''%(ho_chan_nuoi_id, loai_id)
             cr.execute(sql)
             for line in cr.dictfetchall():
                 chi_tiet.append((0,0,{
                                       'name': line['name'],
-                                      'so_luong': line['tong_sl']
+                                      'so_luong': line['tong_sl'],
+                                      'tiem_phong':line['tiem_phong'],
                                       }))
         return {'value': {'chi_tiet_tp_line': chi_tiet}}
 
@@ -215,12 +219,16 @@ class ct_tiem_phong_lmlm_line(osv.osv):
     _columns = {
         'tp_lmlm_id': fields.many2one( 'tiem.phong.lmlm','tiem phong lmlm', ondelete = 'cascade'),
         'name': fields.char('Thông tin', readonly = True),
+        'tiem_phong':fields.boolean('Có được tiêm phòng ?'),
         'so_luong': fields.integer('Tổng đàn', readonly = True),
         'sl_ngoai_dien': fields.integer('Ngoại diện'),
         'sl_mien_dich': fields.integer('Tiêm phòng còn Miễn dịch'),
         'sl_thuc_tiem': fields.integer('Số lượng thực tiêm'),
                 }
-    
+    _defaults = {
+        'tiem_phong':False,
+        
+                 }    
     def _check_so_luong(self, cr, uid, ids, context=None):
         tong_sl = 0
         for line in self.browse(cr, uid, ids, context=context):

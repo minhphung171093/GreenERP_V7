@@ -76,13 +76,25 @@ tinh_tp()
 class loai_vat(osv.osv):
     _name = "loai.vat"
     _columns = {
-        'ma_loai': fields.char('Mã loài',size = 50, required = True),
+        'ma_loai': fields.char('Mã loài',size = 50),
         'name': fields.char('Tên loài',size = 50, required = True),
-        'thuoc_loai': fields.selection((('a','Động vật thường'), ('b','Động vật hoang dã')),'Thuộc'),
+        'thuoc_loai': fields.selection((('dv_thuong','Động vật thường'), ('dv_hoangda','Động vật hoang dã'), ('thuy_san','Thủy sản')),'Thuộc'),
         'thoi_gian': fields.integer('thời gian nuôi (tháng)'),
         'chitiet_loaivat':fields.one2many('chi.tiet.loai.vat','loai_id','Chi tiet'),
         'chitiet_loaibenh':fields.one2many('chi.tiet.loai.benh','loai_id','Chi tiet'),
                 }
+    
+    def _check_ten_loai(self, cr, uid, ids, context=None):
+        for loai in self.browse(cr, uid, ids, context=context):
+            loai_ids = self.search(cr,uid,[('id', '!=', loai.id), ('name', '=', loai.name)])
+            if loai_ids:
+                raise osv.except_osv(_('Warning!'),_('Tên loài vật không được trùng nhau'))
+                return False
+        return True
+    _constraints = [
+        (_check_ten_loai, 'Identical Data', []),
+    ]   
+    
     
     def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
         if context is None:
@@ -109,7 +121,12 @@ class chi_tiet_loai_vat(osv.osv):
     _columns = {
         'loai_id': fields.many2one('loai.vat','Loai vat',ondelete = 'cascade'),
         'name': fields.char('Thông tin',size = 50),
+        'tiem_phong':fields.boolean('Có được tiêm phòng ?'),
                 }
+    _defaults = {
+        'tiem_phong':False,
+        
+                 }
 chi_tiet_loai_vat()
 
 class chi_tiet_loai_benh(osv.osv):
@@ -149,14 +166,18 @@ class chan_nuoi(osv.osv):
         'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)', required = True),
         'khu_pho_id': fields.many2one('khu.pho','Khu phố (ấp)', required = True),
         'quan_huyen_id': fields.many2one('quan.huyen','Quận (huyện)', required = True),
-        'an_toan_dich':fields.boolean('Được cấp An toàn dịch'),
+        'an_toan_dich':fields.boolean('Được cấp An toàn dịch', readonly = True),
         'dien_tich': fields.char('Diện tích đất'),
+        'toa_do_x': fields.char('Tọa độ X'),
+        'toa_do_y': fields.char('Tọa độ Y'),
+        'loai_ho_id': fields.many2one('loai.ho','Loại hộ', required = True),
         'trang_thai_id': fields.many2one('trang.thai','Trạng thái', readonly=True),
         'hien_an': fields.function(_get_hien_an, type='boolean', string='Hien/An'),
         'chinh_sua_rel': fields.related('trang_thai_id', 'chinh_sua', type="selection",
                 selection=[('nhap', 'Nháp'),('in', 'Đang xử lý'), ('ch_duyet', 'Cấp Huyện Duyệt'), ('cc_duyet', 'Chi Cục Duyệt'), ('huy', 'Hủy bỏ')], 
                 string="Chinh Sua", readonly=True, select=True),
                 }
+        
     _defaults = {
         'trang_thai_id': get_trangthai_nhap,
         'an_toan_dich':False,
@@ -232,7 +253,9 @@ class chan_nuoi(osv.osv):
         user = self.pool.get('res.users').browse(cr,uid,uid)
         for line in self.browse(cr, uid, ids, context=context):
            if line.an_toan_dich == False:
-               line.an_toan_dich == True
+               self.write(cr,uid,ids,{
+                                       'an_toan_dich': True,
+                                       })
         return True
     
     def bt_duyet(self, cr, uid, ids, context=None):
@@ -294,6 +317,7 @@ class loai_hang(osv.osv):
         'don_vi': fields.char('Đơn vị tính',size = 50),
                 }
 loai_hang()
+
 class loai_vacxin(osv.osv):
     _name = "loai.vacxin"
     _columns = {
@@ -302,4 +326,16 @@ class loai_vacxin(osv.osv):
                 }
 loai_vacxin()
 
+class loai_ho(osv.osv):
+    _name = "loai.ho"
+    _columns = {
+        'name': fields.char('Loại hộ',size = 50, required = True),
+                }
+loai_ho()
+class loai_giay_tiem_phong(osv.osv):
+    _name = "loai.giay.tiem.phong"
+    _columns = {
+        'name': fields.char('Loại giấy tiêm phòng',size = 50, required = True),
+                }
+loai_giay_tiem_phong()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

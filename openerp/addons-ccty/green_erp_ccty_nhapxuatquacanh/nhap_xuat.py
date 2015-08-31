@@ -71,6 +71,7 @@ class nhap_xuat_canh_giasuc(osv.osv):
         'ten_ho_id': fields.many2one('chan.nuoi','Hộ', required = True),
         'can_bo_id': fields.many2one('res.users','Cán bộ nhập máy'),
         'can_bo_ghi_so': fields.char('Cán bộ ghi sổ'),
+        'loai_ho_id': fields.many2one('loai.ho','Loại hộ'),
         'tram_id': fields.many2one('tram.thu.y','Trạm'),
         'nguon_tinh_thanh_id': fields.many2one( 'tinh.tp','Tỉnh/Thành Phố', required = True),
         'nguon_phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)', required = True),
@@ -125,6 +126,36 @@ class nhap_xuat_canh_giasuc(osv.osv):
         vals = {}
         vals = {'nguon_khu_pho_id':False}
         return {'value': vals}
+    
+    def onchange_ten_ho_id(self, cr, uid, ids, ten_ho_id = False, context=None):
+        res = {'value':{
+                        'loai_ho_id':False,
+                      }
+               }
+        if ten_ho_id:
+            ho = self.pool.get('chan.nuoi').browse(cr,uid,ten_ho_id)
+            res['value'].update({
+                        'loai_ho_id':ho.loai_ho_id and ho.loai_ho_id.id or False,
+            })
+        return res
+    
+    def create(self, cr, uid, vals, context=None):
+        if 'ten_ho_id' in vals:
+            ho = self.pool.get('chan.nuoi').browse(cr,uid,vals['ten_ho_id'])
+            vals.update({
+                'loai_ho_id':ho.loai_ho_id and ho.loai_ho_id.id or False,
+                })
+        new_id = super(nhap_xuat_canh_giasuc, self).create(cr, uid, vals, context=context)
+        return new_id
+    
+    def write(self, cr, uid, ids, vals, context=None):
+        if 'ten_ho_id' in vals:
+            ho = self.pool.get('chan.nuoi').browse(cr,uid,vals['ten_ho_id'])
+            vals.update({
+                'loai_ho_id':ho.loai_ho_id and ho.loai_ho_id.id or False,
+                })
+        new_write = super(nhap_xuat_canh_giasuc, self).write(cr, uid,ids, vals, context)
+        return new_write
     
     def _check_so_luong(self, cr, uid, ids, context=None):
         for nhap_xuat in self.browse(cr, uid, ids, context=context):
@@ -184,7 +215,8 @@ class nhap_xuat_canh_giasuc(osv.osv):
                 for loai in line.chitiet_loai_nx:
                     chi_tiet_loai.append((0,0,{
                     'name':loai.name,
-                    'so_luong':loai.so_luong,                           
+                    'so_luong':loai.so_luong,     
+                    'tiem_phong':loai.tiem_phong,                      
                                                }))
                 if line.trang_thai_id.stt == 1 and user.company_id.cap == 'huyen':
                     sql = '''
@@ -336,7 +368,8 @@ class nhap_xuat_canh_giasuc(osv.osv):
             loai = self.pool.get('loai.vat').browse(cr,uid,loai_id)    
             for line_loaivat in loai.chitiet_loaivat:
                 chi_tiet.append((0,0,{
-                                      'name': line_loaivat.name
+                                      'name': line_loaivat.name,
+                                      'tiem_phong':line_loaivat.tiem_phong,
                                       }))
             for line_loaibenh in loai.chitiet_loaibenh:
                 tiem_phong.append((0,0,{
@@ -353,6 +386,7 @@ class chi_tiet_loai_nhap_xuat(osv.osv):
     _columns = {
         'nhap_xuat_loai_id': fields.many2one('nhap.xuat.canh.giasuc','Nhap Xuat', ondelete = 'cascade'),
         'name': fields.char('Thông tin', readonly = True),
+        'tiem_phong':fields.boolean('Có được tiêm phòng'),
         'so_luong': fields.integer('Số lượng'),
                 }
 chi_tiet_loai_nhap_xuat()

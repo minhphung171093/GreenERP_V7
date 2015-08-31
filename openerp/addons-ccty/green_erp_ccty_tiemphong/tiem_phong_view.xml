@@ -90,7 +90,10 @@
 	        <field name="arch" type="xml">
 	            <search string="Tiêm phòng LMLM">
 	                <group>
-	                    <field name="name" />       
+	                	<field name="loai_giay_tp_id" /> 
+	                    <field name="name" /> 
+	                    <field name="so_quyen" /> 
+	                    <field name="ngay_tiem" />   
 	                    <field name="loai_id" />             
 	                    <field name="tram_id" />
 	                    <field name="can_bo_id" />
@@ -110,7 +113,10 @@
             <field name="type">tree</field>
             <field name="arch" type="xml">
                 <tree string="Quản lý Tiêm phòng bệnh Lỡ mồm long móng">
+ 						<field name="loai_giay_tp_id" />
  						<field name="name" />      
+ 						<field name="so_quyen" />
+ 						<field name="ngay_tiem" />
  						<field name="loai_id" />    
  						<field name="can_bo_tiem" />          
 	                    <field name="tram_id" />
@@ -138,7 +144,10 @@
 	            	</header> 
 	                <sheet>
 	                		<group col="4">
+	                			<field name="loai_giay_tp_id" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}" options="{'create': false, 'create_edit': false}" />
 		                		<field name="name" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+		                		<field name="so_quyen" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}" />
+		                		<field name="ngay_tiem" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}" />
 		                		<field name="loai_id" options="{'create': false, 'create_edit': false}" context="{'search_loai_id':True}" on_change = "onchange_ho_chan_nuoi_id(ho_chan_nuoi_id, loai_id)" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 			                    <field name="can_bo_tiem" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 			                    <field name="tram_id" readonly = "1" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
@@ -156,6 +165,7 @@
 									<field name="chi_tiet_tp_line" nolabel='1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}">
 										<tree editable='bottom' create = 'false'>
 											<field name="name"/>
+											<field name="tiem_phong" readonly="1"/>
 											<field name="so_luong" sum = 'Total'/>
 											<field name="sl_ngoai_dien" sum = 'Total'/>
 											<field name="sl_mien_dich" sum = 'Total'/>
