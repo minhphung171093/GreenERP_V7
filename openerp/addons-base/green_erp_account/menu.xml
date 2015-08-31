@@ -66,6 +66,18 @@
 	      		action="action_report_general_trial_balance" 
 	      		icon="terp-graph"  
 	      		parent="menu_report_finance" sequence="10"/>
+	      		
+      		<menuitem id="menu_action_report_general_balance_sheet"
+      			name="Balance Sheet"
+	      		action="action_report_general_balance_sheet" 
+	      		icon="terp-graph"  
+	      		parent="menu_report_finance" sequence="15"/>
+	      		
+      		<menuitem id="menu_action_report_general_account_profit_loss"
+      			name="Profit And Loss" 
+	      		action="action_report_general_account_profit_loss" 
+	      		icon="terp-graph"  
+	      		parent="menu_report_finance" sequence="20"/>
     	
     </data>
 </openerp>

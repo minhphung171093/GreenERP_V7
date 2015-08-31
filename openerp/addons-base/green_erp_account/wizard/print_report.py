@@ -246,4 +246,112 @@ class general_trial_balance(osv.osv_memory):
     
 general_trial_balance()
 
+class general_balance_sheet(osv.osv_memory):
+    _name = "general.balance.sheet"    
+    
+    def _get_fiscalyear(self, cr, uid, context=None):
+        now = time.strftime('%Y-%m-%d')
+        fiscalyears = self.pool.get('account.fiscalyear').search(cr, uid, [('date_start', '<', now), ('date_stop', '>', now)], limit=1 )
+        return fiscalyears and fiscalyears[0] or False
+    
+    def _get_company(self, cr, uid, context=None):
+        user = self.pool.get('res.users').browse(cr, uid, uid, context=context)
+        return user.company_id and user.company_id.id or False
+    
+    _columns = {
+        'times': fields.selection([
+            ('periods', 'Periods'),
+            ('quarter','Quarter'),
+            ('years','Years')], 'Periods Type', required=True ),
+        'period_id_start': fields.many2one('account.period', 'Period',  domain=[('state','=','draft')],),
+        'period_id_end': fields.many2one('account.period', 'End Perirod',  domain=[('state','=','draft')],),
+        'fiscalyear_start': fields.many2one('account.fiscalyear', 'Fiscalyear', domain=[('state','=','draft')],),
+        'fiscalyear_stop': fields.many2one('account.fiscalyear', 'Stop Fiscalyear',  domain=[('state','=','draft')],),
+        'date_start': fields.date('Date Start'),
+        'date_end':   fields.date('Date end'),
+        'quarter':fields.selection([
+            ('1', '1'),
+            ('2','2'),
+            ('3','3'),
+            ('4','4')], 'Quarter'),
+                
+        'company_id': fields.many2one('res.company', 'Company', required=True),
+     }
+        
+    _defaults = {
+        'times': 'periods',
+        'date_start': time.strftime('%Y-%m-%d'),
+        'date_end': time.strftime('%Y-%m-%d'),        
+        'period_id_start': lambda self, cr, uid, c: self.pool.get('account.period').find(cr, uid, dt=time.strftime('%Y-%m-%d'))[0],
+        'period_id_end': lambda self, cr, uid, c: self.pool.get('account.period').find(cr, uid, dt=time.strftime('%Y-%m-%d'))[0],        
+        'fiscalyear_start': _get_fiscalyear,
+        'fiscalyear_stop': _get_fiscalyear,
+        'quarter': '1',
+        
+        'company_id': _get_company,
+        }
+    
+    def finance_report(self, cr, uid, ids, context=None): 
+        datas = {'ids': context.get('active_ids', [])}
+        datas['model'] = 'general.balance.sheet'
+        datas['form'] = self.read(cr, uid, ids)[0]        
+        report_name = context['type_report']             
+        return {'type': 'ir.actions.report.xml', 'report_name': report_name , 'datas': datas}
+    
+general_balance_sheet()
+
+class general_account_profit_loss(osv.osv_memory):
+    _name = "general.account.profit.loss"    
+    
+    def _get_fiscalyear(self, cr, uid, context=None):
+        now = time.strftime('%Y-%m-%d')
+        fiscalyears = self.pool.get('account.fiscalyear').search(cr, uid, [('date_start', '<', now), ('date_stop', '>', now)], limit=1 )
+        return fiscalyears and fiscalyears[0] or False
+    
+    def _get_company(self, cr, uid, context=None):
+        user = self.pool.get('res.users').browse(cr, uid, uid, context=context)
+        return user.company_id and user.company_id.id or False
+    
+    _columns = {
+        'times': fields.selection([
+            ('periods', 'Periods'),
+            ('quarter','Quarter'),
+            ('years','Years')], 'Periods Type', required=True ),
+        'period_id_start': fields.many2one('account.period', 'Start Period',  domain=[('state','=','draft')],),
+        'period_id_end': fields.many2one('account.period', 'End Period',  domain=[('state','=','draft')],),
+        'fiscalyear_start': fields.many2one('account.fiscalyear', 'Start Fiscalyear', domain=[('state','=','draft')],),
+        'fiscalyear_stop': fields.many2one('account.fiscalyear', 'Stop Fiscalyear',  domain=[('state','=','draft')],),
+        'date_start': fields.date('Date Start'),
+        'date_end':   fields.date('Date end'),
+        'quarter':fields.selection([
+            ('1', '1'),
+            ('2','2'),
+            ('3','3'),
+            ('4','4')], 'Quarter'),
+        
+        'company_id': fields.many2one('res.company', 'Company', required=True),
+     }
+        
+    _defaults = {
+        'times': 'periods',
+        'date_start': time.strftime('%Y-%m-%d'),
+        'date_end': time.strftime('%Y-%m-%d'),        
+        'period_id_start': lambda self, cr, uid, c: self.pool.get('account.period').find(cr, uid, dt=time.strftime('%Y-%m-%d'))[0],
+        'period_id_end': lambda self, cr, uid, c: self.pool.get('account.period').find(cr, uid, dt=time.strftime('%Y-%m-%d'))[0],        
+        'fiscalyear_start': _get_fiscalyear,
+        'fiscalyear_stop': _get_fiscalyear,
+        'quarter': '1',
+        
+        'company_id': _get_company,
+        }
+    
+    def finance_report(self, cr, uid, ids, context=None): 
+        datas = {'ids': context.get('active_ids', [])}
+        datas['model'] = 'general.account.profit.loss'
+        datas['form'] = self.read(cr, uid, ids)[0]        
+        report_name = context['type_report']             
+        return {'type': 'ir.actions.report.xml', 'report_name': report_name , 'datas': datas}
+    
+general_account_profit_loss()
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

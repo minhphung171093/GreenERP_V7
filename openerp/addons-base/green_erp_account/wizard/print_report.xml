@@ -198,7 +198,75 @@
             <field name="view_id" ref="general_trial_balance"/>
         </record>
         
-
+<!--  ========================= Create Balance Sheet  Report ================= -->
+ 		
+ 		<!--   Fin Balance Sheet Report -->
+        <record id="report_general_balance_sheet" model="ir.ui.view">
+            <field name="name">report.general.balance.sheet.form</field>
+            <field name="model">general.balance.sheet</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Balance Sheet" version="7.0">
+                	<group col="6" colspan="3">
+                		<field name="times"/>
+                		<field name="company_id" groups="base.group_multi_company"/>
+                		<newline/>
+                		<field name="quarter" attrs="{'invisible':[('times', 'in', ['dates','years','periods'])],'required':[('times', 'not in', ['dates','years','periods'])]}"/>
+                		<field name="period_id_start" domain="[('company_id','=',company_id)]" context="{'report_type':'1'}" attrs="{'invisible':[('times', 'in', ['dates','years','quarter'])],'required':[('times', 'not in', ['dates','years','quarter'])]}"/>
+                		<field name="fiscalyear_start" domain="[('company_id','=',company_id)]" attrs="{'invisible':[('times', 'in', ['dates','periods'])],'required':[('times','not in', ['dates','periods'])]}"/>
+                    </group>
+	                <footer>
+                        <button string="Print" type="object" name="finance_report" context="{'type_report':'fin_general_balance_sheet_report'}" icon='gtk-execute'/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_report_general_balance_sheet" model="ir.actions.act_window">
+            <field name="name">Balance Sheet</field>
+            <field name="res_model">general.balance.sheet</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="report_general_balance_sheet"/>
+        </record>
+        
+<!--  ===================== Create Account Profit Loss  Report ================= -->       
+        <!--   Fin Account Profit Loss Report -->
+        <record id="report_general_account_profit_loss" model="ir.ui.view">
+            <field name="name">report.general.account.profit.loss.form</field>
+            <field name="model">general.account.profit.loss</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Profit And Loss" version="7.0">
+                	<group col="6" colspan="3">
+                		<field name="times"/>
+                		<field name="company_id" groups="base.group_multi_company"/>
+                		<newline/>
+                		<field name="quarter" attrs="{'invisible':[('times', 'in', ['dates','years','periods'])],'required':[('times', 'not in', ['dates','years','periods'])]}"/>
+                		<field name="period_id_start" domain="[('company_id','=',company_id)]" context="{'report_type':'1'}" attrs="{'invisible':[('times', 'in', ['dates','years','quarter'])],'required':[('times', 'not in', ['dates','years','quarter'])]}"/>
+                		<field name="fiscalyear_start" domain="[('company_id','=',company_id)]" attrs="{'invisible':[('times', 'in', ['dates','periods'])],'required':[('times','not in', ['dates','periods'])]}"/>
+                    </group>
+	                <footer>
+                        <button string="Print" type="object" name="finance_report" context="{'type_report':'fin_general_account_profit_loss_report'}" icon='gtk-execute'/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_report_general_account_profit_loss" model="ir.actions.act_window">
+            <field name="name">Profit And Loss</field>
+            <field name="res_model">general.account.profit.loss</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="report_general_account_profit_loss"/>
+        </record>
+        
    </data>
 </openerp>
         

@@ -155,5 +155,57 @@
 	        string="General Trial Balance"
 	        rml="green_erp_account/report/general_trial_balance_report.ods"/>
 	        
+<!--  ========================= REPORT FINANCIAL General Balance Sheet ================= -->	   	   
+	   <!-- Create New General Balance Sheet Report -->
+    	<record id="fin_general_balance_sheet_report" model="ir.actions.report.xml">
+	        <field name="name">general_balance_sheet_report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">general.balance.sheet</field>
+	        <field name="report_name">fin_general_balance_sheet_report</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">green_erp_account/report/general_balance_sheet_report.py</field>
+	        <field name="report_rml">green_erp_account/report/general_balance_sheet_report.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record>		    
+		
+		<report 
+			auto="False" 
+			menu="False"
+			id="fin_general_balance_sheet_report" 
+			model="general.balance.sheet" 
+			name="fin_general_balance_sheet_report"
+	        string="General Balance Sheet"
+	        rml="green_erp_account/report/general_balance_sheet_report.ods"/>
+	        
+<!--  =========== REPORT GENERAL ACCOUNTt PROFIT LOSS REPORT ============ -->	   	   
+	   <!-- Create New General Account Profit loss Report -->
+    	<record id="fin_general_account_profit_loss_report" model="ir.actions.report.xml">
+	        <field name="name">general_account_profit_loss_report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">general.account.profit.loss</field>
+	        <field name="report_name">fin_general_account_profit_loss_report</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">green_erp_account/report/general_account_profit_loss_report.py</field>
+	        <field name="report_rml">green_erp_account/report/general_account_profit_loss_report.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record>		    
+		
+		<report 
+			auto="False" 
+			menu="False"
+			id="fin_general_account_profit_loss_report" 
+			model="general.account.profit.loss" 
+			name="fin_general_account_profit_loss_report"
+	        string="General Account Profit Loss"
+	        rml="green_erp_account/report/general_account_profit_loss_report.ods"/>
+	        
 	</data>
 </openerp>
