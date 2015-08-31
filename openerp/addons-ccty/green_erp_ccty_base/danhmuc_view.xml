@@ -276,7 +276,7 @@
         </record>
        
         <record model="ir.actions.act_window" id="action_chan_nuoi">
-            <field name="name">Danh Mục Hộ Chăn Nuôi</field>
+            <field name="name">Danh mục cơ sở chăn nuôi</field>
             <field name="res_model">chan.nuoi</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
@@ -376,6 +376,7 @@
             <field name="arch" type="xml">
                 <tree string="Quận (Huyện)" editable='top'>
                     <field name="name" />
+                    <field name="tinh_thanh_id" />
                 </tree>
             </field>
         </record>  

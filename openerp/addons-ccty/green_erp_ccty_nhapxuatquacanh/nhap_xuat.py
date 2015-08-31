@@ -72,6 +72,10 @@ class nhap_xuat_canh_giasuc(osv.osv):
         'can_bo_id': fields.many2one('res.users','Cán bộ nhập máy'),
         'can_bo_ghi_so': fields.char('Cán bộ ghi sổ'),
         'tram_id': fields.many2one('tram.thu.y','Trạm'),
+        'nguon_tinh_thanh_id': fields.many2one( 'tinh.tp','Tỉnh/Thành Phố', required = True),
+        'nguon_phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)', required = True),
+        'nguon_khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)', required = True),
+        'nguon_quan_huyen_id': fields.many2one( 'quan.huyen','Quận (huyện)', required = True),
         'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)', required = True),
         'khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)', required = True),
         'quan_huyen_id': fields.many2one( 'quan.huyen','Quận (huyện)', required = True),
@@ -91,7 +95,10 @@ class nhap_xuat_canh_giasuc(osv.osv):
         'company_id': _get_company,
         'trang_thai_id': get_trangthai_nhap,
                  }
-                
+    def onchange_tinh_thanh(self, cr, uid, ids, context=None):
+        vals = {}
+        vals = {'quan_huyen_id':False}
+        return {'value': vals}            
     def onchange_quan_huyen(self, cr, uid, ids, context=None):
         vals = {}
         vals = {'phuong_xa_id':False}
@@ -104,6 +111,19 @@ class nhap_xuat_canh_giasuc(osv.osv):
         vals = {}
         vals = {'ten_ho_id':False}
         return {'value': vals} 
+    
+    def onchange_nguon_tinh_thanh(self, cr, uid, ids, context=None):
+        vals = {}
+        vals = {'nguon_quan_huyen_id':False}
+        return {'value': vals}            
+    def onchange_nguon_quan_huyen(self, cr, uid, ids, context=None):
+        vals = {}
+        vals = {'nguon_phuong_xa_id':False}
+        return {'value': vals}
+    def onchange_nguon_phuong_xa(self, cr, uid, ids, context=None):
+        vals = {}
+        vals = {'nguon_khu_pho_id':False}
+        return {'value': vals}
     
     def _check_so_luong(self, cr, uid, ids, context=None):
         for nhap_xuat in self.browse(cr, uid, ids, context=context):

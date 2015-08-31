@@ -70,7 +70,7 @@ tram_thu_y()
 class tinh_tp(osv.osv):
     _name = "tinh.tp"
     _columns = {
-        'name': fields.char('Thành Phố',size = 50, required = True),
+        'name': fields.char('Tỉnh/Thành Phố',size = 50, required = True),
                 }
 tinh_tp()
 class loai_vat(osv.osv):
@@ -266,6 +266,7 @@ class quan_huyen(osv.osv):
     _name = "quan.huyen"
     _columns = {
         'name': fields.char('Quận (huyện)',size = 50, required = True),
+        'tinh_thanh_id':fields.many2one('tinh.tp','Thuộc Tỉnh/Thành phố', required = True),
                 }
 quan_huyen()
 class khu_pho(osv.osv):
