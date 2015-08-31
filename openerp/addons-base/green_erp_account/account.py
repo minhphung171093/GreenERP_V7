@@ -35,6 +35,11 @@ class account_invoice(osv.osv):
     
     _columns = {
         'reference_number': fields.char('Reference Number', size=64, readonly=True, states={'draft':[('readonly',False)]}),
+        'date_document': fields.date('Document Date', readonly=True, states={'draft':[('readonly',False)]}),
+    }
+    
+    _defaults = {
+        'date_document': fields.date.context_today,
     }
     
 account_invoice()
@@ -203,6 +208,7 @@ class account_invoice(osv.osv):
                 'narration': inv.comment,
                 'company_id': inv.company_id.id,
                 # Phung them shop cho account_move
+                'date_document': inv.date_document,
                 'shop_id': inv.shop_id.id or False,
             }
             period_id = inv.period_id and inv.period_id.id or False
@@ -263,6 +269,7 @@ class account_move(osv.osv):
 
     _columns = {
         'shop_id': fields.many2one('sale.shop', 'Shop', states={'posted':[('readonly',True)]}),
+        'date_document': fields.date('Document Date', states={'posted':[('readonly',True)]}),
     }
     
     def _get_shop_id(self, cr, uid, context=None):
@@ -274,6 +281,19 @@ class account_move(osv.osv):
     _defaults = {
         'shop_id': _get_shop_id,
     }
+    
+    def create(self, cr, uid, vals, context=None):
+        if vals.get('date',False) and not vals.get('date_document',False):
+            vals.update({'date_document': vals['date']})
+        return super(account_move, self).create(cr, uid, vals, context)
+    
+    def _auto_init(self, cr, context=None):
+        super(account_move, self)._auto_init(cr, context)
+        cr.execute('''
+        UPDATE account_move
+        SET date_document = date
+        where date_document IS NULL
+        ''')
     
 account_move()
 
@@ -291,6 +311,7 @@ class account_voucher(osv.osv):
     
     _columns = {
         'shop_id': fields.many2one('sale.shop', 'Shop', required=True, readonly=True, states={'draft':[('readonly',False)]}),
+        'date_document': fields.date('Document Date', readonly=True, states={'draft':[('readonly',False)]},),
     }
 
     def _get_shop_id(self, cr, uid, context=None):
@@ -338,9 +359,23 @@ class account_voucher(osv.osv):
             'ref': ref,
             'period_id': voucher.period_id.id,
             'shop_id': voucher.shop_id.id or False,
+            'date_document': voucher.date_document,
         }
         return move
-
+    
+    def _auto_init(self, cr, context=None):
+        super(account_voucher, self)._auto_init(cr, context)
+        cr.execute('''
+        UPDATE account_voucher
+        SET date_document = date
+        where date_document IS NULL
+        ''')
+    
+    def create(self, cr, uid, vals, context=None):
+        if vals.get('date',False) and not vals.get('date_document',False):
+            vals.update({'date_document': vals['date']})
+        return super(account_voucher, self).create(cr, uid, vals, context)
+    
 account_voucher()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

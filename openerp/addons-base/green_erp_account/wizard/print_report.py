@@ -136,4 +136,68 @@ class account_ledger_report(osv.osv_memory):
     
 account_ledger_report()
 
+
+class general_ledger_report(osv.osv_memory):
+    _name = "general.ledger.report"
+    
+    def _get_fiscalyear(self, cr, uid, context=None):
+        now = time.strftime('%Y-%m-%d')
+        fiscalyears = self.pool.get('account.fiscalyear').search(cr, uid, [('date_start', '<', now), ('date_stop', '>', now)], limit=1 )
+        return fiscalyears and fiscalyears[0] or False
+            
+    _columns = {
+        'shop_ids': fields.many2many('sale.shop', 'general_ledger_report_shop_rel', 'wizard_id', 'shop_id', 'Shops', required=True),
+        
+        'times': fields.selection([
+            ('dates','Date'),
+            ('periods', 'Periods'),
+            ('quarter','Quarter'),
+            ('years','Years')], 'Periods Type', required=True ),
+        'period_id_start': fields.many2one('account.period', 'Period',  domain=[('state','=','draft')],),
+        'period_id_end': fields.many2one('account.period', 'End Period',  domain=[('state','=','draft')],),
+        'fiscalyear_start': fields.many2one('account.fiscalyear', 'Fiscalyear', domain=[('state','=','draft')],),
+        'fiscalyear_stop': fields.many2one('account.fiscalyear', 'Stop Fiscalyear',  domain=[('state','=','draft')],),
+        'date_start': fields.date('Date Start'),
+        'date_end':   fields.date('Date end'),
+        'quarter':fields.selection([
+            ('1', '1'),
+            ('2','2'),
+            ('3','3'),
+            ('4','4')], 'Quarter'),
+        'company_id': fields.many2one('res.company', 'Company', required=True),
+     }
+    
+    def _get_company(self, cr, uid, context=None):
+        user = self.pool.get('res.users').browse(cr, uid, uid, context=context)
+        return user.company_id and user.company_id.id or False
+        
+    def _get_shop_ids(self, cr, uid, context=None):
+        if context is None:
+            context = {}
+        user = self.pool.get('res.users').browse(cr, uid, uid)
+        return [x.id for x in user.shop_ids]
+    
+    _defaults = {
+        'shop_ids': _get_shop_ids,
+        'times': 'periods',
+        'date_start': time.strftime('%Y-%m-%d'),
+        'date_end': time.strftime('%Y-%m-%d'),        
+        'period_id_start': lambda self, cr, uid, c: self.pool.get('account.period').find(cr, uid, dt=time.strftime('%Y-%m-%d'))[0],
+        'period_id_end': lambda self, cr, uid, c: self.pool.get('account.period').find(cr, uid, dt=time.strftime('%Y-%m-%d'))[0],        
+        'fiscalyear_start': _get_fiscalyear,
+        'fiscalyear_stop': _get_fiscalyear,
+        'quarter': '1',
+        'company_id': _get_company,
+        }
+    
+    def finance_report(self, cr, uid, ids, context=None): 
+        datas = {'ids': context.get('active_ids', [])}
+        datas['model'] = 'general.ledger.report'
+        datas['form'] = self.read(cr, uid, ids)[0]        
+        report_name = context['type_report']             
+        return {'type': 'ir.actions.report.xml', 'report_name': report_name , 'datas': datas}
+    
+general_ledger_report()
+
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

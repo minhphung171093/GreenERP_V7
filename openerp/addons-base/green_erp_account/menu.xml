@@ -47,6 +47,12 @@
 	      		action="action_account_ledger_report" 
 	      		icon="terp-graph"  
 	      		parent="menu_report_general_account" sequence="6"/>
+	      		
+      		<menuitem id="menu_action_general_ledger_report"
+      			name="General Ledger"
+	      		action="action_general_ledger_report" 
+	      		icon="terp-graph"  
+	      		parent="menu_report_general_account" sequence="10"/>
     	
     </data>
 </openerp>
