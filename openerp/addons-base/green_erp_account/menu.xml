@@ -53,6 +53,19 @@
 	      		action="action_general_ledger_report" 
 	      		icon="terp-graph"  
 	      		parent="menu_report_general_account" sequence="10"/>
+	      		
+  		<!-- New VN Finance Reports menu -->
+		<menuitem id="menu_report_finance" 
+      		name="VN Financial Reports" 
+      		sequence="10"
+      		parent="account.menu_finance_reports" 
+      		/>
+	      	 
+		     <menuitem id="menu_action_report_general_trial_balance"
+		     	name="Trial Balance" 
+	      		action="action_report_general_trial_balance" 
+	      		icon="terp-graph"  
+	      		parent="menu_report_finance" sequence="10"/>
     	
     </data>
 </openerp>

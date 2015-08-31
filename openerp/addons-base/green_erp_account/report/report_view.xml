@@ -128,5 +128,32 @@
 	        string="General Ledger"
 	        rml="green_erp_account/report/general_ledger_report.ods"/>
 	        
+<!--  ========================= REPORT FINANCIAL General Trial Balance ================= -->
+
+		<!-- Create New General trial balance Report -->
+    	<record id="fin_general_trial_balance_report" model="ir.actions.report.xml">
+	        <field name="name">general_trial_balance_report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">general.trial.balance</field>
+	        <field name="report_name">fin_general_trial_balance_report</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">green_erp_account/report/general_trial_balance_report.py</field>
+	        <field name="report_rml">green_erp_account/report/general_trial_balance_report.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record>		    
+		
+		<report 
+			auto="False" 
+			menu="False"
+			id="fin_general_trial_balance_report" 
+			model="general.trial.balance" 
+			name="fin_general_trial_balance_report"
+	        string="General Trial Balance"
+	        rml="green_erp_account/report/general_trial_balance_report.ods"/>
+	        
 	</data>
 </openerp>
