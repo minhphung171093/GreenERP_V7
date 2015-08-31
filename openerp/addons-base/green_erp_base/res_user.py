@@ -9,8 +9,8 @@ import openerp
 from openerp.osv import osv, fields
 from openerp.tools.translate import _
 
-import amount_to_text_en
-import amount_to_text_vn
+# import amount_to_text_en
+# import amount_to_text_vn
 
 class users(osv.osv):
     _inherit = 'res.users'
@@ -37,11 +37,11 @@ class users(osv.osv):
         (_check_shop, 'The chosen Shop is not in the allowed Shops for this user', ['context_shop_id', 'shop_ids']),
     ]
     
-    def amount_to_text(self, nbr, lang='vn', currency='USD'):
-        if lang == 'vn':
-            return amount_to_text_vn.amount_to_text(nbr, lang)
-        else:
-            return amount_to_text_en.amount_to_text(nbr, 'en', currency)
+#     def amount_to_text(self, nbr, lang='vn', currency='USD'):
+#         if lang == 'vn':
+#             return amount_to_text_vn.amount_to_text(nbr, lang)
+#         else:
+#             return amount_to_text_en.amount_to_text(nbr, 'en', currency)
         
 users()
 
