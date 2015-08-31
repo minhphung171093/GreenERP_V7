@@ -150,7 +150,7 @@
             <field name="model">loai.vat</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="Tree Loài vật" create = 'false'>
+                <tree string="Tree Loài vật">
                     <field name="ma_loai" invisible = '1'/>
                     <field name="name" />
                     <field name="thuoc_loai" />                    
@@ -164,24 +164,24 @@
             <field name="model">loai.vat</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
-                <form string="form Loài vật" version="7.0" create = 'false'>
+                <form string="form Loài vật" version="7.0">
 	                <sheet>
                 		<group>
-			            	<field name="ma_loai" readonly = '1' invisible = '1'/>
-		                    <field name="name" readonly = '1' />
+			            	<field name="ma_loai" invisible = '1'/>
+		                    <field name="name"/>
 		                    <field name="thuoc_loai" />                    
 		                    <field name="thoi_gian" />
                 		</group>
                 		<notebook>
 							<page string = "Thông tin chi tiết">
-								<field name="chitiet_loaivat" nolabel='1' readonly = '1' >
+								<field name="chitiet_loaivat" nolabel='1' >
 									<tree editable='bottom'>
 										<field name="name" />
 									</tree>
 								</field>
 							</page>
 							<page string = "Thông tin chi tiết loại bệnh">
-								<field name="chitiet_loaibenh" nolabel='1' readonly = '1' >
+								<field name="chitiet_loaibenh" nolabel='1' >
 									<tree editable='bottom'>
 										<field name="name" />
 									</tree>
@@ -215,12 +215,14 @@
                     <field name="phuong_xa_id" />
                     <field name="khu_pho_id" />
                     <field name="dien_tich" />
+                    <field name="loai_ho_id" />
                     <separator/>
                     <group expand="0" string="Group By...">
                         <filter string="Quận (huyện)" domain="[]" context="{'group_by':'quan_huyen_id'}"/>
                         <filter string="Phường (xã)" domain="[]"  context="{'group_by':'phuong_xa_id'}"/>
                         <filter string="Khu phố (ấp)" domain="[]" context="{'group_by':'khu_pho_id'}"/>
                         <filter string="Thời gian cấp" domain="[]"  context="{'group_by':'ngay_cap'}"/>
+                        <filter string="Loại hộ" domain="[]"  context="{'group_by':'loai_ho_id'}"/>
                     </group>
                </search>
             </field>
@@ -236,10 +238,13 @@
                     <field name="ma_ho" />
                     <field name="so_nha" />                    
                     <field name="ngay_cap" />
+                    <field name="loai_ho_id" />
                     <field name="quan_huyen_id" options="{'create': false, 'create_edit': false}"/>
                     <field name="phuong_xa_id" domain="[('quan_huyen_id','=',quan_huyen_id)]" options="{'create': false, 'create_edit': false}"/>
                     <field name="khu_pho_id" domain="[('phuong_xa_id','=',phuong_xa_id)]" options="{'create': false, 'create_edit': false}"/>
                     <field name="dien_tich" />
+                    <field name="toa_do_x" />
+                    <field name="toa_do_y" />
                     <field name="trang_thai_id" options="{'create': false, 'create_edit': false}"/>
                     <field name="hien_an" invisible = '1'/>
                     <field name="chinh_sua_rel" invisible = '1'/>
@@ -263,10 +268,13 @@
 		                    <field name="ma_ho" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 		                    <field name="so_nha" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>                    
 		                    <field name="ngay_cap" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+		                    <field name="loai_ho_id" options="{'create': false, 'create_edit': false}" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 		                    <field name="quan_huyen_id" options="{'create': false, 'create_edit': false}" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 		                    <field name="phuong_xa_id" options="{'create': false, 'create_edit': false}" domain="[('quan_huyen_id','=',quan_huyen_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 		                    <field name="khu_pho_id" options="{'create': false, 'create_edit': false}" domain="[('phuong_xa_id','=',phuong_xa_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 		                    <field name="dien_tich" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+		                    <field name="toa_do_x" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+                    		<field name="toa_do_y" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 		                    <field name="hien_an" invisible = '1'/>
 		                    <field name="chinh_sua_rel" invisible = '1' />
                 		</group>
@@ -541,5 +549,39 @@
             <field name="view_mode">tree,form</field>
         </record>
 		
+		<!-- Loại Hộ -->
+		
+		<record model="ir.ui.view" id="loai_ho_tree">
+            <field name="name">loai.ho.tree</field>
+            <field name="model">loai.ho</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Loại hộ">
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="loai_ho_form">
+            <field name="name">loai.ho.form</field>
+            <field name="model">loai.ho</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Loại hộ" version="7.0">
+	                <sheet>
+                		<group>
+		                    <field name="name" />
+                		</group>
+	                </sheet>
+                </form>
+            </field>
+        </record>
+       
+        <record model="ir.actions.act_window" id="action_loai_ho">
+            <field name="name">Loại hộ</field>
+            <field name="res_model">loai.ho</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
     </data>
 </openerp>
