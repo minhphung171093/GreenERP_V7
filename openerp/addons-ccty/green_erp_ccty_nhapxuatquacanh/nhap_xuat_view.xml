@@ -77,12 +77,13 @@
 	        <field name="model">nhap.xuat.canh.giasuc</field>
 	        <field name="type">search</field>
 	        <field name="arch" type="xml">
-	            <search string="Nhập Xuất gia súc">
+	            <search string="Nhập Xuất động vật">
 	                <group>
 	                	<field name="name" />
 	                    <field name="loai_id" />
 	            		<field name="ngay_cap" />
 	                    <field name="ten_ho_id" />
+	                    <field name="nguon_tinh_thanh_id" />
 	                    <field name="phuong_xa_id" />
 	                    <field name="khu_pho_id" />                    
 	                    <field name="quan_huyen_id" />
@@ -94,6 +95,7 @@
 	                </group>
 	                <separator/>
                     <group expand="0" string="Group By...">
+                    	<filter string="Tỉnh/Thành Phố" domain="[]" context="{'group_by':'nguon_tinh_thanh_id'}"/>
                         <filter string="Quận (huyện)" domain="[]" context="{'group_by':'quan_huyen_id'}"/>
                         <filter string="Phường (xã)" domain="[]"  context="{'group_by':'phuong_xa_id'}"/>
                         <filter string="Khu phố (ấp)" domain="[]" context="{'group_by':'khu_pho_id'}"/>
@@ -113,7 +115,7 @@
             <field name="model">nhap.xuat.canh.giasuc</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="Nhập gia súc">
+                <tree string="Nhập động vật">
                 	<field name="name" />
                 	<field name="loai_id" />
                 	<field name="ngay_cap" />
@@ -121,6 +123,7 @@
                 	<field name="can_bo_id" />
                 	<field name="company_id" string = 'Trạm'/>
                 	<field name="ngay_kiem_tra" />
+                	<field name="nguon_tinh_thanh_id" />
                     <field name="quan_huyen_id" />
                     <field name="phuong_xa_id" />
                     <field name="khu_pho_id" />                    
@@ -139,32 +142,47 @@
             <field name="model">nhap.xuat.canh.giasuc</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
-                <form string="Nhập gia súc" version="7.0">
+                <form string="Nhập động vật" version="7.0">
                 	<header>
 	            		<button name="bt_duyet" groups = "green_erp_ccty_nhapxuatquacanh.group_nhapxuat_manager" attrs="{'invisible': [('hien_an', '!=', True)]}" string="Duyệt" type="object" class="oe_highlight" />
 	                    <field name="trang_thai_id" widget="statusbar"/>
 	            	</header> 
 	                <sheet>
-                		<group col="4" >
+                		<group col='4' colspan='2'>
+                			<group >
                 			<field name="name" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 		                	<field name="loai_id" options="{'create': false, 'create_edit': false}" on_change = "onchange_chon_loai(loai_id)" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 		            		<field name="ngay_cap" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 		            		<field name="can_bo_ghi_so" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+		            		</group>
+		            		<group>
 		                	<field name="company_id" readonly = '1' string = 'Trạm' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 		                	<field name="can_bo_id" readonly = '1' domain="[('company_id','=',company_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 		                	<field name="ngay_kiem_tra" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-		                	<newline/>
-		                    <field name="quan_huyen_id" options="{'create': false, 'create_edit': false}" on_change="onchange_quan_huyen()" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-		                    <field name="phuong_xa_id" options="{'create': false, 'create_edit': false}" on_change="onchange_phuong_xa()" domain="[('quan_huyen_id','=',quan_huyen_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-		                    <field name="khu_pho_id" options="{'create': false, 'create_edit': false}" on_change="onchange_khu_pho()" domain="[('phuong_xa_id','=',phuong_xa_id), ('quan_huyen_id','=',quan_huyen_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-		                    <field name="ten_ho_id" options="{'create': false, 'create_edit': false}" context="{'search_ten_ho_id':True}" domain="[('quan_huyen_id','=',quan_huyen_id), ('phuong_xa_id','=',phuong_xa_id), ('khu_pho_id','=',khu_pho_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-		                    <field name="loai_ho_id" readonly = '1' options="{'create': false, 'create_edit': false}" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+		                	</group>
+		                	
+		                	<newline/> 
+		                	
+		                	<group string="Nguồn">
+			                	<field name="nguon_tinh_thanh_id" options="{'create': false, 'create_edit': false}" on_change="onchange_nguon_tinh_thanh()" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+			                    <field name="nguon_quan_huyen_id" options="{'create': false, 'create_edit': false}" on_change="onchange_nguon_quan_huyen()" domain="[('tinh_thanh_id','=',nguon_tinh_thanh_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+			                    <field name="nguon_phuong_xa_id" options="{'create': false, 'create_edit': false}" on_change="onchange_nguon_phuong_xa()" domain="[('quan_huyen_id','=',nguon_quan_huyen_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+			                    <field name="nguon_khu_pho_id" options="{'create': false, 'create_edit': false}"  domain="[('phuong_xa_id','=',nguon_phuong_xa_id), ('quan_huyen_id','=',nguon_quan_huyen_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+		                    </group>
+		                    
+		              		<group string="Nhập vào">
+			                    <field name="quan_huyen_id" options="{'create': false, 'create_edit': false}" on_change="onchange_quan_huyen()" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+			                    <field name="phuong_xa_id" options="{'create': false, 'create_edit': false}" on_change="onchange_phuong_xa()" domain="[('quan_huyen_id','=',quan_huyen_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+			                    <field name="khu_pho_id" options="{'create': false, 'create_edit': false}" on_change="onchange_khu_pho()" domain="[('phuong_xa_id','=',phuong_xa_id), ('quan_huyen_id','=',quan_huyen_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+								<field name="ten_ho_id" on_change = "onchange_ten_ho_id(ten_ho_id)" options="{'create': false, 'create_edit': false}" context="{'search_ten_ho_id':True}" domain="[('quan_huyen_id','=',quan_huyen_id), ('phuong_xa_id','=',phuong_xa_id), ('khu_pho_id','=',khu_pho_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>	
+								<field name="loai_ho_id" readonly = '1' options="{'create': false, 'create_edit': false}" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>	                    
+		                    </group>
 		                    <field name="loai" invisible = '1' />
 		                    <field name="hien_an" invisible = '1' />
 		                    <field name="chinh_sua_rel" invisible = '1' />
                 		</group>
                 		<notebook>
-							<page string = "Thông tin chi tiết nhập gia súc">
+							<page string = "Thông tin chi tiết Nhập động vật">
 								<field name="chitiet_loai_nx" nolabel='1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}">
 									<tree editable='bottom' create = 'false'>
 										<field name="name"/>
@@ -187,7 +205,7 @@
         </record>
        
         <record model="ir.actions.act_window" id="action_nhap_canh_giasuc">
-            <field name="name">Nhập gia súc</field>
+            <field name="name">Nhập động vật</field>
             <field name="res_model">nhap.xuat.canh.giasuc</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
@@ -214,7 +232,7 @@
             <field name="model">nhap.xuat.canh.giasuc</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="Xuất gia súc">
+                <tree string="Xuất động vật">
                 	<field name="name" />
                 	<field name="loai_id" />
             		<field name="ngay_cap" />
@@ -240,7 +258,7 @@
             <field name="model">nhap.xuat.canh.giasuc</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
-                <form string="Xuất gia súc" version="7.0">
+                <form string="Xuất động vật" version="7.0">
                 	<header>
 	            		<button name="bt_duyet" groups = "green_erp_ccty_nhapxuatquacanh.group_nhapxuat_manager" attrs="{'invisible': [('hien_an', '!=', True)]}" string="Duyệt" type="object" class="oe_highlight" />
 	                    <field name="trang_thai_id" widget="statusbar"/>
@@ -258,14 +276,14 @@
 		                    <field name="quan_huyen_id" options="{'create': false, 'create_edit': false}" on_change="onchange_quan_huyen()" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 		                    <field name="phuong_xa_id" options="{'create': false, 'create_edit': false}" on_change="onchange_phuong_xa()" domain="[('quan_huyen_id','=',quan_huyen_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 		                    <field name="khu_pho_id" options="{'create': false, 'create_edit': false}" on_change="onchange_khu_pho()" domain="[('phuong_xa_id','=',phuong_xa_id), ('quan_huyen_id','=',quan_huyen_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-		                    <field name="ten_ho_id" options="{'create': false, 'create_edit': false}" context="{'search_ten_ho_id':True}" domain="[('quan_huyen_id','=',quan_huyen_id), ('phuong_xa_id','=',phuong_xa_id), ('khu_pho_id','=',khu_pho_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+		                    <field name="ten_ho_id" on_change = "onchange_ten_ho_id(ten_ho_id)" options="{'create': false, 'create_edit': false}" context="{'search_ten_ho_id':True}" domain="[('quan_huyen_id','=',quan_huyen_id), ('phuong_xa_id','=',phuong_xa_id), ('khu_pho_id','=',khu_pho_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 		                    <field name="loai_ho_id" readonly = '1' options="{'create': false, 'create_edit': false}" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 		                    <field name="loai" invisible = '1'/>
 		                    <field name="hien_an" invisible = '1'/>
 		                    <field name="chinh_sua_rel" invisible = '1'/>
                 		</group>
                 		<notebook>
-							<page string = "Thông tin chi tiết xuất gia súc">
+							<page string = "Thông tin chi tiết Xuất động vật">
 								<field name="chitiet_loai_nx" nolabel='1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}">
 									<tree editable='bottom' create = 'false'>
 										<field name="name"/>
@@ -288,7 +306,7 @@
         </record>
        
         <record model="ir.actions.act_window" id="action_xuat_canh_giasuc">
-            <field name="name">Xuất gia súc</field>
+            <field name="name">Xuất động vật</field>
             <field name="res_model">nhap.xuat.canh.giasuc</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
