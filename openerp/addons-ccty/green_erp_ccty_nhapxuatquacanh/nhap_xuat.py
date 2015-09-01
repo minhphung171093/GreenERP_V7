@@ -377,7 +377,8 @@ class nhap_xuat_canh_giasuc(osv.osv):
                                       }))
             for line_loaibenh in loai.chitiet_loaibenh:
                 tiem_phong.append((0,0,{
-                                      'name': line_loaibenh.name
+                                      'name': line_loaibenh.name,
+                                      'loai_benh_id': line_loaibenh.id,
                                       }))
         return {'value': {'chitiet_loai_nx': chi_tiet,
                           'chitiet_da_tiem_phong': tiem_phong,
@@ -400,6 +401,7 @@ class chi_tiet_da_tiem_phong(osv.osv):
     _columns = {
         'nhap_xuat_tiemphong_id': fields.many2one('nhap.xuat.canh.giasuc','Nhap Xuat', ondelete = 'cascade'),
         'name': fields.char('Loại bệnh', readonly = True),
+        'loai_benh_id': fields.many2one('chi.tiet.loai.benh','Loại bệnh', readonly = True),
         'so_luong': fields.integer('Số lượng'),
                 }
 chi_tiet_da_tiem_phong()

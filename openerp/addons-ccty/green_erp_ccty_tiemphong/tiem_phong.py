@@ -116,6 +116,7 @@ class tiem_phong_lmlm(osv.osv):
         'so_lo_id':fields.many2one('so.lo','Số lô'),
         'han_su_dung_rel':fields.related('so_lo_id','han_su_dung',type='date',string='HSD đến'),
         'so_luong_vc': fields.integer('Số lượng Vaccine'),
+        'nhap_xuat_id': fields.many2one('nhap.xuat.canh.giasuc','Phiếu nhập/xuất'),
                 }
         
     _defaults = {
@@ -220,6 +221,7 @@ class ct_tiem_phong_lmlm_line(osv.osv):
         'tp_lmlm_id': fields.many2one( 'tiem.phong.lmlm','tiem phong lmlm', ondelete = 'cascade'),
         'name': fields.char('Thông tin', readonly = True),
         'tiem_phong':fields.boolean('Có được tiêm phòng ?'),
+        'loai_benh_id': fields.many2one('chi.tiet.loai.benh','Loại bệnh'),
         'so_luong': fields.integer('Tổng đàn', readonly = True),
         'sl_ngoai_dien': fields.integer('Ngoại diện'),
         'sl_mien_dich': fields.integer('Tiêm phòng còn Miễn dịch'),
