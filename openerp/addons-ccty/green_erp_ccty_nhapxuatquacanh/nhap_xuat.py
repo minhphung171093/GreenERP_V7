@@ -215,7 +215,8 @@ class nhap_xuat_canh_giasuc(osv.osv):
                 for loai in line.chitiet_loai_nx:
                     chi_tiet_loai.append((0,0,{
                     'name':loai.name,
-                    'so_luong':loai.so_luong,                           
+                    'so_luong':loai.so_luong,     
+                    'tiem_phong':loai.tiem_phong,                      
                                                }))
                 if line.trang_thai_id.stt == 1 and user.company_id.cap == 'huyen':
                     sql = '''
@@ -371,7 +372,8 @@ class nhap_xuat_canh_giasuc(osv.osv):
             loai = self.pool.get('loai.vat').browse(cr,uid,loai_id)    
             for line_loaivat in loai.chitiet_loaivat:
                 chi_tiet.append((0,0,{
-                                      'name': line_loaivat.name
+                                      'name': line_loaivat.name,
+                                      'tiem_phong':line_loaivat.tiem_phong,
                                       }))
             for line_loaibenh in loai.chitiet_loaibenh:
                 tiem_phong.append((0,0,{
@@ -388,6 +390,7 @@ class chi_tiet_loai_nhap_xuat(osv.osv):
     _columns = {
         'nhap_xuat_loai_id': fields.many2one('nhap.xuat.canh.giasuc','Nhap Xuat', ondelete = 'cascade'),
         'name': fields.char('Thông tin', readonly = True),
+        'tiem_phong':fields.boolean('Có được tiêm phòng'),
         'so_luong': fields.integer('Số lượng'),
                 }
 chi_tiet_loai_nhap_xuat()

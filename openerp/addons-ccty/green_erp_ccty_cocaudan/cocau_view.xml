@@ -101,6 +101,7 @@
 								<field name="chitiet_loai" nolabel='1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}">
 									<tree editable='bottom' create = 'false' delete = 'false'>
 										<field name="name"/>
+										<field name="tiem_phong"/>
 										<field name="tong_sl" sum = 'Total'/>
 										<field name="so_luong" sum = 'Total'/>
 									</tree>
@@ -287,6 +288,7 @@
 								<field name="chitiet_loai" nolabel='1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}">
 									<tree editable='bottom' create = 'false' >
 										<field name="name"/>
+										<field name="tiem_phong"/>
 										<field name="tong_sl" sum = 'Total'/>
 										<field name="so_luong" sum = 'Total'/>
 									</tree>
@@ -380,6 +382,7 @@
 								<field name="chitiet_loai" nolabel='1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}">
 									<tree editable='bottom' create = 'false' delete = 'false'>
 										<field name="name"/>
+										<field name="tiem_phong"/>
 										<field name="tong_sl" sum = 'Total'/>
 										<field name="so_luong" sum = 'Total'/>
 									</tree>
