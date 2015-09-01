@@ -55,6 +55,10 @@ class Parser(report_sxw.rml_parse):
             'get_ten_solo': self.get_ten_solo,
             'get_han_su_dung': self.get_han_su_dung,
             'get_vaccine': self.get_vaccine,
+            'get_sum_tongdan': self.get_sum_tongdan,
+            'get_sum_ngoaidien': self.get_sum_ngoaidien,
+            'get_sum_miendich': self.get_sum_miendich,
+            'get_sum_thuctiem': self.get_sum_thuctiem,
         })
         
     def convert_datetime(self, date):
@@ -288,6 +292,21 @@ class Parser(report_sxw.rml_parse):
             soluong = sl and sl['so_luong'] or False
         return soluong
     
+    def get_sum_tongdan(self,row_id):
+        context = {}
+        soluong = False
+        sum = 0
+        wizard_data = self.localcontext['data']['form']
+        ten_ho_id = wizard_data['ten_ho_id']
+        sql = '''
+            select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong from ct_tiem_phong_lmlm_line where tp_lmlm_id = %s 
+        '''%(row_id)
+        self.cr.execute(sql)
+        sl = self.cr.dictfetchone()
+        if sl:
+            soluong = sl and sl['so_luong'] or False
+        return soluong
+    
     def get_cell_ngoaidien(self,row_id,col):
         context = {}
         soluong = False
@@ -297,6 +316,21 @@ class Parser(report_sxw.rml_parse):
         sql = '''
             select sl_ngoai_dien from ct_tiem_phong_lmlm_line where name = '%s' and tp_lmlm_id = %s 
         '''%(col, row_id)
+        self.cr.execute(sql)
+        sl = self.cr.dictfetchone()
+        if sl:
+            soluong = sl and sl['sl_ngoai_dien'] or False
+        return soluong
+    
+    def get_sum_ngoaidien(self,row_id):
+        context = {}
+        soluong = False
+        sum = 0
+        wizard_data = self.localcontext['data']['form']
+        ten_ho_id = wizard_data['ten_ho_id']
+        sql = '''
+            select case when sum(sl_ngoai_dien)!=0 then sum(sl_ngoai_dien) else 0 end sl_ngoai_dien from ct_tiem_phong_lmlm_line where tp_lmlm_id = %s 
+        '''%(row_id)
         self.cr.execute(sql)
         sl = self.cr.dictfetchone()
         if sl:
@@ -318,6 +352,21 @@ class Parser(report_sxw.rml_parse):
             soluong = sl and sl['sl_mien_dich'] or False
         return soluong
     
+    def get_sum_miendich(self,row_id):
+        context = {}
+        soluong = False
+        sum = 0
+        wizard_data = self.localcontext['data']['form']
+        ten_ho_id = wizard_data['ten_ho_id']
+        sql = '''
+            select case when sum(sl_mien_dich)!=0 then sum(sl_mien_dich) else 0 end sl_mien_dich from ct_tiem_phong_lmlm_line where tp_lmlm_id = %s 
+        '''%(row_id)
+        self.cr.execute(sql)
+        sl = self.cr.dictfetchone()
+        if sl:
+            soluong = sl and sl['sl_mien_dich'] or False
+        return soluong
+    
     def get_cell_thuctiem(self,row_id,col):
         context = {}
         soluong = False
@@ -327,6 +376,21 @@ class Parser(report_sxw.rml_parse):
         sql = '''
             select sl_thuc_tiem from ct_tiem_phong_lmlm_line where name = '%s' and tp_lmlm_id = %s 
         '''%(col, row_id)
+        self.cr.execute(sql)
+        sl = self.cr.dictfetchone()
+        if sl:
+            soluong = sl and sl['sl_thuc_tiem'] or False
+        return soluong
+    
+    def get_sum_thuctiem(self,row_id):
+        context = {}
+        soluong = False
+        sum = 0
+        wizard_data = self.localcontext['data']['form']
+        ten_ho_id = wizard_data['ten_ho_id']
+        sql = '''
+            select case when sum(sl_thuc_tiem)!=0 then sum(sl_thuc_tiem) else 0 end sl_thuc_tiem from ct_tiem_phong_lmlm_line where tp_lmlm_id = %s 
+        '''%(row_id)
         self.cr.execute(sql)
         sl = self.cr.dictfetchone()
         if sl:

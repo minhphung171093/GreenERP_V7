@@ -43,6 +43,7 @@ class Parser(report_sxw.rml_parse):
             'get_ho_row': self.get_ho_row,
             'get_loaivat': self.get_loaivat,
             'convert_date':self.convert_date,
+            'get_tongcong': self.get_tongcong,
         })
 
     def convert_date(self, ten_ho_id):
@@ -228,6 +229,21 @@ class Parser(report_sxw.rml_parse):
                             }
                     ))
         return res
+    
+    def get_tongcong(self, row):
+        wizard_data = self.localcontext['data']['form']
+        ten_ho_id = wizard_data['ten_ho_id']
+        soluong = 0
+        if row:
+            sql = '''
+                select case when sum(tong_sl)!=0 then sum(tong_sl) else 0 end tong_sl from chi_tiet_loai_line where
+                    co_cau_id in (select id from co_cau where ten_ho_id = %s and trang_thai = 'new' and chon_loai in %s
+                    and trang_thai_id in (select id from trang_thai where stt = 3))
+            '''%(row, tuple(self.get_loaivat()),)
+            self.cr.execute(sql)
+            test = self.cr.dictfetchone()
+            soluong = test and test['tong_sl'] or False
+        return soluong
     
     def get_cell(self,row,col):
         context = {}
