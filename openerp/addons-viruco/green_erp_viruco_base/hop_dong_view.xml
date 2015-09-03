@@ -637,6 +637,10 @@
 	                    	<field name="hinhthuc_giaohang_id"/>
 	                    	<field name="so_chuyenphatnhanh"/>
 	                    	<field name="user_id"/>
+	                    	<field name="payment_term" widget="selection" string="Điều kiện thanh toán"/>
+	                    	<field name="thoigian_giaohang"/>
+	                    	<field name="noi_giaohang_id"/>
+	                    	<field name="note"/>
 						</group>
 						<notebook>
 							<page string="Thông tin mặt hàng" >
@@ -721,12 +725,12 @@
 			<field name="name">don_ban_hang.ngoai.tree</field>
 			<field name="model">don.ban.hang</field>
 			<field name="arch" type="xml">
-				<tree string="Đơn bán hàng ngoại">
-					<field name="name"/>
-					<field name="partner_id"/>
-					<field name="ngay"/>
-					<field name="amount_total"/>
-					<field name="state"/>
+				<tree string="Sales CONFIRMATION">
+					<field name="name" string="Name"/>
+					<field name="partner_id" string="Partner"/>
+					<field name="ngay" string="Date"/>
+					<field name="amount_total" string="Amount Total"/>
+					<field name="state" string="State"/>
 				</tree>
 			</field>
 		</record>
@@ -735,7 +739,7 @@
             <field name="name">don_ban_hang.ngoai.select</field>
             <field name="model">don.ban.hang</field>
             <field name="arch" type="xml">
-                <search string="Đơn bán hàng ngoại">
+                <search string="Sales CONFIRMATION">
                     <field name="name"/>
                     <field name="partner_id"/>
                     <group expand="0" string="Group By...">
@@ -749,33 +753,34 @@
             <field name="name">don_ban_hang.ngoai.form</field>
             <field name="model">don.ban.hang</field>
             <field name="arch" type="xml">
-	            <form string="Đơn bán hàng ngoại" version="7.0">
+	            <form string="Sales CONFIRMATION" version="7.0">
 					<header>
-						<button name="print_donbanhang" string="In đơn bán hàng ngoại" type="object" class="oe_highlight"/>
-						<button name="duyet" string="Duyệt" states="moi_tao" type="object" class="oe_highlight"/>
-						<button name="huy_bo" string="Hủy bỏ" type="object" states="moi_tao,da_duyet" class="oe_highlight"/>
+						<button name="print_donbanhang" string="Print Sales CONFIRMATION" type="object" class="oe_highlight"/>
+						<button name="duyet" string="Confirm" states="moi_tao" type="object" class="oe_highlight"/>
+						<button name="huy_bo" string="Cancel" type="object" states="moi_tao,da_duyet" class="oe_highlight"/>
 						<field name="state" widget="statusbar" statusbar_visible="moi_tao,da_duyet,het_han,huy_bo"/>
 					</header>
 	            	<sheet>
 	                    <h1>
-	                    	<label string="Số"/>
+	                    	<label string="No."/>
 	                        <field name="name" class="oe_inline" nolabel="1" />
 	                    </h1>
 	                    <group>
-	                    	<field name="company_id" context="{'show_address': 1}" invisible='1'/>
+	                    	<field name="company_id" string="Company" context="{'show_address': 1}" invisible='1'/>
 	                    	<field name="type" invisible='1'/>
 	                    	<field name="currency_company_id" invisible='1'/>
 	                    </group>
 	                    <group col='4' colspan='2'>
-	                    	<field name="partner_id" context="{'show_address': 1}" domain="[('customer','=',True)]"/>
-	                    	<field name="ngay"/>
-	                    	<field name="pricelist_id" domain="[('currency_id','!=',currency_company_id),('type','=','sale')]" on_change="onchange_pricelist_id(pricelist_id,don_ban_hang_line)"/>
-	                    	<field name="currency_id"/>
-	                    	<field name="user_id"/>
-	                    	<field name="thoigian_giaohang"/>
-	                    	<field name="nguoi_gioithieu_id"/>
-	                    	<field name="dieukien_giaohang_id"/>
-	                    	<field name="payment_term" widget="selection"/>
+	                    	<field name="partner_id" string="Partner" context="{'show_address': 1}" domain="[('customer','=',True)]"/>
+	                    	<field name="ngay" string="Date"/>
+	                    	<field name="pricelist_id" string="Price List" domain="[('currency_id','!=',currency_company_id),('type','=','sale')]" on_change="onchange_pricelist_id(pricelist_id,don_ban_hang_line)"/>
+	                    	<field name="currency_id" string="Currency"/>
+	                    	<field name="user_id" string="User"/>
+	                    	<field name="thoigian_giaohang" string="Shipping Time"/>
+	                    	<field name="nguoi_gioithieu_id" string="Broker/Agent"/>
+	                    	<field name="noi_giaohang_id" string="Delivery Location"/>
+	                    	<field name="note" string="Description"/>
+	                    	<field name="payment_term" widget="selection" string="Payment Term"/>
 						</group>
 						<notebook>
 							<page string="Thông tin mặt hàng" >
@@ -793,17 +798,16 @@
 									</tree>
 								</field>
 								<group class="oe_subtotal_footer oe_right" colspan="2" name="hopdong_total">
-	                                <field name="amount_untaxed" widget='monetary' options="{'currency_field': 'currency_id'}"/>
-	                                <field name="amount_tax" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+	                                <field name="amount_untaxed" string="Untaxed" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+	                                <field name="amount_tax" widget='monetary' string="Tax" options="{'currency_field': 'currency_id'}"/>
 	                                <div class="oe_subtotal_footer_separator oe_inline">
-	                                    <label for="amount_total" />
+	                                    <label for="amount_total" string="Total"/>
 	                                    <button name="button_dummy"
 	                                        states="moi_tao" string="(update)" type="object" class="oe_edit_only oe_link"/>
 	                                </div>
-	                                <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+	                                <field name="amount_total" string="Total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'currency_id'}"/>
 	                            </group>
 	                            <div class="oe_clear"/>
-	                            <field name="note" class="oe_inline" placeholder="Terms and conditions..."/>
 							</page>
 							<page string="Hoa Hồng" >
 								<field name="donhang_hoahong_line">
@@ -835,7 +839,7 @@
 		</record>
           
 		<record id="action_don_ban_hang_ngoai" model="ir.actions.act_window">
-            <field name="name">Đơn bán hàng ngoại</field>
+            <field name="name">Sales CONFIRMATION</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">don.ban.hang</field>
             <field name="view_type">form</field>

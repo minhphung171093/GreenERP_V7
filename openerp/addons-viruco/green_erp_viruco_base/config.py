@@ -80,6 +80,15 @@ class nha_sanxuat(osv.osv):
     
 nha_sanxuat()
 
+class noi_giaohang(osv.osv):
+    _name = 'noi.giaohang'
+    _columns = {
+        'name':fields.char('Địa điểm',size=1024,required=True),
+        'description': fields.text('Ghi chú'),
+    }
+    
+noi_giaohang()
+
 class dieukien_giaohang(osv.osv):
     _name = 'dieukien.giaohang'
     _columns = {
@@ -88,6 +97,7 @@ class dieukien_giaohang(osv.osv):
     }
     
 dieukien_giaohang()
+
 
 class hinhthuc_giaohang(osv.osv):
     _name = 'hinhthuc.giaohang'

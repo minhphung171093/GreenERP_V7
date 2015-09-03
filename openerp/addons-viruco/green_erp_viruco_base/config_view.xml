@@ -47,7 +47,55 @@
             <field name="view_id" ref="sale_arbitration_tree_view"/>
             <field name="domain">[]</field>
         </record>
-<!--Dieu kien giao hang-->
+<!--noi giao hang-->
+		
+		<record id="noi_giaohang_tree_view" model="ir.ui.view">
+			<field name="name">noi.giaohang.tree</field>
+			<field name="model">noi.giaohang</field>
+			<field name="arch" type="xml">
+				<tree string="Nơi giao hàng">
+					<field name="name"/>
+					<field name="description"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="noi_giaohang_filter_view" model="ir.ui.view">
+			<field name="name">noi.giaohang.filter</field>
+			<field name="model">noi.giaohang</field>
+            <field name="arch" type="xml">
+                <search string="Nơi giao hàng">
+                    <field name="name"/>
+               </search>
+            </field>
+        </record>
+		
+		<record id="noi_giaohang_form_view" model="ir.ui.view">
+			<field name="name">noi.giaohang.form</field>
+			<field name="model">noi.giaohang</field>
+            <field name="arch" type="xml">
+	            <form string="Nơi giao hàng" version="7.0">
+	            	<sheet>
+	            		<group>
+		                	<field name="name"/>
+							<field name="description"/>
+						</group>
+		         	</sheet>
+		         </form>
+			</field>
+		</record>
+          
+		<record id="action_noi_giaohang" model="ir.actions.act_window">
+            <field name="name">Nơi giao hàng</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">noi.giaohang</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="noi_giaohang_tree_view"/>
+            <field name="domain">[]</field>
+        </record>
+
+<!--dieu kien giao hang-->
 		
 		<record id="dieukien_giaohang_tree_view" model="ir.ui.view">
 			<field name="name">dieukien.giaohang.tree</field>
@@ -94,7 +142,7 @@
             <field name="view_id" ref="dieukien_giaohang_tree_view"/>
             <field name="domain">[]</field>
         </record>
-        
+               
 <!--Hinh thuc giao hang-->
 		
 		<record id="hinhthuc_giaohang_tree_view" model="ir.ui.view">
