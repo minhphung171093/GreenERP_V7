@@ -494,9 +494,9 @@ class don_ban_hang(osv.osv):
         'currency_id': fields.related('pricelist_id', 'currency_id', type="many2one", relation="res.currency", string="Đơn vị tiền tệ", readonly=True, required=True),
         'currency_company_id': fields.many2one('res.currency', 'Currency'),
         'user_id':fields.many2one('res.users','Người đề nghị',readonly=True,states={'moi_tao': [('readonly', False)]}),
-        'thoigian_giaohang':fields.datetime('Thời gian giao hàng'),
+        'thoigian_giaohang':fields.char('Thời gian giao hàng',size=1024),
         'nguoi_gioithieu_id':fields.many2one('res.partner','Người giới thiệu',readonly=True,states={'moi_tao': [('readonly', False)]}),
-        'dieukien_giaohang_id':fields.many2one('dieukien.giaohang','Điều kiện giao hàng'),
+        'noi_giaohang_id':fields.many2one('noi.giaohang','Nơi giao giao hàng'),
         'payment_term': fields.many2one('account.payment.term', 'Payment Term'),
         'amount_untaxed': fields.function(_amount_all, digits_compute=dp.get_precision('Account'), string='Cộng',
             store={
@@ -521,7 +521,7 @@ class don_ban_hang(osv.osv):
             ('da_duyet', 'Đã duyệt'),
             ('huy_bo', 'Hủy bỏ'),
             ], 'Trạng thái',readonly=True, states={'moi_tao': [('readonly', False)]}),
-        'note': fields.text('Terms and conditions'),
+        'note': fields.char('Terms and conditions'),
     }
     
     _defaults = {
