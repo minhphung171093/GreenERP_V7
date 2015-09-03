@@ -632,14 +632,20 @@
 	                    	<field name="ngay"/>
 	                    	<field name="pricelist_id" domain="[('currency_id','=',currency_company_id),('type','=','sale')]" on_change="onchange_pricelist_id(pricelist_id,don_ban_hang_line)"/>
 	                    	<field name="currency_id"/>
+	                    	<field name="nguoi_gioithieu_id" domain="[('nha_moigioi','=',True)]"/>
+	                    	<field name="dieukien_giaohang_id"/>
+	                    	<field name="hinhthuc_giaohang_id"/>
+	                    	<field name="so_chuyenphatnhanh"/>
 	                    	<field name="user_id"/>
 						</group>
 						<notebook>
 							<page string="Thông tin mặt hàng" >
-								<field name="don_ban_hang_line">
+								<field name="don_ban_hang_line" on_change="onchange_don_ban_hang_line(don_ban_hang_line,donhang_hoahong_line)">
 									<tree editable='top'>
 	                                    <field name="product_id" on_change="onchange_product_id(product_qty,parent.ngay,parent.partner_id,parent.pricelist_id,product_id, context)"/>
 	                                    <field name="name"/>
+	                                    <field name="chatluong_id"/>
+	                                    <field name="quycach_donggoi_id"/>
 	                                    <field name="product_uom"/>
 	                                    <field name="product_qty"/>
 	                                    <field name="price_unit"/>
@@ -656,6 +662,29 @@
 	                                        states="moi_tao" string="(update)" type="object" class="oe_edit_only oe_link"/>
 	                                </div>
 	                                <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+	                            </group>
+	                            <div class="oe_clear"/>
+							</page>
+							<page string="Hoa Hồng" >
+								<field name="donhang_hoahong_line">
+									<tree editable='top'>
+	                                    <field name="product_id" on_change="onchange_product_id(product_id, context)"/>
+	                                    <field name="product_uom"/>
+	                                    <field name="product_qty"/>
+	                                    <field name="price_unit"/>
+	                                    <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]"/>
+	                                    <field name="price_subtotal"/>
+									</tree>
+								</field>
+								<group class="oe_subtotal_footer oe_right" colspan="2" name="hopdong_total_hh">
+	                                <field name="amount_untaxed_hh" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+	                                <field name="amount_tax_hh" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+	                                <div class="oe_subtotal_footer_separator oe_inline">
+	                                    <label for="amount_total_hh" />
+	                                    <button name="button_dummy"
+	                                        states="moi_tao" string="(update)" type="object" class="oe_edit_only oe_link"/>
+	                                </div>
+	                                <field name="amount_total_hh" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'currency_id'}"/>
 	                            </group>
 	                            <div class="oe_clear"/>
 							</page>
@@ -750,10 +779,12 @@
 						</group>
 						<notebook>
 							<page string="Thông tin mặt hàng" >
-								<field name="don_ban_hang_line">
+								<field name="don_ban_hang_line" on_change="onchange_don_ban_hang_line(don_ban_hang_line,donhang_hoahong_line)">
 									<tree editable='top'>
 	                                    <field name="product_id" on_change="onchange_product_id(product_qty,parent.ngay,parent.partner_id,parent.pricelist_id,product_id, context)"/>
 	                                    <field name="name"/>
+	                                    <field name="chatluong_id"/>
+	                                    <field name="quycach_donggoi_id"/>
 	                                    <field name="product_uom"/>
 	                                    <field name="product_qty"/>
 	                                    <field name="price_unit"/>
@@ -773,6 +804,29 @@
 	                            </group>
 	                            <div class="oe_clear"/>
 	                            <field name="note" class="oe_inline" placeholder="Terms and conditions..."/>
+							</page>
+							<page string="Hoa Hồng" >
+								<field name="donhang_hoahong_line">
+									<tree editable='top'>
+	                                    <field name="product_id" on_change="onchange_product_id(product_id, context)"/>
+	                                    <field name="product_uom"/>
+	                                    <field name="product_qty"/>
+	                                    <field name="price_unit"/>
+	                                    <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]"/>
+	                                    <field name="price_subtotal"/>
+									</tree>
+								</field>
+								<group class="oe_subtotal_footer oe_right" colspan="2" name="hopdong_total_hh">
+	                                <field name="amount_untaxed_hh" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+	                                <field name="amount_tax_hh" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+	                                <div class="oe_subtotal_footer_separator oe_inline">
+	                                    <label for="amount_total_hh" />
+	                                    <button name="button_dummy"
+	                                        states="moi_tao" string="(update)" type="object" class="oe_edit_only oe_link"/>
+	                                </div>
+	                                <field name="amount_total_hh" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+	                            </group>
+	                            <div class="oe_clear"/>
 							</page>
 						</notebook>
 		         	</sheet>

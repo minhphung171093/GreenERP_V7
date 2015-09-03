@@ -168,7 +168,8 @@ class sale_order(osv.osv):
         order_line = []
         if hop_dong_id:
             hd_obj = self.pool.get('hop.dong')
-            for hd_line in hd_obj.browse(cr, uid, hop_dong_id).hopdong_line:
+            hd = hd_obj.browse(cr, uid, hop_dong_id)
+            for hd_line in hd.hopdong_line:
                 sql = '''
                     select case when sum(product_uom_qty)!=0 then sum(product_uom_qty) else 0 end quantity
                         from sale_order_line where hd_line_id=%s
@@ -179,8 +180,8 @@ class sale_order(osv.osv):
                     val_line={
                         'product_id': hd_line.product_id and hd_line.product_id.id or False,
                         'name':hd_line.name,
-                        'chatluong_id':hd_line.product_id and hd_line.product_id.chatluong_id and hd_line.product_id.chatluong_id.id or False,
-                        'quycach_donggoi_id':hd_line.product_id and hd_line.product_id.quycach_donggoi_id and hd_line.product_id.quycach_donggoi_id.id or False,
+                        'chatluong_id':hd_line.chatluong_id and hd_line.chatluong_id.id or False,
+                        'quycach_donggoi_id':hd_line.quycach_donggoi_id and hd_line.quycach_donggoi_id.id or False,
                         'product_uom': hd_line.product_uom and hd_line.product_uom.id or False,
                         'product_uom_qty': hd_line.product_qty-quantity,
                         'price_unit': hd_line.price_unit,
@@ -190,7 +191,13 @@ class sale_order(osv.osv):
                         'type': 'make_to_stock',
                     }
                     order_line.append((0,0,val_line))
-            vals['order_line'] = order_line
+            vals.update({
+                'order_line': order_line,
+                'nguoi_gioithieu_id': hd.donbanhang_id.nguoi_gioithieu_id and hd.donbanhang_id.nguoi_gioithieu_id.id or False,
+                'dieukien_giaohang_id': hd.donbanhang_id.dieukien_giaohang_id and hd.donbanhang_id.dieukien_giaohang_id.id or False,
+                'hinhthuc_giaohang_id': hd.donbanhang_id.hinhthuc_giaohang_id and hd.donbanhang_id.hinhthuc_giaohang_id.id or False,
+                'so_chuyenphatnhanh': hd.donbanhang_id.so_chuyenphatnhanh,
+            })
         return {'value': vals}
     
 sale_order()

@@ -334,11 +334,13 @@ class hop_dong(osv.osv):
                     'tax_id': [(6,0,[t.id for t in dbh_line.tax_id])],
                 }
                 order_line.append((0,0,val_line))
+            for hh_line in dbh.donhang_hoahong_line:
                 hd_hh_value={
-                    'product_id': dbh_line.product_id and dbh_line.product_id.id or False,
-                    'product_uom': dbh_line.product_uom and dbh_line.product_uom.id or False,
-                    'product_qty': dbh_line.product_qty,
-                    'tax_id': [(6,0,[t.id for t in dbh_line.tax_id])],
+                    'product_id': hh_line.product_id and hh_line.product_id.id or False,
+                    'product_uom': hh_line.product_uom and hh_line.product_uom.id or False,
+                    'product_qty': hh_line.product_qty,
+                    'price_unit': hh_line.price_unit,
+                    'tax_id': [(6,0,[t.id for t in hh_line.tax_id])],
                 }
                 hd_hoahong_line.append((0,0,hd_hh_value))
             vals = {
@@ -385,12 +387,16 @@ class hopdong_hoahong_line(osv.osv):
         for line in self.browse(cr, uid, ids, context=context):
             price = line.price_unit
             taxes = tax_obj.compute_all(cr, uid, line.tax_id, price, line.product_qty, line.product_id, line.hopdong_hh_id.partner_id)
-            cur = line.hopdong_hh_id.company_id.currency_id
+            if line.hopdong_hh_id:
+                cur = line.hopdong_hh_id.company_id.currency_id
+            else:
+                cur = line.hopdong_dh_id.company_id.currency_id
             res[line.id] = cur_obj.round(cr, uid, cur, taxes['total'])
         return res
     
     _columns = {
-        'hopdong_hh_id': fields.many2one('hop.dong', 'Hợp đồng', required=True, ondelete='cascade', select=True),
+        'hopdong_hh_id': fields.many2one('hop.dong', 'Hợp đồng', ondelete='cascade', select=True),
+        'hopdong_dh_id': fields.many2one('don.ban.hang', 'Đơn bán hàng', ondelete='cascade', select=True),
         'product_id': fields.many2one('product.product', 'Product', domain=[('sale_ok', '=', True)], change_default=True,),
         'product_uom': fields.many2one('product.uom', 'Đơn vị tính'),
         'product_qty': fields.float('Số lượng', digits_compute= dp.get_precision('Product UoS')),
@@ -458,6 +464,12 @@ class don_ban_hang(osv.osv):
             val += c.get('amount', 0.0)
         return val
     
+    def _amount_line_tax_hh(self, cr, uid, line, context=None):
+        val = 0.0
+        for c in self.pool.get('account.tax').compute_all(cr, uid, line.tax_id, line.price_unit, line.product_qty, line.product_id, line.hopdong_dh_id.partner_id)['taxes']:
+            val += c.get('amount', 0.0)
+        return val
+    
     def _amount_all(self, cr, uid, ids, field_name, arg, context=None):
         cur_obj = self.pool.get('res.currency')
         res = {}
@@ -477,10 +489,35 @@ class don_ban_hang(osv.osv):
             res[order.id]['amount_total'] = res[order.id]['amount_untaxed'] + res[order.id]['amount_tax']
         return res
     
+    def _amount_all_hh(self, cr, uid, ids, field_name, arg, context=None):
+        cur_obj = self.pool.get('res.currency')
+        res = {}
+        for order in self.browse(cr, uid, ids, context=context):
+            res[order.id] = {
+                'amount_untaxed_hh': 0.0,
+                'amount_tax_hh': 0.0,
+                'amount_total_hh': 0.0,
+            }
+            val = val1 = 0.0
+            cur = order.company_id.currency_id
+            for line in order.donhang_hoahong_line:
+                val1 += line.price_subtotal
+                val += self._amount_line_tax_hh(cr, uid, line, context=context)
+            res[order.id]['amount_tax_hh'] = cur_obj.round(cr, uid, cur, val)
+            res[order.id]['amount_untaxed_hh'] = cur_obj.round(cr, uid, cur, val1)
+            res[order.id]['amount_total_hh'] = res[order.id]['amount_untaxed_hh'] + res[order.id]['amount_tax_hh']
+        return res
+    
     def _get_order(self, cr, uid, ids, context=None):
         result = {}
         for line in self.pool.get('don.ban.hang.line').browse(cr, uid, ids, context=context):
             result[line.donbanhang_id.id] = True
+        return result.keys()
+    
+    def _get_order_dh(self, cr, uid, ids, context=None):
+        result = {}
+        for line in self.pool.get('hopdong.hoahong.line').browse(cr, uid, ids, context=context):
+            result[line.hopdong_dh_id.id] = True
         return result.keys()
     
     _columns = {
@@ -498,6 +535,7 @@ class don_ban_hang(osv.osv):
         'nguoi_gioithieu_id':fields.many2one('res.partner','Người giới thiệu',readonly=True,states={'moi_tao': [('readonly', False)]}),
         'dieukien_giaohang_id':fields.many2one('dieukien.giaohang','Điều kiện giao hàng'),
         'payment_term': fields.many2one('account.payment.term', 'Payment Term'),
+        'donhang_hoahong_line': fields.one2many('hopdong.hoahong.line','hopdong_dh_id','Line',readonly=True, states={'moi_tao': [('readonly', False)]}),
         'amount_untaxed': fields.function(_amount_all, digits_compute=dp.get_precision('Account'), string='Cộng',
             store={
                 'don.ban.hang': (lambda self, cr, uid, ids, c={}: ids, ['don_ban_hang_line'], 10),
@@ -516,12 +554,37 @@ class don_ban_hang(osv.osv):
                 'don.ban.hang.line': (_get_order, ['price_unit', 'tax_id', 'product_qty'], 10),
             },
             multi='sums', help="The total amount."),
+                
+        'amount_untaxed_hh': fields.function(_amount_all_hh, digits_compute=dp.get_precision('Account'), string='Cộng',
+            store={
+                'don.ban.hang': (lambda self, cr, uid, ids, c={}: ids, ['donhang_hoahong_line'], 10),
+                'hopdong.hoahong.line': (_get_order_dh, ['price_unit', 'tax_id', 'product_qty'], 10),
+            },
+            multi='sum_hh', help="The amount without tax.", track_visibility='always'),
+        'amount_tax_hh': fields.function(_amount_all_hh, digits_compute=dp.get_precision('Account'), string='Thuế GTGT',
+            store={
+                'don.ban.hang': (lambda self, cr, uid, ids, c={}: ids, ['donhang_hoahong_line'], 10),
+                'hopdong.hoahong.line': (_get_order_dh, ['price_unit', 'tax_id', 'product_qty'], 10),
+            },
+            multi='sum_hh', help="The tax amount."),
+        'amount_total_hh': fields.function(_amount_all_hh, digits_compute=dp.get_precision('Account'), string='Tổng cộng',
+            store={
+                'don.ban.hang': (lambda self, cr, uid, ids, c={}: ids, ['donhang_hoahong_line'], 10),
+                'hopdong.hoahong.line': (_get_order_dh, ['price_unit', 'tax_id', 'product_qty'], 10),
+            },
+            multi='sum_hh', help="The total amount."),    
+            
         'state': fields.selection([
             ('moi_tao', 'Mới tạo'),
             ('da_duyet', 'Đã duyệt'),
             ('huy_bo', 'Hủy bỏ'),
             ], 'Trạng thái',readonly=True, states={'moi_tao': [('readonly', False)]}),
         'note': fields.text('Terms and conditions'),
+        'thoigian_giaohang':fields.datetime('Thời gian giao hàng'),
+        'nguoi_gioithieu_id':fields.many2one('res.partner','Người giới thiệu',readonly=True,states={'draft': [('readonly', False)], 'sent': [('readonly', False)]}),
+        'dieukien_giaohang_id':fields.many2one('dieukien.giaohang','Điều kiện giao hàng'),
+        'hinhthuc_giaohang_id':fields.many2one('hinhthuc.giaohang','Hình thức giao hàng'),
+        'so_chuyenphatnhanh':fields.char('Số chuyển phát nhanh',size=1024),
     }
     
     _defaults = {
@@ -549,6 +612,17 @@ class don_ban_hang(osv.osv):
             'message' : _('Nếu bạn thay đổi bảng giá cho hợp đồng này thì giá của những sản phẩm đã được chọn sẽ không được cập nhật!')
         }
         return {'warning': warning, 'value': value}
+    
+    def onchange_don_ban_hang_line(self, cr, uid, ids, don_ban_hang_line,donhang_hoahong_line, context=None):
+        context = context or {}
+        value = {}
+        for dhl in don_ban_hang_line:
+            if dhl[0]==0:
+                hhl = dhl[2]
+                hhl['price_unit'] = False
+                donhang_hoahong_line.append((0,0,hhl))
+            value={'donhang_hoahong_line': donhang_hoahong_line}
+        return {'value': value}
     
     def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
         if context is None:
@@ -620,6 +694,8 @@ class don_ban_hang_line(osv.osv):
         'price_unit': fields.float('Đơn giá', digits_compute= dp.get_precision('Product Price')),
         'tax_id': fields.many2many('account.tax', 'don_ban_hang_line_tax_ref', 'don_ban_hang_line_id', 'tax_id', 'Thuế'),
         'price_subtotal': fields.function(_amount_line, string='Thành tiền', digits_compute= dp.get_precision('Account')),
+        'chatluong_id':fields.many2one('chatluong.sanpham','Chất lượng'),
+        'quycach_donggoi_id':fields.many2one('quycach.donggoi','Quy cách đóng gói'),
     }
     
     def onchange_product_id(self, cr, uid, ids,qty=0,ngay=False,partner_id=False,pricelist_id=False,product_id=False, context=None):
@@ -633,6 +709,8 @@ class don_ban_hang_line(osv.osv):
             vals = {
                     'product_uom':product.uom_id.id or False,
                     'name':product.name,
+                    'chatluong_id':product.chatluong_id and product.chatluong_id.id or False,
+                    'quycach_donggoi_id':product.quycach_donggoi_id and product.quycach_donggoi_id.id or False,
                     }
             vals['tax_id'] = self.pool.get('account.fiscal.position').map_tax(cr, uid, False, product.taxes_id)
             if pricelist_id:
