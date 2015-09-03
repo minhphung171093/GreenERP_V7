@@ -124,29 +124,32 @@ class stock_picking(osv.osv):
             }, readonly=True, multi='lo_info'),
                 
         'stock_journal_id': fields.many2one('stock.journal','Stock Journal', required=True, select=True, states={'done':[('readonly', True)], 'cancel':[('readonly',True)]}, track_visibility='onchange'),
+        'return': fields.selection([('none', 'Normal'), ('customer', 'Return from Customer'),('internal','Return Internal'), ('supplier', 'Return to Supplier')], 'Type', required=True, select=True, help="Type specifies whether the Picking has been returned or not."),
     }
     
-#     def _get_journal(self, cr, uid, context=None):
-#         journal_domain = []
-#         if context.get('default_type',False) and context.get('default_return',False):
-#             default_type = context['default_type']
-#             default_return = context['default_return']
-#             if default_type == 'in':
-#                 journal_domain = [('source_type', '=', 'in')]
-#                 if default_return == 'customer':
-#                     journal_domain = [('source_type', '=', 'return_customer')]
-#             if default_type == 'out':
-#                 journal_domain = [('source_type', '=', 'out')]
-#                 if default_return == 'supplier':
-#                     journal_domain = [('source_type', '=', 'return_supplier')]
-#         else:
-#             journal_domain = [('source_type', '=', 'internal')]
-#         journal_ids = self.pool.get('stock.journal').search(cr, uid, journal_domain)
-#         return journal_ids and journal_ids[0] or False
-#     
-#     _defaults = {    
-#         'stock_journal_id': _get_journal,
-#     }
+    def _get_journal(self, cr, uid, context=None):
+        journal_domain = []
+        if context.get('default_type',False) and context.get('default_return',False):
+            default_type = context['default_type']
+            default_return = context['default_return']
+            if default_type == 'in':
+                journal_domain = [('source_type', '=', 'in')]
+                if default_return == 'customer':
+                    journal_domain = [('source_type', '=', 'return_customer')]
+            if default_type == 'out':
+                journal_domain = [('source_type', '=', 'out')]
+                if default_return == 'supplier':
+                    journal_domain = [('source_type', '=', 'return_supplier')]
+        else:
+            journal_domain = [('source_type', '=', 'internal')]
+        journal_ids = self.pool.get('stock.journal').search(cr, uid, journal_domain)
+        return journal_ids and journal_ids[0] or False
+     
+    _defaults = {    
+        'return': 'none',
+        'type':   'internal',
+        'stock_journal_id': _get_journal,
+    }
     
     def _prepare_invoice(self, cr, uid, picking, partner, inv_type, journal_id, context=None):
         """ Builds the dict containing the values for the invoice
@@ -190,6 +193,28 @@ class stock_picking(osv.osv):
         if journal_id:
             invoice_vals['journal_id'] = journal_id
         return invoice_vals
+    
+    def onchange_journal(self, cr, uid, ids, stock_journal_id):
+        value ={}
+        domain = {}
+        if not stock_journal_id:
+            value.update({'location_id':False,
+                           'location_dest_id':False})
+            domain.update({'location_id':[('id','=',False)],
+                           'location_dest_id':[('id','=',False)]})
+        else:
+            journal = self.pool.get('stock.journal').browse(cr, uid, stock_journal_id)
+            from_location_ids = [x.id for x in journal.from_location_id]
+            to_location_ids = [x.id for x in journal.to_location_id]
+            domain.update({'location_id':[('id','=',from_location_ids)],
+                           'location_dest_id':[('id','=',to_location_ids)]})
+            location_id = from_location_ids and from_location_ids[0] or False
+            location_dest_id = False
+            if to_location_ids and to_location_ids[0] != location_id:
+                location_dest_id = to_location_ids[0]
+            value.update({'location_id':location_id,
+                          'location_dest_id': location_dest_id})
+        return {'value': value,'domain':domain} 
     
 stock_picking()
 
@@ -235,7 +260,55 @@ class stock_picking_in(osv.osv):
             store={
                 'stock.picking.in': (lambda self, cr, uid, ids, c={}: ids, ['location_id','location_dest_id'], 10),
             }, readonly=True, multi='pro_info'),
+        'stock_journal_id': fields.many2one('stock.journal','Stock Journal', required=True, select=True, states={'done':[('readonly', True)], 'cancel':[('readonly',True)]}, track_visibility='onchange'),
+        'return': fields.selection([('none', 'Normal'), ('customer', 'Return from Customer'),('internal','Return Internal'), ('supplier', 'Return to Supplier')], 'Type', required=True, select=True, help="Type specifies whether the Picking has been returned or not."),
     }
+    
+#     def _get_journal(self, cr, uid, context=None):
+#         journal_domain = []
+#         if context.get('default_type',False) and context.get('default_return',False):
+#             default_type = context['default_type']
+#             default_return = context['default_return']
+#             if default_type == 'in':
+#                 journal_domain = [('source_type', '=', 'in')]
+#                 if default_return == 'customer':
+#                     journal_domain = [('source_type', '=', 'return_customer')]
+#             if default_type == 'out':
+#                 journal_domain = [('source_type', '=', 'out')]
+#                 if default_return == 'supplier':
+#                     journal_domain = [('source_type', '=', 'return_supplier')]
+#         else:
+#             journal_domain = [('source_type', '=', 'internal')]
+#         journal_ids = self.pool.get('stock.journal').search(cr, uid, journal_domain)
+#         return journal_ids and journal_ids[0] or False
+     
+    _defaults = {  
+        'return': 'none',
+        'type':   'in',  
+#         'stock_journal_id': _get_journal,
+    }
+    
+    def onchange_journal(self, cr, uid, ids, stock_journal_id):
+        value ={}
+        domain = {}
+        if not stock_journal_id:
+            value.update({'location_id':False,
+                           'location_dest_id':False})
+            domain.update({'location_id':[('id','=',False)],
+                           'location_dest_id':[('id','=',False)]})
+        else:
+            journal = self.pool.get('stock.journal').browse(cr, uid, stock_journal_id)
+            from_location_ids = [x.id for x in journal.from_location_id]
+            to_location_ids = [x.id for x in journal.to_location_id]
+            domain.update({'location_id':[('id','=',from_location_ids)],
+                           'location_dest_id':[('id','=',to_location_ids)]})
+            location_id = from_location_ids and from_location_ids[0] or False
+            location_dest_id = False
+            if to_location_ids and to_location_ids[0] != location_id:
+                location_dest_id = to_location_ids[0]
+            value.update({'location_id':location_id,
+                          'location_dest_id': location_dest_id})
+        return {'value': value,'domain':domain} 
     
 stock_picking_in()
 
@@ -281,7 +354,55 @@ class stock_picking_out(osv.osv):
             store={
                 'stock.picking.in': (lambda self, cr, uid, ids, c={}: ids, ['location_id','location_dest_id'], 10),
             }, readonly=True, multi='pro_info'),
+        'stock_journal_id': fields.many2one('stock.journal','Stock Journal', required=True, select=True, states={'done':[('readonly', True)], 'cancel':[('readonly',True)]}, track_visibility='onchange'),
+        'return': fields.selection([('none', 'Normal'), ('customer', 'Return from Customer'),('internal','Return Internal'), ('supplier', 'Return to Supplier')], 'Type', required=True, select=True, help="Type specifies whether the Picking has been returned or not."),
     }
+    
+#     def _get_journal(self, cr, uid, context=None):
+#         journal_domain = []
+#         if context.get('default_type',False) and context.get('default_return',False):
+#             default_type = context['default_type']
+#             default_return = context['default_return']
+#             if default_type == 'in':
+#                 journal_domain = [('source_type', '=', 'in')]
+#                 if default_return == 'customer':
+#                     journal_domain = [('source_type', '=', 'return_customer')]
+#             if default_type == 'out':
+#                 journal_domain = [('source_type', '=', 'out')]
+#                 if default_return == 'supplier':
+#                     journal_domain = [('source_type', '=', 'return_supplier')]
+#         else:
+#             journal_domain = [('source_type', '=', 'internal')]
+#         journal_ids = self.pool.get('stock.journal').search(cr, uid, journal_domain)
+#         return journal_ids and journal_ids[0] or False
+     
+    _defaults = {    
+#         'stock_journal_id': _get_journal,
+        'return': 'none',
+        'type':   'out',
+    }
+    
+    def onchange_journal(self, cr, uid, ids, stock_journal_id):
+        value ={}
+        domain = {}
+        if not stock_journal_id:
+            value.update({'location_id':False,
+                           'location_dest_id':False})
+            domain.update({'location_id':[('id','=',False)],
+                           'location_dest_id':[('id','=',False)]})
+        else:
+            journal = self.pool.get('stock.journal').browse(cr, uid, stock_journal_id)
+            from_location_ids = [x.id for x in journal.from_location_id]
+            to_location_ids = [x.id for x in journal.to_location_id]
+            domain.update({'location_id':[('id','=',from_location_ids)],
+                           'location_dest_id':[('id','=',to_location_ids)]})
+            location_id = from_location_ids and from_location_ids[0] or False
+            location_dest_id = False
+            if to_location_ids and to_location_ids[0] != location_id:
+                location_dest_id = to_location_ids[0]
+            value.update({'location_id':location_id,
+                          'location_dest_id': location_dest_id})
+        return {'value': value,'domain':domain} 
     
 stock_picking_out()
 
