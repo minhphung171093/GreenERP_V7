@@ -37,6 +37,7 @@
             'hop_dong_view.xml',
             'draft_bl_view.xml',
             'phuluc_hop_dong_view.xml',
+            'product_view.xml',
             'menu.xml',
     ],
     'css' : [
