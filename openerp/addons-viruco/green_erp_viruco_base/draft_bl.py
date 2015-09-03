@@ -35,6 +35,7 @@ class draft_bl(osv.osv):
                 'port_of_loading': hd.port_of_loading,
                 'port_of_charge': hd.port_of_charge,
                 'place_of_delivery': hd.diadiem_nhanhang,
+                'notify_party_id':hd.partner_id.id,
                 'draft_bl_line': draft_bl_line,
             }
         return {'value': vals}
