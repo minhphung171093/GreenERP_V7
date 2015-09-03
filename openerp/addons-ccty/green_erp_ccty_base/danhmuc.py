@@ -135,6 +135,23 @@ class chi_tiet_loai_benh(osv.osv):
         'loai_id': fields.many2one('loai.vat','Loai vat',ondelete = 'cascade'),
         'name': fields.char('Loại bệnh',size = 50),
                 }
+    def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
+        if context is None:
+            context = {}
+        if context.get('search_loai_benh'):
+            sql = '''
+                select id from chi_tiet_loai_benh
+                where loai_id = %s
+            '''%(context.get('loai_id'))
+            cr.execute(sql)
+            loai_benh_ids = [row[0] for row in cr.fetchall()]
+            args += [('id','in',loai_benh_ids)]
+        return super(chi_tiet_loai_benh, self).search(cr, uid, args, offset=offset, limit=limit, order=order, context=context, count=count)
+    
+    def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
+       ids = self.search(cr, user, args, context=context, limit=limit)
+       return self.name_get(cr, user, ids, context=context)
+    
 chi_tiet_loai_benh()
 
 class chan_nuoi(osv.osv):

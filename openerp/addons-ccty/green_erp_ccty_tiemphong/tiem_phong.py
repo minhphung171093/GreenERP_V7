@@ -68,6 +68,11 @@ class tiem_phong_lmlm(osv.osv):
         user = self.pool.get('res.users').browse(cr,uid,uid)
         return user.company_id.id or False
     
+    def _get_loaibenh(self, cr, uid, ids, context=None):
+        lmlm_model, lmlm_id = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'green_erp_ccty_base', 'chitiet_bota_loaibenh_LMLM')
+        self.pool.get('chi.tiet.loai.benh').check_access_rule(cr, uid, [lmlm_id], 'read', context = context)
+        return lmlm_id
+    
     def get_trangthai_nhap(self, cr, uid, ids, context=None):
         sql = '''
             select id from trang_thai where stt = 1
@@ -89,6 +94,15 @@ class tiem_phong_lmlm(osv.osv):
                 result[nhap_xuat.id] = True
             elif nhap_xuat.trang_thai_id.stt == 2 and user.company_id.cap in ['chi_cuc']:
                 result[nhap_xuat.id] = True    
+        return result
+    
+    def _get_sl_tiem(self, cr, uid, ids, name, arg, context=None):        
+        result = {}
+        sum = 0
+        for tiem in self.browse(cr,uid,ids):
+            for line in tiem.chi_tiet_tp_line:
+                sum += line.sl_thuc_tiem
+            result[tiem.id] = sum    
         return result
 
     _columns = {
@@ -116,11 +130,15 @@ class tiem_phong_lmlm(osv.osv):
         'so_lo_id':fields.many2one('so.lo','Số lô'),
         'han_su_dung_rel':fields.related('so_lo_id','han_su_dung',type='date',string='HSD đến'),
         'so_luong_vc': fields.integer('Số lượng Vaccine'),
+        'nhap_xuat_id': fields.many2one('nhap.xuat.canh.giasuc','Phiếu nhập/xuất'),
+        'tong_sl_tiem': fields.function(_get_sl_tiem, type='integer', string='SL đã tiêm phòng', store = True),
+        'loai_benh_id': fields.many2one('chi.tiet.loai.benh','Loại bệnh'),
                 }
         
     _defaults = {
         'can_bo_id': _get_user,
         'tram_id': _get_company,
+        'loai_benh_id': _get_loaibenh,
         'trang_thai_id': get_trangthai_nhap,
                  }
     
@@ -145,6 +163,16 @@ class tiem_phong_lmlm(osv.osv):
     def bt_duyet(self, cr, uid, ids, context=None):
         user = self.pool.get('res.users').browse(cr,uid,uid)
         for line in self.browse(cr, uid, ids, context=context):
+            sql = '''
+                 select id from co_cau where trang_thai = 'new' and chon_loai = %s and ten_ho_id = %s
+                 and trang_thai_id in (select id from trang_thai where stt = 3) 
+            '''%(line.loai_id.id, line.ho_chan_nuoi_id.id)
+            cr.execute(sql)
+            co_cau_id = cr.dictfetchone()['id']
+            sql = '''
+                 update tiem_phong_lmlm set co_cau_id = %s where id = %s 
+            '''%(co_cau_id, line.id)
+            cr.execute(sql)
             if line.trang_thai_id.stt == 1 and user.company_id.cap == 'huyen':
                 sql = '''
                     select id from trang_thai where stt = 2
@@ -220,6 +248,7 @@ class ct_tiem_phong_lmlm_line(osv.osv):
         'tp_lmlm_id': fields.many2one( 'tiem.phong.lmlm','tiem phong lmlm', ondelete = 'cascade'),
         'name': fields.char('Thông tin', readonly = True),
         'tiem_phong':fields.boolean('Có được tiêm phòng ?'),
+        'loai_benh_id': fields.many2one('chi.tiet.loai.benh','Loại bệnh'),
         'so_luong': fields.integer('Tổng đàn', readonly = True),
         'sl_ngoai_dien': fields.integer('Ngoại diện'),
         'sl_mien_dich': fields.integer('Tiêm phòng còn Miễn dịch'),

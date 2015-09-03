@@ -43,6 +43,7 @@ class Parser(report_sxw.rml_parse):
             'get_ho_row': self.get_ho_row,
             'get_loaivat': self.get_loaivat,
             'convert_date':self.convert_date,
+            'get_tongcong': self.get_tongcong,
         })
 
     def convert_date(self, date):
@@ -224,6 +225,41 @@ class Parser(report_sxw.rml_parse):
                             }
                     ))
         return res
+    
+    def get_tongcong(self, row):
+        wizard_data = self.localcontext['data']['form']
+        ten_ho_id = wizard_data['ten_ho_id']
+        soluong = 0
+        if row:
+            sql = '''
+                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong from chi_tiet_loai_line
+                where co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so = '%s' and chon_loai in %s
+                and trang_thai_id in (select id from trang_thai where stt = 3))
+            '''%(ten_ho_id[0], row, tuple(self.get_loaivat()),)
+            self.cr.execute(sql)
+            test = self.cr.dictfetchone()
+            co_sl = test and test['so_luong'] or False
+            if co_sl:
+                sql = '''
+                    select case when sum(so_luong)!=0 then sum(so_luong) else 0 end tong_sl from chi_tiet_loai_line
+                        where co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so <= '%s' and tang_giam = 'a'
+                        and chon_loai in %s
+                        and trang_thai_id in (select id from trang_thai where stt = 3))
+                '''%(ten_ho_id[0], row, tuple(self.get_loaivat()),)
+                self.cr.execute(sql)
+                sl = self.cr.dictfetchone()
+                soluong_tang = sl and sl['tong_sl'] or False
+                sql = '''
+                    select case when sum(so_luong)!=0 then sum(so_luong) else 0 end tong_sl_giam from chi_tiet_loai_line
+                        where co_cau_id in (select id from co_cau where ten_ho_id = %s and ngay_ghi_so <= '%s' and tang_giam = 'b'
+                        and chon_loai in %s
+                        and trang_thai_id in (select id from trang_thai where stt = 3))
+                '''%(ten_ho_id[0], row, tuple(self.get_loaivat()),)
+                self.cr.execute(sql)
+                sl = self.cr.dictfetchone()
+                soluong_giam = sl and sl['tong_sl_giam'] or False
+                soluong = soluong_tang - soluong_giam
+        return soluong
     
     def get_cell(self,row,col):
         context = {}

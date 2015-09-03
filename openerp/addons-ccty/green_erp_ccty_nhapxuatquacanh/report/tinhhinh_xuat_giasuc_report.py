@@ -217,6 +217,10 @@ class Parser(report_sxw.rml_parse):
                              'loaivat':ct['name'],'ct':ct['name']
                             }
                     ))
+        res.append((0,0,{
+                             'loaivat':u'Tổng cộng','ct': ''
+                            }
+                    ))
             
         sql = '''
             select * from chi_tiet_loai_benh where loai_id in (select id from loai_vat where id = %s)
@@ -251,7 +255,7 @@ class Parser(report_sxw.rml_parse):
 #         
 #         return [1,2,3,4,5,6]
     
-    def get_cell(self,row,col,so_giay):
+    def get_cell(self,row,col,so_giay,loai):
         context = {}
         soluong = False
         sum = 0
@@ -277,6 +281,20 @@ class Parser(report_sxw.rml_parse):
             sl = self.cr.dictfetchone()
             if sl['so_luong']!=0:
                 soluong = sl and sl['so_luong'] or False
+                
+            if loai == u'Tổng cộng':
+                context = {}
+                sum = 0
+                wizard_data = self.localcontext['data']['form']
+                ten_ho_id = wizard_data['ten_ho_id']
+                if row:
+                    sql = '''
+                        select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl from chi_tiet_loai_nhap_xuat 
+                        where nhap_xuat_loai_id in (select id from nhap_xuat_canh_giasuc 
+                        where ten_ho_id = %s and ngay_kiem_tra = '%s' and name = '%s' and loai_id in %s and trang_thai_id in (select id from trang_thai where stt = 3))
+                    '''%(ten_ho_id[0], row, so_giay, tuple(self.get_loaivat()),)
+                    self.cr.execute(sql)
+                    soluong = self.cr.dictfetchone()['sl']    
         return soluong
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
 

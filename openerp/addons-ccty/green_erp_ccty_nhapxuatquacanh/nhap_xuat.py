@@ -246,6 +246,7 @@ class nhap_xuat_canh_giasuc(osv.osv):
                     'phuong_xa_id':line.phuong_xa_id and line.phuong_xa_id.id or False,
                     'khu_pho_id':line.khu_pho_id and line.khu_pho_id.id or False,
                     'ten_ho_id':line.ten_ho_id and line.ten_ho_id.id or False,
+                    'loai_ho_id':line.loai_ho_id and line.loai_ho_id.id or False,
                     'chitiet_loai':chi_tiet_loai,
                     'trang_thai':'new',
                     'company_id':line.company_id.id,
@@ -273,6 +274,7 @@ class nhap_xuat_canh_giasuc(osv.osv):
                     'phuong_xa_id':line.phuong_xa_id and line.phuong_xa_id.id or False,
                     'khu_pho_id':line.khu_pho_id and line.khu_pho_id.id or False,
                     'ten_ho_id':line.ten_ho_id and line.ten_ho_id.id or False,
+                    'loai_ho_id':line.loai_ho_id and line.loai_ho_id.id or False,
                     'chitiet_loai':chi_tiet_loai,
                     'trang_thai':'new',
                     'company_id':line.company_id.id,
@@ -316,6 +318,7 @@ class nhap_xuat_canh_giasuc(osv.osv):
                     'phuong_xa_id':line.phuong_xa_id and line.phuong_xa_id.id or False,
                     'khu_pho_id':line.khu_pho_id and line.khu_pho_id.id or False,
                     'ten_ho_id':line.ten_ho_id and line.ten_ho_id.id or False,
+                    'loai_ho_id':line.loai_ho_id and line.loai_ho_id.id or False,
                     'chitiet_loai':chi_tiet_loai,
                     'trang_thai':'new',
                     'company_id':line.company_id.id,
@@ -343,6 +346,7 @@ class nhap_xuat_canh_giasuc(osv.osv):
                     'phuong_xa_id':line.phuong_xa_id and line.phuong_xa_id.id or False,
                     'khu_pho_id':line.khu_pho_id and line.khu_pho_id.id or False,
                     'ten_ho_id':line.ten_ho_id and line.ten_ho_id.id or False,
+                    'loai_ho_id':line.loai_ho_id and line.loai_ho_id.id or False,
                     'chitiet_loai':chi_tiet_loai,
                     'trang_thai':'new',
                     'company_id':line.company_id.id,
@@ -373,7 +377,8 @@ class nhap_xuat_canh_giasuc(osv.osv):
                                       }))
             for line_loaibenh in loai.chitiet_loaibenh:
                 tiem_phong.append((0,0,{
-                                      'name': line_loaibenh.name
+                                      'name': line_loaibenh.name,
+                                      'loai_benh_id': line_loaibenh.id,
                                       }))
         return {'value': {'chitiet_loai_nx': chi_tiet,
                           'chitiet_da_tiem_phong': tiem_phong,
@@ -386,7 +391,7 @@ class chi_tiet_loai_nhap_xuat(osv.osv):
     _columns = {
         'nhap_xuat_loai_id': fields.many2one('nhap.xuat.canh.giasuc','Nhap Xuat', ondelete = 'cascade'),
         'name': fields.char('Thông tin', readonly = True),
-        'tiem_phong':fields.boolean('Có được tiêm phòng'),
+        'tiem_phong':fields.boolean('Có được tiêm phòng', readonly = True),
         'so_luong': fields.integer('Số lượng'),
                 }
 chi_tiet_loai_nhap_xuat()
@@ -396,6 +401,7 @@ class chi_tiet_da_tiem_phong(osv.osv):
     _columns = {
         'nhap_xuat_tiemphong_id': fields.many2one('nhap.xuat.canh.giasuc','Nhap Xuat', ondelete = 'cascade'),
         'name': fields.char('Loại bệnh', readonly = True),
+        'loai_benh_id': fields.many2one('chi.tiet.loai.benh','Loại bệnh', readonly = True),
         'so_luong': fields.integer('Số lượng'),
                 }
 chi_tiet_da_tiem_phong()

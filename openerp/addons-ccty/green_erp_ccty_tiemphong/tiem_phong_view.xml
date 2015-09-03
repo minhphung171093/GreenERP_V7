@@ -152,6 +152,7 @@
 			                    <field name="can_bo_tiem" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 			                    <field name="tram_id" readonly = "1" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 			                    <field name="can_bo_id" readonly = "1" domain="[('company_id','=',tram_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+			       <!--             <field name="nhap_xuat_id" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}" options="{'create': false, 'create_edit': false}"/> -->
 			                    <newline/>
 			                    <field name="quan_huyen_id" options="{'create': false, 'create_edit': false}" on_change="onchange_quan_huyen()" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 			                    <field name="phuong_xa_id" options="{'create': false, 'create_edit': false}" on_change="onchange_phuong_xa()" domain="[('quan_huyen_id','=',quan_huyen_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
@@ -163,9 +164,10 @@
                 			<notebook>
 								<page string = "Thông tin chi tiết tiêm phòng">
 									<field name="chi_tiet_tp_line" nolabel='1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}">
-										<tree editable='bottom' create = 'false'>
+										<tree editable='bottom' create = 'false' delete = 'false'>
 											<field name="name"/>
 											<field name="tiem_phong" readonly="1"/>
+											<field name="loai_benh_id" context="{'search_loai_benh':True, 'loai_id': parent.loai_id}" options="{'create': false, 'create_edit': false}" invisible = '1'/>
 											<field name="so_luong" sum = 'Total'/>
 											<field name="sl_ngoai_dien" sum = 'Total'/>
 											<field name="sl_mien_dich" sum = 'Total'/>
