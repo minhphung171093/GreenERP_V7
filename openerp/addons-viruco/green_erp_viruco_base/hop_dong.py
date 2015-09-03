@@ -580,7 +580,7 @@ class don_ban_hang(osv.osv):
             ('huy_bo', 'Hủy bỏ'),
             ], 'Trạng thái',readonly=True, states={'moi_tao': [('readonly', False)]}),
         'note': fields.text('Terms and conditions'),
-        'thoigian_giaohang':fields.datetime('Thời gian giao hàng'),
+        'thoigian_giaohang':fields.char('Thời gian giao hàng', size=1024),
         'nguoi_gioithieu_id':fields.many2one('res.partner','Người giới thiệu',readonly=True,states={'draft': [('readonly', False)], 'sent': [('readonly', False)]}),
         'dieukien_giaohang_id':fields.many2one('dieukien.giaohang','Điều kiện giao hàng'),
         'hinhthuc_giaohang_id':fields.many2one('hinhthuc.giaohang','Hình thức giao hàng'),

@@ -27,6 +27,7 @@ class Parser(report_sxw.rml_parse):
             'get_tong':self.get_tong,
             'convert':self.convert,
             'convert_f_amount':self.convert_f_amount,
+            'get_thue_hh': self.get_thue_hh,
         })
     
     def convert_f_amount(self, amount):
@@ -54,6 +55,18 @@ class Parser(report_sxw.rml_parse):
         cur_obj = self.pool.get('res.currency')
         cur = order.pricelist_id.currency_id
         val = self._amount_line_tax(self.cr, self.uid, line)
+        return cur_obj.round(self.cr, self.uid, cur, val)
+    
+    def _amount_line_tax_hh(self, cr, uid, line, context=None):
+        val = 0.0
+        for c in self.pool.get('account.tax').compute_all(cr, uid, line.tax_id, line.price_unit, line.product_qty, line.product_id, line.hopdong_dh_id.partner_id)['taxes']:
+            val += c.get('amount', 0.0)
+        return val
+    
+    def get_thue_hh(self,order,line):
+        cur_obj = self.pool.get('res.currency')
+        cur = order.pricelist_id.currency_id
+        val = self._amount_line_tax_hh(self.cr, self.uid, line)
         return cur_obj.round(self.cr, self.uid, cur, val)
     
     def get_tong(self,order):
