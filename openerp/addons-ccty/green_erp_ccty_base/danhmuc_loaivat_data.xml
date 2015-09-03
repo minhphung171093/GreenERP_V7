@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data noupdate='0'>
-    
+
+ <!--  ĐƠN VỊ TÍNH
+		<record id="dvt_con" model="don.vi.tinh">
+            <field name="name">Con</field>
+        </record>
+        
+		<record id="dvt_" model="don.vi.tinh">
+            <field name="name">Kg</field>
+        </record>-->
+        
  <!--  VACCINE-->
 		<record id="loai_vacxin_lmlm" model="loai.vacxin">
             <field name="name">Vaccine Lở Mồm Long Móng</field>

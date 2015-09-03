@@ -65,7 +65,7 @@ class co_cau(osv.osv):
                 selection=[('nhap', 'Nháp'),('in', 'Đang xử lý'), ('ch_duyet', 'Cấp Huyện Duyệt'), ('cc_duyet', 'Chi Cục Duyệt'), ('huy', 'Hủy bỏ')], 
                 string="Chinh Sua", readonly=True, select=True),
         'nhap_xuat_id': fields.many2one('nhap.xuat.canh.giasuc','Nhap Xuat'),
-                
+        'xu_ly_id': fields.many2one('xuly.giasuc','Xu Ly'),       
                 }
     _defaults = {
         'can_bo_id': _get_user,
@@ -184,18 +184,18 @@ class co_cau(osv.osv):
         return {'value': {'chitiet_loai': chi_tiet,
                           'loai_ho_id': ho.loai_ho_id.id}}
     
-    def _check_so_luong_giam(self, cr, uid, ids, context=None):
-        for co_cau in self.browse(cr, uid, ids, context=context):
-            if co_cau.tang_giam == 'b':
-                for line in co_cau.chitiet_loai:
-                    if not co_cau.nhap_xuat_id:
-                        if line.so_luong > line.tong_sl:
-                            raise osv.except_osv(_('Warning!'),_('Số lượng giảm %s trong hộ %s vượt quá tổng số đàn hiện có')%(line.name, co_cau.ten_ho_id.name))
-                            return False
-        return True
-    _constraints = [
-        (_check_so_luong_giam, 'Identical Data', []),
-    ]   
+#     def _check_so_luong_giam(self, cr, uid, ids, context=None):
+#         for co_cau in self.browse(cr, uid, ids, context=context):
+#             if co_cau.tang_giam == 'b':
+#                 for line in co_cau.chitiet_loai:
+#                     if not co_cau.nhap_xuat_id:
+#                         if line.so_luong > line.tong_sl:
+#                             raise osv.except_osv(_('Warning!'),_('Số lượng giảm %s trong hộ %s vượt quá tổng số đàn hiện có')%(line.name, co_cau.ten_ho_id.name))
+#                             return False
+#         return True
+#     _constraints = [
+#         (_check_so_luong_giam, 'Identical Data', []),
+#     ]   
 co_cau()
 
 class chi_tiet_loai_line(osv.osv):
@@ -219,24 +219,24 @@ class chi_tiet_loai_line(osv.osv):
             cr.execute(sql)
             tong_sl_giam = cr.dictfetchone()['tong_sl_giam']
             
-            sql = '''
-                select so_luong from chi_tiet_loai_line
-                where co_cau_id in (select id from co_cau where chon_loai = %s and ten_ho_id = %s and tang_giam = 'a'
-                and nhap_xuat_id is null)
-                and name = '%s' and id = %s
-            '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name, line.id)
-            cr.execute(sql)
-            sl_tang_hientai = cr.dictfetchone()
-            tong_sl += sl_tang_hientai and sl_tang_hientai['so_luong'] or 0
-            sql = '''
-                select so_luong from chi_tiet_loai_line
-                where co_cau_id in (select id from co_cau where chon_loai = %s and ten_ho_id = %s and tang_giam = 'b'
-                and nhap_xuat_id is null)
-                and name = '%s' and id = %s
-            '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name, line.id)
-            cr.execute(sql)
-            sl_giam_hientai = cr.dictfetchone()
-            tong_sl_giam += sl_giam_hientai and sl_giam_hientai['so_luong'] or 0
+#             sql = '''
+#                 select so_luong from chi_tiet_loai_line
+#                 where co_cau_id in (select id from co_cau where chon_loai = %s and ten_ho_id = %s and tang_giam = 'a'
+#                 and nhap_xuat_id is null)
+#                 and name = '%s' and id = %s
+#             '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name, line.id)
+#             cr.execute(sql)
+#             sl_tang_hientai = cr.dictfetchone()
+#             tong_sl += sl_tang_hientai and sl_tang_hientai['so_luong'] or 0
+#             sql = '''
+#                 select so_luong from chi_tiet_loai_line
+#                 where co_cau_id in (select id from co_cau where chon_loai = %s and ten_ho_id = %s and tang_giam = 'b'
+#                 and nhap_xuat_id is null)
+#                 and name = '%s' and id = %s
+#             '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name, line.id)
+#             cr.execute(sql)
+#             sl_giam_hientai = cr.dictfetchone()
+#             tong_sl_giam += sl_giam_hientai and sl_giam_hientai['so_luong'] or 0
             
             res[line.id] = tong_sl - tong_sl_giam
         return res

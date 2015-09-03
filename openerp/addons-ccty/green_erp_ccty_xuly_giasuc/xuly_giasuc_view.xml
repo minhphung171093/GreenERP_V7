@@ -85,23 +85,23 @@
                 		<notebook>
 							<page string = "Thông tin chi tiết xử lý gia súc">
 								<field name="chitiet_loai_xuly" nolabel='1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}">
-									<tree editable='bottom' create = 'false'>
+									<tree editable='bottom' create = 'false' delete = 'false' >
 										<field name="name"/>
 										<field name="tong_dan" sum = 'Total'/>
 										<field name="so_luong" sum = 'Total'/>
+										<field name="dvt" required = "1" />
+										<field name="sl_tuong_duong" attrs="{'invisible':[('dvt','=','con')]}" />
 										<field name="ly_do" /> 
 					                    <field name="ket_qua_xn" /> 
 					                    <field name="bien_phap" /> 
 									</tree>
 								</field>
 							</page>
-							<page string = "Thông tin chi tiết vaccine">
+							<page string = "Thông tin chi tiết hoá chất">
 								<field name="chi_tiet_vaccine_line" nolabel='1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}">
 									<tree editable='bottom'>
-										<field name="loai_vaccine_id" options="{'create': false, 'create_edit': false}" required = '1'/>
-					                   	<field name="so_lo_id" options="{'create': false, 'create_edit': false}" required = '1' domain="[('vacxin_id','=',loai_vaccine_id)]" />
-					                   	<field name="han_su_dung_rel" readonly = "1" />
-					                    <field name="so_luong_vc"/>
+										<field name="loai_hoa_chat_id" options="{'create': false, 'create_edit': false}"/>
+					                    <field name="so_luong"/>
 									</tree>
 								</field>
 							</page>
