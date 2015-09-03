@@ -164,7 +164,7 @@
                 			<notebook>
 								<page string = "Thông tin chi tiết tiêm phòng">
 									<field name="chi_tiet_tp_line" nolabel='1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}">
-										<tree editable='bottom' create = 'false'>
+										<tree editable='bottom' create = 'false' delete = 'false'>
 											<field name="name"/>
 											<field name="tiem_phong" readonly="1"/>
 											<field name="loai_benh_id" context="{'search_loai_benh':True, 'loai_id': parent.loai_id}" options="{'create': false, 'create_edit': false}" invisible = '1'/>

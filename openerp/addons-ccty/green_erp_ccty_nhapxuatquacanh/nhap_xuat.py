@@ -391,7 +391,7 @@ class chi_tiet_loai_nhap_xuat(osv.osv):
     _columns = {
         'nhap_xuat_loai_id': fields.many2one('nhap.xuat.canh.giasuc','Nhap Xuat', ondelete = 'cascade'),
         'name': fields.char('Thông tin', readonly = True),
-        'tiem_phong':fields.boolean('Có được tiêm phòng'),
+        'tiem_phong':fields.boolean('Có được tiêm phòng', readonly = True),
         'so_luong': fields.integer('Số lượng'),
                 }
 chi_tiet_loai_nhap_xuat()

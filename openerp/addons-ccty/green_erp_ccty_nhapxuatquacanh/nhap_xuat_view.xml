@@ -185,7 +185,7 @@
                 		<notebook>
 							<page string = "Thông tin chi tiết Nhập động vật">
 								<field name="chitiet_loai_nx" nolabel='1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}">
-									<tree editable='bottom' create = 'false'>
+									<tree editable='bottom' create = 'false' delete = 'false'>
 										<field name="name"/>
 										<field name="tiem_phong"/>
 										<field name="so_luong" sum = 'Total'/>
@@ -305,7 +305,7 @@
                 		<notebook>
 							<page string = "Thông tin chi tiết Xuất động vật">
 								<field name="chitiet_loai_nx" nolabel='1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}">
-									<tree editable='bottom' create = 'false'>
+									<tree editable='bottom' create = 'false' delete = 'false'>
 										<field name="name"/>
 										<field name="tiem_phong"/>
 										<field name="so_luong" sum = 'Total'/>
