@@ -29,8 +29,11 @@
     'data': [
         'security/viruco_account_security.xml',
         'security/ir.model.access.csv',
+        'report/report_view.xml',
+        'wizard/print_report.xml',
         'account_invoice_view.xml',
         'account_voucher_view.xml',
+        'menu.xml',
              ],
     'demo': [],
     'test': [],

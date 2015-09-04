@@ -103,6 +103,8 @@
 									<tree editable='top'>
 	                                    <field name="product_id" on_change="onchange_product_id(product_id, context)"/>
 	                                    <field name="name"/>
+	                                    <field name="chatluong_id"/>
+	                                    <field name="quycach_donggoi_id"/>
 	                                    <field name="product_uom"/>
 	                                    <field name="product_qty"/>
 	                                    <field name="price_unit"/>
@@ -269,6 +271,8 @@
 									<tree editable='top'>
 	                                    <field name="product_id" on_change="onchange_product_id(product_id, context)"/>
 	                                    <field name="name"/>
+	                                    <field name="chatluong_id" string="Quanlity"/>
+	                                    <field name="quycach_donggoi_id" string="Packing"/>
 	                                    <field name="product_uom"/>
 	                                    <field name="product_qty"/>
 	                                    <field name="price_unit"/>

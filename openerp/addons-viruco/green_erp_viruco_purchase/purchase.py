@@ -105,6 +105,9 @@ class purchase_order(osv.osv):
         return True
     
     def _prepare_order_picking(self, cr, uid, order, context=None):
+        journal_ids = self.pool.get('stock.journal').search(cr,uid,[('source_type','=','in')])
+        if not journal_ids:
+            raise osv.except_osv(_('Warning!'), _('Please define Stock Journal for Incomming Order.'))
         return {
             'name': self.pool.get('ir.sequence').get(cr, uid, 'stock.picking.in'),
             'origin': order.name + ((order.origin and (':' + order.origin)) or ''),
@@ -116,6 +119,10 @@ class purchase_order(osv.osv):
             'nguoi_denghi_id': order.user_id and order.user_id.id or False,
             'company_id': order.company_id.id,
             'move_lines' : [],
+            
+            'stock_journal_id':journal_ids and journal_ids[0] or False,
+            'location_id': order.partner_id.property_stock_supplier.id,
+            'location_dest_id': order.location_id.id,
         }
     
     def _prepare_order_line_move(self, cr, uid, order, order_line, picking_id, context=None):
@@ -184,7 +191,8 @@ class purchase_order(osv.osv):
                 inv_lines.append(inv_line_id)
 
                 po_line.write({'invoice_lines': [(4, inv_line_id)]}, context=context)
-
+            
+            shop_ids = self.pool.get('sale.shop').search(cr, uid, [('warehouse_id','=',order.warehouse_id.id or False)])
             # get invoice data and create invoice
             inv_data = {
                 'name': order.partner_ref or order.name,
@@ -199,6 +207,7 @@ class purchase_order(osv.osv):
                 'fiscal_position': order.fiscal_position.id or False,
                 'payment_term': order.payment_term_id.id or False,
                 'company_id': order.company_id.id,
+                'shop_id': shop_ids and shop_ids[0] or False,
                 'hop_dong_id': order.hop_dong_id and order.hop_dong_id.id or False,
             }
             inv_id = inv_obj.create(cr, uid, inv_data, context=context)

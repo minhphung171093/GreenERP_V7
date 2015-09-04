@@ -23,10 +23,19 @@ class account_voucher(osv.osv):
         'hop_dong_id':fields.many2one('hop.dong','Hợp đồng',readonly=True,states={'draft': [('readonly', False)]}),
         'nguoi_de_nghi_id':fields.many2one('res.users','Người đề nghị'),
         'dot_thanhtoan_ids':fields.many2many('account.voucher', 'cac_dot_thanh_toan_ref', 'parent_id', 'voucher_id','Các đợt thanh toán',readonly=True),
+        'shop_id': fields.many2one('sale.shop', 'Shop', required=True, readonly=True, states={'draft':[('readonly',False)]}),
+        'date_document': fields.date('Document Date', readonly=True, states={'draft':[('readonly',False)]},),
     }
+
+    def _get_shop_id(self, cr, uid, context=None):
+        if context is None:
+            context = {}
+        user = self.pool.get('res.users').browse(cr, uid, uid)
+        return user.context_shop_id.id or False
     
     _defaults = {
         'nguoi_de_nghi_id': lambda self, cr, uid, context=None: uid,
+        'shop_id': _get_shop_id,
     }
     
     def onchange_hopdong_id(self, cr, uid, ids, hop_dong_id, context=None):
@@ -46,6 +55,8 @@ class account_voucher(osv.osv):
         return {'value':vals}
     
     def create(self, cr, uid, vals, context=None):
+        if vals.get('date',False) and not vals.get('date_document',False):
+            vals.update({'date_document': vals['date']})
         if vals.get('hop_dong_id',False):
             voucher_ids = self.search(cr, uid, [('hop_dong_id','=',vals['hop_dong_id']),('state','=','posted')])
             vals['dot_thanhtoan_ids']=[(6,0,voucher_ids)]
@@ -157,6 +168,53 @@ class account_voucher(osv.osv):
         vals['value']['line_dr_ids'] = False
         vals['value']['line_cr_ids'] = False
         return vals
+    
+    def account_move_get(self, cr, uid, voucher_id, context=None):
+        '''
+        This method prepare the creation of the account move related to the given voucher.
+
+        :param voucher_id: Id of voucher for which we are creating account_move.
+        :return: mapping between fieldname and value of account move to create
+        :rtype: dict
+        '''
+        seq_obj = self.pool.get('ir.sequence')
+        voucher = self.pool.get('account.voucher').browse(cr,uid,voucher_id,context)
+        if voucher.number:
+            name = voucher.number
+        elif voucher.journal_id.sequence_id:
+            if not voucher.journal_id.sequence_id.active:
+                raise osv.except_osv(_('Configuration Error !'),
+                    _('Please activate the sequence of selected journal !'))
+            c = dict(context)
+            c.update({'fiscalyear_id': voucher.period_id.fiscalyear_id.id})
+            name = seq_obj.next_by_id(cr, uid, voucher.journal_id.sequence_id.id, context=c)
+        else:
+            raise osv.except_osv(_('Error!'),
+                        _('Please define a sequence on the journal.'))
+        if not voucher.reference:
+            ref = name.replace('/','')
+        else:
+            ref = voucher.reference
+
+        move = {
+            'name': name,
+            'journal_id': voucher.journal_id.id,
+            'narration': voucher.narration,
+            'date': voucher.date,
+            'ref': ref,
+            'period_id': voucher.period_id.id,
+            'shop_id': voucher.shop_id.id or False,
+            'date_document': voucher.date_document,
+        }
+        return move
+    
+    def _auto_init(self, cr, context=None):
+        super(account_voucher, self)._auto_init(cr, context)
+        cr.execute('''
+        UPDATE account_voucher
+        SET date_document = date
+        where date_document IS NULL
+        ''')
     
 account_voucher()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -7,6 +7,9 @@
             <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_normal_form_view"/>
             <field name="arch" type="xml">
+            	<label for="warranty" position="before">
+                    <field name="shop_ids" widget="many2many_tags"/>
+            	</label>
             	<xpath expr="//page[@string='Inventory']" position="attributes">
           			<attribute name="invisible">1</attribute>
             	</xpath>

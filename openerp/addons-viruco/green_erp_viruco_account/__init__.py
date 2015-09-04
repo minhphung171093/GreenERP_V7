@@ -21,3 +21,12 @@
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
 import account_voucher
 import account_invoice
+import report
+import wizard
+import account
+import sql_functions
+import sql_account_ledger
+import sql_balance_sheet
+import sql_general_ledger
+import sql_profit_loss
+import sql_trial_balance

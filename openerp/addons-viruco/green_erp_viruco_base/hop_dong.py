@@ -331,6 +331,8 @@ class hop_dong(osv.osv):
                     'product_uom': dbh_line.product_uom and dbh_line.product_uom.id or False,
                     'product_qty': dbh_line.product_qty,
                     'price_unit': dbh_line.price_unit,
+                    'chatluong_id': dbh_line.chatluong_id and dbh_line.chatluong_id.id or False,
+                    'quycach_donggoi_id': dbh_line.quycach_donggoi_id and dbh_line.quycach_donggoi_id.id or False,
                     'tax_id': [(6,0,[t.id for t in dbh_line.tax_id])],
                 }
                 order_line.append((0,0,val_line))
@@ -439,6 +441,8 @@ class hopdong_line(osv.osv):
         'price_unit': fields.float('Đơn giá', digits_compute= dp.get_precision('Product Price')),
         'tax_id': fields.many2many('account.tax', 'hopdong_order_tax', 'hopdong_id', 'tax_id', 'Taxes'),
         'price_subtotal': fields.function(_amount_line, string='Subtotal', digits_compute= dp.get_precision('Account')),
+        'chatluong_id':fields.many2one('chatluong.sanpham','Chất lượng'),
+        'quycach_donggoi_id':fields.many2one('quycach.donggoi','Quy cách đóng gói'),
     }
     
     def onchange_product_id(self, cr, uid, ids,product_id=False, context=None):

@@ -2,11 +2,52 @@
 <openerp>
     <data>
     
+    <record model="ir.ui.view" id="view_voucher_form_inherit_add_shop">
+	        <field name="name">view.vendor.receipt.dialog.form.inherit.add.shop</field>
+	        <field name="model">account.voucher</field>
+	        <field name="inherit_id" ref="account_voucher.view_voucher_form"/>
+	        <field name="arch" type="xml">
+	        	<xpath expr="//field[@name='date']" position="before">
+	        		<field name="shop_id"/>
+	        	</xpath>
+	        </field>
+    	</record>
+    
+<!-- Modify Invoice Payment Form Dialog -->
+		<record model="ir.ui.view" id="view_vendor_receipt_dialog_form_inherit_add_shop">
+	        <field name="name">view.vendor.receipt.dialog.form.inherit.add.shop</field>
+	        <field name="model">account.voucher</field>
+	        <field name="inherit_id" ref="account_voucher.view_vendor_receipt_dialog_form"/>
+	        <field name="arch" type="xml">
+	        	<xpath expr="//field[@name='date']" position="before">
+	        		<field name="shop_id"/>
+	        	</xpath>
+	        </field>
+    	</record>
+    	
+<!-- Modify Customer / Supplier Payment -->
+		<record model="ir.ui.view" id="view_voucher_tree_general_modify">
+	        <field name="name">view.vendor.tree.general.modify</field>
+	        <field name="model">account.voucher</field>
+	        <field name="inherit_id" ref="account_voucher.view_voucher_tree"/>
+	        <field name="arch" type="xml">
+	        	<xpath expr="//field[@name='date']" position="before">
+	        		<field name="shop_id"/>
+	        	</xpath>
+	        	<xpath expr="//field[@name='date']" position="after">
+	        		<field name="date_document"/>
+	        	</xpath>
+	        </field>
+    	</record>
+    
     	<record id="view_vendor_receipt_form_inherit" model="ir.ui.view">
             <field name="name">account.voucher.receipt.form.inherit</field>
             <field name="model">account.voucher</field>
             <field name="inherit_id" ref="account_voucher.view_vendor_receipt_form"/>
             <field name="arch" type="xml">
+            	<xpath expr="//field[@name='date']" position="before">
+	        		<field name="shop_id"/>
+	        	</xpath>
             	<field name="partner_id" position="before">
             		<field name="hop_dong_id" on_change="onchange_hopdong_id(hop_dong_id)" domain="[('type','in',['hd_noi','hd_ngoai']),('state','=','da_duyet')]"/>
             	</field>
@@ -32,6 +73,9 @@
             <field name="model">account.voucher</field>
             <field name="inherit_id" ref="account_voucher.view_vendor_payment_form"/>
             <field name="arch" type="xml">
+            	<xpath expr="//field[@name='date']" position="before">
+	        		<field name="shop_id"/>
+	        	</xpath>
             	<field name="partner_id" position="before">
             		<field name="hop_dong_id" on_change="onchange_hopdong_id(hop_dong_id)" domain="[('type','in',['hd_mua_trongnuoc','hd_mua_nhapkhau']),('state','=','da_duyet')]"/>
             	</field>
@@ -81,5 +125,35 @@
             	</filter>
             </field>
         </record>
+        
+<!-- Modify Sales / Purchase Receipt -->
+		<record model="ir.ui.view" id="view_purchase_receipt_form_general_modify">
+	        <field name="name">view.purchase.receipt.form.general.modify</field>
+	        <field name="model">account.voucher</field>
+	        <field name="inherit_id" ref="account_voucher.view_purchase_receipt_form"/>
+	        <field name="arch" type="xml">
+	        	<xpath expr="//field[@name='date']" position="before">
+	        		<field name="shop_id"/>
+	        	</xpath>
+	        	<xpath expr="//field[@name='date']" position="after">
+	        		<field name="date_document"/>
+	        	</xpath>
+	        </field>
+    	</record>
+    	
+    	<record model="ir.ui.view" id="view_sale_receipt_form_general_modify">
+	        <field name="name">view.sale.receipt.form.general.modify</field>
+	        <field name="model">account.voucher</field>
+	        <field name="inherit_id" ref="account_voucher.view_sale_receipt_form"/>
+	        <field name="arch" type="xml">
+	        	<xpath expr="//field[@name='date']" position="before">
+	        		<field name="shop_id"/>
+	        	</xpath>
+	        	<xpath expr="//field[@name='date']" position="after">
+	        		<field name="date_document"/>
+	        	</xpath>
+	        </field>
+    	</record>
+    	
     </data>
 </openerp>

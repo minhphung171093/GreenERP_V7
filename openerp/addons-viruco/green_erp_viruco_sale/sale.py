@@ -73,6 +73,11 @@ class sale_order(osv.osv):
 #         return True
 #     
     def _prepare_order_picking(self, cr, uid, order, context=None):
+        location_id = order.shop_id.warehouse_id.lot_stock_id.id
+        output_id = order.shop_id.warehouse_id.lot_output_id.id
+        journal_ids = self.pool.get('stock.journal').search(cr,uid,[('source_type','=','out')])
+        if not journal_ids:
+            raise osv.except_osv(_('Warning!'), _('Please define Stock Journal for Delivery Order.'))
         pick_name = self.pool.get('ir.sequence').get(cr, uid, 'stock.picking.out')
         return {
             'name': pick_name,
@@ -86,6 +91,10 @@ class sale_order(osv.osv):
             'note': order.note,
             'invoice_state': (order.order_policy=='picking' and '2binvoiced') or 'none',
             'company_id': order.company_id.id,
+            'stock_journal_id':journal_ids and journal_ids[0] or False,
+            'location_id': location_id,
+            'location_dest_id': output_id,
+            'shop_id':order.shop_id and order.shop_id.id or False,
             'nguoi_denghi_id': order.user_id and order.user_id.id or False,
         }
 #Them hop dong tren stock move khj confirm sale    
@@ -114,8 +123,8 @@ class sale_order(osv.osv):
             'company_id': order.company_id.id,
             'price_unit': line.product_id.standard_price or 0.0,
             'hop_dong_ban_id': order.hop_dong_id and order.hop_dong_id.id or False,
-            'chatluong_id': line.product_id.chatluong_id and line.product_id.chatluong_id.id or False,
-            'quycach_donggoi_id': line.product_id.quycach_donggoi_id and line.product_id.quycach_donggoi_id.id or False,
+            'chatluong_id': line.chatluong_id and line.chatluong_id.id or False,
+            'quycach_donggoi_id': line.quycach_donggoi_id and line.quycach_donggoi_id.id or False,
             'quycach_baobi_id': line.product_id.quycach_baobi_id and line.product_id.quycach_baobi_id.id or False,
         }
     
@@ -154,6 +163,7 @@ class sale_order(osv.osv):
             'date_invoice': context.get('date_invoice', False),
             'company_id': order.company_id.id,
             'user_id': order.user_id and order.user_id.id or False,
+            'shop_id': order.shop_id.id or False,
             'hop_dong_id': order.hop_dong_id and order.hop_dong_id.id or False,
         }
 

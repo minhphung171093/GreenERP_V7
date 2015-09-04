@@ -38,6 +38,7 @@
             'draft_bl_view.xml',
             'phuluc_hop_dong_view.xml',
             'product_view.xml',
+            'res_users_view.xml',
             'menu.xml',
     ],
     'css' : [

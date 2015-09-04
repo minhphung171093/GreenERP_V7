@@ -14,6 +14,32 @@ import openerp.addons.decimal_precision as dp
 import codecs
 from openerp import netsvc
 
+class stock_journal(osv.osv):
+    _inherit = "stock.journal"
+    _columns = {
+        'name': fields.char('Stock Journal', size=32, required=True),
+        'user_id': fields.many2one('res.users', 'Responsible'),
+        'source_type': fields.selection([
+                                        ('in', 'Getting Goods'), 
+                                        ('out', 'Sending Goods'),
+                                        ('return_customer', 'Return from customer'), 
+                                        ('return_supplier', 'Return to supplier'), 
+                                        ('internal', 'Internal'),
+                                        ('production', 'Production'),
+                                        ('phys_adj', 'Physical Adjustment'),], 'Source Type', size=16, required=True),
+        'sequence_id': fields.many2one('ir.sequence', 'Sequence'),
+        
+        'from_location_id':fields.many2many('stock.location','stock_journal_from_location_ref', 
+                                                 'journal_id','location_id','From Location',required = True), 
+        'to_location_id':fields.many2many('stock.location','stock_journal_to_location_ref', 
+                                                 'journal_id','location_id','From Location',required = True), 
+    }
+    _defaults = {
+        'user_id': lambda s, c, u, ctx: u
+    }
+    
+stock_journal()
+
 class stock_picking(osv.osv):
     _inherit = "stock.picking"
     
@@ -166,6 +192,36 @@ class stock_picking(osv.osv):
 
         return res
     
+    def _get_location_info(self, cr, uid, ids, field_name, arg, context=None):
+        res = {}
+        shop_id = False
+        warehouse_id = False
+        for pick in self.browse(cr, uid, ids, context=context):
+            
+            res[pick.id] = {
+                            'shop_id': False,
+                            'warehouse_id': False,
+                            }
+            
+            if pick.location_id.usage =='internal':
+                warehouse_id = pick.location_id and pick.location_id.warehouse_id.id or False
+            if not warehouse_id:
+                if pick.location_dest_id.usage =='internal':
+                    warehouse_id = pick.location_dest_id and pick.location_dest_id.warehouse_id.id or False
+                
+            
+            if warehouse_id:
+                res[pick.id]['warehouse_id'] = warehouse_id
+                sql='''
+                    SELECT id FROM sale_shop WHERE warehouse_id = %s
+                '''%(warehouse_id)
+                cr.execute(sql)
+                shop_res = cr.fetchone()
+                shop_id = shop_res and shop_res[0] or False
+            if shop_id:
+                res[pick.id]['shop_id'] = shop_id
+        return res
+    
     _columns = {
         'nguoi_denghi_id':fields.many2one('res.users','Người đề nghị'),
         'donvi_vanchuyen':fields.many2one('res.partner','Đơn vị vận chuyển'),
@@ -173,6 +229,16 @@ class stock_picking(osv.osv):
         'dongia_vanchuyen':fields.float('Đơn giá vận chuyển'),
         'picking_location_dest_id': fields.many2one('stock.location', 'Destination Location',states={'done': [('readonly', True)]}, select=True,),
         'cang_donghang_id': fields.many2one('cang.donghang', 'Cảng đóng hàng',states={'done': [('readonly', True)]}, select=True,),
+        'shop_id': fields.function(_get_location_info, type='many2one', relation='sale.shop', string='Shop',
+            store={
+                'stock.picking': (lambda self, cr, uid, ids, c={}: ids, ['location_id','location_dest_id'], 10),
+            }, readonly=True, multi='lo_info'),
+        'warehouse_id': fields.function(_get_location_info, type='many2one', relation='stock.warehouse', string='Warehouse',
+            store={
+                'stock.picking': (lambda self, cr, uid, ids, c={}: ids, ['location_id','location_dest_id'], 10),
+            }, readonly=True, multi='lo_info'),
+                
+        'stock_journal_id': fields.many2one('stock.journal','Stock Journal', required=True, select=True, states={'done':[('readonly', True)], 'cancel':[('readonly',True)]}, track_visibility='onchange'),
     }
     
     def action_invoice_create(self, cr, uid, ids, journal_id=False,group=False, type='out_invoice', context=None):
@@ -334,7 +400,10 @@ class stock_picking(osv.osv):
         if picking.type=='out':
             hop_dong_id = picking.sale_id and picking.sale_id.hop_dong_id.id or False
         #Hung them shop
-        shop_ids = self.pool.get('sale.shop').search(cr, uid, [('company_id','=',picking.company_id.id)], context=context)
+        warehouse_id = picking.location_id.warehouse_id and picking.location_id.warehouse_id.id or False
+        if not warehouse_id:
+            warehouse_id = picking.location_dest_id.warehouse_id.id or False
+        shop_ids = self.pool.get('sale.shop').search(cr, uid, [('warehouse_id','=',warehouse_id)])
         invoice_vals = {
             'name': picking.name,
             'origin': (picking.name or '') + (picking.origin and (':' + picking.origin) or ''),
@@ -421,10 +490,62 @@ class stock_picking(osv.osv):
             self.log(cr, uid, id, message)
         return True
     
+    def onchange_journal(self, cr, uid, ids, stock_journal_id):
+        value ={}
+        domain = {}
+        if not stock_journal_id:
+            value.update({'location_id':False,
+                           'location_dest_id':False})
+            domain.update({'location_id':[('id','=',False)],
+                           'location_dest_id':[('id','=',False)]})
+        else:
+            journal = self.pool.get('stock.journal').browse(cr, uid, stock_journal_id)
+            from_location_ids = [x.id for x in journal.from_location_id]
+            to_location_ids = [x.id for x in journal.to_location_id]
+            domain.update({'location_id':[('id','=',from_location_ids)],
+                           'location_dest_id':[('id','=',to_location_ids)]})
+            location_id = from_location_ids and from_location_ids[0] or False
+            location_dest_id = False
+            if to_location_ids and to_location_ids[0] != location_id:
+                location_dest_id = to_location_ids[0]
+            value.update({'location_id':location_id,
+                          'location_dest_id': location_dest_id})
+        return {'value': value,'domain':domain}
+    
 stock_picking()
 
 class stock_picking_in(osv.osv):
     _inherit = "stock.picking.in"
+    
+    def _get_location_info(self, cr, uid, ids, field_name, arg, context=None):
+        res = {}
+        shop_id = False
+        warehouse_id = False
+        for pick in self.browse(cr, uid, ids, context=context):
+            
+            res[pick.id] = {
+                            'shop_id': False,
+                            'warehouse_id': False,
+                            }
+            
+            if pick.location_id.usage =='internal':
+                warehouse_id = pick.location_id and pick.location_id.warehouse_id and pick.location_id.warehouse_id.id or False
+            if not warehouse_id:
+                if pick.location_dest_id.usage =='internal':
+                    warehouse_id = pick.location_dest_id and pick.location_dest_id.warehouse_id and pick.location_dest_id.warehouse_id.id or False
+                
+            
+            if warehouse_id:
+                res[pick.id]['warehouse_id'] = warehouse_id
+                sql='''
+                    SELECT id FROM sale_shop WHERE warehouse_id = %s
+                '''%(warehouse_id)
+                cr.execute(sql)
+                shop_res = cr.fetchone()
+                shop_id = shop_res and shop_res[0] or False
+            if shop_id:
+                res[pick.id]['shop_id'] = shop_id
+        return res
     
     def onchange_picking_location_dest_id(self, cr, uid, ids,picking_location_dest_id=False, context=None):
         if picking_location_dest_id:
@@ -439,6 +560,15 @@ class stock_picking_in(osv.osv):
         'lotrinh_id':fields.many2one('lo.trinh','Lộ trình'),
         'dongia_vanchuyen':fields.float('Đơn giá vận chuyển'),
         'picking_location_dest_id': fields.many2one('stock.location', 'Destination Location',states={'done': [('readonly', True)]}, select=True,),
+        'shop_id': fields.function(_get_location_info, type='many2one', relation='sale.shop', string='Shop',
+            store={
+                'stock.picking.in': (lambda self, cr, uid, ids, c={}: ids, ['location_id','location_dest_id'], 10),
+            }, readonly=True, multi='pro_info'),
+        'warehouse_id': fields.function(_get_location_info, type='many2one', relation='stock.warehouse', string='Warehouse',
+            store={
+                'stock.picking.in': (lambda self, cr, uid, ids, c={}: ids, ['location_id','location_dest_id'], 10),
+            }, readonly=True, multi='pro_info'),
+        'stock_journal_id': fields.many2one('stock.journal','Stock Journal', required=True, select=True, states={'done':[('readonly', True)], 'cancel':[('readonly',True)]}, track_visibility='onchange'),
     }
     
     def has_valuation_moves(self, cr, uid, move):
@@ -505,9 +635,61 @@ class stock_picking_in(osv.osv):
             self.log(cr, uid, id, message)
         return True
     
+    def onchange_journal(self, cr, uid, ids, stock_journal_id):
+        value ={}
+        domain = {}
+        if not stock_journal_id:
+            value.update({'location_id':False,
+                           'location_dest_id':False})
+            domain.update({'location_id':[('id','=',False)],
+                           'location_dest_id':[('id','=',False)]})
+        else:
+            journal = self.pool.get('stock.journal').browse(cr, uid, stock_journal_id)
+            from_location_ids = [x.id for x in journal.from_location_id]
+            to_location_ids = [x.id for x in journal.to_location_id]
+            domain.update({'location_id':[('id','=',from_location_ids)],
+                           'location_dest_id':[('id','=',to_location_ids)]})
+            location_id = from_location_ids and from_location_ids[0] or False
+            location_dest_id = False
+            if to_location_ids and to_location_ids[0] != location_id:
+                location_dest_id = to_location_ids[0]
+            value.update({'location_id':location_id,
+                          'location_dest_id': location_dest_id})
+        return {'value': value,'domain':domain}
+    
 stock_picking_in()
 class stock_picking_out(osv.osv):
     _inherit = "stock.picking.out"
+    
+    def _get_location_info(self, cr, uid, ids, field_name, arg, context=None):
+        res = {}
+        shop_id = False
+        warehouse_id = False
+        for pick in self.browse(cr, uid, ids, context=context):
+            
+            res[pick.id] = {
+                            'shop_id': False,
+                            'warehouse_id': False,
+                            }
+            
+            if pick.location_id.usage =='internal':
+                warehouse_id = pick.location_id and pick.location_id.warehouse_id and pick.location_id.warehouse_id.id or False
+            if not warehouse_id:
+                if pick.location_dest_id.usage =='internal':
+                    warehouse_id = pick.location_dest_id and pick.location_dest_id.warehouse_id and pick.location_dest_id.warehouse_id.id or False
+                
+            
+            if warehouse_id:
+                res[pick.id]['warehouse_id'] = warehouse_id
+                sql='''
+                    SELECT id FROM sale_shop WHERE warehouse_id = %s
+                '''%(warehouse_id)
+                cr.execute(sql)
+                shop_res = cr.fetchone()
+                shop_id = shop_res and shop_res[0] or False
+            if shop_id:
+                res[pick.id]['shop_id'] = shop_id
+        return res
     
     def onchange_picking_location_dest_id(self, cr, uid, ids,picking_location_dest_id=False, context=None):
         if picking_location_dest_id:
@@ -522,6 +704,15 @@ class stock_picking_out(osv.osv):
         'dongia_vanchuyen':fields.float('Đơn giá vận chuyển'),
         'picking_location_dest_id': fields.many2one('stock.location', 'Destination Location',states={'done': [('readonly', True)]}, select=True,),
         'cang_donghang_id': fields.many2one('cang.donghang', 'Cảng đóng hàng',states={'done': [('readonly', True)]}, select=True,),
+        'shop_id': fields.function(_get_location_info, type='many2one', relation='sale.shop', string='Shop',
+            store={
+                'stock.picking.in': (lambda self, cr, uid, ids, c={}: ids, ['location_id','location_dest_id'], 10),
+            }, readonly=True, multi='pro_info'),
+        'warehouse_id': fields.function(_get_location_info, type='many2one', relation='stock.warehouse', string='Warehouse',
+            store={
+                'stock.picking.in': (lambda self, cr, uid, ids, c={}: ids, ['location_id','location_dest_id'], 10),
+            }, readonly=True, multi='pro_info'),
+        'stock_journal_id': fields.many2one('stock.journal','Stock Journal', required=True, select=True, states={'done':[('readonly', True)], 'cancel':[('readonly',True)]}, track_visibility='onchange'),
     }
     
     def has_valuation_moves(self, cr, uid, move):
@@ -587,6 +778,28 @@ class stock_picking_out(osv.osv):
                 ) % (name,)
             self.log(cr, uid, id, message)
         return True
+    
+    def onchange_journal(self, cr, uid, ids, stock_journal_id):
+        value ={}
+        domain = {}
+        if not stock_journal_id:
+            value.update({'location_id':False,
+                           'location_dest_id':False})
+            domain.update({'location_id':[('id','=',False)],
+                           'location_dest_id':[('id','=',False)]})
+        else:
+            journal = self.pool.get('stock.journal').browse(cr, uid, stock_journal_id)
+            from_location_ids = [x.id for x in journal.from_location_id]
+            to_location_ids = [x.id for x in journal.to_location_id]
+            domain.update({'location_id':[('id','=',from_location_ids)],
+                           'location_dest_id':[('id','=',to_location_ids)]})
+            location_id = from_location_ids and from_location_ids[0] or False
+            location_dest_id = False
+            if to_location_ids and to_location_ids[0] != location_id:
+                location_dest_id = to_location_ids[0]
+            value.update({'location_id':location_id,
+                          'location_dest_id': location_dest_id})
+        return {'value': value,'domain':domain}
     
 stock_picking_out()
 
@@ -716,12 +929,17 @@ class stock_move(osv.osv):
                          'line_id': move_lines,
                          'company_id': move.company_id.id,
                          'stock_move_id': move.id,
+                         'shop_id':move.picking_id and move.picking_id.shop_id and move.picking_id.shop_id.id or False,
                          'ref': move.picking_id and move.picking_id.name}, context=company_ctx)
     
 stock_move()
 
 class stock_location(osv.osv):
     _inherit = "stock.location"
+    
+    _columns = {
+        'warehouse_id': fields.many2one('stock.warehouse', 'Warehouse'),
+    }
     
     def name_get(self, cr, uid, ids, context=None):
         # always return the full hierarchical name
