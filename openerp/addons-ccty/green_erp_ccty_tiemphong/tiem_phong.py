@@ -98,8 +98,8 @@ class tiem_phong_lmlm(osv.osv):
     
     def _get_sl_tiem(self, cr, uid, ids, name, arg, context=None):        
         result = {}
-        sum = 0
         for tiem in self.browse(cr,uid,ids):
+            sum = 0
             for line in tiem.chi_tiet_tp_line:
                 sum += line.sl_thuc_tiem
             result[tiem.id] = sum    
@@ -130,7 +130,7 @@ class tiem_phong_lmlm(osv.osv):
         'so_lo_id':fields.many2one('so.lo','Số lô'),
         'han_su_dung_rel':fields.related('so_lo_id','han_su_dung',type='date',string='HSD đến'),
         'so_luong_vc': fields.integer('Số lượng Vaccine'),
-        'nhap_xuat_id': fields.many2one('nhap.xuat.canh.giasuc','Phiếu nhập/xuất'),
+#         'nhap_xuat_id': fields.many2one('nhap.xuat.canh.giasuc','Phiếu nhập/xuất'),
         'tong_sl_tiem': fields.function(_get_sl_tiem, type='integer', string='SL đã tiêm phòng', store = True),
         'loai_benh_id': fields.many2one('chi.tiet.loai.benh','Loại bệnh'),
                 }
