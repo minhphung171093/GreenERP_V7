@@ -332,9 +332,10 @@ class chi_tiet_loai_line(osv.osv):
         'tiem_phong':fields.boolean('Có được tiêm phòng?'),
         'tong_sl':fields.function(sum_so_luong,type='integer',string='Tổng số lượng(hiện có)', store = True),
         'so_luong': fields.integer('Số lượng'),
-        'sl_da_tiem':fields.function(sum_sl_da_tiem,type='integer',string='Số lượng đã tiêm phòng', store = {
-                     'tiem.phong.lmlm':(_get_thuc_tiem, [], 10),                                                                                        
-                                                                                                             }),
+        'sl_da_tiem':fields.function(sum_sl_da_tiem,type='integer',string='Số lượng đã tiêm phòng', store = True),
+#         'sl_da_tiem':fields.function(sum_sl_da_tiem,type='integer',string='Số lượng đã tiêm phòng', store = {
+#                      'tiem.phong.lmlm':(_get_thuc_tiem, [], 10),                                                                                        
+#                                                                                                              }),
         'ti_le': fields.function(ti_le_tp,type='float',string='Tỉ lệ tiêm phòng (%)', store = True),
                 }
     
