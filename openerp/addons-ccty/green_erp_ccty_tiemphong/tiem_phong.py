@@ -219,6 +219,7 @@ class ct_tiem_phong_lmlm_line(osv.osv):
     
     _columns = {
         'tp_lmlm_id': fields.many2one( 'tiem.phong.lmlm','tiem phong lmlm', ondelete = 'cascade'),
+#         'tp_co_cau_id':fields.many2one('co.cau','Co Cau dan'),
         'name': fields.char('Thông tin', readonly = True),
         'tiem_phong':fields.boolean('Có được tiêm phòng ?'),
         'loai_benh_id': fields.many2one('chi.tiet.loai.benh','Loại bệnh'),
