@@ -802,7 +802,7 @@ class don_mua_hang(osv.osv):
             ('da_duyet', 'Đã duyệt'),
             ('huy_bo', 'Hủy bỏ'),
             ], 'Trạng thái',readonly=True, states={'moi_tao': [('readonly', False)]}),
-        'note': fields.text('Terms and conditions'),
+        'note': fields.char('Terms and conditions'),
     }
     
     _defaults = {
