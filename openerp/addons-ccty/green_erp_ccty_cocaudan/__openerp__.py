@@ -26,7 +26,7 @@
     'sequence': 14,
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',
-    'depends': ['report_aeroo','report_aeroo_ooo','green_erp_ccty_base','green_erp_ccty_nhapxuatquacanh','green_erp_ccty_tiemphong'],
+    'depends': ['report_aeroo','report_aeroo_ooo','green_erp_ccty_base','green_erp_ccty_nhapxuatquacanh','green_erp_ccty_xuly_giasuc','green_erp_ccty_tiemphong'],
     'data': [
             'security/cocaudan_security.xml',
             'security/ir.model.access.csv', 

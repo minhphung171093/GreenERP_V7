@@ -608,5 +608,39 @@
             <field name="view_mode">tree,form</field>
         </record> 
         
+        <record model="ir.ui.view" id="don_vi_tinh_tree">
+            <field name="name">don.vi.tinh.tree</field>
+            <field name="model">don.vi.tinh</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Đơn vị tính" editable='top'>
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>  
+        <record model="ir.actions.act_window" id="action_don_vi_tinh">
+            <field name="name">Đơn vị tính</field>
+            <field name="res_model">don.vi.tinh</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record> 
+    
+        <record model="ir.ui.view" id="loai_hoa_chat_tree">
+            <field name="name">loai.hoa.chat.tree</field>
+            <field name="model">loai.hoa.chat</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Loại hoá chất" editable='top'>
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>  
+        <record model="ir.actions.act_window" id="action_loai_hoa_chat">
+            <field name="name">Loại hoá chất</field>
+            <field name="res_model">loai.hoa.chat</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record> 
+        
     </data>
 </openerp>

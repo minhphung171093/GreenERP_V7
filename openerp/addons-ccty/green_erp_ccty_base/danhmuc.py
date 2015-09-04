@@ -355,4 +355,47 @@ class loai_giay_tiem_phong(osv.osv):
         'name': fields.char('Loại giấy tiêm phòng',size = 50, required = True),
                 }
 loai_giay_tiem_phong()
+
+class don_vi_tinh(osv.osv):
+    _name = "don.vi.tinh"
+    _columns = {
+        'name': fields.char('Đơn vị tính',size = 50, required = True),
+                }
+    def create(self, cr, uid, vals, context=None):
+        if 'name' in vals:
+            name = vals['name'].replace(" ","")
+            vals['name'] = name
+        return super(don_vi_tinh, self).create(cr, uid, vals, context)
+    
+    def write(self, cr, uid, ids, vals, context=None):
+        if 'name' in vals:
+            name = vals['name'].replace(" ","")
+            vals['name'] = name
+        return super(don_vi_tinh, self).write(cr, uid,ids, vals, context)    
+
+    def _check_dvt(self, cr, uid, ids, context=None):
+        for dvt in self.browse(cr, uid, ids, context=context):
+            dvt_ids = self.search(cr,uid,[('id', '!=', dvt.id), ('name', '=', dvt.name)])
+            sql = '''
+                select id from don_vi_tinh where id != %s and lower(name) = lower('%s')
+            '''%(dvt.id,dvt.name)
+            cr.execute(sql)
+            lower_ids = [row[0] for row in cr.fetchall()]
+            if dvt_ids or lower_ids:
+                raise osv.except_osv(_('Warning!'),_('Tên ĐVT không được trùng nhau'))
+                return False
+        return True
+    _constraints = [
+        (_check_dvt, 'Identical Data', []),
+    ]   
+    
+    
+don_vi_tinh()
+
+class loai_hoa_chat(osv.osv):
+    _name = "loai.hoa.chat"
+    _columns = {
+        'name': fields.char('Tên hoá chất',size = 50, required = True),
+                }
+loai_hoa_chat()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

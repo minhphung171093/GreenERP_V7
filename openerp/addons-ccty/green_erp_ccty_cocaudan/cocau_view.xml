@@ -299,9 +299,9 @@
 							<page string = "Các giấy tiêm phòng">
 								<field name="chitiet_giay_tiemphong" nolabel='1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}">
 									<tree editable='bottom' create = 'false' delete = 'false'>
-										<field name="tiemphong_id" options="{'create': false, 'create_edit': false}"/>
+										<field name="name" options="{'create': false, 'create_edit': false}"/>
 										<field name="loai_benh_id" options="{'create': false, 'create_edit': false}"/>
-										<field name="so_luong" sum = 'Total'/>
+										<field name="tong_sl_tiem" sum = 'Total'/>
 									</tree>
 								</field>
 							</page>
@@ -404,9 +404,9 @@
 							<page string = "Các giấy tiêm phòng">
 								<field name="chitiet_giay_tiemphong" nolabel='1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}">
 									<tree editable='bottom' create = 'false' delete = 'false'>
-										<field name="tiemphong_id" options="{'create': false, 'create_edit': false}"/>
+										<field name="name" options="{'create': false, 'create_edit': false}"/>
 										<field name="loai_benh_id" options="{'create': false, 'create_edit': false}"/>
-										<field name="so_luong" sum = 'Total'/>
+										<field name="tong_sl_tiem" sum = 'Total'/>
 									</tree>
 								</field>
 							</page>
