@@ -33,9 +33,10 @@
 	            <field name="inherit_id" ref="stock.view_picking_form"/>
 	            <field name="arch" type="xml">
 	            	<xpath expr="//field[@name='stock_journal_id']" position="replace">
-                    	<field name="stock_journal_id" widget="selection"/>
+                    	<field name="stock_journal_id" widget="selection" on_change="onchange_journal(stock_journal_id)"/>
                     	<field name="location_id" required='1'/>
                     	<field name="location_dest_id" required='1'/>
+                    	<field name="return" invisible='1' readonly="1"/>
 	                </xpath>
 	            </field>
 	        </record>
@@ -46,9 +47,10 @@
 	            <field name="inherit_id" ref="stock.view_picking_out_form"/>
 	            <field name="arch" type="xml">
 	            	<xpath expr="//field[@name='stock_journal_id']" position="replace">
-                    	<field name="stock_journal_id" widget="selection"/>
+                    	<field name="stock_journal_id" widget="selection" on_change="onchange_journal(stock_journal_id)"/>
                     	<field name="location_id" required='1'/>
                     	<field name="location_dest_id" required='1'/>
+                    	<field name="return" invisible='1' readonly="1"/>
 	                </xpath>
 	            </field>
 	        </record>
@@ -59,9 +61,10 @@
 	            <field name="inherit_id" ref="stock.view_picking_in_form"/>
 	            <field name="arch" type="xml">
 	            	<xpath expr="//field[@name='stock_journal_id']" position="replace">
-                    	<field name="stock_journal_id" widget="selection"/>
+                    	<field name="stock_journal_id" widget="selection" on_change="onchange_journal(stock_journal_id)"/>
                     	<field name="location_id" required='1'/>
                     	<field name="location_dest_id" required='1'/>
+                    	<field name="return" invisible='1' readonly="1"/>
 	                </xpath>
 	            </field>
 	        </record>
@@ -84,6 +87,103 @@
 	                    </group>
 	                </form>
 	            </field>
-	        </record>    	
+	        </record>  
+	        
+<!-- Change action get form view of menu Internal Move, Filter Internal Moves with domain Stock Journal is Internal-->
+	        <record id="stock.action_picking_tree6" model="ir.actions.act_window">
+	            <field name="name">Internal Moves</field>
+	            <field name="res_model">stock.picking</field>
+	            <field name="type">ir.actions.act_window</field>
+	            <field name="view_type">form</field>
+	            <field name="view_mode">tree,form,calendar</field>
+	            <field name="domain">[('type','=','internal'),('stock_journal_id.source_type','=','internal')]</field>
+	            <field name="context">{'default_type': 'internal'}</field>
+	            <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+	            <field name="help" type="html">
+	              <p class="oe_view_nocontent_create">
+	                Click to create an internal move request. 
+	              </p><p>
+	                Most operations are prepared automatically by OpenERP according
+	                to your preconfigured logistics rules, but you can also record
+	                manual stock movements.
+	              </p>
+	            </field>
+	        </record>
+        
+	        <record model="ir.actions.act_window.view" id="stock.action_picking_tree6_form_view">
+	            <field name="sequence" eval="2"/>
+	            <field name="view_mode">form</field>
+	            <field name="view_id" ref="view_stock_picking_add_amounttotal"/>
+	            <field name="act_window_id" ref="stock.action_picking_tree6"/>
+	        </record>
+	        
+	        <record id="stock.action_picking_tree4" model="ir.actions.act_window">
+	            <field name="name">Incoming Shipments</field>
+	            <field name="res_model">stock.picking.in</field>
+	            <field name="type">ir.actions.act_window</field>
+	            <field name="view_type">form</field>
+	            <field name="view_mode">tree,form,calendar</field>
+	            <field name="domain">[('type','=','in'),('return','=','none')]</field>
+	            <field name="context">{'default_type': 'in', 'default_return': 'none', 'picking_type':False}</field>
+	            <field name="search_view_id" ref="stock.view_picking_in_search"/>
+	            <field name="help" type="html">
+	              <p class="oe_view_nocontent_create">
+	                Click to create an incoming shipment. 
+	              </p><p>
+	                The Incoming Shipments is the list of all orders you will
+	                receive from your suppliers. An incoming shipment contains a
+	                list of products to be received according to the original
+	                purchase order.
+	              </p>
+	            </field>
+	        </record>
+	        
+<!-- Delivery Orders -->
+	        <record id="stock.action_picking_tree" model="ir.actions.act_window">
+	            <field name="name">Delivery Orders</field>
+	            <field name="res_model">stock.picking.out</field>
+	            <field name="type">ir.actions.act_window</field>
+	            <field name="view_type">form</field>
+	            <field name="view_mode">tree,form,calendar</field>
+	            <field name="domain">[('type','=','out'),('return','=','none')]</field>
+	            <field name="context">{'default_type': 'out', 'default_return': 'none'}</field>
+	            <field name="search_view_id" ref="stock.view_picking_out_search"/>
+	            <field name="help" type="html">
+	              <p class="oe_view_nocontent_create">
+	                Click to create a delivery order. 
+	              </p><p>
+	                This is the list of all delivery orders that have to be
+	                prepared, according to your different sales orders and your
+	                logistics rules.
+	              </p>
+	            </field>
+	        </record>
+	        
+<!-- Customer/Supplier return -->
+
+	        <record id="action_picking_return_customer" model="ir.actions.act_window">
+	            <field name="name">Return from Customer</field>
+	            <field name="res_model">stock.picking.out</field>
+	            <field name="type">ir.actions.act_window</field>
+	            <field name="view_type">form</field>
+	            <field name="view_mode">tree,form,calendar</field>
+	            <field name="domain">[('return','=','customer')]</field>
+	            <field name="context">{"no_create":False, 'default_type': 'in', 'default_return': 'customer'}</field>
+	            <field name="search_view_id" ref="stock.view_picking_in_search"/>
+	        </record>
+	        <record id="action_picking_return_supplier" model="ir.actions.act_window">
+	            <field name="name">Return to Supplier</field>
+	            <field name="res_model">stock.picking.in</field>
+	            <field name="type">ir.actions.act_window</field>
+	            <field name="view_type">form</field>
+	            <field name="view_mode">tree,form,calendar</field>
+	            <field name="domain">[('return','=','supplier')]</field>
+	            <field name="context">{"no_create":False, 'default_type': 'out', 'default_return': 'supplier'}</field>
+	            <field name="search_view_id" ref="stock.view_picking_out_search"/>
+	        </record>
+	        
+	        <menuitem action="action_picking_return_customer" id="menu_action_picking_return_customer" parent="stock.menu_stock_warehouse_mgmt" sequence="200"/>
+	        <menuitem action="action_picking_return_supplier" id="menu_action_picking_return_supplier" parent="stock.menu_stock_warehouse_mgmt" sequence="300"/>
+	        	
     </data>
 </openerp>
