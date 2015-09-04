@@ -41,7 +41,7 @@
 	                    	<field name="type" invisible='1'/>
 	                    </group>
 	                    <group col='4' colspan='2'>
-	                    	<field name="hop_dong_id" domain="[('type','=','hd_noi'),('state','=','da_duyet')]"/>
+	                    	<field name="hop_dong_id" domain="[('type','=','hd_noi'),('state','not in',['moi_tao','huy_bo'])]"/>
 						</group>
 						<notebook>
 							<page string="Thông tin chung">
@@ -141,7 +141,7 @@
 	                    	<field name="type" invisible='1'/>
 	                    </group>
 	                    <group col='4' colspan='2'>
-	                    	<field name="hop_dong_id" string="Contract" domain="[('type','=','hd_ngoai'),('state','=','da_duyet')]"/>
+	                    	<field name="hop_dong_id" string="Contract" domain="[('type','=','hd_ngoai'),('state','not in',['moi_tao','huy_bo'])]"/>
 						</group>
 						<notebook>
 							<page string="Information">
@@ -242,7 +242,7 @@
 	                    	<field name="type" invisible='1'/>
 	                    </group>
 	                    <group col='4' colspan='2'>
-	                    	<field name="hop_dong_id" domain="[('type','in',['hd_mua_trongnuoc']),('state','=','da_duyet')]"/>
+	                    	<field name="hop_dong_id" domain="[('type','in',['hd_mua_trongnuoc']),('state','not in',['moi_tao','huy_bo'])]"/>
 						</group>
 						<notebook>
 							<page string="Thông tin chung">
@@ -342,7 +342,7 @@
 	                    	<field name="type" invisible='1'/>
 	                    </group>
 	                    <group col='4' colspan='2'>
-	                    	<field name="hop_dong_id" domain="[('type','in',['hd_mua_nhapkhau']),('state','=','da_duyet')]"/>
+	                    	<field name="hop_dong_id" domain="[('type','in',['hd_mua_nhapkhau']),('state','not in',['moi_tao','huy_bo'])]"/>
 						</group>
 						<notebook>
 							<page string="Thông tin chung">
