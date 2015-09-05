@@ -315,7 +315,8 @@
 							<page string = "Đã tiêm phòng">
 								<field name="chitiet_da_tiem_phong" nolabel='1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}">
 									<tree editable='bottom' create = 'false'>
-										<field name="tiem_phong_id" options="{'create': false, 'create_edit': false}"/>
+										<field name="tiem_phong_id" readonly="1" options="{'create': false, 'create_edit': false}"/>
+										<field name="name" readonly="1" />
 										<field name="loai_benh_id" options="{'create': false, 'create_edit': false}"/>
 										<field name="sl_tiem" sum = 'Total'/>
 										<field name="so_luong" sum = 'Total'/>
