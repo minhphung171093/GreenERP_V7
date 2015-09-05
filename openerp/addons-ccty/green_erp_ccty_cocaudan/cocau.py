@@ -267,11 +267,41 @@ class chi_tiet_loai_line(osv.osv):
             res[line.id] = tong_sl_tiem
         return res
     
-#     def _get_thuc_tiem(self, cr, uid, ids, context=None):
-#         result = {}
-#         for line in self.pool.get('ct.tiem.phong.lmlm.line').browse(cr, uid, ids, context=context):
-#             result[line.tp_co_cau_id.id] = True
-#         return result.keys()   
+    def _get_thuc_tiem(self, cr, uid, ids, context=None):
+        result = {}
+        for line in self.pool.get('tiem.phong.lmlm').browse(cr, uid, ids, context=context):
+            sql = '''
+                select id from chi_tiet_loai_line where co_cau_id in (select id from co_cau 
+                where chon_loai = %s and ten_ho_id = %s and trang_thai = 'new')
+            '''%(line.loai_id.id, line.ho_chan_nuoi_id.id)
+            cr.execute(sql)
+            co_cau_ids = [row[0] for row in cr.fetchall()]
+#             sql = '''
+#                 select id from co_cau 
+#                 where chon_loai = %s and ten_ho_id = %s and trang_thai = 'new'
+#             '''%(line.tp_lmlm_id.loai_id.id, line.tp_lmlm_id.ho_chan_nuoi_id.id)
+#             cr.execute(sql)
+#             co_cau_id = cr.dictfetchone()['id']
+
+
+#             result[co_cau_id] = True
+            
+        return co_cau_ids
+    
+    def _get_tiem_phong_lmlm(self, cr, uid, ids, context=None):
+        result = {}
+        for line in self.pool.get('ct.tiem.phong.lmlm.line').browse(cr, uid, ids, context=context):
+            sql = '''
+                select id from chi_tiet_loai_line where name = '%s' and co_cau_id in (select id from co_cau 
+                where chon_loai = %s and ten_ho_id = %s and trang_thai = 'new')
+            '''%(line.name, line.tp_lmlm_id.loai_id.id, line.tp_lmlm_id.ho_chan_nuoi_id.id)
+            cr.execute(sql)
+            co_cau_id = cr.fetchone()[0]
+            #lam lai tra ve chuoi
+
+            result[co_cau_id] = True
+            
+        return result.keys()
     
     def ti_le_tp(self, cr, uid, ids, name, args, context=None):
         res = {}
@@ -332,13 +362,16 @@ class chi_tiet_loai_line(osv.osv):
         'tiem_phong':fields.boolean('Có được tiêm phòng?'),
         'tong_sl':fields.function(sum_so_luong,type='integer',string='Tổng số lượng(hiện có)', store = True),
         'so_luong': fields.integer('Số lượng'),
-        'sl_da_tiem':fields.function(sum_sl_da_tiem,type='integer',string='Số lượng đã tiêm phòng', store = True),
-#         'sl_da_tiem':fields.function(sum_sl_da_tiem,type='integer',string='Số lượng đã tiêm phòng', store = {
-#                      'tiem.phong.lmlm':(_get_thuc_tiem, [], 10),                                                                                        
-#                                                                                                              }),
-        'ti_le': fields.function(ti_le_tp,type='float',string='Tỉ lệ tiêm phòng (%)', store = True),
+#         'sl_da_tiem':fields.function(sum_sl_da_tiem,type='integer',string='Số lượng đã tiêm phòng', store = True),
+        'sl_da_tiem':fields.function(sum_sl_da_tiem,type='integer',string='Số lượng đã tiêm phòng', store = {
+                    'chi.tiet.loai.line': (lambda self, cr, uid, ids, c={}: ids, ['co_cau_id'], 10),                                                                                         
+                    'tiem.phong.lmlm':(_get_thuc_tiem,['chi_tiet_tp_line', 'trang_thai_id'],10), 
+                                                                                                             }),
+        'ti_le': fields.function(ti_le_tp,type='float',string='Tỉ lệ tiêm phòng (%)', store = {
+                    'chi.tiet.loai.line': (lambda self, cr, uid, ids, c={}: ids, ['co_cau_id'], 10),                                                                        
+                    'tiem.phong.lmlm':(_get_thuc_tiem,['chi_tiet_tp_line', 'trang_thai_id'],10), 
+                                                                                                            }),
                 }
-    
 chi_tiet_loai_line()
 
 # class chi_tiet_giay_tiemphong_line(osv.osv):
