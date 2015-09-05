@@ -352,8 +352,10 @@ class chi_tiet_loai_line(osv.osv):
             cr.execute(sql)
             tong_sl_tiem = cr.dictfetchone()['sl_thuc_tiem']
             sum_sl_da_tiem = tong_sl_tiem
-            
-            res[line.id] = float(sum_sl_da_tiem)/float(sum_so_luong)*100
+            if float(sum_so_luong):
+                res[line.id] = float(sum_sl_da_tiem)/float(sum_so_luong)*100
+            else:
+                res[line.id] = 0
         return res
     
     _columns = {
