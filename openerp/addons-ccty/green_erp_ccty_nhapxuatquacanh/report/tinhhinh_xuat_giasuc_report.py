@@ -274,7 +274,7 @@ class Parser(report_sxw.rml_parse):
                 
             sql = '''
                 select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong from chi_tiet_da_tiem_phong
-                where name = '%s' and nhap_xuat_tiemphong_id in (select id from nhap_xuat_canh_giasuc 
+                where loai_benh_id in (select id from chi_tiet_loai_benh where name = '%s') and nhap_xuat_tiemphong_id in (select id from nhap_xuat_canh_giasuc 
                 where ten_ho_id = %s and ngay_kiem_tra = '%s' and name = '%s' and trang_thai_id in (select id from trang_thai where stt = 3))
             '''%(col, ten_ho_id[0], row, so_giay)
             self.cr.execute(sql)

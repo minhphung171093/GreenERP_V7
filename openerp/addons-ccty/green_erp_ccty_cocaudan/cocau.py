@@ -229,26 +229,6 @@ class chi_tiet_loai_line(osv.osv):
             '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name)
             cr.execute(sql)
             tong_sl_giam = cr.dictfetchone()['tong_sl_giam']
-            
-#             sql = '''
-#                 select so_luong from chi_tiet_loai_line
-#                 where co_cau_id in (select id from co_cau where chon_loai = %s and ten_ho_id = %s and tang_giam = 'a'
-#                 and nhap_xuat_id is null)
-#                 and name = '%s' and id = %s
-#             '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name, line.id)
-#             cr.execute(sql)
-#             sl_tang_hientai = cr.dictfetchone()
-#             tong_sl += sl_tang_hientai and sl_tang_hientai['so_luong'] or 0
-#             sql = '''
-#                 select so_luong from chi_tiet_loai_line
-#                 where co_cau_id in (select id from co_cau where chon_loai = %s and ten_ho_id = %s and tang_giam = 'b'
-#                 and nhap_xuat_id is null)
-#                 and name = '%s' and id = %s
-#             '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name, line.id)
-#             cr.execute(sql)
-#             sl_giam_hientai = cr.dictfetchone()
-#             tong_sl_giam += sl_giam_hientai and sl_giam_hientai['so_luong'] or 0
-            
             res[line.id] = tong_sl - tong_sl_giam
         return res
     
@@ -316,6 +296,27 @@ class chi_tiet_loai_line(osv.osv):
         res = {}
         for line in self.browse(cr, uid, ids, context=context):
             sql = '''
+                select case when sum(sl_thuc_tiem)!=0 then sum(sl_thuc_tiem) else 0 end sl_thuc_tiem
+                from ct_tiem_phong_lmlm_line
+                where tp_lmlm_id in (select id from tiem_phong_lmlm where loai_id = %s and ho_chan_nuoi_id = %s 
+                and trang_thai_id in (select id from trang_thai where stt = 3))
+                and name = '%s'
+            '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name)
+            cr.execute(sql)
+            tong_sl_tiem = cr.dictfetchone()['sl_thuc_tiem']
+            
+            sql = '''
+                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
+                from chi_tiet_da_tiem_phong where nhap_xuat_tiemphong_id in (select id from nhap_xuat_canh_giasuc 
+                where trang_thai_id in (select id from trang_thai where stt = 3) and loai_id = %s and ten_ho_id = %s)
+                and name = '%s'
+            '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name)
+            cr.execute(sql)
+            so_luong = cr.dictfetchone()['so_luong']
+            sum_sl_da_tiem = tong_sl_tiem - so_luong
+            
+            
+            sql = '''
                 select case when sum(so_luong)!=0 then sum(so_luong) else 0 end tong_sl from chi_tiet_loai_line
                 where co_cau_id in (select id from co_cau where chon_loai = %s and ten_ho_id = %s and tang_giam = 'a' and trang_thai_id in (select id from trang_thai where stt = 3))
                 and name = '%s'
@@ -330,37 +331,8 @@ class chi_tiet_loai_line(osv.osv):
             cr.execute(sql)
             tong_sl_giam = cr.dictfetchone()['tong_sl_giam']
             
-            sql = '''
-                select so_luong from chi_tiet_loai_line
-                where co_cau_id in (select id from co_cau where chon_loai = %s and ten_ho_id = %s and tang_giam = 'a'
-                and nhap_xuat_id is null)
-                and name = '%s' and id = %s
-            '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name, line.id)
-            cr.execute(sql)
-            sl_tang_hientai = cr.dictfetchone()
-            tong_sl += sl_tang_hientai and sl_tang_hientai['so_luong'] or 0
-            sql = '''
-                select so_luong from chi_tiet_loai_line
-                where co_cau_id in (select id from co_cau where chon_loai = %s and ten_ho_id = %s and tang_giam = 'b'
-                and nhap_xuat_id is null)
-                and name = '%s' and id = %s
-            '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name, line.id)
-            cr.execute(sql)
-            sl_giam_hientai = cr.dictfetchone()
-            tong_sl_giam += sl_giam_hientai and sl_giam_hientai['so_luong'] or 0
-            
             sum_so_luong = tong_sl - tong_sl_giam
             
-            sql = '''
-                select case when sum(sl_thuc_tiem)!=0 then sum(sl_thuc_tiem) else 0 end sl_thuc_tiem
-                from ct_tiem_phong_lmlm_line
-                where tp_lmlm_id in (select id from tiem_phong_lmlm where loai_id = %s and ho_chan_nuoi_id = %s 
-                and trang_thai_id in (select id from trang_thai where stt = 3))
-                and name = '%s'
-            '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name)
-            cr.execute(sql)
-            tong_sl_tiem = cr.dictfetchone()['sl_thuc_tiem']
-            sum_sl_da_tiem = tong_sl_tiem
             if float(sum_so_luong):
                 res[line.id] = float(sum_sl_da_tiem)/float(sum_so_luong)*100
             else:

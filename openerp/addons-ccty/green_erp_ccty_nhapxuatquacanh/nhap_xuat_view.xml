@@ -197,7 +197,7 @@
 									<tree editable='bottom' create = 'false'>
 										<field name="name" invisible = '1'/>
 										<field name="loai_benh_id" options="{'create': false, 'create_edit': false}"/>
-										<field name="so_luong" sum = 'Total' readonly = '1'/>
+										<field name="so_luong" sum = 'Total' readonly = '1' string = 'Số lượng nhập'/>
 									</tree>
 								</field>
 							</page>
