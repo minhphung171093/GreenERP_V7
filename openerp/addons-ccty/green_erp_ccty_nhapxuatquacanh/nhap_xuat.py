@@ -356,9 +356,11 @@ class nhap_xuat_canh_giasuc(osv.osv):
                     co_cau_id = co_cau_obj.create(cr,uid,value)
                     co_cau_obj.bt_duyet(cr,uid,[co_cau_id])
         return True
-    def onchange_chon_loai(self, cr, uid, ids, loai_id = False, context=None):
+    
+    def onchange_chon_loai(self, cr, uid, ids, loai_id = False, ten_ho_id = False, loai_select = False, context=None):
         chi_tiet= []
         tiem_phong = []
+        loai_ho_id = False
         for nhap_xuat in self.browse(cr,uid,ids):
             sql = '''
                 delete from chi_tiet_loai_nhap_xuat where nhap_xuat_loai_id = %s
@@ -375,13 +377,32 @@ class nhap_xuat_canh_giasuc(osv.osv):
                                       'name': line_loaivat.name,
                                       'tiem_phong':line_loaivat.tiem_phong,
                                       }))
-            for line_loaibenh in loai.chitiet_loaibenh:
-                tiem_phong.append((0,0,{
-                                      'name': line_loaibenh.name,
-                                      'loai_benh_id': line_loaibenh.id,
-                                      }))
+            if loai_select == 'nhap':
+                for line_loaibenh in loai.chitiet_loaibenh:
+                    tiem_phong.append((0,0,{
+                                          'name': line_loaibenh.name,
+                                          'loai_benh_id': line_loaibenh.id,
+                                          }))
+            if loai_select == 'xuat':
+                if ten_ho_id:
+                    ho = self.pool.get('chan.nuoi').browse(cr,uid,ten_ho_id)
+                    loai_ho_id = ho.loai_ho_id.id
+                    sql = '''
+                        select id from tiem_phong_lmlm where loai_id = %s and ho_chan_nuoi_id = %s and trang_thai_id in (select id from trang_thai where stt = 3) 
+                    '''%(loai_id, ten_ho_id)
+                    cr.execute(sql)
+                    lmlm_ids = [r[0] for r in cr.fetchall()]
+                    if lmlm_ids:
+                        for lmlm in self.pool.get('tiem.phong.lmlm').browse(cr,uid,lmlm_ids):
+                            tiem_phong.append((0,0,{
+                                          'tiem_phong_id': lmlm.id,
+                                          'loai_benh_id':lmlm.loai_benh_id.id,
+                                          'sl_tiem':lmlm.tong_sl_tiem,
+                                          }))
+                
         return {'value': {'chitiet_loai_nx': chi_tiet,
                           'chitiet_da_tiem_phong': tiem_phong,
+                          'loai_ho_id': loai_ho_id,
                           }}
     
 nhap_xuat_canh_giasuc()
@@ -396,14 +417,28 @@ class chi_tiet_loai_nhap_xuat(osv.osv):
                 }
 chi_tiet_loai_nhap_xuat()
 
+# class chi_tiet_da_tiem_phong(osv.osv):
+#     _name = "chi.tiet.da.tiem.phong"
+#     _columns = {
+#         'nhap_xuat_tiemphong_id': fields.many2one('nhap.xuat.canh.giasuc','Nhap Xuat', ondelete = 'cascade'),
+#         'name': fields.char('Loại bệnh', readonly = True),
+#         'loai_benh_id': fields.many2one('chi.tiet.loai.benh','Loại bệnh', readonly = True),
+#         'so_luong': fields.integer('Số lượng'),
+#                 }
+# chi_tiet_da_tiem_phong()
+
 class chi_tiet_da_tiem_phong(osv.osv):
     _name = "chi.tiet.da.tiem.phong"
     _columns = {
         'nhap_xuat_tiemphong_id': fields.many2one('nhap.xuat.canh.giasuc','Nhap Xuat', ondelete = 'cascade'),
         'name': fields.char('Loại bệnh', readonly = True),
+        'tiem_phong_id': fields.many2one('tiem.phong.lmlm','Số giấy tiêm phòng'),
         'loai_benh_id': fields.many2one('chi.tiet.loai.benh','Loại bệnh', readonly = True),
-        'so_luong': fields.integer('Số lượng'),
+        'sl_tiem': fields.integer('Số lượng đã tiêm', readonly = True),
+        'so_luong': fields.integer('Số lượng xuất'),
                 }
+    
+    # so luong xuat phai nho hon so luong da tiem trong phieu
 chi_tiet_da_tiem_phong()
 
 
