@@ -1,8 +1,9 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Acespritech Solutions Pvt. Ltd.
-#    Copyright (C) 2013-2014
+#    OpenERP, Open Source Enterprise Management Solution
+#    risk_management Module
+#    Copyright (C) 2014 OpenSur (comercial@opensur.com)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,25 +20,30 @@
 #
 ##############################################################################
 {
-    'name': 'Viruco Account',
-    'version': '1.0',
+    'name': 'GreenERP Web Menu Hide/Show',
     'category': 'GreenERP',
-    'description': """Account""",
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',
-    'depends': ['green_erp_viruco_base','account_voucher','account','green_erp_account_regularization'],
-    'data': [
-        'security/viruco_account_security.xml',
-        'security/ir.model.access.csv',
-        'report/report_view.xml',
-        'wizard/print_report.xml',
-        'account_invoice_view.xml',
-        'account_voucher_view.xml',
-        'menu.xml',
-             ],
-    'demo': [],
-    'test': [],
+    'description': """
+Web Menu Hide/Show
+==================
+
+    * Improves UI by allowing user to hide/show left menu bar
+
+""",
+    'version': '1.0',
+    'depends': ['web'],
+    'data' : [
+    ],
+    'qweb' : [
+    ],
+    'js' : [
+        'static/src/js/web_menu_hide.js'
+    ],
+    'css' : [
+        'static/src/css/web_menu_hide.css'
+    ],
+    'auto_install': True,
     'installable': True,
-    'auto_install': False,
+    'application': True,
 }
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
