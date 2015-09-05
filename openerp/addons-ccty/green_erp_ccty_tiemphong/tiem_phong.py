@@ -254,6 +254,7 @@ class ct_tiem_phong_lmlm_line(osv.osv):
         'sl_ngoai_dien': fields.integer('Ngoại diện'),
         'sl_mien_dich': fields.integer('Tiêm phòng còn Miễn dịch'),
         'sl_thuc_tiem': fields.integer('Số lượng thực tiêm'),
+#         'trang_thai_id_relate': fields.related('tp_lmlm_id','trang_thai_id',type='many2one', relation='trang.thai',string='Trang Thai', store = False),
                 }
     _defaults = {
         'tiem_phong':False,
@@ -281,6 +282,7 @@ class ct_tiem_phong_vaccine_line(osv.osv):
         'so_lo_id':fields.many2one('so.lo','Số lô'),
         'han_su_dung_rel':fields.related('so_lo_id','han_su_dung',type='date',string='HSD đến'),
         'so_luong_vc': fields.integer('Số lượng Vaccine'),
+#         'trang_thai_id_relate': fields.related('tp_lmlm_id','trang_thai_id',type='many2one', relation='trang.thai',string='Trang Thai'),
                 }
     
 ct_tiem_phong_vaccine_line()
