@@ -264,7 +264,16 @@ class chi_tiet_loai_line(osv.osv):
             '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name)
             cr.execute(sql)
             tong_sl_tiem = cr.dictfetchone()['sl_thuc_tiem']
-            res[line.id] = tong_sl_tiem
+            
+            sql = '''
+                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
+                from chi_tiet_da_tiem_phong where nhap_xuat_tiemphong_id in (select id from nhap_xuat_canh_giasuc 
+                where trang_thai_id in (select id from trang_thai where stt = 3) and loai_id = %s and ten_ho_id = %s)
+                and name = '%s'
+            '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name)
+            cr.execute(sql)
+            so_luong = cr.dictfetchone()['so_luong']
+            res[line.id] = tong_sl_tiem - so_luong
         return res
     
     def _get_thuc_tiem(self, cr, uid, ids, context=None):

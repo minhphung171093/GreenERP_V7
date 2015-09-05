@@ -403,12 +403,21 @@ class nhap_xuat_canh_giasuc(osv.osv):
                     lmlm_ids = [r[0] for r in cr.fetchall()]
                     if lmlm_ids:
                         for lmlm_line in self.pool.get('ct.tiem.phong.lmlm.line').browse(cr,uid,lmlm_ids):
-                            tiem_phong.append((0,0,{
-                                          'tiem_phong_id': lmlm_line.tp_lmlm_id.id,
-                                          'name': lmlm_line.name,
-                                          'loai_benh_id':lmlm_line.tp_lmlm_id.loai_benh_id.id,
-                                          'sl_tiem':lmlm_line.sl_thuc_tiem,
-                                          }))
+                            sql = '''
+                                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
+                                from chi_tiet_da_tiem_phong where nhap_xuat_tiemphong_id in (select id from nhap_xuat_canh_giasuc 
+                                where trang_thai_id in (select id from trang_thai where stt = 3) )
+                                and tiem_phong_id = %s and name = '%s'
+                            '''%(lmlm_line.tp_lmlm_id.id, lmlm_line.name)
+                            cr.execute(sql)
+                            so_luong = cr.dictfetchone()['so_luong']
+                            if lmlm_line.sl_thuc_tiem - so_luong > 0:
+                                tiem_phong.append((0,0,{
+                                              'tiem_phong_id': lmlm_line.tp_lmlm_id.id,
+                                              'name': lmlm_line.name,
+                                              'loai_benh_id':lmlm_line.tp_lmlm_id.loai_benh_id.id,
+                                              'sl_tiem':lmlm_line.sl_thuc_tiem - so_luong,
+                                              }))
                 
         return {'value': {'chitiet_loai_nx': chi_tiet,
                           'chitiet_da_tiem_phong': tiem_phong,
@@ -450,6 +459,5 @@ class chi_tiet_da_tiem_phong(osv.osv):
     
     # so luong xuat phai nho hon so luong da tiem trong phieu
 chi_tiet_da_tiem_phong()
-
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
