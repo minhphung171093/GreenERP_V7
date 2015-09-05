@@ -159,19 +159,20 @@ class nhap_xuat_canh_giasuc(osv.osv):
     
     def _check_so_luong(self, cr, uid, ids, context=None):
         for nhap_xuat in self.browse(cr, uid, ids, context=context):
-            sql = '''
-                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_loai from chi_tiet_loai_nhap_xuat
-                where nhap_xuat_loai_id = %s
-            '''%(nhap_xuat.id)
-            cr.execute(sql)
-            sl_loai = cr.dictfetchone()['sl_loai']
-            for tiem in nhap_xuat.chitiet_da_tiem_phong:
-                if tiem.so_luong>sl_loai:
-                    if nhap_xuat.loai == 'nhap':
-                        raise osv.except_osv(_('Warning!'),_('Số lượng loài %s đã tiêm phòng với loại bệnh %s không được nhiều hơn số lượng loài %s nhập vào')%(nhap_xuat.loai_id.name, tiem.name, nhap_xuat.loai_id.name))
-                        return False
+            for line in nhap_xuat.chitiet_loai_nx:
+                sql = '''
+                    select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_tp from chi_tiet_da_tiem_phong
+                    where nhap_xuat_tiemphong_id = %s and name = '%s'
+                '''%(nhap_xuat.id, line.name)
+                cr.execute(sql)
+                sl_tp = cr.dictfetchone()['sl_tp']
+            
+                if sl_tp>line.so_luong:
+    #                 if nhap_xuat.loai == 'nhap':
+    #                     raise osv.except_osv(_('Warning!'),_('Số lượng loài %s đã tiêm phòng với loại bệnh %s không được nhiều hơn số lượng loài %s nhập vào')%(nhap_xuat.loai_id.name, tiem.name, nhap_xuat.loai_id.name))
+    #                     return False
                     if nhap_xuat.loai == 'xuat':
-                        raise osv.except_osv(_('Warning!'),_('Số lượng loài %s đã tiêm phòng với loại bệnh %s không được nhiều hơn số lượng loài %s xuất ra')%(nhap_xuat.loai_id.name, tiem.name, nhap_xuat.loai_id.name))
+                        raise osv.except_osv(_('Warning!'),_('Số lượng xuất đã tiêm phòng không được lớn hơn số lượng muốn xuất'))
                         return False
         return True
         
@@ -198,11 +199,21 @@ class nhap_xuat_canh_giasuc(osv.osv):
                 raise osv.except_osv(_('Warning!'),_('Số giấy kiểm dịch không được trùng nhau'))
                 return False
         return True
+
+    def _check_xuat_da_tp(self, cr, uid, ids, context=None):
+        for nhap_xuat in self.browse(cr, uid, ids, context=context):
+            if nhap_xuat.loai == 'xuat':
+                for line in nhap_xuat.chitiet_da_tiem_phong:
+                    if line.so_luong > line.sl_tiem:
+                        raise osv.except_osv(_('Warning!'),_('Số lượng xuất không được lớn hơn số lượng đã tiêm của phiếu tiêm phòng %s ')%(line.tiem_phong_id.name))
+                        return False
+        return True
          
     _constraints = [
         (_check_so_luong, 'Identical Data', []),
         (_check_so_luong_xuat, 'Identical Data', []),
         (_check_giay_kiem_dich, 'Identical Data', []),
+        (_check_xuat_da_tp, 'Identical Data', []),
     ]   
     
     def bt_duyet(self, cr, uid, ids, context=None):
