@@ -141,6 +141,31 @@ class tiem_phong_lmlm(osv.osv):
         'loai_benh_id': _get_loaibenh,
         'trang_thai_id': get_trangthai_nhap,
                  }
+
+    def create(self, cr, uid, vals, context=None):
+        if 'name' in vals:
+            name = vals['name'].replace(" ","")
+            vals['name'] = name
+        return super(tiem_phong_lmlm, self).create(cr, uid, vals, context)
+    
+    def write(self, cr, uid, ids, vals, context=None):
+        if 'name' in vals:
+            name = vals['name'].replace(" ","")
+            vals['name'] = name
+        return super(tiem_phong_lmlm, self).write(cr, uid,ids, vals, context)    
+
+    def _check_giay_tp(self, cr, uid, ids, context=None):
+        for tp in self.browse(cr, uid, ids, context=context):
+            tp_ids = self.search(cr,uid,[('id', '!=', tp.id), ('name', '=', tp.name)])
+            sql = '''
+                select id from tiem_phong_lmlm where id != %s and lower(name) = lower('%s')
+            '''%(tp.id,tp.name)
+            cr.execute(sql)
+            lower_ids = [row[0] for row in cr.fetchall()]
+            if tp_ids or lower_ids:
+                raise osv.except_osv(_('Warning!'),_('Số giấy tiêm phòng không được trùng nhau'))
+                return False
+        return True
     
     def _check_sl_ton_vaccine(self, cr, uid, ids, context=None):
         for tiem_phong in self.browse(cr, uid, ids, context=context):
@@ -158,6 +183,7 @@ class tiem_phong_lmlm(osv.osv):
          
     _constraints = [
         (_check_sl_ton_vaccine, 'Identical Data', []),
+        (_check_giay_tp, 'Identical Data', []),
     ]   
     
     def bt_duyet(self, cr, uid, ids, context=None):
