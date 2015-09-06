@@ -275,11 +275,20 @@ class tiem_phong_lmlm(osv.osv):
                 '''%(ho_chan_nuoi_id, loai_id, line['name'])
                 cr.execute(sql)
                 sl_xuat_tp = cr.dictfetchone()['so_luong']
+                
+                sql = '''
+                    select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
+                    from ct_xuly_giasuc_tp_line where xuly_giasuc_id in (select id from xuly_giasuc 
+                    where ten_ho_id = %s and loai_id = %s and trang_thai_id in (select id from trang_thai where stt = 3))
+                    and name = '%s'
+                '''%(ho_chan_nuoi_id, loai_id, line['name'])
+                cr.execute(sql)
+                so_luong_chet = cr.dictfetchone()['so_luong']
                 chi_tiet.append((0,0,{
                                       'name': line['name'],
                                       'so_luong': line['tong_sl'],
                                       'tiem_phong':line['tiem_phong'],
-                                      'sl_mien_dich': sl_thuc_tiem_before - sl_xuat_tp
+                                      'sl_mien_dich': sl_thuc_tiem_before - sl_xuat_tp - so_luong_chet
                                       }))
         return {'value': {'chi_tiet_tp_line': chi_tiet}}
 

@@ -51,6 +51,7 @@
                     <field name="ten_ho_id" /> 
                     <field name="trang_thai_id" />
                     <field name="can_bo_ghi_so" />
+                    <field name="co_khong_tp" />
                 	<field name="hien_an" invisible = '1'/>
                 	<field name="chinh_sua_rel" invisible = '1'/>
                 </tree>
@@ -81,6 +82,7 @@
 		                    <field name="ten_ho_id" on_change = "onchange_chon_loai(ten_ho_id, loai_id)" options="{'create': false, 'create_edit': false}" context="{'search_ten_ho_id':True}" domain="[('quan_huyen_id','=',quan_huyen_id), ('phuong_xa_id','=',phuong_xa_id), ('khu_pho_id','=',khu_pho_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 	            			<field name="hien_an" invisible = '1'/>
 	            			<field name="chinh_sua_rel" invisible = '1'/>
+	            			<field name="co_khong_tp" />
 	            		</group>
                 		<notebook>
 							<page string = "Thông tin chi tiết xử lý gia súc">
@@ -88,9 +90,9 @@
 									<tree editable='bottom' create = 'false' delete = 'false' >
 										<field name="name"/>
 										<field name="tong_dan" sum = 'Total'/>
-										<field name="so_luong" sum = 'Total'/>
-										<field name="dvt" required = "1" />
-										<field name="sl_tuong_duong" attrs="{'invisible':[('dvt','=','con')]}" />
+										<field name="so_luong" sum = 'Total' on_change = "onchange_dvt(dvt,so_luong)"/>
+										<field name="dvt" required = "1" on_change = "onchange_dvt(dvt,so_luong)" />
+										<field name="sl_tuong_duong" />
 										<field name="ly_do" /> 
 					                    <field name="ket_qua_xn" /> 
 					                    <field name="bien_phap" /> 
@@ -102,6 +104,17 @@
 									<tree editable='bottom'>
 										<field name="loai_hoa_chat_id" options="{'create': false, 'create_edit': false}"/>
 					                    <field name="so_luong"/>
+									</tree>
+								</field>
+							</page>
+							<page string = "Đã tiêm phòng" attrs="{'invisible': [('co_khong_tp', '=', 'khong')]}">
+								<field name="chi_tiet_tp_line" nolabel='1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}">
+									<tree editable='bottom' create = 'false'>
+										<field name="tiem_phong_id" readonly="1" options="{'create': false, 'create_edit': false}"/>
+										<field name="name" readonly="1" />
+										<field name="loai_benh_id" options="{'create': false, 'create_edit': false}"/>
+										<field name="sl_tiem" sum = 'Total'/>
+										<field name="so_luong" sum = 'Total'/>
 									</tree>
 								</field>
 							</page>

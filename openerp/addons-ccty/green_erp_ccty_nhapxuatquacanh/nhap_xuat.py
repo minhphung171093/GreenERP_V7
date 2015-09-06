@@ -417,17 +417,27 @@ class nhap_xuat_canh_giasuc(osv.osv):
                             sql = '''
                                 select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
                                 from chi_tiet_da_tiem_phong where nhap_xuat_tiemphong_id in (select id from nhap_xuat_canh_giasuc 
+                                where trang_thai_id in (select id from trang_thai where stt = 3) and loai = 'xuat')
+                                and tiem_phong_id = %s and name = '%s'
+                            '''%(lmlm_line.tp_lmlm_id.id, lmlm_line.name)
+                            cr.execute(sql)
+                            so_luong_xuat = cr.dictfetchone()['so_luong']
+                            
+                            sql = '''
+                                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
+                                from ct_xuly_giasuc_tp_line where xuly_giasuc_id in (select id from xuly_giasuc 
                                 where trang_thai_id in (select id from trang_thai where stt = 3) )
                                 and tiem_phong_id = %s and name = '%s'
                             '''%(lmlm_line.tp_lmlm_id.id, lmlm_line.name)
                             cr.execute(sql)
-                            so_luong = cr.dictfetchone()['so_luong']
-                            if lmlm_line.sl_thuc_tiem - so_luong > 0:
+                            so_luong_chet = cr.dictfetchone()['so_luong']
+                    
+                            if lmlm_line.sl_thuc_tiem - so_luong_xuat - so_luong_chet> 0:
                                 tiem_phong.append((0,0,{
                                               'tiem_phong_id': lmlm_line.tp_lmlm_id.id,
                                               'name': lmlm_line.name,
                                               'loai_benh_id':lmlm_line.tp_lmlm_id.loai_benh_id.id,
-                                              'sl_tiem':lmlm_line.sl_thuc_tiem - so_luong,
+                                              'sl_tiem':lmlm_line.sl_thuc_tiem - so_luong_xuat - so_luong_chet,
                                               }))
                 
         return {'value': {'chitiet_loai_nx': chi_tiet,
