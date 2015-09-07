@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		
+		<record model="ir.ui.view" id="huongdan_sudung_tree">
+            <field name="name">huongdan.sudung.tree</field>
+            <field name="model">huongdan.sudung</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Hướng dẫn sử dụng">
+                	<field name="name" />
+                </tree>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="huongdan_sudung_form">
+            <field name="name">huongdan.sudung.form</field>
+            <field name="model">huongdan.sudung</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Hướng dẫn sử dụng" version="7.0">
+	                <sheet>
+                		<group>
+                			<h1>
+                				<label for="name"/>
+            					<field name="name" class="oe_inline"/>
+            				</h1>
+                		</group>
+                		<group>
+        					<field name="datas" filename="datas_fname" string="File mềm"/>
+                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+                		</group>
+                		<notebook>
+		                    <page string="Các bước thực hiện">
+		                        <field name="multi_images" widget="image_multi"/>
+		                    </page>
+		                </notebook>
+	                </sheet>
+                </form>
+            </field>
+        </record>
+       
+        <record model="ir.actions.act_window" id="action_huongdan_sudung">
+            <field name="name">Hướng dẫn sử dụng</field>
+            <field name="res_model">huongdan.sudung</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+		
+		<menuitem id="menu_hdsd" name="Hướng dẫn sử dụng" sequence="490"/>
+		<menuitem id="menu_huongdan_sudung" name="Hướng dẫn sử dụng" parent="menu_hdsd" sequence="10"/>
+		<menuitem id="menu_action_huongdan_sudung" action="action_huongdan_sudung" name="Hướng dẫn sử dụng" parent="menu_huongdan_sudung" sequence="10"/>
+
+    </data>
+</openerp>
