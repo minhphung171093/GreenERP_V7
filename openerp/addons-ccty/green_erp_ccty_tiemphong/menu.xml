@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<openerp>
-    <data>
-    	<menuitem id="tiem_phong" name="Quản lý tiêm phòng" groups = "green_erp_ccty_base.group_base_admin_ccty,group_tiemphong_user"/>
-    	<menuitem id="menu_tiem_phong" parent="tiem_phong" name="Thông tin tiêm phòng" sequence = '1'/>
-    <!--	<menuitem id="thong_tin_tiem_phong" parent="menu_tiem_phong" name="Thông tin tiêm phòng" action="action_tiem_phong"/> -->
-   		<menuitem id="tiem_phong_lmlm" parent="menu_tiem_phong" name="Lỡ mồm long móng" action="action_tiem_phong_lmlm" sequence = '1'/>
-    </data>
-</openerp>
