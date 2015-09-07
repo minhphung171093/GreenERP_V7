@@ -25,6 +25,12 @@ class account_voucher(osv.osv):
         'dot_thanhtoan_ids':fields.many2many('account.voucher', 'cac_dot_thanh_toan_ref', 'parent_id', 'voucher_id','Các đợt thanh toán',readonly=True),
         'shop_id': fields.many2one('sale.shop', 'Shop', required=True, readonly=True, states={'draft':[('readonly',False)]}),
         'date_document': fields.date('Document Date', readonly=True, states={'draft':[('readonly',False)]},),
+        
+        'reference_number': fields.char('Number', size=32, readonly=True, states={'draft':[('readonly',False)]}),
+        'batch_id': fields.many2one('account.voucher.batch', 'Related Batch', ondelete='cascade'),
+        'partner_bank_id':fields.many2one('res.partner.bank', 'Partner Bank', required=False, readonly=True, states={'draft':[('readonly',False)]}),
+        'company_bank_id':fields.many2one('res.partner.bank', 'Company Bank', required=False, readonly=True, states={'draft':[('readonly',False)]}),
+        'unshow_financial_report':fields.boolean('Không khai báo thuế'),
     }
 
     def _get_shop_id(self, cr, uid, context=None):

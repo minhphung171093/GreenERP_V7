@@ -24,6 +24,7 @@ import account_invoice
 import report
 import wizard
 import account
+import account_voucher_batch
 import sql_functions
 import sql_account_ledger
 import sql_balance_sheet
