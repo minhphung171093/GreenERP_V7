@@ -1,8 +1,9 @@
-# -*- coding: utf-8# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    OpenERP, Open Source Management Solution
-#    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
+#    OpenERP, Open Source Enterprise Management Solution
+#    risk_management Module
+#    Copyright (C) 2014 OpenSur (comercial@opensur.com)
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -18,28 +19,31 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-
 {
-    'name': 'GreenERP ACCOUNT',
-    'version': '1.0',
+    'name': 'GreenERP Web Menu Hide/Show',
     'category': 'GreenERP',
-    'sequence': 14,
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',
-    'depends': ['green_erp_base','account','account_accountant','report_aeroo','report_aeroo_ooo','green_erp_account_regularization'],
-    'data': [
-        'account_view.xml',
-        'report/report_view.xml',
-        'wizard/print_report.xml',
-        'account_voucher_batch_view.xml',
-        'menu.xml',
+    'description': """
+Web Menu Hide/Show
+==================
+
+    * Improves UI by allowing user to hide/show left menu bar
+
+""",
+    'version': '1.0',
+    'depends': ['web'],
+    'data' : [
+    ],
+    'qweb' : [
+    ],
+    'js' : [
+        'static/src/js/web_menu_hide.js'
     ],
     'css' : [
+        'static/src/css/web_menu_hide.css'
     ],
-    'qweb': [
-    ],
+    'auto_install': True,
     'installable': True,
-    'auto_install': False,
     'application': True,
 }
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4: -*-

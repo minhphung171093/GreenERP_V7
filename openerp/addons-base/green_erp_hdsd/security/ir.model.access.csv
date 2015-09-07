@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_green_erp_hdsd_1,huongdan.sudung,green_erp_hdsd.model_huongdan_sudung,base.group_user,True,False,False,False
+access_green_erp_hdsd_2,huongdan.sudung,green_erp_hdsd.model_huongdan_sudung,base.group_system,True,True,True,True
+
+
+
+
+
+
+
+
+
+

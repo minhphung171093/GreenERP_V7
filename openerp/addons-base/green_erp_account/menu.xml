@@ -18,7 +18,7 @@
 			<field name="active" eval="False"/>
 		</record>
     	
-    	<!-- New VN Taxes Reports menu -->
+<!-- New VN Taxes Reports menu -->
 		<menuitem id="menu_report_taxes" 
 	    	name="VN Taxes Reports" 
 	      	sequence="5"
@@ -36,7 +36,7 @@
 				icon="terp-graph"  
 				parent="menu_report_taxes" sequence="5"/>
 		
-		<!-- New VN General Journals Reports menu -->
+<!-- New VN General Journals Reports menu -->
 		<menuitem id="menu_report_general_account" 
       		name="VN General Journals" 
       		sequence="7"
@@ -54,7 +54,7 @@
 	      		icon="terp-graph"  
 	      		parent="menu_report_general_account" sequence="10"/>
 	      		
-  		<!-- New VN Finance Reports menu -->
+<!-- New VN Finance Reports menu -->
 		<menuitem id="menu_report_finance" 
       		name="VN Financial Reports" 
       		sequence="10"
@@ -79,5 +79,41 @@
 	      		icon="terp-graph"  
 	      		parent="menu_report_finance" sequence="20"/>
     	
+<!-- Sale and Purchase Receipt -->
+	<menuitem id="menu_sale_purchase_receipt"
+		name="Sale and Purchase Receipt"
+		parent="account.menu_finance" 
+		sequence="3"/>
+
+<!-- Phiếu chi -->
+		<menuitem id="menu_action_purchase_receipt_batch_cash" icon="STOCK_JUSTIFY_FILL"
+	        action="action_purchase_receipt_batch_cash" 
+	        parent="menu_sale_purchase_receipt" sequence="5"/>
+	        
+	    <menuitem id="menu_action_purchase_receipt_batch_bank" icon="STOCK_JUSTIFY_FILL"
+	        action="action_purchase_receipt_batch_bank" 
+	        parent="menu_sale_purchase_receipt" sequence="10"/>
+        
+        <menuitem id="account_voucher.menu_action_purchase_receipt" icon="STOCK_JUSTIFY_FILL"
+       		action="account_voucher.action_purchase_receipt" 
+       		parent="menu_sale_purchase_receipt" 
+       		sequence="20"/>
+   		
+<!-- Phieu Thu -->
+		<menuitem id="menu_action_sale_receipt_batch_cash" icon="STOCK_JUSTIFY_FILL"
+	        action="action_sale_receipt_batch_cash" 
+	        parent="menu_sale_purchase_receipt"
+	        sequence="30"/>
+	            
+        <menuitem id="menu_action_sale_receipt_batch_bank" icon="STOCK_JUSTIFY_FILL"
+            action="action_sale_receipt_batch_bank" 
+            parent="menu_sale_purchase_receipt"
+            sequence="40"/>
+            
+   		<menuitem id="account_voucher.menu_action_sale_receipt" icon="STOCK_JUSTIFY_FILL"
+            action="account_voucher.action_sale_receipt"
+            parent="menu_sale_purchase_receipt"
+            sequence="50"/>
+            
     </data>
 </openerp>

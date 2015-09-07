@@ -1,8 +1,8 @@
-# -*- coding: utf-8# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
+#    This module copyright (C) 2013 Therp BV (<http://therp.nl>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -18,28 +18,36 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-
 {
-    'name': 'GreenERP ACCOUNT',
-    'version': '1.0',
-    'category': 'GreenERP',
-    'sequence': 14,
+    "name": "GreenERP Clickable many2one widget for tree views",
+    "version": "1.0",
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',
-    'depends': ['green_erp_base','account','account_accountant','report_aeroo','report_aeroo_ooo','green_erp_account_regularization'],
-    'data': [
-        'account_view.xml',
-        'report/report_view.xml',
-        'wizard/print_report.xml',
-        'account_voucher_batch_view.xml',
-        'menu.xml',
+    "complexity": "normal",
+    "description": """
+This addon provides a widget to have many2one fields in a tree view open the
+linked resource::
+
+<field name="partner_id" widget="many2one_clickable" />
+
+will open the linked partner in a form view.
+    """,
+    "category": "GreenERP",
+    "depends": [
+        'web',
     ],
-    'css' : [
+    "data": [
     ],
-    'qweb': [
+    "js": [
+        'static/src/js/web_tree_many2one_clickable.js',
     ],
-    'installable': True,
-    'auto_install': False,
-    'application': True,
+    "css": [
+    ],
+    "qweb": [
+    ],
+    "auto_install": False,
+    "installable": True,
+    "external_dependencies": {
+        'python': [],
+    },
 }
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4: -*-

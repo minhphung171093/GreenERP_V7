@@ -1,4 +1,4 @@
-# -*- coding: utf-8# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -20,26 +20,25 @@
 ##############################################################################
 
 {
-    'name': 'GreenERP ACCOUNT',
+    'name': 'GreenERP Web Widget Radio',
     'version': '1.0',
     'category': 'GreenERP',
     'sequence': 14,
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',
-    'depends': ['green_erp_base','account','account_accountant','report_aeroo','report_aeroo_ooo','green_erp_account_regularization'],
+    'depends': [],
     'data': [
-        'account_view.xml',
-        'report/report_view.xml',
-        'wizard/print_report.xml',
-        'account_voucher_batch_view.xml',
-        'menu.xml',
     ],
     'css' : [
     ],
-    'qweb': [
+    'js' : [
+        "static/src/js/web_widget_radio.js",
     ],
+    'qweb': [
+        "static/src/xml/web_widget_radio.xml",
+     ],
     'installable': True,
     'auto_install': False,
     'application': True,
 }
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4: -*-
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
