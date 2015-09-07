@@ -29,6 +29,7 @@
     'depends': ['green_erp_base','stock'],
     'data': [
         'stock_view.xml',
+        'stock_inventory.xml',
         'menu.xml',
     ],
     'css' : [
