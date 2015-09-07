@@ -37,20 +37,20 @@
 			<field name="arch" type="xml">
 				<form string="Phòng ban" version="7.0">   
 					<sheet>
-						<group col="4" colspan="2" >  
+						<group col="4" colspan="2" string = 'Phòng ban'>  
 							<field name="name"/>
 							<field name="truong_phong_id" options="{'create': false, 'create_edit': false}"/>  
+						</group>
 							<notebook>
 								<page string = "Danh sách nhân viên">
 									<field name="ds_nhan_vien_line" nolabel='1'>
 										<tree editable='bottom'>
-											<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
+											<field name="nhan_vien_id" on_change = "onchange_nhan_vien(nhan_vien_id)" options="{'create': false, 'create_edit': false}"/>
 											<field name="chuc_vu_id" options="{'create': false, 'create_edit': false}"/>
 										</tree>
 									</field>
 								</page>
 							</notebook>
-						</group>
 					</sheet>
 				</form>
 			</field>
@@ -88,7 +88,7 @@
 			<field name="arch" type="xml">
 				<form string="Nhân viên" version="7.0">   
 					<sheet>
-						<group col="4" colspan="2" >  
+						<group col="4" colspan="2" string = 'Nhân Viên'>  
 							<field name="name"/>
 							<field name="ten_nv" />
 							<field name="chuc_vu_id" options="{'create': false, 'create_edit': false}"/>

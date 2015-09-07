@@ -30,7 +30,18 @@ class quy_trinh(osv.osv):
         'name': fields.char('Tên quy trình', size = 100, required=True),
         'phong_ban_id':fields.many2one('phong.ban','Phòng Ban',required = True),
         'chuc_vu_id':fields.many2one('chuc.vu','Chức vụ'),
-        'buoc_thuc_hien_line':fields.one2many('buoc_thuc_hien_line','quy_trinh_id','Các bước thực hiện'),
+        'buoc_thuc_hien_line':fields.one2many('buoc.thuc.hien.line','quy_trinh_id','Các bước thực hiện'),
+                }
+    
+quy_trinh()
+
+class buoc_thuc_hien_line(osv.osv):
+    _name = "buoc.thuc.hien.line"
+    _columns = {
+        'quy_trinh_id':fields.many2one('quy.trinh','Quy trình', ondelete = 'cascade'),
+        'name': fields.char('Tên chi tiết', size = 100, required=True),
+        'yeu_cau_kq':fields.text('Yêu cầu kết quả đạt được'),
+        'cach_thuc_hien': fields.text('Cách thức thực hiện'),
                 }
     
 quy_trinh()
