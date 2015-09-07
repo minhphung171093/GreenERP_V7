@@ -26,12 +26,19 @@
 						</group>
 							<notebook>
 								<page string = "Các bước thực hiện">
-									<field name="buoc_thuc_hien_line" nolabel='1'>
-										<tree editable='bottom'>
+									<field name="buoc_thuc_hien_line" nolabel='1' class="oe_green_erp_scroll">
+										<tree>
 											<field name="name" />
 											<field name="yeu_cau_kq"/>
 											<field name="cach_thuc_hien"/>
 										</tree>
+										<form>
+											<group col="4" colspan="2" >  
+												<field name="name" />
+												<field name="yeu_cau_kq"/>
+												<field name="cach_thuc_hien"/>
+											</group>
+										</form>
 									</field>
 								</page>
 							</notebook>
