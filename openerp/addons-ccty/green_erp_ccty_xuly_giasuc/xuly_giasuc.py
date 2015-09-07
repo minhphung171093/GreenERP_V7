@@ -304,7 +304,7 @@ class chitiet_loai_xuly(osv.osv):
         'xuly_giasuc_id': fields.many2one('xuly.giasuc','Xu ly gia suc', ondelete = 'cascade'),
         'name': fields.char('Thông tin', readonly = True),
         'tong_dan': fields.integer('Tổng đàn', readonly = True),
-        'so_luong': fields.float('Số lượng xử lý'),
+        'so_luong': fields.float('Số lượng xử lý', required = True),
 #         'dvt':fields.many2one('don.vi.tinh','ĐVT',required=True),
         'dvt':fields.selection([('kg', 'Kg'),('con', 'Con')],'ĐVT'),
         'sl_tuong_duong':fields.integer('Tương đương (con)', required = True),
