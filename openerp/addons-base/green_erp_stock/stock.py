@@ -120,10 +120,10 @@ class stock_picking(osv.osv):
             store={
                 'stock.picking': (lambda self, cr, uid, ids, c={}: ids, ['location_id','location_dest_id'], 10),
             }, readonly=True, multi='lo_info'),
-        'warehouse_id': fields.function(_get_location_info, type='many2one', relation='stock.warehouse', string='Warehouse',
-            store={
-                'stock.picking': (lambda self, cr, uid, ids, c={}: ids, ['location_id','location_dest_id'], 10),
-            }, readonly=True, multi='lo_info'),
+#         'warehouse_id': fields.function(_get_location_info, type='many2one', relation='stock.warehouse', string='Warehouse',
+#             store={
+#                 'stock.picking': (lambda self, cr, uid, ids, c={}: ids, ['location_id','location_dest_id'], 10),
+#             }, readonly=True, multi='lo_info'),
                 
         'stock_journal_id': fields.many2one('stock.journal','Stock Journal', required=True, select=True, states={'done':[('readonly', True)], 'cancel':[('readonly',True)]}, track_visibility='onchange'),
         'return': fields.selection([('none', 'Normal'), ('customer', 'Return from Customer'),('internal','Return Internal'), ('supplier', 'Return to Supplier')], 'Type', required=True, select=True, help="Type specifies whether the Picking has been returned or not."),
@@ -329,36 +329,17 @@ class stock_picking_in(osv.osv):
             store={
                 'stock.picking.in': (lambda self, cr, uid, ids, c={}: ids, ['location_id','location_dest_id'], 10),
             }, readonly=True, multi='pro_info'),
-        'warehouse_id': fields.function(_get_location_info, type='many2one', relation='stock.warehouse', string='Warehouse',
-            store={
-                'stock.picking.in': (lambda self, cr, uid, ids, c={}: ids, ['location_id','location_dest_id'], 10),
-            }, readonly=True, multi='pro_info'),
+#         'warehouse_id': fields.function(_get_location_info, type='many2one', relation='stock.warehouse', string='Warehouse',
+#             store={
+#                 'stock.picking.in': (lambda self, cr, uid, ids, c={}: ids, ['location_id','location_dest_id'], 10),
+#             }, readonly=True, multi='pro_info'),
         'stock_journal_id': fields.many2one('stock.journal','Stock Journal', required=True, select=True, states={'done':[('readonly', True)], 'cancel':[('readonly',True)]}, track_visibility='onchange'),
         'return': fields.selection([('none', 'Normal'), ('customer', 'Return from Customer'),('internal','Return Internal'), ('supplier', 'Return to Supplier')], 'Type', required=True, select=True, help="Type specifies whether the Picking has been returned or not."),
     }
     
-#     def _get_journal(self, cr, uid, context=None):
-#         journal_domain = []
-#         if context.get('default_type',False) and context.get('default_return',False):
-#             default_type = context['default_type']
-#             default_return = context['default_return']
-#             if default_type == 'in':
-#                 journal_domain = [('source_type', '=', 'in')]
-#                 if default_return == 'customer':
-#                     journal_domain = [('source_type', '=', 'return_customer')]
-#             if default_type == 'out':
-#                 journal_domain = [('source_type', '=', 'out')]
-#                 if default_return == 'supplier':
-#                     journal_domain = [('source_type', '=', 'return_supplier')]
-#         else:
-#             journal_domain = [('source_type', '=', 'internal')]
-#         journal_ids = self.pool.get('stock.journal').search(cr, uid, journal_domain)
-#         return journal_ids and journal_ids[0] or False
-     
     _defaults = {  
         'return': 'none',
         'type':   'in',  
-#         'stock_journal_id': _get_journal,
     }
     
     def fields_view_get(self, cr, uid, view_id=None, view_type=False, context=None, toolbar=False, submenu=False):
@@ -426,34 +407,15 @@ class stock_picking_out(osv.osv):
             store={
                 'stock.picking.in': (lambda self, cr, uid, ids, c={}: ids, ['location_id','location_dest_id'], 10),
             }, readonly=True, multi='pro_info'),
-        'warehouse_id': fields.function(_get_location_info, type='many2one', relation='stock.warehouse', string='Warehouse',
-            store={
-                'stock.picking.in': (lambda self, cr, uid, ids, c={}: ids, ['location_id','location_dest_id'], 10),
-            }, readonly=True, multi='pro_info'),
+#         'warehouse_id': fields.function(_get_location_info, type='many2one', relation='stock.warehouse', string='Warehouse',
+#             store={
+#                 'stock.picking.in': (lambda self, cr, uid, ids, c={}: ids, ['location_id','location_dest_id'], 10),
+#             }, readonly=True, multi='pro_info'),
         'stock_journal_id': fields.many2one('stock.journal','Stock Journal', required=True, select=True, states={'done':[('readonly', True)], 'cancel':[('readonly',True)]}, track_visibility='onchange'),
         'return': fields.selection([('none', 'Normal'), ('customer', 'Return from Customer'),('internal','Return Internal'), ('supplier', 'Return to Supplier')], 'Type', required=True, select=True, help="Type specifies whether the Picking has been returned or not."),
     }
     
-#     def _get_journal(self, cr, uid, context=None):
-#         journal_domain = []
-#         if context.get('default_type',False) and context.get('default_return',False):
-#             default_type = context['default_type']
-#             default_return = context['default_return']
-#             if default_type == 'in':
-#                 journal_domain = [('source_type', '=', 'in')]
-#                 if default_return == 'customer':
-#                     journal_domain = [('source_type', '=', 'return_customer')]
-#             if default_type == 'out':
-#                 journal_domain = [('source_type', '=', 'out')]
-#                 if default_return == 'supplier':
-#                     journal_domain = [('source_type', '=', 'return_supplier')]
-#         else:
-#             journal_domain = [('source_type', '=', 'internal')]
-#         journal_ids = self.pool.get('stock.journal').search(cr, uid, journal_domain)
-#         return journal_ids and journal_ids[0] or False
-     
     _defaults = {    
-#         'stock_journal_id': _get_journal,
         'return': 'none',
         'type':   'out',
     }
