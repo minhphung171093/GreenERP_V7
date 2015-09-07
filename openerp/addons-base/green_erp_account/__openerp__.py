@@ -31,6 +31,7 @@
         'account_view.xml',
         'report/report_view.xml',
         'wizard/print_report.xml',
+        'account_voucher_batch_view.xml',
         'menu.xml',
     ],
     'css' : [

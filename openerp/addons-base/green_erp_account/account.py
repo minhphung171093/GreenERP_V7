@@ -309,9 +309,24 @@ account_move_line()
 class account_voucher(osv.osv):
     _inherit = 'account.voucher'
     
+    def onchange_journal(self, cr, uid, ids, journal_id, line_ids, tax_id, partner_id, date, amount, ttype, company_id, context=None):
+        if not journal_id:
+            return False
+        res = super(account_voucher, self).onchange_journal(cr, uid, ids, journal_id, line_ids, tax_id, partner_id, date, amount, ttype, company_id, context=context)
+        if journal_id:
+            journal_data = self.pool.get('account.journal').browse(cr, uid,journal_id)
+            res['value']['account_id'] = journal_data.default_debit_account_id.id or journal_data.default_credit_account_id.id or False
+        return res
+    
     _columns = {
         'shop_id': fields.many2one('sale.shop', 'Shop', required=True, readonly=True, states={'draft':[('readonly',False)]}),
         'date_document': fields.date('Document Date', readonly=True, states={'draft':[('readonly',False)]},),
+        
+        'reference_number': fields.char('Number', size=32, readonly=True, states={'draft':[('readonly',False)]}),
+        'batch_id': fields.many2one('account.voucher.batch', 'Related Batch', ondelete='cascade'),
+        'partner_bank_id':fields.many2one('res.partner.bank', 'Partner Bank', required=False, readonly=True, states={'draft':[('readonly',False)]}),
+        'company_bank_id':fields.many2one('res.partner.bank', 'Company Bank', required=False, readonly=True, states={'draft':[('readonly',False)]}),
+        'unshow_financial_report':fields.boolean('Không khai báo thuế'),
     }
 
     def _get_shop_id(self, cr, uid, context=None):
@@ -322,6 +337,8 @@ class account_voucher(osv.osv):
     
     _defaults = {
         'shop_id': _get_shop_id,
+        
+        'unshow_financial_report':False,
     }
     
     def account_move_get(self, cr, uid, voucher_id, context=None):
