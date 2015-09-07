@@ -2,5 +2,60 @@
 <openerp>
     <data>
 
+		<record model="ir.ui.view" id="nhom_cong_viec_tree">
+            <field name="name">nhom.cong.viec.tree</field>
+            <field name="model">nhom.cong.viec</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Nhóm công việc">
+                	<field name="name" />
+                	<field name="phong_ban_id" />
+                	<field name="ho_tro" />
+                	<field name="quy_trinh_id" />
+                	<field name="trang_thai" />
+                </tree>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="nhom_cong_viec_form">
+            <field name="name">nhom.cong.viec.form</field>
+            <field name="model">nhom.cong.viec</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Nhóm công việc" version="7.0">
+                <header>
+	                    <field name="trang_thai" widget="statusbar" statusbar_visible="moi,lam,cho_duyet,duyet" />
+	            </header>  
+	                <sheet>
+	                <group>
+	                	<field name="name" />
+	                	<field name="phong_ban_id" options="{'create': false, 'create_edit': false}"/>
+	                	<field name="ho_tro" />
+	                	<field name="quy_trinh_id" options="{'create': false, 'create_edit': false}"/>
+	                </group>
+                		<notebook>
+		                    <page string="Các bước thực hiện">
+		                    <field name="ct_nhom_cv_line" nolabel='1'>
+		                		<group>
+		                			<field name="name" />
+		        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+		                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+		                            <field name="yeu_cau_kq" />
+		                            <field name="cach_thuc_hien" />
+		                		</group>
+		                    </page>
+		                </notebook>
+	                </sheet>
+                </form>
+            </field>
+        </record>
+       
+        <record model="ir.actions.act_window" id="action_nhom_cong_viec">
+            <field name="name">Nhóm công việc</field>
+            <field name="res_model">nhom.cong.viec</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
     </data>
 </openerp>
