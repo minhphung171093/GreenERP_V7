@@ -19,8 +19,98 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
         </record>
+        
+        <record id="phong_ban_tree_view" model="ir.ui.view">
+			<field name="name">phong.ban.tree</field>
+			<field name="model">phong.ban</field>
+			<field name="arch" type="xml">
+				<tree string="Phòng ban">
+					<field name="name"/>
+					<field name="truong_phong_id" options="{'create': false, 'create_edit': false}"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="phong_ban_form_view" model="ir.ui.view">
+			<field name="name">phong.ban.form</field>
+			<field name="model">phong.ban</field>
+			<field name="arch" type="xml">
+				<form string="Phòng ban" version="7.0">   
+					<sheet>
+						<group col="4" colspan="2" string = 'Phòng ban'>  
+							<field name="name"/>
+							<field name="truong_phong_id" options="{'create': false, 'create_edit': false}"/>  
+						</group>
+							<notebook>
+								<page string = "Danh sách nhân viên">
+									<field name="ds_nhan_vien_line" nolabel='1'>
+										<tree editable='bottom'>
+											<field name="nhan_vien_id" on_change = "onchange_nhan_vien(nhan_vien_id)" options="{'create': false, 'create_edit': false}"/>
+											<field name="chuc_vu_id" options="{'create': false, 'create_edit': false}"/>
+										</tree>
+									</field>
+								</page>
+							</notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>
+		
+        
+        <record id="action_phong_ban_form" model="ir.actions.act_window">
+            <field name="name">Phòng ban</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">phong.ban</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+            <field name="view_id" ref="phong_ban_tree_view"/>
+        </record>
 
-
+		<record id="nhan_vien_tree_view" model="ir.ui.view">
+			<field name="name">nhan.vien.tree</field>
+			<field name="model">nhan.vien</field>
+			<field name="arch" type="xml">
+				<tree string="Nhân viên">
+					<field name="name"/>
+					<field name="ten_nv" />
+					<field name="chuc_vu_id" options="{'create': false, 'create_edit': false}"/>
+					<field name="dia_chi"/>
+					<field name="sdt"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="nhan_vien_form_view" model="ir.ui.view">
+			<field name="name">nhan.vien.form</field>
+			<field name="model">nhan.vien</field>
+			<field name="arch" type="xml">
+				<form string="Nhân viên" version="7.0">   
+					<sheet>
+						<group col="4" colspan="2" string = 'Nhân Viên'>  
+							<field name="name"/>
+							<field name="ten_nv" />
+							<field name="chuc_vu_id" options="{'create': false, 'create_edit': false}"/>
+							<field name="dia_chi"/>
+							<field name="sdt"/>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+		
+        
+        <record id="action_nhan_vien_form" model="ir.actions.act_window">
+            <field name="name">Nhân viên</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">nhan.vien</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+            <field name="view_id" ref="nhan_vien_tree_view"/>
+        </record>
 
     </data>
 </openerp>

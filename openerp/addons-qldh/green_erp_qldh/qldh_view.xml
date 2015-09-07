@@ -27,23 +27,35 @@
 	                    <field name="trang_thai" widget="statusbar" statusbar_visible="moi,lam,cho_duyet,duyet" />
 	            </header>  
 	                <sheet>
-	                <group>
+	                <group col="4" colspan="2">
 	                	<field name="name" />
 	                	<field name="phong_ban_id" options="{'create': false, 'create_edit': false}"/>
 	                	<field name="ho_tro" />
 	                	<field name="quy_trinh_id" options="{'create': false, 'create_edit': false}"/>
+	                	<field name="ghi_chu" />
 	                </group>
                 		<notebook>
 		                    <page string="Các bước thực hiện">
-		                    <field name="ct_nhom_cv_line" nolabel='1'>
-		                		<group>
-		                			<field name="name" />
-		        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
-		                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-		                            <field name="yeu_cau_kq" />
-		                            <field name="cach_thuc_hien" />
-		                		</group>
+		                    	<field name="ct_nhom_cv_line" nolabel='1'>
+		                    		<tree>
+			                			<field name="name" />
+			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+			                            <field name="yeu_cau_kq" />
+			                            <field name="cach_thuc_hien" />
+			                        </tree>
+			                        <form>
+			                        <group col="4" colspan="2">
+			                        	<field name="name" />
+			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+			                            <field name="yeu_cau_kq" />
+			                            <field name="cach_thuc_hien" />
+			                         </group>   
+			                        </form>
+		                		</field>
 		                    </page>
+		                    
 		                </notebook>
 	                </sheet>
                 </form>
@@ -57,5 +69,56 @@
             <field name="view_mode">tree,form</field>
         </record>
 
+		<record id="quy_trinh_tree_view" model="ir.ui.view">
+			<field name="name">quy.trinh.tree</field>
+			<field name="model">quy.trinh</field>
+			<field name="arch" type="xml">
+				<tree string="Quy trình">
+					<field name="name"/>
+					<field name="phong_ban_id" options="{'create': false, 'create_edit': false}"/>
+					<field name="chuc_vu_id" options="{'create': false, 'create_edit': false}"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="quy_trinh_form_view" model="ir.ui.view">
+			<field name="name">quy.trinh.form</field>
+			<field name="model">quy.trinh</field>
+			<field name="arch" type="xml">
+				<form string="Quy trình" version="7.0">   
+					<sheet>
+						<group col="4" colspan="2" >  
+							<field name="name"/>
+							<field name="phong_ban_id" options="{'create': false, 'create_edit': false}"/>
+							<field name="chuc_vu_id" options="{'create': false, 'create_edit': false}"/>
+						</group>
+							<notebook>
+								<page string = "Các bước thực hiện">
+									<field name="buoc_thuc_hien_line" nolabel='1'>
+										<tree editable='bottom'>
+											<field name="name" />
+											<field name="yeu_cau_kq"/>
+											<field name="cach_thuc_hien"/>
+										</tree>
+									</field>
+								</page>
+							</notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>
+		
+        
+        <record id="action_quy_trinh_form" model="ir.actions.act_window">
+            <field name="name">Quy trình</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">quy.trinh</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+            <field name="view_id" ref="quy_trinh_tree_view"/>
+        </record>
+		
     </data>
 </openerp>

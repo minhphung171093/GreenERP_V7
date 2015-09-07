@@ -24,6 +24,7 @@ class chuc_vu(osv.osv):
     }
 
 chuc_vu()
+
 class phong_ban(osv.osv):
     _name = "phong.ban"
     _columns = {
@@ -40,13 +41,66 @@ class ds_nhan_vien_line(osv.osv):
         'nhan_vien_id': fields.many2one('nhan.vien','Nhân viên', required=True),
         'chuc_vu_id': fields.many2one('chuc.vu','Chức vụ', readonly = True),
                 }
+    
+    
+    def onchange_nhan_vien(self, cr, uid, ids,nhan_vien_id=False,context=None):
+        if nhan_vien_id:
+            nhan_vien = self.pool.get('nhan.vien').browse(cr,uid,nhan_vien_id)
+        res = {'value':{
+                        'chuc_vu_id':nhan_vien.chuc_vu_id.id,
+                      }
+               }
+        return res 
+    def create(self, cr, uid, vals, context=None):
+        if 'nhan_vien_id' in vals and vals['nhan_vien_id']:
+            nhan_vien = self.pool.get('nhan.vien').browse(cr,uid,vals['nhan_vien_id'])
+            vals.update({
+                        'chuc_vu_id':nhan_vien.chuc_vu_id.id,
+                        })
+        new_id = super(ds_nhan_vien_line, self).create(cr, uid, vals, context)
+        return new_id
+    
+    def write(self, cr, uid, ids, vals, context=None):
+        if 'nhan_vien_id' in vals and vals['nhan_vien_id']:
+            nhan_vien = self.pool.get('nhan.vien').browse(cr,uid,vals['nhan_vien_id'])
+            vals.update({
+                        'chuc_vu_id':nhan_vien.chuc_vu_id.id,
+                        })
+        new_write = super(ds_nhan_vien_line, self).write(cr, uid, ids, vals, context)
+        return new_write
 ds_nhan_vien_line()
 
 class nhan_vien(osv.osv):
     _name = "nhan.vien"
     _columns = {
-        'name': fields.char('Tên nhân viên', size = 100, required=True),
+        'name': fields.char('Mã nhân viên', size = 100, required=True),
+        'ten_nv': fields.char('Tên nhân viên', size = 100, required=True),
         'chuc_vu_id': fields.many2one('chuc.vu','Chức vụ', required=True),
+        'dia_chi': fields.char('Địa chỉ', size = 100),
+        'sdt': fields.char('Số điện thoại', size = 100),
                 }
+    
+    def name_get(self, cr, uid, ids, context=None):
+        res = []
+        if not ids:
+            return res
+        reads = self.read(cr, uid, ids, ['name', 'ten_nv'], context)
+ 
+        for record in reads:
+            name = record['name'] + ' - ' + record['ten_nv']
+            res.append((record['id'], name))
+        return res
+    
+    def _check_ma_nhan_vien(self, cr, uid, ids, context=None):
+        for nhan_vien in self.browse(cr, uid, ids, context=context):
+            nhan_vien_ids = self.search(cr,uid,[('id', '!=', nhan_vien.id), ('name', '=', nhan_vien.name)])
+            if nhan_vien_ids:
+                raise osv.except_osv(_('Warning!'),_('Hệ thống không cho phép trùng mã nhân viên'))
+                return False
+        return True
+    
+    _constraints = [
+        (_check_ma_nhan_vien, 'Identical Data', []),
+    ]
 nhan_vien()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

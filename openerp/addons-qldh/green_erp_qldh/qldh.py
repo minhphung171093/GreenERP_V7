@@ -23,9 +23,10 @@ class nhom_cong_viec(osv.osv):
         'name':fields.char('Tên nhóm công việc',size=1024,required=True),
         'phong_ban_id':fields.many2one('phong.ban','Phòng ban'),
         'ho_tro':fields.selection([('co','Có'),('khong','Không')],'Hỗ trợ'),
-        'quy_trinh_id':fields.many2one('quy_trinh','Quy trình'),
+        'quy_trinh_id':fields.many2one('quy.trinh','Quy trình'),
         'trang_thai':fields.selection([('moi','Mới nhận'),('lam','Đang làm'),('cho_duyet','Chờ phê duyệt'),('duyet','Đã duyệt')],'Trạng thái'),
         'ct_nhom_cv_line':fields.one2many('ct.nhom.cong.viec','nhom_cv_id','Chi tiết công việc'),
+        'ghi_chu':fields.text('Ghi chú'),
 #         'cong_viec_line':fields.one2many('ct.nhom.cong.viec','nhom_cv_id','Chi tiết công việc'),
                 
     }
@@ -70,6 +71,7 @@ class ct_nhom_cong_viec(osv.osv):
             super(ct_nhom_cong_viec, self).write(cr, SUPERUSER_ID, [id], {'db_datas': value, 'file_size': file_size}, context=context)
         return True
     _columns = {
+        'nhom_cv_id':fields.many2one('nhom.cong.viec','nhom cong viec',ondelete='cascade'),
         'name':fields.char('Tên chi tiết',size=1024),
         'datas_fname': fields.char('File Name',size=256),
         'datas': fields.function(_data_get, fnct_inv=_data_set, string='File Content', type="binary", nodrop=True),
@@ -78,7 +80,7 @@ class ct_nhom_cong_viec(osv.osv):
         'file_size': fields.integer('File Size'),
         'yeu_cau_kq':fields.text('Yêu cầu kết quả'),
         'cach_thuc_hien':fields.text('Cách thức thực hiện'),
-        'nhom_cv_id':fields.many2one('nhom.cong.viec','nhom cong viec',ondelete='cascade'),
+
     }
 
 ct_nhom_cong_viec()
@@ -89,7 +91,18 @@ class quy_trinh(osv.osv):
         'name': fields.char('Tên quy trình', size = 100, required=True),
         'phong_ban_id':fields.many2one('phong.ban','Phòng Ban',required = True),
         'chuc_vu_id':fields.many2one('chuc.vu','Chức vụ'),
-        'buoc_thuc_hien_line':fields.one2many('buoc_thuc_hien_line','quy_trinh_id','Các bước thực hiện'),
+        'buoc_thuc_hien_line':fields.one2many('buoc.thuc.hien.line','quy_trinh_id','Các bước thực hiện'),
+                }
+    
+quy_trinh()
+
+class buoc_thuc_hien_line(osv.osv):
+    _name = "buoc.thuc.hien.line"
+    _columns = {
+        'quy_trinh_id':fields.many2one('quy.trinh','Quy trình', ondelete = 'cascade'),
+        'name': fields.char('Tên chi tiết', size = 100, required=True),
+        'yeu_cau_kq':fields.text('Yêu cầu kết quả đạt được'),
+        'cach_thuc_hien': fields.text('Cách thức thực hiện'),
                 }
     
 quy_trinh()
