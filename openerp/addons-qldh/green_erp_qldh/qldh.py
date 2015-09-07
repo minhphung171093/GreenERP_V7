@@ -17,6 +17,11 @@ import os
 from openerp import modules
 base_path = os.path.dirname(modules.get_module_path('green_erp_qldh_base'))
 
+class nhom_cong_viec(osv.osv):
+    _name = "nhom.cong.viec"
+    _columns = {
+    }
 
+nhom_cong_viec()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

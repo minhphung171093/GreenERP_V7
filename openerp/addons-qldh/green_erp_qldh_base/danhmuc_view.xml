@@ -2,5 +2,25 @@
 <openerp>
     <data>
 
+		<record id="chuc_vu_tree_view" model="ir.ui.view">
+			<field name="name">chuc.vu.tree</field>
+			<field name="model">chuc.vu</field>
+			<field name="arch" type="xml">
+				<tree string="Chức vụ" editable= "top">
+					<field name="name"/>
+				</tree>
+			</field>
+		</record>
+		
+        
+        <record id="action_chuc_vu_tree_view" model="ir.actions.act_window">
+            <field name="name">Chức vụ</field>
+            <field name="res_model">chuc.vu</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+
     </data>
 </openerp>

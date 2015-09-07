@@ -17,6 +17,12 @@ import os
 from openerp import modules
 base_path = os.path.dirname(modules.get_module_path('green_erp_qldh_base'))
 
+class chuc_vu(osv.osv):
+    _name = "chuc.vu"
+    _columns = {
+        'name': fields.char("Tên chức vụ", size=1024, required=True),
+    }
 
+chuc_vu()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
