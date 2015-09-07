@@ -24,6 +24,7 @@ class chuc_vu(osv.osv):
     }
 
 chuc_vu()
+
 class phong_ban(osv.osv):
     _name = "phong.ban"
     _columns = {
@@ -45,8 +46,11 @@ ds_nhan_vien_line()
 class nhan_vien(osv.osv):
     _name = "nhan.vien"
     _columns = {
-        'name': fields.char('Tên nhân viên', size = 100, required=True),
+        'name': fields.char('Mã nhân viên', size = 100, required=True),
+        'ten_nv': fields.char('Tên nhân viên', size = 100, required=True),
         'chuc_vu_id': fields.many2one('chuc.vu','Chức vụ', required=True),
+        'dia_chi': fields.char('Địa chỉ', size = 100),
+        'sdt': fields.char('Số điện thoại', size = 100),
                 }
 nhan_vien()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
