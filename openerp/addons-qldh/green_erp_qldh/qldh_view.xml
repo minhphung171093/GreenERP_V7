@@ -36,21 +36,22 @@
 	                </group>
                 		<notebook>
 		                    <page string="Các bước thực hiện">
-		                    	<field name="ct_nhom_cv_line" nolabel='1'>
+		                    	<field name="ct_nhom_cv_line" nolabel='1' class="oe_green_erp_scroll">
 		                    		<tree>
 			                			<field name="name" />
+			                			<field name="yeu_cau_kq" />
+			                            <field name="cach_thuc_hien" />
 			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
 			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-			                            <field name="yeu_cau_kq" />
-			                            <field name="cach_thuc_hien" />
 			                        </tree>
 			                        <form>
 			                        <group col="4" colspan="2">
 			                        	<field name="name" />
+			                        	<newline/>
+			                        	<field name="yeu_cau_kq" />
+			                            <field name="cach_thuc_hien" />
 			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
 			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-			                            <field name="yeu_cau_kq" />
-			                            <field name="cach_thuc_hien" />
 			                         </group>   
 			                        </form>
 		                		</field>
@@ -99,12 +100,18 @@
 											<field name="name" />
 											<field name="yeu_cau_kq"/>
 											<field name="cach_thuc_hien"/>
+											<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+			                            	<field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
 										</tree>
 										<form>
 											<group col="4" colspan="2" >  
 												<field name="name" />
+												<newline/>
 												<field name="yeu_cau_kq"/>
 												<field name="cach_thuc_hien"/>
+												<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+				                            	<field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+												
 											</group>
 										</form>
 									</field>
