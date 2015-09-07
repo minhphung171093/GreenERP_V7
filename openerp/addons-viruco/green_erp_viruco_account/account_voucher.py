@@ -42,6 +42,8 @@ class account_voucher(osv.osv):
     _defaults = {
         'nguoi_de_nghi_id': lambda self, cr, uid, context=None: uid,
         'shop_id': _get_shop_id,
+
+        'unshow_financial_report':False
     }
     
     def onchange_hopdong_id(self, cr, uid, ids, hop_dong_id, context=None):
@@ -173,6 +175,9 @@ class account_voucher(osv.osv):
                 
         vals['value']['line_dr_ids'] = False
         vals['value']['line_cr_ids'] = False
+        if journal_id:
+            journal_data = self.pool.get('account.journal').browse(cr, uid,journal_id)
+            vals['value']['account_id'] = journal_data.default_debit_account_id.id or journal_data.default_credit_account_id.id or False
         return vals
     
     def account_move_get(self, cr, uid, voucher_id, context=None):
