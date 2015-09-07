@@ -338,7 +338,7 @@ class ct_xuly_giasuc_tp_line(osv.osv):
         'tiem_phong_id': fields.many2one('tiem.phong.lmlm','Số giấy tiêm phòng'),
         'loai_benh_id': fields.many2one('chi.tiet.loai.benh','Loại bệnh', readonly = True),
         'sl_tiem': fields.integer('Số lượng đã tiêm', readonly = True),
-        'so_luong': fields.integer('Số lượng chết'),
+        'so_luong': fields.integer('Số lượng xử lý'),
                 }
 ct_xuly_giasuc_tp_line()
 
