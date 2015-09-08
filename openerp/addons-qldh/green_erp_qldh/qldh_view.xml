@@ -31,6 +31,7 @@
 	                <group col="4" colspan="2">
 	                	<field name="name" />
 	                	<field name="phong_ban_id" required = '1' options="{'create': false, 'create_edit': false}"/>
+	                	<field name="ho_tro" />
 	                	<field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id)" options="{'create': false, 'create_edit': false}"/>
 	                	<field name="ghi_chu" />
 	                	<field name="loai" invisible = '1'/>
@@ -75,9 +76,9 @@
 			                            <field name="trang_thai" readonly = '1'/>
 			                            <field name="loai" invisible = '1'/>
 			                        </tree>
-		                		</field>
-		                    </page>
-		                </notebook>
+						         </field>
+						      </page> 
+						 </notebook>
 	                </sheet>
                 </form>
             </field>
