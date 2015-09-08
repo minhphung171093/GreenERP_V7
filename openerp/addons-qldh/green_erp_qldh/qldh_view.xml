@@ -35,8 +35,8 @@
 	                	<field name="ghi_chu" />
 	                </group>
                 		<notebook>
-		                    <page string="Các bước thực hiện">
-		                    	<field name="ct_nhom_cv_line" nolabel='1'>
+		                    <page string="Các bước thực hiện" attrs="{'invisible':[('quy_trinh_id','=',False)]}">
+		                    	<field name="ct_nhom_cv_line" nolabel='1' >
 		                    		<tree>
 			                			<field name="name" />
 			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
