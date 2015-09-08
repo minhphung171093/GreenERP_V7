@@ -405,11 +405,11 @@ class stock_picking_out(osv.osv):
     _columns = {
         'shop_id': fields.function(_get_location_info, type='many2one', relation='sale.shop', string='Shop',
             store={
-                'stock.picking.in': (lambda self, cr, uid, ids, c={}: ids, ['location_id','location_dest_id'], 10),
+                'stock.picking.out': (lambda self, cr, uid, ids, c={}: ids, ['location_id','location_dest_id'], 10),
             }, readonly=True, multi='pro_info'),
         'warehouse_id': fields.function(_get_location_info, type='many2one', relation='stock.warehouse', string='Warehouse',
             store={
-                'stock.picking.in': (lambda self, cr, uid, ids, c={}: ids, ['location_id','location_dest_id'], 10),
+                'stock.picking.out': (lambda self, cr, uid, ids, c={}: ids, ['location_id','location_dest_id'], 10),
             }, readonly=True, multi='pro_info'),
         'stock_journal_id': fields.many2one('stock.journal','Stock Journal', required=True, select=True, states={'done':[('readonly', True)], 'cancel':[('readonly',True)]}, track_visibility='onchange'),
         'return': fields.selection([('none', 'Normal'), ('customer', 'Return from Customer'),('internal','Return Internal'), ('supplier', 'Return to Supplier')], 'Type', required=True, select=True, help="Type specifies whether the Picking has been returned or not."),

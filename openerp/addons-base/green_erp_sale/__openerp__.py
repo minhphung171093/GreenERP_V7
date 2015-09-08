@@ -26,7 +26,7 @@
     'sequence': 14,
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',
-    'depends': ['green_erp_base','green_erp_stock','sale','sale_stock'],
+    'depends': ['green_erp_base','sale','sale_stock'],
     'data': [
         'sale_view.xml',
         'menu.xml',
