@@ -31,7 +31,7 @@
 	                	<field name="name" />
 	                	<field name="phong_ban_id" options="{'create': false, 'create_edit': false}"/>
 	                	<field name="ho_tro" />
-	                	<field name="quy_trinh_id" options="{'create': false, 'create_edit': false}"/>
+	                	<field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id)" options="{'create': false, 'create_edit': false}"/>
 	                	<field name="ghi_chu" />
 	                </group>
                 		<notebook>
@@ -71,8 +71,8 @@
 			                        <group>
 			                        	<group col="4" colspan="2">
 				                        	<field name="name" />
-				                        	<field name="phong_ban_id" />
-				                            <field name="quy_trinh_id" />
+				                        	<field name="phong_ban_id" options="{'create': false, 'create_edit': false}"/>
+				                            <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id)" options="{'create': false, 'create_edit': false}"/>
 				        					<field name="ghi_chu"/>
 			        					</group>
 			        					<group>
@@ -113,8 +113,8 @@
 							                        <group>
 							                         <group col="4" colspan="2">
 							                        	<field name="name" />
-							                        	<field name="phong_ban_id" />
-							                            <field name="quy_trinh_id" />
+							                        	<field name="phong_ban_id" options="{'create': false, 'create_edit': false}"/>
+							                            <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id)" options="{'create': false, 'create_edit': false}"/>
 							        					<field name="ghi_chu"/>
 							        				 </group>
 							        				 <group>	
@@ -191,7 +191,7 @@
 	                <group col="4" colspan="2">
 	                	<field name="name" />
 	                	<field name="phong_ban_id" options="{'create': false, 'create_edit': false}"/>
-	                	<field name="quy_trinh_id" options="{'create': false, 'create_edit': false}"/>
+	                	<field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id)" options="{'create': false, 'create_edit': false}"/>
 	                	<field name="ghi_chu" />
 	                </group>
                 		<notebook>
@@ -231,8 +231,8 @@
 			                        <group>
 			                        	<group col="4" colspan="2">
 				                        	<field name="name" />
-				                        	<field name="phong_ban_id" />
-				                            <field name="quy_trinh_id" />
+				                        	<field name="phong_ban_id" options="{'create': false, 'create_edit': false}"/>
+				                            <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id)" options="{'create': false, 'create_edit': false}"/>
 				        					<field name="ghi_chu"/>
 				        				</group>
 				        				<group>	
@@ -304,7 +304,7 @@
 	                <group col="4" colspan="2">
 	                	<field name="name" />
 	                	<field name="phong_ban_id" options="{'create': false, 'create_edit': false}"/>
-	                	<field name="quy_trinh_id" options="{'create': false, 'create_edit': false}"/>
+	                	<field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id)" options="{'create': false, 'create_edit': false}"/>
 	                	<field name="ghi_chu" />
 	                </group>
                 		<notebook>
