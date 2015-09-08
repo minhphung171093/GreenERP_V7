@@ -23,17 +23,45 @@ class nhom_cong_viec(osv.osv):
         'name':fields.char('Tên nhóm công việc',size=1024,required=True),
         'phong_ban_id':fields.many2one('phong.ban','Phòng ban'),
         'ho_tro':fields.selection([('co','Có'),('khong','Không')],'Hỗ trợ'),
+        'phong_ban_ids': fields.many2many('phong.ban','phong_ban_nhom_cv_ref','nhom_cv_id','phong_ban_id','Phòng ban hỗ trợ' ),
         'quy_trinh_id':fields.many2one('quy.trinh','Quy trình'),
         'trang_thai':fields.selection([('moi','Mới nhận'),('lam','Đang làm'),('cho_duyet','Chờ phê duyệt'),('duyet','Đã duyệt')],'Trạng thái'),
+        'loai':fields.selection([('nhom_cv','Nhóm công việc'),
+                                 ('cv','Công việc'),
+                                 ('cv_con','Công việc con'),
+                                 ('nhom_cv_tg','Nhóm công việc TG')],'Loại'),
         'ct_nhom_cv_line':fields.one2many('ct.nhom.cong.viec','nhom_cv_id','Chi tiết công việc'),
+        'cong_viec_id':fields.many2one('nhom.cong.viec','Nhóm công việc line'),
+        'cong_viec_line':fields.one2many('nhom.cong.viec','cong_viec_id','Công việc'),
+        'cong_viec_con_id':fields.many2one('nhom.cong.viec','công việc line'),
+        'cong_viec_con_line':fields.one2many('nhom.cong.viec','cong_viec_con_id','Công việc con'),
         'ghi_chu':fields.text('Ghi chú'),
-        'cong_viec_line':fields.one2many('cong.viec','cong_viec_id','Công việc'),
+        'nhan_vien_id':fields.many2one('nhan.vien','Nhân viên', required = True),
+        'nhan_vien_ids':fields.many2many('nhan.vien','nhan_vien_cong_viec_ids', 'cong_viec_id', 'nhan_vien_id', 'Nhân viên', required = True),
+#         'cong_viec_line':fields.one2many('cong.viec','cong_viec_id','Công việc'),
                 
     }
     _defaults = {
              'trang_thai':'moi',    
-             'ho_tro':'co'    
+             'ho_tro':'khong'    
                  }
+    
+    def onchange_quy_trinh_id(self, cr, uid, ids, quy_trinh_id=False):
+        ct_nhom_cv_line = []
+        if quy_trinh_id:
+            quy_trinh = self.pool.get('quy.trinh').browse(cr,uid,quy_trinh_id)
+            for line in quy_trinh.buoc_thuc_hien_line:
+                ct_nhom_cv_line.append((0,0,{
+                                            'name': line.name,
+                                            'datas_fname': line.datas_fname,
+                                            'datas': line.datas,
+                                            'store_fname': line.store_fname,
+                                            'db_datas': line.db_datas,
+                                            'file_size': line.file_size,
+                                            'yeu_cau_kq': line.yeu_cau_kq,
+                                            'cach_thuc_hien': line.cach_thuc_hien,
+                                             }))
+        return {'value': {'ct_nhom_cv_line': ct_nhom_cv_line}}
 nhom_cong_viec()
 
 class ct_nhom_cong_viec(osv.osv):
@@ -83,154 +111,155 @@ class ct_nhom_cong_viec(osv.osv):
         'file_size': fields.integer('File Size'),
         'yeu_cau_kq':fields.text('Yêu cầu kết quả'),
         'cach_thuc_hien':fields.text('Cách thức thực hiện'),
-
+        'nhan_vien_id':fields.many2one('nhan.vien','Nhân viên', required = True),
     }
 
 ct_nhom_cong_viec()
 
-class cong_viec(osv.osv):
-    _name = "cong.viec"
-    _columns = {
-        'cong_viec_id':fields.many2one('nhom.cong.viec','Công việc'),
-        'name':fields.char('Tên công việc',size=1024,required=True),
-        'phong_ban_id':fields.many2one('phong.ban','Phòng ban'),
-#         'ho_tro':fields.selection([('co','Có'),('khong','Không')],'Hỗ trợ'),
-        'quy_trinh_id':fields.many2one('quy.trinh','Quy trình'),
-        'trang_thai':fields.selection([('moi','Mới nhận'),('lam','Đang làm'),('cho_duyet','Chờ phê duyệt'),('duyet','Đã duyệt')],'Trạng thái'),
-        'chi_tiet_cv_line':fields.one2many('chi.tiet.cong.viec','cv_id','Chi tiết công việc'),
-        'ghi_chu':fields.text('Ghi chú'),
-        'cong_viec_con_line':fields.one2many('cong.viec.con','cong_viec_con_id','Công việc'),
-                
-    }
-    
-    _defaults = {
-             'trang_thai':'moi',    
-                 }
-cong_viec()
-
-class chi_tiet_cong_viec(osv.osv):
-    _name = "chi.tiet.cong.viec"
-    
-    def _data_get(self, cr, uid, ids, name, arg, context=None):
-        if context is None:
-            context = {}
-        result = {}
-        location = self.pool.get('ir.config_parameter').get_param(cr, SUPERUSER_ID, 'ir_attachment.location')
-        bin_size = context.get('bin_size')
-        for attach in self.browse(cr, uid, ids, context=context):
-            if location and attach.store_fname:
-                result[attach.id] = self._file_read(cr, uid, location, attach.store_fname, bin_size)
-            else:
-                result[attach.id] = attach.db_datas
-                if bin_size:
-                    result[attach.id] = int(result[attach.id])
-
-        return result
-
-    def _data_set(self, cr, uid, id, name, value, arg, context=None):
-        # We dont handle setting data to null
-        if not value:
-            return True
-        if context is None:
-            context = {}
-        location = self.pool.get('ir.config_parameter').get_param(cr, SUPERUSER_ID, 'ir_attachment.location')
-        file_size = len(value.decode('base64'))
-        if location:
-            attach = self.browse(cr, uid, id, context=context)
-            if attach.store_fname:
-                self._file_delete(cr, uid, location, attach.store_fname)
-            fname = self._file_write(cr, uid, location, value)
-            # SUPERUSER_ID as probably don't have write access, trigger during create
-            super(chi_tiet_cong_viec, self).write(cr, SUPERUSER_ID, [id], {'store_fname': fname, 'file_size': file_size}, context=context)
-        else:
-            super(chi_tiet_cong_viec, self).write(cr, SUPERUSER_ID, [id], {'db_datas': value, 'file_size': file_size}, context=context)
-        return True
-    _columns = {
-        'cv_id':fields.many2one('cong.viec','Cong viec',ondelete='cascade'),
-        'name':fields.char('Tên chi tiết',size=1024),
-        'datas_fname': fields.char('File Name',size=256),
-        'datas': fields.function(_data_get, fnct_inv=_data_set, string='File Content', type="binary", nodrop=True),
-        'store_fname': fields.char('Stored Filename', size=256),
-        'db_datas': fields.binary('Database Data'),
-        'file_size': fields.integer('File Size'),
-        'yeu_cau_kq':fields.text('Yêu cầu kết quả'),
-        'cach_thuc_hien':fields.text('Cách thức thực hiện'),
-
-    }
-
-chi_tiet_cong_viec()
-
-class cong_viec_con(osv.osv):
-    _name = "cong.viec.con"
-    _columns = {
-        'cong_viec_con_id':fields.many2one('cong.viec','Công việc'),
-        'name':fields.char('Tên công việc',size=1024,required=True),
-        'phong_ban_id':fields.many2one('phong.ban','Phòng ban'),
-#         'ho_tro':fields.selection([('co','Có'),('khong','Không')],'Hỗ trợ'),
-        'quy_trinh_id':fields.many2one('quy.trinh','Quy trình'),
-        'trang_thai':fields.selection([('moi','Mới nhận'),('lam','Đang làm'),('cho_duyet','Chờ phê duyệt'),('duyet','Đã duyệt')],'Trạng thái'),
-        'chi_tiet_cv_con_line':fields.one2many('chi.tiet.cong.viec.con','cv_con_id','Chi tiết công việc'),
-        'ghi_chu':fields.text('Ghi chú'),
-#         'cong_viec_line':fields.one2many('ct.nhom.cong.viec','nhom_cv_id','Chi tiết công việc'),
-                
-    }
-    
-    _defaults = {
-             'trang_thai':'moi',    
-                 }
-cong_viec()
-
-class chi_tiet_cong_viec_con(osv.osv):
-    _name = "chi.tiet.cong.viec.con"
-    
-    def _data_get(self, cr, uid, ids, name, arg, context=None):
-        if context is None:
-            context = {}
-        result = {}
-        location = self.pool.get('ir.config_parameter').get_param(cr, SUPERUSER_ID, 'ir_attachment.location')
-        bin_size = context.get('bin_size')
-        for attach in self.browse(cr, uid, ids, context=context):
-            if location and attach.store_fname:
-                result[attach.id] = self._file_read(cr, uid, location, attach.store_fname, bin_size)
-            else:
-                result[attach.id] = attach.db_datas
-                if bin_size:
-                    result[attach.id] = int(result[attach.id])
-
-        return result
-
-    def _data_set(self, cr, uid, id, name, value, arg, context=None):
-        # We dont handle setting data to null
-        if not value:
-            return True
-        if context is None:
-            context = {}
-        location = self.pool.get('ir.config_parameter').get_param(cr, SUPERUSER_ID, 'ir_attachment.location')
-        file_size = len(value.decode('base64'))
-        if location:
-            attach = self.browse(cr, uid, id, context=context)
-            if attach.store_fname:
-                self._file_delete(cr, uid, location, attach.store_fname)
-            fname = self._file_write(cr, uid, location, value)
-            # SUPERUSER_ID as probably don't have write access, trigger during create
-            super(chi_tiet_cong_viec_con, self).write(cr, SUPERUSER_ID, [id], {'store_fname': fname, 'file_size': file_size}, context=context)
-        else:
-            super(chi_tiet_cong_viec_con, self).write(cr, SUPERUSER_ID, [id], {'db_datas': value, 'file_size': file_size}, context=context)
-        return True
-    _columns = {
-        'cv_con_id':fields.many2one('cong.viec.con','Cong viec',ondelete='cascade'),
-        'name':fields.char('Tên chi tiết',size=1024),
-        'datas_fname': fields.char('File Name',size=256),
-        'datas': fields.function(_data_get, fnct_inv=_data_set, string='File Content', type="binary", nodrop=True),
-        'store_fname': fields.char('Stored Filename', size=256),
-        'db_datas': fields.binary('Database Data'),
-        'file_size': fields.integer('File Size'),
-        'yeu_cau_kq':fields.text('Yêu cầu kết quả'),
-        'cach_thuc_hien':fields.text('Cách thức thực hiện'),
-
-    }
-
-chi_tiet_cong_viec_con()
+# class cong_viec(osv.osv):
+#     _name = "cong.viec"
+#     _columns = {
+#         'cong_viec_id':fields.many2one('nhom.cong.viec','Công việc'),
+#         'name':fields.char('Tên công việc',size=1024,required=True),
+#         'phong_ban_id':fields.many2one('phong.ban','Phòng ban'),
+#         'phong_ban_ids': fields.many2many('phong.ban','phong_ban_cv_ref','cv_id','phong_ban_id','Phòng ban hỗ trợ' ),
+#         'quy_trinh_id':fields.many2one('quy.trinh','Quy trình'),
+#         'trang_thai':fields.selection([('moi','Mới nhận'),('lam','Đang làm'),('cho_duyet','Chờ phê duyệt'),('duyet','Đã duyệt')],'Trạng thái'),
+#         'chi_tiet_cv_line':fields.one2many('chi.tiet.cong.viec','cv_id','Chi tiết công việc'),
+#         'ghi_chu':fields.text('Ghi chú'),
+#         'cong_viec_con_line':fields.one2many('cong.viec.con','cong_viec_con_id','Công việc'),
+#                 
+#     }
+#     
+#     _defaults = {
+#              'trang_thai':'moi',    
+#                  }
+# cong_viec()
+# 
+# class chi_tiet_cong_viec(osv.osv):
+#     _name = "chi.tiet.cong.viec"
+#     
+#     def _data_get(self, cr, uid, ids, name, arg, context=None):
+#         if context is None:
+#             context = {}
+#         result = {}
+#         location = self.pool.get('ir.config_parameter').get_param(cr, SUPERUSER_ID, 'ir_attachment.location')
+#         bin_size = context.get('bin_size')
+#         for attach in self.browse(cr, uid, ids, context=context):
+#             if location and attach.store_fname:
+#                 result[attach.id] = self._file_read(cr, uid, location, attach.store_fname, bin_size)
+#             else:
+#                 result[attach.id] = attach.db_datas
+#                 if bin_size:
+#                     result[attach.id] = int(result[attach.id])
+# 
+#         return result
+# 
+#     def _data_set(self, cr, uid, id, name, value, arg, context=None):
+#         # We dont handle setting data to null
+#         if not value:
+#             return True
+#         if context is None:
+#             context = {}
+#         location = self.pool.get('ir.config_parameter').get_param(cr, SUPERUSER_ID, 'ir_attachment.location')
+#         file_size = len(value.decode('base64'))
+#         if location:
+#             attach = self.browse(cr, uid, id, context=context)
+#             if attach.store_fname:
+#                 self._file_delete(cr, uid, location, attach.store_fname)
+#             fname = self._file_write(cr, uid, location, value)
+#             # SUPERUSER_ID as probably don't have write access, trigger during create
+#             super(chi_tiet_cong_viec, self).write(cr, SUPERUSER_ID, [id], {'store_fname': fname, 'file_size': file_size}, context=context)
+#         else:
+#             super(chi_tiet_cong_viec, self).write(cr, SUPERUSER_ID, [id], {'db_datas': value, 'file_size': file_size}, context=context)
+#         return True
+#     _columns = {
+#         'cv_id':fields.many2one('cong.viec','Cong viec',ondelete='cascade'),
+#         'name':fields.char('Tên chi tiết',size=1024),
+#         'datas_fname': fields.char('File Name',size=256),
+#         'datas': fields.function(_data_get, fnct_inv=_data_set, string='File Content', type="binary", nodrop=True),
+#         'store_fname': fields.char('Stored Filename', size=256),
+#         'db_datas': fields.binary('Database Data'),
+#         'file_size': fields.integer('File Size'),
+#         'yeu_cau_kq':fields.text('Yêu cầu kết quả'),
+#         'cach_thuc_hien':fields.text('Cách thức thực hiện'),
+# 
+#     }
+# 
+# chi_tiet_cong_viec()
+# 
+# class cong_viec_con(osv.osv):
+#     _name = "cong.viec.con"
+#     _columns = {
+#         'cong_viec_con_id':fields.many2one('cong.viec','Công việc'),
+#         'name':fields.char('Tên công việc',size=1024,required=True),
+#         'phong_ban_id':fields.many2one('phong.ban','Phòng ban'),
+#         
+# #         'ho_tro':fields.selection([('co','Có'),('khong','Không')],'Hỗ trợ'),
+#         'quy_trinh_id':fields.many2one('quy.trinh','Quy trình'),
+#         'trang_thai':fields.selection([('moi','Mới nhận'),('lam','Đang làm'),('cho_duyet','Chờ phê duyệt'),('duyet','Đã duyệt')],'Trạng thái'),
+#         'chi_tiet_cv_con_line':fields.one2many('chi.tiet.cong.viec.con','cv_con_id','Chi tiết công việc'),
+#         'ghi_chu':fields.text('Ghi chú'),
+# #         'cong_viec_line':fields.one2many('ct.nhom.cong.viec','nhom_cv_id','Chi tiết công việc'),
+#                 
+#     }
+#     
+#     _defaults = {
+#              'trang_thai':'moi',    
+#                  }
+# cong_viec()
+# 
+# class chi_tiet_cong_viec_con(osv.osv):
+#     _name = "chi.tiet.cong.viec.con"
+#     
+#     def _data_get(self, cr, uid, ids, name, arg, context=None):
+#         if context is None:
+#             context = {}
+#         result = {}
+#         location = self.pool.get('ir.config_parameter').get_param(cr, SUPERUSER_ID, 'ir_attachment.location')
+#         bin_size = context.get('bin_size')
+#         for attach in self.browse(cr, uid, ids, context=context):
+#             if location and attach.store_fname:
+#                 result[attach.id] = self._file_read(cr, uid, location, attach.store_fname, bin_size)
+#             else:
+#                 result[attach.id] = attach.db_datas
+#                 if bin_size:
+#                     result[attach.id] = int(result[attach.id])
+# 
+#         return result
+# 
+#     def _data_set(self, cr, uid, id, name, value, arg, context=None):
+#         # We dont handle setting data to null
+#         if not value:
+#             return True
+#         if context is None:
+#             context = {}
+#         location = self.pool.get('ir.config_parameter').get_param(cr, SUPERUSER_ID, 'ir_attachment.location')
+#         file_size = len(value.decode('base64'))
+#         if location:
+#             attach = self.browse(cr, uid, id, context=context)
+#             if attach.store_fname:
+#                 self._file_delete(cr, uid, location, attach.store_fname)
+#             fname = self._file_write(cr, uid, location, value)
+#             # SUPERUSER_ID as probably don't have write access, trigger during create
+#             super(chi_tiet_cong_viec_con, self).write(cr, SUPERUSER_ID, [id], {'store_fname': fname, 'file_size': file_size}, context=context)
+#         else:
+#             super(chi_tiet_cong_viec_con, self).write(cr, SUPERUSER_ID, [id], {'db_datas': value, 'file_size': file_size}, context=context)
+#         return True
+#     _columns = {
+#         'cv_con_id':fields.many2one('cong.viec.con','Cong viec',ondelete='cascade'),
+#         'name':fields.char('Tên chi tiết',size=1024),
+#         'datas_fname': fields.char('File Name',size=256),
+#         'datas': fields.function(_data_get, fnct_inv=_data_set, string='File Content', type="binary", nodrop=True),
+#         'store_fname': fields.char('Stored Filename', size=256),
+#         'db_datas': fields.binary('Database Data'),
+#         'file_size': fields.integer('File Size'),
+#         'yeu_cau_kq':fields.text('Yêu cầu kết quả'),
+#         'cach_thuc_hien':fields.text('Cách thức thực hiện'),
+# 
+#     }
+# 
+# chi_tiet_cong_viec_con()
 
 
 
