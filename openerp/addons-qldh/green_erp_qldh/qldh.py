@@ -25,7 +25,12 @@ class nhom_cong_viec(osv.osv):
         'ho_tro':fields.selection([('co','Có'),('khong','Không')],'Hỗ trợ'),
         'phong_ban_ids': fields.many2many('phong.ban','phong_ban_nhom_cv_ref','nhom_cv_id','phong_ban_id','Phòng ban hỗ trợ' ),
         'quy_trinh_id':fields.many2one('quy.trinh','Quy trình'),
-        'state':fields.selection([('moi_tao','Mới tạo'), ('moi_nhan','Mới nhận'),('lam','Đang làm'),('cho_duyet','Chờ phê duyệt'),('duyet','Đã duyệt')],'Trạng thái'),
+        'state':fields.selection([('nhap','Nháp'),
+                                  ('moi_tao','Mới tạo'), 
+                                  ('moi_nhan','Mới nhận'),
+                                  ('lam','Đang làm'),
+                                  ('cho_duyet','Chờ phê duyệt'),
+                                  ('duyet','Đã duyệt')],'Trạng thái'),
         'loai':fields.selection([('nhom_cv','Nhóm công việc'),
                                  ('cv','Công việc'),
                                  ('cv_con','Công việc con'),
@@ -42,11 +47,12 @@ class nhom_cong_viec(osv.osv):
         'nhan_vien_ids':fields.many2many('nhan.vien','nhan_vien_cong_viec_ids', 'cong_viec_id', 'nhan_vien_id', 'Nhân viên', required = True),
     }
     _defaults = {
-             'ho_tro':'khong'    
+            'state': 'nhap',
+            'ho_tro':'khong',    
                  }
     
     def bt_xacnhan_ncv(self, cr, uid, ids, context=None):
-        return self.write(cr, uid, ids,{'trang_thai':'moi_tao'})
+        return self.write(cr, uid, ids,{'state':'moi_tao'})
     
     def bt_tao_ncv(self, cr, uid, ids, context=None):
         res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 

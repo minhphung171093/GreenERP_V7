@@ -25,9 +25,14 @@
             <field name="arch" type="xml">
                 <form string="Nhóm công việc" version="7.0">
                 <header>
+<<<<<<< HEAD
                 		<button name="bt_xacnhan_ncv" states="" string="Xác nhận nhóm công việc" type="object" class="oe_highlight"/>
                 		<button name="bt_tao_ncv" states="" string="Tạo công việc" type="object" class="oe_highlight"/>
 	                    <field name="state" widget="statusbar" statusbar_visible="moi_tao,lam,cho_duyet,duyet" />
+=======
+                		<button name="bt_xacnhan_ncv" states="nhap" string="Xác nhận nhóm công việc" type="object" class="oe_highlight"/>
+	                    <field name="state" widget="statusbar" statusbar_visible="nhap,moi_tao,lam,cho_duyet,duyet" />
+>>>>>>> 9ea55aa1a91a75131fb224939a683160fc608315
 	            </header>  
 	                <sheet>
 	                <group col="4" colspan="2">
@@ -64,8 +69,8 @@
 		                    </page>
 		                    
 		                    
-		                     <page string="Công việc" attrs="{'invisible':['|',('quy_trinh_id','!=',False),('ho_tro','=','co')]}">
-		                    	<field name="cong_viec_line" nolabel='1' context = "{'default_loai': 'cv'}">
+		                     <page string="Công việc" attrs="{'invisible':[('quy_trinh_id','!=',False)]}">
+		                    	<field name="cong_viec_line" nolabel='1' context = "{'default_loai': 'cv'}" create = 'false' edit = 'false' delete = 'false'>
 		                    		<tree editable = 'bottom'>
 			                			<field name="name" string = 'Tên công việc'/>
 			             <!--               <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id)" options="{'create': false, 'create_edit': false}"/>  -->
@@ -100,7 +105,7 @@
             <field name="res_model">nhom.cong.viec</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain">[('loai','=','nhom_cv')]</field>
+            <field name="domain">[('loai','=','nhom_cv'), ('state','in',['nhap', 'moi_tao'])]</field>
             <field name="context">{'default_loai': 'nhom_cv'}</field>
             <field name="view_id" ref="nhom_cong_viec_tree"/>
         </record>
@@ -126,6 +131,7 @@
             <field name="arch" type="xml">
                 <tree string="Công việc">
                 	<field name="name" string = 'Tên công việc'/>
+                	<field name="cong_viec_id" string = 'Nhóm công việc' options="{'create': false, 'create_edit': false}"/>
 	                <field name="quy_trinh_id" options="{'create': false, 'create_edit': false}"/>
 	                <field name="nhan_vien_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}"/>
 					<field name="ghi_chu"/>
@@ -148,6 +154,7 @@
 	                	<field name="name" string = 'Tên công việc'/>
 		                <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id)" options="{'create': false, 'create_edit': false}"/>
 		                <field name="nhan_vien_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}"/>
+		                <field name="cong_viec_id" string = 'Nhóm công việc' options="{'create': false, 'create_edit': false}"/>
 						<field name="ghi_chu"/>
 	                </group>
                 		<notebook>
@@ -176,7 +183,7 @@
 		                    
 		                    
 		                     <page string="Công việc con" attrs="{'invisible':[('quy_trinh_id','!=',False)]}">
-		                    	<field name="cong_viec_con_line" nolabel='1' context = "{'default_loai': 'cv_con'}">
+		                    	<field name="cong_viec_con_line" nolabel='1' context = "{'default_loai': 'cv_con'}" create = 'false' edit = 'false' delete = 'false'>
 		                    		<tree editable = 'bottom'>
 			                			<field name="name" string = 'Tên công việc con'/>
 			                <!--            <field name="quy_trinh_id" options="{'create': false, 'create_edit': false}"/>  -->
@@ -223,6 +230,8 @@
             <field name="arch" type="xml">
                 <tree string="Công việc con">
                 	<field name="name" string = 'Tên công việc con'/>
+                	<field name="cong_viec_id" string = 'Nhóm công việc' options="{'create': false, 'create_edit': false}"/>
+                	<field name="cong_viec_con_id" string = 'Công việc' options="{'create': false, 'create_edit': false}"/>
 	                <field name="quy_trinh_id" options="{'create': false, 'create_edit': false}"/>
 	                <field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
 					<field name="ghi_chu"/>
@@ -243,6 +252,8 @@
 	                <sheet>
 	                <group col="4" colspan="2">
 	                	<field name="name" string = 'Tên công việc con'/>
+	                	<field name="cong_viec_id" string = 'Nhóm công việc' options="{'create': false, 'create_edit': false}"/>
+	                	<field name="cong_viec_con_id" string = 'Công việc' options="{'create': false, 'create_edit': false}"/>
 		                <field name="quy_trinh_id" options="{'create': false, 'create_edit': false}"/>
 		                <field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
 						<field name="ghi_chu"/>
