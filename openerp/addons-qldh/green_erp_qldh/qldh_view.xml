@@ -104,6 +104,208 @@
             <field name="act_window_id" ref="action_nhom_cong_viec"/>
         </record>
         
+       	<record model="ir.ui.view" id="nhom_cong_viec_cho_phe_duyet_tree">
+            <field name="name">nhom.cong.viec.cho.phe.duyet.tree</field>
+            <field name="model">nhom.cong.viec</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Nhóm công việc chờ duyệt" create = 'false' edit = 'false' delete = 'false'>
+                	<field name="name" />
+                	<field name="phong_ban_id" />
+                	<field name="quy_trinh_id" />
+                	<field name="ho_tro" />
+                	<field name="phong_ban_ids" />
+                	<field name="state" />
+                </tree>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="nhom_cong_viec_cho_phe_duyet_form">
+            <field name="name">nhom.cong.viec.cho.phe.duyet.form</field>
+            <field name="model">nhom.cong.viec</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Nhóm công việc chờ duyệt" version="7.0" create = 'false' edit = 'false' delete = 'false'>
+                <header>
+                		<button name="bt_cho_duyet" states="cho_duyet" string="Xác nhận duyệt" type="object" class="oe_highlight"/>
+	                    <field name="state" widget="statusbar" statusbar_visible="nhap,moi_tao,lam,cho_duyet,duyet" />
+	            </header>  
+	                <sheet>
+	                <group col="4" colspan="2">
+	                	<field name="name" />
+	                	<field name="phong_ban_id" required = '1' options="{'create': false, 'create_edit': false}"/>
+	                	<field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id)" options="{'create': false, 'create_edit': false}"/>
+	                	<field name="ho_tro" widget="radio" />
+	                	<field name="ghi_chu" />
+	                	<field name="phong_ban_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('ho_tro','=','khong')]}" />
+	                	<field name="loai" invisible = '1'/>
+	                </group>
+                		<notebook>
+		                    <page string="Chi tiết thực hiện" attrs="{'invisible':[('quy_trinh_id','=',False)]}">
+		                    	<field name="ct_nhom_cv_line" nolabel='1' >
+		                    		<tree>
+			                			<field name="name" />
+			                			<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
+			                			<field name="yeu_cau_kq" />
+			                            <field name="cach_thuc_hien" />
+			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+			                        </tree>
+			                        <form>
+			                        <group col="4" colspan="2">
+			                        	<field name="name" />
+			                        	<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
+			                        	<field name="yeu_cau_kq" />
+			                            <field name="cach_thuc_hien" />
+			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+			                         </group>   
+			                        </form>
+		                		</field>
+		                    </page>
+		                    
+		                    
+		                     <page string="Công việc" attrs="{'invisible':[('quy_trinh_id','!=',False)]}">
+		                    	<field name="cong_viec_line" nolabel='1' context = "{'default_loai': 'cv'}" create = 'false' edit = 'false' delete = 'false'>
+		                    		<tree editable = 'bottom'>
+			                			<field name="name" string = 'Tên công việc'/>
+			             <!--               <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id)" options="{'create': false, 'create_edit': false}"/>  -->
+			                            <field name="nhan_vien_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}"/>
+			        					<field name="ghi_chu"/>
+			                            <field name="state" readonly = '1'/>
+			                            <field name="loai" invisible = '1'/>
+			                        </tree>
+						         </field>
+						      </page> 
+						 </notebook>
+	                </sheet>
+                </form>
+            </field>
+        </record>
+       
+        <record model="ir.actions.act_window" id="action_nhom_cong_viec_cho_phe_duyet">
+            <field name="name">Nhóm công việc chờ duyệt</field>
+            <field name="res_model">nhom.cong.viec</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('loai','=','nhom_cv'), ('state','in',['cho_duyet'])]</field>
+            <field name="context">{'default_loai': 'nhom_cv'}</field>
+            <field name="view_id" ref="nhom_cong_viec_cho_phe_duyet_tree"/>
+        </record>
+        
+        <record id="action_nhom_cong_viec_cho_phe_duyet1" model="ir.actions.act_window.view">
+            <field eval="0" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="nhom_cong_viec_cho_phe_duyet_tree"/>
+            <field name="act_window_id" ref="action_nhom_cong_viec_cho_phe_duyet"/>
+        </record>
+        <record id="action_nhom_cong_viec_cho_phe_duyet2" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="nhom_cong_viec_cho_phe_duyet_form"/>
+            <field name="act_window_id" ref="action_nhom_cong_viec_cho_phe_duyet"/>
+        </record>
+        
+       	<record model="ir.ui.view" id="nhom_cong_viec_da_duyet_tree">
+            <field name="name">nhom.cong.viec.da.duyet.tree</field>
+            <field name="model">nhom.cong.viec</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Nhóm công việc đã duyệt" create = 'false' edit = 'false' delete = 'false'>
+                	<field name="name" />
+                	<field name="phong_ban_id" />
+                	<field name="quy_trinh_id" />
+                	<field name="ho_tro" />
+                	<field name="phong_ban_ids" />
+                	<field name="state" />
+                </tree>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="nhom_cong_viec_da_duyet_form">
+            <field name="name">nhom.cong.viec.da.duyet.form</field>
+            <field name="model">nhom.cong.viec</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Nhóm công việc đã duyệt" version="7.0" create = 'false' edit = 'false' delete = 'false'>
+                <header>
+	                    <field name="state" widget="statusbar" statusbar_visible="nhap,moi_tao,lam,cho_duyet,duyet" />
+	            </header>  
+	                <sheet>
+	                <group col="4" colspan="2">
+	                	<field name="name" />
+	                	<field name="phong_ban_id" required = '1' options="{'create': false, 'create_edit': false}"/>
+	                	<field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id)" options="{'create': false, 'create_edit': false}"/>
+	                	<field name="ho_tro" widget="radio" />
+	                	<field name="ghi_chu" />
+	                	<field name="phong_ban_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('ho_tro','=','khong')]}" />
+	                	<field name="loai" invisible = '1'/>
+	                </group>
+                		<notebook>
+		                    <page string="Chi tiết thực hiện" attrs="{'invisible':[('quy_trinh_id','=',False)]}">
+		                    	<field name="ct_nhom_cv_line" nolabel='1' >
+		                    		<tree>
+			                			<field name="name" />
+			                			<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
+			                			<field name="yeu_cau_kq" />
+			                            <field name="cach_thuc_hien" />
+			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+			                        </tree>
+			                        <form>
+			                        <group col="4" colspan="2">
+			                        	<field name="name" />
+			                        	<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
+			                        	<field name="yeu_cau_kq" />
+			                            <field name="cach_thuc_hien" />
+			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+			                         </group>   
+			                        </form>
+		                		</field>
+		                    </page>
+		                    
+		                    
+		                     <page string="Công việc" attrs="{'invisible':[('quy_trinh_id','!=',False)]}">
+		                    	<field name="cong_viec_line" nolabel='1' context = "{'default_loai': 'cv'}" create = 'false' edit = 'false' delete = 'false'>
+		                    		<tree editable = 'bottom'>
+			                			<field name="name" string = 'Tên công việc'/>
+			             <!--               <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id)" options="{'create': false, 'create_edit': false}"/>  -->
+			                            <field name="nhan_vien_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}"/>
+			        					<field name="ghi_chu"/>
+			                            <field name="state" readonly = '1'/>
+			                            <field name="loai" invisible = '1'/>
+			                        </tree>
+						         </field>
+						      </page> 
+						 </notebook>
+	                </sheet>
+                </form>
+            </field>
+        </record>
+       
+        <record model="ir.actions.act_window" id="action_nhom_cong_viec_da_duyet">
+            <field name="name">Nhóm công việc đã duyệt</field>
+            <field name="res_model">nhom.cong.viec</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('loai','=','nhom_cv'), ('state','in',['duyet'])]</field>
+            <field name="context">{'default_loai': 'nhom_cv'}</field>
+            <field name="view_id" ref="nhom_cong_viec_cho_phe_duyet_tree"/>
+        </record>
+        
+        <record id="action_nhom_cong_viec_da_duyet1" model="ir.actions.act_window.view">
+            <field eval="0" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="nhom_cong_viec_da_duyet_tree"/>
+            <field name="act_window_id" ref="action_nhom_cong_viec_da_duyet"/>
+        </record>
+        <record id="action_nhom_cong_viec_da_duyet2" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="nhom_cong_viec_da_duyet_form"/>
+            <field name="act_window_id" ref="action_nhom_cong_viec_da_duyet"/>
+        </record>
         
         <record model="ir.ui.view" id="cong_viec_tree">
             <field name="name">cong.viec.tree</field>

@@ -52,6 +52,9 @@ class nhom_cong_viec(osv.osv):
     def bt_xacnhan_ncv(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids,{'state':'moi_tao'})
     
+    def bt_cho_duyet(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids,{'state':'duyet'})
+    
     def onchange_quy_trinh_id(self, cr, uid, ids, quy_trinh_id=False):
         ct_nhom_cv_line = []
         if quy_trinh_id:
