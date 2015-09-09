@@ -4,8 +4,10 @@
 		<menuitem id="quan_ly" name="Quản Lý"/>
 	    	<menuitem id="menu_quan_ly_dh" parent="quan_ly" name="Quản lý điều hành"/>
 			    <menuitem action="action_quy_trinh_form" id="menu_action_quy_trinh_form" parent="menu_quan_ly_dh" name="Quy trình"  sequence="1"/>
-			    <menuitem action="action_nhom_cong_viec" id="menu_action_nhom_cong_viec" parent="menu_quan_ly_dh" name="Nhóm công việc"  sequence="2"/>
-			    <menuitem action="action_cong_viec" id="menu_action_cong_viec" parent="menu_quan_ly_dh" name="Công việc"  sequence="3"/>
-			    <menuitem action="action_cong_viec_con" id="menu_action_cong_viec_con" parent="menu_quan_ly_dh" name="Công việc con"  sequence="4"/> 
+			<menuitem id="menu_gd_dh" parent="quan_ly" name="Menu Giám đốc / Lãnh đạo"/>    
+			    <menuitem action="action_nhom_cong_viec" id="menu_action_nhom_cong_viec" parent="menu_gd_dh" name="Nhóm công việc"  sequence="2"/>
+			<menuitem id="menu_chuyen_vien" parent="quan_ly" name="Menu Chuyên viên"/>     
+			    <menuitem action="action_cong_viec" id="menu_action_cong_viec" parent="menu_chuyen_vien" name="Công việc"  sequence="3"/>
+			    <menuitem action="action_cong_viec_con" id="menu_action_cong_viec_con" parent="menu_chuyen_vien" name="Công việc con"  sequence="4"/> 
     </data>
 </openerp>
