@@ -13,7 +13,7 @@
                 	<field name="quy_trinh_id" />
                 	<field name="ho_tro" />
                 	<field name="phong_ban_ids" />
-                	<field name="trang_thai" />
+                	<field name="state" />
                 </tree>
             </field>
         </record>
@@ -25,7 +25,8 @@
             <field name="arch" type="xml">
                 <form string="Nhóm công việc" version="7.0">
                 <header>
-	                    <field name="trang_thai" widget="statusbar" statusbar_visible="moi,lam,cho_duyet,duyet" />
+                		<button name="bt_xacnhan_ncv" states="" string="Xác nhận nhóm công việc" type="object" class="oe_highlight"/>
+	                    <field name="state" widget="statusbar" statusbar_visible="moi_tao,lam,cho_duyet,duyet" />
 	            </header>  
 	                <sheet>
 	                <group col="4" colspan="2">
@@ -69,7 +70,7 @@
 			             <!--               <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id)" options="{'create': false, 'create_edit': false}"/>  -->
 			                            <field name="nhan_vien_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}"/>
 			        					<field name="ghi_chu"/>
-			                            <field name="trang_thai" readonly = '1'/>
+			                            <field name="state" readonly = '1'/>
 			                            <field name="loai" invisible = '1'/>
 			                        </tree>
 						         </field>
@@ -114,7 +115,7 @@
 	                <field name="quy_trinh_id" options="{'create': false, 'create_edit': false}"/>
 	                <field name="nhan_vien_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}"/>
 					<field name="ghi_chu"/>
-	                <field name="trang_thai"/>
+	                <field name="state"/>
                 </tree>
             </field>
         </record>
@@ -126,7 +127,7 @@
             <field name="arch" type="xml">
                 <form string="Công việc" version="7.0">
                 <header>
-	                    <field name="trang_thai" widget="statusbar" statusbar_visible="moi,lam,cho_duyet,duyet" />
+	                    <field name="state" widget="statusbar" statusbar_visible="moi,lam,cho_duyet,duyet" />
 	            </header>  
 	                <sheet>
 	                <group col="4" colspan="2">
@@ -167,7 +168,7 @@
 			                <!--            <field name="quy_trinh_id" options="{'create': false, 'create_edit': false}"/>  -->
 			                            <field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
 			        					<field name="ghi_chu"/>
-			                            <field name="trang_thai" readonly = '1'/>
+			                            <field name="state" readonly = '1'/>
 			                            <field name="loai" invisible = '1'/>
 			                        </tree>
 		                		</field>
@@ -211,7 +212,7 @@
 	                <field name="quy_trinh_id" options="{'create': false, 'create_edit': false}"/>
 	                <field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
 					<field name="ghi_chu"/>
-	                <field name="trang_thai"/>
+	                <field name="state"/>
                 </tree>
             </field>
         </record>
@@ -223,7 +224,7 @@
             <field name="arch" type="xml">
                 <form string="Công việc con" version="7.0">
                 <header>
-	                    <field name="trang_thai" widget="statusbar" statusbar_visible="moi,lam,cho_duyet,duyet" />
+	                    <field name="state" widget="statusbar" statusbar_visible="moi,lam,cho_duyet,duyet" />
 	            </header>  
 	                <sheet>
 	                <group col="4" colspan="2">
