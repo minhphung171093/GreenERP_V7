@@ -27,8 +27,7 @@ class nhom_cong_viec(osv.osv):
         'quy_trinh_id':fields.many2one('quy.trinh','Quy trình'),
         'state':fields.selection([('nhap','Nháp'),
                                   ('moi_tao','Mới tạo'), 
-                                  ('moi_nhan','Mới nhận'),
-                                  ('lam','Đang làm'),
+                                  ('moi_nhan','Mới nhận/Đang làm'),
                                   ('cho_duyet','Chờ phê duyệt'),
                                   ('duyet','Đã duyệt')],'Trạng thái'),
         'loai':fields.selection([('nhom_cv','Nhóm công việc'),
@@ -36,10 +35,12 @@ class nhom_cong_viec(osv.osv):
                                  ('cv_con','Công việc con'),
                                  ('nhom_cv_tg','Nhóm công việc TG')],'Loại'),
         'ct_nhom_cv_line':fields.one2many('ct.nhom.cong.viec','nhom_cv_id','Chi tiết công việc'),
-        'cong_viec_id':fields.many2one('nhom.cong.viec','Nhóm công việc line'),
+        'cong_viec_id':fields.many2one('nhom.cong.viec','Nhóm công việc line', required = True),
         'cong_viec_line':fields.one2many('nhom.cong.viec','cong_viec_id','Công việc'),
         'cong_viec_con_id':fields.many2one('nhom.cong.viec','công việc line'),
         'cong_viec_con_line':fields.one2many('nhom.cong.viec','cong_viec_con_id','Công việc con'),
+        'phan_cong_phong_ban_id':fields.many2one('nhom.cong.viec','Phân công'),
+        'phan_cong_phong_ban_line':fields.one2many('nhom.cong.viec','phan_cong_phong_ban_id','Phân công phòng ban'),
         'ghi_chu':fields.text('Ghi chú'),
         'nhan_vien_id':fields.many2one('nhan.vien','Nhân viên', required = True),
         'nhan_vien_ids':fields.many2many('nhan.vien','nhan_vien_cong_viec_ids', 'cong_viec_id', 'nhan_vien_id', 'Nhân viên', required = True),
@@ -49,11 +50,29 @@ class nhom_cong_viec(osv.osv):
             'ho_tro':'khong',    
                  }
     
-    def bt_xacnhan_ncv(self, cr, uid, ids, context=None):
+    def bt_tao_ncv(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids,{'state':'moi_tao'})
+    
+    def bt_nhan_ncv(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids,{'state':'moi_nhan'})
     
     def bt_cho_duyet(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids,{'state':'duyet'})
+    
+    def bt_tao_cong_viec(self, cr, uid, ids, context=None):
+        res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
+                                        'green_erp_qldh', 'cong_viec_form')
+        return {
+                    'name': 'Công việc',
+                    'view_type': 'form',
+                    'view_mode': 'form',
+                    'view_id': res[1],
+                    'res_model': 'nhom.cong.viec',
+                    'domain': ['loai','=','cv'],
+                    'context': {'default_loai': 'cv'},
+                    'type': 'ir.actions.act_window',
+                    'target': 'current',
+                }
     
     def onchange_quy_trinh_id(self, cr, uid, ids, quy_trinh_id=False):
         ct_nhom_cv_line = []
