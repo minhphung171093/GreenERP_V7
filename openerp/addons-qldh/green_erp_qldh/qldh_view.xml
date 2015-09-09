@@ -26,6 +26,7 @@
                 <form string="Nhóm công việc" version="7.0">
                 <header>
                 		<button name="bt_xacnhan_ncv" states="" string="Xác nhận nhóm công việc" type="object" class="oe_highlight"/>
+                		<button name="bt_tao_ncv" states="" string="Tạo công việc" type="object" class="oe_highlight"/>
 	                    <field name="state" widget="statusbar" statusbar_visible="moi_tao,lam,cho_duyet,duyet" />
 	            </header>  
 	                <sheet>
@@ -33,9 +34,9 @@
 	                	<field name="name" />
 	                	<field name="phong_ban_id" required = '1' options="{'create': false, 'create_edit': false}"/>
 	                	<field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id)" options="{'create': false, 'create_edit': false}"/>
-	                	<field name="ho_tro" widget="radio" />
+	                	<field name="ho_tro" widget="radio" required = '1' />
 	                	<field name="ghi_chu" />
-	                	<field name="phong_ban_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('ho_tro','=','khong')]}" />
+	                	<field name="phong_ban_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('ho_tro','=','khong')],'required':[('ho_tro','=','co')]}" />
 	                	<field name="loai" invisible = '1'/>
 	                </group>
                 		<notebook>
@@ -63,7 +64,7 @@
 		                    </page>
 		                    
 		                    
-		                     <page string="Công việc" attrs="{'invisible':[('quy_trinh_id','!=',False)]}">
+		                     <page string="Công việc" attrs="{'invisible':['|',('quy_trinh_id','!=',False),('ho_tro','=','co')]}">
 		                    	<field name="cong_viec_line" nolabel='1' context = "{'default_loai': 'cv'}">
 		                    		<tree editable = 'bottom'>
 			                			<field name="name" string = 'Tên công việc'/>
@@ -71,10 +72,23 @@
 			                            <field name="nhan_vien_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}"/>
 			        					<field name="ghi_chu"/>
 			                            <field name="state" readonly = '1'/>
-			                            <field name="loai" invisible = '1'/>
+			                            <field name="loai" invisible = '1'/> 
 			                        </tree>
 						         </field>
 						      </page> 
+						      
+						     <page string="Phân Công Phòng Ban" attrs="{'invisible':['|',('quy_trinh_id','=',True),('ho_tro','=','khong')]}" >
+		                    	<field name="phan_cong_phong_ban_line" nolabel='1' context = "{'default_loai': 'nhom_cv_tg'}">
+		                    		<tree editable = 'bottom'>
+			                			<field name="name" string = 'Tên công việc'/>
+			                			<field name="phong_ban_id" required = '1' options="{'create': false, 'create_edit': false}"/>
+			               <!--             <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id)" options="{'create': false, 'create_edit': false}"/>   -->
+			        					<field name="ghi_chu"/>
+			                            <field name="state" readonly = '1'/>
+			                            <field name="loai" invisible = '1'/>
+			                        </tree>
+						         </field>
+						      </page>   
 						 </notebook>
 	                </sheet>
                 </form>
