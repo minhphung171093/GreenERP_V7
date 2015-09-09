@@ -69,11 +69,26 @@ class nhom_cong_viec(osv.osv):
                     'view_id': res[1],
                     'res_model': 'nhom.cong.viec',
                     'domain': ['loai','=','cv'],
-                    'context': {'default_loai': 'cv'},
+                    'context': {'default_loai': 'cv', 'default_cong_viec_id':ids[0]},
                     'type': 'ir.actions.act_window',
                     'target': 'current',
                 }
-        
+
+    def bt_tao_tiep_cong_viec(self, cr, uid, ids, context=None):
+        res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
+                                        'green_erp_qldh', 'cong_viec_form')
+        for cv in self.browse(cr,uid,ids):
+            return {
+                        'name': 'Công việc',
+                        'view_type': 'form',
+                        'view_mode': 'form',
+                        'view_id': res[1],
+                        'res_model': 'nhom.cong.viec',
+                        'domain': ['loai','=','cv'],
+                        'context': {'default_loai': 'cv', 'default_cong_viec_id':cv.cong_viec_id.id},
+                        'type': 'ir.actions.act_window',
+                        'target': 'current',
+                    }        
     def bt_tao_cv_con(self, cr, uid, ids, context=None):
         res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
                                         'green_erp_qldh', 'cong_viec_con_form')

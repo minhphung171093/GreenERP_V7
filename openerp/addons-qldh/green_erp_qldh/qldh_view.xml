@@ -582,6 +582,7 @@
                 <form string="Công việc" version="7.0">
                 <header>
 	                    <field name="state" widget="statusbar" statusbar_visible="moi_tao,moi_nhan,cho_duyet,duyet" />
+	                    <button name="bt_tao_tiep_cong_viec" states="" string="Tạo tiếp công việc" type="object" class="oe_highlight" />
 	            </header>  
 	                <sheet>
 	                 <group>
