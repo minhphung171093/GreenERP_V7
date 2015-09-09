@@ -584,6 +584,9 @@
 	                    <field name="state" widget="statusbar" statusbar_visible="moi_tao,moi_nhan,cho_duyet,duyet" />
 	            </header>  
 	                <sheet>
+	                 <group>
+	                 	   <button name="bt_tao_cv_con" states="" string="Tạo công việc con" type="object" class="oe_highlight oe_right" />
+	                </group>
 	                <group col="4" colspan="2">
 	                	<field name="name" string = 'Tên công việc'/>
 		                <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id)" options="{'create': false, 'create_edit': false}"/>
