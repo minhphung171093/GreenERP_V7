@@ -55,6 +55,7 @@
 			                            <field name="cach_thuc_hien" />
 			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
 			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+			                            <field name="hoan_thanh" />
 			                        </tree>
 			                        <form>
 			                        <group col="4" colspan="2">
@@ -63,6 +64,7 @@
 			                        	<field name="yeu_cau_kq" />
 			                            <field name="cach_thuc_hien" />
 			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+			        					<field name="hoan_thanh" />
 			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
 			                         </group>   
 			                        </form>
@@ -174,6 +176,7 @@
 			                            <field name="cach_thuc_hien" />
 			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
 			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+			                            <field name="hoan_thanh" />
 			                        </tree>
 			                        <form>
 			                        <group col="4" colspan="2">
@@ -182,6 +185,7 @@
 			                        	<field name="yeu_cau_kq" />
 			                            <field name="cach_thuc_hien" />
 			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+			        					<field name="hoan_thanh" />
 			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
 			                         </group>   
 			                        </form>
@@ -279,6 +283,7 @@
 			                            <field name="cach_thuc_hien" />
 			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
 			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+			                            <field name="hoan_thanh" />
 			                        </tree>
 			                        <form>
 			                        <group col="4" colspan="2">
@@ -287,6 +292,7 @@
 			                        	<field name="yeu_cau_kq" />
 			                            <field name="cach_thuc_hien" />
 			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+			        					<field name="hoan_thanh" />
 			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
 			                         </group>   
 			                        </form>
@@ -388,6 +394,7 @@
 			                            <field name="cach_thuc_hien" />
 			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
 			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+			                            <field name="hoan_thanh" />
 			                        </tree>
 			                        <form>
 			                        <group col="4" colspan="2">
@@ -396,6 +403,7 @@
 			                        	<field name="yeu_cau_kq" />
 			                            <field name="cach_thuc_hien" />
 			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+			        					<field name="hoan_thanh" />
 			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
 			                         </group>   
 			                        </form>
@@ -509,6 +517,7 @@
 			                            <field name="cach_thuc_hien" />
 			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
 			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+			                            <field name="hoan_thanh" />
 			                        </tree>
 			                        <form>
 			                        <group col="4" colspan="2">
@@ -517,6 +526,7 @@
 			                        	<field name="yeu_cau_kq" />
 			                            <field name="cach_thuc_hien" />
 			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+			        					<field name="hoan_thanh" />
 			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
 			                         </group>   
 			                        </form>
@@ -601,12 +611,16 @@
             <field name="arch" type="xml">
                 <form string="Công việc" version="7.0">
                 <header>
+                		<button name="bt_nhan_cv" states="moi_tao" string="Nhận công việc" type="object" class="oe_highlight"/>
 	                    <field name="state" widget="statusbar" statusbar_visible="moi_tao,moi_nhan,cho_duyet,duyet" />
-	                    <button name="bt_tao_tiep_cong_viec" states="" string="Tạo tiếp công việc" type="object" class="oe_highlight" />
 	            </header>  
 	                <sheet>
-	                 <group>
-	                 	   <button name="bt_tao_cv_con" states="" string="Tạo công việc con" type="object" class="oe_highlight oe_right" />
+	                <div>
+	                 	   <button name="bt_tao_cv_con" states="" string="Tạo công việc con" type="object" class="oe_highlight oe_right oe_inline" />
+	                 	   <button name="bt_tao_tiep_cong_viec" states="" string="Tạo tiếp công việc" type="object" class="oe_highlight oe_left oe_inline" />
+	                </div>
+	             	<group >
+	                	<newline/>
 	                </group>
 	                <group col="4" colspan="2">
 	                	<field name="name" string = 'Tên công việc'/>
@@ -625,6 +639,7 @@
 			                            <field name="cach_thuc_hien" />
 			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
 			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+			                            <field name="hoan_thanh" />
 			                        </tree>
 			                        <form>
 			                        <group col="4" colspan="2">
@@ -633,6 +648,7 @@
 			                        	<field name="yeu_cau_kq" />
 			                            <field name="cach_thuc_hien" />
 			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+			        					<field name="hoan_thanh" />
 			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
 			                         </group>   
 			                        </form>
@@ -705,7 +721,7 @@
             <field name="arch" type="xml">
                 <form string="Công việc con" version="7.0">
                 <header>
-                		<button name="bt_tao_tiep_cv_con" states="" string="Tạo tiếp công việc" type="object" class="oe_highlight" />
+                		<button name="bt_tao_tiep_cv_con" states="" string="Tạo tiếp công việc con" type="object" class="oe_highlight" />
 	                    <field name="state" widget="statusbar" statusbar_visible="moi_tao,moi_nhan,cho_duyet,duyet" />
 	            </header>  
 	                <sheet>
@@ -727,6 +743,7 @@
 			                            <field name="cach_thuc_hien" />
 			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
 			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+			                            <field name="hoan_thanh" />
 			                        </tree>
 			                        <form>
 			                        <group col="4" colspan="2">
@@ -735,6 +752,7 @@
 			                        	<field name="yeu_cau_kq" />
 			                            <field name="cach_thuc_hien" />
 			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+			        					<field name="hoan_thanh" />
 			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
 			                         </group>   
 			                        </form>
