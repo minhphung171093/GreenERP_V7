@@ -50,10 +50,42 @@ class nhom_cong_viec(osv.osv):
             'ho_tro':'khong',    
                  }
     
+    def write(self, cr, uid, ids, vals, context=None):
+        new_write = super(nhom_cong_viec, self).write(cr, uid,ids, vals, context)
+        dem_line = 0
+        dem_ht = 0
+        for nhom_cv in self.browse(cr,uid,ids):
+            if nhom_cv.loai == 'nhom_cv':
+                for ct_line in nhom_cv.ct_nhom_cv_line:
+                    dem_line += 1
+                    if ct_line.hoan_thanh == True:
+                        dem_ht += 1
+                if nhom_cv.state != 'duyet':
+                    if dem_line !=0 and dem_line == dem_ht:
+                        sql = '''
+                            update nhom_cong_viec set state = 'cho_duyet' where id = %s
+                        '''%(nhom_cv.id)
+                        cr.execute(sql)
+            if nhom_cv.loai == 'cv':
+                for ct_line in nhom_cv.ct_nhom_cv_line:
+                    dem_line += 1
+                    if ct_line.hoan_thanh == True:
+                        dem_ht += 1
+                if nhom_cv.state != 'duyet':
+                    if dem_line !=0 and dem_line == dem_ht:
+                        sql = '''
+                            update nhom_cong_viec set state = 'cho_duyet' where id = %s
+                        '''%(nhom_cv.id)
+                        cr.execute(sql)
+        return new_write    
+    
     def bt_tao_ncv(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids,{'state':'moi_tao'})
     
     def bt_nhan_ncv(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids,{'state':'moi_nhan'})
+    
+    def bt_nhan_cv(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids,{'state':'moi_nhan'})
     
     def bt_cho_duyet(self, cr, uid, ids, context=None):
@@ -69,7 +101,7 @@ class nhom_cong_viec(osv.osv):
                     'view_id': res[1],
                     'res_model': 'nhom.cong.viec',
                     'domain': ['loai','=','cv'],
-                    'context': {'default_loai': 'cv', 'default_cong_viec_id':ids[0]},
+                    'context': {'default_loai': 'cv', 'default_cong_viec_id':ids[0], 'default_state':'moi_tao'},
                     'type': 'ir.actions.act_window',
                     'target': 'current',
                 }
@@ -85,7 +117,7 @@ class nhom_cong_viec(osv.osv):
                         'view_id': res[1],
                         'res_model': 'nhom.cong.viec',
                         'domain': ['loai','=','cv'],
-                        'context': {'default_loai': 'cv', 'default_cong_viec_id':cv.cong_viec_id.id},
+                        'context': {'default_loai': 'cv', 'default_cong_viec_id':cv.cong_viec_id.id, 'default_state':'moi_tao'},
                         'type': 'ir.actions.act_window',
                         'target': 'current',
                     }        
@@ -122,6 +154,11 @@ class nhom_cong_viec(osv.osv):
     
     def onchange_quy_trinh_id(self, cr, uid, ids, quy_trinh_id=False):
         ct_nhom_cv_line = []
+        for cv in self.browse(cr,uid,ids):
+            sql = '''
+                delete from ct_nhom_cong_viec where nhom_cv_id = %s
+            '''%(cv.id)
+            cr.execute(sql)
         if quy_trinh_id:
             quy_trinh = self.pool.get('quy.trinh').browse(cr,uid,quy_trinh_id)
             for line in quy_trinh.buoc_thuc_hien_line:
@@ -186,7 +223,11 @@ class ct_nhom_cong_viec(osv.osv):
         'yeu_cau_kq':fields.text('Yêu cầu kết quả'),
         'cach_thuc_hien':fields.text('Cách thức thực hiện'),
         'nhan_vien_id':fields.many2one('nhan.vien','Nhân viên'),
+        'hoan_thanh': fields.boolean('Hoàn thành'),
     }
+    _defaults = {
+         'hoan_thanh': False,
+         }
 
 ct_nhom_cong_viec()
 
