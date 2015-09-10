@@ -136,6 +136,13 @@ class nhom_cong_viec(osv.osv):
                                             'cach_thuc_hien': line.cach_thuc_hien,
                                              }))
         return {'value': {'ct_nhom_cv_line': ct_nhom_cv_line}}  
+    
+    def onchange_ho_tro(self, cr, uid, ids, ho_tro):
+        if ho_tro:
+            if ho_tro == 'co':
+                return {'value': {'quy_trinh_id': False}}    
+            else:
+                return True  
 nhom_cong_viec()
 
 class ct_nhom_cong_viec(osv.osv):
