@@ -49,12 +49,23 @@ class nhom_cong_viec(osv.osv):
             'state': 'nhap',
             'ho_tro':'khong',    
                  }
-    
+    def _check_nhan_vien(self, cr, uid, ids, context=None):
+        for line in self.browse(cr, uid, ids, context=context):
+            for nv in line.ct_nhom_cv_line:
+                if not nv.nhan_vien_id and line.state in ['moi_nhan','cho_duyet','duyet'] :
+                    raise osv.except_osv(_('Cảnh Báo!'),_('Cần chọn nhân viên cho công việc'))
+                    return False
+        return True
+    _constraints = [
+        (_check_nhan_vien, 'Identical Data', []),
+    ]   
     def write(self, cr, uid, ids, vals, context=None):
         new_write = super(nhom_cong_viec, self).write(cr, uid,ids, vals, context)
         dem_line = 0
         dem_ht = 0
         for nhom_cv in self.browse(cr,uid,ids):
+#             if not nhom_cv.nhan_vien_id and nhom_cv.state != 'nhap' and nhom_cv.state != 'moi_tao':
+#                 raise osv.except_osv(_('Cảnh Báo!'),_('Cần chọn nhân viên cho công việc'))
             if nhom_cv.loai == 'nhom_cv':
                 for ct_line in nhom_cv.ct_nhom_cv_line:
                     dem_line += 1
@@ -235,7 +246,18 @@ class ct_nhom_cong_viec(osv.osv):
     _defaults = {
          'hoan_thanh': False,
          }
+#     def _check_nhan_vien(self, cr, uid, ids, context=None):
+#         for line in self.browse(cr, uid, ids, context=context):
+#             if not line.nhan_vien_id and line.nhom_cv_id.state != 'nhap' and line.nhom_cv_id.state != 'moi_tao':
+#                 raise osv.except_osv(_('Cảnh Báo!'),_('Cần chọn nhân viên cho công việc'))
+#                 return False
+#         return True
+#     _constraints = [
+#         (_check_nhan_vien, 'Identical Data', []),
+#     ]
+   
 
+    
 ct_nhom_cong_viec()
 
 class quy_trinh(osv.osv):
@@ -298,6 +320,8 @@ class buoc_thuc_hien_line(osv.osv):
         'db_datas': fields.binary('Database Data'),
         'file_size': fields.integer('File Size'),
                 }
+    
+
     
 buoc_thuc_hien_line()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
