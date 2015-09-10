@@ -35,15 +35,15 @@ class nhom_cong_viec(osv.osv):
                                  ('cv_con','Công việc con'),
                                  ('nhom_cv_tg','Nhóm công việc TG')],'Loại'),
         'ct_nhom_cv_line':fields.one2many('ct.nhom.cong.viec','nhom_cv_id','Chi tiết công việc'),
-        'cong_viec_id':fields.many2one('nhom.cong.viec','Nhóm công việc line', required = True),
+        'cong_viec_id':fields.many2one('nhom.cong.viec','Nhóm công việc line'),
         'cong_viec_line':fields.one2many('nhom.cong.viec','cong_viec_id','Công việc'),
         'cong_viec_con_id':fields.many2one('nhom.cong.viec','công việc line'),
         'cong_viec_con_line':fields.one2many('nhom.cong.viec','cong_viec_con_id','Công việc con'),
         'phan_cong_phong_ban_id':fields.many2one('nhom.cong.viec','Phân công'),
         'phan_cong_phong_ban_line':fields.one2many('nhom.cong.viec','phan_cong_phong_ban_id','Phân công phòng ban'),
         'ghi_chu':fields.text('Ghi chú'),
-        'nhan_vien_id':fields.many2one('nhan.vien','Nhân viên', required = True),
-        'nhan_vien_ids':fields.many2many('nhan.vien','nhan_vien_cong_viec_ids', 'cong_viec_id', 'nhan_vien_id', 'Nhân viên', required = True),
+        'nhan_vien_id':fields.many2one('nhan.vien','Nhân viên'),
+        'nhan_vien_ids':fields.many2many('nhan.vien','nhan_vien_cong_viec_ids', 'cong_viec_id', 'nhan_vien_id', 'Nhân viên'),
     }
     _defaults = {
             'state': 'nhap',
@@ -92,17 +92,33 @@ class nhom_cong_viec(osv.osv):
     def bt_tao_cv_con(self, cr, uid, ids, context=None):
         res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
                                         'green_erp_qldh', 'cong_viec_con_form')
-        return {
-                    'name': 'Công việc con',
-                    'view_type': 'form',
-                    'view_mode': 'form',
-                    'view_id': res[1],
-                    'res_model': 'nhom.cong.viec',
-                    'domain': ['loai','=','cv_con'],
-                    'context': {'default_loai': 'cv_con'},
-                    'type': 'ir.actions.act_window',
-                    'target': 'current',
-                }
+        for cv in self.browse(cr,uid,ids):
+            return {
+                        'name': 'Công việc con',
+                        'view_type': 'form',
+                        'view_mode': 'form',
+                        'view_id': res[1],
+                        'res_model': 'nhom.cong.viec',
+                        'domain': ['loai','=','cv_con'],
+                        'context': {'default_loai': 'cv_con', 'default_cong_viec_id':cv.cong_viec_id.id, 'default_cong_viec_con_id':ids[0]},
+                        'type': 'ir.actions.act_window',
+                        'target': 'current',
+                    }
+    def bt_tao_tiep_cv_con(self, cr, uid, ids, context=None):
+        res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
+                                        'green_erp_qldh', 'cong_viec_con_form')
+        for cv in self.browse(cr,uid,ids):
+            return {
+                        'name': 'Công việc con',
+                        'view_type': 'form',
+                        'view_mode': 'form',
+                        'view_id': res[1],
+                        'res_model': 'nhom.cong.viec',
+                        'domain': ['loai','=','cv_con'],
+                        'context': {'default_loai': 'cv_con', 'default_cong_viec_id':cv.cong_viec_id.id, 'default_cong_viec_con_id':cv.cong_viec_con_id.id},
+                        'type': 'ir.actions.act_window',
+                        'target': 'current',
+                    }       
     
     def onchange_quy_trinh_id(self, cr, uid, ids, quy_trinh_id=False):
         ct_nhom_cv_line = []
@@ -169,7 +185,7 @@ class ct_nhom_cong_viec(osv.osv):
         'file_size': fields.integer('File Size'),
         'yeu_cau_kq':fields.text('Yêu cầu kết quả'),
         'cach_thuc_hien':fields.text('Cách thức thực hiện'),
-        'nhan_vien_id':fields.many2one('nhan.vien','Nhân viên', required = True),
+        'nhan_vien_id':fields.many2one('nhan.vien','Nhân viên'),
     }
 
 ct_nhom_cong_viec()
