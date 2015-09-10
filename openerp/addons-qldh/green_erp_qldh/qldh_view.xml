@@ -35,11 +35,15 @@
 	                <group col="4" colspan="2">
 	                	<field name="name" />
 	                	<field name="phong_ban_id" required = '1' options="{'create': false, 'create_edit': false}"/>
-	                	<field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id)" options="{'create': false, 'create_edit': false}"/>
-	                	<field name="ho_tro" widget="radio" required = '1' />
-	                	<field name="ghi_chu" />
+	                	
+	                	<field name="ho_tro" widget="radio" required = '1' on_change = "onchange_ho_tro(ho_tro)" />
+	                	<field name="quy_trinh_id"  on_change = "onchange_quy_trinh_id(quy_trinh_id)" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('ho_tro','=','co')]}" />
+	                	
 	                	<field name="phong_ban_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('ho_tro','=','khong')],'required':[('ho_tro','=','co')]}" />
 	                	<field name="loai" invisible = '1'/>
+	                </group>
+	               	<group col="4" colspan="2">
+	                	<field name="ghi_chu" />
 	                </group>
                 		<notebook>
 		                    <page string="Chi tiết thực hiện" attrs="{'invisible':[('quy_trinh_id','=',False)]}">
@@ -68,7 +72,7 @@
 		                    </page>
 		                    
 		                    
-		                     <page string="Công việc" attrs="{'invisible':[('quy_trinh_id','!=',False)]}">
+		                     <page string="Công việc" attrs="{'invisible':['|',('quy_trinh_id','!=',False),('ho_tro','=','co')]}">
 		                    	<field name="cong_viec_line" nolabel='1' context = "{'default_loai': 'cv'}" >
 		                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
 			                			<field name="name" string = 'Tên công việc'/>
@@ -149,14 +153,18 @@
 	                    <field name="state" widget="statusbar" statusbar_visible="nhap,moi_tao,moi_nhan,cho_duyet,duyet" />
 	            </header>  
 	                <sheet>
-	                <group col="4" colspan="2">
+	                 <group col="4" colspan="2">
 	                	<field name="name" />
 	                	<field name="phong_ban_id" required = '1' options="{'create': false, 'create_edit': false}"/>
-	                	<field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id)" options="{'create': false, 'create_edit': false}"/>
-	                	<field name="ho_tro" widget="radio" />
-	                	<field name="ghi_chu" />
-	                	<field name="phong_ban_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('ho_tro','=','khong')]}" />
+	                	
+	                	<field name="ho_tro" widget="radio" required = '1' on_change = "onchange_ho_tro(ho_tro)" />
+	                	<field name="quy_trinh_id"  on_change = "onchange_quy_trinh_id(quy_trinh_id)" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('ho_tro','=','co')]}" />
+	                	
+	                	<field name="phong_ban_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('ho_tro','=','khong')],'required':[('ho_tro','=','co')]}" />
 	                	<field name="loai" invisible = '1'/>
+	                </group>
+	               	<group col="4" colspan="2">
+	                	<field name="ghi_chu" />
 	                </group>
                 		<notebook>
 		                    <page string="Chi tiết thực hiện" attrs="{'invisible':[('quy_trinh_id','=',False)]}">
@@ -252,14 +260,18 @@
 	                    <field name="state" widget="statusbar" statusbar_visible="nhap,moi_tao,moi_nhan,cho_duyet,duyet" />
 	            </header>  
 	                <sheet>
-	                <group col="4" colspan="2">
+	                 <group col="4" colspan="2">
 	                	<field name="name" />
 	                	<field name="phong_ban_id" required = '1' options="{'create': false, 'create_edit': false}"/>
-	                	<field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id)" options="{'create': false, 'create_edit': false}"/>
-	                	<field name="ho_tro" widget="radio" />
-	                	<field name="ghi_chu" />
-	                	<field name="phong_ban_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('ho_tro','=','khong')]}" />
+	                	
+	                	<field name="ho_tro" widget="radio" required = '1' on_change = "onchange_ho_tro(ho_tro)" />
+	                	<field name="quy_trinh_id"  on_change = "onchange_quy_trinh_id(quy_trinh_id)" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('ho_tro','=','co')]}" />
+	                	
+	                	<field name="phong_ban_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('ho_tro','=','khong')],'required':[('ho_tro','=','co')]}" />
 	                	<field name="loai" invisible = '1'/>
+	                </group>
+	               	<group col="4" colspan="2">
+	                	<field name="ghi_chu" />
 	                </group>
                 		<notebook>
 		                    <page string="Chi tiết thực hiện" attrs="{'invisible':[('quy_trinh_id','=',False)]}">
@@ -359,14 +371,18 @@
 	                <group>
 	                	<button name="bt_tao_cong_viec" states="" string="Tạo công việc" type="object" class="oe_highlight oe_right" attrs="{'invisible':['|',('quy_trinh_id','!=',False), ('state','=','moi_tao')]}"/>
 	                </group>
-	                <group col="4" colspan="2">
+ 					<group col="4" colspan="2">
 	                	<field name="name" />
 	                	<field name="phong_ban_id" required = '1' options="{'create': false, 'create_edit': false}"/>
-	                	<field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id)" options="{'create': false, 'create_edit': false}"/>
-	                	<field name="ho_tro" widget="radio" required = '1' />
-	                	<field name="ghi_chu" />
+	                	
+	                	<field name="ho_tro" widget="radio" required = '1' on_change = "onchange_ho_tro(ho_tro)" />
+	                	<field name="quy_trinh_id"  on_change = "onchange_quy_trinh_id(quy_trinh_id)" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('ho_tro','=','co')]}" />
+	                	
 	                	<field name="phong_ban_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('ho_tro','=','khong')],'required':[('ho_tro','=','co')]}" />
 	                	<field name="loai" invisible = '1'/>
+	                </group>
+	               	<group col="4" colspan="2">
+	                	<field name="ghi_chu" />
 	                </group>
                 		<notebook>
 		                    <page string="Chi tiết thực hiện" attrs="{'invisible':[('quy_trinh_id','=',False)]}">
@@ -479,15 +495,19 @@
 	                <group>
 	                	<button name="bt_tao_cong_viec" states="" string="Tạo công việc" type="object" class="oe_highlight oe_right" attrs="{'invisible':['|',('quy_trinh_id','!=',False), ('state','=','moi_tao')]}"/>
 	                </group>
-	                <group col="4" colspan="2">
+	                 <group col="4" colspan="2">
 	                	<field name="name" />
 	                	<field name="phong_ban_id" required = '1' options="{'create': false, 'create_edit': false}"/>
-	                	<field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id)" options="{'create': false, 'create_edit': false}"/>
-	                	<field name="ho_tro" widget="radio" required = '1' />
-	                	<field name="ghi_chu" />
+	                	
+	                	<field name="ho_tro" widget="radio" required = '1' on_change = "onchange_ho_tro(ho_tro)" />
+	                	<field name="quy_trinh_id"  on_change = "onchange_quy_trinh_id(quy_trinh_id)" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('ho_tro','=','co')]}" />
+	                	
 	                	<field name="phong_ban_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('ho_tro','=','khong')],'required':[('ho_tro','=','co')]}" />
 	                	<field name="loai" invisible = '1'/>
 	                	<field name="trangthai_ncv" invisible = '1'/>
+	                </group>
+	               	<group col="4" colspan="2">
+	                	<field name="ghi_chu" />
 	                </group>
                 		<notebook>
 		                    <page string="Chi tiết thực hiện" attrs="{'invisible':[('quy_trinh_id','=',False)]}">
