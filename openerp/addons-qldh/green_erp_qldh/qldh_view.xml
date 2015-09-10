@@ -472,6 +472,7 @@
             <field name="arch" type="xml">
                 <form string="Nhóm công việc đang làm" version="7.0" create = 'false' delete = 'false'>
                 <header>
+                		<button name="bt_duyet_trinh_ncv" states="" string="Duyệt và trình giám đốc" type="object" class="oe_highlight" attrs="{'invisible':['|',('trangthai_ncv','=','chua_xong'), ('state','!=','moi_nhan')]}"/>
 	                    <field name="state" widget="statusbar" statusbar_visible="moi_tao,moi_nhan,cho_duyet,duyet" />
 	            </header>  
 	                <sheet>
@@ -486,6 +487,7 @@
 	                	<field name="ghi_chu" />
 	                	<field name="phong_ban_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('ho_tro','=','khong')],'required':[('ho_tro','=','co')]}" />
 	                	<field name="loai" invisible = '1'/>
+	                	<field name="trangthai_ncv" invisible = '1'/>
 	                </group>
                 		<notebook>
 		                    <page string="Chi tiết thực hiện" attrs="{'invisible':[('quy_trinh_id','=',False)]}">
@@ -591,6 +593,7 @@
             <field name="arch" type="xml">
                 <form string="Công việc" version="7.0">
                 <header>
+                		<button name="bt_duyet_trinh_cv" states="" string="Duyệt và trình công việc" type="object" class="oe_highlight" attrs="{'invisible':['|',('trangthai_cv','=','chua_xong'), ('state','!=','moi_nhan')]}"/>
                 		<button name="bt_nhan_cv" states="moi_tao" string="Nhận công việc" type="object" class="oe_highlight"/>
 	                    <field name="state" widget="statusbar" statusbar_visible="moi_tao,moi_nhan,cho_duyet,duyet" />
 	            </header>  
@@ -608,6 +611,7 @@
 		                <field name="nhan_vien_ids" required = '1' widget="many2many_tags" options="{'create': false, 'create_edit': false}"/>
 		                <field name="cong_viec_id" required = '1' domain="[('loai','=','nhom_cv')]" string = 'Nhóm công việc' options="{'create': false, 'create_edit': false}"/>
 						<field name="ghi_chu"/>
+						<field name="trangthai_cv" invisible = '1'/>
 	                </group>
                 		<notebook>
 		                    <page string="Chi tiết thực hiện" attrs="{'invisible':[('quy_trinh_id','=',False)]}">

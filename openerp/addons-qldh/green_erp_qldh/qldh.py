@@ -44,10 +44,16 @@ class nhom_cong_viec(osv.osv):
         'ghi_chu':fields.text('Ghi chú'),
         'nhan_vien_id':fields.many2one('nhan.vien','Nhân viên'),
         'nhan_vien_ids':fields.many2many('nhan.vien','nhan_vien_cong_viec_ids', 'cong_viec_id', 'nhan_vien_id', 'Nhân viên'),
+        'trangthai_ncv': fields.selection([('xong','Xong'),
+                                 ('chua_xong','Chưa Xong')],'TT_NCV'),
+        'trangthai_cv': fields.selection([('xong','Xong'),
+                                 ('chua_xong','Chưa Xong')],'TT_CV'),
     }
     _defaults = {
             'state': 'nhap',
-            'ho_tro':'khong',    
+            'ho_tro':'khong',   
+            'trangthai_ncv': 'chua_xong', 
+            'trangthai_cv': 'chua_xong', 
                  }
     
     def write(self, cr, uid, ids, vals, context=None):
@@ -63,10 +69,11 @@ class nhom_cong_viec(osv.osv):
                 if nhom_cv.state != 'duyet':
                     if dem_line !=0 and dem_line == dem_ht:
                         sql = '''
-                            update nhom_cong_viec set state = 'cho_duyet' where id = %s
+                            update nhom_cong_viec set trangthai_ncv = 'xong' where id = %s and loai = 'nhom_cv'
                         '''%(nhom_cv.id)
                         cr.execute(sql)
             if nhom_cv.loai == 'cv':
+                dem_cho_duyet = 0
                 for ct_line in nhom_cv.ct_nhom_cv_line:
                     dem_line += 1
                     if ct_line.hoan_thanh == True:
@@ -74,10 +81,52 @@ class nhom_cong_viec(osv.osv):
                 if nhom_cv.state != 'duyet':
                     if dem_line !=0 and dem_line == dem_ht:
                         sql = '''
-                            update nhom_cong_viec set state = 'cho_duyet' where id = %s
+                            update nhom_cong_viec set trangthai_cv = 'xong' where id = %s and loai = 'cv'
                         '''%(nhom_cv.id)
                         cr.execute(sql)
+                    
+#                 sql = '''
+#                     select state from nhom_cong_viec where cong_viec_id = %s and loai = 'cv'
+#                 '''%(nhom_cv.cong_viec_id.id)
+#                 cr.execute(sql)
+#                 state_ids = cr.dictfetchall()
+#                 for state in state_ids:
+#                     if state['state']=='cho_duyet':
+#                         dem_cho_duyet += 1
+#                 if len(state_ids) != 0 and len(state_ids) == dem_cho_duyet:
+#                     sql = '''
+#                         update nhom_cong_viec set trangthai_ncv = 'xong' where id = %s and loai = 'nhom_cv'
+#                     '''%(nhom_cv.cong_viec_id.id)
+#                     cr.execute(sql)
         return new_write    
+    
+    def bt_duyet_trinh_ncv(self, cr, uid, ids, context=None):
+        for nhom_cv in self.browse(cr,uid,ids):
+            for cv in nhom_cv.cong_viec_line:
+                sql = '''
+                    update nhom_cong_viec set state = 'duyet' where loai = 'cv' and id = %s
+                '''%(cv.id)
+                cr.execute(sql)
+        return self.write(cr, uid, ids,{'state':'cho_duyet'})
+    
+    def bt_duyet_trinh_cv(self, cr, uid, ids, context=None):
+        self.write(cr, uid, ids,{'state':'cho_duyet'})
+        dem_cho_duyet = 0
+        for nhom_cv in self.browse(cr,uid,ids):
+            sql = '''
+                select state from nhom_cong_viec where cong_viec_id = %s and loai = 'cv'
+            '''%(nhom_cv.cong_viec_id.id)
+            cr.execute(sql)
+            state_ids = cr.dictfetchall()
+            for state in state_ids:
+                if state['state']=='cho_duyet':
+                    dem_cho_duyet += 1
+            if len(state_ids) != 0 and len(state_ids) == dem_cho_duyet:
+                sql = '''
+                    update nhom_cong_viec set trangthai_ncv = 'xong' where id = %s and loai = 'nhom_cv'
+                '''%(nhom_cv.cong_viec_id.id)
+                cr.execute(sql)      
+        return True
     
     def bt_tao_ncv(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids,{'state':'moi_tao'})
