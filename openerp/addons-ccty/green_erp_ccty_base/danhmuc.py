@@ -184,7 +184,7 @@ class chan_nuoi(osv.osv):
         'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)', required = True),
         'khu_pho_id': fields.many2one('khu.pho','Khu phố (ấp)', required = True),
         'quan_huyen_id': fields.many2one('quan.huyen','Quận (huyện)', required = True),
-        'an_toan_dich':fields.boolean('Được cấp An toàn dịch', readonly = True),
+#         'an_toan_dich':fields.boolean('Được cấp An toàn dịch', readonly = True),
         'dien_tich': fields.char('Diện tích đất'),
         'toa_do_x': fields.char('Tọa độ X'),
         'toa_do_y': fields.char('Tọa độ Y'),
@@ -194,11 +194,25 @@ class chan_nuoi(osv.osv):
         'chinh_sua_rel': fields.related('trang_thai_id', 'chinh_sua', type="selection",
                 selection=[('nhap', 'Nháp'),('in', 'Đang xử lý'), ('ch_duyet', 'Cấp Huyện Duyệt'), ('cc_duyet', 'Chi Cục Duyệt'), ('huy', 'Hủy bỏ')], 
                 string="Chinh Sua", readonly=True, select=True),
+        'loai_hinh_so_huu_id':fields.many2one('loai.hinh.so.huu','Loại hình sở hữu', required = True),
+        'quy_cach': fields.selection([('ho', 'Trại hở'),('lanh', 'Trại lạnh')],'Quy cách chuồng trại'),
+        'xu_ly_moi_truong': fields.selection([('bioga', 'Biogas'),('sinh_hoc', 'Đệm lót sinh học'),
+                                              ('khac', 'Phương thức xử lý khác,...'),('khong', 'Không xử lý')],'Xử lý môi trường(chỉ chọn 1)',required=True),
+        'bao_ve_moi_truong':fields.selection([('co', 'Có'),('khong', 'Không')],'Cam kết bảo vệ MT'),
+        'danh_gia_moi_truong':fields.selection([('co', 'Có'),('khong', 'Không')],'Đánh giá tác động MT'),
+        'san_xuat_giong':fields.selection([('thuong_pham', 'Giống thương phẩm'),('bo_me', 'Giống bố mẹ, ông bà, cụ kỵ')],'Cơ sở sản xuất giống'),
+        'tieu_chuan_viet':fields.boolean('VietGAHP'),
+        'tieu_chuan_global':fields.boolean('Tiêu chuẩn Global GAP'),
+        'an_toan_dich':fields.boolean('Cơ sở An toàn dịch'),
+        'tieu_chuan_khac':fields.boolean('Tiêu chuẩn khác'),
                 }
-        
+
     _defaults = {
         'trang_thai_id': get_trangthai_nhap,
         'an_toan_dich':False,
+        'tieu_chuan_viet':False,
+        'tieu_chuan_global':False,
+        'tieu_chuan_khac':False,
         
                  }
     
@@ -267,14 +281,14 @@ class chan_nuoi(osv.osv):
        ids = self.search(cr, user, args, context=context, limit=limit)
        return self.name_get(cr, user, ids, context=context)
 
-    def bt_an_toan_dich(self, cr, uid, ids, context=None):
-        user = self.pool.get('res.users').browse(cr,uid,uid)
-        for line in self.browse(cr, uid, ids, context=context):
-           if line.an_toan_dich == False:
-               self.write(cr,uid,ids,{
-                                       'an_toan_dich': True,
-                                       })
-        return True
+#     def bt_an_toan_dich(self, cr, uid, ids, context=None):
+#         user = self.pool.get('res.users').browse(cr,uid,uid)
+#         for line in self.browse(cr, uid, ids, context=context):
+#            if line.an_toan_dich == False:
+#                self.write(cr,uid,ids,{
+#                                        'an_toan_dich': True,
+#                                        })
+#         return True
     
     def bt_duyet(self, cr, uid, ids, context=None):
         user = self.pool.get('res.users').browse(cr,uid,uid)

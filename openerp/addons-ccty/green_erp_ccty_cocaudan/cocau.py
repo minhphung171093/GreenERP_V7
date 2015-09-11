@@ -67,6 +67,17 @@ class co_cau(osv.osv):
                 string="Chinh Sua", readonly=True, select=True),
         'nhap_xuat_id': fields.many2one('nhap.xuat.canh.giasuc','Nhap Xuat'),
         'xu_ly_id': fields.many2one('xuly.giasuc','Xu Ly'),       
+        'loai_hinh_so_huu_id':fields.many2one('loai.hinh.so.huu','Loại hình sở hữu', required = True),
+        'quy_cach': fields.selection([('ho', 'Trại hở'),('lanh', 'Trại lạnh')],'Quy cách chuồng trại'),
+        'xu_ly_moi_truong': fields.selection([('bioga', 'Biogas'),('sinh_hoc', 'Đệm lót sinh học'),
+                                              ('khac', 'Phương thức xử lý khác,...'),('khong', 'Không xử lý')],'Xử lý môi trường(chỉ chọn 1)',required=True),
+        'bao_ve_moi_truong':fields.selection([('co', 'Có'),('khong', 'Không')],'Cam kết bảo vệ MT'),
+        'danh_gia_moi_truong':fields.selection([('co', 'Có'),('khong', 'Không')],'Đánh giá tác động MT'),
+        'san_xuat_giong':fields.selection([('thuong_pham', 'Giống thương phẩm'),('bo_me', 'Giống bố mẹ, ông bà, cụ kỵ')],'Cơ sở sản xuất giống'),
+        'tieu_chuan_viet':fields.boolean('VietGAHP'),
+        'tieu_chuan_global':fields.boolean('Tiêu chuẩn Global GAP'),
+        'an_toan_dich':fields.boolean('Cơ sở An toàn dịch'),
+        'tieu_chuan_khac':fields.boolean('Tiêu chuẩn khác'),
                 }
     _defaults = {
         'can_bo_id': _get_user,
