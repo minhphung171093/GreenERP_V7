@@ -602,6 +602,7 @@
 	                <field name="nhan_vien_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}"/>
 					<field name="ghi_chu"/>
 	                <field name="state"/>
+	                <field name="trangthai_cv" invisible = '1'/>
                 </tree>
             </field>
         </record>
@@ -714,6 +715,7 @@
 	                <field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
 					<field name="ghi_chu"/>
 	                <field name="state"/>
+	                <field name="trangthai_cvc" invisible = '1'/>
                 </tree>
             </field>
         </record>
@@ -725,10 +727,14 @@
             <field name="arch" type="xml">
                 <form string="Công việc con" version="7.0">
                 <header>
-                		<button name="bt_tao_tiep_cv_con" states="" string="Tạo tiếp công việc con" type="object" class="oe_highlight" />
+                		<button name="bt_nhan_cv_con" states="moi_tao" string="Nhận công việc con" type="object" class="oe_highlight"/>
+                		<button name="bt_duyet_trinh_cv_con" states="" string="Duyệt và trình công việc con" type="object" class="oe_highlight" attrs="{'invisible':['|',('trangthai_cvc','=','chua_xong'), ('state','!=','moi_nhan')]}"/>
 	                    <field name="state" widget="statusbar" statusbar_visible="moi_tao,moi_nhan,cho_duyet,duyet" />
 	            </header>  
 	                <sheet>
+	                <div>
+	                 	   <button name="bt_tao_tiep_cv_con" states="" string="Tạo tiếp công việc con" type="object" class="oe_highlight" />
+	                </div>
 	                <group col="4" colspan="2">
 	                	<field name="name" string = 'Tên công việc con'/>
 	                	<field name="cong_viec_id" required = '1' domain="[('loai','=','nhom_cv')]" string = 'Nhóm công việc' options="{'create': false, 'create_edit': false}"/>
@@ -736,6 +742,7 @@
 		                <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id)" options="{'create': false, 'create_edit': false}"/>
 		                <field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
 						<field name="ghi_chu"/>
+						<field name="trangthai_cvc" invisible = '1'/>
 	                </group>
                 		<notebook>
 		                    <page string="Chi tiết thực hiện">
