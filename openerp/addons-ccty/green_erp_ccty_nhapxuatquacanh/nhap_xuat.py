@@ -65,7 +65,7 @@ class nhap_xuat_canh_giasuc(osv.osv):
     
     _columns = {
         'name': fields.char('Số Giấy kiểm dịch',size = 50, required = True),
-        'loai_id': fields.many2one('loai.vat','Loài vật', required = True),
+        'loai_id': fields.many2one('loai.vat','Loài vật', required = True, ondelete = 'restrict'),
         'ngay_cap': fields.date('Ngày cấp', required = True),
         'ngay_kiem_tra': fields.date('Ngày', required = True),
         'ten_ho_id': fields.many2one('chan.nuoi','Hộ', required = True),
