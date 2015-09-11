@@ -17,6 +17,7 @@
     	<menuitem id="menu_loai_giay_tp" parent="menu_danh_muc" name="Loại giấy tiêm phòng" action="action_loai_giay_tp"/>
  <!--    	<menuitem id="menu_don_vi_tinh" parent="menu_danh_muc" name="Đơn vị tính" action="action_don_vi_tinh"/> -->
     	<menuitem id="menu_loai_hoa_chat" parent="menu_danh_muc" name="Loại hoá chất" action="action_loai_hoa_chat"/>
+    	<menuitem id="menu_loai_hinh_so_huu" parent="menu_danh_muc" name="Loại hình sở hữu" action="action_loai_hinh_so_huu"/>
     	<menuitem id="menu_trang_thai" parent="menu_danh_muc" name="Trạng thái" action="action_trang_thai" sequence = '50'/>
     	
     	<record model="ir.ui.menu" id="base.menu_administration">

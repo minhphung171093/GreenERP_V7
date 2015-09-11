@@ -178,6 +178,7 @@ class chan_nuoi(osv.osv):
     _columns = {
         'ma_ho': fields.char('Mã hộ',size = 50, required = True),
         'name': fields.char('Tên hộ',size = 50, required = True),
+        'dien_thoai': fields.char('Điện thoại',size = 50),
         'so_nha': fields.char('Số nhà',size = 50, required = True),
         'ngay_cap': fields.date('Thời gian cấp', required = True),
         'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)', required = True),
@@ -398,4 +399,11 @@ class loai_hoa_chat(osv.osv):
         'name': fields.char('Tên hoá chất',size = 50, required = True),
                 }
 loai_hoa_chat()
+
+class loai_hinh_so_huu(osv.osv):
+    _name = "loai.hinh.so.huu"
+    _columns = {
+        'name': fields.char('Tên loại hình sở hữu',size = 50, required = True),
+                }
+loai_hinh_so_huu()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
