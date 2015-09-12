@@ -264,6 +264,16 @@ class nhap_xuat_canh_giasuc(osv.osv):
                     'company_id':line.company_id.id,
                     'nhap_xuat_id': line.id,
                     'trang_thai_id': trang and trang['id'] or False,
+                    'loai_hinh_so_huu_id':line.ten_ho_id and line.ten_ho_id.loai_hinh_so_huu_id.id or False,
+                    'quy_cach': line.ten_ho_id and line.ten_ho_id.quy_cach or False,
+                    'xu_ly_moi_truong': line.ten_ho_id and line.ten_ho_id.xu_ly_moi_truong or False,
+                    'bao_ve_moi_truong':line.ten_ho_id and line.ten_ho_id.bao_ve_moi_truong or False,
+                    'danh_gia_moi_truong':line.ten_ho_id and line.ten_ho_id.danh_gia_moi_truong or False,
+                    'san_xuat_giong':line.ten_ho_id and line.ten_ho_id.san_xuat_giong or False,
+                    'tieu_chuan_viet':line.ten_ho_id and line.ten_ho_id.tieu_chuan_viet or False,
+                    'tieu_chuan_global':line.ten_ho_id and line.ten_ho_id.tieu_chuan_global or False,
+                    'an_toan_dich':line.ten_ho_id and line.ten_ho_id.an_toan_dich or False,
+                    'tieu_chuan_khac':line.ten_ho_id and line.ten_ho_id.tieu_chuan_khac or False,
                             }
                     co_cau_id = co_cau_obj.create(cr,uid,value)
                     co_cau_obj.bt_duyet(cr,uid,[co_cau_id])
@@ -292,6 +302,16 @@ class nhap_xuat_canh_giasuc(osv.osv):
                     'company_id':line.company_id.id,
                     'nhap_xuat_id': line.id,
                     'trang_thai_id': trang and trang['id'] or False,
+                    'loai_hinh_so_huu_id':line.ten_ho_id and line.ten_ho_id.loai_hinh_so_huu_id.id or False,
+                    'quy_cach': line.ten_ho_id and line.ten_ho_id.quy_cach or False,
+                    'xu_ly_moi_truong': line.ten_ho_id and line.ten_ho_id.xu_ly_moi_truong or False,
+                    'bao_ve_moi_truong':line.ten_ho_id and line.ten_ho_id.bao_ve_moi_truong or False,
+                    'danh_gia_moi_truong':line.ten_ho_id and line.ten_ho_id.danh_gia_moi_truong or False,
+                    'san_xuat_giong':line.ten_ho_id and line.ten_ho_id.san_xuat_giong or False,
+                    'tieu_chuan_viet':line.ten_ho_id and line.ten_ho_id.tieu_chuan_viet or False,
+                    'tieu_chuan_global':line.ten_ho_id and line.ten_ho_id.tieu_chuan_global or False,
+                    'an_toan_dich':line.ten_ho_id and line.ten_ho_id.an_toan_dich or False,
+                    'tieu_chuan_khac':line.ten_ho_id and line.ten_ho_id.tieu_chuan_khac or False,
                             }
                     co_cau_id = co_cau_obj.create(cr,uid,value)
                     co_cau_obj.bt_duyet(cr,uid,[co_cau_id])
