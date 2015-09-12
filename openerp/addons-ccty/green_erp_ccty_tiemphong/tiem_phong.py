@@ -286,6 +286,7 @@ class tiem_phong_lmlm(osv.osv):
                 so_luong_chet = cr.dictfetchone()['so_luong']
                 chi_tiet.append((0,0,{
                                       'name': line['name'],
+                                      'ct_loai_id': line['ct_loai_id'],
                                       'so_luong': line['tong_sl'],
                                       'tiem_phong':line['tiem_phong'],
                                       'sl_mien_dich': sl_thuc_tiem_before - sl_xuat_tp - so_luong_chet
@@ -301,6 +302,7 @@ class ct_tiem_phong_lmlm_line(osv.osv):
         'tp_lmlm_id': fields.many2one( 'tiem.phong.lmlm','tiem phong lmlm', ondelete = 'cascade'),
 #         'tp_co_cau_id':fields.many2one('co.cau','Co Cau dan'),
         'name': fields.char('Thông tin', readonly = True),
+        'ct_loai_id': fields.many2one('chi.tiet.loai.vat','Thông tin'),
         'tiem_phong':fields.boolean('Có được tiêm phòng ?'),
         'loai_benh_id': fields.many2one('chi.tiet.loai.benh','Loại bệnh'),
         'so_luong': fields.integer('Tổng đàn', readonly = True),

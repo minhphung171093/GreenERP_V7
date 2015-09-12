@@ -225,6 +225,7 @@ class nhap_xuat_canh_giasuc(osv.osv):
             if line.loai == 'nhap':
                 for loai in line.chitiet_loai_nx:
                     chi_tiet_loai.append((0,0,{
+                    'ct_loai_id': loai.ct_loai_id.id,
                     'name':loai.name,
                     'so_luong':loai.so_luong,     
                     'tiem_phong':loai.tiem_phong,                      
@@ -297,6 +298,7 @@ class nhap_xuat_canh_giasuc(osv.osv):
             elif line.loai == 'xuat':
                 for loai in line.chitiet_loai_nx:
                     chi_tiet_loai.append((0,0,{
+                    'ct_loai_id': loai.ct_loai_id.id,
                     'name':loai.name,
                     'so_luong':loai.so_luong,    
                     'tiem_phong':loai.tiem_phong,                                   
@@ -393,6 +395,7 @@ class nhap_xuat_canh_giasuc(osv.osv):
             loai = self.pool.get('loai.vat').browse(cr,uid,loai_id)    
             for line_loaivat in loai.chitiet_loaivat:
                 chi_tiet.append((0,0,{
+                                      'ct_loai_id': line_loaivat.id,
                                       'name': line_loaivat.name,
                                       'tiem_phong':line_loaivat.tiem_phong,
                                       }))
@@ -451,6 +454,7 @@ class chi_tiet_loai_nhap_xuat(osv.osv):
     _name = "chi.tiet.loai.nhap.xuat"
     _columns = {
         'nhap_xuat_loai_id': fields.many2one('nhap.xuat.canh.giasuc','Nhap Xuat', ondelete = 'cascade'),
+        'ct_loai_id': fields.many2one('chi.tiet.loai.vat','Thông tin'),
         'name': fields.char('Thông tin', readonly = True),
         'tiem_phong':fields.boolean('Có được tiêm phòng', readonly = True),
         'so_luong': fields.integer('Số lượng'),

@@ -32,9 +32,9 @@
 	        <field name="target">new</field>
 	    </record>
 	    
-	    <menuitem id="xuly_giasuc" name="Tình hình xử lý gia súc"/>
+<!--	    <menuitem id="xuly_giasuc" name="Tình hình xử lý gia súc"/>
         <menuitem id="menu_thongke_xuly_giasuc" parent="xuly_giasuc" name="Thống kê xử lý gia súc" sequence = '2'/>
-	    	<menuitem id="menu_action_theodoi_tinhhinh_xuly_giasuc_form" name="Xử lý gia súc (heo)" parent="menu_thongke_xuly_giasuc" action="action_theodoi_tinhhinh_xuly_giasuc_form" sequence = '2'/>
+	    	<menuitem id="menu_action_theodoi_tinhhinh_xuly_giasuc_form" name="Xử lý gia súc (heo)" parent="menu_thongke_xuly_giasuc" action="action_theodoi_tinhhinh_xuly_giasuc_form" sequence = '2'/>  -->
 	 
 	    
     </data>

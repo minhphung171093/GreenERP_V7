@@ -87,130 +87,54 @@ class Parser(report_sxw.rml_parse):
         if tu_ngay and not den_ngay:
             sql='''
                 select * from chitiet_loai_xuly where xuly_giasuc_id in (select id from xuly_giasuc 
-                where ten_ho_id = %s and ngay >= '%s' and loai_id in %s and trang_thai_id in (select id from trang_thai where stt = 3)) 
+                where ten_ho_id = %s and ngay >= '%s' and trang_thai_id in (select id from trang_thai where stt = 3)) 
                 and so_luong !=0
-            '''%(ten_ho_id[0], tu_ngay, tuple(self.get_loaivat()),)
+            '''%(ten_ho_id[0], tu_ngay)
             self.cr.execute(sql)
         elif den_ngay and not tu_ngay:
             sql='''
                 select * from chitiet_loai_xuly where xuly_giasuc_id in (select id from xuly_giasuc 
-                where ten_ho_id = %s and ngay <= '%s' and loai_id in %s and trang_thai_id in (select id from trang_thai where stt = 3)) 
+                where ten_ho_id = %s and ngay <= '%s' and trang_thai_id in (select id from trang_thai where stt = 3)) 
                 and so_luong !=0
-            '''%(ten_ho_id[0], den_ngay, tuple(self.get_loaivat()),)
+            '''%(ten_ho_id[0], den_ngay)
             self.cr.execute(sql)
         elif den_ngay and tu_ngay:
             sql='''
                 select * from chitiet_loai_xuly where xuly_giasuc_id in (select id from xuly_giasuc 
-                where ten_ho_id = %s and ngay between '%s' and '%s' and loai_id in %s and trang_thai_id in (select id from trang_thai where stt = 3)) 
+                where ten_ho_id = %s and ngay between '%s' and '%s' and trang_thai_id in (select id from trang_thai where stt = 3)) 
                 and so_luong !=0
-            '''%(ten_ho_id[0], tu_ngay, den_ngay, tuple(self.get_loaivat()),)
+            '''%(ten_ho_id[0], tu_ngay, den_ngay)
             self.cr.execute(sql)
         else:
             sql='''
                 select * from chitiet_loai_xuly where xuly_giasuc_id in (select id from xuly_giasuc 
-                where ten_ho_id = %s and loai_id in %s and trang_thai_id in (select id from trang_thai where stt = 3)) and so_luong != 0
-            '''%(ten_ho_id[0], tuple(self.get_loaivat()),)
+                where ten_ho_id = %s and trang_thai_id in (select id from trang_thai where stt = 3)) and so_luong != 0
+            '''%(ten_ho_id[0])
             self.cr.execute(sql)
         return self.cr.dictfetchall()
     
     def get_col(self):
         res = []
         context = {}
-        bosua_model, bosua_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_bosua')
-        self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [bosua_id], 'read', context = context)
         sql = '''
-            select * from chi_tiet_loai_vat where loai_id in (select id from loai_vat where id = %s)
-        '''%(bosua_id)
+            select id from loai_vat
+        '''
         self.cr.execute(sql)
-        
-        for seq,ct in enumerate(self.cr.dictfetchall()):
-            if seq==0:
-                res.append((0,0,{
-                                 'loaivat':u'Bò Sữa','ct': ct['name']
+        loaivat_ids = [r[0] for r in self.cr.fetchall()]
+        for loai_vat in self.pool.get('loai.vat').browse(self.cr, self.uid, loaivat_ids):
+#             seq = 0
+            for seq,line in enumerate(loai_vat.chitiet_loaivat):
+                if seq == 0:
+                    res.append((0,0,{
+                                 'loaivat':line.loai_id.name,'ct': line.name,'ct_id': line.id
                                 }
                         ))
-            else:
-                res.append((0,0,{
-                                 'loaivat':'','ct': ct['name']
-                                }
-                        ))
-        
-        bota_model, bota_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_bota')
-        self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [bota_id], 'read', context = context)
-        sql = '''
-            select * from chi_tiet_loai_vat where loai_id in (select id from loai_vat where id = %s)
-        '''%(bota_id)
-        self.cr.execute(sql)
-        for seq,ct in enumerate(self.cr.dictfetchall()):
-            if seq == 0:
-                res.append((0,0,{
-                                 'loaivat':u'Bò Ta','ct': ct['name']
-                                }
-                        ))
-            else:
-                res.append((0,0,{
-                                 'loaivat':'','ct': ct['name']
-                                }
-                        ))
-        
-        bolai_model, bolai_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_bolai')
-        self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [bolai_id], 'read', context = context)
-        sql = '''
-            select * from chi_tiet_loai_vat where loai_id in (select id from loai_vat where id = %s)
-        '''%(bolai_id)
-        self.cr.execute(sql)
-        for seq,ct in enumerate(self.cr.dictfetchall()):
-            if seq == 0:
-                res.append((0,0,{
-                                 'loaivat':u'Bò lai sind','ct': ct['name']
-                                }
-                        ))
-            else:
-                res.append((0,0,{
-                                 'loaivat':'','ct': ct['name']
-                                }
-                        ))
-        trau_model, trau_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_trau')
-        self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [trau_id], 'read', context = context)
-        sql = '''
-            select * from chi_tiet_loai_vat where loai_id in (select id from loai_vat where id = %s)
-        '''%(trau_id)
-        self.cr.execute(sql)
-        for seq,ct in enumerate(self.cr.dictfetchall()):
-            if seq == 0:
-                res.append((0,0,{
-                                 'loaivat':u'Trâu','ct': ct['name']
-                                }
-                        ))
-            else:
-                res.append((0,0,{
-                                 'loaivat':'','ct': ct['name']
-                                }
-                        ))
-        
-        de_model, de_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_de')
-        self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [de_id], 'read', context = context)
-        sql = '''
-            select * from chi_tiet_loai_vat where loai_id in (select id from loai_vat where id = %s)
-        '''%(de_id)
-        self.cr.execute(sql)
-        for ct in self.cr.dictfetchall():
-            res.append((0,0,{
-                             'loaivat':ct['name'],'ct':ct['name']
-                            }
-                    ))
+                else:
+                    res.append((0,0,{
+                                     'loaivat':'','ct': line.name,'ct_id': line.id
+                                    }
+                            ))
             
-        cuu_model, cuu_id = self.pool.get('ir.model.data').get_object_reference(self.cr, self.uid, 'green_erp_ccty_base', 'loaivat_cuu')
-        self.pool.get('loai.vat').check_access_rule(self.cr, self.uid, [cuu_id], 'read', context = context)
-        sql = '''
-            select * from chi_tiet_loai_vat where loai_id in (select id from loai_vat where id = %s)
-        '''%(cuu_id)
-        self.cr.execute(sql)
-        for ct in self.cr.dictfetchall():
-            res.append((0,0,{
-                             'loaivat':ct['name'],'ct':ct['name']
-                            }
-                    ))
         return res
     
     def get_cell(self,row_id,row_name, col):
@@ -222,7 +146,7 @@ class Parser(report_sxw.rml_parse):
         if row_name:
             sql = '''
                 select so_luong from chitiet_loai_xuly 
-                where name = '%s' and name = '%s' and xuly_giasuc_id = %s
+                where ct_loai_id = %s and name = '%s' and xuly_giasuc_id = %s
             '''%(col, row_name, row_id)
             self.cr.execute(sql)
             sl = self.cr.dictfetchone()

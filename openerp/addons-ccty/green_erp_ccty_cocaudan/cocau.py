@@ -189,6 +189,7 @@ class co_cau(osv.osv):
                 cr.execute(sql)
                 tong_sl_giam = cr.dictfetchone()['tong_sl_giam']
                 chi_tiet.append((0,0,{
+                                      'ct_loai_id': line.id,
                                       'name': line.name,
                                       'tong_sl': tong_sl-tong_sl_giam,
                                       }))
@@ -361,6 +362,7 @@ class chi_tiet_loai_line(osv.osv):
     _columns = {
         'co_cau_id': fields.many2one( 'co.cau','Co cau', ondelete = 'cascade'),
         'name': fields.char('Thông tin', readonly = True),
+        'ct_loai_id': fields.many2one('chi.tiet.loai.vat','Thông tin'),
         'tiem_phong':fields.boolean('Có được tiêm phòng?'),
         'tong_sl':fields.function(sum_so_luong,type='integer',string='Tổng số lượng(hiện có)', store = True),
         'so_luong': fields.integer('Số lượng'),

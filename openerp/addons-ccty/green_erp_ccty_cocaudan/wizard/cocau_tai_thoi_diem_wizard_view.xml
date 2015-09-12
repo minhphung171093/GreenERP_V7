@@ -32,9 +32,9 @@
 	        <field name="target">new</field>
 	    </record>
 	    
-		<menuitem id="co_cau" name="Quản lý cơ cấu đàn"/>
+<!--		<menuitem id="co_cau" name="Quản lý cơ cấu đàn"/>
 	    <menuitem id="thongke_baocao" parent="co_cau" name="Thống kê báo cáo cơ cấu đàn" sequence = '2'/>
-    		<menuitem action="action_cocau_tai_thoi_diem_form" id="menu_action_cocau_tai_thoi_diem_form" parent="thongke_baocao" sequence = '2'/>
+    		<menuitem action="action_cocau_tai_thoi_diem_form" id="menu_action_cocau_tai_thoi_diem_form" parent="thongke_baocao" sequence = '2'/> -->
         
 	 
 	    

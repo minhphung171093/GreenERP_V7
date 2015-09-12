@@ -257,6 +257,7 @@ class xuly_giasuc(osv.osv):
             cr.execute(sql)
             for line in cr.dictfetchall():
                 chi_tiet.append((0,0,{
+                                      'ct_loai_id': line['ct_loai_id'],
                                       'name': line['name'],
                                       'tong_dan': line['tong_sl']
                                       }))
@@ -303,6 +304,7 @@ class chitiet_loai_xuly(osv.osv):
     _columns = {
         'xuly_giasuc_id': fields.many2one('xuly.giasuc','Xu ly gia suc', ondelete = 'cascade'),
         'name': fields.char('Thông tin', readonly = True),
+        'ct_loai_id': fields.many2one('chi.tiet.loai.vat','Thông tin'),
         'tong_dan': fields.integer('Tổng đàn', readonly = True),
         'so_luong': fields.float('Số lượng xử lý', required = True),
 #         'dvt':fields.many2one('don.vi.tinh','ĐVT',required=True),
