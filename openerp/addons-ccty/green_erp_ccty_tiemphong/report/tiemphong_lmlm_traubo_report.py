@@ -170,29 +170,29 @@ class Parser(report_sxw.rml_parse):
         if tu_ngay and not den_ngay:
             sql='''
                 select * from tiem_phong_lmlm where ho_chan_nuoi_id = %s 
-                and to_char(name, 'YYYY-MM-DD') >= '%s' and loai_id in %s and trang_thai_id in (select id from trang_thai where stt = 3)
-                order by name
-            '''%(ten_ho_id[0], tu_ngay, tuple(self.get_loaivat()),)
+                and to_char(ngay_tiem, 'YYYY-MM-DD') >= '%s' and trang_thai_id in (select id from trang_thai where stt = 3)
+                order by ngay_tiem
+            '''%(ten_ho_id[0], tu_ngay)
             self.cr.execute(sql)
         elif den_ngay and not tu_ngay:
             sql='''
                 select * from tiem_phong_lmlm where ho_chan_nuoi_id = %s 
-                and to_char(name, 'YYYY-MM-DD') <= '%s' and loai_id in %s and trang_thai_id in (select id from trang_thai where stt = 3)
-                order by name
-            '''%(ten_ho_id[0], den_ngay, tuple(self.get_loaivat()),)
+                and to_char(ngay_tiem, 'YYYY-MM-DD') <= '%s' and trang_thai_id in (select id from trang_thai where stt = 3)
+                order by ngay_tiem
+            '''%(ten_ho_id[0], den_ngay)
             self.cr.execute(sql)
         elif den_ngay and tu_ngay:
             sql='''
                 select * from tiem_phong_lmlm where ho_chan_nuoi_id = %s 
-                and to_char(name, 'YYYY-MM-DD') between '%s' and '%s' and loai_id in %s and trang_thai_id in (select id from trang_thai where stt = 3)
-                order by name
-            '''%(ten_ho_id[0], tu_ngay, den_ngay, tuple(self.get_loaivat()),)
+                and to_char(ngay_tiem, 'YYYY-MM-DD') between '%s' and '%s' and trang_thai_id in (select id from trang_thai where stt = 3)
+                order by ngay_tiem
+            '''%(ten_ho_id[0], tu_ngay, den_ngay)
             self.cr.execute(sql)
         else:
             sql='''
-                select * from tiem_phong_lmlm where ho_chan_nuoi_id = %s and loai_id in %s and trang_thai_id in (select id from trang_thai where stt = 3)
-                order by name
-            '''%(ten_ho_id[0], tuple(self.get_loaivat()),)
+                select * from tiem_phong_lmlm where ho_chan_nuoi_id = %s and trang_thai_id in (select id from trang_thai where stt = 3)
+                order by ngay_tiem
+            '''%(ten_ho_id[0])
             self.cr.execute(sql)
         return self.cr.dictfetchall()
     
@@ -216,11 +216,6 @@ class Parser(report_sxw.rml_parse):
                                      'loaivat':'','ct': line.name,'ct_id': line.id
                                     }
                             ))
-            res.append((0,0,{
-                         'loaivat':'','ct': u'Cộng ' + loai_vat.name,'ct_id':'' 
-                        }
-                ))    
-            
         return res
     
     def get_cell_tongdan(self,row_id,col):
@@ -229,13 +224,14 @@ class Parser(report_sxw.rml_parse):
         sum = 0
         wizard_data = self.localcontext['data']['form']
         ten_ho_id = wizard_data['ten_ho_id']
-        sql = '''
-            select so_luong from ct_tiem_phong_lmlm_line where name = '%s' and tp_lmlm_id = %s 
-        '''%(col, row_id)
-        self.cr.execute(sql)
-        sl = self.cr.dictfetchone()
-        if sl:
-            soluong = sl and sl['so_luong'] or False
+        if col:
+            sql = '''
+                select so_luong from ct_tiem_phong_lmlm_line where ct_loai_id = %s and tp_lmlm_id = %s 
+            '''%(col, row_id)
+            self.cr.execute(sql)
+            sl = self.cr.dictfetchone()
+            if sl:
+                soluong = sl and sl['so_luong'] or False
         return soluong
     
     def get_sum_tongdan(self,row_id):
@@ -260,7 +256,7 @@ class Parser(report_sxw.rml_parse):
         wizard_data = self.localcontext['data']['form']
         ten_ho_id = wizard_data['ten_ho_id']
         sql = '''
-            select sl_ngoai_dien from ct_tiem_phong_lmlm_line where name = '%s' and tp_lmlm_id = %s 
+            select sl_ngoai_dien from ct_tiem_phong_lmlm_line where ct_loai_id = %s and tp_lmlm_id = %s 
         '''%(col, row_id)
         self.cr.execute(sql)
         sl = self.cr.dictfetchone()
@@ -290,7 +286,7 @@ class Parser(report_sxw.rml_parse):
         wizard_data = self.localcontext['data']['form']
         ten_ho_id = wizard_data['ten_ho_id']
         sql = '''
-            select sl_mien_dich from ct_tiem_phong_lmlm_line where name = '%s' and tp_lmlm_id = %s 
+            select sl_mien_dich from ct_tiem_phong_lmlm_line where ct_loai_id = %s and tp_lmlm_id = %s 
         '''%(col, row_id)
         self.cr.execute(sql)
         sl = self.cr.dictfetchone()
@@ -320,7 +316,7 @@ class Parser(report_sxw.rml_parse):
         wizard_data = self.localcontext['data']['form']
         ten_ho_id = wizard_data['ten_ho_id']
         sql = '''
-            select sl_thuc_tiem from ct_tiem_phong_lmlm_line where name = '%s' and tp_lmlm_id = %s 
+            select sl_thuc_tiem from ct_tiem_phong_lmlm_line where ct_loai_id = %s and tp_lmlm_id = %s 
         '''%(col, row_id)
         self.cr.execute(sql)
         sl = self.cr.dictfetchone()

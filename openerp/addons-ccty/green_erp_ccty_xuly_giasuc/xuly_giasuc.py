@@ -159,19 +159,21 @@ class xuly_giasuc(osv.osv):
         for line in self.browse(cr, uid, ids, context=context):
             for gs in line.chitiet_loai_xuly:
                 sql = '''
-                    select tiem_phong from chi_tiet_loai_vat where loai_id = %s and name = '%s'
-                '''%(line.loai_id.id, gs.name)
+                    select tiem_phong from chi_tiet_loai_vat where loai_id = %s and ct_loai_id = %s
+                '''%(line.loai_id.id, gs.ct_loai_id.id)
                 cr.execute(sql)
                 tiem_phong = cr.dictfetchone()['tiem_phong']
                 if gs.dvt == 'con':
                     chi_tiet_loai.append((0,0,{
                         'name':gs.name,
+                        'ct_loai_id': gs.ct_loai_id.id,
                         'so_luong':gs.so_luong,   
                         'tiem_phong':tiem_phong,
                     }))
                 else:
                     chi_tiet_loai.append((0,0,{
                         'name':gs.name,
+                        'ct_loai_id': gs.ct_loai_id.id,
                         'so_luong':gs.sl_tuong_duong,     
                         'tiem_phong':tiem_phong,    
                     }))

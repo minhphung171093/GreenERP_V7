@@ -69,9 +69,12 @@ class tiem_phong_lmlm(osv.osv):
         return user.company_id.id or False
     
     def _get_loaibenh(self, cr, uid, ids, context=None):
-        lmlm_model, lmlm_id = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'green_erp_ccty_base', 'chitiet_bota_loaibenh_LMLM')
-        self.pool.get('chi.tiet.loai.benh').check_access_rule(cr, uid, [lmlm_id], 'read', context = context)
-        return lmlm_id
+        sql = '''
+            select id from chi_tiet_loai_benh where name = 'LMLM'
+        '''
+        cr.execute(sql)
+        lmlm_id = cr.dictfetchone()
+        return lmlm_id and lmlm_id['id'] or False
     
     def get_trangthai_nhap(self, cr, uid, ids, context=None):
         sql = '''
@@ -222,7 +225,7 @@ class tiem_phong_lmlm(osv.osv):
                                                               'so_luong': -(vaccine.so_luong_vc),
                                                               'loai': 'xuat',
                                                               'lmlm_id': vaccine.tp_lmlm_id.id,
-                                                              'ngay': vaccine.tp_lmlm_id.name,
+                                                              'ngay': vaccine.tp_lmlm_id.ngay_tiem,
                                                                  })
                 
             elif line.trang_thai_id.stt == 2 and user.company_id.cap == 'chi_cuc':
@@ -240,7 +243,7 @@ class tiem_phong_lmlm(osv.osv):
                                                               'so_luong': -(vaccine.so_luong_vc),
                                                               'loai': 'xuat',
                                                               'lmlm_id': vaccine.tp_lmlm_id.id,
-                                                              'ngay': vaccine.tp_lmlm_id.name,
+                                                              'ngay': vaccine.tp_lmlm_id.ngay_tiem,
                                                                  })
         return True
     

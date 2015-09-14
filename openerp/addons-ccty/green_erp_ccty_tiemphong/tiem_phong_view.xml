@@ -148,7 +148,7 @@
 		                		<field name="name" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 		                		<field name="so_quyen" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}" />
 		                		<field name="ngay_tiem" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}" />
-		                		<field name="loai_id" options="{'create': false, 'create_edit': false}" context="{'search_loai_id':True}" on_change = "onchange_ho_chan_nuoi_id(ho_chan_nuoi_id, loai_id)" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+		                		<field name="loai_id" options="{'create': false, 'create_edit': false}" on_change = "onchange_ho_chan_nuoi_id(ho_chan_nuoi_id, loai_id)" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 			                    <field name="can_bo_tiem" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 			                    <field name="tram_id" readonly = "1" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 			                    <field name="can_bo_id" readonly = "1" domain="[('company_id','=',tram_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
