@@ -166,7 +166,7 @@
 	        <field name="in_format">oo-ods</field>
 	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
 	        <field name="parser_loc">green_erp_account/report/general_balance_sheet_report.py</field>
-	        <field name="report_rml">green_erp_account/report/general_balance_sheet_report.ods</field>
+	        <field name="report_rml">green_erp_account/report/general_balance_sheet_bcdkt_report.ods</field>
 	        <field name="parser_state">loc</field>
 	        <field name="tml_source">file</field>
 	        <field name="attachment_use" eval="0"/>
@@ -179,7 +179,7 @@
 			model="general.balance.sheet" 
 			name="fin_general_balance_sheet_report"
 	        string="General Balance Sheet"
-	        rml="green_erp_account/report/general_balance_sheet_report.ods"/>
+	        rml="green_erp_account/report/general_balance_sheet_bcdkt_report.ods"/>
 	        
 <!--  =========== REPORT GENERAL ACCOUNTt PROFIT LOSS REPORT ============ -->	   	   
 	   <!-- Create New General Account Profit loss Report -->
@@ -206,6 +206,32 @@
 			name="fin_general_account_profit_loss_report"
 	        string="General Account Profit Loss"
 	        rml="green_erp_account/report/general_account_profit_loss_report.ods"/>
+	        
+<!--  =========== REPORT Luu Chuyen tien te ============ -->	   	   
+	   <!-- Create New Luu Chuyen tien te Report truc tiep -->
+    	<record id="luuchuyen_tiente_tructiep_report" model="ir.actions.report.xml">
+	        <field name="name">luuchuyen_tiente_tructiep_report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">luuchuyen.tiente</field>
+	        <field name="report_name">luuchuyen_tiente_tructiep_report</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">green_erp_account/report/luuchuyen_tiente_tructiep_report.py</field>
+	        <field name="report_rml">green_erp_account/report/luuchuyen_tiente_tructiep_report.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record>		    
+		
+		<report 
+			auto="False" 
+			menu="False"
+			id="luuchuyen_tiente_tructiep_report" 
+			model="luuchuyen.tiente" 
+			name="luuchuyen_tiente_tructiep_report"
+	        string="Lưu chuyển tiền tệ (trực tiếp)"
+	        rml="green_erp_account/report/luuchuyen_tiente_tructiep_report.ods"/>
 	        
 	</data>
 </openerp>

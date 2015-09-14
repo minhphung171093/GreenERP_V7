@@ -78,6 +78,12 @@
 	      		action="action_report_general_account_profit_loss" 
 	      		icon="terp-graph"  
 	      		parent="menu_report_finance" sequence="20"/>
+	      		
+      		<menuitem id="menu_action_report_luuchuyen_tiente_tructiep"
+      			name="Lưu chuyển tiền tệ (trực tiếp)" 
+	      		action="action_report_luuchuyen_tiente_tructiep" 
+	      		icon="terp-graph"  
+	      		parent="menu_report_finance" sequence="25"/>
     	
 <!-- Sale and Purchase Receipt -->
 	<menuitem id="menu_sale_purchase_receipt"

@@ -21,6 +21,8 @@ class sql_profit_loss(osv.osv):
         self.fin_profit_loss_data(cr)
         self.fin_get_account_data(cr)
         self.fin_profit_loss_report(cr)
+        self.fin_get_accumulated(cr)
+        self.fin_get_doi_ung(cr)
         
         cr.commit()
         return True
@@ -109,7 +111,142 @@ class sql_profit_loss(osv.osv):
         '''
         cr.execute(sql)
         return True
+
+    def fin_get_accumulated(self,cr):
+        sql = '''
+        DROP FUNCTION IF EXISTS fin_get_accumulated(date, date, text, character varying, integer) CASCADE;
+        commit;
+        
+        CREATE OR REPLACE FUNCTION fin_get_accumulated(date, date, text, character varying, integer)
+          RETURNS numeric AS
+        $BODY$
+        DECLARE
+            rec        record;
+            lst_account    text = '';
+            bal_dr    numeric = 0;
+            bal_cr    numeric = 0;
+        BEGIN
+            lst_account = fin_get_array_accountid($3);
+            
+            if lst_account <> '' then
+                for rec in execute '
+                        select  sum(aml.debit) balance_dr, sum(aml.credit) balance_cr
+                        from account_move amh join account_move_line aml 
+                                on amh.id = aml.move_id
+                            join account_journal ajn on aml.journal_id = ajn.id
+                        where amh.state = ''posted'' and aml.state = ''valid''
+                            and ajn.type = ''situation'' and aml.account_id in ('||lst_account||')
+                            and date_trunc(''year'', aml.date) = date_trunc(''year'', date($1))
+                            and amh.company_id = $3
+                        union all
+                        select  sum(aml.debit) balance_dr, sum(aml.credit) balance_cr
+                        from account_move amh join account_move_line aml 
+                                on amh.id = aml.move_id
+                            join account_journal ajn on aml.journal_id = ajn.id
+                        where amh.state = ''posted'' and aml.state = ''valid''
+                            and ajn.type != ''situation'' and aml.account_id in ('||lst_account||')
+                            and date_trunc(''day'', aml.date) between date_trunc(''year'', date($1))
+                            and date($2)
+                            and amh.company_id = $3' using $1, $2, $5
+                
+                loop
+                    bal_dr = bal_dr + coalesce(rec.balance_dr, 0);
+                    bal_cr = bal_cr + coalesce(rec.balance_cr, 0);
+                end loop;
+            else
+                bal_dr = 0;
+                bal_cr = 0;
+            end if;
+            
+            if $4 = 'dr' then
+                return bal_dr;
+            else
+                return bal_cr;
+            end if;
+            
+        END;$BODY$
+          LANGUAGE plpgsql VOLATILE
+          COST 100;
+        ALTER FUNCTION fin_get_accumulated(date, date, text, character varying, integer)
+          OWNER TO openerp;
+        '''
+        cr.execute(sql)
+        return True
     
+    def fin_get_doi_ung(self,cr):
+        sql = '''
+        DROP FUNCTION IF EXISTS fin_get_doi_ung(date, date, text, text, character varying, integer) CASCADE;
+        commit;
+        
+        CREATE OR REPLACE FUNCTION fin_get_doi_ung(date, date, text, text, character varying, integer)
+          RETURNS numeric AS
+        $BODY$
+        DECLARE
+            rec        record;
+            lst_account    text = '';
+            lst_account_du    text = '';
+            bal_dr    numeric = 0;
+            bal_cr    numeric = 0;
+        BEGIN
+            lst_account = fin_get_array_accountid($3);
+            lst_account_du = fin_get_array_accountid($4);
+            
+            if lst_account <> '' and lst_account_du <> '' then
+                for rec in execute '
+                    select amh.id
+                        from account_move amh join account_move_line aml 
+                                on amh.id = aml.move_id
+                            join account_journal ajn on aml.journal_id = ajn.id
+                        where amh.state = ''posted'' and aml.state = ''valid''
+                            and ajn.type = ''situation'' and aml.account_id in ('||lst_account||')
+                            and date_trunc(''year'', aml.date) = date_trunc(''year'', date($1))
+                            and amh.company_id = $3
+                        group by amh.id
+                    union all
+                    select amh.id
+                        from account_move amh join account_move_line aml 
+                                on amh.id = aml.move_id
+                            join account_journal ajn on aml.journal_id = ajn.id
+                        where amh.state = ''posted'' and aml.state = ''valid''
+                            and ajn.type != ''situation'' and aml.account_id in ('||lst_account||')
+                            and date_trunc(''day'', aml.date) between date_trunc(''year'', date($1))
+                            and date($2)
+                            and amh.company_id = $3
+                        group by amh.id
+                        ' using $1, $2, $6
+                
+                loop
+                    for rec in execute '
+                        select sum(aml.debit) balance_dr, sum(aml.credit) balance_cr
+                        from account_move amh join account_move_line aml 
+                                on amh.id = aml.move_id
+                        where aml.account_id in ('||lst_account_du||') and aml.move_id=$1
+                            ' using rec.id
+                    loop
+                        bal_dr = bal_dr + coalesce(rec.balance_dr, 0);
+                        bal_cr = bal_cr + coalesce(rec.balance_cr, 0);
+                    end loop;
+                end loop;
+            else
+                bal_dr = 0;
+                bal_cr = 0;
+            end if;
+            
+            if $5 = 'dr' then
+                return bal_dr;
+            else
+                return bal_cr;
+            end if;
+            
+        END;$BODY$
+          LANGUAGE plpgsql VOLATILE
+          COST 100;
+        ALTER FUNCTION fin_get_doi_ung(date, date, text, text, character varying, integer)
+          OWNER TO openerp;
+        '''
+        cr.execute(sql)
+        return True
+
     def fin_profit_loss_report(self, cr):
 #         cr.execute("select exists (select 1 from pg_proc where proname = 'fin_profit_loss_report')")
 #         res = cr.fetchone()
@@ -135,61 +272,36 @@ class sql_profit_loss(osv.osv):
             RAISE NOTICE 'Prior date range: % - %', prior_sdate, prior_edate;
             
             -- chỉ tiêu 1,2,3 (doanh thu 511)
-            -- 1. lấy chỉ tiêu 02 fisrt
-            for rec_pl in select* from fin_get_account_data(prior_sdate, prior_edate, 1, 100, $4)
-            loop
-                pl_data.prior_amt2 = coalesce(rec_pl.cr_amount,0) - coalesce(rec_pl.dr_amount,0);
-            end loop;
-            for rec_pl in select* from fin_get_account_data(_cur_sdate, _cur_edate, 1, 100, $4)
-            loop
-                pl_data.curr_amt2 = coalesce(rec_pl.cr_amount,0) - coalesce(rec_pl.dr_amount,0);
-            end loop;
-            -- 2. lấy chỉ tiêu 03
-            for rec_pl in select* from fin_get_account_data(prior_sdate, prior_edate, 101, 200, $4)
-            loop
-                pl_data.prior_amt3 = coalesce(rec_pl.dr_amount,0) - coalesce(rec_pl.cr_amount,0);
-            end loop;
-            for rec_pl in select* from fin_get_account_data(_cur_sdate, _cur_edate, 101, 200, $4)
-            loop
-                pl_data.curr_amt3 = coalesce(rec_pl.dr_amount,0) - coalesce(rec_pl.cr_amount,0, $4);
-            end loop;
-            -- 3. tính lại chỉ tiêu 01
-            pl_data.prior_amt1 = pl_data.prior_amt2 + pl_data.prior_amt3;
-            pl_data.curr_amt1 = pl_data.curr_amt2 + pl_data.curr_amt3;
             
-            -- 4. lấy chỉ tiêu 04 (giá vốn 632)
-            for rec_pl in select* from fin_get_account_data(prior_sdate, prior_edate, 301, 400, $4)
-            loop
-                pl_data.prior_amt4 = coalesce(rec_pl.cr_amount,0) - coalesce(rec_pl.dr_amount,0);
-            end loop;
-            for rec_pl in select* from fin_get_account_data(_cur_sdate, _cur_edate, 301, 400, $4)
-            loop
-                pl_data.curr_amt4 = coalesce(rec_pl.cr_amount,0) - coalesce(rec_pl.dr_amount,0);
-            end loop;
-            -- 5. tính chỉ tiêu 05 (lợi nhuận gộp) 3 - 4
+            -- 1. lấy chỉ tiêu 01 MS 01
+            pl_data.prior_amt1 = fin_get_accumulated(prior_sdate, prior_edate, '511', 'cr', $4);
+            pl_data.curr_amt1 = fin_get_accumulated(_cur_sdate, _cur_edate, '511', 'cr', $4);
+            
+            -- 2. lấy chỉ tiêu 02 MS 02
+            pl_data.prior_amt2 = fin_get_doi_ung(prior_sdate, prior_edate, '511', '521', 'cr', $4);
+            pl_data.curr_amt2 = fin_get_doi_ung(_cur_sdate, _cur_edate, '511', '521', 'cr', $4);
+            
+            -- 3. lấy chỉ tiêu 03 MS 10
+            pl_data.prior_amt3 = pl_data.prior_amt1 - pl_data.prior_amt2 ;
+            pl_data.curr_amt3 = pl_data.curr_amt1 - pl_data.curr_amt2;
+            
+            -- 4. lấy chỉ tiêu 04 (giá vốn 632) MS 11
+            pl_data.prior_amt4 = fin_get_doi_ung(prior_sdate, prior_edate, '632', '911', 'dr', $4);
+            pl_data.curr_amt4 = fin_get_doi_ung(_cur_sdate, _cur_edate, '632', '911', 'dr', $4);
+            
+            -- 5. tính chỉ tiêu 05 (lợi nhuận gộp) MS 20 = 10 - 11 
             pl_data.prior_amt5 = pl_data.prior_amt3 - pl_data.prior_amt4;
             pl_data.curr_amt5 = pl_data.curr_amt3 - pl_data.curr_amt4;
             
-            -- 6. lấy chỉ tiêu 06 (doanh thu tai chinh 515)
-            for rec_pl in select* from fin_get_account_data(prior_sdate, prior_edate, 201, 300, $4)
-            loop
-                pl_data.prior_amt6 = coalesce(rec_pl.dr_amount,0) - coalesce(rec_pl.cr_amount,0);
-            end loop;
-            for rec_pl in select* from fin_get_account_data(_cur_sdate, _cur_edate, 201, 300, $4)
-            loop
-                pl_data.curr_amt6 = coalesce(rec_pl.dr_amount,0) - coalesce(rec_pl.cr_amount,0);
-            end loop;
+            -- 6. lấy chỉ tiêu 06 (doanh thu tai chinh 515) MS 21
+            pl_data.prior_amt6 = fin_get_doi_ung(prior_sdate, prior_edate, '515', '911', 'cr', $4);
+            pl_data.curr_amt6 = fin_get_doi_ung(_cur_sdate, _cur_edate, '515', '911', 'cr', $4);
             
-            -- 7. lấy chỉ tiêu 07 (chi phí tai chinh 635)
-            for rec_pl in select* from fin_get_account_data(prior_sdate, prior_edate, 401, 500, $4)
-            loop
-                pl_data.prior_amt7 = coalesce(rec_pl.cr_amount,0) - coalesce(rec_pl.dr_amount,0);
-            end loop;
-            for rec_pl in select* from fin_get_account_data(_cur_sdate, _cur_edate, 401, 500, $4)
-            loop
-                pl_data.curr_amt7 = coalesce(rec_pl.cr_amount,0) - coalesce(rec_pl.dr_amount,0);
-            end loop;
-            -- 7.1. tách chi phí lãi vay 6351
+            -- 7. lấy chỉ tiêu 07 (chi phí tai chinh 635) MS 22
+            pl_data.prior_amt6 = fin_get_doi_ung(prior_sdate, prior_edate, '635', '911', 'dr', $4);
+            pl_data.curr_amt6 = fin_get_doi_ung(_cur_sdate, _cur_edate, '635', '911', 'dr', $4);
+            
+            -- 7.1. tách chi phí lãi vay 6351 MS 23 hỏi lại
             for rec_pl in select* from fin_get_account_data(prior_sdate, prior_edate, 401, 401, $4)
             loop
                 pl_data.prior_amt71 = coalesce(rec_pl.cr_amount,0) - coalesce(rec_pl.dr_amount,0);
@@ -199,75 +311,49 @@ class sql_profit_loss(osv.osv):
                 pl_data.curr_amt71 = coalesce(rec_pl.cr_amount,0) - coalesce(rec_pl.dr_amount,0);
             end loop;
             
-            -- 8. lấy chỉ tiêu 08 (chi phí bán hàng 641)
-            for rec_pl in select* from fin_get_account_data(prior_sdate, prior_edate, 501, 600, $4)
-            loop
-                pl_data.prior_amt8 = coalesce(rec_pl.cr_amount,0) - coalesce(rec_pl.dr_amount,0);
-            end loop;
-            for rec_pl in select* from fin_get_account_data(_cur_sdate, _cur_edate, 501, 600, $4)
-            loop
-                pl_data.curr_amt8 = coalesce(rec_pl.cr_amount,0) - coalesce(rec_pl.dr_amount,0);
-            end loop;
-            -- 9. lấy chỉ tiêu 09 (chi phí quản lý 642)
-            for rec_pl in select* from fin_get_account_data(prior_sdate, prior_edate, 601, 700, $4)
-            loop
-                pl_data.prior_amt9 = coalesce(rec_pl.cr_amount,0) - coalesce(rec_pl.dr_amount,0);
-            end loop;
-            for rec_pl in select* from fin_get_account_data(_cur_sdate, _cur_edate, 601, 700, $4)
-            loop
-                pl_data.curr_amt9 = coalesce(rec_pl.cr_amount,0) - coalesce(rec_pl.dr_amount,0);
-            end loop;
-            -- 10. tính chỉ tiêu 10 (lợi nhuận thuần) 5 + 6 - 7 - 8 - 9
-            pl_data.prior_amt10 = pl_data.prior_amt5 + pl_data.prior_amt6 - pl_data.prior_amt7 - pl_data.prior_amt8 - pl_data.prior_amt9;
-            pl_data.curr_amt10 = pl_data.curr_amt5 + pl_data.curr_amt6 - pl_data.curr_amt7 - pl_data.curr_amt8 - pl_data.curr_amt9;
+            -- 8. lấy chỉ tiêu 08 (chi phí bán hàng 641) MS 25
+            pl_data.prior_amt6 = fin_get_doi_ung(prior_sdate, prior_edate, '641', '911', 'dr', $4);
+            pl_data.curr_amt6 = fin_get_doi_ung(_cur_sdate, _cur_edate, '641', '911', 'dr', $4);
             
-            -- 11. lấy chỉ tiêu 11 (thu nhập khác 711)
-            for rec_pl in select* from fin_get_account_data(prior_sdate, prior_edate, 701, 800, $4)
-            loop
-                pl_data.prior_amt11 = coalesce(rec_pl.dr_amount,0) - coalesce(rec_pl.cr_amount,0);
-            end loop;
-            for rec_pl in select* from fin_get_account_data(_cur_sdate, _cur_edate, 701, 800, $4)
-            loop
-                pl_data.curr_amt11 = coalesce(rec_pl.dr_amount,0) - coalesce(rec_pl.cr_amount,0);
-            end loop;
-            -- 12. lấy chỉ tiêu 12 (chi phí khác 811)
-            for rec_pl in select* from fin_get_account_data(prior_sdate, prior_edate, 801, 803, $4)
-            loop
-                pl_data.prior_amt12 = coalesce(rec_pl.cr_amount,0) - coalesce(rec_pl.dr_amount,0);
-            end loop;
-            for rec_pl in select* from fin_get_account_data(_cur_sdate, _cur_edate, 801, 803, $4)
-            loop
-                pl_data.curr_amt12 = coalesce(rec_pl.cr_amount,0) - coalesce(rec_pl.dr_amount,0);
-            end loop;
-            -- 13. tính chỉ tiêu 13 (lợi nhuận khác) 11 - 12
+            -- 9. lấy chỉ tiêu 09 (chi phí quản lý 642) MS 26
+            pl_data.prior_amt6 = fin_get_doi_ung(prior_sdate, prior_edate, '642', '911', 'dr', $4);
+            pl_data.curr_amt6 = fin_get_doi_ung(_cur_sdate, _cur_edate, '642', '911', 'dr', $4);
+            
+            -- 10. tính chỉ tiêu 10 (lợi nhuận thuần) MS 30 = 20 + (21 - 22) - (25 + 26)
+            pl_data.prior_amt10 = pl_data.prior_amt5 + (pl_data.prior_amt6 - pl_data.prior_amt7) - (pl_data.prior_amt8 + pl_data.prior_amt9);
+            pl_data.curr_amt10 = pl_data.curr_amt5 + (pl_data.curr_amt6 - pl_data.curr_amt7) - (pl_data.curr_amt8 + pl_data.curr_amt9);
+            
+            -- 11. lấy chỉ tiêu 11 (thu nhập khác 711) MS 31
+            pl_data.prior_amt6 = fin_get_doi_ung(prior_sdate, prior_edate, '711', '911', 'cr', $4);
+            pl_data.curr_amt6 = fin_get_doi_ung(_cur_sdate, _cur_edate, '711', '911', 'cr', $4);
+            
+            -- 12. lấy chỉ tiêu 12 (chi phí khác 811) MS 32
+            pl_data.prior_amt6 = fin_get_doi_ung(prior_sdate, prior_edate, '811', '911', 'dr', $4);
+            pl_data.curr_amt6 = fin_get_doi_ung(_cur_sdate, _cur_edate, '811', '911', 'dr', $4);
+            
+            -- 13. tính chỉ tiêu 13 (lợi nhuận khác) MS 40 = 31 - 32
             pl_data.prior_amt13 = pl_data.prior_amt11 - pl_data.prior_amt12;
             pl_data.curr_amt13 = pl_data.curr_amt11 - pl_data.curr_amt12;
-            -- 14. tính chỉ tiêu 14 (tổng lợi nhuận trước thuế) 10 + 13
+            
+            -- 14. tính chỉ tiêu 14 (tổng lợi nhuận trước thuế) MS 50 = 30 + 40
             pl_data.prior_amt14 = pl_data.prior_amt10 + pl_data.prior_amt13;
             pl_data.curr_amt14 = pl_data.curr_amt10 + pl_data.curr_amt13;
             
-            -- 15. lấy chỉ tiêu 15 (thuế TNDN hiện hành 8211)
-            for rec_pl in select* from fin_get_account_data(prior_sdate, prior_edate, 804, 804, $4)
-            loop
-                pl_data.prior_amt15 = coalesce(rec_pl.cr_amount,0) - coalesce(rec_pl.dr_amount,0);
-            end loop;
-            for rec_pl in select* from fin_get_account_data(_cur_sdate, _cur_edate, 804, 804, $4)
-            loop
-                pl_data.curr_amt15 = coalesce(rec_pl.cr_amount,0) - coalesce(rec_pl.dr_amount,0);
-            end loop;
-            -- 16. lấy chỉ tiêu 16 (thuế TNDN hoan lại 8212)
-            for rec_pl in select* from fin_get_account_data(prior_sdate, prior_edate, 805, 805, $4)
-            loop
-                pl_data.prior_amt16 = coalesce(rec_pl.cr_amount,0) - coalesce(rec_pl.dr_amount,0);
-            end loop;
-            for rec_pl in select* from fin_get_account_data(_cur_sdate, _cur_edate, 805, 805, $4)
-            loop
-                pl_data.curr_amt16 = coalesce(rec_pl.cr_amount,0) - coalesce(rec_pl.dr_amount,0);
-            end loop;
-            -- 17. tính chỉ tiêu 17 (tổng lợi nhuận sau thuế) 14 - 15 - 16
+            -- 15. lấy chỉ tiêu 15 (thuế TNDN hiện hành 8211) MS 51
+            pl_data.prior_amt6 = -1*fin_get_doi_ung(prior_sdate, prior_edate, '8211', '911', 'dr', $4);
+            pl_data.curr_amt6 = -1*fin_get_doi_ung(_cur_sdate, _cur_edate, '8211', '911', 'dr', $4);
+            
+            -- 16. lấy chỉ tiêu 16 (thuế TNDN hoãn lại 8212) MS 52
+            pl_data.prior_amt6 = -1*fin_get_doi_ung(prior_sdate, prior_edate, '8212', '911', 'dr', $4);
+            pl_data.curr_amt6 = -1*fin_get_doi_ung(_cur_sdate, _cur_edate, '8212', '911', 'dr', $4);
+            
+            -- 17. tính chỉ tiêu 17 (tổng lợi nhuận sau thuế) MS 60 = 50 - 51 - 52
             pl_data.prior_amt17 = pl_data.prior_amt14 - pl_data.prior_amt15 - pl_data.prior_amt16;
             pl_data.curr_amt17 = pl_data.curr_amt14 - pl_data.curr_amt15 - pl_data.curr_amt16;
+            
             -- 18. tính chỉ tiêu 18 (khong tinh)
+            
+            -- 19. tính chỉ tiêu 19 (khong tinh)
             
             return next pl_data;
             return;
