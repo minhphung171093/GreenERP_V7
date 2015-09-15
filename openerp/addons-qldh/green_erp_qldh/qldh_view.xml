@@ -26,7 +26,7 @@
                 <form string="Nhóm công việc" version="7.0">
                 <header>
                 		<button name="bt_tao_ncv" states="nhap" string="Xác nhận" type="object" class="oe_highlight"/>
-	                    <field name="state" widget="statusbar" statusbar_visible="nhap,moi_tao,moi_nhan,cho_duyet,duyet" />
+	                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,moi_tao,moi_nhan,cho_duyet,duyet" />
 	            </header>  
 	                <sheet>
 	                <group>
@@ -125,6 +125,220 @@
             <field name="view_id" ref="nhom_cong_viec_form"/>
             <field name="act_window_id" ref="action_nhom_cong_viec"/>
         </record>
+ 
+        <record model="ir.ui.view" id="nhom_cong_viec_da_giao_tree">
+            <field name="name">nhom.cong.viec.da.giao.tree</field>
+            <field name="model">nhom.cong.viec</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Nhóm công việc đã giao" create = 'false' edit = 'false' delete = 'false'>
+                	<field name="name" />
+                	<field name="phong_ban_id" />
+                	<field name="quy_trinh_id" />
+                	<field name="ho_tro" />
+                	<field name="phong_ban_ids" />
+                	<field name="state" />
+                </tree>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="nhom_cong_viec_da_giao_form">
+            <field name="name">nhom.cong.viec.da.giao.form</field>
+            <field name="model">nhom.cong.viec</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Nhóm công việc đã giao" version="7.0" create = 'false' edit = 'false' delete = 'false'>
+                <header>
+	                    <field name="state" widget="statusbar" statusbar_visible="nhap,moi_tao,moi_nhan,cho_duyet,duyet" />
+	            </header>  
+	                <sheet>
+	                 <group col="4" colspan="2">
+	                	<field name="name" />
+	                	<field name="phong_ban_id" required = '1' options="{'create': false, 'create_edit': false}"/>
+	                	
+	                	<field name="ho_tro" widget="radio" required = '1' on_change = "onchange_ho_tro(ho_tro)" />
+	                	<field name="quy_trinh_id"  on_change = "onchange_quy_trinh_id(quy_trinh_id)" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('ho_tro','=','co')]}" />
+	                	
+	                	<field name="phong_ban_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('ho_tro','=','khong')],'required':[('ho_tro','=','co')]}" />
+	                	<field name="loai" invisible = '1'/>
+	                </group>
+	               	<group col="4" colspan="2">
+	                	<field name="ghi_chu" />
+	                </group>
+                		<notebook>
+		                    <page string="Chi tiết thực hiện" attrs="{'invisible':[('quy_trinh_id','=',False)]}">
+		                    	<field name="ct_nhom_cv_line" nolabel='1' >
+		                    		<tree>
+			                			<field name="name" />
+			                			<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
+			                			<field name="yeu_cau_kq" />
+			                            <field name="cach_thuc_hien" />
+			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+			                            <field name="hoan_thanh" />
+			                        </tree>
+			                        <form>
+			                        <group col="4" colspan="2">
+			                        	<field name="name" />
+			                        	<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
+			                        	<field name="yeu_cau_kq" />
+			                            <field name="cach_thuc_hien" />
+			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+			        					<field name="hoan_thanh" />
+			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+			                         </group>   
+			                        </form>
+		                		</field>
+		                    </page>
+		                    
+		                    
+		                     <page string="Công việc" attrs="{'invisible':[('quy_trinh_id','!=',False)]}">
+		                    	<field name="cong_viec_line" nolabel='1' context = "{'default_loai': 'cv'}" >
+		                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
+			                			<field name="name" string = 'Tên công việc'/>
+			             <!--               <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id)" options="{'create': false, 'create_edit': false}"/>  -->
+			                            <field name="nhan_vien_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}"/>
+			        					<field name="ghi_chu"/>
+			                            <field name="state" readonly = '1'/>
+			                            <field name="loai" invisible = '1'/>
+			                        </tree>
+						         </field>
+						      </page> 
+						 </notebook>
+	                </sheet>
+                </form>
+            </field>
+        </record>
+       
+        <record model="ir.actions.act_window" id="action_nhom_cong_viec_da_giao">
+            <field name="name">Nhóm công việc đã giao</field>
+            <field name="res_model">nhom.cong.viec</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('loai','=','nhom_cv'), ('state','in',['da_giao'])]</field>
+            <field name="context">{'default_loai': 'nhom_cv'}</field>
+            <field name="view_id" ref="nhom_cong_viec_da_giao_tree"/>
+        </record>
+        
+        <record id="action_nhom_cong_viec_da_giao1" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="nhom_cong_viec_da_giao_tree"/>
+            <field name="act_window_id" ref="action_nhom_cong_viec_da_giao"/>
+        </record>
+        <record id="action_nhom_cong_viec_da_giao2" model="ir.actions.act_window.view">
+            <field eval="3" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="nhom_cong_viec_da_giao_form"/>
+            <field name="act_window_id" ref="action_nhom_cong_viec_da_giao"/>
+        </record>
+ 
+         <record model="ir.ui.view" id="nhom_cong_viec_da_duoc_giao_tree">
+            <field name="name">nhom.cong.viec.da.duoc.giao.tree</field>
+            <field name="model">nhom.cong.viec</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Nhóm công việc đã được giao" create = 'false' edit = 'false' delete = 'false'>
+                	<field name="name" />
+                	<field name="phong_ban_id" />
+                	<field name="quy_trinh_id" />
+                	<field name="ho_tro" />
+                	<field name="phong_ban_ids" />
+                	<field name="state" />
+                </tree>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="nhom_cong_viec_da_duoc_giao_form">
+            <field name="name">nhom.cong.viec.da.duoc.giao.form</field>
+            <field name="model">nhom.cong.viec</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Nhóm công việc đã được giao" version="7.0" create = 'false' edit = 'false' delete = 'false'>
+                <header>
+	                    <field name="state" widget="statusbar" statusbar_visible="nhap,moi_tao,moi_nhan,cho_duyet,duyet" />
+	            </header>  
+	                <sheet>
+	                 <group col="4" colspan="2">
+	                	<field name="name" />
+	                	<field name="phong_ban_id" required = '1' options="{'create': false, 'create_edit': false}"/>
+	                	
+	                	<field name="ho_tro" widget="radio" required = '1' on_change = "onchange_ho_tro(ho_tro)" />
+	                	<field name="quy_trinh_id"  on_change = "onchange_quy_trinh_id(quy_trinh_id)" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('ho_tro','=','co')]}" />
+	                	
+	                	<field name="phong_ban_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('ho_tro','=','khong')],'required':[('ho_tro','=','co')]}" />
+	                	<field name="loai" invisible = '1'/>
+	                </group>
+	               	<group col="4" colspan="2">
+	                	<field name="ghi_chu" />
+	                </group>
+                		<notebook>
+		                    <page string="Chi tiết thực hiện" attrs="{'invisible':[('quy_trinh_id','=',False)]}">
+		                    	<field name="ct_nhom_cv_line" nolabel='1' >
+		                    		<tree>
+			                			<field name="name" />
+			                			<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
+			                			<field name="yeu_cau_kq" />
+			                            <field name="cach_thuc_hien" />
+			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+			                            <field name="hoan_thanh" />
+			                        </tree>
+			                        <form>
+			                        <group col="4" colspan="2">
+			                        	<field name="name" />
+			                        	<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
+			                        	<field name="yeu_cau_kq" />
+			                            <field name="cach_thuc_hien" />
+			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+			        					<field name="hoan_thanh" />
+			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+			                         </group>   
+			                        </form>
+		                		</field>
+		                    </page>
+		                    
+		                    
+		                     <page string="Công việc" attrs="{'invisible':[('quy_trinh_id','!=',False)]}">
+		                    	<field name="cong_viec_line" nolabel='1' context = "{'default_loai': 'cv'}" >
+		                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
+			                			<field name="name" string = 'Tên công việc'/>
+			             <!--               <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id)" options="{'create': false, 'create_edit': false}"/>  -->
+			                            <field name="nhan_vien_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}"/>
+			        					<field name="ghi_chu"/>
+			                            <field name="state" readonly = '1'/>
+			                            <field name="loai" invisible = '1'/>
+			                        </tree>
+						         </field>
+						      </page> 
+						 </notebook>
+	                </sheet>
+                </form>
+            </field>
+        </record>
+       
+        <record model="ir.actions.act_window" id="action_nhom_cong_viec_da_duoc_giao">
+            <field name="name">Nhóm công việc đã được giao</field>
+            <field name="res_model">nhom.cong.viec</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('loai','=','nhom_cv'), ('state','in',['da_giao'])]</field>
+            <field name="context">{'default_loai': 'nhom_cv'}</field>
+            <field name="view_id" ref="nhom_cong_viec_da_giao_tree"/>
+        </record>
+        
+        <record id="action_nhom_cong_viec_da_duoc_giao1" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="nhom_cong_viec_da_duoc_giao_tree"/>
+            <field name="act_window_id" ref="action_nhom_cong_viec_da_duoc_giao"/>
+        </record>
+        <record id="action_nhom_cong_viec_da_duoc_giao2" model="ir.actions.act_window.view">
+            <field eval="3" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="nhom_cong_viec_da_duoc_giao_form"/>
+            <field name="act_window_id" ref="action_nhom_cong_viec_da_duoc_giao"/>
+        </record>
         
        	<record model="ir.ui.view" id="nhom_cong_viec_cho_phe_duyet_tree">
             <field name="name">nhom.cong.viec.cho.phe.duyet.tree</field>
@@ -222,13 +436,13 @@
         </record>
         
         <record id="action_nhom_cong_viec_cho_phe_duyet1" model="ir.actions.act_window.view">
-            <field eval="0" name="sequence"/>
+            <field eval="3" name="sequence"/>
             <field name="view_mode">tree</field>
             <field name="view_id" ref="nhom_cong_viec_cho_phe_duyet_tree"/>
             <field name="act_window_id" ref="action_nhom_cong_viec_cho_phe_duyet"/>
         </record>
         <record id="action_nhom_cong_viec_cho_phe_duyet2" model="ir.actions.act_window.view">
-            <field eval="1" name="sequence"/>
+            <field eval="4" name="sequence"/>
             <field name="view_mode">form</field>
             <field name="view_id" ref="nhom_cong_viec_cho_phe_duyet_form"/>
             <field name="act_window_id" ref="action_nhom_cong_viec_cho_phe_duyet"/>
@@ -329,13 +543,13 @@
         </record>
         
         <record id="action_nhom_cong_viec_da_duyet1" model="ir.actions.act_window.view">
-            <field eval="0" name="sequence"/>
+            <field eval="5" name="sequence"/>
             <field name="view_mode">tree</field>
             <field name="view_id" ref="nhom_cong_viec_da_duyet_tree"/>
             <field name="act_window_id" ref="action_nhom_cong_viec_da_duyet"/>
         </record>
         <record id="action_nhom_cong_viec_da_duyet2" model="ir.actions.act_window.view">
-            <field eval="1" name="sequence"/>
+            <field eval="6" name="sequence"/>
             <field name="view_mode">form</field>
             <field name="view_id" ref="nhom_cong_viec_da_duyet_form"/>
             <field name="act_window_id" ref="action_nhom_cong_viec_da_duyet"/>

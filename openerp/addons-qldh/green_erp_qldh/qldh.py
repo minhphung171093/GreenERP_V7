@@ -26,6 +26,8 @@ class nhom_cong_viec(osv.osv):
         'phong_ban_ids': fields.many2many('phong.ban','phong_ban_nhom_cv_ref','nhom_cv_id','phong_ban_id','Phòng ban hỗ trợ' ),
         'quy_trinh_id':fields.many2one('quy.trinh','Quy trình'),
         'state':fields.selection([('nhap','Nháp'),
+                                  ('da_giao','Đã giao'),
+                                  ('da_nhan','Đã nhận'),
                                   ('moi_tao','Mới tạo'), 
                                   ('moi_nhan','Mới nhận/Đang làm'),
                                   ('cho_duyet','Chờ phê duyệt'),
@@ -162,7 +164,7 @@ class nhom_cong_viec(osv.osv):
         return True
     
     def bt_tao_ncv(self, cr, uid, ids, context=None):
-        return self.write(cr, uid, ids,{'state':'moi_tao'})
+        return self.write(cr, uid, ids,{'state':'da_giao'})
     
     def bt_nhan_ncv(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids,{'state':'moi_nhan'})
