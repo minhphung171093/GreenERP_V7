@@ -60,6 +60,12 @@
 	      		icon="terp-graph"  
 	      		parent="menu_report_general_account" sequence="15"/>
 	      		
+      		<menuitem id="menu_action_so_tiengui_nganhang_report"
+      			name="Sổ tiền gửi ngân hàng"
+	      		action="action_so_tiengui_nganhang_report" 
+	      		icon="terp-graph"  
+	      		parent="menu_report_general_account" sequence="20"/>
+	      		
 <!-- New VN Finance Reports menu -->
 		<menuitem id="menu_report_finance" 
       		name="VN Financial Reports" 

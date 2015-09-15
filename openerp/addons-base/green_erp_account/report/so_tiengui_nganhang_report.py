@@ -47,6 +47,7 @@ class Parser(report_sxw.rml_parse):
         })
     
     def get_company(self, company_id):
+        self.get_account()
         if company_id:
             company_obj = self.pool.get('res.company').browse(self.cr, self.uid,company_id)
             self.company_name = company_obj.name or ''
@@ -252,18 +253,11 @@ class Parser(report_sxw.rml_parse):
                       })
                     self.cr.execute(sql)
                     for j in self.cr.dictfetchall():
-                        if j['credit'] and not j['debit']:
-                            doc_no_thu = j['doc_no']
-                            doc_no_chi = ''
-                        else:
-                            doc_no_chi = j['doc_no']
-                            doc_no_thu = ''
                         self.ton += (j['credit'] - j['debit'])
                         res.append({
                                      'gl_date':j['gl_date'],
                                      'doc_date':j['doc_date'],
-                                     'doc_no_thu': doc_no_thu,
-                                     'doc_no_chi':doc_no_chi,
+                                     'doc_no': j['doc_no'],
                                      'description':j['description'],
                                      'acc_code':j['acc_code'],
                                      'debit':j['credit'] or 0.0,
@@ -307,18 +301,11 @@ class Parser(report_sxw.rml_parse):
                       })
                     self.cr.execute(sql)
                     for j in self.cr.dictfetchall():
-                        if j['debit'] and not j['credit']:
-                            doc_no_thu = j['doc_no']
-                            doc_no_chi = ''
-                        else:
-                            doc_no_chi = j['doc_no']
-                            doc_no_thu = ''
                         self.ton += (j['debit'] - j['credit'])
                         res.append({
                                      'gl_date':j['gl_date'],
                                      'doc_date':j['doc_date'],
-                                     'doc_no_thu': doc_no_thu,
-                                     'doc_no_chi':doc_no_chi,
+                                     'doc_no':j['doc_no'],
                                      'description':j['description'],
                                      'acc_code':j['acc_code'],
                                      'debit':j['debit'] or 0.0,
