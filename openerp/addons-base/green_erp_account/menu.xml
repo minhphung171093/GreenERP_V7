@@ -54,6 +54,12 @@
 	      		icon="terp-graph"  
 	      		parent="menu_report_general_account" sequence="10"/>
 	      		
+	      	<menuitem id="menu_action_soquy_tienmat_report"
+      			name="Sổ quỹ tiền mặt"
+	      		action="action_soquy_tienmat_report" 
+	      		icon="terp-graph"  
+	      		parent="menu_report_general_account" sequence="15"/>
+	      		
 <!-- New VN Finance Reports menu -->
 		<menuitem id="menu_report_finance" 
       		name="VN Financial Reports" 

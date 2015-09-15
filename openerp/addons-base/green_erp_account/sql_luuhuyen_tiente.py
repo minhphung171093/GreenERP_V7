@@ -20,21 +20,21 @@ class sql_luuhuyen_tiente(osv.osv):
     def init(self, cr):
         self.fin_luuhuyen_tiente_tructiep_data(cr)
         self.fin_luuhuyen_tiente_tructiep_report(cr)
-        self.fin_get_accumulated(cr)
-        self.fin_get_doi_ung(cr)
-        self.fin_get_tru_doi_ung(cr)
-        self.fin_get_balance_all(cr)
+        self.fin_get_accumulated_lctt(cr)
+        self.fin_get_doi_ung_lctt(cr)
+        self.fin_get_tru_doi_ung_lctt(cr)
+        self.fin_get_balance_all_lctt(cr)
         
         cr.commit()
         return True
 
 
-    def fin_get_balance_all(self,cr):
+    def fin_get_balance_all_lctt(self,cr):
         sql = '''
-        DROP FUNCTION IF EXISTS fin_get_balance_all(date, date, text, character varying, integer) CASCADE;
+        DROP FUNCTION IF EXISTS fin_get_balance_all_lctt(date, date, text, character varying, integer) CASCADE;
         commit;
         
-        CREATE OR REPLACE FUNCTION fin_get_balance_all(date, date, text, character varying, integer)
+        CREATE OR REPLACE FUNCTION fin_get_balance_all_lctt(date, date, text, character varying, integer)
           RETURNS numeric AS
         $BODY$
         DECLARE
@@ -83,7 +83,7 @@ class sql_luuhuyen_tiente(osv.osv):
         END;$BODY$
           LANGUAGE plpgsql VOLATILE
           COST 100;
-        ALTER FUNCTION fin_get_balance_all(date, date, text, character varying, integer)
+        ALTER FUNCTION fin_get_balance_all_lctt(date, date, text, character varying, integer)
           OWNER TO openerp;
         '''
         cr.execute(sql)
@@ -158,12 +158,12 @@ class sql_luuhuyen_tiente(osv.osv):
         cr.execute(sql)
         return True
 
-    def fin_get_accumulated(self,cr):#lay luy ke no hoac co cua nhug tai khoan trong $3
+    def fin_get_accumulated_lctt(self,cr):#lay luy ke no hoac co cua nhug tai khoan trong $3
         sql = '''
-        DROP FUNCTION IF EXISTS fin_get_accumulated(date, date, text, character varying, integer) CASCADE;
+        DROP FUNCTION IF EXISTS fin_get_accumulated_lctt(date, date, text, character varying, integer) CASCADE;
         commit;
         
-        CREATE OR REPLACE FUNCTION fin_get_accumulated(date, date, text, character varying, integer)
+        CREATE OR REPLACE FUNCTION fin_get_accumulated_lctt(date, date, text, character varying, integer)
           RETURNS numeric AS
         $BODY$
         DECLARE
@@ -213,18 +213,18 @@ class sql_luuhuyen_tiente(osv.osv):
         END;$BODY$
           LANGUAGE plpgsql VOLATILE
           COST 100;
-        ALTER FUNCTION fin_get_accumulated(date, date, text, character varying, integer)
+        ALTER FUNCTION fin_get_accumulated_lctt(date, date, text, character varying, integer)
           OWNER TO openerp;
         '''
         cr.execute(sql)
         return True
     
-    def fin_get_doi_ung(self,cr):#tim nhung account move co line la nhug tai khoan trong $3 va lay doi dung no hoac co cua cac tai khoan trong $4
+    def fin_get_doi_ung_lctt(self,cr):#tim nhung account move co line la nhug tai khoan trong $3 va lay doi dung no hoac co cua cac tai khoan trong $4
         sql = '''
-        DROP FUNCTION IF EXISTS fin_get_doi_ung(date, date, text, text, character varying, integer) CASCADE;
+        DROP FUNCTION IF EXISTS fin_get_doi_ung_lctt(date, date, text, text, character varying, integer) CASCADE;
         commit;
         
-        CREATE OR REPLACE FUNCTION fin_get_doi_ung(date, date, text, text, character varying, integer)
+        CREATE OR REPLACE FUNCTION fin_get_doi_ung_lctt(date, date, text, text, character varying, integer)
           RETURNS numeric AS
         $BODY$
         DECLARE
@@ -289,18 +289,18 @@ class sql_luuhuyen_tiente(osv.osv):
         END;$BODY$
           LANGUAGE plpgsql VOLATILE
           COST 100;
-        ALTER FUNCTION fin_get_doi_ung(date, date, text, text, character varying, integer)
+        ALTER FUNCTION fin_get_doi_ung_lctt(date, date, text, text, character varying, integer)
           OWNER TO openerp;
         '''
         cr.execute(sql)
         return True
 
-    def fin_get_tru_doi_ung(self,cr):#tim nhung account move co line la nhug tai khoan trong $3 va doi ung k phai la nhug tai khoan trong $4
+    def fin_get_tru_doi_ung_lctt(self,cr):#tim nhung account move co line la nhug tai khoan trong $3 va doi ung k phai la nhug tai khoan trong $4
         sql = '''
-        DROP FUNCTION IF EXISTS fin_get_tru_doi_ung(date, date, text, text, character varying, integer) CASCADE;
+        DROP FUNCTION IF EXISTS fin_get_tru_doi_ung_lctt(date, date, text, text, character varying, integer) CASCADE;
         commit;
         
-        CREATE OR REPLACE FUNCTION fin_get_tru_doi_ung(date, date, text, text, character varying, integer)
+        CREATE OR REPLACE FUNCTION fin_get_tru_doi_ung_lctt(date, date, text, text, character varying, integer)
           RETURNS numeric AS
         $BODY$
         DECLARE
@@ -377,7 +377,7 @@ class sql_luuhuyen_tiente(osv.osv):
         END;$BODY$
           LANGUAGE plpgsql VOLATILE
           COST 100;
-        ALTER FUNCTION fin_get_tru_doi_ung(date, date, text, text, character varying, integer)
+        ALTER FUNCTION fin_get_tru_doi_ung_lctt(date, date, text, text, character varying, integer)
           OWNER TO openerp;
         '''
         cr.execute(sql)
@@ -404,118 +404,118 @@ class sql_luuhuyen_tiente(osv.osv):
             RAISE NOTICE 'Prior date range: % - %', prior_sdate, prior_edate;
             
             -- 1. lấy chỉ tiêu 01
-            pl_data.prior_amt01 = fin_get_doi_ung(prior_sdate, prior_edate, '131', '111 112', 'dr', $4) +
-                                fin_get_doi_ung(prior_sdate, prior_edate, '5111 5112 5113 333 121 515', '111 112', 'dr', $4) +
-                                fin_get_tru_doi_ung(prior_sdate, prior_edate, '131', '111 112', 'cr', $4) +
-                                fin_get_tru_doi_ung(prior_sdate, prior_edate, '5111 5112 5113 333 121 515', '111 112 131 138', 'cr', $4);
-            pl_data.curr_amt01 = fin_get_doi_ung(_cur_sdate, _cur_edate, '131', '111 112', 'dr', $4) +
-                                fin_get_doi_ung(_cur_sdate, _cur_edate, '5111 5112 5113 333 121 515', '111 112', 'dr', $4) +
-                                fin_get_tru_doi_ung(_cur_sdate, _cur_edate, '131', '111 112', 'cr', $4) +
-                                fin_get_tru_doi_ung(_cur_sdate, _cur_edate, '5111 5112 5113 333 121 515', '111 112 131 138', 'cr', $4);
+            pl_data.prior_amt01 = fin_get_doi_ung_lctt(prior_sdate, prior_edate, '131', '111 112', 'dr', $4) +
+                                fin_get_doi_ung_lctt(prior_sdate, prior_edate, '5111 5112 5113 333 121 515', '111 112', 'dr', $4) +
+                                fin_get_tru_doi_ung_lctt(prior_sdate, prior_edate, '131', '111 112', 'cr', $4) +
+                                fin_get_tru_doi_ung_lctt(prior_sdate, prior_edate, '5111 5112 5113 333 121 515', '111 112 131 138', 'cr', $4);
+            pl_data.curr_amt01 = fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '131', '111 112', 'dr', $4) +
+                                fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '5111 5112 5113 333 121 515', '111 112', 'dr', $4) +
+                                fin_get_tru_doi_ung_lctt(_cur_sdate, _cur_edate, '131', '111 112', 'cr', $4) +
+                                fin_get_tru_doi_ung_lctt(_cur_sdate, _cur_edate, '5111 5112 5113 333 121 515', '111 112 131 138', 'cr', $4);
             
             -- 2. lấy chỉ tiêu 02
-            pl_data.prior_amt02 = -1*(fin_get_doi_ung(prior_sdate, prior_edate, '151 152 153 156 133 627 641 642 133 121', '111 112', 'cr', $4) +
-                                fin_get_doi_ung(prior_sdate, prior_edate, '331', '111 112', 'cr', $4) +
-                                fin_get_tru_doi_ung(prior_sdate, prior_edate, '331', '111 112', 'dr', $4) +
-                                fin_get_tru_doi_ung(prior_sdate, prior_edate, '151 152 153 156 133 627 641 642 133 121', '111 112 331', 'dr', $4));
-            pl_data.curr_amt02 = -1*(fin_get_doi_ung(_cur_sdate, _cur_edate, '151 152 153 156 133 627 641 642 133 121', '111 112', 'cr', $4) +
-                                fin_get_doi_ung(_cur_sdate, _cur_edate, '331', '111 112', 'cr', $4) +
-                                fin_get_tru_doi_ung(_cur_sdate, _cur_edate, '331', '111 112', 'dr', $4) +
-                                fin_get_tru_doi_ung(_cur_sdate, _cur_edate, '151 152 153 156 133 627 641 642 133 121', '111 112 331', 'dr', $4));
+            pl_data.prior_amt02 = -1*(fin_get_doi_ung_lctt(prior_sdate, prior_edate, '151 152 153 156 133 627 641 642 133 121', '111 112', 'cr', $4) +
+                                fin_get_doi_ung_lctt(prior_sdate, prior_edate, '331', '111 112', 'cr', $4) +
+                                fin_get_tru_doi_ung_lctt(prior_sdate, prior_edate, '331', '111 112', 'dr', $4) +
+                                fin_get_tru_doi_ung_lctt(prior_sdate, prior_edate, '151 152 153 156 133 627 641 642 133 121', '111 112 331', 'dr', $4));
+            pl_data.curr_amt02 = -1*(fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '151 152 153 156 133 627 641 642 133 121', '111 112', 'cr', $4) +
+                                fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '331', '111 112', 'cr', $4) +
+                                fin_get_tru_doi_ung_lctt(_cur_sdate, _cur_edate, '331', '111 112', 'dr', $4) +
+                                fin_get_tru_doi_ung_lctt(_cur_sdate, _cur_edate, '151 152 153 156 133 627 641 642 133 121', '111 112 331', 'dr', $4));
             
             -- 3. lấy chỉ tiêu 03
-            pl_data.prior_amt03 = -1*fin_get_doi_ung(prior_sdate, prior_edate, '334', '111 112', 'cr', $4);
-            pl_data.curr_amt03 =  -1*fin_get_doi_ung(_cur_sdate, _cur_edate, '334', '111 112', 'cr', $4);
+            pl_data.prior_amt03 = -1*fin_get_doi_ung_lctt(prior_sdate, prior_edate, '334', '111 112', 'cr', $4);
+            pl_data.curr_amt03 =  -1*fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '334', '111 112', 'cr', $4);
             
             -- 4. lấy chỉ tiêu 04
-            pl_data.prior_amt04 = -1*(fin_get_doi_ung(prior_sdate, prior_edate, '635 242 335', '111 112', 'cr', $4) +
-                                fin_get_tru_doi_ung(prior_sdate, prior_edate, '635 242 335', '111 112', 'dr', $4));
-            pl_data.curr_amt04 =  -1*(fin_get_doi_ung(_cur_sdate, _cur_edate, '635 242 335', '111 112', 'cr', $4) +
-                                fin_get_tru_doi_ung(_cur_sdate, _cur_edate, '635 242 335', '111 112', 'dr', $4));
+            pl_data.prior_amt04 = -1*(fin_get_doi_ung_lctt(prior_sdate, prior_edate, '635 242 335', '111 112', 'cr', $4) +
+                                fin_get_tru_doi_ung_lctt(prior_sdate, prior_edate, '635 242 335', '111 112', 'dr', $4));
+            pl_data.curr_amt04 =  -1*(fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '635 242 335', '111 112', 'cr', $4) +
+                                fin_get_tru_doi_ung_lctt(_cur_sdate, _cur_edate, '635 242 335', '111 112', 'dr', $4));
                                 
             -- 5. lấy chỉ tiêu 05
-            pl_data.prior_amt05 = -1*(fin_get_doi_ung(prior_sdate, prior_edate, '3334', '111 112', 'cr', $4) +
-                                fin_get_tru_doi_ung(prior_sdate, prior_edate, '3334', '111 112', 'dr', $4));
-            pl_data.curr_amt05 =  -1*(fin_get_doi_ung(_cur_sdate, _cur_edate, '3334', '111 112', 'cr', $4) +
-                                fin_get_tru_doi_ung(_cur_sdate, _cur_edate, '3334', '111 112', 'dr', $4));
+            pl_data.prior_amt05 = -1*(fin_get_doi_ung_lctt(prior_sdate, prior_edate, '3334', '111 112', 'cr', $4) +
+                                fin_get_tru_doi_ung_lctt(prior_sdate, prior_edate, '3334', '111 112', 'dr', $4));
+            pl_data.curr_amt05 =  -1*(fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '3334', '111 112', 'cr', $4) +
+                                fin_get_tru_doi_ung_lctt(_cur_sdate, _cur_edate, '3334', '111 112', 'dr', $4));
             
             -- 6. lấy chỉ tiêu 06 hỏi lại
-            pl_data.prior_amt06 = fin_get_doi_ung(prior_sdate, prior_edate, '711 133 141 334 244 461 414 353', '111 112', 'dr', $4);
-            pl_data.curr_amt06 =  fin_get_doi_ung(_cur_sdate, _cur_edate, '711 133 141 334 244 461 414 353', '111 112', 'dr', $4);
+            pl_data.prior_amt06 = fin_get_doi_ung_lctt(prior_sdate, prior_edate, '711 133 141 334 244 461 414 353', '111 112', 'dr', $4);
+            pl_data.curr_amt06 =  fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '711 133 141 334 244 461 414 353', '111 112', 'dr', $4);
             
             -- 7. lấy chỉ tiêu 07 hỏi lại
-            pl_data.prior_amt07 = -1*fin_get_doi_ung(prior_sdate, prior_edate, '811 161 244 3331 3332 3333 3335 3336 3337 3338 3339 338 334 352 353 356', '111 112', 'cr', $4);
-            pl_data.curr_amt07 =  -1*fin_get_doi_ung(_cur_sdate, _cur_edate, '811 161 244 3331 3332 3333 3335 3336 3337 3338 3339 338 334 352 353 356', '111 112', 'cr', $4);
+            pl_data.prior_amt07 = -1*fin_get_doi_ung_lctt(prior_sdate, prior_edate, '811 161 244 3331 3332 3333 3335 3336 3337 3338 3339 338 334 352 353 356', '111 112', 'cr', $4);
+            pl_data.curr_amt07 =  -1*fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '811 161 244 3331 3332 3333 3335 3336 3337 3338 3339 338 334 352 353 356', '111 112', 'cr', $4);
             
             -- 8. lấy chỉ tiêu 20
             pl_data.prior_amt20 = pl_data.prior_amt01 + pl_data.prior_amt02 + pl_data.prior_amt03 + pl_data.prior_amt04 + pl_data.prior_amt05 + pl_data.prior_amt06 + pl_data.prior_amt07;
             pl_data.curr_amt20 = pl_data.curr_amt01 + pl_data.curr_amt02 + pl_data.curr_amt03 + pl_data.curr_amt04 + pl_data.curr_amt05 + pl_data.curr_amt06 + pl_data.curr_amt07;
             
             -- 9. lấy chỉ tiêu 21
-            pl_data.prior_amt21 = -1*(fin_get_doi_ung(prior_sdate, prior_edate, '211 212 213 217 241 133 331', '111 112', 'cr', $4) +
-                                fin_get_tru_doi_ung(prior_sdate, prior_edate, '211 212 213 217 241 133 331', '111 112', 'dr', $4));
-            pl_data.curr_amt21 =  -1*(fin_get_doi_ung(_cur_sdate, _cur_edate, '211 212 213 217 241 133 331', '111 112', 'cr', $4) +
-                                fin_get_tru_doi_ung(_cur_sdate, _cur_edate, '211 212 213 217 241 133 331', '111 112', 'dr', $4));
+            pl_data.prior_amt21 = -1*(fin_get_doi_ung_lctt(prior_sdate, prior_edate, '211 212 213 217 241 133 331', '111 112', 'cr', $4) +
+                                fin_get_tru_doi_ung_lctt(prior_sdate, prior_edate, '211 212 213 217 241 133 331', '111 112', 'dr', $4));
+            pl_data.curr_amt21 =  -1*(fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '211 212 213 217 241 133 331', '111 112', 'cr', $4) +
+                                fin_get_tru_doi_ung_lctt(_cur_sdate, _cur_edate, '211 212 213 217 241 133 331', '111 112', 'dr', $4));
                                 
             -- 10. lấy chỉ tiêu 22
-            pl_data.prior_amt22 = fin_get_doi_ung(prior_sdate, prior_edate, '711 5117 131', '111 112 113', 'dr', $4) -
-                                fin_get_doi_ung(prior_sdate, prior_edate, '811 632', '111 112 113', 'cr', $4);
-            pl_data.curr_amt22 =  fin_get_doi_ung(_cur_sdate, _cur_edate, '711 5117 131', '111 112 113', 'dr', $4) -
-                                fin_get_doi_ung(_cur_sdate, _cur_edate, '811 632', '111 112 113', 'cr', $4);
+            pl_data.prior_amt22 = fin_get_doi_ung_lctt(prior_sdate, prior_edate, '711 5117 131', '111 112 113', 'dr', $4) -
+                                fin_get_doi_ung_lctt(prior_sdate, prior_edate, '811 632', '111 112 113', 'cr', $4);
+            pl_data.curr_amt22 =  fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '711 5117 131', '111 112 113', 'dr', $4) -
+                                fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '811 632', '111 112 113', 'cr', $4);
                                 
             -- 11. lấy chỉ tiêu 23
-            pl_data.prior_amt23 = -1*fin_get_doi_ung(prior_sdate, prior_edate, '128 171', '111 112', 'cr', $4);
-            pl_data.curr_amt23 =  -1*fin_get_doi_ung(_cur_sdate, _cur_edate, '128 171', '111 112', 'cr', $4);
+            pl_data.prior_amt23 = -1*fin_get_doi_ung_lctt(prior_sdate, prior_edate, '128 171', '111 112', 'cr', $4);
+            pl_data.curr_amt23 =  -1*fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '128 171', '111 112', 'cr', $4);
             
             -- 12. lấy chỉ tiêu 24
-            pl_data.prior_amt24 = fin_get_doi_ung(prior_sdate, prior_edate, '128 171', '111 112', 'dr', $4);
-            pl_data.curr_amt24 =  fin_get_doi_ung(_cur_sdate, _cur_edate, '128 171', '111 112', 'dr', $4);
+            pl_data.prior_amt24 = fin_get_doi_ung_lctt(prior_sdate, prior_edate, '128 171', '111 112', 'dr', $4);
+            pl_data.curr_amt24 =  fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '128 171', '111 112', 'dr', $4);
             
             -- 13. lấy chỉ tiêu 25
-            pl_data.prior_amt25 = -1*fin_get_doi_ung(prior_sdate, prior_edate, '221 222 2281 331', '111 112', 'cr', $4);
-            pl_data.curr_amt25 =  -1*fin_get_doi_ung(_cur_sdate, _cur_edate, '221 222 2281 331', '111 112', 'cr', $4);
+            pl_data.prior_amt25 = -1*fin_get_doi_ung_lctt(prior_sdate, prior_edate, '221 222 2281 331', '111 112', 'cr', $4);
+            pl_data.curr_amt25 =  -1*fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '221 222 2281 331', '111 112', 'cr', $4);
             
             -- 14. lấy chỉ tiêu 26
-            pl_data.prior_amt26 = fin_get_doi_ung(prior_sdate, prior_edate, '221 222 2281 131', '111 112', 'dr', $4);
-            pl_data.curr_amt26 =  fin_get_doi_ung(_cur_sdate, _cur_edate, '221 222 2281 131', '111 112', 'dr', $4);
+            pl_data.prior_amt26 = fin_get_doi_ung_lctt(prior_sdate, prior_edate, '221 222 2281 131', '111 112', 'dr', $4);
+            pl_data.curr_amt26 =  fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '221 222 2281 131', '111 112', 'dr', $4);
             
             -- 15. lấy chỉ tiêu 27
-            pl_data.prior_amt27 = fin_get_doi_ung(prior_sdate, prior_edate, '515', '111 112', 'dr', $4);
-            pl_data.curr_amt27 =  fin_get_doi_ung(_cur_sdate, _cur_edate, '515', '111 112', 'dr', $4);
+            pl_data.prior_amt27 = fin_get_doi_ung_lctt(prior_sdate, prior_edate, '515', '111 112', 'dr', $4);
+            pl_data.curr_amt27 =  fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '515', '111 112', 'dr', $4);
             
             -- 16. lấy chỉ tiêu 30
             pl_data.prior_amt30 = pl_data.prior_amt21 + pl_data.prior_amt22 + pl_data.prior_amt23 + pl_data.prior_amt24 + pl_data.prior_amt25 + pl_data.prior_amt26 + pl_data.prior_amt27;
             pl_data.curr_amt30 =  pl_data.curr_amt21 + pl_data.curr_amt22 + pl_data.curr_amt23 + pl_data.curr_amt24 + pl_data.curr_amt25 + pl_data.curr_amt26 + pl_data.curr_amt27;
             
             -- 17. lấy chỉ tiêu 31
-            pl_data.prior_amt31 = fin_get_doi_ung(prior_sdate, prior_edate, '411', '111 112', 'dr', $4);
-            pl_data.curr_amt31 =  fin_get_doi_ung(_cur_sdate, _cur_edate, '411', '111 112', 'dr', $4);
+            pl_data.prior_amt31 = fin_get_doi_ung_lctt(prior_sdate, prior_edate, '411', '111 112', 'dr', $4);
+            pl_data.curr_amt31 =  fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '411', '111 112', 'dr', $4);
             
             -- 18. lấy chỉ tiêu 32
-            pl_data.prior_amt32 = -1*fin_get_doi_ung(prior_sdate, prior_edate, '411 419', '111 112', 'cr', $4);
-            pl_data.curr_amt32 =  -1*fin_get_doi_ung(_cur_sdate, _cur_edate, '411 419', '111 112', 'cr', $4);
+            pl_data.prior_amt32 = -1*fin_get_doi_ung_lctt(prior_sdate, prior_edate, '411 419', '111 112', 'cr', $4);
+            pl_data.curr_amt32 =  -1*fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '411 419', '111 112', 'cr', $4);
             
             -- 19. lấy chỉ tiêu 33
-            pl_data.prior_amt33 = fin_get_doi_ung(prior_sdate, prior_edate, '171 3411 3431 3432 343', '111 112', 'dr', $4) +
-                                fin_get_tru_doi_ung(prior_sdate, prior_edate, '343', '111 112', 'cr', $4);
-            pl_data.curr_amt33 =  fin_get_doi_ung(_cur_sdate, _cur_edate, '171 3411 3431 3432 343', '111 112', 'dr', $4) +
-                                fin_get_tru_doi_ung(_cur_sdate, _cur_edate, '343', '111 112', 'cr', $4);
+            pl_data.prior_amt33 = fin_get_doi_ung_lctt(prior_sdate, prior_edate, '171 3411 3431 3432 343', '111 112', 'dr', $4) +
+                                fin_get_tru_doi_ung_lctt(prior_sdate, prior_edate, '343', '111 112', 'cr', $4);
+            pl_data.curr_amt33 =  fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '171 3411 3431 3432 343', '111 112', 'dr', $4) +
+                                fin_get_tru_doi_ung_lctt(_cur_sdate, _cur_edate, '343', '111 112', 'cr', $4);
                                 
             -- 20. lấy chỉ tiêu 34
-            pl_data.prior_amt34 = -1*(fin_get_doi_ung(prior_sdate, prior_edate, '171 3411 3431 3432', '111 112', 'cr', $4) +
-                                fin_get_tru_doi_ung(prior_sdate, prior_edate, '171 3411 3431 3432', '111 112', 'dr', $4));
-            pl_data.curr_amt34 =  -1*(fin_get_doi_ung(_cur_sdate, _cur_edate, '171 3411 3431 3432', '111 112', 'cr', $4) +
-                                fin_get_tru_doi_ung(_cur_sdate, _cur_edate, '171 3411 3431 3432', '111 112', 'dr', $4));
+            pl_data.prior_amt34 = -1*(fin_get_doi_ung_lctt(prior_sdate, prior_edate, '171 3411 3431 3432', '111 112', 'cr', $4) +
+                                fin_get_tru_doi_ung_lctt(prior_sdate, prior_edate, '171 3411 3431 3432', '111 112', 'dr', $4));
+            pl_data.curr_amt34 =  -1*(fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '171 3411 3431 3432', '111 112', 'cr', $4) +
+                                fin_get_tru_doi_ung_lctt(_cur_sdate, _cur_edate, '171 3411 3431 3432', '111 112', 'dr', $4));
                                 
             -- 21. lấy chỉ tiêu 35
-            pl_data.prior_amt35 = -1*(fin_get_doi_ung(prior_sdate, prior_edate, '3412', '111 112', 'cr', $4) +
-                                fin_get_tru_doi_ung(prior_sdate, prior_edate, '3412', '111 112', 'dr', $4));
-            pl_data.curr_amt35 =  -1*(fin_get_doi_ung(_cur_sdate, _cur_edate, '3412', '111 112', 'cr', $4) +
-                                fin_get_tru_doi_ung(_cur_sdate, _cur_edate, '3412', '111 112', 'dr', $4));
+            pl_data.prior_amt35 = -1*(fin_get_doi_ung_lctt(prior_sdate, prior_edate, '3412', '111 112', 'cr', $4) +
+                                fin_get_tru_doi_ung_lctt(prior_sdate, prior_edate, '3412', '111 112', 'dr', $4));
+            pl_data.curr_amt35 =  -1*(fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '3412', '111 112', 'cr', $4) +
+                                fin_get_tru_doi_ung_lctt(_cur_sdate, _cur_edate, '3412', '111 112', 'dr', $4));
                                 
             -- 22. lấy chỉ tiêu 36
-            pl_data.prior_amt36 = -1*fin_get_doi_ung(prior_sdate, prior_edate, '421 3388', '111 112', 'cr', $4);
-            pl_data.curr_amt36 =  -1*fin_get_doi_ung(_cur_sdate, _cur_edate, '421 3388', '111 112', 'cr', $4);
+            pl_data.prior_amt36 = -1*fin_get_doi_ung_lctt(prior_sdate, prior_edate, '421 3388', '111 112', 'cr', $4);
+            pl_data.curr_amt36 =  -1*fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '421 3388', '111 112', 'cr', $4);
             
             -- 23. lấy chỉ tiêu 40
             pl_data.prior_amt40 = pl_data.prior_amt31 + pl_data.prior_amt32 + pl_data.prior_amt33 + pl_data.prior_amt34 + pl_data.prior_amt35 + pl_data.prior_amt36;
@@ -526,19 +526,19 @@ class sql_luuhuyen_tiente(osv.osv):
             pl_data.curr_amt50 =  pl_data.curr_amt20 + pl_data.curr_amt30 + pl_data.curr_amt40;
             
             -- 25. lấy chỉ tiêu 60
-            pl_data.prior_amt60 = fin_get_balance_all(prior_sdate, prior_edate, '111 112 113', 'dr', $4) +
-                                fin_get_balance_all(prior_sdate, prior_edate, '1281 1288', 'dr', $4);
-            pl_data.curr_amt60 =  fin_get_balance_all(_cur_sdate, _cur_edate, '111 112 113', 'dr', $4) +
-                                fin_get_balance_all(_cur_sdate, _cur_edate, '1281 1288', 'dr', $4);
+            pl_data.prior_amt60 = fin_get_balance_all_lctt(prior_sdate, prior_edate, '111 112 113', 'dr', $4) +
+                                fin_get_balance_all_lctt(prior_sdate, prior_edate, '1281 1288', 'dr', $4);
+            pl_data.curr_amt60 =  fin_get_balance_all_lctt(_cur_sdate, _cur_edate, '111 112 113', 'dr', $4) +
+                                fin_get_balance_all_lctt(_cur_sdate, _cur_edate, '1281 1288', 'dr', $4);
             
             -- 26. lấy chỉ tiêu 61
-            pl_data.prior_amt61 = fin_get_doi_ung(prior_sdate, prior_edate, '4131', '1112 1122', 'dr', $4);
+            pl_data.prior_amt61 = fin_get_doi_ung_lctt(prior_sdate, prior_edate, '4131', '1112 1122', 'dr', $4);
             if pl_data.prior_amt61=0 then
-                pl_data.prior_amt61 = -1*fin_get_doi_ung(prior_sdate, prior_edate, '4131', '1112 1122', 'cr', $4);
+                pl_data.prior_amt61 = -1*fin_get_doi_ung_lctt(prior_sdate, prior_edate, '4131', '1112 1122', 'cr', $4);
             end if;
-            pl_data.curr_amt61 =  fin_get_doi_ung(prior_sdate, prior_edate, '4131', '1112 1122', 'dr', $4);
+            pl_data.curr_amt61 =  fin_get_doi_ung_lctt(prior_sdate, prior_edate, '4131', '1112 1122', 'dr', $4);
             if pl_data.curr_amt61=0 then
-                pl_data.curr_amt61 =  -1*fin_get_doi_ung(prior_sdate, prior_edate, '4131', '1112 1122', 'cr', $4);
+                pl_data.curr_amt61 =  -1*fin_get_doi_ung_lctt(prior_sdate, prior_edate, '4131', '1112 1122', 'cr', $4);
             end if;
             
             -- 27. lấy chỉ tiêu 70
