@@ -14,7 +14,6 @@
  <!--  VACCINE-->
 		<record id="loai_vacxin_lmlm" model="loai.vacxin">
             <field name="name">Vaccine Lở Mồm Long Móng</field>
-            <field name="ma_loai">vc_lmlm</field>
         </record>
         
  <!--  TRẠNG THÁI-->

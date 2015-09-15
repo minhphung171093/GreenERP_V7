@@ -181,10 +181,11 @@
 									</tree>
 								</field>
 							</page>
-							<page string = "Thông tin chi tiết loại bệnh">
-								<field name="chitiet_loaibenh" nolabel='1' >
+							<page string = "Thông tin chi tiết các vaccine">
+								<field name="chitiet_loai_vaccine" nolabel='1' >
 									<tree editable='bottom'>
-										<field name="name" />
+										<field name="vacxin_id" options="{'create': false, 'create_edit': false}"/>
+										<field name="yes_no"/>
 									</tree>
 								</field>
 							</page>
@@ -498,7 +499,6 @@
 	        <field name="arch" type="xml">
 	            <search string="Loại vacxin">
 	                <group>
-	                    <field name="ma_loai" />
 	                    <field name="name" />
 	                </group>
 	            </search>	
@@ -510,8 +510,7 @@
             <field name="model">loai.vacxin</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="Tree Loại vacxin"  editable='top'>
-                    <field name="ma_loai" />
+                <tree string="Loại vacxin"  editable='top'>
                     <field name="name" />
                 </tree>
             </field>
@@ -522,10 +521,9 @@
             <field name="model">loai.vacxin</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
-                <form string="form Loại vacxin" version="7.0">
+                <form string="Loại vacxin" version="7.0">
 	                <sheet>
                 		<group>
-			            	<field name="ma_loai" />
 	                    	<field name="name" />
                 		</group>
 	                </sheet>

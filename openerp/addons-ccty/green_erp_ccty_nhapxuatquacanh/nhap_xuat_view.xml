@@ -151,7 +151,7 @@
                 		<group col='4' colspan='2'>
                 			<group >
                 			<field name="name" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-		                	<field name="loai_id" options="{'create': false, 'create_edit': false}" on_change = "onchange_chon_loai(loai_id, ten_ho_id)" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+		                	<field name="loai_id" options="{'create': false, 'create_edit': false}" on_change = "onchange_chon_loai(loai_id, ten_ho_id,loai)" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 		            		<field name="ngay_cap" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 		            		<field name="can_bo_ghi_so" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 		            		</group>
@@ -195,9 +195,8 @@
 							<page string = "Đã tiêm phòng">
 								<field name="chitiet_da_tiem_phong" nolabel='1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}">
 									<tree editable='bottom' create = 'false'>
-										<field name="name" invisible = '1'/>
-										<field name="loai_benh_id" options="{'create': false, 'create_edit': false}"/>
-										<field name="so_luong" sum = 'Total' readonly = '1' string = 'Số lượng nhập'/>
+										<field name="vacxin_id" options="{'create': false, 'create_edit': false}"/>
+										<field name="so_luong" string = 'Số lượng nhập' sum = 'Total'/>
 									</tree>
 								</field>
 							</page>
@@ -316,10 +315,10 @@
 								<field name="chitiet_da_tiem_phong" nolabel='1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}">
 									<tree editable='bottom' create = 'false'>
 										<field name="tiem_phong_id" readonly="1" options="{'create': false, 'create_edit': false}"/>
-										<field name="name" readonly="1" />
-										<field name="loai_benh_id" options="{'create': false, 'create_edit': false}"/>
-										<field name="sl_tiem" sum = 'Total'/>
-										<field name="so_luong" sum = 'Total'/>
+										<field name="vacxin_id" readonly="1" options="{'create': false, 'create_edit': false}"/>
+										<field name="ct_loai_id" readonly="1" options="{'create': false, 'create_edit': false}"/>
+										<field name="sl_tiem" readonly="1"/>
+										<field name="so_luong" string = "Số lượng xuất" sum = 'Total'/>
 									</tree>
 								</field>
 							</page>

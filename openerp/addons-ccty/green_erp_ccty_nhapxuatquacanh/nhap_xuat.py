@@ -218,17 +218,24 @@ class nhap_xuat_canh_giasuc(osv.osv):
     
     def bt_duyet(self, cr, uid, ids, context=None):
         chi_tiet_loai =[]
+        ct_tiem_phong = []
         co_cau_obj = self.pool.get('co.cau')
         user = self.pool.get('res.users').browse(cr,uid,uid)
         
         for line in self.browse(cr, uid, ids, context=context):
+            for vaccine_line in line.loai_id.chitiet_loai_vaccine:
+                if vaccine_line.yes_no == True:
+                    ct_tiem_phong.append((0,0,{
+                        'vacxin_id': vaccine_line.id,
+                                                   }))
             if line.loai == 'nhap':
                 for loai in line.chitiet_loai_nx:
                     chi_tiet_loai.append((0,0,{
                     'ct_loai_id': loai.ct_loai_id.id,
                     'name':loai.name,
                     'so_luong':loai.so_luong,     
-                    'tiem_phong':loai.tiem_phong,                      
+                    'tiem_phong':loai.tiem_phong,        
+                    'ct_tiem_phong_line': ct_tiem_phong,   
                                                }))
                 if line.trang_thai_id.stt == 1 and user.company_id.cap == 'huyen':
                     sql = '''
@@ -420,48 +427,48 @@ class nhap_xuat_canh_giasuc(osv.osv):
                                       'tiem_phong':line_loaivat.tiem_phong,
                                       }))
             if loai_select == 'nhap':
-                for line_loaibenh in loai.chitiet_loaibenh:
-                    tiem_phong.append((0,0,{
-                                          'name': line_loaibenh.name,
-                                          'loai_benh_id': line_loaibenh.id,
-                                          }))
-            if loai_select == 'xuat':
-                if ten_ho_id:
-                    ho = self.pool.get('chan.nuoi').browse(cr,uid,ten_ho_id)
-                    loai_ho_id = ho.loai_ho_id.id
-                    sql = '''
-                        select id from ct_tiem_phong_lmlm_line where tp_lmlm_id in (select id from tiem_phong_lmlm where loai_id = %s and ho_chan_nuoi_id = %s 
-                        and trang_thai_id in (select id from trang_thai where stt = 3) )
-                    '''%(loai_id, ten_ho_id)
-                    cr.execute(sql)
-                    lmlm_ids = [r[0] for r in cr.fetchall()]
-                    if lmlm_ids:
-                        for lmlm_line in self.pool.get('ct.tiem.phong.lmlm.line').browse(cr,uid,lmlm_ids):
-                            sql = '''
-                                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
-                                from chi_tiet_da_tiem_phong where nhap_xuat_tiemphong_id in (select id from nhap_xuat_canh_giasuc 
-                                where trang_thai_id in (select id from trang_thai where stt = 3) and loai = 'xuat')
-                                and tiem_phong_id = %s and name = '%s'
-                            '''%(lmlm_line.tp_lmlm_id.id, lmlm_line.name)
-                            cr.execute(sql)
-                            so_luong_xuat = cr.dictfetchone()['so_luong']
-                            
-                            sql = '''
-                                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
-                                from ct_xuly_giasuc_tp_line where xuly_giasuc_id in (select id from xuly_giasuc 
-                                where trang_thai_id in (select id from trang_thai where stt = 3) )
-                                and tiem_phong_id = %s and name = '%s'
-                            '''%(lmlm_line.tp_lmlm_id.id, lmlm_line.name)
-                            cr.execute(sql)
-                            so_luong_chet = cr.dictfetchone()['so_luong']
-                    
-                            if lmlm_line.sl_thuc_tiem - so_luong_xuat - so_luong_chet> 0:
-                                tiem_phong.append((0,0,{
-                                              'tiem_phong_id': lmlm_line.tp_lmlm_id.id,
-                                              'name': lmlm_line.name,
-                                              'loai_benh_id':lmlm_line.tp_lmlm_id.loai_benh_id.id,
-                                              'sl_tiem':lmlm_line.sl_thuc_tiem - so_luong_xuat - so_luong_chet,
+                for line_loaibenh in loai.chitiet_loai_vaccine:
+                    if line_loaibenh.yes_no == True:
+                        tiem_phong.append((0,0,{
+                                              'vacxin_id': line_loaibenh.vacxin_id.id,
                                               }))
+#             if loai_select == 'xuat':
+#                 if ten_ho_id:
+#                     ho = self.pool.get('chan.nuoi').browse(cr,uid,ten_ho_id)
+#                     loai_ho_id = ho.loai_ho_id.id
+#                     sql = '''
+#                         select id from ct_tiem_phong_lmlm_line where tp_lmlm_id in (select id from tiem_phong_lmlm where loai_id = %s and ho_chan_nuoi_id = %s 
+#                         and trang_thai_id in (select id from trang_thai where stt = 3) )
+#                     '''%(loai_id, ten_ho_id)
+#                     cr.execute(sql)
+#                     lmlm_ids = [r[0] for r in cr.fetchall()]
+#                     if lmlm_ids:
+#                         for lmlm_line in self.pool.get('ct.tiem.phong.lmlm.line').browse(cr,uid,lmlm_ids):
+#                             sql = '''
+#                                 select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
+#                                 from chi_tiet_da_tiem_phong where nhap_xuat_tiemphong_id in (select id from nhap_xuat_canh_giasuc 
+#                                 where trang_thai_id in (select id from trang_thai where stt = 3) and loai = 'xuat')
+#                                 and tiem_phong_id = %s and name = '%s'
+#                             '''%(lmlm_line.tp_lmlm_id.id, lmlm_line.name)
+#                             cr.execute(sql)
+#                             so_luong_xuat = cr.dictfetchone()['so_luong']
+#                             
+#                             sql = '''
+#                                 select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
+#                                 from ct_xuly_giasuc_tp_line where xuly_giasuc_id in (select id from xuly_giasuc 
+#                                 where trang_thai_id in (select id from trang_thai where stt = 3) )
+#                                 and tiem_phong_id = %s and name = '%s'
+#                             '''%(lmlm_line.tp_lmlm_id.id, lmlm_line.name)
+#                             cr.execute(sql)
+#                             so_luong_chet = cr.dictfetchone()['so_luong']
+#                     
+#                             if lmlm_line.sl_thuc_tiem - so_luong_xuat - so_luong_chet> 0:
+#                                 tiem_phong.append((0,0,{
+#                                               'tiem_phong_id': lmlm_line.tp_lmlm_id.id,
+#                                               'name': lmlm_line.name,
+#                                               'loai_benh_id':lmlm_line.tp_lmlm_id.loai_benh_id.id,
+#                                               'sl_tiem':lmlm_line.sl_thuc_tiem - so_luong_xuat - so_luong_chet,
+#                                               }))
                 
         return {'value': {'chitiet_loai_nx': chi_tiet,
                           'chitiet_da_tiem_phong': tiem_phong,
@@ -496,13 +503,14 @@ class chi_tiet_da_tiem_phong(osv.osv):
     _columns = {
         'nhap_xuat_tiemphong_id': fields.many2one('nhap.xuat.canh.giasuc','Nhap Xuat', ondelete = 'cascade'),
         'name': fields.char('Thông tin', readonly = True),
+        'ct_loai_id': fields.many2one('chi.tiet.loai.vat','Thông tin'),
         'tiem_phong_id': fields.many2one('tiem.phong.lmlm','Số giấy tiêm phòng'),
-        'loai_benh_id': fields.many2one('chi.tiet.loai.benh','Loại bệnh', readonly = True),
+        'vacxin_id': fields.many2one('loai.vacxin','Loại Vaccine', readonly = True),
         'sl_tiem': fields.integer('Số lượng đã tiêm', readonly = True),
         'so_luong': fields.integer('Số lượng xuất'),
                 }
-    
-    # so luong xuat phai nho hon so luong da tiem trong phieu
+     
 chi_tiet_da_tiem_phong()
+    
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

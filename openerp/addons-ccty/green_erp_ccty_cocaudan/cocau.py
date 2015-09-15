@@ -56,7 +56,7 @@ class co_cau(osv.osv):
         'khu_pho_id': fields.many2one( 'khu.pho','Khu phố (ấp)', required = True),
         'quan_huyen_id': fields.many2one( 'quan.huyen','Quận (huyện)', required = True),
         'chitiet_loai':fields.one2many('chi.tiet.loai.line','co_cau_id','Co Cau'),
-        'chitiet_giay_tiemphong':fields.one2many('tiem.phong.lmlm','co_cau_id','Tiem Phong'),
+        'chitiet_giay_tiemphong':fields.one2many('chi.tiet.tiem.phong','co_cau_id','Tiem Phong'),
         'company_id': fields.many2one( 'res.company','Company'),
         'trang_thai': fields.selection((('old','Old'), ('new','New')),'Trang thai'),
         'loai_ho_id': fields.many2one('loai.ho','Loại hộ', readonly = True),
@@ -207,18 +207,6 @@ class co_cau(osv.osv):
         return {'value': {'chitiet_loai': chi_tiet,
                           'loai_ho_id': ho.loai_ho_id.id}}
     
-#     def _check_so_luong_giam(self, cr, uid, ids, context=None):
-#         for co_cau in self.browse(cr, uid, ids, context=context):
-#             if co_cau.tang_giam == 'b':
-#                 for line in co_cau.chitiet_loai:
-#                     if not co_cau.nhap_xuat_id:
-#                         if line.so_luong > line.tong_sl:
-#                             raise osv.except_osv(_('Warning!'),_('Số lượng giảm %s trong hộ %s vượt quá tổng số đàn hiện có')%(line.name, co_cau.ten_ho_id.name))
-#                             return False
-#         return True
-#     _constraints = [
-#         (_check_so_luong_giam, 'Identical Data', []),
-#     ]   
 co_cau()
 
 class chi_tiet_loai_line(osv.osv):
@@ -244,132 +232,6 @@ class chi_tiet_loai_line(osv.osv):
             res[line.id] = tong_sl - tong_sl_giam
         return res
     
-    def sum_sl_da_tiem(self, cr, uid, ids, name, args, context=None):
-        res = {}
-        for line in self.browse(cr, uid, ids, context=context):
-            sql = '''
-                select case when sum(sl_thuc_tiem)!=0 then sum(sl_thuc_tiem) else 0 end sl_thuc_tiem
-                from ct_tiem_phong_lmlm_line
-                where tp_lmlm_id in (select id from tiem_phong_lmlm where loai_id = %s and ho_chan_nuoi_id = %s 
-                and trang_thai_id in (select id from trang_thai where stt = 3))
-                and name = '%s'
-            '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name)
-            cr.execute(sql)
-            tong_sl_tiem = cr.dictfetchone()['sl_thuc_tiem']
-            
-            sql = '''
-                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
-                from chi_tiet_da_tiem_phong where nhap_xuat_tiemphong_id in (select id from nhap_xuat_canh_giasuc 
-                where trang_thai_id in (select id from trang_thai where stt = 3) and loai_id = %s and ten_ho_id = %s and loai = 'xuat')
-                and name = '%s'
-            '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name)
-            cr.execute(sql)
-            so_luong_xuat = cr.dictfetchone()['so_luong']
-            
-            sql = '''
-                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
-                from ct_xuly_giasuc_tp_line where xuly_giasuc_id in (select id from xuly_giasuc 
-                where trang_thai_id in (select id from trang_thai where stt = 3) and loai_id = %s and ten_ho_id = %s)
-                and name = '%s'
-            '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name)
-            cr.execute(sql)
-            so_luong_chet = cr.dictfetchone()['so_luong']
-            
-            res[line.id] = tong_sl_tiem - so_luong_xuat - so_luong_chet
-        return res
-    
-    def _get_thuc_tiem(self, cr, uid, ids, context=None):
-        result = {}
-        for line in self.pool.get('tiem.phong.lmlm').browse(cr, uid, ids, context=context):
-            sql = '''
-                select id from chi_tiet_loai_line where co_cau_id in (select id from co_cau 
-                where chon_loai = %s and ten_ho_id = %s and trang_thai = 'new')
-            '''%(line.loai_id.id, line.ho_chan_nuoi_id.id)
-            cr.execute(sql)
-            co_cau_ids = [row[0] for row in cr.fetchall()]
-#             sql = '''
-#                 select id from co_cau 
-#                 where chon_loai = %s and ten_ho_id = %s and trang_thai = 'new'
-#             '''%(line.tp_lmlm_id.loai_id.id, line.tp_lmlm_id.ho_chan_nuoi_id.id)
-#             cr.execute(sql)
-#             co_cau_id = cr.dictfetchone()['id']
-
-
-#             result[co_cau_id] = True
-            
-        return co_cau_ids
-    
-    def _get_tiem_phong_lmlm(self, cr, uid, ids, context=None):
-        result = {}
-        for line in self.pool.get('ct.tiem.phong.lmlm.line').browse(cr, uid, ids, context=context):
-            sql = '''
-                select id from chi_tiet_loai_line where name = '%s' and co_cau_id in (select id from co_cau 
-                where chon_loai = %s and ten_ho_id = %s and trang_thai = 'new')
-            '''%(line.name, line.tp_lmlm_id.loai_id.id, line.tp_lmlm_id.ho_chan_nuoi_id.id)
-            cr.execute(sql)
-            co_cau_id = cr.fetchone()[0]
-            #lam lai tra ve chuoi
-
-            result[co_cau_id] = True
-            
-        return result.keys()
-    
-    def ti_le_tp(self, cr, uid, ids, name, args, context=None):
-        res = {}
-        for line in self.browse(cr, uid, ids, context=context):
-            sql = '''
-                select case when sum(sl_thuc_tiem)!=0 then sum(sl_thuc_tiem) else 0 end sl_thuc_tiem
-                from ct_tiem_phong_lmlm_line
-                where tp_lmlm_id in (select id from tiem_phong_lmlm where loai_id = %s and ho_chan_nuoi_id = %s 
-                and trang_thai_id in (select id from trang_thai where stt = 3))
-                and name = '%s'
-            '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name)
-            cr.execute(sql)
-            tong_sl_tiem = cr.dictfetchone()['sl_thuc_tiem']
-            
-            sql = '''
-                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
-                from chi_tiet_da_tiem_phong where nhap_xuat_tiemphong_id in (select id from nhap_xuat_canh_giasuc 
-                where trang_thai_id in (select id from trang_thai where stt = 3) and loai_id = %s and ten_ho_id = %s and loai = 'xuat')
-                and name = '%s'
-            '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name)
-            cr.execute(sql)
-            so_luong_xuat = cr.dictfetchone()['so_luong']
-            
-            sql = '''
-                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
-                from ct_xuly_giasuc_tp_line where xuly_giasuc_id in (select id from xuly_giasuc 
-                where trang_thai_id in (select id from trang_thai where stt = 3) and loai_id = %s and ten_ho_id = %s)
-                and name = '%s'
-            '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name)
-            cr.execute(sql)
-            so_luong_chet = cr.dictfetchone()['so_luong']
-            sum_sl_da_tiem = tong_sl_tiem - so_luong_xuat - so_luong_chet
-            
-            
-            sql = '''
-                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end tong_sl from chi_tiet_loai_line
-                where co_cau_id in (select id from co_cau where chon_loai = %s and ten_ho_id = %s and tang_giam = 'a' and trang_thai_id in (select id from trang_thai where stt = 3))
-                and name = '%s'
-            '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name)
-            cr.execute(sql)
-            tong_sl = cr.dictfetchone()['tong_sl']
-            sql = '''
-                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end tong_sl_giam from chi_tiet_loai_line
-                where co_cau_id in (select id from co_cau where chon_loai = %s and ten_ho_id = %s and tang_giam = 'b' and trang_thai_id in (select id from trang_thai where stt = 3))
-                and name = '%s'
-            '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name)
-            cr.execute(sql)
-            tong_sl_giam = cr.dictfetchone()['tong_sl_giam']
-            
-            sum_so_luong = tong_sl - tong_sl_giam
-            
-            if float(sum_so_luong):
-                res[line.id] = float(sum_sl_da_tiem)/float(sum_so_luong)*100
-            else:
-                res[line.id] = 0
-        return res
-    
     _columns = {
         'co_cau_id': fields.many2one( 'co.cau','Co cau', ondelete = 'cascade'),
         'name': fields.char('Thông tin', readonly = True),
@@ -377,29 +239,213 @@ class chi_tiet_loai_line(osv.osv):
         'tiem_phong':fields.boolean('Có được tiêm phòng?'),
         'tong_sl':fields.function(sum_so_luong,type='integer',string='Tổng số lượng(hiện có)', store = True),
         'so_luong': fields.integer('Số lượng'),
-#         'sl_da_tiem':fields.function(sum_sl_da_tiem,type='integer',string='Số lượng đã tiêm phòng', store = True),
-        'sl_da_tiem':fields.function(sum_sl_da_tiem,type='integer',string='Số lượng đã tiêm phòng', store = {
-                    'chi.tiet.loai.line': (lambda self, cr, uid, ids, c={}: ids, ['co_cau_id'], 10),                                                                                         
-                    'tiem.phong.lmlm':(_get_thuc_tiem,['chi_tiet_tp_line', 'trang_thai_id'],10), 
-                                                                                                             }),
-        'ti_le': fields.function(ti_le_tp,type='float',string='Tỉ lệ tiêm phòng (%)', store = {
-                    'chi.tiet.loai.line': (lambda self, cr, uid, ids, c={}: ids, ['co_cau_id'], 10),                                                                        
-                    'tiem.phong.lmlm':(_get_thuc_tiem,['chi_tiet_tp_line', 'trang_thai_id'],10), 
-                                                                                                            }),
+        'ct_tiem_phong_line':fields.one2many('chi.tiet.tiem.phong.line','ct_cocau_loai_id','Chi tiet'),     
                 }
 chi_tiet_loai_line()
 
-# class chi_tiet_giay_tiemphong_line(osv.osv):
-#     _name = "chi.tiet.giay.tiemphong.line"
-#     
-#     _columns = {
-#         'co_cau_id': fields.many2one('co.cau','Co cau', ondelete = 'cascade'),
-#         'tiemphong_id': fields.many2one('tiem.phong.lmlm','Số giấy tiêm phòng'),
-#         'loai_benh_id': fields.many2one('chi.tiet.loai.benh','Loại bệnh'),
-# #         'so_luong':fields.function(sum_so_luong,type='integer',string='Tổng số lượng(hiện có)', store = True),
-#         'so_luong': fields.integer('Số lượng'),
-#                 }
-# chi_tiet_giay_tiemphong_line()
+class chi_tiet_tiem_phong_line(osv.osv):
+    _name = "chi.tiet.tiem.phong.line"
+     
+     
+    def sum_sl_da_tiem(self, cr, uid, ids, name, args, context=None):
+        res = {}
+        tong_sl_tiem = 0
+        so_luong_xuat = 0
+        so_luong_chet = 0
+        print len(ids)
+        for line in self.browse(cr, uid, ids, context=context):
+            sql = '''
+                select case when sum(sl_thuc_tiem)!=0 then sum(sl_thuc_tiem) else 0 end sl_thuc_tiem
+                from ct_tiem_phong_lmlm_line
+                where tp_lmlm_id in (select id from tiem_phong_lmlm where loai_id = %s and ho_chan_nuoi_id = %s and vacxin_id = %s
+                and trang_thai_id in (select id from trang_thai where stt = 3))
+            '''%(line.ct_cocau_loai_id.co_cau_id.chon_loai.id, line.ct_cocau_loai_id.co_cau_id.ten_ho_id.id, line.vacxin_id.id)
+            cr.execute(sql)
+            tong_sl_tiem = cr.dictfetchone()['sl_thuc_tiem']
+             
+#             sql = '''
+#                 select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
+#                 from chi_tiet_da_tiem_phong where nhap_xuat_tiemphong_id in (select id from nhap_xuat_canh_giasuc 
+#                 where trang_thai_id in (select id from trang_thai where stt = 3) and loai_id = %s and ten_ho_id = %s and loai = 'xuat')
+#                 and name = '%s'
+#             '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name)
+#             cr.execute(sql)
+#             so_luong_xuat = cr.dictfetchone()['so_luong']
+             
+#             sql = '''
+#                 select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
+#                 from ct_xuly_giasuc_tp_line where xuly_giasuc_id in (select id from xuly_giasuc 
+#                 where trang_thai_id in (select id from trang_thai where stt = 3) and loai_id = %s and ten_ho_id = %s)
+#                 and name = '%s'
+#             '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name)
+#             cr.execute(sql)
+#             so_luong_chet = cr.dictfetchone()['so_luong']
+             
+            res[line.id] = tong_sl_tiem - so_luong_xuat - so_luong_chet
+        return res
+      
+    def _get_thuc_tiem(self, cr, uid, ids, context=None):
+        result = {}
+        co_cau_ids =[]
+        for line in self.pool.get('tiem.phong.lmlm').browse(cr, uid, ids, context=context):
+#             sql = '''
+#                 select id from chi_tiet_loai_line where co_cau_id in (select id from co_cau 
+#                 where chon_loai = %s and ten_ho_id = %s and trang_thai = 'new')
+#             '''%(line.loai_id.id, line.ho_chan_nuoi_id.id)
+#             cr.execute(sql)
+#             co_cau_ids = [row[0] for row in cr.fetchall()]
+            
+            sql = '''
+                select id from chi_tiet_tiem_phong_line where vacxin_id = %s and ct_cocau_loai_id in (select id from chi_tiet_loai_line 
+                where co_cau_id in (select id from co_cau
+                where chon_loai = %s and ten_ho_id = %s and trang_thai = 'new'))
+            '''%(line.vacxin_id.id, line.loai_id.id, line.ho_chan_nuoi_id.id)
+            cr.execute(sql)
+            co_cau_ids = [row[0] for row in cr.fetchall()]
+        return co_cau_ids
+      
+    def ti_le_tp(self, cr, uid, ids, name, args, context=None):
+        res = {}
+#         for line in self.browse(cr, uid, ids, context=context):
+#             sql = '''
+#                 select case when sum(sl_thuc_tiem)!=0 then sum(sl_thuc_tiem) else 0 end sl_thuc_tiem
+#                 from ct_tiem_phong_lmlm_line
+#                 where tp_lmlm_id in (select id from tiem_phong_lmlm where loai_id = %s and ho_chan_nuoi_id = %s 
+#                 and trang_thai_id in (select id from trang_thai where stt = 3))
+#                 and name = '%s'
+#             '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name)
+#             cr.execute(sql)
+#             tong_sl_tiem = cr.dictfetchone()['sl_thuc_tiem']
+#             
+#             sql = '''
+#                 select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
+#                 from chi_tiet_da_tiem_phong where nhap_xuat_tiemphong_id in (select id from nhap_xuat_canh_giasuc 
+#                 where trang_thai_id in (select id from trang_thai where stt = 3) and loai_id = %s and ten_ho_id = %s and loai = 'xuat')
+#                 and name = '%s'
+#             '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name)
+#             cr.execute(sql)
+#             so_luong_xuat = cr.dictfetchone()['so_luong']
+#             
+#             sql = '''
+#                 select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
+#                 from ct_xuly_giasuc_tp_line where xuly_giasuc_id in (select id from xuly_giasuc 
+#                 where trang_thai_id in (select id from trang_thai where stt = 3) and loai_id = %s and ten_ho_id = %s)
+#                 and name = '%s'
+#             '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name)
+#             cr.execute(sql)
+#             so_luong_chet = cr.dictfetchone()['so_luong']
+#             sum_sl_da_tiem = tong_sl_tiem - so_luong_xuat - so_luong_chet
+#             
+#             
+#             sql = '''
+#                 select case when sum(so_luong)!=0 then sum(so_luong) else 0 end tong_sl from chi_tiet_loai_line
+#                 where co_cau_id in (select id from co_cau where chon_loai = %s and ten_ho_id = %s and tang_giam = 'a' and trang_thai_id in (select id from trang_thai where stt = 3))
+#                 and name = '%s'
+#             '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name)
+#             cr.execute(sql)
+#             tong_sl = cr.dictfetchone()['tong_sl']
+#             sql = '''
+#                 select case when sum(so_luong)!=0 then sum(so_luong) else 0 end tong_sl_giam from chi_tiet_loai_line
+#                 where co_cau_id in (select id from co_cau where chon_loai = %s and ten_ho_id = %s and tang_giam = 'b' and trang_thai_id in (select id from trang_thai where stt = 3))
+#                 and name = '%s'
+#             '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name)
+#             cr.execute(sql)
+#             tong_sl_giam = cr.dictfetchone()['tong_sl_giam']
+#             
+#             sum_so_luong = tong_sl - tong_sl_giam
+#             
+#             if float(sum_so_luong):
+#                 res[line.id] = float(sum_sl_da_tiem)/float(sum_so_luong)*100
+#             else:
+#                 res[line.id] = 0
+        return res
+    
+    def _get_co_cau(self, cr, uid, ids, context=None):
+        result = {}
+        co_cau_ids =[]
+#         sql = '''
+#             select id from chi_tiet_tiem_phong_line
+#         '''
+#         cr.execute(sql)
+#         for r in cr.fetchall():
+        for line in self.pool.get('nhap.xuat.canh.giasuc').browse(cr, uid, ids, context=context):
+            sql = '''
+                select id from chi_tiet_tiem_phong_line where ct_cocau_loai_id in (select id from chi_tiet_loai_line where co_cau_id in
+                (select id from co_cau 
+                where chon_loai = %s and ten_ho_id = %s and trang_thai = 'new'))
+            '''%(line.loai_id.id, line.ten_ho_id.id)
+            cr.execute(sql)
+            for r in cr.fetchall():
+                result[r[0]] = True
+        return result.keys()
+    
+    def _get_cc(self, cr, uid, ids, context=None):
+        result = {}
+        co_cau_ids =[]
+        for line in self.pool.get('co.cau').browse(cr, uid, ids, context=context):
+            sql = '''
+                select id from chi_tiet_tiem_phong_line where ct_cocau_loai_id in (select id from chi_tiet_loai_line where co_cau_id = %s)
+            '''%(line.id)
+            cr.execute(sql)
+        for r in cr.fetchall():
+#         for line in self.pool.get('nhap.xuat.canh.giasuc').browse(cr, uid, ids, context=context):
+#             sql = '''
+#                 select id from co_cau 
+#                 where chon_loai = %s and ten_ho_id = %s and trang_thai = 'new'
+#             '''%(line.loai_id.id, line.ten_ho_id.id)
+#             cr.execute(sql)
+#             co_cau_ids = [row[0] for row in cr.fetchall()]
+            result[r[0]] = True
+        return result.keys()
+    
+    def _get_ctll(self, cr, uid, ids, context=None):
+        result = {}
+        co_cau_ids =[]
+        for line in self.pool.get('chi.tiet.loai.line').browse(cr, uid, ids, context=context):
+            sql = '''
+                select id from chi_tiet_tiem_phong_line where ct_cocau_loai_id = %s
+            '''%(line.id)
+            cr.execute(sql)
+            for r in cr.fetchall():
+#         for line in self.pool.get('nhap.xuat.canh.giasuc').browse(cr, uid, ids, context=context):
+#             sql = '''
+#                 select id from co_cau 
+#                 where chon_loai = %s and ten_ho_id = %s and trang_thai = 'new'
+#             '''%(line.loai_id.id, line.ten_ho_id.id)
+#             cr.execute(sql)
+#             co_cau_ids = [row[0] for row in cr.fetchall()]
+                result[r[0]] = True
+        return result.keys()
+        
+#     def _get_order(self, cr, uid, ids, context=None):
+#         result = {}
+#         for line in self.pool.get('sale.order.line').browse(cr, uid, ids, context=context):
+#             result[line.order_id.id] = True
+#         return result.keys() 
+     
+    _columns = {
+        'ct_cocau_loai_id': fields.many2one('chi.tiet.loai.line','CT Co cau', ondelete = 'cascade'),
+        'vacxin_id': fields.many2one('loai.vacxin','Loại Vaccine', readonly = True),
+#         'sl_da_tiem':fields.function(sum_sl_da_tiem,type='integer',string='Số lượng đã tiêm phòng', store = {
+#                     'chi.tiet.tiem.phong.line': (lambda self, cr, uid, ids, c={}: ids, ['ct_cocau_loai_id'], 10),                                                                                         
+#                     'tiem.phong.lmlm':(_get_thuc_tiem,['chi_tiet_tp_line', 'trang_thai_id'],10), 
+#                                                                                                              }),
+        'sl_da_tiem':fields.function(sum_sl_da_tiem,type='integer',string='Số lượng đã tiêm phòng', store = {
+                    'co.cau': (_get_cc,['trang_thai_id','chitiet_loai'],10),
+                    'chi.tiet.loai.line': (_get_ctll,['ct_tiem_phong_line'],10),
+                    'chi.tiet.tiem.phong.line': (lambda self, cr, uid, ids, c={}: ids, ['ct_cocau_loai_id','vacxin_id'], 10),
+#                     'nhap.xuat.canh.giasuc': (_get_co_cau,['trang_thai_id'],10),                                                                                         
+#                     'tiem.phong.lmlm':(_get_thuc_tiem,['chi_tiet_tp_line', 'trang_thai_id'],10), 
+                                                                                                             }),
+        'ti_le': fields.function(ti_le_tp,type='float',string='Tỉ lệ tiêm phòng (%)', store = {
+                    'co.cau': (_get_cc,['trang_thai_id','chitiet_loai'],10),
+                    'chi.tiet.loai.line': (_get_ctll,['ct_tiem_phong_line'],10),
+                    'chi.tiet.tiem.phong.line': (lambda self, cr, uid, ids, c={}: ids, ['ct_cocau_loai_id','vacxin_id'], 10),
+                    'nhap.xuat.canh.giasuc': (_get_co_cau,['trang_thai_id'],10),                                                                          
+#                     'tiem.phong.lmlm':(_get_thuc_tiem,['chi_tiet_tp_line', 'trang_thai_id'],10), 
+                                                                                                            }),
+                }
+chi_tiet_tiem_phong_line()
 
 class tiem_phong_lmlm(osv.osv):
     _inherit = "tiem.phong.lmlm"

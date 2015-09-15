@@ -294,7 +294,7 @@ class xuly_giasuc(osv.osv):
                         tiem_phong.append((0,0,{
                                       'tiem_phong_id': lmlm_line.tp_lmlm_id.id,
                                       'name': lmlm_line.name,
-                                      'loai_benh_id':lmlm_line.tp_lmlm_id.loai_benh_id.id,
+#                                       'loai_benh_id':lmlm_line.tp_lmlm_id.loai_benh_id.id,
                                       'sl_tiem':lmlm_line.sl_thuc_tiem - so_luong_chet - so_luong_xuat,
                                       }))
         return {'value': {'chitiet_loai_xuly': chi_tiet, 'chi_tiet_tp_line':tiem_phong }

@@ -302,23 +302,33 @@
                 		<notebook>
 							<page string = "Thông tin chi tiết loài vật">
 								<field name="chitiet_loai" nolabel='1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}">
-									<tree editable='bottom' create = 'false' >
+									<tree create = 'false' >
 										<field name="name"/>
 										<field name="tiem_phong"/>
 										<field name="tong_sl" sum = 'Total'/>
 										<field name="so_luong" sum = 'Total'/>
-										<field name="sl_da_tiem" sum = 'Total'/>
-										<field name="ti_le"/>
 									</tree>
-								</field>
-							</page>
-							<page string = "Các giấy tiêm phòng" invisible = '1'>
-								<field name="chitiet_giay_tiemphong" nolabel='1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}">
-									<tree editable='bottom' create = 'false' delete = 'false'>
-										<field name="name" options="{'create': false, 'create_edit': false}"/>
-										<field name="loai_benh_id" options="{'create': false, 'create_edit': false}"/>
-										<field name="tong_sl_tiem" sum = 'Total'/>
-									</tree>
+									<form>
+									<group >
+										<group col="4" colspan="2">
+										<field name="name"/>
+										<field name="tiem_phong"/>
+										<field name="tong_sl"/>
+										</group>
+										<newline/>
+										<notebook>
+											<page string = "Thông tin chi tiết tiêm phòng">
+												<field name="ct_tiem_phong_line" nolabel='1'>
+													<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
+														<field name="vacxin_id" options="{'create': false, 'create_edit': false}"/>
+														<field name="sl_da_tiem" sum = 'Total'/>
+														<field name="ti_le"/>
+													</tree>
+												</field>
+											</page>
+										</notebook>
+									</group>	
+									</form>
 								</field>
 							</page>
 							<page string = "Thông tin khác">
@@ -428,12 +438,10 @@
 										<field name="tiem_phong"/>
 										<field name="tong_sl" sum = 'Total'/>
 										<field name="so_luong" sum = 'Total'/>
-										<field name="sl_da_tiem" sum = 'Total'/>
-										<field name="ti_le"/>
 									</tree>
 								</field>
 							</page>
-							<page string = "Các giấy tiêm phòng" invisible = '1'>
+					<!--		<page string = "Các giấy tiêm phòng">
 								<field name="chitiet_giay_tiemphong" nolabel='1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}">
 									<tree editable='bottom' create = 'false' delete = 'false'>
 										<field name="name" options="{'create': false, 'create_edit': false}"/>
@@ -441,7 +449,7 @@
 										<field name="tong_sl_tiem" sum = 'Total'/>
 									</tree>
 								</field>
-							</page>
+							</page> -->
 							<page string = "Thông tin khác">
 								<group col="4" string="Thông tin khác">
 				                    <field name="loai_hinh_so_huu_id" options="{'create': false, 'create_edit': false}"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>                    

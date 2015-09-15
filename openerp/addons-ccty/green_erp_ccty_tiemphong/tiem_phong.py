@@ -136,12 +136,13 @@ class tiem_phong_lmlm(osv.osv):
 #         'nhap_xuat_id': fields.many2one('nhap.xuat.canh.giasuc','Phiếu nhập/xuất'),
         'tong_sl_tiem': fields.function(_get_sl_tiem, type='integer', string='SL đã tiêm phòng', store = True),
         'loai_benh_id': fields.many2one('chi.tiet.loai.benh','Loại bệnh'),
+        'vacxin_id': fields.many2one('loai.vacxin','Loại Vaccine', required = True),
                 }
         
     _defaults = {
         'can_bo_id': _get_user,
         'tram_id': _get_company,
-        'loai_benh_id': _get_loaibenh,
+#         'loai_benh_id': _get_loaibenh,
         'trang_thai_id': get_trangthai_nhap,
                  }
 
@@ -247,14 +248,17 @@ class tiem_phong_lmlm(osv.osv):
                                                                  })
         return True
     
-    def onchange_ho_chan_nuoi_id(self, cr, uid, ids, ho_chan_nuoi_id = False, loai_id = False, context=None):
+    def onchange_ho_chan_nuoi_id(self, cr, uid, ids, ho_chan_nuoi_id = False, loai_id = False, vacxin_id = False, context=None):
         chi_tiet= []
+        sl_thuc_tiem_before = 0
+        sl_xuat_tp = 0
+        so_luong_chet = 0
         for lmlm in self.browse(cr,uid,ids):
             sql = '''
                 delete from ct_tiem_phong_lmlm_line where tp_lmlm_id = %s
             '''%(lmlm.id)
             cr.execute(sql)
-        if ho_chan_nuoi_id and loai_id:
+        if ho_chan_nuoi_id and loai_id and vacxin_id:
             sql = '''
                 select * from chi_tiet_loai_line where tiem_phong='true' and co_cau_id in (select id from co_cau 
                 where ten_ho_id = %s and chon_loai = %s and trang_thai = 'new')
@@ -264,9 +268,9 @@ class tiem_phong_lmlm(osv.osv):
                 sql = '''
                     select case when sum(sl_thuc_tiem)!=0 then sum(sl_thuc_tiem) else 0 end sl_thuc_tiem 
                     from ct_tiem_phong_lmlm_line where tp_lmlm_id in (select id from tiem_phong_lmlm 
-                    where ho_chan_nuoi_id = %s and loai_id = %s and trang_thai_id in (select id from trang_thai where stt = 3))
+                    where ho_chan_nuoi_id = %s and loai_id = %s and vacxin_id = %s and trang_thai_id in (select id from trang_thai where stt = 3))
                     and name = '%s'
-                '''%(ho_chan_nuoi_id, loai_id, line['name'])
+                '''%(ho_chan_nuoi_id, loai_id, vacxin_id, line['name'])
                 cr.execute(sql)
                 sl_thuc_tiem_before = cr.dictfetchone()['sl_thuc_tiem']
                 

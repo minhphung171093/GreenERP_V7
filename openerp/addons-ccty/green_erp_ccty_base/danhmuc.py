@@ -81,7 +81,8 @@ class loai_vat(osv.osv):
         'thuoc_loai': fields.selection((('dv_thuong','Động vật thường'), ('dv_hoangda','Động vật hoang dã'), ('thuy_san','Thủy sản')),'Thuộc'),
         'thoi_gian': fields.integer('thời gian nuôi (tháng)'),
         'chitiet_loaivat':fields.one2many('chi.tiet.loai.vat','loai_id','Chi tiet'),
-        'chitiet_loaibenh':fields.one2many('chi.tiet.loai.benh','loai_id','Chi tiet'),
+#         'chitiet_loaibenh':fields.one2many('chi.tiet.loai.benh','loai_id','Chi tiet'),
+        'chitiet_loai_vaccine':fields.one2many('chi.tiet.loai.vacxin','loai_id','Chi tiet'),
                 }
     
     def _check_ten_loai(self, cr, uid, ids, context=None):
@@ -128,6 +129,18 @@ class chi_tiet_loai_vat(osv.osv):
         
                  }
 chi_tiet_loai_vat()
+
+class chi_tiet_loai_vacxin(osv.osv):
+    _name = "chi.tiet.loai.vacxin"
+    _columns = {
+        'loai_id': fields.many2one('loai.vat','Loai vat',ondelete = 'cascade'),
+        'vacxin_id': fields.many2one('loai.vacxin','Loại Vaccine', required = True),
+        'yes_no': fields.boolean('Có'),
+                }
+    _defaults = {
+                 'yes_no': True,
+                 }    
+chi_tiet_loai_vacxin()
 
 class chi_tiet_loai_benh(osv.osv):
     _name = "chi.tiet.loai.benh"
@@ -353,9 +366,26 @@ loai_hang()
 class loai_vacxin(osv.osv):
     _name = "loai.vacxin"
     _columns = {
-        'ma_loai': fields.char('Mã loại vacxin',size = 50, required = True),
-        'name': fields.char('Tên loại vacxin',size = 50),
+        'name': fields.char('Tên loại vacxin',size = 50, required = True),
                 }
+    def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
+        loai_vacxin_ids =[]
+        if context is None:
+            context = {}
+        if context.get('search_vacxin_id'):
+            if context.get('loai_id'):
+                sql = '''
+                    select vacxin_id from chi_tiet_loai_vacxin
+                    where loai_id = %s and yes_no = True
+                '''%(context.get('loai_id'))
+                cr.execute(sql)
+                loai_vacxin_ids = [row[0] for row in cr.fetchall()]
+                args += [('id','in',loai_vacxin_ids)]
+        return super(loai_vacxin, self).search(cr, uid, args, offset=offset, limit=limit, order=order, context=context, count=count)
+    
+    def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
+       ids = self.search(cr, user, args, context=context, limit=limit)
+       return self.name_get(cr, user, ids, context=context)
 loai_vacxin()
 
 class loai_ho(osv.osv):
