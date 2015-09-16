@@ -482,14 +482,14 @@ class nhap_xuat_canh_giasuc(osv.osv):
                             cr.execute(sql)
                             so_luong_xuat = cr.dictfetchone()['so_luong']
 #                              
-#                             sql = '''
-#                                 select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
-#                                 from ct_xuly_giasuc_tp_line where xuly_giasuc_id in (select id from xuly_giasuc 
-#                                 where trang_thai_id in (select id from trang_thai where stt = 3) )
-#                                 and tiem_phong_id = %s and name = '%s'
-#                             '''%(lmlm_line.tp_lmlm_id.id, lmlm_line.name)
-#                             cr.execute(sql)
-#                             so_luong_chet = cr.dictfetchone()['so_luong']
+                            sql = '''
+                                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
+                                from ct_xuly_giasuc_tp_line where xuly_giasuc_id in (select id from xuly_giasuc 
+                                where trang_thai_id in (select id from trang_thai where stt = 3) )
+                                and tiem_phong_id = %s and ct_loai_id = %s and vacxin_id = %s
+                            '''%(lmlm_line.tp_lmlm_id.id,lmlm_line.ct_loai_id.id,lmlm_line.tp_lmlm_id.vacxin_id.id)
+                            cr.execute(sql)
+                            so_luong_chet = cr.dictfetchone()['so_luong']
                      
                             if lmlm_line.sl_thuc_tiem - so_luong_xuat - so_luong_chet> 0:
                                 tiem_phong.append((0,0,{

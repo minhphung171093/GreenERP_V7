@@ -171,22 +171,21 @@ class tiem_phong_lmlm(osv.osv):
                 return False
         return True
     
-    def _check_sl_ton_vaccine(self, cr, uid, ids, context=None):
-        for tiem_phong in self.browse(cr, uid, ids, context=context):
-            for vaccine in tiem_phong.chi_tiet_vaccine_line:
-                sql = '''
-                    select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong from ton_vaccine
-                    where vaccine_id = %s and so_lo_id = %s
-                '''%(vaccine.loai_vaccine_id.id, vaccine.so_lo_id.id)
-                cr.execute(sql)
-                ton_vaccine = cr.dictfetchone()['so_luong']
-                if vaccine.so_luong_vc > ton_vaccine:
-                    raise osv.except_osv(_('Warning!'),_('Bạn nhập %s vaccine nhưng chỉ  còn %s vaccine trong lô %s của loại %s')%(vaccine.so_luong_vc, ton_vaccine, vaccine.so_lo_id.name, vaccine.loai_vaccine_id.name))
-                    return False
-        return True
+#     def _check_sl_ton_vaccine(self, cr, uid, ids, context=None):
+#         for tiem_phong in self.browse(cr, uid, ids, context=context):
+#             for vaccine in tiem_phong.chi_tiet_vaccine_line:
+#                 sql = '''
+#                     select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong from ton_vaccine
+#                     where vaccine_id = %s and so_lo_id = %s
+#                 '''%(vaccine.loai_vaccine_id.id, vaccine.so_lo_id.id)
+#                 cr.execute(sql)
+#                 ton_vaccine = cr.dictfetchone()['so_luong']
+#                 if vaccine.so_luong_vc > ton_vaccine:
+#                     raise osv.except_osv(_('Warning!'),_('Bạn nhập %s vaccine nhưng chỉ  còn %s vaccine trong lô %s của loại %s')%(vaccine.so_luong_vc, ton_vaccine, vaccine.so_lo_id.name, vaccine.loai_vaccine_id.name))
+#                     return False
+#         return True
          
     _constraints = [
-        (_check_sl_ton_vaccine, 'Identical Data', []),
         (_check_giay_tp, 'Identical Data', []),
     ]   
     
@@ -221,7 +220,7 @@ class tiem_phong_lmlm(osv.osv):
                                        })
                 for vaccine in line.chi_tiet_vaccine_line:
                     self.pool.get('ton.vaccine').create(cr,uid, {
-                                                              'vaccine_id': vaccine.loai_vaccine_id.id,
+                                                              'vaccine_id': vaccine.tp_lmlm_id.vacxin_id.id,
                                                               'so_lo_id': vaccine.so_lo_id.id,
                                                               'so_luong': -(vaccine.so_luong_vc),
                                                               'loai': 'xuat',
@@ -239,7 +238,7 @@ class tiem_phong_lmlm(osv.osv):
                                        })
                 for vaccine in line.chi_tiet_vaccine_line:
                     self.pool.get('ton.vaccine').create(cr,uid, {
-                                                              'vaccine_id': vaccine.loai_vaccine_id.id,
+                                                              'vaccine_id': vaccine.tp_lmlm_id.vacxin_id.id,
                                                               'so_lo_id': vaccine.so_lo_id.id,
                                                               'so_luong': -(vaccine.so_luong_vc),
                                                               'loai': 'xuat',
@@ -249,7 +248,8 @@ class tiem_phong_lmlm(osv.osv):
         return True
     
     def onchange_ho_chan_nuoi_id(self, cr, uid, ids, ho_chan_nuoi_id = False, loai_id = False, vacxin_id = False, context=None):
-        chi_tiet= []
+        chi_tiet = []
+        chi_tiet_vacxin = []
         sl_thuc_tiem_before = 0
         sl_xuat_tp = 0
         so_luong_chet = 0
@@ -258,6 +258,35 @@ class tiem_phong_lmlm(osv.osv):
                 delete from ct_tiem_phong_lmlm_line where tp_lmlm_id = %s
             '''%(lmlm.id)
             cr.execute(sql)
+            sql = '''
+                delete from ct_tiem_phong_vaccine_line where tp_lmlm_id = %s
+            '''%(lmlm.id)
+            cr.execute(sql)
+        if vacxin_id:
+            sql = '''
+                select * from so_lo where vacxin_id = %s 
+            '''%(vacxin_id)
+            cr.execute(sql)
+            for vacxin in cr.dictfetchall():
+                sql = '''
+                    select case when sum(soluong)!=0 then sum(soluong) else 0 end soluong from nhap_vaccine
+                    where so_lo_id = %s and name = %s and trang_thai_id in (select id from trang_thai where stt = 3)
+                '''%(vacxin['id'], vacxin_id)
+                cr.execute(sql)
+                nhap = cr.dictfetchone()['soluong']
+                
+                sql = '''
+                    select case when sum(so_luong_vc)!=0 then sum(so_luong_vc) else 0 end so_luong_vc from ct_tiem_phong_vaccine_line
+                    where so_lo_id = %s and tp_lmlm_id in (select id from tiem_phong_lmlm where vacxin_id = %s and trang_thai_id in (select id from trang_thai where stt = 3))
+                '''%(vacxin['id'], vacxin_id)
+                cr.execute(sql)
+                xuat = cr.dictfetchone()['so_luong_vc']
+                if nhap-xuat>0:
+                    chi_tiet_vacxin.append((0,0,{
+                                          'so_lo_id': vacxin['id'],
+                                          'han_su_dung_rel': vacxin['han_su_dung'],
+                                          'so_luong_ton': nhap-xuat,
+                                          }))
         if ho_chan_nuoi_id and loai_id and vacxin_id:
             sql = '''
                 select * from chi_tiet_loai_line where tiem_phong='true' and co_cau_id in (select id from co_cau 
@@ -287,8 +316,8 @@ class tiem_phong_lmlm(osv.osv):
                     select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
                     from ct_xuly_giasuc_tp_line where xuly_giasuc_id in (select id from xuly_giasuc 
                     where ten_ho_id = %s and loai_id = %s and trang_thai_id in (select id from trang_thai where stt = 3))
-                    and name = '%s'
-                '''%(ho_chan_nuoi_id, loai_id, line['name'])
+                    and ct_loai_id = %s and vacxin_id = %s
+                '''%(ho_chan_nuoi_id, loai_id, line['ct_loai_id'], vacxin_id)
                 cr.execute(sql)
                 so_luong_chet = cr.dictfetchone()['so_luong']
                 chi_tiet.append((0,0,{
@@ -298,8 +327,8 @@ class tiem_phong_lmlm(osv.osv):
                                       'tiem_phong':line['tiem_phong'],
                                       'sl_mien_dich': sl_thuc_tiem_before - sl_xuat_tp - so_luong_chet
                                       }))
-        return {'value': {'chi_tiet_tp_line': chi_tiet}}
-
+        return {'value': {'chi_tiet_tp_line': chi_tiet, 'chi_tiet_vaccine_line': chi_tiet_vacxin}}
+    
 tiem_phong_lmlm()
 
 class ct_tiem_phong_lmlm_line(osv.osv):
@@ -343,9 +372,21 @@ class ct_tiem_phong_vaccine_line(osv.osv):
         'loai_vaccine_id': fields.many2one('loai.vacxin','Loại vaccine'),
         'so_lo_id':fields.many2one('so.lo','Số lô'),
         'han_su_dung_rel':fields.related('so_lo_id','han_su_dung',type='date',string='HSD đến'),
+        'so_luong_ton': fields.integer('Số lượng tồn'),
         'so_luong_vc': fields.integer('Số lượng Vaccine'),
 #         'trang_thai_id_relate': fields.related('tp_lmlm_id','trang_thai_id',type='many2one', relation='trang.thai',string='Trang Thai'),
                 }
+    
+    def _check_so_luong_ton_vaccine(self, cr, uid, ids, context=None):
+        tong_sl = 0
+        for line in self.browse(cr, uid, ids, context=context):
+            if line.so_luong_vc > line.so_luong_ton:
+                raise osv.except_osv(_('Warning!'),_('Số lượng tiêm vaccine lớn hơn số lượng tồn vaccine'))
+                return False
+        return True
+    _constraints = [
+        (_check_so_luong_ton_vaccine, 'Identical Data', []),
+    ]
     
 ct_tiem_phong_vaccine_line()
 

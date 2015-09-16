@@ -47,7 +47,7 @@ class nhap_vaccine(osv.osv):
         'name': fields.many2one('loai.vacxin','Loại vaccine', required = True),
         'can_bo_id': fields.many2one('res.users','Cán bộ nhập máy'),
         'ngay_nhap': fields.date('Ngày nhập'),
-        'soluong': fields.char('Số lượng',size = 50),
+        'soluong': fields.integer('Số lượng'),
         'so_lo_id':fields.many2one('so.lo','Số lô', required = True),
         'han_su_dung':fields.related('so_lo_id','han_su_dung',type='date',string='HSD đến'),
         'state':fields.selection([('draft', 'Nháp'),('done', 'Duyệt')],'Status', readonly=True),
