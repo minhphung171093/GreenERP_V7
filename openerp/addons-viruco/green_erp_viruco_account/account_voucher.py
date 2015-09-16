@@ -25,6 +25,12 @@ class account_voucher(osv.osv):
         'dot_thanhtoan_ids':fields.many2many('account.voucher', 'cac_dot_thanh_toan_ref', 'parent_id', 'voucher_id','Các đợt thanh toán',readonly=True),
         'shop_id': fields.many2one('sale.shop', 'Shop', required=True, readonly=True, states={'draft':[('readonly',False)]}),
         'date_document': fields.date('Document Date', readonly=True, states={'draft':[('readonly',False)]},),
+        
+        'reference_number': fields.char('Number', size=32, readonly=True, states={'draft':[('readonly',False)]}),
+        'batch_id': fields.many2one('account.voucher.batch', 'Related Batch', ondelete='cascade'),
+        'partner_bank_id':fields.many2one('res.partner.bank', 'Partner Bank', required=False, readonly=True, states={'draft':[('readonly',False)]}),
+        'company_bank_id':fields.many2one('res.partner.bank', 'Company Bank', required=False, readonly=True, states={'draft':[('readonly',False)]}),
+        'unshow_financial_report':fields.boolean('Không khai báo thuế'),
     }
 
     def _get_shop_id(self, cr, uid, context=None):
@@ -36,6 +42,8 @@ class account_voucher(osv.osv):
     _defaults = {
         'nguoi_de_nghi_id': lambda self, cr, uid, context=None: uid,
         'shop_id': _get_shop_id,
+
+        'unshow_financial_report':False
     }
     
     def onchange_hopdong_id(self, cr, uid, ids, hop_dong_id, context=None):
@@ -167,6 +175,9 @@ class account_voucher(osv.osv):
                 
         vals['value']['line_dr_ids'] = False
         vals['value']['line_cr_ids'] = False
+        if journal_id:
+            journal_data = self.pool.get('account.journal').browse(cr, uid,journal_id)
+            vals['value']['account_id'] = journal_data.default_debit_account_id.id or journal_data.default_credit_account_id.id or False
         return vals
     
     def account_move_get(self, cr, uid, voucher_id, context=None):

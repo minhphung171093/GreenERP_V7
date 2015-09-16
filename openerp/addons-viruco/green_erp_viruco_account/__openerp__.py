@@ -33,6 +33,7 @@
         'wizard/print_report.xml',
         'account_invoice_view.xml',
         'account_voucher_view.xml',
+        'account_voucher_batch_view.xml',
         'menu.xml',
              ],
     'demo': [],
