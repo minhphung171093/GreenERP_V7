@@ -160,7 +160,7 @@ class stock_picking(osv.osv):
     }
     
     def create(self, cr, uid, vals, context=None):
-        if ('name' not in vals) or (vals.get('name')=='/') and vals.get('stock_journal_id',False):
+        if (('name' not in vals) or (vals.get('name')=='/')) and vals.get('stock_journal_id',False):
             stock_journal = self.pool.get('stock.journal').browse(cr, uid, vals['stock_journal_id'])
             vals['name'] = self.pool.get('ir.sequence').get_id(cr, uid, stock_journal.sequence_id.id, code_or_id='id', context=context)
         new_id = super(stock_picking, self).create(cr, uid, vals, context)
@@ -552,6 +552,13 @@ class stock_picking_in(osv.osv):
         'type':   'in',  
     }
     
+    def create(self, cr, uid, vals, context=None):
+        if (('name' not in vals) or (vals.get('name')=='/')) and vals.get('stock_journal_id',False):
+            stock_journal = self.pool.get('stock.journal').browse(cr, uid, vals['stock_journal_id'])
+            vals['name'] = self.pool.get('ir.sequence').get_id(cr, uid, stock_journal.sequence_id.id, code_or_id='id', context=context)
+        new_id = super(stock_picking_in, self).create(cr, uid, vals, context)
+        return new_id
+    
     def fields_view_get(self, cr, uid, view_id=None, view_type=False, context=None, toolbar=False, submenu=False):
         return self.pool.get('stock.picking').fields_view_get(cr, uid, view_id=view_id, view_type=view_type, context=context, toolbar=toolbar, submenu=submenu)
     
@@ -693,6 +700,13 @@ class stock_picking_out(osv.osv):
         'return': 'none',
         'type':   'out',
     }
+    
+    def create(self, cr, uid, vals, context=None):
+        if (('name' not in vals) or (vals.get('name')=='/')) and vals.get('stock_journal_id',False):
+            stock_journal = self.pool.get('stock.journal').browse(cr, uid, vals['stock_journal_id'])
+            vals['name'] = self.pool.get('ir.sequence').get_id(cr, uid, stock_journal.sequence_id.id, code_or_id='id', context=context)
+        new_id = super(stock_picking_out, self).create(cr, uid, vals, context)
+        return new_id
     
     def fields_view_get(self, cr, uid, view_id=None, view_type=False, context=None, toolbar=False, submenu=False):
         return self.pool.get('stock.picking').fields_view_get(cr, uid, view_id=view_id, view_type=view_type, context=context, toolbar=toolbar, submenu=submenu)
@@ -960,7 +974,7 @@ class stock_return_picking(osv.osv):
         seq_obj_name = 'stock.picking.' + new_type
         # SHOULD USE ir_sequence.next_by_code() or ir_sequence.next_by_id()
         new_pick_name = self.pool.get('ir.sequence').get(cr, uid, seq_obj_name)
-        new_picking_vals = {'name': _('%s-%s-return') % (new_pick_name, pick.name),
+        new_picking_vals = {'name': '/',
                             'move_lines': [],
                             'state':'draft',
                             'type': new_type,
