@@ -269,8 +269,8 @@ class tiem_phong_lmlm(osv.osv):
                     select case when sum(sl_thuc_tiem)!=0 then sum(sl_thuc_tiem) else 0 end sl_thuc_tiem 
                     from ct_tiem_phong_lmlm_line where tp_lmlm_id in (select id from tiem_phong_lmlm 
                     where ho_chan_nuoi_id = %s and loai_id = %s and vacxin_id = %s and trang_thai_id in (select id from trang_thai where stt = 3))
-                    and name = '%s'
-                '''%(ho_chan_nuoi_id, loai_id, vacxin_id, line['name'])
+                    and ct_loai_id = %s
+                '''%(ho_chan_nuoi_id, loai_id, vacxin_id, line['ct_loai_id'])
                 cr.execute(sql)
                 sl_thuc_tiem_before = cr.dictfetchone()['sl_thuc_tiem']
                 
@@ -278,8 +278,8 @@ class tiem_phong_lmlm(osv.osv):
                     select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
                     from chi_tiet_da_tiem_phong where nhap_xuat_tiemphong_id in (select id from nhap_xuat_canh_giasuc 
                     where ten_ho_id = %s and loai_id = %s and loai = 'xuat' and trang_thai_id in (select id from trang_thai where stt = 3))
-                    and name = '%s'
-                '''%(ho_chan_nuoi_id, loai_id, line['name'])
+                    and ct_loai_id = %s and vacxin_id = %s
+                '''%(ho_chan_nuoi_id, loai_id, line['ct_loai_id'], vacxin_id)
                 cr.execute(sql)
                 sl_xuat_tp = cr.dictfetchone()['so_luong']
                 

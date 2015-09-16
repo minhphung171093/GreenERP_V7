@@ -161,19 +161,25 @@ class nhap_xuat_canh_giasuc(osv.osv):
         for nhap_xuat in self.browse(cr, uid, ids, context=context):
             for line in nhap_xuat.chitiet_loai_nx:
                 sql = '''
-                    select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_tp from chi_tiet_da_tiem_phong
-                    where nhap_xuat_tiemphong_id = %s and name = '%s'
-                '''%(nhap_xuat.id, line.name)
+                     select id from loai_vacxin 
+                '''
                 cr.execute(sql)
-                sl_tp = cr.dictfetchone()['sl_tp']
+                vacxin_ids = [r[0] for r in cr.fetchall()]
+                for vacxin in self.pool.get('loai.vacxin').browse(cr,uid,vacxin_ids):
+                    sql = '''
+                        select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_tp from chi_tiet_da_tiem_phong
+                        where nhap_xuat_tiemphong_id = %s and ct_loai_id = %s and vacxin_id = %s
+                    '''%(nhap_xuat.id, line.ct_loai_id.id, vacxin.id)
+                    cr.execute(sql)
+                    sl_tp = cr.dictfetchone()['sl_tp']
             
-                if sl_tp>line.so_luong:
-    #                 if nhap_xuat.loai == 'nhap':
-    #                     raise osv.except_osv(_('Warning!'),_('Số lượng loài %s đã tiêm phòng với loại bệnh %s không được nhiều hơn số lượng loài %s nhập vào')%(nhap_xuat.loai_id.name, tiem.name, nhap_xuat.loai_id.name))
-    #                     return False
-                    if nhap_xuat.loai == 'xuat':
-                        raise osv.except_osv(_('Warning!'),_('Số lượng xuất đã tiêm phòng không được lớn hơn số lượng muốn xuất'))
-                        return False
+                    if sl_tp>line.so_luong:
+        #                 if nhap_xuat.loai == 'nhap':
+        #                     raise osv.except_osv(_('Warning!'),_('Số lượng loài %s đã tiêm phòng với loại bệnh %s không được nhiều hơn số lượng loài %s nhập vào')%(nhap_xuat.loai_id.name, tiem.name, nhap_xuat.loai_id.name))
+        #                     return False
+                        if nhap_xuat.loai == 'xuat':
+                            raise osv.except_osv(_('Warning!'),_('Số lượng xuất đã tiêm phòng không được lớn hơn số lượng muốn xuất'))
+                            return False
         return True
         
     def _check_so_luong_xuat(self, cr, uid, ids, context=None):
@@ -226,7 +232,7 @@ class nhap_xuat_canh_giasuc(osv.osv):
             for vaccine_line in line.loai_id.chitiet_loai_vaccine:
                 if vaccine_line.yes_no == True:
                     ct_tiem_phong.append((0,0,{
-                        'vacxin_id': vaccine_line.id,
+                        'vacxin_id': vaccine_line.vacxin_id.id,
                                                    }))
             if line.loai == 'nhap':
                 for loai in line.chitiet_loai_nx:
@@ -328,7 +334,8 @@ class nhap_xuat_canh_giasuc(osv.osv):
                     'ct_loai_id': loai.ct_loai_id.id,
                     'name':loai.name,
                     'so_luong':loai.so_luong,    
-                    'tiem_phong':loai.tiem_phong,                                   
+                    'tiem_phong':loai.tiem_phong,              
+                    'ct_tiem_phong_line': ct_tiem_phong,                        
                                                }))
                 
                 for tp in line.chitiet_da_tiem_phong:
@@ -372,6 +379,16 @@ class nhap_xuat_canh_giasuc(osv.osv):
                     'company_id':line.company_id.id,
                     'nhap_xuat_id': line.id,
                     'trang_thai_id': trang and trang['id'] or False,
+                    'loai_hinh_so_huu_id':line.ten_ho_id and line.ten_ho_id.loai_hinh_so_huu_id.id or False,
+                    'quy_cach': line.ten_ho_id and line.ten_ho_id.quy_cach or False,
+                    'xu_ly_moi_truong': line.ten_ho_id and line.ten_ho_id.xu_ly_moi_truong or False,
+                    'bao_ve_moi_truong':line.ten_ho_id and line.ten_ho_id.bao_ve_moi_truong or False,
+                    'danh_gia_moi_truong':line.ten_ho_id and line.ten_ho_id.danh_gia_moi_truong or False,
+                    'san_xuat_giong':line.ten_ho_id and line.ten_ho_id.san_xuat_giong or False,
+                    'tieu_chuan_viet':line.ten_ho_id and line.ten_ho_id.tieu_chuan_viet or False,
+                    'tieu_chuan_global':line.ten_ho_id and line.ten_ho_id.tieu_chuan_global or False,
+                    'an_toan_dich':line.ten_ho_id and line.ten_ho_id.an_toan_dich or False,
+                    'tieu_chuan_khac':line.ten_ho_id and line.ten_ho_id.tieu_chuan_khac or False,
                         }
                     co_cau_id = co_cau_obj.create(cr,uid,value)
                     co_cau_obj.bt_duyet(cr,uid,[co_cau_id])
@@ -400,6 +417,16 @@ class nhap_xuat_canh_giasuc(osv.osv):
                     'company_id':line.company_id.id,
                     'nhap_xuat_id': line.id,
                     'trang_thai_id': trang and trang['id'] or False,
+                    'loai_hinh_so_huu_id':line.ten_ho_id and line.ten_ho_id.loai_hinh_so_huu_id.id or False,
+                    'quy_cach': line.ten_ho_id and line.ten_ho_id.quy_cach or False,
+                    'xu_ly_moi_truong': line.ten_ho_id and line.ten_ho_id.xu_ly_moi_truong or False,
+                    'bao_ve_moi_truong':line.ten_ho_id and line.ten_ho_id.bao_ve_moi_truong or False,
+                    'danh_gia_moi_truong':line.ten_ho_id and line.ten_ho_id.danh_gia_moi_truong or False,
+                    'san_xuat_giong':line.ten_ho_id and line.ten_ho_id.san_xuat_giong or False,
+                    'tieu_chuan_viet':line.ten_ho_id and line.ten_ho_id.tieu_chuan_viet or False,
+                    'tieu_chuan_global':line.ten_ho_id and line.ten_ho_id.tieu_chuan_global or False,
+                    'an_toan_dich':line.ten_ho_id and line.ten_ho_id.an_toan_dich or False,
+                    'tieu_chuan_khac':line.ten_ho_id and line.ten_ho_id.tieu_chuan_khac or False,
                         }
                     co_cau_id = co_cau_obj.create(cr,uid,value)
                     co_cau_obj.bt_duyet(cr,uid,[co_cau_id])
@@ -409,6 +436,8 @@ class nhap_xuat_canh_giasuc(osv.osv):
         chi_tiet= []
         tiem_phong = []
         loai_ho_id = False
+        so_luong_xuat = 0
+        so_luong_chet = 0
         for nhap_xuat in self.browse(cr,uid,ids):
             sql = '''
                 delete from chi_tiet_loai_nhap_xuat where nhap_xuat_loai_id = %s
@@ -432,27 +461,27 @@ class nhap_xuat_canh_giasuc(osv.osv):
                         tiem_phong.append((0,0,{
                                               'vacxin_id': line_loaibenh.vacxin_id.id,
                                               }))
-#             if loai_select == 'xuat':
-#                 if ten_ho_id:
-#                     ho = self.pool.get('chan.nuoi').browse(cr,uid,ten_ho_id)
-#                     loai_ho_id = ho.loai_ho_id.id
-#                     sql = '''
-#                         select id from ct_tiem_phong_lmlm_line where tp_lmlm_id in (select id from tiem_phong_lmlm where loai_id = %s and ho_chan_nuoi_id = %s 
-#                         and trang_thai_id in (select id from trang_thai where stt = 3) )
-#                     '''%(loai_id, ten_ho_id)
-#                     cr.execute(sql)
-#                     lmlm_ids = [r[0] for r in cr.fetchall()]
-#                     if lmlm_ids:
-#                         for lmlm_line in self.pool.get('ct.tiem.phong.lmlm.line').browse(cr,uid,lmlm_ids):
-#                             sql = '''
-#                                 select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
-#                                 from chi_tiet_da_tiem_phong where nhap_xuat_tiemphong_id in (select id from nhap_xuat_canh_giasuc 
-#                                 where trang_thai_id in (select id from trang_thai where stt = 3) and loai = 'xuat')
-#                                 and tiem_phong_id = %s and name = '%s'
-#                             '''%(lmlm_line.tp_lmlm_id.id, lmlm_line.name)
-#                             cr.execute(sql)
-#                             so_luong_xuat = cr.dictfetchone()['so_luong']
-#                             
+            if loai_select == 'xuat':
+                if ten_ho_id:
+                    ho = self.pool.get('chan.nuoi').browse(cr,uid,ten_ho_id)
+                    loai_ho_id = ho.loai_ho_id.id
+                    sql = '''
+                        select id from ct_tiem_phong_lmlm_line where tp_lmlm_id in (select id from tiem_phong_lmlm where loai_id = %s and ho_chan_nuoi_id = %s 
+                        and trang_thai_id in (select id from trang_thai where stt = 3) )
+                    '''%(loai_id, ten_ho_id)
+                    cr.execute(sql)
+                    lmlm_ids = [r[0] for r in cr.fetchall()]
+                    if lmlm_ids:
+                        for lmlm_line in self.pool.get('ct.tiem.phong.lmlm.line').browse(cr,uid,lmlm_ids):
+                            sql = '''
+                                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
+                                from chi_tiet_da_tiem_phong where nhap_xuat_tiemphong_id in (select id from nhap_xuat_canh_giasuc 
+                                where trang_thai_id in (select id from trang_thai where stt = 3) and loai = 'xuat')
+                                and tiem_phong_id = %s and ct_loai_id = %s and vacxin_id = %s
+                            '''%(lmlm_line.tp_lmlm_id.id,lmlm_line.ct_loai_id.id,lmlm_line.tp_lmlm_id.vacxin_id.id)
+                            cr.execute(sql)
+                            so_luong_xuat = cr.dictfetchone()['so_luong']
+#                              
 #                             sql = '''
 #                                 select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
 #                                 from ct_xuly_giasuc_tp_line where xuly_giasuc_id in (select id from xuly_giasuc 
@@ -461,14 +490,15 @@ class nhap_xuat_canh_giasuc(osv.osv):
 #                             '''%(lmlm_line.tp_lmlm_id.id, lmlm_line.name)
 #                             cr.execute(sql)
 #                             so_luong_chet = cr.dictfetchone()['so_luong']
-#                     
-#                             if lmlm_line.sl_thuc_tiem - so_luong_xuat - so_luong_chet> 0:
-#                                 tiem_phong.append((0,0,{
-#                                               'tiem_phong_id': lmlm_line.tp_lmlm_id.id,
-#                                               'name': lmlm_line.name,
-#                                               'loai_benh_id':lmlm_line.tp_lmlm_id.loai_benh_id.id,
-#                                               'sl_tiem':lmlm_line.sl_thuc_tiem - so_luong_xuat - so_luong_chet,
-#                                               }))
+                     
+                            if lmlm_line.sl_thuc_tiem - so_luong_xuat - so_luong_chet> 0:
+                                tiem_phong.append((0,0,{
+                                              'tiem_phong_id': lmlm_line.tp_lmlm_id.id,
+                                              'ct_loai_id': lmlm_line.ct_loai_id.id,
+                                              'name': lmlm_line.name,
+                                              'vacxin_id':lmlm_line.tp_lmlm_id.vacxin_id.id,
+                                              'sl_tiem':lmlm_line.sl_thuc_tiem - so_luong_xuat - so_luong_chet,
+                                              }))
                 
         return {'value': {'chitiet_loai_nx': chi_tiet,
                           'chitiet_da_tiem_phong': tiem_phong,
