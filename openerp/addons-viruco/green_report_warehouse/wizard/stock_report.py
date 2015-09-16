@@ -81,7 +81,7 @@ class stock_cards_many_report(osv.osv_memory):
     _columns = {
         'date_start':fields.date('Date Start',required=True),
         'date_end':fields.date('Date End',required=True),
-        'product_ids':fields.many2many('product.product', 'product_cards_rel', 'cards_id', 'product_id', 'Product'),
+        'product_ids':fields.many2many('product.product', 'product_cards_rel', 'cards_id', 'product_id', 'Product',required=True),
         'location_id': fields.many2one('stock.location', 'Location',required=False, select=True,domain=[('usage','=','internal')]),
      }
     _defaults = {
