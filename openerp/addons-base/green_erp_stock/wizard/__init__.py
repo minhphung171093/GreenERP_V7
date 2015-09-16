@@ -1,4 +1,4 @@
-# -*- coding: utf-8# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -19,27 +19,6 @@
 #
 ##############################################################################
 
-{
-    'name': 'GreenERP STOCK',
-    'version': '1.0',
-    'category': 'GreenERP',
-    'sequence': 14,
-    'author': 'nguyentoanit@gmail.com',
-    'website' : 'http://incomtech.com/',
-    'depends': ['green_erp_base','stock','green_erp_account'],
-    'data': [
-        'wizard/stock_invoice_onshipping_view.xml',
-        'stock_view.xml',
-        'stock_inventory.xml',
-        'menu.xml',
-        'stock_data.xml',
-    ],
-    'css' : [
-    ],
-    'qweb': [
-    ],
-    'installable': True,
-    'auto_install': False,
-    'application': True,
-}
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4: -*-
+import stock_invoice_onshipping
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+

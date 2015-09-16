@@ -197,6 +197,203 @@ class stock_picking(osv.osv):
             invoice_vals['journal_id'] = journal_id
         return invoice_vals
     
+    def _prepare_invoice_line(self, cr, uid, group, picking, move_line, invoice_id,
+        invoice_vals, context=None):
+        """ Builds the dict containing the values for the invoice line
+            @param group: True or False
+            @param picking: picking object
+            @param: move_line: move_line object
+            @param: invoice_id: ID of the related invoice
+            @param: invoice_vals: dict used to created the invoice
+            @return: dict that will be used to create the invoice line
+        """
+        if group:
+            name = (picking.name or '') + '-' + move_line.name
+        else:
+            name = move_line.name
+        origin = move_line.picking_id.name or ''
+        if move_line.picking_id.origin:
+            origin += ':' + move_line.picking_id.origin
+
+        if invoice_vals['type'] in ('out_invoice', 'out_refund'):
+            account_id = move_line.product_id.property_account_income.id
+            if not account_id:
+                account_id = move_line.product_id.categ_id.\
+                        property_account_income_categ.id
+        else:
+            account_id = move_line.product_id.property_account_expense.id
+            if not account_id:
+                account_id = move_line.product_id.categ_id.\
+                        property_account_expense_categ.id
+        if invoice_vals['fiscal_position']:
+            fp_obj = self.pool.get('account.fiscal.position')
+            fiscal_position = fp_obj.browse(cr, uid, invoice_vals['fiscal_position'], context=context)
+            account_id = fp_obj.map_account(cr, uid, fiscal_position, account_id)
+        # set UoS if it's a sale and the picking doesn't have one
+        uos_id = move_line.product_uos and move_line.product_uos.id or False
+        if not uos_id and invoice_vals['type'] in ('out_invoice', 'out_refund'):
+            uos_id = move_line.product_uom.id
+        
+        quantity =  move_line.product_uos_qty or move_line.product_qty
+        if context.get('invoicing_list',False):
+            quantity = 0
+            for line in context['invoicing_list']:
+                if move_line.id == line.move_id.id and line.check_invoice:
+                    quantity = line.quantity
+                    self.pool.get('stock.move').write(cr,uid,move_line.id,{'invoiced_qty':move_line.invoiced_qty + quantity})
+                    break
+        if quantity:
+            return {
+                'name': name,
+                'origin': origin,
+                'invoice_id': invoice_id,
+                'uos_id': uos_id,
+                'product_id': move_line.product_id.id,
+                'account_id': account_id,
+                'price_unit': self._get_price_unit_invoice(cr, uid, move_line, invoice_vals['type']),
+                'discount': self._get_discount_invoice(cr, uid, move_line),
+                'quantity': quantity,
+                'invoice_line_tax_id': [(6, 0, self._get_taxes_invoice(cr, uid, move_line, invoice_vals['type']))],
+                'account_analytic_id': self._get_account_analytic_invoice(cr, uid, picking, move_line),
+                'stock_move_id': move_line.id,
+            }
+        else:
+            return {}
+    
+    def action_invoice_create(self, cr, uid, ids, journal_id=False,group=False, type='out_invoice', context=None):
+        """ Creates invoice based on the invoice state selected for picking.
+        @param journal_id: Id of journal
+        @param group: Whether to create a group invoice or not
+        @param type: Type invoice to be created
+        @return: Ids of created invoices for the pickings
+        """
+        if context is None:
+            context = {}
+
+        invoice_obj = self.pool.get('account.invoice')
+        invoice_line_obj = self.pool.get('account.invoice.line')
+        partner_obj = self.pool.get('res.partner')
+        invoices_group = {}
+        res = {}
+        inv_type = type
+        for picking in self.browse(cr, uid, ids, context=context):
+            if picking.invoice_state != '2binvoiced':
+                continue
+            partner = self._get_partner_to_invoice(cr, uid, picking, context=context)
+            if isinstance(partner, int):
+                partner = partner_obj.browse(cr, uid, [partner], context=context)[0]
+            if not partner:
+                raise osv.except_osv(_('Error, no partner!'),
+                    _('Please put a partner on the picking list if you want to generate invoice.'))
+
+            if not inv_type:
+                inv_type = self._get_invoice_type(picking)
+
+            if group and partner.id in invoices_group:
+                invoice_id = invoices_group[partner.id]
+                invoice = invoice_obj.browse(cr, uid, invoice_id)
+                invoice_vals_group = self._prepare_invoice_group(cr, uid, picking, partner, invoice, context=context)
+                invoice_obj.write(cr, uid, [invoice_id], invoice_vals_group, context=context)
+            else:
+                invoice_vals = self._prepare_invoice(cr, uid, picking, partner, inv_type, journal_id, context=context)
+                invoice_id = invoice_obj.create(cr, uid, invoice_vals, context=context)
+                invoices_group[partner.id] = invoice_id
+            res[picking.id] = invoice_id
+            for move_line in picking.move_lines:
+                if move_line.state == 'cancel':
+                    continue
+                if move_line.scrapped:
+                    # do no invoice scrapped products
+                    continue
+                vals = self._prepare_invoice_line(cr, uid, group, picking, move_line,
+                                invoice_id, invoice_vals, context=context)
+                if vals:
+                    invoice_line_id = invoice_line_obj.create(cr, uid, vals, context=context)
+                    self._invoice_line_hook(cr, uid, move_line, invoice_line_id)
+                    
+            invoice_obj.button_compute(cr, uid, [invoice_id], context=context,
+                    set_total=(inv_type in ('in_invoice', 'in_refund')))
+            
+            
+        for picking in self.browse(cr, uid, res.keys(), context=context):
+            invoiced=True
+            for line in picking.move_lines:
+                return_qty = self.pool.get('stock.invoice.onshipping').get_returned_qty(cr,uid,line)
+                invoicing_qty = line.product_qty - return_qty 
+                if invoicing_qty != line.invoiced_qty:
+                    invoiced = False
+                    break
+            if invoiced:
+                self.write(cr, uid, [picking.id], {
+                'invoice_state': 'invoiced',
+                }, context=context)    
+            
+        return res
+    
+    def has_valuation_moves(self, cr, uid, move):
+        return self.pool.get('account.move').search(cr, uid, [
+            ('stock_move_id', '=', move.id),
+            ])
+    
+    def action_revert_done(self, cr, uid, ids, context=None):
+        move_ids = []
+        invoice_ids = []
+        if not len(ids):
+            return False
+        
+        sql ='''
+            Select id 
+            FROM
+                stock_move where picking_id = %s
+        '''%(ids[0])
+        cr.execute(sql)
+        for line in cr.dictfetchall():
+            move_ids.append(line['id'])
+        if move_ids:
+            sql='''
+                SELECT state ,id
+                FROM account_invoice 
+                WHERE id IN (
+                     SELECT distinct invoice_id 
+                     FROM account_invoice_line 
+                     WHERE stock_move_id in(%s))
+            '''%(','.join(map(str,move_ids)))
+            cr.execute(sql)
+            for line in cr.dictfetchall():
+                if line['state'] not in ('draft','cancel'):
+                    raise osv.except_osv(
+                        _('Cảnh báo'),
+                        _('You must first cancel all Invoice order(s) attached to this sales order.'))
+                else:
+                    invoice_ids.append(line['id'])
+            if invoice_ids:
+                cr.execute('delete from account_invoice where id in %s',(tuple(invoice_ids),))
+#                 self.pool.get('account.invoice').unlink(cr,uid,invoice_ids)
+                
+        for picking in self.browse(cr, uid, ids, context):
+            for line in picking.move_lines:
+                if self.has_valuation_moves(cr, uid, line):
+                    raise osv.except_osv(
+                        _('Cảnh báo'),
+                        _('Sản phẩm "%s" đã sinh bút toán "%s". \
+                            Vui lòng xóa bút toán trước') % (line.name,
+                                                   line.picking_id.name))
+                line.write({'state': 'draft','invoiced_qty':0})
+            self.write(cr, uid, [picking.id], {'state': 'draft'})
+            if picking.invoice_state == 'invoiced':# and not picking.invoice_id:
+                self.write(cr, uid, [picking.id],
+                           {'invoice_state': '2binvoiced'})
+            wf_service = netsvc.LocalService("workflow")
+            # Deleting the existing instance of workflow
+            wf_service.trg_delete(uid, 'stock.picking', picking.id, cr)
+            wf_service.trg_create(uid, 'stock.picking', picking.id, cr)
+        for (id, name) in self.name_get(cr, uid, ids):
+            message = _(
+                "The stock picking '%s' has been set in draft state."
+                ) % (name,)
+            self.log(cr, uid, id, message)
+        return True
+    
     def fields_view_get(self, cr, uid, view_id=None, view_type=False, context=None, toolbar=False, submenu=False):
         journal_obj = self.pool.get('stock.journal')
         if context is None:
@@ -346,6 +543,70 @@ class stock_picking_in(osv.osv):
     def fields_view_get(self, cr, uid, view_id=None, view_type=False, context=None, toolbar=False, submenu=False):
         return self.pool.get('stock.picking').fields_view_get(cr, uid, view_id=view_id, view_type=view_type, context=context, toolbar=toolbar, submenu=submenu)
     
+    def has_valuation_moves(self, cr, uid, move):
+        return self.pool.get('account.move').search(cr, uid, [
+            ('stock_move_id', '=', move.id),
+            ])
+    
+    def action_revert_done(self, cr, uid, ids, context=None):
+        move_ids = []
+        invoice_ids = []
+        if not len(ids):
+            return False
+        
+        sql ='''
+            Select id 
+            FROM
+                stock_move where picking_id = %s
+        '''%(ids[0])
+        cr.execute(sql)
+        for line in cr.dictfetchall():
+            move_ids.append(line['id'])
+        if move_ids:
+            sql='''
+                SELECT state ,id
+                FROM account_invoice 
+                WHERE id IN (
+                     SELECT distinct invoice_id 
+                     FROM account_invoice_line 
+                     WHERE stock_move_id in(%s))
+            '''%(','.join(map(str,move_ids)))
+            cr.execute(sql)
+            for line in cr.dictfetchall():
+                if line['state'] not in ('draft','cancel'):
+                    raise osv.except_osv(
+                        _('Cảnh báo'),
+                        _('Vui lòng hủy bỏ tất cả các hóa đơn của phiếu nhập này trước!'))
+                else:
+                    invoice_ids.append(line['id'])
+            if invoice_ids:
+                cr.execute('delete from account_invoice where id in %s',(tuple(invoice_ids),))
+#                 self.pool.get('account.invoice').unlink(cr,uid,invoice_ids)
+                
+        for picking in self.browse(cr, uid, ids, context):
+            for line in picking.move_lines:
+                if self.has_valuation_moves(cr, uid, line):
+                    raise osv.except_osv(
+                        _('Cảnh báo'),
+                        _('Sản phẩm "%s" đã sinh bút toán "%s". \
+                            Vui lòng xóa bút toán trước') % (line.name,
+                                                   line.picking_id.name))
+                line.write({'state': 'draft','invoiced_qty':0})
+            self.write(cr, uid, [picking.id], {'state': 'draft'})
+            if picking.invoice_state == 'invoiced':# and not picking.invoice_id:
+                self.write(cr, uid, [picking.id],
+                           {'invoice_state': '2binvoiced'})
+            wf_service = netsvc.LocalService("workflow")
+            # Deleting the existing instance of workflow
+            wf_service.trg_delete(uid, 'stock.picking', picking.id, cr)
+            wf_service.trg_create(uid, 'stock.picking', picking.id, cr)
+        for (id, name) in self.name_get(cr, uid, ids):
+            message = _(
+                "The stock picking '%s' has been set in draft state."
+                ) % (name,)
+            self.log(cr, uid, id, message)
+        return True
+    
     def onchange_journal(self, cr, uid, ids, stock_journal_id):
         value ={}
         domain = {}
@@ -423,6 +684,70 @@ class stock_picking_out(osv.osv):
     
     def fields_view_get(self, cr, uid, view_id=None, view_type=False, context=None, toolbar=False, submenu=False):
         return self.pool.get('stock.picking').fields_view_get(cr, uid, view_id=view_id, view_type=view_type, context=context, toolbar=toolbar, submenu=submenu)
+    
+    def has_valuation_moves(self, cr, uid, move):
+        return self.pool.get('account.move').search(cr, uid, [
+            ('stock_move_id', '=', move.id),
+            ])
+    
+    def action_revert_done(self, cr, uid, ids, context=None):
+        move_ids = []
+        invoice_ids = []
+        if not len(ids):
+            return False
+        
+        sql ='''
+            Select id 
+            FROM
+                stock_move where picking_id = %s
+        '''%(ids[0])
+        cr.execute(sql)
+        for line in cr.dictfetchall():
+            move_ids.append(line['id'])
+        if move_ids:
+            sql='''
+                SELECT state ,id
+                FROM account_invoice 
+                WHERE id IN (
+                     SELECT distinct invoice_id 
+                     FROM account_invoice_line 
+                     WHERE stock_move_id in(%s))
+            '''%(','.join(map(str,move_ids)))
+            cr.execute(sql)
+            for line in cr.dictfetchall():
+                if line['state'] not in ('draft','cancel'):
+                    raise osv.except_osv(
+                        _('Cảnh báo'),
+                        _('Vui lòng hủy bỏ tất cả các hóa đơn của phiếu xuất này trước!'))
+                else:
+                    invoice_ids.append(line['id'])
+            if invoice_ids:
+                cr.execute('delete from account_invoice where id in %s',(tuple(invoice_ids),))
+#                 self.pool.get('account.invoice').unlink(cr,uid,invoice_ids)
+                
+        for picking in self.browse(cr, uid, ids, context):
+            for line in picking.move_lines:
+                if self.has_valuation_moves(cr, uid, line):
+                    raise osv.except_osv(
+                        _('Cảnh báo'),
+                        _('Sản phẩm "%s" đã sinh bút toán "%s". \
+                            Vui lòng xóa bút toán trước') % (line.name,
+                                                   line.picking_id.name))
+                line.write({'state': 'draft','invoiced_qty':0})
+            self.write(cr, uid, [picking.id], {'state': 'draft'})
+            if picking.invoice_state == 'invoiced':# and not picking.invoice_id:
+                self.write(cr, uid, [picking.id],
+                           {'invoice_state': '2binvoiced'})
+            wf_service = netsvc.LocalService("workflow")
+            # Deleting the existing instance of workflow
+            wf_service.trg_delete(uid, 'stock.picking', picking.id, cr)
+            wf_service.trg_create(uid, 'stock.picking', picking.id, cr)
+        for (id, name) in self.name_get(cr, uid, ids):
+            message = _(
+                "The stock picking '%s' has been set in draft state."
+                ) % (name,)
+            self.log(cr, uid, id, message)
+        return True
     
     def onchange_journal(self, cr, uid, ids, stock_journal_id):
         value ={}
@@ -522,6 +847,7 @@ class stock_move(osv.osv):
                          'journal_id': j_id,
                          'line_id': move_lines,
                          'company_id': move.company_id.id,
+                         'stock_move_id': move.id,
                          'shop_id':move.picking_id and move.picking_id.shop_id and move.picking_id.shop_id.id or False,
                          'ref': move.picking_id and move.picking_id.name}, context=company_ctx)
     

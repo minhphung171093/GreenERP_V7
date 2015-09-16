@@ -38,6 +38,12 @@
                     	<field name="location_dest_id" required='1'/>
                     	<field name="return" invisible='1' readonly="1"/>
 	                </xpath>
+	                
+	                <xpath expr="//button[@name='button_cancel']" position="after">
+	                    <button name="action_revert_done" string="Reopen" states="done,cancel" type="object" icon="gtk-cancel" 
+							confirm="Are you sure you want to reopen this stock picking?"/>
+	            	</xpath>
+	                
 	            </field>
 	        </record>
 		
@@ -212,8 +218,7 @@
 	                <form string="Quick Internal move Entry" version="7.0">
 	                <header>
 						<button name="action_revert_done" string="Reopen" states="done,cancel" type="object" icon="gtk-cancel" 
-						confirm="Are you sure you want to reopen this stock picking?"
-						groups="general_stock.group_stock_reopen_picking"/>
+							confirm="Are you sure you want to reopen this stock picking?"/>
 	                    <button name="draft_force_assign" states="draft" string="Confirm" type="object" class="oe_highlight" groups="base.group_user"/>
 	                    <button name="draft_validate" states="draft" string="Confirm &amp; Transfer" type="object" class="oe_highlight" groups="base.group_user"/>
 	                    <button name="print_inphieu" string="In Phiếu" type="object" class="oe_highlight"/>
