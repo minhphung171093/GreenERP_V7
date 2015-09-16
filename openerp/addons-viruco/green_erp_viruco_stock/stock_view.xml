@@ -36,6 +36,7 @@
                     	<field name="stock_journal_id" widget="selection" on_change="onchange_journal(stock_journal_id)"/>
                     	<field name="location_id" required='1'/>
                     	<field name="location_dest_id" required='1'/>
+                    	<field name="return" invisible='1' readonly="1"/>
 	                </xpath>
 	            </field>
 	        </record>
@@ -49,6 +50,7 @@
                     	<field name="stock_journal_id" widget="selection" on_change="onchange_journal(stock_journal_id)"/>
                     	<field name="location_id" required='1'/>
                     	<field name="location_dest_id" required='1'/>
+                    	<field name="return" invisible='1' readonly="1"/>
 	                </xpath>
 	            </field>
 	        </record>
@@ -62,6 +64,7 @@
                     	<field name="stock_journal_id" widget="selection" on_change="onchange_journal(stock_journal_id)"/>
                     	<field name="location_id" required='1'/>
                     	<field name="location_dest_id" required='1'/>
+                    	<field name="return" invisible='1' readonly="1"/>
 	                </xpath>
 	            </field>
 	        </record>
@@ -85,7 +88,246 @@
 	                </form>
 	            </field>
 	        </record>
-    
+	        
+<!-- Change action get form view of menu Internal Move, Filter Internal Moves with domain Stock Journal is Internal-->
+	        <record id="stock.action_picking_tree6" model="ir.actions.act_window">
+	            <field name="name">Internal Moves</field>
+	            <field name="res_model">stock.picking</field>
+	            <field name="type">ir.actions.act_window</field>
+	            <field name="view_type">form</field>
+	            <field name="view_mode">tree,form,calendar</field>
+	            <field name="domain">[('type','=','internal'),('stock_journal_id.source_type','=','internal')]</field>
+	            <field name="context">{'default_type': 'internal'}</field>
+	            <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+	            <field name="help" type="html">
+	              <p class="oe_view_nocontent_create">
+	                Click to create an internal move request. 
+	              </p><p>
+	                Most operations are prepared automatically by OpenERP according
+	                to your preconfigured logistics rules, but you can also record
+	                manual stock movements.
+	              </p>
+	            </field>
+	        </record>
+	        
+	        <record model="ir.actions.act_window.view" id="stock.action_picking_tree6_form_view">
+	            <field name="sequence" eval="2"/>
+	            <field name="view_mode">form</field>
+	            <field name="view_id" ref="view_stock_picking_add_amounttotal"/>
+	            <field name="act_window_id" ref="stock.action_picking_tree6"/>
+	        </record>
+	        
+	        <record id="stock.action_picking_tree4" model="ir.actions.act_window">
+	            <field name="name">Incoming Shipments</field>
+	            <field name="res_model">stock.picking.in</field>
+	            <field name="type">ir.actions.act_window</field>
+	            <field name="view_type">form</field>
+	            <field name="view_mode">tree,form,calendar</field>
+	            <field name="domain">[('type','=','in'),('return','=','none')]</field>
+	            <field name="context">{'default_type': 'in', 'default_return': 'none', 'picking_type':False}</field>
+	            <field name="search_view_id" ref="stock.view_picking_in_search"/>
+	            <field name="help" type="html">
+	              <p class="oe_view_nocontent_create">
+	                Click to create an incoming shipment. 
+	              </p><p>
+	                The Incoming Shipments is the list of all orders you will
+	                receive from your suppliers. An incoming shipment contains a
+	                list of products to be received according to the original
+	                purchase order.
+	              </p>
+	            </field>
+	        </record>
+	        
+<!-- Delivery Orders -->
+	        <record id="stock.action_picking_tree" model="ir.actions.act_window">
+	            <field name="name">Delivery Orders</field>
+	            <field name="res_model">stock.picking.out</field>
+	            <field name="type">ir.actions.act_window</field>
+	            <field name="view_type">form</field>
+	            <field name="view_mode">tree,form,calendar</field>
+	            <field name="domain">[('type','=','out'),('return','=','none')]</field>
+	            <field name="context">{'default_type': 'out', 'default_return': 'none'}</field>
+	            <field name="search_view_id" ref="stock.view_picking_out_search"/>
+	            <field name="help" type="html">
+	              <p class="oe_view_nocontent_create">
+	                Click to create a delivery order. 
+	              </p><p>
+	                This is the list of all delivery orders that have to be
+	                prepared, according to your different sales orders and your
+	                logistics rules.
+	              </p>
+	            </field>
+	        </record>
+	        
+<!-- Customer/Supplier return -->
+
+	        <record id="action_picking_return_customer" model="ir.actions.act_window">
+	            <field name="name">Return from Customer</field>
+	            <field name="res_model">stock.picking.in</field>
+	            <field name="type">ir.actions.act_window</field>
+	            <field name="view_type">form</field>
+	            <field name="view_mode">tree,form,calendar</field>
+	            <field name="domain">[('return','=','customer')]</field>
+	            <field name="context">{"no_create":False, 'default_type': 'in', 'default_return': 'customer'}</field>
+	            <field name="search_view_id" ref="stock.view_picking_in_search"/>
+	        </record>
+	        <record id="action_picking_return_supplier" model="ir.actions.act_window">
+	            <field name="name">Return to Supplier</field>
+	            <field name="res_model">stock.picking.out</field>
+	            <field name="type">ir.actions.act_window</field>
+	            <field name="view_type">form</field>
+	            <field name="view_mode">tree,form,calendar</field>
+	            <field name="domain">[('return','=','supplier')]</field>
+	            <field name="context">{"no_create":False, 'default_type': 'out', 'default_return': 'supplier'}</field>
+	            <field name="search_view_id" ref="stock.view_picking_out_search"/>
+	        </record>
+	        
+	        <menuitem action="action_picking_return_customer" id="menu_action_picking_return_customer" parent="stock.menu_stock_warehouse_mgmt" sequence="200"/>
+	        <menuitem action="action_picking_return_supplier" id="menu_action_picking_return_supplier" parent="stock.menu_stock_warehouse_mgmt" sequence="300"/>
+	        
+	        <!-- New Menu Quick Internal Move -->
+			<record id="stock.vpicktree" model="ir.ui.view">
+	            <field name="name">stock.picking.tree</field>
+	            <field name="model">stock.picking</field>
+	            <field name="arch" type="xml">
+	                <tree colors="blue:state == 'draft';grey:state == 'cancel';red:state not in ('cancel', 'done') and date &lt; current_date" string="Picking list">
+	                    <field name="stock_journal_id" widget="selection"/>
+	                    <field name="name"/>
+	                    <field name="origin"/>
+	                    <field name="date"/>
+	                    <field name="min_date" invisible='1'/>
+	                    <field name="date_done"/>
+	                    <!--<field name="date_done_user_tz" invisible='1'/>-->
+	                    <!--<field name="day_done_user_tz" invisible='1'/>-->
+	                    <field name="invoice_state" invisible='1'/>
+	                    <field name="state"/>
+	                </tree>
+	            </field>
+	        </record>
+        
+	    	<record id="view_picking_subinventory_form" model="ir.ui.view">
+	            <field name="name">view.picking.subinventory.form</field>
+	            <field name="model">stock.picking</field>
+	            <field name="arch" type="xml">
+	                <form string="Quick Internal move Entry" version="7.0">
+	                <header>
+						<button name="action_revert_done" string="Reopen" states="done,cancel" type="object" icon="gtk-cancel" 
+						confirm="Are you sure you want to reopen this stock picking?"
+						groups="general_stock.group_stock_reopen_picking"/>
+	                    <button name="draft_force_assign" states="draft" string="Confirm" type="object" class="oe_highlight" groups="base.group_user"/>
+	                    <button name="draft_validate" states="draft" string="Confirm &amp; Transfer" type="object" class="oe_highlight" groups="base.group_user"/>
+	                    <button name="print_inphieu" string="In Phiếu" type="object" class="oe_highlight"/>
+	                    <button name="action_assign" states="confirmed" string="Check Availability" type="object"/>
+	                    <!--<button name="force_assign" states="confirmed" string="Force Availability" type="object" class="oe_highlight" groups="base.group_user"/>-->
+	                    <button name="action_process" states="assigned" string="Confirm &amp; Transfer" groups="stock.group_stock_user" type="object" class="oe_highlight"/>
+	                    <button name="%(stock.action_stock_invoice_onshipping)d" string="Create Invoice/Refund"  attrs="{'invisible': ['|','|',('state','&lt;&gt;','done'),('invoice_state','=','invoiced'),('invoice_state','=','none')]}"  type="action" class="oe_highlight" groups="base.group_user"/>
+	                    <button name="%(stock.act_stock_return_picking)d" string="Reverse Transfer" states="done" type="action" groups="base.group_user"/>
+	                    <button name="button_cancel" states="assigned,confirmed,draft" string="_Cancel" groups="base.group_user"/>
+	                    <field name="state" widget="statusbar" statusbar_visible="draft,assigned,done" statusbar_colors='{"shipping_except":"red","invoice_except":"red","waiting_date":"blue"}'/>
+	                </header>
+	                <sheet>
+	                    <h1>
+	                        <field name="name" class="oe_inline" attrs="{'invisible': [('name','=','/')]}" readonly="1"/>
+	                    </h1>
+	                    <group>
+	                        <group>
+	                            <field name="partner_id" on_change="onchange_partner_in(partner_id)"/>
+	                            <field name="stock_journal_id" widget="selection" required = '1' 
+	                            on_change="onchange_journal(stock_journal_id)"/>
+	                            <field name="invoice_state" string="Invoice Control" groups="account.group_account_invoice" invisible="1"/>
+	                            <field name="location_id"
+	                            context="{'stock_journal_id':stock_journal_id,'location_id':'location'}" 
+	                            on_change="onchange_location(location_id,location_dest_id,move_lines)" required='1'/>
+	                        	<field name="location_dest_id" 
+	                        	context="{'stock_journal_id':stock_journal_id,'location_dest_id':'location_dest'}" 
+	                        	on_change="onchange_location(location_id,location_dest_id,move_lines)" required='1'/>
+	                        </group>
+	                        <group>
+	                            <field name="date"/>
+	                            <field name="min_date"/>
+	                            <field name="date_done"/>
+	                            <field name="origin" placeholder="e.g. PO0032" class="oe_inline"/>
+	                        </group>
+	                    </group>
+	                    <notebook>
+	                        <page string="Products">
+	                            <field name="move_lines" context="{'default_location_id':location_id,
+	                            'default_location_dest_id':location_dest_id,
+	                            'default_date_expected':min_date or date}" options='{"reload_on_button": true}'>
+	                                <tree editable="top">
+	                                    <field name="product_id" on_change="product_id_change(product_id, parent.location_id, parent.location_dest_id, context)"/>
+	                                    <field name="product_qty"/>
+	                                    <field name="product_uom"/>
+	                                    <field name="location_id" invisible="1"/>
+	                                    <field name="location_dest_id" invisible="1"/>
+	                                    <field name="date_expected"/>
+	                                    <field name="product_uos" groups="product.group_uos" invisible="1"/>
+	                                    <field name="scrapped" invisible="1"/>
+	                                    <field name="prodlot_id" groups="stock.group_production_lot" domain="[('product_id','=',product_id)]"/>
+	                                    <field name="tracking_id" groups="stock.group_tracking_lot" invisible="0"/>
+	                                    <button icon="gtk-justify-fill"
+					                    	string="Theo ngày nhập"
+					                    	name="theo_ngay_nhap" type="object"
+					                    	invisible="context.get('search_source_type',False) and context.get('search_source_type')=='production' and 0 or 1"
+					                    	states="draft,waiting,confirmed,assigned"/>
+					                    <button icon="gtk-justify-fill"
+					                    	string="Theo hạn sử dụng"
+					                    	name="theo_han_su_dung" type="object"
+					                    	invisible="context.get('search_source_type',False) and context.get('search_source_type')=='production' and 0 or 1"
+					                    	states="draft,waiting,confirmed,assigned"/>
+	                                    <field name="name" invisible="1"/>          
+	                                    <field name="state" readonly="1"/>                       
+	                                </tree>
+	                            </field>
+	                            <field name="note" placeholder="Add an internal note..." class="oe_inline"/>
+	                        </page>
+	                        <page string="Additional Info">
+	                            <group>
+	                                <group>
+	                                    <field name="move_type"/>
+	                                    <field name="type" invisible="1"/>
+	                                    <field name="auto_picking" groups="base.group_user"/>
+	                                    
+	                                </group>
+	                                <group>
+	                                    <field name="company_id" groups="base.group_multi_company" widget="selection"/>
+	                                </group>
+	                            </group>
+	                        </page>
+	                    </notebook>
+	                </sheet>
+	                </form>
+	            </field>
+	        </record>
+	        
+	        <!-- Menu for Internal Move for Physical Adjustment -->
+    		<record id="action_phys_adj_moves" model="ir.actions.act_window">
+	            <field name="name">Physical Adjustments</field>
+	            <field name="res_model">stock.picking</field>
+	            <field name="type">ir.actions.act_window</field>
+	            <field name="view_type">form</field>
+	            <field name="view_mode">tree,form,calendar</field>
+	            <field name="domain">[('type','=','internal'),('stock_journal_id.source_type','=','phys_adj')]</field>
+	            <field name="context">{'search_source_type': 'phys_adj','default_type': 'internal', 'contact_display': 'partner_address', 'search_default_available': 1}</field>
+	            <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+	            <field name="help" type="html"></field>
+	        </record>
+	
+	        <record model="ir.actions.act_window.view" id="action_phys_adj_moves_tree_view">
+	            <field name="sequence" eval="1"/>
+	            <field name="view_mode">tree</field>
+	            <field name="view_id" ref="stock.vpicktree"/>
+	            <field name="act_window_id" ref="action_phys_adj_moves"/>
+	        </record>
+	        <record model="ir.actions.act_window.view" id="action_phys_adj_moves_form_view">
+	            <field name="sequence" eval="2"/>
+	            <field name="view_mode">form</field>
+	            <field name="view_id" ref="view_picking_subinventory_form"/>
+	            <field name="act_window_id" ref="action_phys_adj_moves"/>
+	        </record>
+        	
+        	<menuitem action="action_phys_adj_moves" id="menu_action_phys_adj_moves" parent="stock.menu_stock_warehouse_mgmt" sequence="4" groups="stock.group_locations"/>
+	            
     	<record id="view_move_picking_in_tree" model="ir.ui.view">
             <field name="name">stock.move.in.tree</field>
             <field name="model">stock.move</field>
