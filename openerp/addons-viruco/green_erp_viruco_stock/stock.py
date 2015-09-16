@@ -239,7 +239,68 @@ class stock_picking(osv.osv):
             }, readonly=True, multi='lo_info'),
                 
         'stock_journal_id': fields.many2one('stock.journal','Stock Journal', required=True, select=True, states={'done':[('readonly', True)], 'cancel':[('readonly',True)]}, track_visibility='onchange'),
+         'return': fields.selection([('none', 'Normal'), ('customer', 'Return from Customer'),('internal','Return Internal'), ('supplier', 'Return to Supplier')], 'Type', required=True, select=True, help="Type specifies whether the Picking has been returned or not."),
     }
+    
+    def _get_journal(self, cr, uid, context=None):
+        journal_domain = []
+        if context.get('default_type',False) and context.get('default_return',False):
+            default_type = context['default_type']
+            default_return = context['default_return']
+            if default_type == 'in':
+                journal_domain = [('source_type', '=', 'in')]
+                if default_return == 'customer':
+                    journal_domain = [('source_type', '=', 'return_customer')]
+            if default_type == 'out':
+                journal_domain = [('source_type', '=', 'out')]
+                if default_return == 'supplier':
+                    journal_domain = [('source_type', '=', 'return_supplier')]
+        else:
+            journal_domain = [('source_type', '=', 'internal')]
+        journal_ids = self.pool.get('stock.journal').search(cr, uid, journal_domain)
+        return journal_ids and journal_ids[0] or False
+    
+    _defaults = {    
+        'return': 'none',
+        'type':   'internal',
+        'stock_journal_id': _get_journal,
+    }
+    
+    def fields_view_get(self, cr, uid, view_id=None, view_type=False, context=None, toolbar=False, submenu=False):
+        journal_obj = self.pool.get('stock.journal')
+        if context is None:
+            context = {}
+        res = super(stock_picking,self).fields_view_get(cr, uid, view_id=view_id, view_type=view_type, context=context, toolbar=toolbar, submenu=submenu)
+        
+        if view_type == 'form':
+            journal_ids = []
+            if context.get('default_type',False):
+                journal_domain = []
+                if context.get('default_return',False):
+                    default_type = context['default_type']
+                    default_return = context['default_return']
+                    if default_type == 'in':
+                        journal_domain = [('source_type', '=', 'in')]
+                        if default_return == 'customer':
+                            journal_domain = [('source_type', '=', 'return_customer')]
+                    if default_type == 'out':
+                        journal_domain = [('source_type', '=', 'out')]
+                        if default_return == 'supplier':
+                            journal_domain = [('source_type', '=', 'return_supplier')]
+                
+                if context['default_type'] == 'internal':
+                    journal_domain = [('source_type', '=', 'internal')]
+                if context.get('search_source_type',False) and context['search_source_type'] == 'production':
+                    journal_domain = [('source_type', '=', 'production')]
+                if context.get('search_source_type',False) and context['search_source_type'] == 'phys_adj':
+                    journal_domain = [('source_type', '=', 'phys_adj')]
+                    
+                journal_ids = journal_obj._name_search(cr, uid, '', journal_domain, context=context, limit=None, name_get_uid=1)
+            if journal_ids != []:
+                for field in res['fields']:
+                    if field == 'stock_journal_id':
+                        res['fields'][field]['selection'] = journal_ids
+        return res
     
     def action_invoice_create(self, cr, uid, ids, journal_id=False,group=False, type='out_invoice', context=None):
         """ Creates invoice based on the invoice state selected for picking.
@@ -512,6 +573,41 @@ class stock_picking(osv.osv):
                           'location_dest_id': location_dest_id})
         return {'value': value,'domain':domain}
     
+    def onchange_location(self,cr,uid,ids,location_id,location_dest_id,move_lines):
+        if location_id and location_dest_id and location_id == location_dest_id:
+            value ={}
+            value.update({'location_dest_id':False})
+            warning = {
+            'title': _('Location Warning!'),
+            'message' : _('Location = Location Dest')
+            }
+            return {'value': value, 'warning': warning} 
+        if location_id:
+            i = 0
+            for line in move_lines:
+                if not line[2]:
+                    move_lines[i][0] = 1
+                    move_lines[i][2] = {'location_id':location_id}
+                else:
+                    move_lines[i][2]['location_id'] = location_id
+                i+= 1
+        if location_dest_id:
+            i = 0
+            for line in move_lines:
+                if not line[2]:
+                    move_lines[i][0] = 1
+                    move_lines[i][2] = {'location_dest_id':location_dest_id}
+                else:
+                    move_lines[i][2]['location_dest_id'] = location_dest_id
+                i+= 1
+        
+        result ={
+                 'move_lines': move_lines,
+                 'location_id': location_id,
+                 }
+        
+        return  {'value': result}
+    
 stock_picking()
 
 class stock_picking_in(osv.osv):
@@ -569,7 +665,16 @@ class stock_picking_in(osv.osv):
                 'stock.picking.in': (lambda self, cr, uid, ids, c={}: ids, ['location_id','location_dest_id'], 10),
             }, readonly=True, multi='pro_info'),
         'stock_journal_id': fields.many2one('stock.journal','Stock Journal', required=True, select=True, states={'done':[('readonly', True)], 'cancel':[('readonly',True)]}, track_visibility='onchange'),
+        'return': fields.selection([('none', 'Normal'), ('customer', 'Return from Customer'),('internal','Return Internal'), ('supplier', 'Return to Supplier')], 'Type', required=True, select=True, help="Type specifies whether the Picking has been returned or not."),
     }
+    
+    _defaults = {  
+        'return': 'none',
+        'type':   'in',  
+    }
+    
+    def fields_view_get(self, cr, uid, view_id=None, view_type=False, context=None, toolbar=False, submenu=False):
+        return self.pool.get('stock.picking').fields_view_get(cr, uid, view_id=view_id, view_type=view_type, context=context, toolbar=toolbar, submenu=submenu)
     
     def has_valuation_moves(self, cr, uid, move):
         return self.pool.get('account.move').search(cr, uid, [
@@ -706,14 +811,23 @@ class stock_picking_out(osv.osv):
         'cang_donghang_id': fields.many2one('cang.donghang', 'Cảng đóng hàng',states={'done': [('readonly', True)]}, select=True,),
         'shop_id': fields.function(_get_location_info, type='many2one', relation='sale.shop', string='Shop',
             store={
-                'stock.picking.in': (lambda self, cr, uid, ids, c={}: ids, ['location_id','location_dest_id'], 10),
+                'stock.picking.out': (lambda self, cr, uid, ids, c={}: ids, ['location_id','location_dest_id'], 10),
             }, readonly=True, multi='pro_info'),
         'warehouse_id': fields.function(_get_location_info, type='many2one', relation='stock.warehouse', string='Warehouse',
             store={
-                'stock.picking.in': (lambda self, cr, uid, ids, c={}: ids, ['location_id','location_dest_id'], 10),
+                'stock.picking.out': (lambda self, cr, uid, ids, c={}: ids, ['location_id','location_dest_id'], 10),
             }, readonly=True, multi='pro_info'),
         'stock_journal_id': fields.many2one('stock.journal','Stock Journal', required=True, select=True, states={'done':[('readonly', True)], 'cancel':[('readonly',True)]}, track_visibility='onchange'),
+        'return': fields.selection([('none', 'Normal'), ('customer', 'Return from Customer'),('internal','Return Internal'), ('supplier', 'Return to Supplier')], 'Type', required=True, select=True, help="Type specifies whether the Picking has been returned or not."),
     }
+    
+    _defaults = {    
+        'return': 'none',
+        'type':   'out',
+    }
+    
+    def fields_view_get(self, cr, uid, view_id=None, view_type=False, context=None, toolbar=False, submenu=False):
+        return self.pool.get('stock.picking').fields_view_get(cr, uid, view_id=view_id, view_type=view_type, context=context, toolbar=toolbar, submenu=submenu)
     
     def has_valuation_moves(self, cr, uid, move):
         return self.pool.get('account.move').search(cr, uid, [
@@ -992,6 +1106,215 @@ class account_move(osv.osv):
     }
     
 account_move()
+
+class stock_return_picking(osv.osv):
+    _inherit = 'stock.return.picking'
+
+    _columns = {
+        'return_type': fields.selection([('none', 'Normal'), ('internal','Return Internal'), ('customer', 'Return from Customer'), ('supplier', 'Return to Supplier')], 'Type', required=True, readonly=True, help="Type specifies whether the Picking has been returned or not."),
+        'note':        fields.text('Notes'),
+        'location_id': fields.many2one('stock.location', 'Location', help='If a location is chosen the destination location for customer return (or origin for supplier return) is forced for all moves.'),
+        'journal_id':fields.many2one('stock.journal', 'Stock Journal',required=True,),
+        'option':fields.boolean('Tranfer Product'),
+    }
+
+    def default_get(self, cr, uid, fields, context=None):
+        res = super(stock_return_picking, self).default_get(cr, uid, fields, context)
+        record_id = context and context.get('active_id', False) or False
+        pick_obj = self.pool.get('stock.picking')
+        pick = pick_obj.browse(cr, uid, record_id, context=context)
+        if pick and pick.sale_id and pick.sale_id:
+            warehouse = pick.sale_id.shop_id and pick.sale_id.shop_id.warehouse_id
+            res.update({'location_id': warehouse and warehouse.lot_return_id and warehouse.lot_return_id.id or False})
+        
+        if pick:
+            if pick.type == 'in':
+                journal_ids =  self.pool.get('stock.journal').search(cr,uid,[('source_type','=','return_supplier')])
+                if pick['return'] == 'none':
+                    res.update({'return_type': 'supplier','journal_id':journal_ids and journal_ids[0] or False})
+            elif pick.type == 'out':
+                journal_ids =  self.pool.get('stock.journal').search(cr,uid,[('source_type','=','return_customer')])
+                if pick['return'] == 'none':
+                    res.update({'return_type': 'customer','journal_id':journal_ids and journal_ids[0] or False})
+            else:
+                if pick['return'] == 'none':
+                    res.update({'return_type': 'internal','journal_id':pick.stock_journal_id.id})
+                    
+            result1 = []
+            return_history = self.get_return_history(cr, uid, record_id, context)       
+            for line in pick.move_lines:
+                if line.state in ('cancel') or line.scrapped:
+                    continue
+                qty = line.product_qty - return_history.get(line.id, 0)
+                if qty > 0:
+                    result1.append({'product_id': line.product_id.id, 'quantity': qty,'move_id':line.id, 'prodlot_id': line.prodlot_id and line.prodlot_id.id or False})
+            if 'product_return_moves' in fields:
+                res.update({'product_return_moves': result1})
+        return res
+    
+    def create_returns(self, cr, uid, ids, context=None):
+        """ 
+         Creates return picking.
+         @param self: The object pointer.
+         @param cr: A database cursor
+         @param uid: ID of the user currently logged in
+         @param ids: List of ids selected
+         @param context: A standard dictionary
+         @return: A dictionary which of fields with values.
+        """
+        if context is None:
+            context = {} 
+        record_id = context and context.get('active_id', False) or False
+        move_obj = self.pool.get('stock.move')
+        pick_obj = self.pool.get('stock.picking')
+        uom_obj = self.pool.get('product.uom')
+        data_obj = self.pool.get('stock.return.picking.memory')
+        act_obj = self.pool.get('ir.actions.act_window')
+        model_obj = self.pool.get('ir.model.data')
+        wf_service = netsvc.LocalService("workflow")
+        pick = pick_obj.browse(cr, uid, record_id, context=context)
+        data = self.read(cr, uid, ids[0], context=context)
+        date_cur = time.strftime('%Y-%m-%d %H:%M:%S')
+        set_invoice_state_to_none = False#True LY by default 
+        returned_lines = 0
+        location_id = False
+        location_dest_id = False
+        return_picking_obj = self.browse(cr,uid,ids[0])
+        # Create new picking for returned products
+
+        if pick.type == 'out':
+            new_type = 'in'
+            location_id = pick.location_id and pick.location_id.id or False
+            location_dest_id = pick.location_dest_id and pick.location_dest_id.id or False
+            # lay mat dinh stoc
+            journal_id =  self.pool.get('stock.journal').search(cr,uid,[('source_type','=','return_customer')])
+        elif pick.type == 'in':
+            new_type = 'out'
+            location_id = pick.location_id and pick.location_id.id or False
+            location_dest_id = pick.location_dest_id and pick.location_dest_id.id or False
+            journal_id =  self.pool.get('stock.journal').search(cr,uid,[('source_type','=','return_supplier')])
+        else:
+            new_type = 'internal'
+            journal_id =  [pick.stock_journal_id.id] or False
+            location_id = pick.location_id and pick.location_id.id or False
+            location_dest_id = pick.location_dest_id and pick.location_dest_id.id or False
+        
+        seq_obj_name = 'stock.picking.' + new_type
+        # SHOULD USE ir_sequence.next_by_code() or ir_sequence.next_by_id()
+        new_pick_name = self.pool.get('ir.sequence').get(cr, uid, seq_obj_name)
+        new_picking_vals = {'name': _('%s-%s-return') % (new_pick_name, pick.name),
+                            'move_lines': [],
+                            'state':'draft',
+                            'type': new_type,
+                            'return': data['return_type'],
+                            'note': data['note'],
+                            'origin':pick.name or '',
+                            'date':date_cur,
+                            'invoice_state': data['invoice_state'], 
+                            'stock_journal_id':journal_id and journal_id[0] or False,
+                            'location_id':location_dest_id,
+                            'location_dest_id':location_id,}
+        new_picking = pick_obj.copy(cr, uid, pick.id, new_picking_vals)
+        #Hung them chuc nang doi san pham.
+        if pick.type =='out' and pick.sale_id and return_picking_obj.option:
+            new_id = pick_obj.copy(cr, uid, pick.id, {
+                                        'name': pick.name + '-ship',
+                                        'move_lines': [], 
+                                        'state':'draft', 
+                                        'type': 'out',
+                                        'date':date_cur,
+                                        'date_done':False, 
+                                        'invoice_state': data['invoice_state'], })
+            val_id = data['product_return_moves']
+            for v in val_id:
+                data_get = data_obj.browse(cr, uid, v, context=context)
+                mov_id = data_get.move_id.id
+                new_qty = data_get.quantity
+                move = move_obj.browse(cr, uid, mov_id, context=context)
+                if new_qty >move.product_qty:
+                    error = 'Không vượt quá số lượng đơn hàng'
+                    raise osv.except_osv(unicode('Lỗi', 'utf8'), unicode(error, 'utf8'))
+                if move.state in ('cancel') or move.scrapped:
+                    continue
+                new_location = move.location_dest_id.id
+                returned_qty = move.product_qty
+                for rec in move.move_history_ids2:
+                    returned_qty -= rec.product_qty
+                if new_qty:
+                    returned_lines += 1
+                    new_move_vals = {'prodlot_id':move.prodlot_id and move.prodlot_id.id or False,
+                                    'product_qty': new_qty,
+                                    'product_uos_qty': uom_obj._compute_qty(cr, uid, move.product_uom.id, new_qty, move.product_uos.id),
+                                    'picking_id': new_id,
+                                    'state': 'draft',
+                                    'location_id': new_location,
+                                    'location_dest_id': move.location_id.id,
+                                    'date': date_cur,
+                                    'note': data['note'],
+                                    }
+                    if data['location_id']:
+                        if data['return_type'] == 'customer':
+                            new_move_vals.update({'location_dest_id': data['location_id'][0], })
+                        else:
+                            new_move_vals.update({'location_id': data['location_id'][0], })
+                    
+                    new_move = move_obj.copy(cr, uid, move.id, new_move_vals)
+                    move_obj.write(cr, uid, [move.id], {'move_history_ids2':[(4, new_move)]}, context=context)
+            if not returned_lines:
+                raise osv.except_osv(_('Warning!'), _("Please specify at least one non-zero quantity."))
+
+        val_id = data['product_return_moves']
+        for v in val_id:
+            data_get = data_obj.browse(cr, uid, v, context=context)
+            mov_id = data_get.move_id.id
+            new_qty = data_get.quantity
+            move = move_obj.browse(cr, uid, mov_id, context=context)
+            new_location = move.location_dest_id.id
+            returned_qty = move.product_qty
+            for rec in move.move_history_ids2:
+                returned_qty -= rec.product_qty
+    
+            if returned_qty != new_qty:
+                set_invoice_state_to_none = False
+            if new_qty:
+                returned_lines += 1
+                new_move=move_obj.copy(cr, uid, move.id, {
+                                            'prodlot_id':move.prodlot_id and move.prodlot_id.id or False,
+                                            'product_qty': new_qty,
+                                            'product_uos_qty': uom_obj._compute_qty(cr, uid, move.product_uom.id, new_qty, move.product_uos.id),
+                                            'picking_id': new_picking, 
+                                            'state': 'draft',
+                                            'location_id': new_location, 
+                                            'location_dest_id': move.location_id.id,
+                                            'date': date_cur,
+                })
+                move_obj.write(cr, uid, [move.id], {'move_history_ids2':[(4,new_move)]}, context=context)
+        if not returned_lines:
+            raise osv.except_osv(_('Warning!'), _("Please specify at least one non-zero quantity."))
+        #LY make it can be invoiced
+        if data['invoice_state'] == 'none':#returned_qty == new_qty #!= new_qty:
+            set_invoice_state_to_none = True#LY False
+        if set_invoice_state_to_none:
+            pick_obj.write(cr, uid, [pick.id], {'invoice_state':'none'}, context=context)
+        wf_service.trg_validate(uid, 'stock.picking', new_picking, 'button_confirm', cr)
+        pick_obj.force_assign(cr, uid, [new_picking], context)
+        # Update view id in context, lp:702939
+        model_list = {
+                'out': 'stock.picking.out',
+                'in': 'stock.picking.in',
+                'internal': 'stock.picking',
+        }
+        return {
+            'domain': "[('id', 'in', [" + str(new_picking) + "])]",
+            'name': _('Returned Picking'),
+            'view_type':'form',
+            'view_mode':'tree,form',
+            'res_model': model_list.get(new_type, 'stock.picking'),
+            'type':'ir.actions.act_window',
+            'context':context,
+        }
+
+stock_return_picking()
 
 class account_invoice_line(osv.osv):
     _inherit = "account.invoice.line"

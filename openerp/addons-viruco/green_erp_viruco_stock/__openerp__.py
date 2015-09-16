@@ -36,6 +36,7 @@
         'wizard/stock_partial_picking_view.xml',
         'wizard/stock_invoice_onshipping_view.xml',
         'stock_view.xml', 
+        'stock_inventory.xml', 
      ],
     'demo': [],
     'test': [],
