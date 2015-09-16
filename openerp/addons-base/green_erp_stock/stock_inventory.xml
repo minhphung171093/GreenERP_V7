@@ -38,7 +38,7 @@
                                 <field readonly="0" context="{'location':location_id, 'uom':product_uom, 'to_date':parent.date}" name="product_id" on_change="on_change_product_id(location_id,product_id,product_uom,parent.date)"  domain="[('type','&lt;&gt;','service')]"/>
                                 <field name="product_uom" string="Base Uom" readonly="0"/>
                                 <field name="move_id" invisible="1"/>
-                                <field name="prod_lot_id"/>
+                                <field name="prod_lot_id" groups="stock.group_production_lot" domain="[('product_id','=',product_id)]"/>
                                 <field name="freeze_cost"/>
                                 <field name="product_qty" string="Sys Onhand" readonly="1"/>
                                 <field name="count_quantity" string="Count Qty" />
