@@ -119,7 +119,7 @@ class purchase_order(osv.osv):
         if not journal_ids:
             raise osv.except_osv(_('Warning!'), _('Please define Stock Journal for Incomming Order.'))
         return {
-            'name': self.pool.get('ir.sequence').get(cr, uid, 'stock.picking.in'),
+            'name': '/',
             'origin': order.name + ((order.origin and (':' + order.origin)) or ''),
             'date': self.date_to_datetime(cr, uid, order.date_order, context),
             'partner_id': order.partner_id.id,

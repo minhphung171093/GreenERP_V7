@@ -58,7 +58,7 @@ class sale_order(osv.osv):
             raise osv.except_osv(_('Warning!'), _('Please define Stock Journal for Delivery Order.'))
         pick_name = self.pool.get('ir.sequence').get(cr, uid, 'stock.picking.out')
         return {
-            'name': pick_name,
+            'name': '/',
             'origin': order.name,
             'date': self.date_to_datetime(cr, uid, order.date_order, context),
             'type': 'out',
