@@ -31,8 +31,9 @@
         'wizard/stock_invoice_onshipping_view.xml',
         'stock_view.xml',
         'stock_inventory.xml',
-        'menu.xml',
+        'stock_sequence.xml',
         'stock_data.xml',
+        'menu.xml',
     ],
     'css' : [
     ],

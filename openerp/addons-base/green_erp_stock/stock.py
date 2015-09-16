@@ -55,7 +55,7 @@ class stock_journal(osv.osv):
                                         ('internal', 'Internal'),
                                         ('production', 'Production'),
                                         ('phys_adj', 'Physical Adjustment'),], 'Source Type', size=16, required=True),
-        'sequence_id': fields.many2one('ir.sequence', 'Sequence'),
+        'sequence_id': fields.many2one('ir.sequence', 'Sequence', required=True),
         
         'from_location_id':fields.many2many('stock.location','stock_journal_from_location_ref', 
                                                  'journal_id','location_id','From Location',required = True), 
@@ -144,7 +144,12 @@ class stock_picking(osv.osv):
                 if default_return == 'supplier':
                     journal_domain = [('source_type', '=', 'return_supplier')]
         else:
-            journal_domain = [('source_type', '=', 'internal')]
+            if context.get('search_source_type',False) and context['search_source_type'] == 'production':
+                journal_domain = [('source_type', '=', 'production')]
+            if context.get('search_source_type',False) and context['search_source_type'] == 'phys_adj':
+                journal_domain = [('source_type', '=', 'phys_adj')]
+            if not journal_domain:
+                journal_domain = [('source_type', '=', 'internal')]
         journal_ids = self.pool.get('stock.journal').search(cr, uid, journal_domain)
         return journal_ids and journal_ids[0] or False
      
@@ -153,6 +158,13 @@ class stock_picking(osv.osv):
         'type':   'internal',
         'stock_journal_id': _get_journal,
     }
+    
+    def create(self, cr, uid, vals, context=None):
+        if ('name' not in vals) or (vals.get('name')=='/') and vals.get('stock_journal_id',False):
+            stock_journal = self.pool.get('stock.journal').browse(cr, uid, vals['stock_journal_id'])
+            vals['name'] = self.pool.get('ir.sequence').get_id(cr, uid, stock_journal.sequence_id.id, code_or_id='id', context=context)
+        new_id = super(stock_picking, self).create(cr, uid, vals, context)
+        return new_id
     
     def _prepare_invoice(self, cr, uid, picking, partner, inv_type, journal_id, context=None):
         """ Builds the dict containing the values for the invoice
