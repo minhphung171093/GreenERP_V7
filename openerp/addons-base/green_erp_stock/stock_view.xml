@@ -325,7 +325,37 @@
 	            <field name="view_id" ref="view_picking_subinventory_form"/>
 	            <field name="act_window_id" ref="action_phys_adj_moves"/>
 	        </record>
-        <menuitem action="action_phys_adj_moves" id="menu_action_phys_adj_moves" parent="stock.menu_stock_warehouse_mgmt" sequence="4" groups="stock.group_locations"/>
-	        	
+        	
+        	<menuitem action="action_phys_adj_moves" id="menu_action_phys_adj_moves" parent="stock.menu_stock_warehouse_mgmt" sequence="4" groups="stock.group_locations"/>
+	       
+	        <!-- Menu for Internal Move for Production -->
+    		<record id="action_production_moves" model="ir.actions.act_window">
+	            <field name="name">Production Moves</field>
+	            <field name="res_model">stock.picking</field>
+	            <field name="type">ir.actions.act_window</field>
+	            <field name="view_type">form</field>
+	            <field name="view_mode">tree,form,calendar</field>
+	            <field name="domain">[('type','=','internal'),('stock_journal_id.source_type','=','production')]</field>
+	            <field name="context">{'search_source_type': 'production','default_type': 'internal', 'contact_display': 'partner_address', 'search_default_available': 1}</field>
+	            <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+	            <field name="help" type="html"></field>
+	        </record>
+	
+	        <record model="ir.actions.act_window.view" id="action_production_moves_tree_view">
+	            <field name="sequence" eval="1"/>
+	            <field name="view_mode">tree</field>
+	            <field name="view_id" ref="stock.vpicktree"/>
+	            <field name="act_window_id" ref="action_production_moves"/>
+	        </record>
+	        <record model="ir.actions.act_window.view" id="action_production_moves_form_view">
+	            <field name="sequence" eval="2"/>
+	            <field name="view_mode">form</field>
+	            <field name="view_id" ref="view_picking_subinventory_form"/>
+	            <field name="act_window_id" ref="action_production_moves"/>
+	        </record>
+        	
+        	<menuitem action="action_production_moves" id="menu_action_production_moves" parent="stock.menu_stock_warehouse_mgmt" sequence="3" groups="stock.group_locations"/>
+        
+	       
     </data>
 </openerp>
