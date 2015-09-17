@@ -26,7 +26,7 @@
                 <form string="Nhóm công việc" version="7.0">
                 <header>
                 		<button name="bt_tao_ncv" states="nhap" string="Xác nhận" type="object" class="oe_highlight"/>
-	                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,moi_tao,moi_nhan,cho_duyet,duyet" />
+	                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,da_nhan,dang_lam,cho_duyet,duyet" />
 	            </header>  
 	                <sheet>
 	                <group>
@@ -149,7 +149,7 @@
             <field name="arch" type="xml">
                 <form string="Nhóm công việc đã giao" version="7.0" create = 'false' edit = 'false' delete = 'false'>
                 <header>
-	                    <field name="state" widget="statusbar" statusbar_visible="nhap,moi_tao,moi_nhan,cho_duyet,duyet" />
+	                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,da_nhan,dang_lam,cho_duyet,duyet" />
 	            </header>  
 	                <sheet>
 	                 <group col="4" colspan="2">
@@ -256,7 +256,7 @@
             <field name="arch" type="xml">
                 <form string="Nhóm công việc đã được giao" version="7.0" create = 'false' edit = 'false' delete = 'false'>
                 <header>
-	                    <field name="state" widget="statusbar" statusbar_visible="nhap,moi_tao,moi_nhan,cho_duyet,duyet" />
+	                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,da_nhan,dang_lam,cho_duyet,duyet" />
 	            </header>  
 	                <sheet>
 	                 <group col="4" colspan="2">
@@ -364,7 +364,7 @@
                 <form string="Nhóm công việc chờ duyệt" version="7.0" create = 'false' edit = 'false' delete = 'false'>
                 <header>
                 		<button name="bt_cho_duyet" states="cho_duyet" string="Xác nhận duyệt" type="object" class="oe_highlight"/>
-	                    <field name="state" widget="statusbar" statusbar_visible="nhap,moi_tao,moi_nhan,cho_duyet,duyet" />
+	                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,da_nhan,dang_lam,cho_duyet,duyet" />
 	            </header>  
 	                <sheet>
 	                 <group col="4" colspan="2">
@@ -471,7 +471,7 @@
             <field name="arch" type="xml">
                 <form string="Nhóm công việc đã duyệt" version="7.0" create = 'false' edit = 'false' delete = 'false'>
                 <header>
-	                    <field name="state" widget="statusbar" statusbar_visible="nhap,moi_tao,moi_nhan,cho_duyet,duyet" />
+	                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,da_nhan,dang_lam,cho_duyet,duyet" />
 	            </header>  
 	                <sheet>
 	                 <group col="4" colspan="2">
@@ -555,12 +555,12 @@
             <field name="act_window_id" ref="action_nhom_cong_viec_da_duyet"/>
         </record>
         
-        <record model="ir.ui.view" id="nhom_cong_viec_moi_tao_tree">
-            <field name="name">nhom.cong.viec.moi.tao.tree</field>
+        <record model="ir.ui.view" id="nhom_cong_viec_moi_giao_tree">
+            <field name="name">nhom.cong.viec.moi.giao.tree</field>
             <field name="model">nhom.cong.viec</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="Nhóm công việc mới tạo" create = 'false' delete = 'false'>
+                <tree string="Nhóm công việc mới giao" create = 'false' delete = 'false'>
                 	<field name="name" />
                 	<field name="phong_ban_id" />
                 	<field name="quy_trinh_id" />
@@ -571,15 +571,15 @@
             </field>
         </record>
         
-        <record model="ir.ui.view" id="nhom_cong_viec_moi_tao_form">
-            <field name="name">nhom.cong.viec.moi.tao.form</field>
+        <record model="ir.ui.view" id="nhom_cong_viec_moi_giao_form">
+            <field name="name">nhom.cong.viec.moi.giao.form</field>
             <field name="model">nhom.cong.viec</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
                 <form string="Nhóm công việc mới tạo" version="7.0" create = 'false' delete = 'false'>
                 <header>
-                		<button name="bt_nhan_ncv" states="moi_tao" string="Nhận nhóm công việc" type="object" class="oe_highlight"/>
-	                    <field name="state" widget="statusbar" statusbar_visible="moi_tao,moi_nhan,cho_duyet,duyet" />
+                		<button name="bt_nhan_ncv" states="da_giao" string="Nhận nhóm công việc" type="object" class="oe_highlight"/>
+	                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,da_nhan,dang_lam,cho_duyet,duyet" />
 	            </header>  
 	                <sheet>
 	                <group>
@@ -656,27 +656,27 @@
             </field>
         </record>
        
-        <record model="ir.actions.act_window" id="action_nhom_cong_viec_moi_tao">
-            <field name="name">Nhóm công việc mới tạo</field>
+        <record model="ir.actions.act_window" id="action_nhom_cong_viec_moi_giao">
+            <field name="name">Nhóm công việc mới giao</field>
             <field name="res_model">nhom.cong.viec</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain">[('loai','=','nhom_cv'), ('state','in',['moi_tao'])]</field>
+            <field name="domain">[('loai','=','nhom_cv'), ('state','in',['da_giao'])]</field>
             <field name="context">{'default_loai': 'nhom_cv'}</field>
-            <field name="view_id" ref="nhom_cong_viec_moi_tao_tree"/>
+            <field name="view_id" ref="nhom_cong_viec_moi_giao_tree"/>
         </record>
         
-        <record id="action_nhom_cong_viec_moi_tao1" model="ir.actions.act_window.view">
+        <record id="action_nhom_cong_viec_moi_giao1" model="ir.actions.act_window.view">
             <field eval="0" name="sequence"/>
             <field name="view_mode">tree</field>
-            <field name="view_id" ref="nhom_cong_viec_moi_tao_tree"/>
-            <field name="act_window_id" ref="action_nhom_cong_viec_moi_tao"/>
+            <field name="view_id" ref="nhom_cong_viec_moi_giao_tree"/>
+            <field name="act_window_id" ref="action_nhom_cong_viec_moi_giao"/>
         </record>
-        <record id="action_nhom_cong_viec_moi_tao2" model="ir.actions.act_window.view">
+        <record id="action_nhom_cong_viec_moi_giao2" model="ir.actions.act_window.view">
             <field eval="1" name="sequence"/>
             <field name="view_mode">form</field>
-            <field name="view_id" ref="nhom_cong_viec_moi_tao_form"/>
-            <field name="act_window_id" ref="action_nhom_cong_viec_moi_tao"/>
+            <field name="view_id" ref="nhom_cong_viec_moi_giao_form"/>
+            <field name="act_window_id" ref="action_nhom_cong_viec_moi_giao"/>
         </record>
         
         <record model="ir.ui.view" id="nhom_cong_viec_dang_lam_tree">
@@ -703,7 +703,7 @@
                 <form string="Nhóm công việc đang làm" version="7.0" create = 'false' delete = 'false'>
                 <header>
                 		<button name="bt_duyet_trinh_ncv" states="" string="Duyệt và trình giám đốc" type="object" class="oe_highlight" attrs="{'invisible':['|',('trangthai_ncv','=','chua_xong'), ('state','!=','moi_nhan')]}"/>
-	                    <field name="state" widget="statusbar" statusbar_visible="moi_tao,moi_nhan,cho_duyet,duyet" />
+	                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,da_nhan,dang_lam,cho_duyet,duyet"/>
 	            </header>  
 	                <sheet>
 	                <group>
@@ -830,7 +830,7 @@
                 <header>
                 		<button name="bt_duyet_trinh_cv" states="" string="Duyệt và trình công việc" type="object" class="oe_highlight" attrs="{'invisible':['|',('trangthai_cv','=','chua_xong'), ('state','!=','moi_nhan')]}"/>
                 		<button name="bt_nhan_cv" states="moi_tao" string="Nhận công việc" type="object" class="oe_highlight"/>
-	                    <field name="state" widget="statusbar" statusbar_visible="moi_tao,moi_nhan,cho_duyet,duyet" />
+	                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,da_nhan,dang_lam,cho_duyet,duyet" />
 	            </header>  
 	                <sheet>
 	                <div>
@@ -943,7 +943,7 @@
                 <header>
                 		<button name="bt_nhan_cv_con" states="moi_tao" string="Nhận công việc con" type="object" class="oe_highlight"/>
                 		<button name="bt_duyet_trinh_cv_con" states="" string="Duyệt và trình công việc con" type="object" class="oe_highlight" attrs="{'invisible':['|',('trangthai_cvc','=','chua_xong'), ('state','!=','moi_nhan')]}"/>
-	                    <field name="state" widget="statusbar" statusbar_visible="moi_tao,moi_nhan,cho_duyet,duyet" />
+	                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,da_nhan,dang_lam,cho_duyet,duyet" />
 	            </header>  
 	                <sheet>
 	                <div>
