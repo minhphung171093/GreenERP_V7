@@ -219,6 +219,7 @@
                     <field name="dien_tich" />
                     <field name="an_toan_dich" />
                     <field name="loai_ho_id" />
+                    <field name="company_id" />
                     <separator/>
                     <group expand="0" string="Group By...">
                         <filter string="Quận (huyện)" domain="[]" context="{'group_by':'quan_huyen_id'}"/>
@@ -227,6 +228,7 @@
                         <filter string="Thời gian cấp" domain="[]"  context="{'group_by':'ngay_cap'}"/>
                         <filter string="An toàn dịch" domain="[]"  context="{'group_by':'an_toan_dich'}"/>
                         <filter string="Loại hộ" domain="[]"  context="{'group_by':'loai_ho_id'}"/>
+                        <filter string="Trạm" domain="[]"  context="{'group_by':'company_id'}"/>
                     </group>
                </search>
             </field>
@@ -240,8 +242,8 @@
                 <tree string="Hộ chăn nuôi">
                     <field name="name" />
                     <field name="ma_ho" />
-                                     
-                    <field name="ngay_cap" />
+                    <field name="ngay_cap" />                 
+                    <field name="company_id" />
                     <field name="loai_ho_id" />
                     <field name="dien_thoai" />
                     <field name="so_nha" />  
@@ -277,6 +279,7 @@
 		                    <field name="ma_ho" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}" string="Mã trại, cơ sở" />
 		                    <field name="dien_thoai" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}" />
 		                    <field name="ngay_cap" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+		                    <field name="company_id" options="{'create': false, 'create_edit': false}" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 		                    <field name="hien_an" invisible = '1'/>
 		                    <field name="chinh_sua_rel" invisible = '1' />
                 		</group>

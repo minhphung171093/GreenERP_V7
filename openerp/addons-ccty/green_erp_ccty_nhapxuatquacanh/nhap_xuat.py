@@ -94,7 +94,6 @@ class nhap_xuat_canh_giasuc(osv.osv):
                 }
     _defaults = {
         'can_bo_id': _get_user,
-        'company_id': _get_company,
         'trang_thai_id': get_trangthai_nhap,
                  }
     def onchange_tinh_thanh(self, cr, uid, ids, context=None):
@@ -136,6 +135,7 @@ class nhap_xuat_canh_giasuc(osv.osv):
             ho = self.pool.get('chan.nuoi').browse(cr,uid,ten_ho_id)
             res['value'].update({
                         'loai_ho_id':ho.loai_ho_id and ho.loai_ho_id.id or False,
+                        'company_id':ho.company_id and ho.company_id.id or False,
             })
         return res
     
@@ -144,6 +144,7 @@ class nhap_xuat_canh_giasuc(osv.osv):
             ho = self.pool.get('chan.nuoi').browse(cr,uid,vals['ten_ho_id'])
             vals.update({
                 'loai_ho_id':ho.loai_ho_id and ho.loai_ho_id.id or False,
+                'company_id':ho.company_id and ho.company_id.id or False,
                 })
         new_id = super(nhap_xuat_canh_giasuc, self).create(cr, uid, vals, context=context)
         return new_id
@@ -153,6 +154,7 @@ class nhap_xuat_canh_giasuc(osv.osv):
             ho = self.pool.get('chan.nuoi').browse(cr,uid,vals['ten_ho_id'])
             vals.update({
                 'loai_ho_id':ho.loai_ho_id and ho.loai_ho_id.id or False,
+                'company_id':ho.company_id and ho.company_id.id or False,
                 })
         new_write = super(nhap_xuat_canh_giasuc, self).write(cr, uid,ids, vals, context)
         return new_write
@@ -436,6 +438,7 @@ class nhap_xuat_canh_giasuc(osv.osv):
         chi_tiet= []
         tiem_phong = []
         loai_ho_id = False
+        company_id = False
         so_luong_xuat = 0
         so_luong_chet = 0
         for nhap_xuat in self.browse(cr,uid,ids):
@@ -447,24 +450,25 @@ class nhap_xuat_canh_giasuc(osv.osv):
                 delete from chi_tiet_da_tiem_phong where nhap_xuat_tiemphong_id = %s
             '''%(nhap_xuat.id)
             cr.execute(sql)
-        if loai_id:
-            loai = self.pool.get('loai.vat').browse(cr,uid,loai_id)    
-            for line_loaivat in loai.chitiet_loaivat:
-                chi_tiet.append((0,0,{
-                                      'ct_loai_id': line_loaivat.id,
-                                      'name': line_loaivat.name,
-                                      'tiem_phong':line_loaivat.tiem_phong,
-                                      }))
-            if loai_select == 'nhap':
-                for line_loaibenh in loai.chitiet_loai_vaccine:
-                    if line_loaibenh.yes_no == True:
-                        tiem_phong.append((0,0,{
-                                              'vacxin_id': line_loaibenh.vacxin_id.id,
-                                              }))
-            if loai_select == 'xuat':
-                if ten_ho_id:
-                    ho = self.pool.get('chan.nuoi').browse(cr,uid,ten_ho_id)
-                    loai_ho_id = ho.loai_ho_id.id
+        if ten_ho_id:
+            ho = self.pool.get('chan.nuoi').browse(cr,uid,ten_ho_id)
+            loai_ho_id = ho.loai_ho_id.id
+            company_id = ho.company_id.id
+            if loai_id:
+                loai = self.pool.get('loai.vat').browse(cr,uid,loai_id)    
+                for line_loaivat in loai.chitiet_loaivat:
+                    chi_tiet.append((0,0,{
+                                          'ct_loai_id': line_loaivat.id,
+                                          'name': line_loaivat.name,
+                                          'tiem_phong':line_loaivat.tiem_phong,
+                                          }))
+                if loai_select == 'nhap':
+                    for line_loaibenh in loai.chitiet_loai_vaccine:
+                        if line_loaibenh.yes_no == True:
+                            tiem_phong.append((0,0,{
+                                                  'vacxin_id': line_loaibenh.vacxin_id.id,
+                                                  }))
+                if loai_select == 'xuat':
                     sql = '''
                         select id from ct_tiem_phong_lmlm_line where tp_lmlm_id in (select id from tiem_phong_lmlm where loai_id = %s and ho_chan_nuoi_id = %s 
                         and trang_thai_id in (select id from trang_thai where stt = 3) )
@@ -481,7 +485,7 @@ class nhap_xuat_canh_giasuc(osv.osv):
                             '''%(lmlm_line.tp_lmlm_id.id,lmlm_line.ct_loai_id.id,lmlm_line.tp_lmlm_id.vacxin_id.id)
                             cr.execute(sql)
                             so_luong_xuat = cr.dictfetchone()['so_luong']
-#                              
+    #                              
                             sql = '''
                                 select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
                                 from ct_xuly_giasuc_tp_line where xuly_giasuc_id in (select id from xuly_giasuc 
@@ -503,6 +507,7 @@ class nhap_xuat_canh_giasuc(osv.osv):
         return {'value': {'chitiet_loai_nx': chi_tiet,
                           'chitiet_da_tiem_phong': tiem_phong,
                           'loai_ho_id': loai_ho_id,
+                          'company_id': company_id,
                           }}
     
 nhap_xuat_canh_giasuc()

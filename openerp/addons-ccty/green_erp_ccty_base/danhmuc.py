@@ -197,6 +197,7 @@ class chan_nuoi(osv.osv):
         'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)', required = True),
         'khu_pho_id': fields.many2one('khu.pho','Khu phố (ấp)', required = True),
         'quan_huyen_id': fields.many2one('quan.huyen','Quận (huyện)', required = True),
+        'company_id': fields.many2one('res.company','Trạm', required = True),
 #         'an_toan_dich':fields.boolean('Được cấp An toàn dịch', readonly = True),
         'dien_tich': fields.char('Diện tích đất'),
         'toa_do_x': fields.char('Tọa độ X'),
