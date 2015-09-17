@@ -29,6 +29,7 @@
     'depends': ['green_erp_base','stock','green_erp_account'],
     'data': [
         'wizard/stock_invoice_onshipping_view.xml',
+        'wizard/stock_return_picking_view.xml',
         'stock_view.xml',
         'stock_inventory.xml',
         'stock_sequence.xml',

@@ -895,9 +895,9 @@ class stock_return_picking(osv.osv):
         record_id = context and context.get('active_id', False) or False
         pick_obj = self.pool.get('stock.picking')
         pick = pick_obj.browse(cr, uid, record_id, context=context)
-        if pick and pick.sale_id and pick.sale_id:
-            warehouse = pick.sale_id.shop_id and pick.sale_id.shop_id.warehouse_id
-            res.update({'location_id': warehouse and warehouse.lot_return_id and warehouse.lot_return_id.id or False})
+#         if pick and pick.sale_id and pick.sale_id:
+#             warehouse = pick.sale_id.shop_id and pick.sale_id.shop_id.warehouse_id
+#             res.update({'location_id': warehouse and warehouse.lot_return_id and warehouse.lot_return_id.id or False})
         
         if pick:
             if pick.type == 'in':
@@ -971,10 +971,7 @@ class stock_return_picking(osv.osv):
             location_id = pick.location_id and pick.location_id.id or False
             location_dest_id = pick.location_dest_id and pick.location_dest_id.id or False
         
-        seq_obj_name = 'stock.picking.' + new_type
-        # SHOULD USE ir_sequence.next_by_code() or ir_sequence.next_by_id()
-        new_pick_name = self.pool.get('ir.sequence').get(cr, uid, seq_obj_name)
-        new_picking_vals = {'name': '/',
+        new_picking_vals = {'name': self.pool.get('ir.sequence').get_id(cr, uid, return_picking_obj.journal_id.sequence_id.id, code_or_id='id', context=context),
                             'move_lines': [],
                             'state':'draft',
                             'type': new_type,
@@ -983,20 +980,22 @@ class stock_return_picking(osv.osv):
                             'origin':pick.name or '',
                             'date':date_cur,
                             'invoice_state': data['invoice_state'], 
-                            'stock_journal_id':journal_id and journal_id[0] or False,
+                            'stock_journal_id':return_picking_obj.journal_id and return_picking_obj.journal_id.id or False,
                             'location_id':location_dest_id,
                             'location_dest_id':location_id,}
         new_picking = pick_obj.copy(cr, uid, pick.id, new_picking_vals)
-        #Hung them chuc nang doi san pham.
-        if pick.type =='out' and pick.sale_id and return_picking_obj.option:
+        #Hung them chuc nang doi san pham.lay journal tren picking goc va tren wizard
+        if return_picking_obj.option:
             new_id = pick_obj.copy(cr, uid, pick.id, {
-                                        'name': pick.name + '-ship',
+                                        'name': self.pool.get('ir.sequence').get_id(cr, uid, pick.stock_journal_id.sequence_id.id, code_or_id='id', context=context),
                                         'move_lines': [], 
                                         'state':'draft', 
-                                        'type': 'out',
+                                        'type': pick.type,
                                         'date':date_cur,
                                         'date_done':False, 
-                                        'invoice_state': data['invoice_state'], })
+                                        'invoice_state': data['invoice_state'],
+                                        'stock_journal_id':pick.stock_journal_id and pick.stock_journal_id.id or False,
+                                         })
             val_id = data['product_return_moves']
             for v in val_id:
                 data_get = data_obj.browse(cr, uid, v, context=context)
