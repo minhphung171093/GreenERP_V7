@@ -302,6 +302,20 @@ class stock_picking(osv.osv):
                         res['fields'][field]['selection'] = journal_ids
         return res
     
+    def create(self, cr, user, vals, context=None):
+        context = context or {}
+        context.update({'sequence_obj_ids':[]})
+        if ('name' not in vals) or (vals.get('name')=='/'):
+            if vals.get('stock_journal_id',False):
+                journal = self.pool.get('stock.journal').browse(cr, user, vals['stock_journal_id'])
+                if not journal.sequence_id:
+                    raise osv.except_osv(_('Warning!'), _('Please define Sequence for Stock Journal.'))
+                vals['name'] = self.pool.get('ir.sequence').get_id(cr, user, journal.sequence_id.id, code_or_id='id', context=context)
+                
+        new_id = super(osv.osv, self).create(cr, user, vals, context)
+        return new_id
+    
+    
     def action_invoice_create(self, cr, uid, ids, journal_id=False,group=False, type='out_invoice', context=None):
         """ Creates invoice based on the invoice state selected for picking.
         @param journal_id: Id of journal
@@ -762,6 +776,20 @@ class stock_picking_in(osv.osv):
                           'location_dest_id': location_dest_id})
         return {'value': value,'domain':domain}
     
+    def create(self, cr, user, vals, context=None):
+        context = context or {}
+        context.update({'sequence_obj_ids':[]})
+        if ('name' not in vals) or (vals.get('name')=='/'):
+            if vals.get('stock_journal_id',False):
+                journal = self.pool.get('stock.journal').browse(cr, user, vals['stock_journal_id'])
+                if not journal.sequence_id:
+                    raise osv.except_osv(_('Warning!'), _('Please define Sequence for Stock Journal.'))
+                vals['name'] = self.pool.get('ir.sequence').get_id(cr, user, journal.sequence_id.id, code_or_id='id', context=context)
+                
+        new_id = super(osv.osv, self).create(cr, user, vals, context)
+        return new_id
+    
+    
 stock_picking_in()
 class stock_picking_out(osv.osv):
     _inherit = "stock.picking.out"
@@ -915,11 +943,35 @@ class stock_picking_out(osv.osv):
                           'location_dest_id': location_dest_id})
         return {'value': value,'domain':domain}
     
+    def create(self, cr, user, vals, context=None):
+        context = context or {}
+        context.update({'sequence_obj_ids':[]})
+        if ('name' not in vals) or (vals.get('name')=='/'):
+            if vals.get('stock_journal_id',False):
+                journal = self.pool.get('stock.journal').browse(cr, user, vals['stock_journal_id'])
+                if not journal.sequence_id:
+                    raise osv.except_osv(_('Warning!'), _('Please define Sequence for Stock Journal.'))
+                vals['name'] = self.pool.get('ir.sequence').get_id(cr, user, journal.sequence_id.id, code_or_id='id', context=context)
+                
+        new_id = super(osv.osv, self).create(cr, user, vals, context)
+        return new_id
+    
 stock_picking_out()
 
 class stock_move(osv.osv):
     _inherit = "stock.move"
     
+    def product_id_change(self, cr, uid, ids, product, location_id, location_dest_id, context=None):
+        context = context or {}
+        result = {}
+        
+        product_obj = self.pool.get('product.product').browse(cr, uid, product, context=context)
+        if product_obj and product_obj.uom_id:
+            result['product_uom'] = product_obj.uom_id.id
+        result['name'] = product_obj.name
+        result['location_id'] = location_id
+        result['location_dest_id'] = location_dest_id
+        return {'value': result}
     
     def _get_product_info(self, cr, uid, ids, field_name, arg, context=None):
         res = {}

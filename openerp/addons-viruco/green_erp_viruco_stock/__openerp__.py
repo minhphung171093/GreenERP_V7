@@ -37,6 +37,8 @@
         'wizard/stock_invoice_onshipping_view.xml',
         'stock_view.xml', 
         'stock_inventory.xml', 
+        'stock_sequence.xml',
+        'wizard_stock_view.xml',
      ],
     'demo': [],
     'test': [],
