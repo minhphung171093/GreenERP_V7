@@ -133,6 +133,36 @@ class purchase_order(osv.osv):
             'location_id': order.partner_id.property_stock_supplier.id,
             'location_dest_id': order.location_id.id,
         }
+        
+    def view_picking(self, cr, uid, ids, context=None):
+        '''
+        This function returns an action that display existing pîcking orders of given purchase order ids.
+        '''
+        mod_obj = self.pool.get('ir.model.data')
+        pick_ids = []
+        for po in self.browse(cr, uid, ids, context=context):
+            pick_ids += [picking.id for picking in po.picking_ids]
+
+        action_model, action_id = tuple(mod_obj.get_object_reference(cr, uid, 'green_erp_stock', 'action_picking_in'))
+        action = self.pool.get(action_model).read(cr, uid, action_id, context=context)
+        ctx = eval(action['context'])
+        ctx.update({
+            'search_default_purchase_id': ids[0]
+        })
+        if pick_ids and len(pick_ids) == 1:
+            form_view_ids = [view_id for view_id, view in action['views'] if view == 'form']
+            view_id = form_view_ids and form_view_ids[0] or False
+            action.update({
+                'views': [],
+                'view_mode': 'form',
+                'view_id': view_id,
+                'res_id': pick_ids[0]
+            })
+
+        action.update({
+            'context': ctx,
+        })
+        return action
     
 purchase_order()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

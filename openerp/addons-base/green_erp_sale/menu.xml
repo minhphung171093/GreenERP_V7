@@ -12,16 +12,6 @@
 	          parent="base.menu_invoiced"
 	          sequence="10"/>
 	          
-		<menuitem name="Delivery Products"
-	          id="menu_delivery_products"
-	          parent="base.menu_base_partner"
-	          sequence="4"/>
-	          
-	    <menuitem name="Delivery Orders"
-	    	  action="stock.action_picking_tree"
-	          id="menu_action_picking_delivery_orders"
-	          parent="menu_delivery_products"
-	          sequence="4"/>
 		
     </data>
 </openerp>

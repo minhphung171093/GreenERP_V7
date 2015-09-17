@@ -1950,5 +1950,33 @@
 	        </record>
 	        <menuitem action="action_picking_return_supplier" id="menu_action_picking_return_supplier" parent="stock.menu_stock_warehouse_mgmt" sequence="6" groups="stock.group_locations"/>
 	        
+	        <record id="sale_stock.outgoing_picking_list_to_invoice" model="ir.actions.act_window">
+	            <field name="name">Deliveries to Invoice</field>
+	            <field name="res_model">stock.picking.out</field>
+	            <field name="type">ir.actions.act_window</field>
+	            <field name="view_type">form</field>
+	            <field name="view_mode">tree,form,calendar</field>
+	            <field name="domain">[('type','=','out'),('return','=','none')]</field>
+	            <field name="context">{'default_type': 'out', 'default_return': 'none', 'contact_display': 'partner_address', 'search_default_to_invoice': 1, 'search_default_done': 1, 'default_invoice_state': '2binvoiced'}</field>
+	            <field name="search_view_id" ref="view_stock_picking_out_search"/>
+	        </record>
+	        <record id="outgoing_picking_list_to_invoice1" model="ir.actions.act_window.view">
+	            <field eval="1" name="sequence"/>
+	            <field name="view_mode">tree</field>
+	            <field name="view_id" ref="view_stock_picking_out_tree"/>
+	            <field name="act_window_id" ref="sale_stock.outgoing_picking_list_to_invoice"/>
+	        </record>
+	        <record id="outgoing_picking_list_to_invoice2" model="ir.actions.act_window.view">
+	            <field eval="2" name="sequence"/>
+	            <field name="view_mode">form</field>
+	            <field name="view_id" ref="view_stock_picking_out_form"/>
+	            <field name="act_window_id" ref="sale_stock.outgoing_picking_list_to_invoice"/>
+	        </record>
+	        <record id="outgoing_picking_list_to_invoice3" model="ir.actions.act_window.view">
+	            <field eval="3" name="sequence"/>
+	            <field name="view_mode">calendar</field>
+	            <field name="view_id" ref="view_stock_picking_out_calendar"/>
+	            <field name="act_window_id" ref="sale_stock.outgoing_picking_list_to_invoice"/>
+	        </record>
     </data>
 </openerp>
