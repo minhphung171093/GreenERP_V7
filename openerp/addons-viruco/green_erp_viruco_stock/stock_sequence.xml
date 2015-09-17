@@ -1,50 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data noupdate="0">
-
+		
+		<record id="seq_type_picking_phys_adj" model="ir.sequence.type">
+            <field name="name">Hàng thất thoát</field>
+            <field name="code">picking.phys.adj</field>
+        </record>
+        
         <record id="seq_picking_phys_adj" model="ir.sequence">
             <field name="name">Hàng thất thoát</field>
-            <field name="code"></field>
+            <field name="code">picking.phys.adj</field>
             <field name="prefix">HTT/%(month)s/%(year)s/</field>
             <field name="padding">3</field>
             <field name="number_next_actual">001</field>
-            <field name="implementation">no_gap</field>
+            <field name="implementation">standard</field>
             <field name="auto_reset">True</field>
             <field name="reset_period">month</field>
             <field name="reset_init_number">001</field>
+        </record>
+        
+        <record id="seq_type_picking_disrepair" model="ir.sequence.type">
+            <field name="name">Hàng hư hỏng</field>
+            <field name="code">picking.disrepair</field>
         </record>
         
         <record id="seq_picking_disrepair" model="ir.sequence">
             <field name="name">Hàng hư hỏng</field>
-            <field name="code"></field>
+            <field name="code">picking.disrepair</field>
             <field name="prefix">HH/%(month)s/%(year)s/</field>
             <field name="padding">3</field>
             <field name="number_next_actual">001</field>
-            <field name="implementation">no_gap</field>
+            <field name="implementation">standard</field>
             <field name="auto_reset">True</field>
             <field name="reset_period">month</field>
             <field name="reset_init_number">001</field>
+        </record>
+        
+        <record id="seq_type_picking_return_customer" model="ir.sequence.type">
+            <field name="name">Hàng trả của KH</field>
+            <field name="code">picking.return.customer</field>
         </record>
         
         <record id="seq_picking_return_customer" model="ir.sequence">
             <field name="name">Hàng trả của KH</field>
-            <field name="code"></field>
+            <field name="code">picking.return.customer</field>
             <field name="prefix">HTKH/%(month)s/%(year)s/</field>
             <field name="padding">3</field>
             <field name="number_next_actual">001</field>
-            <field name="implementation">no_gap</field>
+            <field name="implementation">standard</field>
             <field name="auto_reset">True</field>
             <field name="reset_period">month</field>
             <field name="reset_init_number">001</field>
         </record>
         
+        <record id="seq_type_picking_return_supplier" model="ir.sequence.type">
+            <field name="name">Hàng trả NCC</field>
+            <field name="code">picking.return.supplier</field>
+        </record>
+        
         <record id="seq_picking_return_supplier" model="ir.sequence">
             <field name="name">Hàng trả NCC</field>
-            <field name="code"></field>
+            <field name="code">picking.return.supplier</field>
             <field name="prefix">HTNCC/%(month)s/%(year)s/</field>
             <field name="padding">3</field>
             <field name="number_next_actual">001</field>
-            <field name="implementation">no_gap</field>
+            <field name="implementation">standard</field>
             <field name="auto_reset">True</field>
             <field name="reset_period">month</field>
             <field name="reset_init_number">001</field>
