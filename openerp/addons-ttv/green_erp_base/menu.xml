@@ -1,7 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-		<record model="ir.ui.menu" id="base.menu_partner_form">
+		<record model="ir.ui.menu" id="mail.mail_feeds_main">
+			<field name="active" eval="False"/>
+		</record>
+		<record model="ir.ui.menu" id="base.menu_reporting">
+			<field name="active" eval="False"/>
+		</record>
+		<record model="ir.ui.menu" id="account.menu_finance_reports">
+			<field name="active" eval="False"/>
+		</record>
+		<record model="ir.ui.menu" id="account.menu_finance_payables">
+			<field name="active" eval="False"/>
+		</record>
+		<record model="ir.ui.menu" id="account.menu_finance_bank_and_cash">
+			<field name="active" eval="False"/>
+		</record>
+		<record model="ir.ui.menu" id="account.menu_finance_entries">
+			<field name="active" eval="False"/>
+		</record>
+		<record model="ir.ui.menu" id="account.menu_finance_charts">
+			<field name="active" eval="False"/>
+		</record>
+		<record model="ir.ui.menu" id="account.menu_finance_periodical_processing">
 			<field name="active" eval="False"/>
 		</record>
     </data>

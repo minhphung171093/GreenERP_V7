@@ -1,4 +1,4 @@
-# -*- coding: utf-8# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
@@ -19,25 +19,22 @@
 #
 ##############################################################################
 
-{
-    'name': 'GreenERP BASE',
-    'version': '1.0',
-    'category': 'GreenERP',
-    'sequence': 14,
-    'author': 'nguyentoanit@gmail.com',
-    'website' : 'http://incomtech.com/',
-    'depends': ['sale','web'],
-    'data': [
-        'ir_ui_menu_view.xml',
-        'menu.xml',
-        'ttv_sale_view.xml',
-    ],
-    'css' : [
-    ],
-    'qweb': [
-    ],
-    'installable': True,
-    'auto_install': False,
-    'application': True,
-}
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4: -*-
+from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
+import time
+from openerp import pooler
+from openerp.osv import fields, osv
+from openerp.tools.translate import _
+from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT, DATETIME_FORMATS_MAP, float_compare
+import openerp.addons.decimal_precision as dp
+from openerp import netsvc
+
+
+class sale_order(osv.osv):
+    _inherit = "sale.order"
+
+    _columns = {
+        'product_ralate': fields.related('order_line','product_id',type='many2one',relation='product.product',string='Product',store=True,readonly=True)
+    }
+sale_order()
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
