@@ -112,7 +112,7 @@
             <field name="model">tiem.phong.lmlm</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="Quản lý Tiêm phòng bệnh Lỡ mồm long móng">
+                <tree string="Thông tin tiêm phòng">
  						<field name="loai_giay_tp_id" />
  						<field name="name" />      
  						<field name="so_quyen" />
@@ -138,7 +138,7 @@
             <field name="model">tiem.phong.lmlm</field>
             <field name="type">form</field>
             <field name="arch" type="xml">
-                <form string="Quản lý Tiêm phòng bệnh Lỡ mồm long móng" version="7.0">
+                <form string="Thông tin tiêm phòng" version="7.0">
                     <header>
 	            		<button name="bt_duyet" groups = "green_erp_ccty_tiemphong.group_tiemphong_manager" attrs="{'invisible': [('hien_an', '!=', True)]}" string="Duyệt" type="object" class="oe_highlight" />
 	                    <field name="trang_thai_id" widget="statusbar"/>
@@ -180,7 +180,7 @@
 								<page string = "Thông tin chi tiết vaccine tiêm phòng">
 									<field name="chi_tiet_vaccine_line" nolabel='1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}">
 										<tree editable='bottom'>
-						                   	<field name="so_lo_id" options="{'create': false, 'create_edit': false}" required = '1' domain="[('vacxin_id','=',loai_vaccine_id)]" />
+						                   	<field name="so_lo_id"  options="{'create': false, 'create_edit': false}" readonly = '1' domain="[('vacxin_id','=',loai_vaccine_id)]" />
 						                   	<field name="han_su_dung_rel" readonly = "1" />
 						                   	<field name="so_luong_ton" readonly = "1" />
 						                    <field name="so_luong_vc"/>
@@ -194,7 +194,7 @@
         </record>
        
         <record model="ir.actions.act_window" id="action_tiem_phong_lmlm">
-            <field name="name">Quản lý Tiêm phòng bệnh Lỡ mồm long móng</field>
+            <field name="name">Thông tin tiêm phòng</field>
             <field name="res_model">tiem.phong.lmlm</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>

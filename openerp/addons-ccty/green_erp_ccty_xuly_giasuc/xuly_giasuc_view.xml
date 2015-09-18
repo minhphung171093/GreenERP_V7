@@ -90,9 +90,9 @@
 									<tree editable='bottom' create = 'false' delete = 'false' >
 										<field name="name"/>
 										<field name="tong_dan" sum = 'Total'/>
-										<field name="so_luong" sum = 'Total' on_change = "onchange_dvt(dvt,so_luong)"/>
+										<field name="so_luong"  on_change = "onchange_dvt(dvt,so_luong)"/>
 										<field name="dvt" required = "1" on_change = "onchange_dvt(dvt,so_luong)" />
-										<field name="sl_tuong_duong" />
+										<field name="sl_tuong_duong" sum = 'Total' />
 										<field name="ly_do" /> 
 					                    <field name="ket_qua_xn" /> 
 					                    <field name="bien_phap" /> 

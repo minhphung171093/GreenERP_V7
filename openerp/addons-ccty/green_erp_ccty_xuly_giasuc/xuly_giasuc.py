@@ -86,19 +86,19 @@ class xuly_giasuc(osv.osv):
                         raise osv.except_osv(_('Cảnh báo!'),_('Bạn nhập %s con nhưng tổng đàn chỉ có %s con của loại %s')%(gs.so_luong, gs.tong_dan, gs.name))
                         return False
         return True    
-    def _check_sl_ton_vaccine(self, cr, uid, ids, context=None):
-        for xl_gs in self.browse(cr, uid, ids, context=context):
-            for vaccine in xl_gs.chi_tiet_vaccine_line:
-                sql = '''
-                    select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong from ton_vaccine
-                    where vaccine_id = %s and so_lo_id = %s
-                '''%(vaccine.loai_vaccine_id.id, vaccine.so_lo_id.id)
-                cr.execute(sql)
-                ton_vaccine = cr.dictfetchone()['so_luong']
-                if vaccine.so_luong_vc > ton_vaccine:
-                    raise osv.except_osv(_('Warning!'),_('Bạn nhập %s vaccine nhưng chỉ  còn %s vaccine trong lô %s của loại %s')%(vaccine.so_luong_vc, ton_vaccine, vaccine.so_lo_id.name, vaccine.loai_vaccine_id.name))
-                    return False
-        return True
+#     def _check_sl_ton_vaccine(self, cr, uid, ids, context=None):
+#         for xl_gs in self.browse(cr, uid, ids, context=context):
+#             for vaccine in xl_gs.chi_tiet_vaccine_line:
+#                 sql = '''
+#                     select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong from ton_vaccine
+#                     where vaccine_id = %s and so_lo_id = %s
+#                 '''%(vaccine.loai_vaccine_id.id, vaccine.so_lo_id.id)
+#                 cr.execute(sql)
+#                 ton_vaccine = cr.dictfetchone()['so_luong']
+#                 if vaccine.so_luong_vc > ton_vaccine:
+#                     raise osv.except_osv(_('Warning!'),_('Bạn nhập %s vaccine nhưng chỉ  còn %s vaccine trong lô %s của loại %s')%(vaccine.so_luong_vc, ton_vaccine, vaccine.so_lo_id.name, vaccine.loai_vaccine_id.name))
+#                     return False
+#         return True
     
     def _check_xuly_giasuc(self, cr, uid, ids, context=None):
         for giasuc in self.browse(cr, uid, ids, context=context):
@@ -138,7 +138,7 @@ class xuly_giasuc(osv.osv):
         return True
     
     _constraints = [
-        (_check_sl_ton_vaccine, 'Identical Data', []),
+#         (_check_sl_ton_vaccine, 'Identical Data', []),
         (_check_xuly_giasuc, 'Identical Data', []),
         (_check_sl_gia_suc, 'Identical Data', []),
         (_check_chet_da_tp, 'Identical Data', []),
