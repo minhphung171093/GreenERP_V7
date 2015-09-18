@@ -48,11 +48,11 @@
 	      		icon="terp-graph"  
 	      		parent="menu_report_general_account" sequence="6"/>
 	      		
-      		<menuitem id="menu_action_general_ledger_report"
+      		<!-- <menuitem id="menu_action_general_ledger_report"
       			name="Bảng cân đối số phát sinh"
 	      		action="action_general_ledger_report" 
 	      		icon="terp-graph"  
-	      		parent="menu_report_general_account" sequence="10"/>
+	      		parent="menu_report_general_account" sequence="10"/> -->
 	      		
 	      	<menuitem id="menu_action_soquy_tienmat_report"
       			name="Sổ quỹ tiền mặt"
@@ -74,19 +74,19 @@
       		/>
 	      	 
 		     <menuitem id="menu_action_report_general_trial_balance"
-		     	name="Trial Balance" 
+		     	name="Bảng cân đối số phát sinh" 
 	      		action="action_report_general_trial_balance" 
 	      		icon="terp-graph"  
 	      		parent="menu_report_finance" sequence="10"/>
 	      		
       		<menuitem id="menu_action_report_general_balance_sheet"
-      			name="Balance Sheet"
+      			name="Bảng cân đối kế toán"
 	      		action="action_report_general_balance_sheet" 
 	      		icon="terp-graph"  
 	      		parent="menu_report_finance" sequence="15"/>
 	      		
       		<menuitem id="menu_action_report_general_account_profit_loss"
-      			name="Profit And Loss" 
+      			name="Kế quả kinh doanh" 
 	      		action="action_report_general_account_profit_loss" 
 	      		icon="terp-graph"  
 	      		parent="menu_report_finance" sequence="20"/>
