@@ -43,13 +43,13 @@
       		parent="account.menu_finance_reports"/>
       			
   			<menuitem id="menu_action_account_ledger_report"
-  				name="Account Ledger"
+  				name="Sổ cái"
 	      		action="action_account_ledger_report" 
 	      		icon="terp-graph"  
 	      		parent="menu_report_general_account" sequence="6"/>
 	      		
       		<menuitem id="menu_action_general_ledger_report"
-      			name="General Ledger"
+      			name="Bảng cân đối số phát sinh"
 	      		action="action_general_ledger_report" 
 	      		icon="terp-graph"  
 	      		parent="menu_report_general_account" sequence="10"/>

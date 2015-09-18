@@ -411,6 +411,18 @@ luuchuyen_tiente()
 class so_quy(osv.osv_memory):
     _name = "so.quy"    
     
+    def default_get(self, cr, uid, fields, context=None):
+        if not context:
+            context = {}
+        res = super(so_quy, self).default_get(cr, uid, fields, context=context)
+        account_ids = []
+        if context.get('report_type','')=='soquy_tienmat_report':
+            account_ids = self.pool.get('account.account').search(cr, uid, [('code','=','111')])
+        if context.get('report_type','')=='so_tiengui_nganhang_report':
+            account_ids = self.pool.get('account.account').search(cr, uid, [('code','=','112')])
+        res.update({'account_id': account_ids and account_ids[0] or False})
+        return res
+    
     def _get_fiscalyear(self, cr, uid, context=None):
         now = time.strftime('%Y-%m-%d')
         fiscalyears = self.pool.get('account.fiscalyear').search(cr, uid, [('date_start', '<', now), ('date_stop', '>', now)], limit=1 )
@@ -437,6 +449,7 @@ class so_quy(osv.osv_memory):
             ('4','4')], 'Quarter'),
         'account_id': fields.many2one('account.account', 'Account', required=True),
         'company_id': fields.many2one('res.company', 'Company', required=True),
+        'showdetails':fields.boolean('Get Detail'),
      }
     
     def _get_company(self, cr, uid, context=None):
@@ -460,14 +473,20 @@ class so_quy(osv.osv_memory):
         'fiscalyear_stop': _get_fiscalyear,
         'quarter': '1',
         'company_id': _get_company,
+        'showdetails': True,
         }
     
     def finance_report(self, cr, uid, ids, context=None): 
         datas = {'ids': context.get('active_ids', [])}
         datas['model'] = 'so.quy'
         datas['form'] = self.read(cr, uid, ids)[0]    
-        this = self.browse(cr,uid,ids[0])
         report_name = context['type_report']
+        if report_name=='soquy_tienmat_report':
+            this = self.browse(cr,uid,ids[0])
+            if this.showdetails:
+                report_name = 'soquy_tienmat_chitiet_report'
+            else:
+                report_name = 'soquy_tienmat_report'
         return {'type': 'ir.actions.report.xml', 'report_name': report_name , 'datas': datas}
     
 so_quy()

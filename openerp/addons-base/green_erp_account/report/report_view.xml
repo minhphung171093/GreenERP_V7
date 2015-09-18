@@ -258,6 +258,31 @@
 	        string="Sổ quỹ tiền mặt"
 	        rml="green_erp_account/report/soquy_tienmat_report.ods"/>
 	        
+<!--  ========================= Sổ quỹ tiền mặt chi tiết ================= -->
+		<record id="soquy_tienmat_chitiet_report" model="ir.actions.report.xml">
+	        <field name="name">soquy_tienmat_chitiet_report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">so.quy</field>
+	        <field name="report_name">soquy_tienmat_chitiet_report</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">green_erp_account/report/soquy_tienmat_chitiet_report.py</field>
+	        <field name="report_rml">green_erp_account/report/soquy_tienmat_chitiet_report.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record>		    
+		
+		<report 
+			auto="False" 
+			menu="False"
+			id="soquy_tienmat_chitiet_report" 
+			model="so.quy" 
+			name="soquy_tienmat_chitiet_report"
+	        string="Sổ quỹ tiền mặt chi tiết"
+	        rml="green_erp_account/report/soquy_tienmat_chitiet_report.ods"/>
+	        
 <!--  ========================= Sổ tiền gửi ngân hàng ================= -->
 		<record id="so_tiengui_nganhang_report" model="ir.actions.report.xml">
 	        <field name="name">so_tiengui_nganhang_report</field>

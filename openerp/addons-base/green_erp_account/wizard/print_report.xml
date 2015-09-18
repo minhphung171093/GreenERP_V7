@@ -312,6 +312,7 @@
 		        			<field name="shop_ids" widget="many2many_tags"/>
 			        		<field name="times"/>
 			        		<field name="company_id" groups="base.group_multi_company"/>
+			        		<field name="showdetails"/>
 		        		</group>
 		        		<group>
 			        		<field name="quarter" attrs="{'invisible':[('times', 'in', ['dates','years','periods'])],'required':[('times', 'not in', ['dates','years','periods'])]}"/>
@@ -321,7 +322,7 @@
 			        		<field name="date_end"  attrs="{'invisible':[('times', 'in', ['years','periods','quarter'])],'required':[('times','not in', ['years','periods'])]}"/>
 		           		</group>
 		           		<group>
-		           			<field name="account_id" domain="[('code','like','111')]"/>
+		           			<field name="account_id" domain="[('code','like','111')]" invisible='1'/>
 		           		</group>
 		            </group>
 		            <footer>
@@ -340,6 +341,7 @@
 		    <field name="view_mode">form</field>
 		    <field name="target">new</field>
 		    <field name="view_id" ref="view_soquy_tienmat_report_form"/>
+		    <field name="context">{'report_type':'soquy_tienmat_report'}</field>
 		</record>
 
 <!--  ========================= Sổ tiền gửi ngân hàng ================= -->
@@ -362,7 +364,7 @@
 			        		<field name="date_end"  attrs="{'invisible':[('times', 'in', ['years','periods','quarter'])],'required':[('times','not in', ['years','periods'])]}"/>
 		           		</group>
 		           		<group>
-		           			<field name="account_id" domain="[('code','like','112')]"/>
+		           			<field name="account_id" domain="[('code','like','112')]" invisible='1'/>
 		           		</group>
 		            </group>
 		            <footer>
@@ -381,6 +383,7 @@
 		    <field name="view_mode">form</field>
 		    <field name="target">new</field>
 		    <field name="view_id" ref="view_so_tiengui_nganhang_report_form"/>
+		    <field name="context">{'report_type':'so_tiengui_nganhang_report'}</field>
 		</record>
 		
    </data>

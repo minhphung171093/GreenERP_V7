@@ -185,19 +185,15 @@ class Parser(report_sxw.rml_parse):
     def get_trongky(self):
         res =[]
         sql='''
-            SELECT am.date gl_date, coalesce(am.date_document,am.date) doc_date, am.name doc_no, 
-                            coalesce(aih.comment, coalesce(avh.narration,
-                                coalesce(am.narration, am.ref))) description,aml.debit,aml.credit
+            SELECT aml.move_id,sum(abs(aml.debit-aml.credit)) sum_cr
                 FROM account_move_line aml 
                     JOIN account_move am on am.id = aml.move_id
-                    LEFT JOIN account_invoice aih on aml.move_id = aih.move_id -- lien ket voi invoice
-                    LEFT JOIN account_voucher avh on aml.move_id = avh.move_id -- lien ket thu/chi
-                    LEFT JOIN account_account acc on acc.id = aml.account_id
                 WHERE aml.account_id in (SELECT id from fn_get_account_child_id('%(account_id)s'))
                 and aml.shop_id = ('%(shop_ids)s')
                 and aml.company_id= '%(company_id)s'
                 and am.state = 'posted'
                 and aml.state = 'valid' and date(aml.date) between '%(start_date)s'::date and '%(end_date)s'::date
+                group by aml.move_id,am.date,am.date_document
                 order by am.date,am.date_document
         '''%({
                   'start_date': self.start_date,
@@ -208,23 +204,127 @@ class Parser(report_sxw.rml_parse):
           })
         self.cr.execute(sql)
         for line in self.cr.dictfetchall():
-            if line['debit'] and not line['credit']:
-                doc_no_thu = line['doc_no']
-                doc_no_chi = ''
-            else:
-                doc_no_chi = line['doc_no']
-                doc_no_thu = ''
-            self.ton += (line['debit'] - line['credit'])
-            res.append({
-                         'gl_date':line['gl_date'],
-                         'doc_date':line['doc_date'],
-                         'doc_no_thu': doc_no_thu,
-                         'doc_no_chi':doc_no_chi,
-                         'description':line['description'],
-                         'debit':line['debit'] or 0.0,
-                         'credit':line['credit'] or 0.0,
-                         'ton': self.ton,
-                     })
+            sql='''
+               SELECT sum(abs(aml.debit-aml.credit)) sum_dr
+                    FROM account_move_line aml 
+                        JOIN account_move am on am.id = aml.move_id
+                    WHERE aml.account_id not in (SELECT id from fn_get_account_child_id('%(account_id)s'))
+                    and aml.shop_id = ('%(shop_ids)s')
+                    and aml.company_id= '%(company_id)s'
+                    and am.state = 'posted'
+                    and aml.state = 'valid' and date(aml.date) between '%(start_date)s'::date and '%(end_date)s'::date
+                    and am.id = %(move_id)s
+            '''%({
+                      'start_date': self.start_date,
+                      'end_date': self.end_date,
+                      'shop_ids':self.shop_ids,
+                      'company_id':self.company_id,
+                      'account_id':self.account_id,
+                      'move_id':line['move_id']
+              })
+            self.cr.execute(sql)
+            for i in self.cr.dictfetchall():
+                if line['sum_cr'] == i['sum_dr']:    
+                    sql='''
+                    SELECT  am.date gl_date, coalesce(am.date_document,am.date) doc_date, am.name doc_no, 
+                            coalesce(aih.comment, coalesce(avh.narration,
+                                coalesce(am.narration, am.ref))) description,acc.code acc_code,                    
+                    aml.debit,aml.credit
+                    FROM account_move_line aml 
+                        JOIN account_move am on am.id = aml.move_id
+                        LEFT JOIN account_invoice aih on aml.move_id = aih.move_id -- lien ket voi invoice
+                        LEFT JOIN account_voucher avh on aml.move_id = avh.move_id -- lien ket thu/chi
+                        LEFT JOIN account_account acc on acc.id = aml.account_id
+                    WHERE aml.account_id not in (SELECT id from fn_get_account_child_id('%(account_id)s'))
+                    and aml.shop_id = ('%(shop_ids)s')
+                    and aml.company_id= '%(company_id)s'
+                    and am.state = 'posted'
+                    and aml.state = 'valid' and date(aml.date) between '%(start_date)s'::date and '%(end_date)s'::date
+                            and am.id = %(move_id)s
+                    ORDER BY am.date,am.date_document
+                    '''%({
+                              'start_date': self.start_date,
+                              'end_date': self.end_date,
+                              'shop_ids':self.shop_ids,
+                              'company_id':self.company_id,
+                              'account_id':self.account_id,
+                              'move_id':line['move_id']
+                      })
+                    self.cr.execute(sql)
+                    for j in self.cr.dictfetchall():
+                        if j['credit'] and not j['debit']:
+                            doc_no_thu = j['doc_no']
+                            doc_no_chi = ''
+                        else:
+                            doc_no_chi = j['doc_no']
+                            doc_no_thu = ''
+                        self.ton += (j['credit'] - j['debit'])
+                        res.append({
+                                     'gl_date':j['gl_date'],
+                                     'doc_date':j['doc_date'],
+                                     'doc_no_thu': doc_no_thu,
+                                     'doc_no_chi':doc_no_chi,
+                                     'description':j['description'],
+                                     'acc_code':j['acc_code'],
+                                     'debit':j['credit'] or 0.0,
+                                     'credit':j['debit'] or 0.0,
+                                     'ton': self.ton,
+                                 })
+                else:
+                    # truong hop lien ket nhiều nhiều
+                    sql='''
+                        select row_number() over(order by am.date, am.date_document, am.name)::int seq, 
+                            am.date gl_date, coalesce(am.date_document,am.date) doc_date, am.name doc_no, 
+                            coalesce(aih.comment, coalesce(avh.narration,
+                                coalesce(am.narration, am.ref))) description,
+                            case when aml.debit != 0
+                                then
+                                    array_to_string(ARRAY(SELECT DISTINCT a.code
+                                                          FROM account_move_line m2
+                                                          LEFT JOIN account_account a ON (m2.account_id=a.id)
+                                                          WHERE m2.move_id = aml.move_id
+                                                          AND m2.credit != 0.0), ', ') 
+                                else
+                                    array_to_string(ARRAY(SELECT DISTINCT a.code
+                                                          FROM account_move_line m2
+                                                          LEFT JOIN account_account a ON (m2.account_id=a.id)
+                                                          WHERE m2.move_id = aml.move_id
+                                                          AND m2.credit = 0.0), ', ')
+                                end acc_code,
+                            aml.debit, aml.credit
+                        from account_move_line aml
+                            join account_move am on aml.move_id=am.id
+                            and am.id=%(move_id)s
+                            and am.state = 'posted'
+                            and aml.state = 'valid'
+                            and aml.account_id in (SELECT id from fn_get_account_child_id('%(account_id)s'))
+                        left join account_invoice aih on aml.move_id = aih.move_id -- lien ket voi invoice
+                        left join account_voucher avh on aml.move_id = avh.move_id -- lien ket thu/chi
+                        order by am.date, am.date_document, am.name, acc_code
+                     '''%({
+                          'move_id':line['move_id'],
+                          'account_id':self.account_id,
+                      })
+                    self.cr.execute(sql)
+                    for j in self.cr.dictfetchall():
+                        if j['debit'] and not j['credit']:
+                            doc_no_thu = j['doc_no']
+                            doc_no_chi = ''
+                        else:
+                            doc_no_chi = j['doc_no']
+                            doc_no_thu = ''
+                        self.ton += (j['debit'] - j['credit'])
+                        res.append({
+                                     'gl_date':j['gl_date'],
+                                     'doc_date':j['doc_date'],
+                                     'doc_no_thu': doc_no_thu,
+                                     'doc_no_chi':doc_no_chi,
+                                     'description':j['description'],
+                                     'acc_code':j['acc_code'],
+                                     'debit':j['debit'] or 0.0,
+                                     'credit':j['credit'] or 0.0,
+                                     'ton': self.ton,
+                                 })
             
         return res
         
