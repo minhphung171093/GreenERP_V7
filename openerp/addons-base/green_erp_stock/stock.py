@@ -820,11 +820,14 @@ class stock_move(osv.osv):
         return res
     
     _columns = {
+        'stock_journal_id':  fields.related('picking_id', 'stock_journal_id', type='many2one', relation='stock.journal', string='Stock Journal', store=True, readonly=1),
         'invoiced_qty':fields.float('Invoiced Qty'),
         'primary_qty': fields.function(_get_product_info, string='Primary Qty', digits_compute= dp.get_precision('Product Unit of Measure'), type='float',
             store={
                 'stock.move': (lambda self, cr, uid, ids, c={}: ids, ['product_id','product_uom','product_qty'], 10),
             }, readonly=True, multi='pro_info'),
+        'costed':fields.boolean('Costed'),
+        'ini_flag':fields.boolean('Ini Flag'),
     }
     
     def _create_product_valuation_moves(self, cr, uid, move, context=None):

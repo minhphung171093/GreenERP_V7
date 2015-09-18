@@ -3,3 +3,4 @@ import wizard
 import stock
 import stock_inventory
 import sale_stock
+import res_config
