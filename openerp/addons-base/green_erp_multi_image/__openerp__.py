@@ -25,6 +25,7 @@
     "version" : "1.0",
     "author" : "nguyentoanit@gmail.com",
     "category": 'GreenERP',
+    'sequence': 1,
     'complexity': "easy",
     'depends': ['web'],
     "description": """

@@ -2,6 +2,7 @@
     "name" : "GreenERP Group Expand Buttons",
     "category": "GreenERP",
     "version" : '1.0',
+    'sequence': 1,
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',
     "description":

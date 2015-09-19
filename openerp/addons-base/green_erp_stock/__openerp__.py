@@ -23,7 +23,7 @@
     'name': 'GreenERP STOCK',
     'version': '1.0',
     'category': 'GreenERP',
-    'sequence': 14,
+    'sequence': 1,
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',
     'depends': ['green_erp_base','stock','green_erp_account'],

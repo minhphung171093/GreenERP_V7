@@ -13,7 +13,7 @@
     "description": """
     """,
     "category": 'GreenERP',
-    "sequence": 14,
+    "sequence": 1,
     "images" : [],
     "depends" : ["stock","sale",'green_erp_stock'],
     "init_xml" : [],

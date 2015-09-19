@@ -4,7 +4,7 @@
     "name": 'GreenERP m2x options',
     "version": "0.1",
     'category': 'GreenERP',
-    'sequence': 14,
+    'sequence': 1,
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',
     "description": """
@@ -43,7 +43,6 @@ Thanks to:
     "js": [
         'static/src/js/form.js',
     ],
-    "author": "Tuxservices",
     "installable": True,
     "active": False,
 }

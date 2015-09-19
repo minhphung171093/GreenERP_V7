@@ -13,7 +13,7 @@
     "description": """
     """,
     "category": 'GreenERP',
-    "sequence": 14,
+    "sequence": 1,
     "images" : [],
     "depends" : ["base","account_accountant","report_aeroo",'green_erp_base'],
     "init_xml" : [],

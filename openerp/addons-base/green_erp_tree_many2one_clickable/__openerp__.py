@@ -23,6 +23,7 @@
     "version": "1.0",
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',
+    'sequence': 1,
     "complexity": "normal",
     "description": """
 This addon provides a widget to have many2one fields in a tree view open the

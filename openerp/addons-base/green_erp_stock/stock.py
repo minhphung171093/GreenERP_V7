@@ -232,6 +232,10 @@ class stock_picking(osv.osv):
             if not account_id:
                 account_id = move_line.product_id.categ_id.\
                         property_account_income_categ.id
+            if invoice_vals['type'] == 'out_refund':
+                account_id = move_line.product_id.account_deducted_id.id
+                if not account_id:
+                    account_id = move_line.product_id.categ_id.account_deducted_id.id
         else:
             account_id = move_line.product_id.property_account_expense.id
             if not account_id:

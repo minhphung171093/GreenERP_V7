@@ -11,5 +11,28 @@
             	</label>
             </field>
         </record>
+        
+        <record id="view_category_property_form_account_modify" model="ir.ui.view">
+            <field name="name">product.category.property.form.inherit.account</field>
+            <field name="model">product.category</field>
+            <field name="inherit_id" ref="account.view_category_property_form"/>
+            <field name="arch" type="xml">
+            	<field name="property_account_expense_categ" position="after">
+                    <field name="account_deducted_id" domain="[('type','=','other')]" groups="account.group_account_user"/>
+            	</field>
+            </field>
+        </record>
+        
+        <record id="product_normal_form_view_account_modify" model="ir.ui.view">
+            <field name="name">product.normal.form.view.account.modify</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="account.product_normal_form_view"/>
+            <field name="arch" type="xml">
+            	<field name="property_account_income" position="after">
+                    <field name="account_deducted_id" domain="[('type','=','other')]" groups="account.group_account_user"/>
+            	</field>
+            </field>
+        </record>
+        
     </data>
 </openerp>

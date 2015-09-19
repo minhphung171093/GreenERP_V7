@@ -21,11 +21,12 @@
 ##############################################################################
 
 {
-    "name" : "HDSD",
+    "name" : "GreenERP HDSD",
     "version" : "1.0",
     "author" : "nguyentoanit@gmail.com",
     'website': 'http://incomtech.com/',
     "category": 'GreenERP',
+    'sequence': 1,
     'complexity': "easy",
     'depends': ['green_erp_multi_image'],
     "description": """

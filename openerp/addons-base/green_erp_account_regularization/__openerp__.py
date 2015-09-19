@@ -8,6 +8,7 @@
 	"version" : "6.1",
 	"author" : "nguyentoanit@gmail.com",
 	'website' : 'http://incomtech.com/',
+	'sequence': 1,
 	"license" : "GPL-3",
 	"category" : "GreenERP",
 	"description" : """ This module creates a new object in accounting, 

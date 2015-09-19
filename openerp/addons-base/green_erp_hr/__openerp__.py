@@ -22,7 +22,7 @@
 {
     "name" : "GreenERP HR",
     'category': 'GreenERP',
-    'sequence': 14,
+    'sequence': 1,
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',
     "depends" : ['hr','hr_contract','hr_payroll','green_erp_base'],

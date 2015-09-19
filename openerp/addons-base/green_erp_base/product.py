@@ -21,8 +21,18 @@ class product_product(osv.osv):
     
     _columns = {
         'shop_ids': fields.many2many('sale.shop', 'product_shop_rel', 'product_id', 'shop_id', 'Product Shop'),
+        'account_deducted_id': fields.many2one('account.account', 'Deducted Account'),
     }
     
 product_product()
+
+class product_category(osv.osv):
+    _inherit = "product.category"
+    
+    _columns = {
+        'account_deducted_id': fields.many2one('account.account', 'Deducted Account'),
+    }
+    
+product_category()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -23,7 +23,7 @@
     'name': 'GreenERP SALE',
     'version': '1.0',
     'category': 'GreenERP',
-    'sequence': 14,
+    'sequence': 1,
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',
     'depends': ['green_erp_base','sale','sale_stock'],

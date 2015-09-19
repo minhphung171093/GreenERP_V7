@@ -24,6 +24,7 @@
     'category': 'GreenERP',
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',
+    'sequence': 1,
     'description': """
 Web Menu Hide/Show
 ==================

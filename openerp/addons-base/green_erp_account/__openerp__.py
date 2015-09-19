@@ -23,7 +23,7 @@
     'name': 'GreenERP ACCOUNT',
     'version': '1.0',
     'category': 'GreenERP',
-    'sequence': 14,
+    'sequence': 1,
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',
     'depends': ['green_erp_base','account','account_accountant','report_aeroo','report_aeroo_ooo','green_erp_account_regularization','account_cancel'],

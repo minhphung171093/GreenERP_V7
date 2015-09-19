@@ -7,7 +7,7 @@
 {
     "name" : "GreenERP Account Search",
     "version" : "7.0",
-    'sequence': 14,
+    'sequence': 1,
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',
     'category': 'GreenERP',

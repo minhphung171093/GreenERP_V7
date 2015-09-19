@@ -33,7 +33,8 @@
 { 
     'name': 'Aeroo Reports - OpenOffice Helper Addon',
     'version': '1.1',
-    'category': 'Generic Modules/Aeroo Reporting',
+    'category': 'GreenERP',
+    'sequence': 1,
     'description': """
 Aeroo Reports OpenOffice.org helper adds following features:
 
@@ -50,8 +51,8 @@ ods -> pdf
 ods -> xls
 ods -> csv
 """,
-    'author': 'Alistek Ltd',
-    'website': 'http://www.alistek.com',
+    'author': 'nguyentoanit@gmail.com',
+    'website' : 'http://incomtech.com/',
     'complexity': "easy",
     'depends': ['base','report_aeroo'],
     "init_xml" : [],
