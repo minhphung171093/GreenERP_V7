@@ -22,7 +22,7 @@
     	</record>
 
 	    <record model="ir.actions.act_window" id="action_cocau_hientai_cac_ho_form">
-	        <field name="name">Theo khu vực</field>
+	        <field name="name">Cơ cấu đàn hiện tại</field>
 	        <field name="res_model">cocau.hientai.cac.ho.form</field>
 	        <field name="view_type">form</field>
 	        <field name="view_mode">form</field>

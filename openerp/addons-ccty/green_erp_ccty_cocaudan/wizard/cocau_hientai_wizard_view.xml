@@ -24,7 +24,7 @@
     	</record>
 
 	    <record model="ir.actions.act_window" id="action_cocau_hientai_form">
-	        <field name="name">Theo hộ</field>
+	        <field name="name">Lịch sử cơ cấu đàn</field>
 	        <field name="res_model">cocau.hientai.form</field>
 	        <field name="view_type">form</field>
 	        <field name="view_mode">form</field>
