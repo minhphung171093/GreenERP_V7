@@ -129,7 +129,7 @@ class tiem_phong_lmlm(osv.osv):
         'chinh_sua_rel': fields.related('trang_thai_id', 'chinh_sua', type="selection",
                 selection=[('nhap', 'Nháp'),('in', 'Đang xử lý'), ('ch_duyet', 'Cấp Huyện Duyệt'), ('cc_duyet', 'Chi Cục Duyệt'), ('huy', 'Hủy bỏ')], 
                 string="Chinh Sua", readonly=True, select=True),
-        'loai_vaccine_id': fields.many2one('loai.vacxin','Loại vaccine'),
+#        'loai_vaccine_id': fields.many2one('loai.vacxin','Loại vaccine'),
         'so_lo_id':fields.many2one('so.lo','Số lô'),
         'han_su_dung_rel':fields.related('so_lo_id','han_su_dung',type='date',string='HSD đến'),
         'so_luong_vc': fields.integer('Số lượng Vaccine'),

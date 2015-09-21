@@ -180,7 +180,7 @@
 								<page string = "Thông tin chi tiết vaccine tiêm phòng">
 									<field name="chi_tiet_vaccine_line" nolabel='1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}">
 										<tree editable='bottom'>
-						                   	<field name="so_lo_id"  options="{'create': false, 'create_edit': false}" readonly = '1' domain="[('vacxin_id','=',loai_vaccine_id)]" />
+						                   	<field name="so_lo_id"  options="{'create': false, 'create_edit': false}" readonly = '1' />
 						                   	<field name="han_su_dung_rel" readonly = "1" />
 						                   	<field name="so_luong_ton" readonly = "1" />
 						                    <field name="so_luong_vc"/>
