@@ -45,8 +45,11 @@
 								<page string = "Danh sách nhân viên">
 									<field name="ds_nhan_vien_line" nolabel='1'>
 										<tree editable='bottom'>
-											<field name="nhan_vien_id" on_change = "onchange_nhan_vien(nhan_vien_id)" options="{'create': false, 'create_edit': false}"/>
+											<field name="name"/>
+											<field name="ten_nv"/>
 											<field name="chuc_vu_id" options="{'create': false, 'create_edit': false}"/>
+											<field name="dia_chi"/>
+											<field name="sdt"/>
 										</tree>
 									</field>
 								</page>
@@ -77,6 +80,7 @@
 					<field name="ten_nv" />
 					<field name="chuc_vu_id" options="{'create': false, 'create_edit': false}"/>
 					<field name="dia_chi"/>
+					<field name="phong_ban_id"/>
 					<field name="sdt"/>
 				</tree>
 			</field>
@@ -92,6 +96,7 @@
 							<field name="name"/>
 							<field name="ten_nv" />
 							<field name="chuc_vu_id" options="{'create': false, 'create_edit': false}"/>
+							<field name="phong_ban_id" options="{'create': false, 'create_edit': false}"/>
 							<field name="dia_chi"/>
 							<field name="sdt"/>
 						</group>

@@ -195,11 +195,18 @@
 	                    <button name="bt_nhan_cttth" string="Nhận chi tiết thực hiện" type="object" class="oe_highlight" attrs="{'invisible':['|',('loai','!=','5_ct_th'),('state','!=','da_giao')]}"/>
 	                    
 	                    <button name="bt_hoan_thanh_ctth" string="Hoàn Thành" type="object" class="oe_highlight" attrs="{'invisible':['|',('loai','!=','5_ct_th'),('state','!=','dang_lam')]}"/>
-                		<button name="bt_hoan_thanh_ncv" string="Hoàn Thành" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','1_nhom_cv'),('state','!=','dang_lam'),('trangthai_ncv','!=','xong')]}"/>
+	                    <button name="bt_duyet_ctth" string="Duyệt" type="object" class="oe_highlight" attrs="{'invisible':['|',('loai','!=','5_ct_th'),('state','!=','cho_duyet')]}"/>
+                		
                 		<button name="bt_hoan_thanh_cv_tg" string="Hoàn Thành" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','2_nhom_cv_tg'),('state','!=','dang_lam'),('trangthai_cv_tg','!=','xong')]}"/>
+                		<button name="bt_duyet_cv_tg" string="Duyệt" type="object" class="oe_highlight" attrs="{'invisible':['|',('loai','!=','2_nhom_cv_tg'),('state','!=','cho_duyet')]}"/>
+                		
                 		<button name="bt_hoan_thanh_cv" string="Hoàn Thành" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','3_cv'),('state','!=','dang_lam'),('trangthai_cv','!=','xong')]}"/>
+                		<button name="bt_duyet_cv" string="Duyệt" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','3_cv'),('state','!=','cho_duyet')]}"/>
+                		
                 		<button name="bt_hoan_thanh_cvc" string="Hoàn Thành" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','4_cv_con'),('state','!=','dang_lam'),('trangthai_cvc','!=','xong')]}"/>
+                		<button name="bt_duyet_cvc" string="Duyệt" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','4_cv_con'),('state','!=','cho_duyet')]}"/>
 	                    
+	                    <button name="bt_hoan_thanh_ncv" string="Hoàn Thành" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','1_nhom_cv'),('state','!=','dang_lam'),('trangthai_ncv','!=','xong')]}"/>
 	                    <button name="bt_cho_duyet" string="Ban Hành" type="object" class="oe_highlight" attrs="{'invisible':['|',('loai','!=','1_nhom_cv'), ('state','!=','cho_duyet')]}"/>
 	                    
 	                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,da_nhan,dang_lam,cho_duyet,duyet" />
@@ -640,11 +647,18 @@
 	                    <button name="bt_nhan_cttth" string="Nhận chi tiết thực hiện" type="object" class="oe_highlight" attrs="{'invisible':['|',('loai','!=','5_ct_th'),('state','!=','da_giao')]}"/>
 	                    
 	                    <button name="bt_hoan_thanh_ctth" string="Hoàn Thành" type="object" class="oe_highlight" attrs="{'invisible':['|',('loai','!=','5_ct_th'),('state','!=','dang_lam')]}"/>
-                		<button name="bt_hoan_thanh_ncv" string="Hoàn Thành" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','1_nhom_cv'),('state','!=','dang_lam'),('trangthai_ncv','!=','xong')]}"/>
+	                    <button name="bt_duyet_ctth" string="Duyệt" type="object" class="oe_highlight" attrs="{'invisible':['|',('loai','!=','5_ct_th'),('state','!=','cho_duyet')]}"/>
+                		
                 		<button name="bt_hoan_thanh_cv_tg" string="Hoàn Thành" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','2_nhom_cv_tg'),('state','!=','dang_lam'),('trangthai_cv_tg','!=','xong')]}"/>
+                		<button name="bt_duyet_cv_tg" string="Duyệt" type="object" class="oe_highlight" attrs="{'invisible':['|',('loai','!=','2_nhom_cv_tg'),('state','!=','cho_duyet')]}"/>
+                		
                 		<button name="bt_hoan_thanh_cv" string="Hoàn Thành" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','3_cv'),('state','!=','dang_lam'),('trangthai_cv','!=','xong')]}"/>
+                		<button name="bt_duyet_cv" string="Duyệt" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','3_cv'),('state','!=','cho_duyet')]}"/>
+                		
                 		<button name="bt_hoan_thanh_cvc" string="Hoàn Thành" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','4_cv_con'),('state','!=','dang_lam'),('trangthai_cvc','!=','xong')]}"/>
+                		<button name="bt_duyet_cvc" string="Duyệt" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','4_cv_con'),('state','!=','cho_duyet')]}"/>
 	                    
+	                    <button name="bt_hoan_thanh_ncv" string="Hoàn Thành" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','1_nhom_cv'),('state','!=','dang_lam'),('trangthai_ncv','!=','xong')]}"/>
 	                    <button name="bt_cho_duyet" string="Ban Hành" type="object" class="oe_highlight" attrs="{'invisible':['|',('loai','!=','1_nhom_cv'), ('state','!=','cho_duyet')]}"/>
 	                    
 	                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,da_nhan,dang_lam,cho_duyet,duyet" />
@@ -699,7 +713,7 @@
 	                </group>
                 		<notebook attrs="{'invisible':[('loai','not in',['1_nhom_cv'])]}">
 		                     <page string="Chi tiết thực hiện" attrs="{'invisible':['|',('ho_tro','=','co'),('ho_tro','=','khong'),('quy_trinh_id','=',False)]}">
-		                    	<field name="ct_th_nhom_cv_line" attrs="{'readonly':[('state','in',['cho_duyet', 'duyet'])]}" context = "{'default_loai': '5_ct_th', 'default_state': 'da_giao'}" nolabel='1' >
+		                    	<field name="ct_th_nhom_cv_line" attrs="{'readonly':[('state','in',['cho_duyet', 'duyet'])]}" context = "{'default_loai': '5_ct_th', 'default_state': 'nhap'}" nolabel='1' >
 		                    		<tree>
 			                			<field name="name" string = 'Tên chi tiết'/>
 			                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
@@ -922,11 +936,18 @@
                 <form string="Nhóm công việc đã nhận" version="7.0"  >
                 <header>
                 		<button name="bt_hoan_thanh_ctth" string="Hoàn Thành" type="object" class="oe_highlight" attrs="{'invisible':['|',('loai','!=','5_ct_th'),('state','!=','dang_lam')]}"/>
-                		<button name="bt_hoan_thanh_ncv" string="Hoàn Thành" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','1_nhom_cv'),('state','!=','dang_lam'),('trangthai_ncv','!=','xong')]}"/>
+	                    <button name="bt_duyet_ctth" string="Duyệt" type="object" class="oe_highlight" attrs="{'invisible':['|',('loai','!=','5_ct_th'),('state','!=','cho_duyet')]}"/>
+                		
                 		<button name="bt_hoan_thanh_cv_tg" string="Hoàn Thành" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','2_nhom_cv_tg'),('state','!=','dang_lam'),('trangthai_cv_tg','!=','xong')]}"/>
+                		<button name="bt_duyet_cv_tg" string="Duyệt" type="object" class="oe_highlight" attrs="{'invisible':['|',('loai','!=','2_nhom_cv_tg'),('state','!=','cho_duyet')]}"/>
+                		
                 		<button name="bt_hoan_thanh_cv" string="Hoàn Thành" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','3_cv'),('state','!=','dang_lam'),('trangthai_cv','!=','xong')]}"/>
+                		<button name="bt_duyet_cv" string="Duyệt" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','3_cv'),('state','!=','cho_duyet')]}"/>
+                		
                 		<button name="bt_hoan_thanh_cvc" string="Hoàn Thành" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','4_cv_con'),('state','!=','dang_lam'),('trangthai_cvc','!=','xong')]}"/>
+                		<button name="bt_duyet_cvc" string="Duyệt" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','4_cv_con'),('state','!=','cho_duyet')]}"/>
 	                    
+	                    <button name="bt_hoan_thanh_ncv" string="Hoàn Thành" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','1_nhom_cv'),('state','!=','dang_lam'),('trangthai_ncv','!=','xong')]}"/>
 	                    <button name="bt_cho_duyet" string="Ban Hành" type="object" class="oe_highlight" attrs="{'invisible':['|',('loai','!=','1_nhom_cv'), ('state','!=','cho_duyet')]}"/>
 	                    
 	                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,da_nhan,dang_lam,cho_duyet,duyet" />
@@ -1267,11 +1288,18 @@
                 <form string="Nhóm công việc đang làm" version="7.0"  >
                 <header>
                 		<button name="bt_hoan_thanh_ctth" string="Hoàn Thành" type="object" class="oe_highlight" attrs="{'invisible':['|',('loai','!=','5_ct_th'),('state','!=','dang_lam')]}"/>
-                		<button name="bt_hoan_thanh_ncv" string="Hoàn Thành" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','1_nhom_cv'),('state','!=','dang_lam'),('trangthai_ncv','!=','xong')]}"/>
+	                    <button name="bt_duyet_ctth" string="Duyệt" type="object" class="oe_highlight" attrs="{'invisible':['|',('loai','!=','5_ct_th'),('state','!=','cho_duyet')]}"/>
+                		
                 		<button name="bt_hoan_thanh_cv_tg" string="Hoàn Thành" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','2_nhom_cv_tg'),('state','!=','dang_lam'),('trangthai_cv_tg','!=','xong')]}"/>
+                		<button name="bt_duyet_cv_tg" string="Duyệt" type="object" class="oe_highlight" attrs="{'invisible':['|',('loai','!=','2_nhom_cv_tg'),('state','!=','cho_duyet')]}"/>
+                		
                 		<button name="bt_hoan_thanh_cv" string="Hoàn Thành" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','3_cv'),('state','!=','dang_lam'),('trangthai_cv','!=','xong')]}"/>
+                		<button name="bt_duyet_cv" string="Duyệt" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','3_cv'),('state','!=','cho_duyet')]}"/>
+                		
                 		<button name="bt_hoan_thanh_cvc" string="Hoàn Thành" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','4_cv_con'),('state','!=','dang_lam'),('trangthai_cvc','!=','xong')]}"/>
+                		<button name="bt_duyet_cvc" string="Duyệt" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','4_cv_con'),('state','!=','cho_duyet')]}"/>
 	                    
+	                    <button name="bt_hoan_thanh_ncv" string="Hoàn Thành" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','1_nhom_cv'),('state','!=','dang_lam'),('trangthai_ncv','!=','xong')]}"/>
 	                    <button name="bt_cho_duyet" string="Ban Hành" type="object" class="oe_highlight" attrs="{'invisible':['|',('loai','!=','1_nhom_cv'), ('state','!=','cho_duyet')]}"/>
 	                    
 	                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,da_nhan,dang_lam,cho_duyet,duyet" />
@@ -1611,7 +1639,15 @@
             <field name="arch" type="xml">
                 <form string="Nhóm công việc chờ duyệt" version="7.0" create = 'false' edit = 'false'>
                 <header>
-                		<button name="bt_cho_duyet" string="Ban Hành" type="object" class="oe_highlight" attrs="{'invisible':['|',('loai','!=','1_nhom_cv'), ('state','!=','cho_duyet')]}"/>
+	                    <button name="bt_duyet_ctth" string="Duyệt" type="object" class="oe_highlight" attrs="{'invisible':['|',('loai','!=','5_ct_th'),('state','!=','cho_duyet')]}"/>
+                		
+                		<button name="bt_duyet_cv_tg" string="Duyệt" type="object" class="oe_highlight" attrs="{'invisible':['|',('loai','!=','2_nhom_cv_tg'),('state','!=','cho_duyet')]}"/>
+                		
+                		<button name="bt_duyet_cv" string="Duyệt" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','3_cv'),('state','!=','cho_duyet')]}"/>
+                		
+                		<button name="bt_duyet_cvc" string="Duyệt" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','4_cv_con'),('state','!=','cho_duyet')]}"/>
+	                    
+	                    <button name="bt_cho_duyet" string="Ban Hành" type="object" class="oe_highlight" attrs="{'invisible':['|',('loai','!=','1_nhom_cv'), ('state','!=','cho_duyet')]}"/>
 	                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,da_nhan,dang_lam,cho_duyet,duyet" />
 	            </header>  
 	                <sheet>

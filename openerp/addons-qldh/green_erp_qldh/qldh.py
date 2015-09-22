@@ -85,7 +85,7 @@ class nhom_cong_viec(osv.osv):
                                   ('da_nhan','Đã nhận'),
                                   ('dang_lam','Đang làm'),
                                   ('cho_duyet','Chờ phê duyệt'),
-                                  ('duyet','Đã ban hành')],'Trạng thái'),
+                                  ('duyet','Đã duyệt')],'Trạng thái'),
         'loai':fields.selection([('1_nhom_cv','Nhóm công việc'),
                                  ('3_cv','Công việc'),
                                  ('4_cv_con','Công việc con'),
@@ -215,14 +215,14 @@ class nhom_cong_viec(osv.osv):
                                 '''%(nhom_cv.ct_th_cv_con_id.cv_tg_id.id)
                                 cr.execute(sql)
                                 
-                        
-                    
-                    
         return new_write    
     
     def bt_hoan_thanh_ctth(self, cr, uid, ids, context=None):
-        self.write(cr, uid, ids,{'state':'cho_duyet'})
-        dem_cho_duyet = 0
+        return self.write(cr, uid, ids,{'state':'cho_duyet'})
+    
+    def bt_duyet_ctth(self, cr, uid, ids, context=None):
+        self.write(cr, uid, ids,{'state':'duyet'})
+        dem_duyet = 0
         for nhom_cv in self.browse(cr,uid,ids):
             if nhom_cv.loai == '5_ct_th':
                 if nhom_cv.ct_th_nhom_cv_id:
@@ -232,9 +232,9 @@ class nhom_cong_viec(osv.osv):
                     cr.execute(sql)
                     state_ids = cr.dictfetchall()
                     for state in state_ids:
-                        if state['state']=='cho_duyet':
-                            dem_cho_duyet += 1
-                    if len(state_ids) != 0 and len(state_ids) == dem_cho_duyet:
+                        if state['state']=='duyet':
+                            dem_duyet += 1
+                    if len(state_ids) != 0 and len(state_ids) == dem_duyet:
                         sql = '''
                             update nhom_cong_viec set trangthai_ncv = 'xong' where id = %s and loai = '1_nhom_cv'
                         '''%(nhom_cv.ct_th_nhom_cv_id.id)
@@ -247,9 +247,9 @@ class nhom_cong_viec(osv.osv):
                     cr.execute(sql)
                     state_ids = cr.dictfetchall()
                     for state in state_ids:
-                        if state['state']=='cho_duyet':
-                            dem_cho_duyet += 1
-                    if len(state_ids) != 0 and len(state_ids) == dem_cho_duyet:
+                        if state['state']=='duyet':
+                            dem_duyet += 1
+                    if len(state_ids) != 0 and len(state_ids) == dem_duyet:
                         sql = '''
                             update nhom_cong_viec set trangthai_cv_tg = 'xong' where id = %s and loai = '2_nhom_cv_tg'
                         '''%(nhom_cv.ct_th_cv_tg_id.id)
@@ -262,9 +262,9 @@ class nhom_cong_viec(osv.osv):
                     cr.execute(sql)
                     state_ids = cr.dictfetchall()
                     for state in state_ids:
-                        if state['state']=='cho_duyet':
-                            dem_cho_duyet += 1
-                    if len(state_ids) != 0 and len(state_ids) == dem_cho_duyet:
+                        if state['state']=='duyet':
+                            dem_duyet += 1
+                    if len(state_ids) != 0 and len(state_ids) == dem_duyet:
                         sql = '''
                             update nhom_cong_viec set trangthai_cv = 'xong' where id = %s and loai = '3_cv'
                         '''%(nhom_cv.ct_th_cv_id.id)
@@ -277,9 +277,9 @@ class nhom_cong_viec(osv.osv):
                     cr.execute(sql)
                     state_ids = cr.dictfetchall()
                     for state in state_ids:
-                        if state['state']=='cho_duyet':
-                            dem_cho_duyet += 1
-                    if len(state_ids) != 0 and len(state_ids) == dem_cho_duyet:
+                        if state['state']=='duyet':
+                            dem_duyet += 1
+                    if len(state_ids) != 0 and len(state_ids) == dem_duyet:
                         sql = '''
                             update nhom_cong_viec set trangthai_cvc = 'xong' where id = %s and loai = '4_cv_con'
                         '''%(nhom_cv.ct_th_cv_con_id.id)
@@ -289,31 +289,18 @@ class nhom_cong_viec(osv.osv):
     def bt_hoan_thanh_ncv(self, cr, uid, ids, context=None):
         dem_cho_duyet = 0
         self.write(cr, uid, ids,{'state':'cho_duyet'})
-        for ncv in self.browse(cr,uid,ids):
-            if ncv.loai == '1_nhom_cv':
-                for ct_th in ncv.ct_th_nhom_cv_line:
-                    self.write(cr,uid,[ct_th.id],{
-                                                  'state': 'duyet',
-                                                  })
-                for cv in ncv.cong_viec_line:
-                    self.write(cr,uid,[cv.id],{
-                                                  'state': 'duyet',
-                                                  })
         return True
     
     def bt_hoan_thanh_cv(self, cr, uid, ids, context=None):
         dem_cho_duyet = 0
         self.write(cr, uid, ids,{'state':'cho_duyet'})
+        return True
+    
+    def bt_duyet_cv(self, cr, uid, ids, context=None):
+        dem_cho_duyet = 0
+        self.write(cr, uid, ids,{'state':'duyet'})
         for cv in self.browse(cr,uid,ids):
             if cv.loai == '3_cv':
-                for ct_th in cv.ct_th_cv_line:
-                    self.write(cr,uid,[ct_th.id],{
-                                                  'state': 'duyet',
-                                                  })
-                for cv_con in cv.cong_viec_con_line:
-                    self.write(cr,uid,[cv_con.id],{
-                                                  'state': 'duyet',
-                                                  })
                 if cv.cong_viec_id:
                     sql = '''
                         select state from nhom_cong_viec where cong_viec_id = %s and loai = '3_cv'
@@ -321,7 +308,7 @@ class nhom_cong_viec(osv.osv):
                     cr.execute(sql)
                     state_ids = cr.dictfetchall()
                     for state in state_ids:
-                        if state['state']=='cho_duyet':
+                        if state['state']=='duyet':
                             dem_cho_duyet += 1
                     if len(state_ids) != 0 and len(state_ids) == dem_cho_duyet:
                         sql = '''
@@ -335,7 +322,7 @@ class nhom_cong_viec(osv.osv):
                     cr.execute(sql)
                     state_ids = cr.dictfetchall()
                     for state in state_ids:
-                        if state['state']=='cho_duyet':
+                        if state['state']=='duyet':
                             dem_cho_duyet += 1
                     if len(state_ids) != 0 and len(state_ids) == dem_cho_duyet:
                         sql = '''
@@ -347,19 +334,20 @@ class nhom_cong_viec(osv.osv):
     def bt_hoan_thanh_cvc(self, cr, uid, ids, context=None):
         dem_cho_duyet = 0
         self.write(cr, uid, ids,{'state':'cho_duyet'})
+        return True
+    
+    def bt_duyet_cvc(self, cr, uid, ids, context=None):
+        dem_cho_duyet = 0
+        self.write(cr, uid, ids,{'state':'duyet'})
         for cvc in self.browse(cr,uid,ids):
             if cvc.loai == '4_cv_con':
-                for ct_th in cvc.ct_th_cv_con_line:
-                    self.write(cr,uid,[ct_th.id],{
-                                                  'state': 'duyet',
-                                                  })
                 sql = '''
                     select state from nhom_cong_viec where cong_viec_con_id = %s and loai = '4_cv_con'
                 '''%(cvc.cong_viec_con_id.id)
                 cr.execute(sql)
                 state_ids = cr.dictfetchall()
                 for state in state_ids:
-                    if state['state']=='cho_duyet':
+                    if state['state']=='duyet':
                         dem_cho_duyet += 1
                 if len(state_ids) != 0 and len(state_ids) == dem_cho_duyet:
                     sql = '''
@@ -371,23 +359,20 @@ class nhom_cong_viec(osv.osv):
     def bt_hoan_thanh_cv_tg(self, cr, uid, ids, context=None):
         dem_cho_duyet = 0
         self.write(cr, uid, ids,{'state':'cho_duyet'})
+        return True
+    
+    def bt_duyet_cv_tg(self, cr, uid, ids, context=None):
+        dem_cho_duyet = 0
+        self.write(cr, uid, ids,{'state':'duyet'})
         for cv_tg in self.browse(cr,uid,ids):
             if cv_tg.loai == '2_nhom_cv_tg':
-                for ct_th in cv_tg.ct_th_cv_tg_line:
-                    self.write(cr,uid,[ct_th.id],{
-                                                  'state': 'duyet',
-                                                  })
-                for cv in cv_tg.cong_viec_pc_line:
-                    self.write(cr,uid,[cv.id],{
-                                                  'state': 'duyet',
-                                                  })
                 sql = '''
                     select state from nhom_cong_viec where phan_cong_phong_ban_id = %s and loai = '2_nhom_cv_tg'
                 '''%(cv_tg.phan_cong_phong_ban_id.id)
                 cr.execute(sql)
                 state_ids = cr.dictfetchall()
                 for state in state_ids:
-                    if state['state']=='cho_duyet':
+                    if state['state']=='duyet':
                         dem_cho_duyet += 1
                 if len(state_ids) != 0 and len(state_ids) == dem_cho_duyet:
                     sql = '''
@@ -396,8 +381,7 @@ class nhom_cong_viec(osv.osv):
                     cr.execute(sql) 
         return True
     
-    def bt_duyet_trinh(self, cr, uid, ids, context=None):
-        return True
+    
     
     def bt_duyet_trinh_cv_con(self, cr, uid, ids, context=None):
         return True
