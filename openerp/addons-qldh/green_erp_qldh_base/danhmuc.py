@@ -30,48 +30,107 @@ class phong_ban(osv.osv):
     _columns = {
         'name': fields.char('Tên phòng ban', size = 100, required=True),
         'truong_phong_id': fields.many2one('nhan.vien','Trưởng phòng', required=True),
-        'ds_nhan_vien_line': fields.one2many('nhan.vien','phong_ban_id','Các nhân viên'),
+        'ds_nhan_vien_line': fields.one2many('ds.nhan.vien.line','phong_ban_id','Các nhân viên'),
                 }
+    def _check_truong_phong_id(self, cr, uid, ids, context=None):
+        for nhan_vien in self.browse(cr, uid, ids, context=context):
+            nhan_vien_ids = self.search(cr, uid, [('id','!=',nhan_vien.id),('truong_phong_id', '=',nhan_vien.truong_phong_id.id)])
+            if nhan_vien_ids:
+                raise osv.except_osv(_('Warning!'),_('Trưởng phòng %s đã thuộc một phòng ban !')%(nhan_vien.truong_phong_id.name))
+                return False
+            return True
+         
+    _constraints = [
+        (_check_truong_phong_id, 'Identical Data',[]),
+    ]   
+    
+    def create(self, cr, uid, vals, context=None):
+        new_id = super(phong_ban, self).create(cr, uid, vals, context)
+        phong = self.browse(cr,uid,new_id)
+        sql = '''
+            update nhan_vien set phong_ban_id = %s where id = %s
+        '''%(new_id, phong.truong_phong_id.id)
+        cr.execute(sql)
+        for line in phong.ds_nhan_vien_line:
+            sql = '''
+                update nhan_vien set phong_ban_id = %s where id = %s
+            '''%(new_id, line.nhan_vien_id.id)
+            cr.execute(sql)
+        return new_id
+    
+    def write(self, cr, uid, ids, vals, context=None):
+        new_write = super(phong_ban, self).write(cr, uid,ids, vals, context)
+        for phong in self.browse(cr,uid,ids):
+            sql = '''
+                update nhan_vien set phong_ban_id = %s where id = %s
+            '''%(new_id, phong.truong_phong_id.id)
+            cr.execute(sql)
+            for line in phong.ds_nhan_vien_line:
+                sql = '''
+                    update nhan_vien set phong_ban_id = %s where id = %s
+                '''%(new_id, line.nhan_vien_id.id)
+                cr.execute(sql)
+        return new_write
 phong_ban()
+
+class ds_nhan_vien_line(osv.osv):
+    _name = "ds.nhan.vien.line"
+    _columns = {
+        'phong_ban_id': fields.many2one('phong.ban','Phòng ban', ondelete = 'cascade'),
+        'nhan_vien_id': fields.many2one('nhan.vien','Nhân viên', required=True),
+        'chuc_vu_id': fields.many2one('chuc.vu','Chức vụ', required=True),
+        'dia_chi': fields.char('Địa chỉ', size = 100),
+        'sdt': fields.char('Số điện thoại', size = 100),
+                }
+    def onchange_nhan_vien_id(self, cr, uid, ids, nhan_vien_id = False):
+        if nhan_vien_id:
+            nhan_vien = self.pool.get('nhan.vien').browse(cr,uid,nhan_vien_id)
+            return {'value': {'chuc_vu_id': nhan_vien.chuc_vu_id.id, 'dia_chi': nhan_vien.dia_chi and nhan_vien.dia_chi or '', 'sdt': nhan_vien.sdt and nhan_vien.sdt or ''}}
+   
+    def _check_nhan_vien_id(self, cr, uid, ids, context=None):
+        for nhan_vien in self.browse(cr, uid, ids, context=context):
+            nhan_vien_ids = self.search(cr, uid, [('id','!=',nhan_vien.id),('nhan_vien_id', '=',nhan_vien.nhan_vien_id.id)])
+            if nhan_vien_ids:
+                raise osv.except_osv(_('Warning!'),_('Nhân viên %s đã thuộc một phòng ban !')%(nhan_vien.nhan_vien_id.name))
+                return False
+            return True
+         
+    _constraints = [
+        (_check_nhan_vien_id, 'Identical Data',[]),
+    ]   
+    
+
+ds_nhan_vien_line()
 
 
 class nhan_vien(osv.osv):
     _name = "nhan.vien"
     _columns = {
         'name': fields.char('Mã nhân viên', size = 100, required=True),
-        'phong_ban_id': fields.many2one('phong.ban','Phòng ban', ondelete = 'cascade'),
+        'phong_ban_id': fields.many2one('phong.ban','Phòng ban'),
         'ten_nv': fields.char('Tên nhân viên', size = 100, required=True),
         'chuc_vu_id': fields.many2one('chuc.vu','Chức vụ', required=True),
         'dia_chi': fields.char('Địa chỉ', size = 100),
         'sdt': fields.char('Số điện thoại', size = 100),
                 }
     
-#     def onchange_nhan_vien(self, cr, uid, ids,nhan_vien_id=False,context=None):
-#         if nhan_vien_id:
-#             nhan_vien = self.pool.get('nhan.vien').browse(cr,uid,nhan_vien_id)
-#         res = {'value':{
-#                         'chuc_vu_id':nhan_vien.chuc_vu_id.id,
-#                       }
-#                }
-#         return res 
-#     def create(self, cr, uid, vals, context=None):
-#         if 'nhan_vien_id' in vals and vals['nhan_vien_id']:
-#             nhan_vien = self.pool.get('nhan.vien').browse(cr,uid,vals['nhan_vien_id'])
-#             vals.update({
-#                         'chuc_vu_id':nhan_vien.chuc_vu_id.id,
-#                         })
-#         new_id = super(ds_nhan_vien_line, self).create(cr, uid, vals, context)
-#         return new_id
-#     
-#     def write(self, cr, uid, ids, vals, context=None):
-#         if 'nhan_vien_id' in vals and vals['nhan_vien_id']:
-#             nhan_vien = self.pool.get('nhan.vien').browse(cr,uid,vals['nhan_vien_id'])
-#             vals.update({
-#                         'chuc_vu_id':nhan_vien.chuc_vu_id.id,
-#                         })
-#         new_write = super(ds_nhan_vien_line, self).write(cr, uid, ids, vals, context)
-#         return new_write
+    def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
+        if context is None:
+            context = {}
+        if context.get('search_nhan_vien_id'):
+            sql = '''
+                select id from nhan_vien
+                where phong_ban_id is null
+            '''
+            cr.execute(sql)
+            nv_ids = [row[0] for row in cr.fetchall()]
+            args += [('id','in',nv_ids)]
+        return super(nhan_vien, self).search(cr, uid, args, offset=offset, limit=limit, order=order, context=context, count=count)
     
+    def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
+       ids = self.search(cr, user, args, context=context, limit=limit)
+       return self.name_get(cr, user, ids, context=context)
+   
     def name_get(self, cr, uid, ids, context=None):
         res = []
         if not ids:

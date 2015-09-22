@@ -391,8 +391,6 @@ class nhom_cong_viec(osv.osv):
             if ncv.quy_trinh_id and ncv.loai == '1_nhom_cv':
                 for ctth in ncv.ct_th_nhom_cv_line:
                     self.write(cr, uid, [ctth.id],{'state':'da_giao'})
-                for phan_cong in ncv.phan_cong_phong_ban_line:
-                    self.write(cr, uid, [ctth.id],{'state':'da_giao'})
         return self.write(cr, uid, ids,{'state':'da_giao'})
     
     def bt_nhan_ncv(self, cr, uid, ids, context=None):
@@ -430,7 +428,7 @@ class nhom_cong_viec(osv.osv):
                 }
 
     
-    def onchange_quy_trinh_id(self, cr, uid, ids, quy_trinh_id=False, loai=False):
+    def onchange_quy_trinh_id(self, cr, uid, ids, quy_trinh_id=False, loai=False, state=False):
         ct_nhom_cv_line = []
         for cv in self.browse(cr,uid,ids):
             if loai == "1_nhom_cv":
@@ -457,18 +455,32 @@ class nhom_cong_viec(osv.osv):
             quy_trinh = self.pool.get('quy.trinh').browse(cr,uid,quy_trinh_id)
             for line in quy_trinh.buoc_thuc_hien_line:
                 if loai == "1_nhom_cv":
-                    ct_nhom_cv_line.append((0,0,{
-                                                'name': line.name,
-                                                'datas_fname': line.datas_fname,
-                                                'datas': line.datas,
-                                                'store_fname': line.store_fname,
-                                                'db_datas': line.db_datas,
-                                                'file_size': line.file_size,
-                                                'yeu_cau_kq': line.yeu_cau_kq,
-                                                'cach_thuc_hien': line.cach_thuc_hien,
-                                                'state': 'da_giao',
-                                                'loai': '5_ct_th',
-                                                 }))
+                    if state == 'nhap':
+                        ct_nhom_cv_line.append((0,0,{
+                                                    'name': line.name,
+                                                    'datas_fname': line.datas_fname,
+                                                    'datas': line.datas,
+                                                    'store_fname': line.store_fname,
+                                                    'db_datas': line.db_datas,
+                                                    'file_size': line.file_size,
+                                                    'yeu_cau_kq': line.yeu_cau_kq,
+                                                    'cach_thuc_hien': line.cach_thuc_hien,
+                                                    'state': 'nhap',
+                                                    'loai': '5_ct_th',
+                                                     }))
+                    else:
+                        ct_nhom_cv_line.append((0,0,{
+                                                    'name': line.name,
+                                                    'datas_fname': line.datas_fname,
+                                                    'datas': line.datas,
+                                                    'store_fname': line.store_fname,
+                                                    'db_datas': line.db_datas,
+                                                    'file_size': line.file_size,
+                                                    'yeu_cau_kq': line.yeu_cau_kq,
+                                                    'cach_thuc_hien': line.cach_thuc_hien,
+                                                    'state': 'da_giao',
+                                                    'loai': '5_ct_th',
+                                                     }))
                     return {'value': {'ct_th_nhom_cv_line': ct_nhom_cv_line}}
                 if loai == "2_nhom_cv_tg":
                     ct_nhom_cv_line.append((0,0,{

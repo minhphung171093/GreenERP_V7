@@ -4,10 +4,7 @@
 		<menuitem id="quan_ly" name="Quản Lý"/>
 			    
 			<menuitem id="menu_gd_dh" parent="quan_ly" name="Menu Giám đốc / Lãnh đạo" sequence = '2'/>    
-			    <menuitem action="action_nhom_cong_viec_tao" id="menu_action_nhom_cong_viec_tao" parent="menu_gd_dh" name="Tạo mới nhóm công việc"  sequence="1"/>
-			    <menuitem action="action_nhom_cong_viec_da_giao" id="menu_action_nhom_cong_viec_da_giao" parent="menu_gd_dh" name="Nhóm công việc đã giao"  sequence="2"/>
-			    <menuitem action="action_nhom_cong_viec_cho_duyet_giam_doc" id="menu_action_nhom_cong_viec_cho_duyet_giam_doc" parent="menu_gd_dh" name="Nhóm công việc chờ duyệt"  sequence="3"/>
-			    <menuitem action="action_nhom_cong_viec_da_ban_hanh_giam_doc" id="menu_action_nhom_cong_viec_da_ban_hanh_giam_doc" parent="menu_gd_dh" name="Nhóm công việc đã ban hành"  sequence="4"/>
+			    <menuitem action="action_nhom_cong_viec_tao" id="menu_action_nhom_cong_viec_tao" parent="menu_gd_dh" name="Nhóm công việc"  sequence="1"/>
 			
 			<menuitem id="menu_chuyen_vien" parent="quan_ly" name="Menu Chuyên viên" sequence = '4'/>  
 				<menuitem action="action_nhom_cong_viec_moi_giao" id="menu_action_nhom_cong_viec_moi_giao_cv" parent="menu_chuyen_vien" name="Mới giao"  sequence="1"/>

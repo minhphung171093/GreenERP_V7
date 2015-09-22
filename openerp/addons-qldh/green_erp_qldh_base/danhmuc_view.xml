@@ -39,14 +39,13 @@
 					<sheet>
 						<group col="4" colspan="2" string = 'Phòng ban'>  
 							<field name="name"/>
-							<field name="truong_phong_id" options="{'create': false, 'create_edit': false}"/>  
+							<field name="truong_phong_id" context="{'search_nhan_vien_id':True}" options="{'create': false, 'create_edit': false}"/>  
 						</group>
 							<notebook>
 								<page string = "Danh sách nhân viên">
 									<field name="ds_nhan_vien_line" nolabel='1'>
 										<tree editable='bottom'>
-											<field name="name"/>
-											<field name="ten_nv"/>
+											<field name="nhan_vien_id" context="{'search_nhan_vien_id':True}" on_change = "onchange_nhan_vien_id(nhan_vien_id)" options="{'create': false, 'create_edit': false}"/>
 											<field name="chuc_vu_id" options="{'create': false, 'create_edit': false}"/>
 											<field name="dia_chi"/>
 											<field name="sdt"/>
