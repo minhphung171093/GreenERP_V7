@@ -2,21 +2,26 @@
 <openerp>
     <data>
 		<menuitem id="quan_ly" name="Quản Lý"/>
-	    	<menuitem id="menu_quan_ly_dh" parent="quan_ly" name="Quản lý điều hành"/>
+	    	<menuitem id="menu_quan_ly_dh" parent="quan_ly" name="Quản lý điều hành" sequence = '1'/>
 			    <menuitem action="action_quy_trinh_form" id="menu_action_quy_trinh_form" parent="menu_quan_ly_dh" name="Quy trình"  sequence="1"/>
-			<menuitem id="menu_gd_dh" parent="quan_ly" name="Menu Giám đốc / Lãnh đạo"/>    
-			    <menuitem action="action_nhom_cong_viec" id="menu_action_nhom_cong_viec" parent="menu_gd_dh" name="Nhóm công việc"  sequence="1"/>
+			<menuitem id="menu_gd_dh" parent="quan_ly" name="Menu Giám đốc / Lãnh đạo" sequence = '2'/>    
+			    <menuitem action="action_nhom_cong_viec_tao" id="menu_action_nhom_cong_viec_tao" parent="menu_gd_dh" name="Tạo mới nhóm công việc"  sequence="1"/>
 			    <menuitem action="action_nhom_cong_viec_da_giao" id="menu_action_nhom_cong_viec_da_giao" parent="menu_gd_dh" name="Nhóm công việc đã giao"  sequence="2"/>
-			    <menuitem action="action_nhom_cong_viec_cho_phe_duyet" id="menu_action_nhom_cong_viec_cho_phe_duyet" parent="menu_gd_dh" name="Nhóm công việc chờ duyệt"  sequence="3"/>
-			    <menuitem action="action_nhom_cong_viec_da_duyet" id="menu_action_nhom_cong_viec_da_duyet" parent="menu_gd_dh" name="Nhóm công việc đã duyệt"  sequence="4"/>
+			    <menuitem action="action_nhom_cong_viec_cho_duyet_giam_doc" id="menu_action_nhom_cong_viec_cho_duyet_giam_doc" parent="menu_gd_dh" name="Nhóm công việc chờ duyệt"  sequence="3"/>
+			    <menuitem action="action_nhom_cong_viec_da_ban_hanh_giam_doc" id="menu_action_nhom_cong_viec_da_ban_hanh_giam_doc" parent="menu_gd_dh" name="Nhóm công việc đã ban hành"  sequence="4"/>
 			
-			<menuitem id="menu_chuyen_vien" parent="quan_ly" name="Menu Chuyên viên"/>   
-				<menuitem action="action_nhom_cong_viec_da_duoc_giao" id="menu_action_nhom_cong_viec_da_duoc_giao" parent="menu_chuyen_vien" name="Nhóm công việc đã được giao"  sequence="1"/>
+			<menuitem id="menu_chuyen_vien" parent="quan_ly" name="Menu Chuyên viên" sequence = '4'/>  
+				<menuitem action="action_nhom_cong_viec_moi_giao" id="menu_action_nhom_cong_viec_moi_giao_cv" parent="menu_chuyen_vien" name="Mới giao"  sequence="1"/>
+				<menuitem action="action_nhom_cong_viec_da_nhan" id="menu_action_nhom_cong_viec_da_nhan_cv" parent="menu_chuyen_vien" name="Đã nhận"  sequence="2"/>
+				<menuitem action="action_nhom_cong_viec_dang_lam" id="menu_action_nhom_cong_viec_dang_lam_cv" parent="menu_chuyen_vien" name="Đang làm"  sequence="3"/>
+				<menuitem action="action_nhom_cong_viec_cho_duyet" id="menu_action_nhom_cong_viec_cho_duyet_cv" parent="menu_chuyen_vien" name="Chờ duyệt"  sequence="4"/>
+				<menuitem action="action_nhom_cong_viec_da_ban_hanh" id="menu_action_nhom_cong_viec_da_ban_hanh_cv" parent="menu_chuyen_vien" name="Đã ban hành"  sequence="5"/> 
 			
-			<menuitem id="menu_lanh_dao_phong" parent="quan_ly" name="Menu Lãnh đạo phòng"/>       
-				<menuitem action="action_nhom_cong_viec_moi_giao" id="menu_action_nhom_cong_viec_moi_giao" parent="menu_lanh_dao_phong" name="Nhóm công việc mới giao"  sequence="1"/>
-				<menuitem action="action_nhom_cong_viec_dang_lam" id="menu_action_nhom_cong_viec_dang_lam" parent="menu_lanh_dao_phong" name="Nhóm công việc đang làm"  sequence="2"/>
-			    <menuitem action="action_cong_viec" id="menu_action_cong_viec" parent="menu_lanh_dao_phong" name="Công việc"  sequence="3"/>
-			    <menuitem action="action_cong_viec_con" id="menu_action_cong_viec_con" parent="menu_lanh_dao_phong" name="Công việc con"  sequence="4"/> 
+			<menuitem id="menu_lanh_dao_phong" parent="quan_ly" name="Menu Lãnh đạo phòng" sequence = '3'/>       
+				<menuitem action="action_nhom_cong_viec_moi_giao" id="menu_action_nhom_cong_viec_moi_giao" parent="menu_lanh_dao_phong" name="Mới giao"  sequence="1"/>
+				<menuitem action="action_nhom_cong_viec_da_nhan" id="menu_action_nhom_cong_viec_da_nhan" parent="menu_lanh_dao_phong" name="Đã nhận"  sequence="2"/>
+				<menuitem action="action_nhom_cong_viec_dang_lam" id="menu_action_nhom_cong_viec_dang_lam" parent="menu_lanh_dao_phong" name="Đang làm"  sequence="3"/>
+				<menuitem action="action_nhom_cong_viec_cho_duyet" id="menu_action_nhom_cong_viec_cho_duyet" parent="menu_lanh_dao_phong" name="Chờ duyệt"  sequence="4"/>
+				<menuitem action="action_nhom_cong_viec_da_ban_hanh" id="menu_action_nhom_cong_viec_da_ban_hanh" parent="menu_lanh_dao_phong" name="Đã ban hành"  sequence="5"/>
     </data>
 </openerp>

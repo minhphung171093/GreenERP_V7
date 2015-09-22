@@ -19,6 +19,25 @@ base_path = os.path.dirname(modules.get_module_path('green_erp_qldh_base'))
 
 class nhom_cong_viec(osv.osv):
     _name = "nhom.cong.viec"
+    _order = 'loai desc'
+    def default_get(self, cr, uid, fields, context=None):
+        if context is None:
+            context = {}
+        res = super(nhom_cong_viec, self).default_get(cr, uid, fields, context)
+        cong_viec_con_id = context.get('default_cong_viec_con_id',False)
+        if cong_viec_con_id:
+            cong_viec_con = self.browse(cr, uid, cong_viec_con_id)
+            if cong_viec_con.cong_viec_id:
+                res.update({'nhom_cv_id':cong_viec_con.cong_viec_id and cong_viec_con.cong_viec_id.id or False})
+            if cong_viec_con.nhom_cv_pc_id:
+                res.update({'nhom_cv_id':cong_viec_con.nhom_cv_pc_id and cong_viec_con.nhom_cv_pc_id.id or False,
+                            'cv_tg_id': cong_viec_con.cong_viec_pc_id and cong_viec_con.cong_viec_pc_id.id or False,})
+        
+        cong_viec_pc_id = context.get('default_cong_viec_pc_id',False)
+        if cong_viec_pc_id:
+            cong_viec_pc = self.browse(cr, uid, cong_viec_pc_id)
+            res.update({'nhom_cv_pc_id':cong_viec_pc.phan_cong_phong_ban_id and cong_viec_pc.phan_cong_phong_ban_id.id or False})
+        return res
     
     def _data_get(self, cr, uid, ids, name, arg, context=None):
         if context is None:
@@ -66,18 +85,23 @@ class nhom_cong_viec(osv.osv):
                                   ('da_nhan','Đã nhận'),
                                   ('dang_lam','Đang làm'),
                                   ('cho_duyet','Chờ phê duyệt'),
-                                  ('duyet','Đã duyệt')],'Trạng thái'),
-        'loai':fields.selection([('nhom_cv','Nhóm công việc'),
-                                 ('cv','Công việc'),
-                                 ('cv_con','Công việc con'),
-                                 ('nhom_cv_tg','Nhóm công việc TG'),
-                                 ('ct_th','Chi tiết thực hiện')],'Loại'),
+                                  ('duyet','Đã ban hành')],'Trạng thái'),
+        'loai':fields.selection([('1_nhom_cv','Nhóm công việc'),
+                                 ('3_cv','Công việc'),
+                                 ('4_cv_con','Công việc con'),
+                                 ('2_nhom_cv_tg','Nhóm công việc TG'),
+                                 ('5_ct_th','Chi tiết thực hiện')],'Loại'),
         'ct_nhom_cv_line':fields.one2many('ct.nhom.cong.viec','nhom_cv_id','Chi tiết công việc'),
-        'cong_viec_id':fields.many2one('nhom.cong.viec','Nhóm công việc line'),
+        'cong_viec_id':fields.many2one('nhom.cong.viec','Nhóm công việc'),
+        'nhom_cv_id': fields.many2one('nhom.cong.viec','Nhóm công việc'),
+        'cv_tg_id': fields.many2one('nhom.cong.viec','Công việc phân công PBHT'),
+        'cong_viec_pc_line':fields.one2many('nhom.cong.viec','cong_viec_pc_id','Công việc'),
+        'cong_viec_pc_id': fields.many2one('nhom.cong.viec','Công việc phân công'),
+        'nhom_cv_pc_id': fields.many2one('nhom.cong.viec','Nhóm công việc'),
         'cong_viec_line':fields.one2many('nhom.cong.viec','cong_viec_id','Công việc'),
-        'cong_viec_con_id':fields.many2one('nhom.cong.viec','công việc line'),
+        'cong_viec_con_id':fields.many2one('nhom.cong.viec','Công việc'),
         'cong_viec_con_line':fields.one2many('nhom.cong.viec','cong_viec_con_id','Công việc con'),
-        'phan_cong_phong_ban_id':fields.many2one('nhom.cong.viec','Phân công'),
+        'phan_cong_phong_ban_id':fields.many2one('nhom.cong.viec','Nhóm công việc'),
         'phan_cong_phong_ban_line':fields.one2many('nhom.cong.viec','phan_cong_phong_ban_id','Phân công phòng ban'),
         'ghi_chu':fields.text('Ghi chú'),
         'nhan_vien_id':fields.many2one('nhan.vien','Nhân viên'),
@@ -88,15 +112,18 @@ class nhom_cong_viec(osv.osv):
                                  ('chua_xong','Chưa Xong')],'TT_CV'),
         'trangthai_cvc': fields.selection([('xong','Xong'),
                                  ('chua_xong','Chưa Xong')],'TT_CVC'),
+        'trangthai_cv_tg': fields.selection([('xong','Xong'),
+                                 ('chua_xong','Chưa Xong')],'TT_CVTG'),
                 
         'ct_th_nhom_cv_line':fields.one2many('nhom.cong.viec','ct_th_nhom_cv_id','CTTH Nhom Cong Viec'),
+        'ct_th_cv_tg_line':fields.one2many('nhom.cong.viec','ct_th_cv_tg_id','CTTH Cong Viec Trung Gian'),
         'ct_th_cv_line':fields.one2many('nhom.cong.viec','ct_th_cv_id','CTTH Cong Viec'), 
         'ct_th_cv_con_line':fields.one2many('nhom.cong.viec','ct_th_cv_con_id','CTTH Cong Viec Con'), 
         'ct_th_nhom_cv_id':fields.many2one('nhom.cong.viec','nhom cong viec'),
+        'ct_th_cv_tg_id':fields.many2one('nhom.cong.viec','cong viec trung gian'),
         'ct_th_cv_id':fields.many2one('nhom.cong.viec','cong viec'),
         'ct_th_cv_con_id':fields.many2one('nhom.cong.viec','cong viec con'),
         
-        'ten_ct':fields.char('Tên chi tiết',size=1024, required = True),
         'datas_fname': fields.char('File Name',size=256),
         'datas': fields.function(_data_get, fnct_inv=_data_set, string='File Content', type="binary", nodrop=True),
         'store_fname': fields.char('Stored Filename', size=256),
@@ -104,15 +131,13 @@ class nhom_cong_viec(osv.osv):
         'file_size': fields.integer('File Size'),
         'yeu_cau_kq':fields.text('Yêu cầu kết quả'),
         'cach_thuc_hien':fields.text('Cách thức thực hiện'),
-        'hoan_thanh': fields.boolean('Hoàn thành'),
     }
     _defaults = {
-            'state': 'nhap',
             'ho_tro':'khong',   
             'trangthai_ncv': 'chua_xong', 
             'trangthai_cv': 'chua_xong', 
             'trangthai_cvc': 'chua_xong', 
-            'hoan_thanh': False,
+            'trangthai_cv_tg': 'chua_xong',
                  }
     
     
@@ -132,198 +157,381 @@ class nhom_cong_viec(osv.osv):
         dem_line = 0
         dem_ht = 0
         for nhom_cv in self.browse(cr,uid,ids):
-#             if not nhom_cv.nhan_vien_id and nhom_cv.state != 'nhap' and nhom_cv.state != 'moi_tao':
-#                 raise osv.except_osv(_('Cảnh Báo!'),_('Cần chọn nhân viên cho công việc'))
-            if nhom_cv.loai == 'nhom_cv':
-                for ct_line in nhom_cv.ct_nhom_cv_line:
-                    dem_line += 1
-                    if ct_line.hoan_thanh == True:
-                        dem_ht += 1
-                if nhom_cv.state != 'duyet':
-                    if dem_line !=0 and dem_line == dem_ht:
+            if nhom_cv.loai=='5_ct_th':
+                if vals and nhom_cv.state == 'da_nhan' :
+                    if 'state' not in vals:
                         sql = '''
-                            update nhom_cong_viec set trangthai_ncv = 'xong' where id = %s and loai = 'nhom_cv'
-                        '''%(nhom_cv.id)
-                        cr.execute(sql)
-            if nhom_cv.loai == 'cv':
-                dem_cho_duyet = 0
-                for ct_line in nhom_cv.ct_nhom_cv_line:
-                    dem_line += 1
-                    if ct_line.hoan_thanh == True:
-                        dem_ht += 1
-                if nhom_cv.state != 'duyet':
-                    if dem_line !=0 and dem_line == dem_ht:
-                        sql = '''
-                            update nhom_cong_viec set trangthai_cv = 'xong' where id = %s and loai = 'cv'
+                            update nhom_cong_viec set state = 'dang_lam' where id = %s
                         '''%(nhom_cv.id)
                         cr.execute(sql)
                         
-            if nhom_cv.loai == 'cv_con':
-                dem_cho_duyet = 0
-                for ct_line in nhom_cv.ct_nhom_cv_line:
-                    dem_line += 1
-                    if ct_line.hoan_thanh == True:
-                        dem_ht += 1
-                if nhom_cv.state != 'duyet':
-                    if dem_line !=0 and dem_line == dem_ht:
-                        sql = '''
-                            update nhom_cong_viec set trangthai_cvc = 'xong' where id = %s and loai = 'cv_con'
-                        '''%(nhom_cv.id)
-                        cr.execute(sql)
+                        
+                        if nhom_cv.ct_th_nhom_cv_id:
+                            sql = '''
+                                update nhom_cong_viec set state = 'dang_lam' where id = %s
+                            '''%(nhom_cv.ct_th_nhom_cv_id.id)
+                            cr.execute(sql)
+                            
+                        if nhom_cv.ct_th_cv_tg_id:
+                            sql = '''
+                                update nhom_cong_viec set state = 'dang_lam' where id = %s
+                            '''%(nhom_cv.ct_th_cv_tg_id.id)
+                            cr.execute(sql)
+                            if nhom_cv.ct_th_cv_tg_id.phan_cong_phong_ban_id:
+                                sql = '''
+                                    update nhom_cong_viec set state = 'dang_lam' where id = %s
+                                '''%(nhom_cv.ct_th_cv_tg_id.phan_cong_phong_ban_id.id)
+                                cr.execute(sql)
+                        
+                        if nhom_cv.ct_th_cv_id:
+                            sql = '''
+                                update nhom_cong_viec set state = 'dang_lam' where id = %s
+                            '''%(nhom_cv.ct_th_cv_id.id)
+                            cr.execute(sql)
+                            if nhom_cv.ct_th_cv_id.cong_viec_id:
+                                sql = '''
+                                    update nhom_cong_viec set state = 'dang_lam' where id = %s
+                                '''%(nhom_cv.ct_th_cv_id.cong_viec_id.id)
+                                cr.execute(sql)
+                                
+                        if nhom_cv.ct_th_cv_con_id:
+                            sql = '''
+                                update nhom_cong_viec set state = 'dang_lam' where id = %s
+                            '''%(nhom_cv.ct_th_cv_con_id.id)
+                            cr.execute(sql)
+                            if nhom_cv.ct_th_cv_con_id.cong_viec_con_id:
+                                sql = '''
+                                    update nhom_cong_viec set state = 'dang_lam' where id = %s
+                                '''%(nhom_cv.ct_th_cv_con_id.cong_viec_con_id.id)
+                                cr.execute(sql)
+                            if nhom_cv.ct_th_cv_con_id.nhom_cv_id:
+                                sql = '''
+                                    update nhom_cong_viec set state = 'dang_lam' where id = %s
+                                '''%(nhom_cv.ct_th_cv_con_id.nhom_cv_id.id)
+                                cr.execute(sql)
+                            if nhom_cv.ct_th_cv_con_id.cv_tg_id:
+                                sql = '''
+                                    update nhom_cong_viec set state = 'dang_lam' where id = %s
+                                '''%(nhom_cv.ct_th_cv_con_id.cv_tg_id.id)
+                                cr.execute(sql)
+                                
+                        
+                    
                     
         return new_write    
     
-    def bt_duyet_trinh_ncv(self, cr, uid, ids, context=None):
-        for nhom_cv in self.browse(cr,uid,ids):
-            for cv in nhom_cv.cong_viec_line:
-                sql = '''
-                    update nhom_cong_viec set state = 'duyet' where loai = 'cv' and id = %s
-                '''%(cv.id)
-                cr.execute(sql)
-        return self.write(cr, uid, ids,{'state':'cho_duyet'})
-    
-    def bt_duyet_trinh_cv(self, cr, uid, ids, context=None):
+    def bt_hoan_thanh_ctth(self, cr, uid, ids, context=None):
         self.write(cr, uid, ids,{'state':'cho_duyet'})
         dem_cho_duyet = 0
         for nhom_cv in self.browse(cr,uid,ids):
-            sql = '''
-                select state from nhom_cong_viec where cong_viec_id = %s and loai = 'cv'
-            '''%(nhom_cv.cong_viec_id.id)
-            cr.execute(sql)
-            state_ids = cr.dictfetchall()
-            for state in state_ids:
-                if state['state']=='cho_duyet':
-                    dem_cho_duyet += 1
-            if len(state_ids) != 0 and len(state_ids) == dem_cho_duyet:
+            if nhom_cv.loai == '5_ct_th':
+                if nhom_cv.ct_th_nhom_cv_id:
+                    sql = '''
+                        select state from nhom_cong_viec where ct_th_nhom_cv_id = %s and loai = '5_ct_th'
+                    '''%(nhom_cv.ct_th_nhom_cv_id.id)
+                    cr.execute(sql)
+                    state_ids = cr.dictfetchall()
+                    for state in state_ids:
+                        if state['state']=='cho_duyet':
+                            dem_cho_duyet += 1
+                    if len(state_ids) != 0 and len(state_ids) == dem_cho_duyet:
+                        sql = '''
+                            update nhom_cong_viec set trangthai_ncv = 'xong' where id = %s and loai = '1_nhom_cv'
+                        '''%(nhom_cv.ct_th_nhom_cv_id.id)
+                        cr.execute(sql)  
+                        
+                if nhom_cv.ct_th_cv_tg_id:
+                    sql = '''
+                        select state from nhom_cong_viec where ct_th_cv_tg_id = %s and loai = '5_ct_th'
+                    '''%(nhom_cv.ct_th_cv_tg_id.id)
+                    cr.execute(sql)
+                    state_ids = cr.dictfetchall()
+                    for state in state_ids:
+                        if state['state']=='cho_duyet':
+                            dem_cho_duyet += 1
+                    if len(state_ids) != 0 and len(state_ids) == dem_cho_duyet:
+                        sql = '''
+                            update nhom_cong_viec set trangthai_cv_tg = 'xong' where id = %s and loai = '2_nhom_cv_tg'
+                        '''%(nhom_cv.ct_th_cv_tg_id.id)
+                        cr.execute(sql)  
+                        
+                if nhom_cv.ct_th_cv_id:
+                    sql = '''
+                        select state from nhom_cong_viec where ct_th_cv_id = %s and loai = '5_ct_th'
+                    '''%(nhom_cv.ct_th_cv_id.id)
+                    cr.execute(sql)
+                    state_ids = cr.dictfetchall()
+                    for state in state_ids:
+                        if state['state']=='cho_duyet':
+                            dem_cho_duyet += 1
+                    if len(state_ids) != 0 and len(state_ids) == dem_cho_duyet:
+                        sql = '''
+                            update nhom_cong_viec set trangthai_cv = 'xong' where id = %s and loai = '3_cv'
+                        '''%(nhom_cv.ct_th_cv_id.id)
+                        cr.execute(sql)   
+                
+                if nhom_cv.ct_th_cv_con_id:
+                    sql = '''
+                        select state from nhom_cong_viec where ct_th_cv_con_id = %s and loai = '5_ct_th'
+                    '''%(nhom_cv.ct_th_cv_con_id.id)
+                    cr.execute(sql)
+                    state_ids = cr.dictfetchall()
+                    for state in state_ids:
+                        if state['state']=='cho_duyet':
+                            dem_cho_duyet += 1
+                    if len(state_ids) != 0 and len(state_ids) == dem_cho_duyet:
+                        sql = '''
+                            update nhom_cong_viec set trangthai_cvc = 'xong' where id = %s and loai = '4_cv_con'
+                        '''%(nhom_cv.ct_th_cv_con_id.id)
+                        cr.execute(sql)  
+        return True
+    
+    def bt_hoan_thanh_ncv(self, cr, uid, ids, context=None):
+        dem_cho_duyet = 0
+        self.write(cr, uid, ids,{'state':'cho_duyet'})
+        for ncv in self.browse(cr,uid,ids):
+            if ncv.loai == '1_nhom_cv':
+                for ct_th in ncv.ct_th_nhom_cv_line:
+                    self.write(cr,uid,[ct_th.id],{
+                                                  'state': 'duyet',
+                                                  })
+                for cv in ncv.cong_viec_line:
+                    self.write(cr,uid,[cv.id],{
+                                                  'state': 'duyet',
+                                                  })
+        return True
+    
+    def bt_hoan_thanh_cv(self, cr, uid, ids, context=None):
+        dem_cho_duyet = 0
+        self.write(cr, uid, ids,{'state':'cho_duyet'})
+        for cv in self.browse(cr,uid,ids):
+            if cv.loai == '3_cv':
+                for ct_th in cv.ct_th_cv_line:
+                    self.write(cr,uid,[ct_th.id],{
+                                                  'state': 'duyet',
+                                                  })
+                for cv_con in cv.cong_viec_con_line:
+                    self.write(cr,uid,[cv_con.id],{
+                                                  'state': 'duyet',
+                                                  })
+                if cv.cong_viec_id:
+                    sql = '''
+                        select state from nhom_cong_viec where cong_viec_id = %s and loai = '3_cv'
+                    '''%(cv.cong_viec_id.id)
+                    cr.execute(sql)
+                    state_ids = cr.dictfetchall()
+                    for state in state_ids:
+                        if state['state']=='cho_duyet':
+                            dem_cho_duyet += 1
+                    if len(state_ids) != 0 and len(state_ids) == dem_cho_duyet:
+                        sql = '''
+                            update nhom_cong_viec set trangthai_ncv = 'xong' where id = %s and loai = '1_nhom_cv'
+                        '''%(cv.cong_viec_id.id)
+                        cr.execute(sql)   
+                if cv.cong_viec_pc_id:
+                    sql = '''
+                        select state from nhom_cong_viec where cong_viec_pc_id = %s and loai = '3_cv'
+                    '''%(cv.cong_viec_pc_id.id)
+                    cr.execute(sql)
+                    state_ids = cr.dictfetchall()
+                    for state in state_ids:
+                        if state['state']=='cho_duyet':
+                            dem_cho_duyet += 1
+                    if len(state_ids) != 0 and len(state_ids) == dem_cho_duyet:
+                        sql = '''
+                            update nhom_cong_viec set trangthai_cv_tg = 'xong' where id = %s and loai = '2_nhom_cv_tg'
+                        '''%(cv.cong_viec_pc_id.id)
+                        cr.execute(sql)   
+        return True
+    
+    def bt_hoan_thanh_cvc(self, cr, uid, ids, context=None):
+        dem_cho_duyet = 0
+        self.write(cr, uid, ids,{'state':'cho_duyet'})
+        for cvc in self.browse(cr,uid,ids):
+            if cvc.loai == '4_cv_con':
+                for ct_th in cvc.ct_th_cv_con_line:
+                    self.write(cr,uid,[ct_th.id],{
+                                                  'state': 'duyet',
+                                                  })
                 sql = '''
-                    update nhom_cong_viec set trangthai_ncv = 'xong' where id = %s and loai = 'nhom_cv'
-                '''%(nhom_cv.cong_viec_id.id)
-                cr.execute(sql)      
+                    select state from nhom_cong_viec where cong_viec_con_id = %s and loai = '4_cv_con'
+                '''%(cvc.cong_viec_con_id.id)
+                cr.execute(sql)
+                state_ids = cr.dictfetchall()
+                for state in state_ids:
+                    if state['state']=='cho_duyet':
+                        dem_cho_duyet += 1
+                if len(state_ids) != 0 and len(state_ids) == dem_cho_duyet:
+                    sql = '''
+                        update nhom_cong_viec set trangthai_cv = 'xong' where id = %s and loai = '3_cv'
+                    '''%(cvc.cong_viec_con_id.id)
+                    cr.execute(sql)   
+        return True
+    
+    def bt_hoan_thanh_cv_tg(self, cr, uid, ids, context=None):
+        dem_cho_duyet = 0
+        self.write(cr, uid, ids,{'state':'cho_duyet'})
+        for cv_tg in self.browse(cr,uid,ids):
+            if cv_tg.loai == '2_nhom_cv_tg':
+                for ct_th in cv_tg.ct_th_cv_tg_line:
+                    self.write(cr,uid,[ct_th.id],{
+                                                  'state': 'duyet',
+                                                  })
+                for cv in cv_tg.cong_viec_pc_line:
+                    self.write(cr,uid,[cv.id],{
+                                                  'state': 'duyet',
+                                                  })
+                sql = '''
+                    select state from nhom_cong_viec where phan_cong_phong_ban_id = %s and loai = '2_nhom_cv_tg'
+                '''%(cv_tg.phan_cong_phong_ban_id.id)
+                cr.execute(sql)
+                state_ids = cr.dictfetchall()
+                for state in state_ids:
+                    if state['state']=='cho_duyet':
+                        dem_cho_duyet += 1
+                if len(state_ids) != 0 and len(state_ids) == dem_cho_duyet:
+                    sql = '''
+                        update nhom_cong_viec set trangthai_ncv = 'xong' where id = %s and loai = '1_nhom_cv'
+                    '''%(cv_tg.phan_cong_phong_ban_id.id)
+                    cr.execute(sql) 
+        return True
+    
+    def bt_duyet_trinh(self, cr, uid, ids, context=None):
         return True
     
     def bt_duyet_trinh_cv_con(self, cr, uid, ids, context=None):
-        self.write(cr, uid, ids,{'state':'cho_duyet'})
-        dem_cho_duyet = 0
-        for nhom_cv in self.browse(cr,uid,ids):
-            sql = '''
-                select state from nhom_cong_viec where cong_viec_id = %s and cong_viec_con_id = %s and loai = 'cv_con'
-            '''%(nhom_cv.cong_viec_id.id, nhom_cv.cong_viec_con_id.id)
-            cr.execute(sql)
-            state_ids = cr.dictfetchall()
-            for state in state_ids:
-                if state['state']=='cho_duyet':
-                    dem_cho_duyet += 1
-            if len(state_ids) != 0 and len(state_ids) == dem_cho_duyet:
-                sql = '''
-                    update nhom_cong_viec set trangthai_cv = 'xong' where id = %s and loai = 'cv'
-                '''%(nhom_cv.cong_viec_con_id.id)
-                cr.execute(sql)      
         return True
     
     def bt_tao_ncv(self, cr, uid, ids, context=None):
+        for ncv in self.browse(cr,uid,ids):
+            if ncv.quy_trinh_id and ncv.loai == '1_nhom_cv':
+                for ctth in ncv.ct_th_nhom_cv_line:
+                    self.write(cr, uid, [ctth.id],{'state':'da_giao'})
+                for phan_cong in ncv.phan_cong_phong_ban_line:
+                    self.write(cr, uid, [ctth.id],{'state':'da_giao'})
         return self.write(cr, uid, ids,{'state':'da_giao'})
     
     def bt_nhan_ncv(self, cr, uid, ids, context=None):
-        return self.write(cr, uid, ids,{'state':'moi_nhan'})
+        return self.write(cr, uid, ids,{'state':'da_nhan'})
+    
+    def bt_nhan_cv_pc(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids,{'state':'da_nhan'})
     
     def bt_nhan_cv(self, cr, uid, ids, context=None):
-        return self.write(cr, uid, ids,{'state':'moi_nhan'})
+        return self.write(cr, uid, ids,{'state':'da_nhan'})
     
     def bt_nhan_cv_con(self, cr, uid, ids, context=None):
-        return self.write(cr, uid, ids,{'state':'moi_nhan'})
+        return self.write(cr, uid, ids,{'state':'da_nhan'})
+    
+    def bt_nhan_cttth(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids,{'state':'da_nhan'})
     
     def bt_cho_duyet(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids,{'state':'duyet'})
     
+    
     def bt_tao_cong_viec(self, cr, uid, ids, context=None):
         res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
-                                        'green_erp_qldh', 'cong_viec_form')
+                                        'green_erp_qldh', 'cong_viec_tree')
         return {
                     'name': 'Công việc',
                     'view_type': 'form',
                     'view_mode': 'form',
                     'view_id': res[1],
                     'res_model': 'nhom.cong.viec',
-                    'domain': ['loai','=','cv'],
-                    'context': {'default_loai': 'cv', 'default_cong_viec_id':ids[0], 'default_state':'moi_tao'},
+                    'domain': ['loai','=','3_cv'],
+                    'context': {'default_loai': '3_cv', 'default_cong_viec_id':ids[0], 'default_state':'da_giao'},
                     'type': 'ir.actions.act_window',
                     'target': 'current',
                 }
 
-    def bt_tao_tiep_cong_viec(self, cr, uid, ids, context=None):
-        res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
-                                        'green_erp_qldh', 'cong_viec_form')
-        for cv in self.browse(cr,uid,ids):
-            return {
-                        'name': 'Công việc',
-                        'view_type': 'form',
-                        'view_mode': 'form',
-                        'view_id': res[1],
-                        'res_model': 'nhom.cong.viec',
-                        'domain': ['loai','=','cv'],
-                        'context': {'default_loai': 'cv', 'default_cong_viec_id':cv.cong_viec_id.id, 'default_state':'moi_tao'},
-                        'type': 'ir.actions.act_window',
-                        'target': 'current',
-                    }        
-    def bt_tao_cv_con(self, cr, uid, ids, context=None):
-        res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
-                                        'green_erp_qldh', 'cong_viec_con_form')
-        for cv in self.browse(cr,uid,ids):
-            return {
-                        'name': 'Công việc con',
-                        'view_type': 'form',
-                        'view_mode': 'form',
-                        'view_id': res[1],
-                        'res_model': 'nhom.cong.viec',
-                        'domain': ['loai','=','cv_con'],
-                        'context': {'default_loai': 'cv_con', 'default_cong_viec_id':cv.cong_viec_id.id, 'default_cong_viec_con_id':ids[0], 'default_state':'moi_tao'},
-                        'type': 'ir.actions.act_window',
-                        'target': 'current',
-                    }
-    def bt_tao_tiep_cv_con(self, cr, uid, ids, context=None):
-        res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
-                                        'green_erp_qldh', 'cong_viec_con_form')
-        for cv in self.browse(cr,uid,ids):
-            return {
-                        'name': 'Công việc con',
-                        'view_type': 'form',
-                        'view_mode': 'form',
-                        'view_id': res[1],
-                        'res_model': 'nhom.cong.viec',
-                        'domain': ['loai','=','cv_con'],
-                        'context': {'default_loai': 'cv_con', 'default_cong_viec_id':cv.cong_viec_id.id, 'default_cong_viec_con_id':cv.cong_viec_con_id.id, 'default_state':'moi_tao'},
-                        'type': 'ir.actions.act_window',
-                        'target': 'current',
-                    }       
     
-    def onchange_quy_trinh_id(self, cr, uid, ids, quy_trinh_id=False):
+    def onchange_quy_trinh_id(self, cr, uid, ids, quy_trinh_id=False, loai=False):
         ct_nhom_cv_line = []
         for cv in self.browse(cr,uid,ids):
-            sql = '''
-                delete from ct_nhom_cong_viec where nhom_cv_id = %s
-            '''%(cv.id)
-            cr.execute(sql)
+            if loai == "1_nhom_cv":
+                sql = '''
+                    delete from nhom_cong_viec where ct_th_nhom_cv_id = %s and ct_th_nhom_cv_id is not null
+                '''%(cv.id)
+                cr.execute(sql)
+            if loai == "3_cv":
+                sql = '''
+                    delete from nhom_cong_viec where ct_th_cv_id = %s and ct_th_cv_id is not null
+                '''%(cv.id)
+                cr.execute(sql)
+            if loai == "4_cv_con":
+                sql = '''
+                    delete from nhom_cong_viec where ct_th_cv_con_id = %s and ct_th_cv_con_id is not null
+                '''%(cv.id)
+                cr.execute(sql)
+            if loai == "2_nhom_cv_tg":
+                sql = '''
+                    delete from nhom_cong_viec where ct_th_cv_tg_id = %s and ct_th_cv_tg_id is not null
+                '''%(cv.id)
+                cr.execute(sql)
         if quy_trinh_id:
             quy_trinh = self.pool.get('quy.trinh').browse(cr,uid,quy_trinh_id)
             for line in quy_trinh.buoc_thuc_hien_line:
-                ct_nhom_cv_line.append((0,0,{
-                                            'name': line.name,
-                                            'datas_fname': line.datas_fname,
-                                            'datas': line.datas,
-                                            'store_fname': line.store_fname,
-                                            'db_datas': line.db_datas,
-                                            'file_size': line.file_size,
-                                            'yeu_cau_kq': line.yeu_cau_kq,
-                                            'cach_thuc_hien': line.cach_thuc_hien,
-                                             }))
-        return {'value': {'ct_nhom_cv_line': ct_nhom_cv_line}}  
+                if loai == "1_nhom_cv":
+                    ct_nhom_cv_line.append((0,0,{
+                                                'name': line.name,
+                                                'datas_fname': line.datas_fname,
+                                                'datas': line.datas,
+                                                'store_fname': line.store_fname,
+                                                'db_datas': line.db_datas,
+                                                'file_size': line.file_size,
+                                                'yeu_cau_kq': line.yeu_cau_kq,
+                                                'cach_thuc_hien': line.cach_thuc_hien,
+                                                'state': 'da_giao',
+                                                'loai': '5_ct_th',
+                                                 }))
+                    return {'value': {'ct_th_nhom_cv_line': ct_nhom_cv_line}}
+                if loai == "2_nhom_cv_tg":
+                    ct_nhom_cv_line.append((0,0,{
+                                                'name': line.name,
+                                                'datas_fname': line.datas_fname,
+                                                'datas': line.datas,
+                                                'store_fname': line.store_fname,
+                                                'db_datas': line.db_datas,
+                                                'file_size': line.file_size,
+                                                'yeu_cau_kq': line.yeu_cau_kq,
+                                                'cach_thuc_hien': line.cach_thuc_hien,
+                                                'state': 'da_giao',
+                                                'loai': '5_ct_th',
+                                                 }))
+                    return {'value': {'ct_th_cv_tg_line': ct_nhom_cv_line}}
+                if loai == "3_cv":
+                    ct_nhom_cv_line.append((0,0,{
+                                                'name': line.name,
+                                                'datas_fname': line.datas_fname,
+                                                'datas': line.datas,
+                                                'store_fname': line.store_fname,
+                                                'db_datas': line.db_datas,
+                                                'file_size': line.file_size,
+                                                'yeu_cau_kq': line.yeu_cau_kq,
+                                                'cach_thuc_hien': line.cach_thuc_hien,
+                                                'state': 'da_giao',
+                                                'loai': '5_ct_th',
+                                                 }))
+                    return {'value': {'ct_th_cv_line': ct_nhom_cv_line}}
+                if loai == "4_cv_con":
+                    ct_nhom_cv_line.append((0,0,{
+                                                'name': line.name,
+                                                'datas_fname': line.datas_fname,
+                                                'datas': line.datas,
+                                                'store_fname': line.store_fname,
+                                                'db_datas': line.db_datas,
+                                                'file_size': line.file_size,
+                                                'yeu_cau_kq': line.yeu_cau_kq,
+                                                'cach_thuc_hien': line.cach_thuc_hien,
+                                                'state': 'da_giao',
+                                                'loai': '5_ct_th',
+                                                 }))
+                    return {'value': {'ct_th_cv_con_line': ct_nhom_cv_line}}
     
-    def onchange_ho_tro(self, cr, uid, ids, ho_tro):
-        if ho_tro:
-            if ho_tro == 'co':
-                return {'value': {'quy_trinh_id': False}}    
-            else:
-                return True  
+    def onchange_phong_ban_ids(self, cr, uid, ids, phong_ban_ids = False):
+        if phong_ban_ids:
+            return {'value': {'ho_tro': 'co'}}    
 nhom_cong_viec()
 
 class ct_nhom_cong_viec(osv.osv):
