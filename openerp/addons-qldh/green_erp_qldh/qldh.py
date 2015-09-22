@@ -514,8 +514,12 @@ class nhom_cong_viec(osv.osv):
                     return {'value': {'ct_th_cv_con_line': ct_nhom_cv_line}}
     
     def onchange_phong_ban_ids(self, cr, uid, ids, phong_ban_ids = False):
-        if phong_ban_ids:
-            return {'value': {'ho_tro': 'co'}}    
+        if phong_ban_ids and phong_ban_ids[0] and phong_ban_ids[0][2]:
+            ho_tro = 'co'
+        else:
+            ho_tro = 'khong'
+        return {'value': {'ho_tro': ho_tro}}
+        
 nhom_cong_viec()
 
 class ct_nhom_cong_viec(osv.osv):
