@@ -77,12 +77,14 @@ se hien thi nhug diem cua nhug partner da duoc chon trong partner_ids
     'depends': ['base', 'web'],
     'data': ['gmap_view.xml'],
     'update_xml': [],
-    'active': True,
-    'web': True,
     'js': [
            'static/src/js/gmap.js',
 	    ],
     'css': ['static/src/css/gmap.css', ],
     'qweb': ['static/src/xml/base.xml', ],
     'images': ['images/map.png',],
+    
+    'installable': True,
+    'auto_install': False,
+    'application': True,
 }

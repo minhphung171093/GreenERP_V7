@@ -18,6 +18,7 @@ class sql_profit_loss(osv.osv):
         return cr.dictfetchall()
     
     def init(self, cr):
+        self.fin_get_balance_all_pl(cr)
         self.fin_profit_loss_data(cr)
         self.fin_get_account_data(cr)
         self.fin_profit_loss_report(cr)
@@ -111,7 +112,67 @@ class sql_profit_loss(osv.osv):
         '''
         cr.execute(sql)
         return True
-
+    
+    def fin_get_balance_all_pl(self,cr):
+        sql = '''
+        DROP FUNCTION IF EXISTS fin_get_balance_all_pl(date, date, text, character varying, integer) CASCADE;
+        commit;
+        
+        CREATE OR REPLACE FUNCTION fin_get_balance_all_pl(date, date, text, character varying, integer)
+          RETURNS numeric AS
+        $BODY$
+        DECLARE
+            rec        record;
+            lst_account    text = '';
+            bal_dr    numeric = 0;
+            bal_cr    numeric = 0;
+        BEGIN
+            lst_account = fin_get_array_accountid($3);
+            
+            if lst_account <> '' then
+                for rec in execute '
+                        select  sum(aml.debit) balance_dr, sum(aml.credit) balance_cr
+                        from account_move amh join account_move_line aml 
+                                on amh.id = aml.move_id
+                            join account_journal ajn on aml.journal_id = ajn.id
+                        where amh.state = ''posted'' and aml.state = ''valid''
+                            and ajn.type = ''situation'' and aml.account_id in ('||lst_account||')
+                            and date_trunc(''year'', aml.date) = date_trunc(''year'', date($1))
+                            and amh.company_id = $3
+                        union all
+                        select  sum(aml.debit) balance_dr, sum(aml.credit) balance_cr
+                        from account_move amh join account_move_line aml 
+                                on amh.id = aml.move_id
+                            join account_journal ajn on aml.journal_id = ajn.id
+                        where amh.state = ''posted'' and aml.state = ''valid''
+                            and ajn.type != ''situation'' and aml.account_id in ('||lst_account||')
+                            and date_trunc(''day'', aml.date) between date_trunc(''year'', date($1))
+                            and date($2)
+                            and amh.company_id = $3' using $1, $2, $5
+                loop
+                    bal_dr = bal_dr + coalesce(rec.balance_dr, 0);
+                    bal_cr = bal_cr + coalesce(rec.balance_cr, 0);
+                end loop;
+            else
+                bal_dr = 0;
+                bal_cr = 0;
+            end if;
+            
+            if $4 = 'dr' then
+                return (bal_dr - bal_cr);
+            else
+                return (bal_cr - bal_dr);
+            end if;
+            
+        END;$BODY$
+          LANGUAGE plpgsql VOLATILE
+          COST 100;
+        ALTER FUNCTION fin_get_balance_all_pl(date, date, text, character varying, integer)
+          OWNER TO openerp;
+        '''
+        cr.execute(sql)
+        return True
+    
     def fin_get_accumulated(self,cr):
         sql = '''
         DROP FUNCTION IF EXISTS fin_get_accumulated(date, date, text, character varying, integer) CASCADE;
@@ -301,15 +362,9 @@ class sql_profit_loss(osv.osv):
             pl_data.prior_amt6 = fin_get_doi_ung(prior_sdate, prior_edate, '635', '911', 'dr', $4);
             pl_data.curr_amt6 = fin_get_doi_ung(_cur_sdate, _cur_edate, '635', '911', 'dr', $4);
             
-            -- 7.1. tách chi phí lãi vay 6351 MS 23 hỏi lại
-            for rec_pl in select* from fin_get_account_data(prior_sdate, prior_edate, 401, 401, $4)
-            loop
-                pl_data.prior_amt71 = coalesce(rec_pl.cr_amount,0) - coalesce(rec_pl.dr_amount,0);
-            end loop;
-            for rec_pl in select* from fin_get_account_data(_cur_sdate, _cur_edate, 401, 401, $4)
-            loop
-                pl_data.curr_amt71 = coalesce(rec_pl.cr_amount,0) - coalesce(rec_pl.dr_amount,0);
-            end loop;
+            -- 7.1. tách chi phí lãi vay 6351 MS 23
+            pl_data.prior_amt71 = fin_get_balance_all_pl(prior_sdate, prior_edate, '6352', 'cr', $4);
+            pl_data.curr_amt71 = fin_get_balance_all_pl(_cur_sdate, _cur_edate, '6352', 'cr', $4);
             
             -- 8. lấy chỉ tiêu 08 (chi phí bán hàng 641) MS 25
             pl_data.prior_amt6 = fin_get_doi_ung(prior_sdate, prior_edate, '641', '911', 'dr', $4);

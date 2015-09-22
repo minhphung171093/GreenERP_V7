@@ -89,7 +89,7 @@ class average_cost_detail_history(osv.osv):
         move_obj = self.pool.get('stock.move')
         for detail_history in self.browse(cr,uid,ids):
             for move in detail_history.move_ids:
-                if move.stock_journal_id  and move.stock_journal_id.source_type !='in':
+                if move.stock_journal_id  and move.stock_journal_id.source_type not in ['in','return_supplier']:
                     move_obj._create_product_valuation_moves(cr, uid, move, context=context)
 #             if move.stock_journal_id and move.stock_journal_id and move.stock_journal_id.source_type =='phys_adj':
 #                 context.update({'internal':'internal'})

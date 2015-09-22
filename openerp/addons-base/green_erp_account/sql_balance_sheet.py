@@ -602,8 +602,8 @@ class sql_balance_sheet(osv.osv):
             bal_data.description = 'Các khoản tương đương tiền';
             bal_data.code = '112';
             bal_data.illustrate = null;
-            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '1281 1288', 'dr', $4);
-            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '1281 1288', 'dr', $4);
+            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '12811 12881', 'dr', $4);
+            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '12811 12881', 'dr', $4);
             bal_data.type = 1;
             bal_data.format = 0;
             
@@ -667,8 +667,8 @@ class sql_balance_sheet(osv.osv):
             bal_data.description = 'Đầu tư nắm giữ đến ngày đáo hạn';
             bal_data.code = '123';
             bal_data.illustrate = null;
-            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '1281 1282 1288', 'dr', $4);
-            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '1281 1282 1288', 'dr', $4);
+            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '12812 12821 12882', 'dr', $4);
+            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '12812 12821 12882', 'dr', $4);
             bal_data.type = 1;
             bal_data.format = 0;
             
@@ -732,8 +732,10 @@ class sql_balance_sheet(osv.osv):
             bal_data.description = 'Phải thu nội bộ ngắn hạn';
             bal_data.code = '133';
             bal_data.illustrate = null;
-            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '13621 13631 13681', 'dr', $4);
-            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '13621 13631 13681', 'dr', $4);
+            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '13621 13631 13681', 'dr', $4) -
+                                    fin_get_balance_all(prior_sdate, prior_edate, '33621 33631 33681', 'cr', $4);
+            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '13621 13631 13681', 'dr', $4) -
+                                    fin_get_balance_all(_cur_sdate, _cur_edate, '33621 33631 33681', 'cr', $4);
             bal_data.type = 1;
             bal_data.format = 0;
             
@@ -777,14 +779,14 @@ class sql_balance_sheet(osv.osv):
             curr_grp1 = curr_grp1 + bal_data.current_amount;
             return next bal_data;
             
-            -- 13. lấy chỉ tiêu 136  hỏi lại
+            -- 13. lấy chỉ tiêu 136
             bal_data.seq = 15;
             bal_data.line_no = '6.';
             bal_data.description = 'Phải thu ngắn hạn khác';
             bal_data.code = '136';
             bal_data.illustrate = null;
-            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '1385 1388 334 338 141 244', 'dr', $4);
-            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '1385 1388 334 338 141 244', 'dr', $4);
+            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '13851 13881 33411 33481 33811 33821 33831 33841 33851 33861 33871 33881 1411 2441', 'dr', $4);
+            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '13851 13881 33411 33481 33811 33821 33831 33841 33851 33861 33871 33881 1411 2441', 'dr', $4);
             bal_data.type = 1;
             bal_data.format = 0;
             
@@ -800,8 +802,8 @@ class sql_balance_sheet(osv.osv):
             bal_data.description = 'Dự phòng phải thu ngắn hạn khó đòi (*)';
             bal_data.code = '137';
             bal_data.illustrate = null;
-            bal_data.prior_amount = -1*fin_get_balance_all(prior_sdate, prior_edate, '2293', 'cr', $4);
-            bal_data.current_amount = -1*fin_get_balance_all(_cur_sdate, _cur_edate, '2293', 'cr', $4);
+            bal_data.prior_amount = -1*fin_get_balance_all(prior_sdate, prior_edate, '22931', 'cr', $4);
+            bal_data.current_amount = -1*fin_get_balance_all(_cur_sdate, _cur_edate, '22931', 'cr', $4);
             bal_data.type = 1;
             bal_data.format = 0;
             
@@ -848,8 +850,8 @@ class sql_balance_sheet(osv.osv):
             bal_data.description = 'Hàng tồn kho';
             bal_data.code = '141';
             bal_data.illustrate = '';
-            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '151 152 153 154 156 157 158', 'dr', $4);
-            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '151 152 153 154 156 157 158', 'dr', $4);
+            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '151 152 153 1541 156 157 158', 'dr', $4);
+            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '151 152 153 1541 156 157 158', 'dr', $4);
             bal_data.type = 1;
             bal_data.format = 0;
             
@@ -865,8 +867,8 @@ class sql_balance_sheet(osv.osv):
             bal_data.description = 'Dự phòng giảm giá hàng tồn kho (*)';
             bal_data.code = '149';
             bal_data.illustrate = null;
-            bal_data.prior_amount = -1*fin_get_balance_all(prior_sdate, prior_edate, '2291', 'cr', $4);
-            bal_data.current_amount = -1*fin_get_balance_all(_cur_sdate, _cur_edate, '2291', 'cr', $4);
+            bal_data.prior_amount = -1*fin_get_balance_all(prior_sdate, prior_edate, '2294', 'cr', $4);
+            bal_data.current_amount = -1*fin_get_balance_all(_cur_sdate, _cur_edate, '2294', 'cr', $4);
             bal_data.type = 1;
             bal_data.format = 0;
             
@@ -896,8 +898,8 @@ class sql_balance_sheet(osv.osv):
             bal_data.description = 'Chi phí trả trước ngắn hạn';
             bal_data.code = '151';
             bal_data.illustrate = null;
-            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '242', 'dr', $4);
-            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '242', 'dr', $4);
+            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '2421', 'dr', $4);
+            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '2421', 'dr', $4);
             bal_data.type = 1;
             bal_data.format = 0;
             
@@ -1062,8 +1064,10 @@ class sql_balance_sheet(osv.osv):
             bal_data.description = 'Phải thu dài hạn nội bộ';
             bal_data.code = '214';
             bal_data.illustrate = '';
-            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '13622 13632 13682', 'dr', $4);
-            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '13622 13632 13682', 'dr', $4);
+            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '13622 13632 13682', 'dr', $4) -
+                                    fin_get_balance_all(prior_sdate, prior_edate, '33622 33632 33682', 'cr', $4);
+            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '13622 13632 13682', 'dr', $4) -
+                                    fin_get_balance_all(_cur_sdate, _cur_edate, '33622 33632 33682', 'cr', $4);
             bal_data.type = 1;
             bal_data.format = 0;
             
@@ -1096,8 +1100,8 @@ class sql_balance_sheet(osv.osv):
             bal_data.description = 'Phải thu dài hạn khác';
             bal_data.code = '219';
             bal_data.illustrate = null;
-            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '1385 1388 334 338 141 244', 'dr', $4);
-            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '1385 1388 334 338 141 244', 'dr', $4);
+            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '13852 13882 33412 33482 33812 33822 33832 33842 33852 33862 33872 33882 1412 2442', 'dr', $4);
+            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '13852 13882 33412 33482 33812 33822 33832 33842 33852 33862 33872 33882 1412 2442', 'dr', $4);
             bal_data.type = 1;
             bal_data.format = 0;
             
@@ -1113,8 +1117,8 @@ class sql_balance_sheet(osv.osv):
             bal_data.description = 'Dự phòng phải thu dài hạn khó đòi (*)';
             bal_data.code = '219';
             bal_data.illustrate = null;
-            bal_data.prior_amount = -1*fin_get_balance_all(prior_sdate, prior_edate, '2293', 'cr', $4);
-            bal_data.current_amount = -1*fin_get_balance_all(_cur_sdate, _cur_edate, '2293', 'cr', $4);
+            bal_data.prior_amount = -1*fin_get_balance_all(prior_sdate, prior_edate, '22932', 'cr', $4);
+            bal_data.current_amount = -1*fin_get_balance_all(_cur_sdate, _cur_edate, '22932', 'cr', $4);
             bal_data.type = 1;
             bal_data.format = 0;
             
@@ -1160,7 +1164,7 @@ class sql_balance_sheet(osv.osv):
             curr_grp1 = curr_grp1 + bal_data.current_amount;
             return next bal_data;
             
-            -- 36. lấy chỉ tiêu 223 ok
+            -- 36. lấy chỉ tiêu 223
             bal_data.seq = 39;
             bal_data.line_no = null;
             bal_data.description = '- Giá trị hao mòn lũy kế (*)';
@@ -1179,7 +1183,7 @@ class sql_balance_sheet(osv.osv):
             curr_grp1 = curr_grp1 + bal_data.current_amount;
             return next bal_data;
             
-            -- 37. lấy chỉ tiêu 221 ok
+            -- 37. lấy chỉ tiêu 221
             bal_data.seq = 37;
             bal_data.line_no = '1.';
             bal_data.description = 'Tài sản cố định hữu hình';
@@ -1365,8 +1369,8 @@ class sql_balance_sheet(osv.osv):
             bal_data.description = 'Chi phí sản xuất kinh doanh dở dang dài hạn';
             bal_data.code = '241';
             bal_data.illustrate = null;
-            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '154', 'dr', $4) - fin_get_balance_all(prior_sdate, prior_edate, '2294', 'cr', $4);
-            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '154', 'dr', $4) - fin_get_balance_all(_cur_sdate, _cur_edate, '2294', 'cr', $4);
+            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '1542', 'dr', $4) - fin_get_balance_all(prior_sdate, prior_edate, '2294', 'cr', $4);
+            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '1542', 'dr', $4) - fin_get_balance_all(_cur_sdate, _cur_edate, '2294', 'cr', $4);
             bal_data.type = 1;
             bal_data.format = 0;
             
@@ -1482,8 +1486,8 @@ class sql_balance_sheet(osv.osv):
             bal_data.description = 'Đầu tư nắm giữ đến ngày đáo hạn';
             bal_data.code = '255';
             bal_data.illustrate = null;
-            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '1281 1282 1288', 'dr', $4);
-            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '1281 1282 1288', 'dr', $4);
+            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '12813 12822 12883', 'dr', $4);
+            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '12813 12822 12883', 'dr', $4);
             bal_data.type = 1;
             bal_data.format = 0;
             
@@ -1514,8 +1518,8 @@ class sql_balance_sheet(osv.osv):
             bal_data.description = 'Chi phí trả trước dài hạn';
             bal_data.code = '261';
             bal_data.illustrate = '';
-            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '242', 'dr', $4);
-            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '242', 'dr', $4);
+            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '2422', 'dr', $4);
+            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '2422', 'dr', $4);
             bal_data.type = 1;
             bal_data.format = 0;
             
@@ -1708,7 +1712,7 @@ class sql_balance_sheet(osv.osv):
             curr_grp1 = curr_grp1 + bal_data.current_amount;
             return next bal_data;
 
-            -- 67. lấy chỉ tiêu 314 ok
+            -- 67. lấy chỉ tiêu 314
             bal_data.seq = 69;
             bal_data.line_no = '4.';
             bal_data.description = 'Phải trả người lao động';
@@ -1731,8 +1735,8 @@ class sql_balance_sheet(osv.osv):
             bal_data.description = 'Chi phí phải trả ngắn hạn';
             bal_data.code = '315';
             bal_data.illustrate = '';
-            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '335', 'cr', $4);
-            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '335', 'cr', $4);
+            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '3351', 'cr', $4);
+            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '3351', 'cr', $4);
             bal_data.type = 2;
             bal_data.format = 0;
             
@@ -1748,8 +1752,10 @@ class sql_balance_sheet(osv.osv):
             bal_data.description = 'Phải trả nội bộ ngắn hạn';
             bal_data.code = '316';
             bal_data.illustrate = null;
-            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '3362 3363 2268', 'cr', $4);
-            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '3362 3363 2268', 'cr', $4);
+            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '33621 33631 33681', 'cr', $4) -
+                                    fin_get_balance_all(prior_sdate, prior_edate, '13621 13631 13681', 'dr', $4);
+            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '33621 33631 33681', 'cr', $4) -
+                                    fin_get_balance_all(_cur_sdate, _cur_edate, '13621 13631 13681', 'dr', $4);
             bal_data.type = 2;
             bal_data.format = 0;
             
@@ -1782,8 +1788,8 @@ class sql_balance_sheet(osv.osv):
             bal_data.description = 'Doanh thu chưa thực hiện ngắn hạn';
             bal_data.code = '318';
             bal_data.illustrate = '';
-            bal_data.prior_amount = fin_get_detailsbalance(prior_sdate, prior_edate, '3387', 'cr', $4);
-            bal_data.current_amount = fin_get_detailsbalance(_cur_sdate, _cur_edate, '3387', 'cr', $4);
+            bal_data.prior_amount = fin_get_detailsbalance(prior_sdate, prior_edate, '33871', 'cr', $4);
+            bal_data.current_amount = fin_get_detailsbalance(_cur_sdate, _cur_edate, '33871', 'cr', $4);
             bal_data.type = 2;
             bal_data.format = 0;
             
@@ -1799,8 +1805,8 @@ class sql_balance_sheet(osv.osv):
             bal_data.description = 'Phải trả ngắn hạn khác';
             bal_data.code = '319';
             bal_data.illustrate = '';
-            bal_data.prior_amount = fin_get_detailsbalance(prior_sdate, prior_edate, '338 138 334', 'cr', $4);
-            bal_data.current_amount = fin_get_detailsbalance(_cur_sdate, _cur_edate, '338 138 334', 'cr', $4);
+            bal_data.prior_amount = fin_get_detailsbalance(prior_sdate, prior_edate, '33811 33821 33821 33831 33841 33851 33861 33871 33881 138 33411 33481', 'cr', $4);
+            bal_data.current_amount = fin_get_detailsbalance(_cur_sdate, _cur_edate, '33811 33821 33821 33831 33841 33851 33861 33871 33881 138 33411 33481', 'cr', $4);
             bal_data.type = 2;
             bal_data.format = 0;
             
@@ -1833,8 +1839,8 @@ class sql_balance_sheet(osv.osv):
             bal_data.description = 'Dự phòng phải trả ngắn hạn';
             bal_data.code = '321';
             bal_data.illustrate = null;
-            bal_data.prior_amount = fin_get_detailsbalance(prior_sdate, prior_edate, '352', 'cr', $4);
-            bal_data.current_amount = fin_get_detailsbalance(_cur_sdate, _cur_edate, '352', 'cr', $4);
+            bal_data.prior_amount = fin_get_detailsbalance(prior_sdate, prior_edate, '35211 35221 35231 35241', 'cr', $4);
+            bal_data.current_amount = fin_get_detailsbalance(_cur_sdate, _cur_edate, '35211 35221 35231 35241', 'cr', $4);
             bal_data.type = 2;
             bal_data.format = 0;
             
@@ -1910,7 +1916,7 @@ class sql_balance_sheet(osv.osv):
             -- ===== Muc II =====
             prior_grp2 = 0;    curr_grp2 = 0;
             
-            -- 79. lấy chỉ tiêu 331 ok
+            -- 79. lấy chỉ tiêu 331
             bal_data.seq = 81;
             bal_data.line_no = '1.';
             bal_data.description = 'Phải trả người bán dài hạn';
@@ -1950,8 +1956,8 @@ class sql_balance_sheet(osv.osv):
             bal_data.description = 'Chi phí phải trả dài hạn';
             bal_data.code = '333';
             bal_data.illustrate = null;
-            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '335', 'cr', $4);
-            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '335', 'cr', $4);
+            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '3352', 'cr', $4);
+            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '3352', 'cr', $4);
             bal_data.type = 2;
             bal_data.format = 0;
             
@@ -1984,8 +1990,10 @@ class sql_balance_sheet(osv.osv):
             bal_data.description = 'Phải trả nội bộ dài hạn';
             bal_data.code = '335';
             bal_data.illustrate = '';
-            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '3362 3363 3368', 'cr', $4);
-            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '3362 3363 3368', 'cr', $4);
+            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '33622 33632 33682', 'cr', $4) -
+                                    fin_get_balance_all(prior_sdate, prior_edate, '13622 13632 13682', 'dr', $4);
+            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '33622 33632 33682', 'cr', $4) -
+                                    fin_get_balance_all(_cur_sdate, _cur_edate, '13622 13632 13682', 'dr', $4);
             bal_data.type = 2;
             bal_data.format = 0;
             
@@ -2001,8 +2009,8 @@ class sql_balance_sheet(osv.osv):
             bal_data.description = 'Doanh thu chưa thực hiện dài hạn';
             bal_data.code = '336';
             bal_data.illustrate = null;
-            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '3387', 'cr', $4);
-            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '3387', 'cr', $4);
+            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '33872', 'cr', $4);
+            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '33872', 'cr', $4);
             bal_data.type = 2;
             bal_data.format = 0;
             
@@ -2018,8 +2026,8 @@ class sql_balance_sheet(osv.osv):
             bal_data.description = 'Phải trả dài hạn khác';
             bal_data.code = '337';
             bal_data.illustrate = null;
-            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '338 334', 'cr', $4);
-            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '338 334', 'cr', $4);
+            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '33812 33822 33832 33842 33852 33862 33872 33882 33412 33482' , 'cr', $4);
+            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '33812 33822 33832 33842 33852 33862 33872 33882 33412 33482', 'cr', $4);
             bal_data.type = 2;
             bal_data.format = 0;
             
@@ -2075,8 +2083,8 @@ class sql_balance_sheet(osv.osv):
             bal_data.description = 'Cổ phiếu ưu đãi';
             bal_data.code = '340';
             bal_data.illustrate = null;
-            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '41112', 'cr', $4);
-            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '41112', 'cr', $4);
+            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '411121', 'cr', $4);
+            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '411121', 'cr', $4);
             bal_data.type = 2;
             bal_data.format = 0;
             
@@ -2109,8 +2117,8 @@ class sql_balance_sheet(osv.osv):
             bal_data.description = 'Dự phòng phải trả dài hạn';
             bal_data.code = '342';
             bal_data.illustrate = null;
-            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '352', 'cr', $4);
-            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '352', 'cr', $4);
+            bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '3522', 'cr', $4);
+            bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '3522', 'cr', $4);
             bal_data.type = 2;
             bal_data.format = 0;
             
@@ -2392,7 +2400,7 @@ class sql_balance_sheet(osv.osv):
             bal_data.seq = 109;
             bal_data.line_no = '12.';
             bal_data.description = 'Nguồn vốn đầu tư XDCB';
-            bal_data.code = '421b';
+            bal_data.code = '422';
             bal_data.illustrate = null;
             bal_data.prior_amount = fin_get_balance_all(prior_sdate, prior_edate, '441', 'cr', $4);
             bal_data.current_amount = fin_get_balance_all(_cur_sdate, _cur_edate, '441', 'cr', $4);

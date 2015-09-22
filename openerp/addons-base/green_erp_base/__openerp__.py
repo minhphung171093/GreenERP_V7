@@ -26,7 +26,7 @@
     'sequence': 1,
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',
-    'depends': ['web','sale'],
+    'depends': ['web','sale','stock'],
     'data': [
         'ir_ui_menu_view.xml',
         'base_view.xml',
