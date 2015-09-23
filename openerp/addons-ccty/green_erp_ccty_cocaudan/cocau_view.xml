@@ -109,7 +109,8 @@
 							</page>
 							<page string = "Thông tin khác">
 								<group col="4">
-				                    <field name="loai_hinh_so_huu_id" options="{'create': false, 'create_edit': false}"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>                    
+				                    <field name="loai_hinh_so_huu_id" options="{'create': false, 'create_edit': false}"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>        
+				                    <field name="cty_gia_cong_ids" widget="many2many_tags"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>            
 				                    <field name="quy_cach"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 				                    <field name="xu_ly_moi_truong"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 				                    <field name="bao_ve_moi_truong" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
@@ -333,7 +334,8 @@
 							</page>
 							<page string = "Thông tin khác">
 								<group col="4">
-				                    <field name="loai_hinh_so_huu_id" options="{'create': false, 'create_edit': false}"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>                    
+				                    <field name="loai_hinh_so_huu_id" options="{'create': false, 'create_edit': false}"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>         
+				                    <field name="cty_gia_cong_ids" widget="many2many_tags"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>           
 				                    <field name="quy_cach"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 				                    <field name="xu_ly_moi_truong"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 				                    <field name="bao_ve_moi_truong" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
@@ -464,7 +466,8 @@
 							</page>
 							<page string = "Thông tin khác">
 								<group col="4" string="Thông tin khác">
-				                    <field name="loai_hinh_so_huu_id" options="{'create': false, 'create_edit': false}"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>                    
+				                    <field name="loai_hinh_so_huu_id" options="{'create': false, 'create_edit': false}"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/> 
+				                    <field name="cty_gia_cong_ids" widget="many2many_tags"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>                   
 				                    <field name="quy_cach"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 				                    <field name="xu_ly_moi_truong"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 				                    <field name="bao_ve_moi_truong" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>

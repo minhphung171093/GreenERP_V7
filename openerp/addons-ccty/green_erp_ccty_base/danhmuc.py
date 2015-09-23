@@ -122,7 +122,7 @@ class chi_tiet_loai_vat(osv.osv):
     _columns = {
         'loai_id': fields.many2one('loai.vat','Loai vat',ondelete = 'cascade'),
         'name': fields.char('Thông tin',size = 50),
-        'tiem_phong':fields.boolean('Có được tiêm phòng ?'),
+        'tiem_phong':fields.boolean('Có được phép tiêm phòng ?'),
                 }
     _defaults = {
         'tiem_phong':False,
@@ -192,7 +192,7 @@ class chan_nuoi(osv.osv):
         'ma_ho': fields.char('Mã hộ',size = 50, required = True),
         'name': fields.char('Tên hộ',size = 50, required = True),
         'dien_thoai': fields.char('Điện thoại',size = 50),
-        'so_nha': fields.char('Số nhà',size = 50, required = True),
+        'so_nha': fields.char('Số nhà',size = 50),
         'ngay_cap': fields.date('Thời gian cấp', required = True),
         'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)', required = True),
         'khu_pho_id': fields.many2one('khu.pho','Khu phố (ấp)', required = True),
@@ -209,6 +209,8 @@ class chan_nuoi(osv.osv):
                 selection=[('nhap', 'Nháp'),('in', 'Đang xử lý'), ('ch_duyet', 'Cấp Huyện Duyệt'), ('cc_duyet', 'Chi Cục Duyệt'), ('huy', 'Hủy bỏ')], 
                 string="Chinh Sua", readonly=True, select=True),
         'loai_hinh_so_huu_id':fields.many2one('loai.hinh.so.huu','Loại hình sở hữu', required = True),
+        'cty_gia_cong_ids': fields.many2many('cty.gia.cong', 'chan_nuoi_cong_ty_ref', 'chan_nuoi_id', 'cong_ty_id', 'Cty được gia công'),
+#         'cty_gia_cong_id':fields.many2one('cty.gia.cong','Cty được gia công'),
         'quy_cach': fields.selection([('ho', 'Trại hở'),('lanh', 'Trại lạnh')],'Quy cách chuồng trại'),
         'xu_ly_moi_truong': fields.selection([('bioga', 'Biogas'),('sinh_hoc', 'Đệm lót sinh học'),
                                               ('khac', 'Phương thức xử lý khác,...'),('khong', 'Không xử lý')],'Xử lý môi trường(chỉ chọn 1)',required=True),
@@ -219,6 +221,7 @@ class chan_nuoi(osv.osv):
         'tieu_chuan_global':fields.boolean('Tiêu chuẩn Global GAP'),
         'an_toan_dich':fields.boolean('Cơ sở An toàn dịch'),
         'tieu_chuan_khac':fields.boolean('Tiêu chuẩn khác'),
+        'dien_tich_chuong':fields.char('Diện tích chuồng trại'),
                 }
 
     _defaults = {
@@ -451,4 +454,11 @@ class loai_hinh_so_huu(osv.osv):
         'name': fields.char('Tên loại hình sở hữu',size = 50, required = True),
                 }
 loai_hinh_so_huu()
+
+class cty_gia_cong(osv.osv):
+    _name = "cty.gia.cong"
+    _columns = {
+        'name': fields.char('Tên Công Ty',size = 50, required = True),
+                }
+cty_gia_cong()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

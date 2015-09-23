@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-    	<menuitem id="cau_hinh" name="Cấu hình" groups = "green_erp_ccty_base.group_base_admin_ccty"/>
+    	<menuitem id="cau_hinh" name="Cấu hình"/>
     	<menuitem id="menu_danh_muc" parent="cau_hinh" icon="STOCK_OPEN" name="Các danh mục"/>
-    	<menuitem id="menu_action_res_users_canbo" parent="menu_danh_muc" name="Danh mục cán bộ" action="action_res_users_canbo" sequence = '1'/>
-    	<menuitem id="base.menu_action_res_company_form" parent="menu_danh_muc" name="Danh mục trạm"  action="base.action_res_company_form" sequence = '2'/>
-    	<menuitem id="menu_loai" parent="menu_danh_muc" name="Danh mục loài vật" action="action_loai_vat"/>
+    	<menuitem id="menu_action_res_users_canbo" parent="menu_danh_muc" name="Danh mục cán bộ" action="action_res_users_canbo" sequence = '1' groups = "green_erp_ccty_base.group_base_admin_ccty"/>
+    	<menuitem id="base.menu_action_res_company_form" parent="menu_danh_muc" name="Danh mục trạm"  action="base.action_res_company_form" sequence = '2' groups = "green_erp_ccty_base.group_base_admin_ccty"/>
+    	<menuitem id="menu_loai" parent="menu_danh_muc" name="Danh mục loài vật" action="action_loai_vat" groups = "green_erp_ccty_base.group_base_admin_ccty"/>
     	<menuitem id="menu_ho_chan_nuoi" parent="menu_danh_muc" name="Danh mục cơ sở chăn nuôi" action="action_chan_nuoi"/>
  <!--   	<menuitem id="menu_loai_hang" parent="menu_danh_muc" name="Danh mục loại hàng" action="action_loai_hang"/>  -->
-    	<menuitem id="menu_loai_vacxin" parent="menu_danh_muc" name="Danh mục vacxin" action="action_loai_vacxin"/> 
-    	<menuitem id="menu_tinh_tp" parent="menu_danh_muc" name="Tỉnh/Thành phố" action="action_tinh_tp"/>  
-    	<menuitem id="menu_quan_huyen" parent="menu_danh_muc" name="Quận (Huyện)" action="action_quan_huyen"/>
-    	<menuitem id="menu_phuong_xa" parent="menu_danh_muc" name="Phường (xã)" action="action_phuong_xa"/>
-    	<menuitem id="menu_khu_pho" parent="menu_danh_muc" name="Khu phố (Ấp)" action="action_khu_pho"/>
-    	<menuitem id="menu_loai_ho" parent="menu_danh_muc" name="Loại hộ" action="action_loai_ho"/>
-    	<menuitem id="menu_loai_giay_tp" parent="menu_danh_muc" name="Loại giấy tiêm phòng" action="action_loai_giay_tp"/>
+    	<menuitem id="menu_loai_vacxin" parent="menu_danh_muc" name="Danh mục vacxin" action="action_loai_vacxin" groups = "green_erp_ccty_base.group_base_admin_ccty"/> 
+    	<menuitem id="menu_tinh_tp" parent="menu_danh_muc" name="Tỉnh/Thành phố" action="action_tinh_tp" groups = "green_erp_ccty_base.group_base_admin_ccty"/>  
+    	<menuitem id="menu_quan_huyen" parent="menu_danh_muc" name="Quận (Huyện)" action="action_quan_huyen" groups = "green_erp_ccty_base.group_base_admin_ccty"/>
+    	<menuitem id="menu_phuong_xa" parent="menu_danh_muc" name="Phường (xã)" action="action_phuong_xa" groups = "green_erp_ccty_base.group_base_admin_ccty"/>
+    	<menuitem id="menu_khu_pho" parent="menu_danh_muc" name="Khu phố (Ấp)" action="action_khu_pho" groups = "green_erp_ccty_base.group_base_admin_ccty"/>
+    	<menuitem id="menu_loai_ho" parent="menu_danh_muc" name="Loại hộ" action="action_loai_ho" groups = "green_erp_ccty_base.group_base_admin_ccty"/>
+    	<menuitem id="menu_loai_giay_tp" parent="menu_danh_muc" name="Loại giấy tiêm phòng" action="action_loai_giay_tp" groups = "green_erp_ccty_base.group_base_admin_ccty"/>
  <!--    	<menuitem id="menu_don_vi_tinh" parent="menu_danh_muc" name="Đơn vị tính" action="action_don_vi_tinh"/> -->
-    	<menuitem id="menu_loai_hoa_chat" parent="menu_danh_muc" name="Loại hoá chất" action="action_loai_hoa_chat"/>
-    	<menuitem id="menu_loai_hinh_so_huu" parent="menu_danh_muc" name="Loại hình sở hữu" action="action_loai_hinh_so_huu"/>
-    	<menuitem id="menu_trang_thai" parent="menu_danh_muc" name="Trạng thái" action="action_trang_thai" sequence = '50'/>
+    	<menuitem id="menu_loai_hoa_chat" parent="menu_danh_muc" name="Loại hoá chất" action="action_loai_hoa_chat" groups = "green_erp_ccty_base.group_base_admin_ccty"/>
+    	<menuitem id="menu_loai_hinh_so_huu" parent="menu_danh_muc" name="Loại hình sở hữu" action="action_loai_hinh_so_huu" groups = "green_erp_ccty_base.group_base_admin_ccty"/>
+    	<menuitem id="menu_cty_gia_cong" parent="menu_danh_muc" name="Công ty được gia công" action="action_cty_gia_cong" groups = "green_erp_ccty_base.group_base_admin_ccty"/>
+    	<menuitem id="menu_trang_thai" parent="menu_danh_muc" name="Trạng thái" action="action_trang_thai" sequence = '50' groups = "green_erp_ccty_base.group_base_admin_ccty"/>
     	
     	<record model="ir.ui.menu" id="base.menu_administration">
 	    	<field name="groups_id" eval="[(6,0, [ref('base.group_system')])]"/>

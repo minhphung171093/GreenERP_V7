@@ -68,6 +68,7 @@ class co_cau(osv.osv):
         'nhap_xuat_id': fields.many2one('nhap.xuat.canh.giasuc','Nhap Xuat'),
         'xu_ly_id': fields.many2one('xuly.giasuc','Xu Ly'),       
         'loai_hinh_so_huu_id':fields.many2one('loai.hinh.so.huu','Loại hình sở hữu', required = True),
+        'cty_gia_cong_ids': fields.many2many('cty.gia.cong', 'cocau_chan_nuoi_cong_ty_ref', 'chan_nuoi_id', 'cong_ty_id', 'Cty được gia công'),
         'quy_cach': fields.selection([('ho', 'Trại hở'),('lanh', 'Trại lạnh')],'Quy cách chuồng trại'),
         'xu_ly_moi_truong': fields.selection([('bioga', 'Biogas'),('sinh_hoc', 'Đệm lót sinh học'),
                                               ('khac', 'Phương thức xử lý khác,...'),('khong', 'Không xử lý')],'Xử lý môi trường(chỉ chọn 1)',required=True),

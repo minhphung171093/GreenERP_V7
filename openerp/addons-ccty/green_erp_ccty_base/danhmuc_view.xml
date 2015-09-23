@@ -217,6 +217,7 @@
                     <field name="phuong_xa_id" />
                     <field name="khu_pho_id" />
                     <field name="dien_tich" />
+                    <field name="dien_tich_chuong" />
                     <field name="an_toan_dich" />
                     <field name="loai_ho_id" />
                     <field name="company_id" />
@@ -251,6 +252,7 @@
                     <field name="phuong_xa_id" domain="[('quan_huyen_id','=',quan_huyen_id)]" options="{'create': false, 'create_edit': false}"/>
                     <field name="khu_pho_id" domain="[('phuong_xa_id','=',phuong_xa_id)]" options="{'create': false, 'create_edit': false}"/>
                     <field name="dien_tich" />
+                    <field name="dien_tich_chuong" />
                     <field name="an_toan_dich" />
                     <field name="toa_do_x" />
                     <field name="toa_do_y" />
@@ -289,14 +291,15 @@
 		                    <field name="phuong_xa_id" options="{'create': false, 'create_edit': false}" domain="[('quan_huyen_id','=',quan_huyen_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 		                    <field name="khu_pho_id" options="{'create': false, 'create_edit': false}" domain="[('phuong_xa_id','=',phuong_xa_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 		                    <field name="dien_tich" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-		                    <newline/>
+		                     <field name="dien_tich_chuong" />
 		                    <field name="toa_do_x" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
                     		<field name="toa_do_y" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
                 		</group>
                 		<notebook>
 							<page string = "Thông tin khác">
 								<group col="4" string="Thông tin khác">
-				                    <field name="loai_hinh_so_huu_id" options="{'create': false, 'create_edit': false}"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>                    
+				                    <field name="loai_hinh_so_huu_id" options="{'create': false, 'create_edit': false}"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>       
+				                    <field name="cty_gia_cong_ids" widget="many2many_tags"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>             
 				                    <field name="quy_cach"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 				                    <field name="xu_ly_moi_truong"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 				                    <field name="bao_ve_moi_truong" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
@@ -679,6 +682,23 @@
         <record model="ir.actions.act_window" id="action_loai_hinh_so_huu">
             <field name="name">Loại hình sở hữu</field>
             <field name="res_model">loai.hinh.so.huu</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record> 
+        
+       <record model="ir.ui.view" id="cty_gia_cong_tree">
+            <field name="name">cty.gia.cong.tree</field>
+            <field name="model">cty.gia.cong</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Danh sách Công ty được gia công" editable='top'>
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>  
+        <record model="ir.actions.act_window" id="action_cty_gia_cong">
+            <field name="name">Danh sách Công ty được gia công</field>
+            <field name="res_model">cty.gia.cong</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
         </record> 

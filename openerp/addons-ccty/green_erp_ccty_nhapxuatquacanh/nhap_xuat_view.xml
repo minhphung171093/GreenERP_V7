@@ -187,8 +187,8 @@
 								<field name="chitiet_loai_nx" nolabel='1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}">
 									<tree editable='bottom' create = 'false' delete = 'false'>
 										<field name="name"/>
-										<field name="tiem_phong"/>
-										<field name="so_luong" sum = 'Total'/>
+										<field name="tiem_phong" invisible="1"/>
+										<field name="so_luong" string = 'Số lượng nhập'  sum = 'Total'/>
 									</tree>
 								</field>
 							</page>
@@ -196,7 +196,8 @@
 								<field name="chitiet_da_tiem_phong" nolabel='1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}">
 									<tree editable='bottom' create = 'false'>
 										<field name="vacxin_id" options="{'create': false, 'create_edit': false}"/>
-										<field name="so_luong" string = 'Số lượng nhập' sum = 'Total'/>
+										<field name="ngay_tiem" />
+										<field name="so_luong" string = 'Số lượng' sum = 'Total'/>
 									</tree>
 								</field>
 							</page>
@@ -306,8 +307,8 @@
 								<field name="chitiet_loai_nx" nolabel='1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}">
 									<tree editable='bottom' create = 'false' delete = 'false'>
 										<field name="name"/>
-										<field name="tiem_phong"/>
-										<field name="so_luong" sum = 'Total'/>
+										<field name="tiem_phong" invisible="1"/>
+										<field name="so_luong" string = 'Số lượng xuất' sum = 'Total'/>
 									</tree>
 								</field>
 							</page>
