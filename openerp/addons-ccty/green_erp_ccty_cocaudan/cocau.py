@@ -265,6 +265,15 @@ class chi_tiet_tiem_phong_line(osv.osv):
             '''%(line.ct_cocau_loai_id.co_cau_id.chon_loai.id, line.ct_cocau_loai_id.co_cau_id.ten_ho_id.id, line.vacxin_id.id, line.ct_cocau_loai_id.ct_loai_id.id)
             cr.execute(sql)
             tong_sl_tiem = cr.dictfetchone()['sl_thuc_tiem']
+            
+            sql = '''
+                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
+                from chi_tiet_da_tiem_phong where nhap_xuat_tiemphong_id in (select id from nhap_xuat_canh_giasuc 
+                where trang_thai_id in (select id from trang_thai where stt = 3) and loai_id = %s and ten_ho_id = %s and loai = 'nhap')
+                and vacxin_id = %s and ct_loai_id = %s
+            '''%(line.ct_cocau_loai_id.co_cau_id.chon_loai.id, line.ct_cocau_loai_id.co_cau_id.ten_ho_id.id, line.vacxin_id.id, line.ct_cocau_loai_id.ct_loai_id.id)
+            cr.execute(sql)
+            so_luong_nhap = cr.dictfetchone()['so_luong']
              
             sql = '''
                 select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
@@ -284,7 +293,7 @@ class chi_tiet_tiem_phong_line(osv.osv):
             cr.execute(sql)
             so_luong_chet = cr.dictfetchone()['so_luong']
              
-            res[line.id] = tong_sl_tiem - so_luong_xuat - so_luong_chet
+            res[line.id] = tong_sl_tiem + so_luong_nhap - so_luong_xuat - so_luong_chet
         return res
       
     def _get_thuc_tiem(self, cr, uid, ids, context=None):
@@ -315,6 +324,15 @@ class chi_tiet_tiem_phong_line(osv.osv):
             '''%(line.ct_cocau_loai_id.co_cau_id.chon_loai.id, line.ct_cocau_loai_id.co_cau_id.ten_ho_id.id, line.vacxin_id.id, line.ct_cocau_loai_id.ct_loai_id.id)
             cr.execute(sql)
             tong_sl_tiem = cr.dictfetchone()['sl_thuc_tiem']
+            
+            sql = '''
+                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
+                from chi_tiet_da_tiem_phong where nhap_xuat_tiemphong_id in (select id from nhap_xuat_canh_giasuc 
+                where trang_thai_id in (select id from trang_thai where stt = 3) and loai_id = %s and ten_ho_id = %s and loai = 'nhap')
+                and vacxin_id = %s and ct_loai_id = %s
+            '''%(line.ct_cocau_loai_id.co_cau_id.chon_loai.id, line.ct_cocau_loai_id.co_cau_id.ten_ho_id.id, line.vacxin_id.id, line.ct_cocau_loai_id.ct_loai_id.id)
+            cr.execute(sql)
+            so_luong_nhap = cr.dictfetchone()['so_luong']
              
             sql = '''
                 select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
@@ -334,7 +352,7 @@ class chi_tiet_tiem_phong_line(osv.osv):
             cr.execute(sql)
             so_luong_chet = cr.dictfetchone()['so_luong']
             
-            sl_da_tiem = tong_sl_tiem - so_luong_xuat - so_luong_chet
+            sl_da_tiem = tong_sl_tiem + so_luong_nhap - so_luong_xuat - so_luong_chet
             if line.ct_cocau_loai_id.tong_sl != 0:
                 res[line.id] = float(sl_da_tiem)/float(line.ct_cocau_loai_id.tong_sl)*100
         return res

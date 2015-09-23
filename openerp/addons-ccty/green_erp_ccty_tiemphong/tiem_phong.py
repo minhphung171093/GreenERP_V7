@@ -309,6 +309,15 @@ class tiem_phong_lmlm(osv.osv):
                     sql = '''
                         select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
                         from chi_tiet_da_tiem_phong where nhap_xuat_tiemphong_id in (select id from nhap_xuat_canh_giasuc 
+                        where ten_ho_id = %s and loai_id = %s and loai = 'nhap' and trang_thai_id in (select id from trang_thai where stt = 3))
+                        and ct_loai_id = %s and vacxin_id = %s
+                    '''%(ho_chan_nuoi_id, loai_id, line['ct_loai_id'], vacxin_id)
+                    cr.execute(sql)
+                    sl_nhap_tp = cr.dictfetchone()['so_luong']
+                    
+                    sql = '''
+                        select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
+                        from chi_tiet_da_tiem_phong where nhap_xuat_tiemphong_id in (select id from nhap_xuat_canh_giasuc 
                         where ten_ho_id = %s and loai_id = %s and loai = 'xuat' and trang_thai_id in (select id from trang_thai where stt = 3))
                         and ct_loai_id = %s and vacxin_id = %s
                     '''%(ho_chan_nuoi_id, loai_id, line['ct_loai_id'], vacxin_id)
@@ -328,7 +337,7 @@ class tiem_phong_lmlm(osv.osv):
                                           'ct_loai_id': line['ct_loai_id'],
                                           'so_luong': line['tong_sl'],
                                           'tiem_phong':line['tiem_phong'],
-                                          'sl_mien_dich': sl_thuc_tiem_before - sl_xuat_tp - so_luong_chet
+                                          'sl_mien_dich': sl_thuc_tiem_before + sl_nhap_tp - sl_xuat_tp - so_luong_chet
                                           }))
         return {'value': {'chi_tiet_tp_line': chi_tiet, 'chi_tiet_vaccine_line': chi_tiet_vacxin, 'tram_id': tram_id}}
     

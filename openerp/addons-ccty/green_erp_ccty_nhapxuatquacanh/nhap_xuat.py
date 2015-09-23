@@ -176,9 +176,9 @@ class nhap_xuat_canh_giasuc(osv.osv):
                     sl_tp = cr.dictfetchone()['sl_tp']
             
                     if sl_tp>line.so_luong:
-        #                 if nhap_xuat.loai == 'nhap':
-        #                     raise osv.except_osv(_('Warning!'),_('Số lượng loài %s đã tiêm phòng với loại bệnh %s không được nhiều hơn số lượng loài %s nhập vào')%(nhap_xuat.loai_id.name, tiem.name, nhap_xuat.loai_id.name))
-        #                     return False
+                        if nhap_xuat.loai == 'nhap':
+                            raise osv.except_osv(_('Warning!'),_('Số lượng nhập đã tiêm phòng không được lớn hơn số lượng muốn nhập'))
+                            return False
                         if nhap_xuat.loai == 'xuat':
                             raise osv.except_osv(_('Warning!'),_('Số lượng xuất đã tiêm phòng không được lớn hơn số lượng muốn xuất'))
                             return False
@@ -466,12 +466,14 @@ class nhap_xuat_canh_giasuc(osv.osv):
                                           'name': line_loaivat.name,
                                           'tiem_phong':line_loaivat.tiem_phong,
                                           }))
-                if loai_select == 'nhap':
-                    for line_loaibenh in loai.chitiet_loai_vaccine:
-                        if line_loaibenh.yes_no == True:
-                            tiem_phong.append((0,0,{
-                                                  'vacxin_id': line_loaibenh.vacxin_id.id,
-                                                  }))
+                    if loai_select == 'nhap':
+                        for line_loaibenh in loai.chitiet_loai_vaccine:
+                            if line_loaibenh.yes_no == True:
+                                tiem_phong.append((0,0,{
+                                                      'vacxin_id': line_loaibenh.vacxin_id.id,
+                                                      'name': line_loaivat.name,
+                                                      'ct_loai_id': line_loaivat.id,
+                                                      }))
                 if loai_select == 'xuat':
                     sql = '''
                         select id from ct_tiem_phong_lmlm_line where tp_lmlm_id in (select id from tiem_phong_lmlm where loai_id = %s and ho_chan_nuoi_id = %s 
