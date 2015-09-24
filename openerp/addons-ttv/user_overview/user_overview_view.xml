@@ -275,6 +275,7 @@
                 	</xpath>
                 	<xpath expr="//filter[@string='Order Date']" position="after">
                     	<filter string="Department" icon="terp-go-month" domain="[]" context="{'group_by':'department_id'}"/>
+<filter string="Year" icon="terp-go-month" domain="[]" context="{'group_by':'nam_order'}"/>
                 	</xpath>
                 </data>
             </field>

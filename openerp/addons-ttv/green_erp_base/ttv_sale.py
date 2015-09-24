@@ -32,9 +32,21 @@ from openerp import netsvc
 
 class sale_order(osv.osv):
     _inherit = "sale.order"
-
+	
+    def _get_nam(self, cr, uid, ids, field_name, arg, context=None):
+        cur_obj = self.pool.get('res.currency')
+        res = {}
+        for order in self.browse(cr, uid, ids, context=context):
+            if order.date_order:
+                nam_order = order.date_order[:4]
+	    else:
+		nam_order = ''
+            res[order.id] = nam_order
+        return res
+	
     _columns = {
-        'product_ralate': fields.related('order_line','product_id',type='many2one',relation='product.product',string='Product',store=True,readonly=True)
+        'product_ralate': fields.related('order_line','product_id',type='many2one',relation='product.product',string='Product',store=True,readonly=True),
+		'nam_order': fields.function(_get_nam,type='char', string='Năm',store=True),
     }
 sale_order()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
