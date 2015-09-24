@@ -1109,6 +1109,7 @@
 	                    <field name="product_uom" string="Unit of Measure" groups="product.group_uom"/>
 	                    <field name="product_uos_qty" groups="product.group_uos"/>
 	                    <field name="product_uos" groups="product.group_uos"/>
+	                    <field name="hop_dong_ban_id" domain="[('type','in',['hd_noi','hd_ngoai'])]"/>
 	                    <field name="location_id" groups="stock.group_locations" invisible="1"/>
 	                    <field name="picking_id" invisible="1" />
 	                    <field name="create_date" invisible="1" />
@@ -1184,6 +1185,7 @@
 	                            </group>
 	
 	                            <group string="Locations" groups="stock.group_locations">
+	                            	<field name="hop_dong_ban_id" domain="[('type','in',['hd_noi','hd_ngoai'])]"/>
 	                                <field name="location_id" domain="[('usage','&lt;&gt;','view')]"/>
 	                                <field name="location_dest_id" domain="[('usage','in', ['internal', 'supplier', 'customer'])]" groups="stock.group_locations"/>
 	                            </group>
@@ -1373,6 +1375,7 @@
 	                    <field name="product_uom" string="Unit of Measure" groups="product.group_uom"/>
 	                    <field name="product_uos_qty" groups="product.group_uos"/>
 	                    <field name="product_uos" groups="product.group_uos"/>
+	                    <field name="hop_dong_mua_id" domain="[('type','in',['hd_mua_trongnuoc','hd_mua_nhapkhau'])]"/>
 	                    <field name="location_id" groups="stock.group_locations" invisible="1"/>
 	                    <field name="picking_id" invisible="1" />
 	                    <field name="create_date" invisible="1" />
@@ -1448,6 +1451,7 @@
 	                            </group>
 	
 	                            <group string="Locations" groups="stock.group_locations">
+	                            	<field name="hop_dong_mua_id" domain="[('type','in',['hd_mua_trongnuoc','hd_mua_nhapkhau'])]"/>
 	                                <field name="location_id" domain="[('usage','&lt;&gt;','view')]"/>
 	                                <field name="location_dest_id" domain="[('usage','in', ['internal', 'supplier', 'customer'])]" groups="stock.group_locations"/>
 	                            </group>

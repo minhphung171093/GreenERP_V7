@@ -12,7 +12,6 @@
             <field name="code">picking.phys.adj</field>
             <field name="prefix">HTT/%(month)s/%(year)s/</field>
             <field name="padding">3</field>
-            <field name="number_next_actual">001</field>
             <field name="implementation">standard</field>
             <field name="auto_reset">True</field>
             <field name="reset_period">month</field>
@@ -29,7 +28,6 @@
             <field name="code">picking.return.customer</field>
             <field name="prefix">HTKH/%(month)s/%(year)s/</field>
             <field name="padding">3</field>
-            <field name="number_next_actual">001</field>
             <field name="implementation">standard</field>
             <field name="auto_reset">True</field>
             <field name="reset_period">month</field>
@@ -46,7 +44,6 @@
             <field name="code">picking.return.supplier</field>
             <field name="prefix">HTNCC/%(month)s/%(year)s/</field>
             <field name="padding">3</field>
-            <field name="number_next_actual">001</field>
             <field name="implementation">standard</field>
             <field name="auto_reset">True</field>
             <field name="reset_period">month</field>
