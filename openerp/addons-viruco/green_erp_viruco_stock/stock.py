@@ -998,6 +998,7 @@ class stock_move(osv.osv):
 #         'picking_ids': fields.many2many('stock.picking.in', 'move_picking_ref', 'move_id', 'picking_id', 'Phiếu nhập kho'),
         'picking_in_id': fields.many2one('stock.picking.in', 'Phiếu nhập kho'),
         'ghichu':fields.char('Ghi chú'),
+        'stock_journal_id':  fields.related('picking_id', 'stock_journal_id', type='many2one', relation='stock.journal', string='Stock Journal', store=True, readonly=1),
         #Hung them 'invoiced_qty' de tru so luong da len hoa don
         'invoiced_qty':fields.float('Invoiced Qty'),
         'primary_qty': fields.function(_get_product_info, string='Primary Qty', digits_compute= dp.get_precision('Product Unit of Measure'), type='float',
@@ -1046,15 +1047,17 @@ class stock_move(osv.osv):
 
             self._update_average_price(cr, uid, move, context=context)
             
-            product_obj = self.pool.get('product.product')
-            if move.picking_id and move.picking_id.type == 'in' and move.product_id:
-                product_obj.write(cr, uid, [move.product_id.id], {'standard_price':move.purchase_line_id.price_unit})
-            if move.picking_id and move.picking_id.type == 'out' and move.product_id and move.picking_in_id:
-                move_in_ids = self.search(cr, uid, [('picking_id','=',move.picking_in_id.id),('product_id','=',move.product_id.id)])
-                if move_in_ids:
-                    move_in = self.browse(cr, uid, move_in_ids[0])
-                    product_obj.write(cr, uid, [move.product_id.id], {'standard_price':move_in.purchase_line_id.price_unit})    
-            self._create_product_valuation_moves(cr, uid, move, context=context)
+            if move.stock_journal_id  and move.stock_journal_id.source_type not in ['in','return_supplier']:
+                product_obj = self.pool.get('product.product')
+                if move.picking_id and move.picking_id.type == 'in' and move.product_id:
+                    product_obj.write(cr, uid, [move.product_id.id], {'standard_price':move.purchase_line_id.price_unit})
+                if move.picking_id and move.picking_id.type == 'out' and move.product_id and move.picking_in_id:
+                    move_in_ids = self.search(cr, uid, [('picking_id','=',move.picking_in_id.id),('product_id','=',move.product_id.id)])
+                    if move_in_ids:
+                        move_in = self.browse(cr, uid, move_in_ids[0])
+                        product_obj.write(cr, uid, [move.product_id.id], {'standard_price':move_in.purchase_line_id.price_unit})    
+                self._create_product_valuation_moves(cr, uid, move, context=context)
+                
             if move.state not in ('confirmed','done','assigned'):
                 todo.append(move.id)
 

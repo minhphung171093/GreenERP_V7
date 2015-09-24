@@ -350,7 +350,9 @@
 	                    </group>
 	                    <notebook>
 	                        <page string="Products">
-	                            <field name="move_lines" string="Stock Move" context="{'address_out_id': partner_id, 'picking_type': 'out', 'form_view_ref':'green_erp_viruco_stock.view_move_picking_out_form', 'tree_view_ref':'green_erp_viruco_stock.view_move_picking_out_tree'}" options='{"reload_on_button": true}'/>
+	                            <field name="move_lines" string="Stock Move" context="{'default_location_id':location_id,
+	                            'default_location_dest_id':location_dest_id,
+	                            'default_date_expected':min_date or date,'address_out_id': partner_id, 'picking_type': 'out', 'form_view_ref':'green_erp_viruco_stock.view_move_picking_out_form', 'tree_view_ref':'green_erp_viruco_stock.view_move_picking_out_tree'}" options='{"reload_on_button": true}'/>
 	                            <field name="note" placeholder="Add an internal note..." class="oe_inline"/>
 	                        </page>
 	                        <page string="Additional Info">
@@ -420,7 +422,9 @@
                     </group>
                     <notebook>
                         <page string="Products">
-                            <field name="move_lines" string="Stock Move" context="{'address_in_id': partner_id, 'picking_type': 'in', 'form_view_ref':'green_erp_viruco_stock.view_move_picking_in_form', 'tree_view_ref':'green_erp_viruco_stock.view_move_picking_in_tree'}" options='{"reload_on_button": true}'/>
+                            <field name="move_lines" string="Stock Move" context="{'default_location_id':location_id,
+	                            'default_location_dest_id':location_dest_id,
+	                            'default_date_expected':min_date or date,'address_in_id': partner_id, 'picking_type': 'in', 'form_view_ref':'green_erp_viruco_stock.view_move_picking_in_form', 'tree_view_ref':'green_erp_viruco_stock.view_move_picking_in_tree'}" options='{"reload_on_button": true}'/>
                             <field name="note" placeholder="Add an internal note..." class="oe_inline"/>
                         </page>
                         <page string="Additional Info">
@@ -765,7 +769,9 @@
 	                    </group>
 	                    <notebook>
 	                        <page string="Products">
-	                            <field name="move_lines" string="Stock Move" context="{'address_in_id': partner_id, 'form_view_ref':'green_erp_stock.view_move_picking_internal_form', 'tree_view_ref':'green_erp_stock.view_move_picking_internal_tree', 'picking_type': 'internal'}" options='{"reload_on_button": true}'/>
+	                            <field name="move_lines" string="Stock Move" context="{'default_location_id':location_id,
+	                            'default_location_dest_id':location_dest_id,
+	                            'default_date_expected':min_date or date,'address_in_id': partner_id, 'form_view_ref':'green_erp_stock.view_move_picking_internal_form', 'tree_view_ref':'green_erp_stock.view_move_picking_internal_tree', 'picking_type': 'internal'}" options='{"reload_on_button": true}'/>
 	                            <field name="note" placeholder="Add an internal note..." class="oe_inline"/>
 	                        </page>
 	                        <page string="Additional Info">
@@ -1044,7 +1050,9 @@
 	                    </group>
 	                    <notebook>
 	                        <page string="Products">
-	                            <field name="move_lines" string="Stock Move" context="{'address_in_id': partner_id, 'form_view_ref':'green_erp_stock.view_move_picking_physical_adjustments_form', 'tree_view_ref':'green_erp_stock.view_move_picking_physical_adjustments_tree', 'picking_type': 'internal'}" options='{"reload_on_button": true}'/>
+	                            <field name="move_lines" string="Stock Move" context="{'default_location_id':location_id,
+	                            'default_location_dest_id':location_dest_id,
+	                            'default_date_expected':min_date or date,'address_in_id': partner_id, 'form_view_ref':'green_erp_stock.view_move_picking_physical_adjustments_form', 'tree_view_ref':'green_erp_stock.view_move_picking_physical_adjustments_tree', 'picking_type': 'internal'}" options='{"reload_on_button": true}'/>
 	                            <field name="note" placeholder="Add an internal note..." class="oe_inline"/>
 	                        </page>
 	                        <page string="Additional Info">
@@ -1311,7 +1319,9 @@
 	                    </group>
 	                    <notebook>
 	                        <page string="Products">
-	                            <field name="move_lines" string="Stock Move" context="{'address_in_id': partner_id, 'form_view_ref':'green_erp_stock.view_move_picking_return_customer_form', 'tree_view_ref':'green_erp_stock.view_move_picking_return_customer_tree', 'picking_type': 'internal'}" options='{"reload_on_button": true}'/>
+	                            <field name="move_lines" string="Stock Move" context="{'default_location_id':location_id,
+	                            'default_location_dest_id':location_dest_id,
+	                            'default_date_expected':min_date or date,'address_in_id': partner_id, 'form_view_ref':'green_erp_stock.view_move_picking_return_customer_form', 'tree_view_ref':'green_erp_stock.view_move_picking_return_customer_tree', 'picking_type': 'internal'}" options='{"reload_on_button": true}'/>
 	                            <field name="note" placeholder="Add an internal note..." class="oe_inline"/>
 	                        </page>
 	                        <page string="Additional Info">
@@ -1577,7 +1587,9 @@
 	                    </group>
 	                    <notebook>
 	                        <page string="Products">
-	                            <field name="move_lines" string="Stock Move" context="{'address_in_id': partner_id, 'form_view_ref':'green_erp_stock.view_move_picking_return_supplier_form', 'tree_view_ref':'green_erp_stock.view_move_picking_return_supplier_tree', 'picking_type': 'internal'}" options='{"reload_on_button": true}'/>
+	                            <field name="move_lines" string="Stock Move" context="{'default_location_id':location_id,
+	                            'default_location_dest_id':location_dest_id,
+	                            'default_date_expected':min_date or date,'address_in_id': partner_id, 'form_view_ref':'green_erp_stock.view_move_picking_return_supplier_form', 'tree_view_ref':'green_erp_stock.view_move_picking_return_supplier_tree', 'picking_type': 'internal'}" options='{"reload_on_button": true}'/>
 	                            <field name="note" placeholder="Add an internal note..." class="oe_inline"/>
 	                        </page>
 	                        <page string="Additional Info">
