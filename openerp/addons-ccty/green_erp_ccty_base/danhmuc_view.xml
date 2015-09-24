@@ -276,41 +276,41 @@
 	            	</header> 
 	                <sheet>
                 		<group col="4"  string="Thông tin chung">
-                			<field name="loai_ho_id" options="{'create': false, 'create_edit': false}" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}" string="Loại cơ sở" />
-		            		<field name="name" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}" string="Tên trại, cơ sở" />
-		                    <field name="ma_ho" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}" string="Mã trại, cơ sở" />
-		                    <field name="dien_thoai" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}" />
-		                    <field name="ngay_cap" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-		                    <field name="company_id" options="{'create': false, 'create_edit': false}" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+                			<field name="loai_ho_id" options="{'create': false, 'create_edit': false}" string="Loại cơ sở" />
+		            		<field name="name" string="Tên trại, cơ sở" />
+		                    <field name="ma_ho" string="Mã trại, cơ sở" />
+		                    <field name="dien_thoai"/>
+		                    <field name="ngay_cap" />
+		                    <field name="company_id" options="{'create': false, 'create_edit': false}" />
 		                    <field name="hien_an" invisible = '1'/>
 		                    <field name="chinh_sua_rel" invisible = '1' />
                 		</group>
                 		<group col="4"  string="Địa chỉ">
-							<field name="so_nha" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>                    
-							<field name="quan_huyen_id" options="{'create': false, 'create_edit': false}" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-							<field name="phuong_xa_id" options="{'create': false, 'create_edit': false}" domain="[('quan_huyen_id','=',quan_huyen_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-							<field name="khu_pho_id" options="{'create': false, 'create_edit': false}" domain="[('phuong_xa_id','=',phuong_xa_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-							<field name="dien_tich" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+							<field name="so_nha" />                    
+							<field name="quan_huyen_id" options="{'create': false, 'create_edit': false}" />
+							<field name="phuong_xa_id" options="{'create': false, 'create_edit': false}" domain="[('quan_huyen_id','=',quan_huyen_id)]" />
+							<field name="khu_pho_id" options="{'create': false, 'create_edit': false}" domain="[('phuong_xa_id','=',phuong_xa_id)]" />
+							<field name="dien_tich" />
 							<field name="dien_tich_chuong" />
-							<field name="lat" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-							<field name="lng" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+							<field name="lat" />
+							<field name="lng" />
                 		</group>
                 		<notebook>
 							<page string = "Thông tin khác">
 								<group col="4" string="Thông tin khác">
-				                    <field name="loai_hinh_so_huu_id" options="{'create': false, 'create_edit': false}"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>       
-				                    <field name="cty_gia_cong_ids" widget="many2many_tags"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>             
-				                    <field name="quy_cach"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-				                    <field name="xu_ly_moi_truong"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-				                    <field name="bao_ve_moi_truong" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-				                    <field name="danh_gia_moi_truong"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-				                    <field name="san_xuat_giong" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+				                    <field name="loai_hinh_so_huu_id" options="{'create': false, 'create_edit': false}"  />       
+				                    <field name="cty_gia_cong_ids" widget="many2many_tags"  />             
+				                    <field name="quy_cach"  />
+				                    <field name="xu_ly_moi_truong"  />
+				                    <field name="bao_ve_moi_truong" />
+				                    <field name="danh_gia_moi_truong"  />
+				                    <field name="san_xuat_giong" />
                 				</group>
                 				<group string="Các tiêu chuẩn khác">
-				                    <field name="tieu_chuan_viet" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-				                    <field name="tieu_chuan_global"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-				                    <field name="an_toan_dich" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-				                    <field name="tieu_chuan_khac"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+				                    <field name="tieu_chuan_viet" />
+				                    <field name="tieu_chuan_global"  />
+				                    <field name="an_toan_dich" />
+				                    <field name="tieu_chuan_khac"  />
                 				</group>
 							</page>
 						</notebook>
