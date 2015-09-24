@@ -529,16 +529,6 @@ class chi_tiet_loai_nhap_xuat(osv.osv):
                 }
 chi_tiet_loai_nhap_xuat()
 
-# class chi_tiet_da_tiem_phong(osv.osv):
-#     _name = "chi.tiet.da.tiem.phong"
-#     _columns = {
-#         'nhap_xuat_tiemphong_id': fields.many2one('nhap.xuat.canh.giasuc','Nhap Xuat', ondelete = 'cascade'),
-#         'name': fields.char('Loại bệnh', readonly = True),
-#         'loai_benh_id': fields.many2one('chi.tiet.loai.benh','Loại bệnh', readonly = True),
-#         'so_luong': fields.integer('Số lượng'),
-#                 }
-# chi_tiet_da_tiem_phong()
-
 class chi_tiet_da_tiem_phong(osv.osv):
     _name = "chi.tiet.da.tiem.phong"
     _columns = {

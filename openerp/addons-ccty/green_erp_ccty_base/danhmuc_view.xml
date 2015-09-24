@@ -254,8 +254,8 @@
                     <field name="dien_tich" />
                     <field name="dien_tich_chuong" />
                     <field name="an_toan_dich" />
-                    <field name="toa_do_x" />
-                    <field name="toa_do_y" />
+                    <field name="lat" />
+                    <field name="lng" />
                     <field name="trang_thai_id" options="{'create': false, 'create_edit': false}"/>
                     <field name="hien_an" invisible = '1'/>
                     <field name="chinh_sua_rel" invisible = '1'/>
@@ -286,14 +286,14 @@
 		                    <field name="chinh_sua_rel" invisible = '1' />
                 		</group>
                 		<group col="4"  string="Địa chỉ">
-		                    <field name="so_nha" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>                    
-		                    <field name="quan_huyen_id" options="{'create': false, 'create_edit': false}" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-		                    <field name="phuong_xa_id" options="{'create': false, 'create_edit': false}" domain="[('quan_huyen_id','=',quan_huyen_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-		                    <field name="khu_pho_id" options="{'create': false, 'create_edit': false}" domain="[('phuong_xa_id','=',phuong_xa_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-		                    <field name="dien_tich" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-		                     <field name="dien_tich_chuong" />
-		                    <field name="toa_do_x" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-                    		<field name="toa_do_y" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+							<field name="so_nha" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>                    
+							<field name="quan_huyen_id" options="{'create': false, 'create_edit': false}" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+							<field name="phuong_xa_id" options="{'create': false, 'create_edit': false}" domain="[('quan_huyen_id','=',quan_huyen_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+							<field name="khu_pho_id" options="{'create': false, 'create_edit': false}" domain="[('phuong_xa_id','=',phuong_xa_id)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+							<field name="dien_tich" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+							<field name="dien_tich_chuong" />
+							<field name="lat" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+							<field name="lng" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
                 		</group>
                 		<notebook>
 							<page string = "Thông tin khác">
