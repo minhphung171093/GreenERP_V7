@@ -5,7 +5,7 @@
 ##############################################################################
 
 {
-    "name" : "GreenERP Report Warehouse",
+    "name" : "GreenERP Warehouse Reports",
     "version" : "1.0",
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',

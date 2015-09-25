@@ -9,6 +9,8 @@
             <field name="arch" type="xml">
                 <tree string="Hướng dẫn sử dụng">
                 	<field name="name" />
+                	<field name="datas" filename="datas_fname" string="File mềm"/>
+                    <field name="datas_fname" invisible="1"/>
                 </tree>
             </field>
         </record>
