@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+		<record id='view_greenerp_report_tree' model='ir.ui.view'>
+			<field name='name'>greenerp.report.tree</field>
+			<field name='model'>greenerp.report</field>
+			<field name='type'>tree</field>
+			<field name='arch' type='xml'>
+				<tree string='GreenERP Report' editable='top'>
+					<field name='name'/>
+					<field name="delete_after"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id='action_greenerp_report' model='ir.actions.act_window'>
+			<field name='name'>GreenERP Report</field>
+			<field name='res_model'>greenerp.report</field>
+			<field name='view_type'>form</field>
+			<field name='view_mode'>tree,form</field>
+			<field name="view_id" ref="view_greenerp_report_tree"/>
+		</record>
+	    
+    </data>
+</openerp>

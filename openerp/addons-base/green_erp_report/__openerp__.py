@@ -20,25 +20,22 @@
 ##############################################################################
 
 {
-    'name': 'GreenERP BASE',
+    'name': 'GreenERP REPORT',
     'version': '1.0',
     'category': 'GreenERP',
     'sequence': 1,
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',
-    'depends': ['web','sale','stock','purchase'],
+    'depends': ['green_erp_base'],
     'data': [
-        'ir_ui_menu_view.xml',
-        'base_view.xml',
-        'res_users_view.xml',
-        'product_view.xml',
+        'security/ir.model.access.csv',
+        'report_view.xml',
+        'report_schedule.xml',
         'menu.xml',
     ],
     'css' : [
-        "static/src/css/base.css",
     ],
     'qweb': [
-        'static/src/xml/base.xml'
     ],
     'installable': True,
     'auto_install': False,
