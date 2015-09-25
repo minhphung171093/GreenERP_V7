@@ -29,8 +29,6 @@
     'depends': ['green_erp_base','account','account_accountant','report_aeroo','report_aeroo_ooo','green_erp_account_regularization','account_cancel'],
     'data': [
         'account_view.xml',
-        'report/report_view.xml',
-        'wizard/print_report.xml',
         'account_voucher_batch_view.xml',
         'menu.xml',
     ],
