@@ -74,23 +74,72 @@ class nhom_cong_viec(osv.osv):
             super(ct_nhom_cong_viec, self).write(cr, SUPERUSER_ID, [id], {'db_datas': value, 'file_size': file_size}, context=context)
         return True
     
+    def _get_tt_lanhdao(self, cr, uid, ids, field_name, args, context=None):
+        res = {}
+        for tt in self.browse(cr,uid,ids,context=context):
+            if tt.state == 'nhap':
+                res[tt.id] = '1_nhap'
+            if tt.state == 'da_giao':
+                res[tt.id] = '2_phan_cong'
+            if tt.state == 'dang_lam':
+                res[tt.id] = '2_phan_cong'
+            if tt.state == 'cho_duyet':
+                res[tt.id] = '3_cho_duyet'
+            if tt.state == 'duyet':
+                res[tt.id] = '4_hoan_thanh'
+        return res
+    
+    def _check_color(self, cr, uid, ids, field_name, arg, context):
+        res = {}
+        for record in self.browse(cr, uid, ids, context):
+            color = 0
+            if record.tt_lanhdao == '2_phan_cong':
+                if record.state == 'da_giao':
+                    color=3
+                if record.state == 'dang_lam':
+                    color=6
+                now = time.strftime('%Y-%m-%d')
+                if record.ngay_het_han > now:
+                    color=2
+            res[record.id] = color
+        return res
+    
+    def _get_name(self, cr, uid, ids, field_name, arg, context):
+        res = {}
+        for record in self.browse(cr, uid, ids, context):
+            name_kanban = record.name
+            if len(name_kanban)>20:
+                name_kanban = name_kanban[:19]+'...'
+            res[record.id] = name_kanban
+        return res
+    
     _columns = {
         'name':fields.char('Tên nhóm công việc',size=1024,required=True),
-        'phong_ban_id':fields.many2one('phong.ban','Phòng ban'),
+        'phong_ban_id':fields.many2one('phong.ban','Đơn vị thực hiện chính'),
         'ho_tro':fields.selection([('co','Có'),('khong','Không')],'Hỗ trợ'),
-        'phong_ban_ids': fields.many2many('phong.ban','phong_ban_nhom_cv_ref','nhom_cv_id','phong_ban_id','Phòng ban hỗ trợ' ),
+        'phong_ban_ids': fields.many2many('phong.ban','phong_ban_nhom_cv_ref','nhom_cv_id','phong_ban_id','Đơn vị phối hợp hỗ trợ' ),
         'quy_trinh_id':fields.many2one('quy.trinh','Quy trình'),
-        'state':fields.selection([('nhap','Nháp'),
+        'ngay_het_han': fields.date('Ngày hết hạn'), 
+        'state':fields.selection([('nhap','Đang dự thảo'),
                                   ('da_giao','Đã giao'),
-                                  ('da_nhan','Đã nhận'),
-                                  ('dang_lam','Đang làm'),
+                                  ('dang_lam','Đang xử lý'),
                                   ('cho_duyet','Chờ phê duyệt'),
                                   ('duyet','Đã duyệt')],'Trạng thái'),
+                
         'loai':fields.selection([('1_nhom_cv','Nhóm công việc'),
                                  ('3_cv','Công việc'),
                                  ('4_cv_con','Công việc con'),
                                  ('2_nhom_cv_tg','Nhóm công việc TG'),
                                  ('5_ct_th','Chi tiết thực hiện')],'Loại'),
+                
+        'tt_lanhdao': fields.function(_get_tt_lanhdao, type='selection',method=True, store = True,selection=[('1_nhap','Đang dự thảo'),
+                                 ('2_phan_cong','Phân công xử lý công việc'),
+                                 ('3_cho_duyet','Chờ phê duyệt'),
+                                 ('4_hoan_thanh','Đã hoàn thành'),
+                                 ], string="TT Lãnh đạo"),       
+        'color':fields.function(_check_color,'Color',type="integer"),
+        'name_kanban':fields.function(_get_name,'Name',type="char"),
+                
         'ct_nhom_cv_line':fields.one2many('ct.nhom.cong.viec','nhom_cv_id','Chi tiết công việc'),
         'cong_viec_id':fields.many2one('nhom.cong.viec','Nhóm công việc'),
         'nhom_cv_id': fields.many2one('nhom.cong.viec','Nhóm công việc'),
@@ -124,13 +173,14 @@ class nhom_cong_viec(osv.osv):
         'ct_th_cv_id':fields.many2one('nhom.cong.viec','cong viec'),
         'ct_th_cv_con_id':fields.many2one('nhom.cong.viec','cong viec con'),
         
+        'stt': fields.integer('STT', required=True),
+        'yeu_cau_kq':fields.text('Yêu cầu kết quả đạt được'),
+        'cach_thuc_hien': fields.text('Cách thức thực hiện'),
         'datas_fname': fields.char('File Name',size=256),
         'datas': fields.function(_data_get, fnct_inv=_data_set, string='File Content', type="binary", nodrop=True),
         'store_fname': fields.char('Stored Filename', size=256),
         'db_datas': fields.binary('Database Data'),
         'file_size': fields.integer('File Size'),
-        'yeu_cau_kq':fields.text('Yêu cầu kết quả'),
-        'cach_thuc_hien':fields.text('Cách thức thực hiện'),
     }
     _defaults = {
             'ho_tro':'khong',   
@@ -152,70 +202,6 @@ class nhom_cong_viec(osv.osv):
     _constraints = [
         (_check_nhan_vien, 'Identical Data', []),
     ]   
-    def write(self, cr, uid, ids, vals, context=None):
-        new_write = super(nhom_cong_viec, self).write(cr, uid,ids, vals, context)
-        dem_line = 0
-        dem_ht = 0
-        for nhom_cv in self.browse(cr,uid,ids):
-            if nhom_cv.loai=='5_ct_th':
-                if vals and nhom_cv.state == 'da_nhan' :
-                    if 'state' not in vals:
-                        sql = '''
-                            update nhom_cong_viec set state = 'dang_lam' where id = %s
-                        '''%(nhom_cv.id)
-                        cr.execute(sql)
-                        
-                        
-                        if nhom_cv.ct_th_nhom_cv_id:
-                            sql = '''
-                                update nhom_cong_viec set state = 'dang_lam' where id = %s
-                            '''%(nhom_cv.ct_th_nhom_cv_id.id)
-                            cr.execute(sql)
-                            
-                        if nhom_cv.ct_th_cv_tg_id:
-                            sql = '''
-                                update nhom_cong_viec set state = 'dang_lam' where id = %s
-                            '''%(nhom_cv.ct_th_cv_tg_id.id)
-                            cr.execute(sql)
-                            if nhom_cv.ct_th_cv_tg_id.phan_cong_phong_ban_id:
-                                sql = '''
-                                    update nhom_cong_viec set state = 'dang_lam' where id = %s
-                                '''%(nhom_cv.ct_th_cv_tg_id.phan_cong_phong_ban_id.id)
-                                cr.execute(sql)
-                        
-                        if nhom_cv.ct_th_cv_id:
-                            sql = '''
-                                update nhom_cong_viec set state = 'dang_lam' where id = %s
-                            '''%(nhom_cv.ct_th_cv_id.id)
-                            cr.execute(sql)
-                            if nhom_cv.ct_th_cv_id.cong_viec_id:
-                                sql = '''
-                                    update nhom_cong_viec set state = 'dang_lam' where id = %s
-                                '''%(nhom_cv.ct_th_cv_id.cong_viec_id.id)
-                                cr.execute(sql)
-                                
-                        if nhom_cv.ct_th_cv_con_id:
-                            sql = '''
-                                update nhom_cong_viec set state = 'dang_lam' where id = %s
-                            '''%(nhom_cv.ct_th_cv_con_id.id)
-                            cr.execute(sql)
-                            if nhom_cv.ct_th_cv_con_id.cong_viec_con_id:
-                                sql = '''
-                                    update nhom_cong_viec set state = 'dang_lam' where id = %s
-                                '''%(nhom_cv.ct_th_cv_con_id.cong_viec_con_id.id)
-                                cr.execute(sql)
-                            if nhom_cv.ct_th_cv_con_id.nhom_cv_id:
-                                sql = '''
-                                    update nhom_cong_viec set state = 'dang_lam' where id = %s
-                                '''%(nhom_cv.ct_th_cv_con_id.nhom_cv_id.id)
-                                cr.execute(sql)
-                            if nhom_cv.ct_th_cv_con_id.cv_tg_id:
-                                sql = '''
-                                    update nhom_cong_viec set state = 'dang_lam' where id = %s
-                                '''%(nhom_cv.ct_th_cv_con_id.cv_tg_id.id)
-                                cr.execute(sql)
-                                
-        return new_write    
     
     def bt_hoan_thanh_ctth(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids,{'state':'cho_duyet'})
@@ -394,19 +380,19 @@ class nhom_cong_viec(osv.osv):
         return self.write(cr, uid, ids,{'state':'da_giao'})
     
     def bt_nhan_ncv(self, cr, uid, ids, context=None):
-        return self.write(cr, uid, ids,{'state':'da_nhan'})
+        return self.write(cr, uid, ids,{'state':'dang_lam'})
     
     def bt_nhan_cv_pc(self, cr, uid, ids, context=None):
-        return self.write(cr, uid, ids,{'state':'da_nhan'})
+        return self.write(cr, uid, ids,{'state':'dang_lam'})
     
     def bt_nhan_cv(self, cr, uid, ids, context=None):
-        return self.write(cr, uid, ids,{'state':'da_nhan'})
+        return self.write(cr, uid, ids,{'state':'dang_lam'})
     
     def bt_nhan_cv_con(self, cr, uid, ids, context=None):
-        return self.write(cr, uid, ids,{'state':'da_nhan'})
+        return self.write(cr, uid, ids,{'state':'dang_lam'})
     
     def bt_nhan_cttth(self, cr, uid, ids, context=None):
-        return self.write(cr, uid, ids,{'state':'da_nhan'})
+        return self.write(cr, uid, ids,{'state':'dang_lam'})
     
     def bt_cho_duyet(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids,{'state':'duyet'})
@@ -455,8 +441,11 @@ class nhom_cong_viec(osv.osv):
             quy_trinh = self.pool.get('quy.trinh').browse(cr,uid,quy_trinh_id)
             for line in quy_trinh.buoc_thuc_hien_line:
                 if loai == "1_nhom_cv":
+                    if state == 'da_giao':
+                        raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa nhận nhóm công việc!'))
                     if state == 'nhap':
                         ct_nhom_cv_line.append((0,0,{
+                                                    'stt': line.stt,
                                                     'name': line.name,
                                                     'datas_fname': line.datas_fname,
                                                     'datas': line.datas,
@@ -470,6 +459,7 @@ class nhom_cong_viec(osv.osv):
                                                      }))
                     else:
                         ct_nhom_cv_line.append((0,0,{
+                                                    'stt': line.stt,
                                                     'name': line.name,
                                                     'datas_fname': line.datas_fname,
                                                     'datas': line.datas,
@@ -481,9 +471,11 @@ class nhom_cong_viec(osv.osv):
                                                     'state': 'da_giao',
                                                     'loai': '5_ct_th',
                                                      }))
-                    return {'value': {'ct_th_nhom_cv_line': ct_nhom_cv_line}}
                 if loai == "2_nhom_cv_tg":
+                    if state == 'da_giao':
+                        raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa nhận công việc phân công!'))
                     ct_nhom_cv_line.append((0,0,{
+                                                'stt': line.stt,
                                                 'name': line.name,
                                                 'datas_fname': line.datas_fname,
                                                 'datas': line.datas,
@@ -495,9 +487,11 @@ class nhom_cong_viec(osv.osv):
                                                 'state': 'da_giao',
                                                 'loai': '5_ct_th',
                                                  }))
-                    return {'value': {'ct_th_cv_tg_line': ct_nhom_cv_line}}
                 if loai == "3_cv":
+                    if state == 'da_giao':
+                        raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa nhận công việc!'))
                     ct_nhom_cv_line.append((0,0,{
+                                                'stt': line.stt,
                                                 'name': line.name,
                                                 'datas_fname': line.datas_fname,
                                                 'datas': line.datas,
@@ -509,9 +503,11 @@ class nhom_cong_viec(osv.osv):
                                                 'state': 'da_giao',
                                                 'loai': '5_ct_th',
                                                  }))
-                    return {'value': {'ct_th_cv_line': ct_nhom_cv_line}}
                 if loai == "4_cv_con":
+                    if state == 'da_giao':
+                        raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa nhận công việc con!'))
                     ct_nhom_cv_line.append((0,0,{
+                                                'stt': line.stt,
                                                 'name': line.name,
                                                 'datas_fname': line.datas_fname,
                                                 'datas': line.datas,
@@ -523,7 +519,11 @@ class nhom_cong_viec(osv.osv):
                                                 'state': 'da_giao',
                                                 'loai': '5_ct_th',
                                                  }))
-                    return {'value': {'ct_th_cv_con_line': ct_nhom_cv_line}}
+        return {'value': {'ct_th_cv_con_line': ct_nhom_cv_line,
+                          'ct_th_cv_line': ct_nhom_cv_line,
+                          'ct_th_cv_tg_line': ct_nhom_cv_line,
+                          'ct_th_nhom_cv_line': ct_nhom_cv_line,
+                          }}
     
     def onchange_phong_ban_ids(self, cr, uid, ids, phong_ban_ids = False):
         if phong_ban_ids and phong_ban_ids[0] and phong_ban_ids[0][2]:
@@ -604,17 +604,78 @@ ct_nhom_cong_viec()
 class quy_trinh(osv.osv):
     _name = "quy.trinh"
     _columns = {
-        'name': fields.char('Tên quy trình', size = 100, required=True),
-        'phong_ban_id':fields.many2one('phong.ban','Phòng Ban',required = True),
-        'chuc_vu_id':fields.many2one('chuc.vu','Chức vụ'),
+        'name': fields.char('Mã số', size = 100, required=True),
+        'ten': fields.char('Tên quy trình', size = 100, required=True),
+        'phong_ban_ids': fields.many2many('phong.ban','phong_ban_quy_trinh_ref','quy_trinh_id','phong_ban_id','Cấp chịu trách nhiệm thực hiện',required = True),
+        'nguoi_xx': fields.many2one('nhan.vien', 'Người xem xét'),
+        'nguoi_soan': fields.many2one('nhan.vien', 'Người biên soạn'),
+        'nguoi_duyet': fields.many2one('nhan.vien', 'Người phê duyệt'),
+        'ngay_bh': fields.date('Ngày ban hành'),
+        'lan_bh': fields.integer('Lần ban hành'),
+        'all_phong_ban': fields.boolean('Tất cả phòng ban'),
         'buoc_thuc_hien_line':fields.one2many('buoc.thuc.hien.line','quy_trinh_id','Các bước thực hiện'),
+        'ls_quy_trinh_line': fields.one2many('quy.trinh','quy_trinh_id','Theo dõi sửa đổi tài liệu'),
+        'quy_trinh_id': fields.many2one('quy.trinh', 'Quy trình'),
+                }
+    _defaults = {
+                'all_phong_ban': False,
                 }
     
+    def onchange_all_phong_ban(self, cr, uid, ids,all_phong_ban=False, context=None):
+        phong_ban_ids = []
+        if all_phong_ban == True:
+            sql = '''
+                select id from phong_ban
+            '''
+            cr.execute(sql)
+            phong_ban_ids = [r[0] for r in cr.fetchall()]
+        return {'value': {'phong_ban_ids': phong_ban_ids}}
+    
+    def write(self, cr, uid, ids, vals, context=None):
+        default = {}
+        ls = []
+        if vals:
+            default.update({
+                'quy_trinh_id':ids[0],
+                'ls_quy_trinh_line':[]
+            })
+            new_id = self.copy(cr, uid, ids[0], default, context=context)
+        return super(quy_trinh, self).write(cr, uid,ids, vals, context)
+    
+    def bt_lay_quy_trinh(self, cr, uid, ids, context=None):
+        res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
+                                        'green_erp_qldh', 'quy_trinh_form_view')
+        default = {}
+        for qt in self.browse(cr,uid,ids):
+            sql = '''
+                update quy_trinh set quy_trinh_id = %s where id = %s
+            '''%(qt.id, qt.quy_trinh_id.id)
+            cr.execute(sql)
+            sql = '''
+                update quy_trinh set quy_trinh_id = %s where id in (select id from quy_trinh where quy_trinh_id = %s)
+            '''%(qt.id, qt.quy_trinh_id.id)
+            cr.execute(sql)
+            sql = '''
+                update quy_trinh set quy_trinh_id = NULL where id = %s
+            '''%(qt.id)
+            cr.execute(sql)
+            
+        return {
+                    'name': 'Quy Trình',
+                    'view_type': 'form',
+                    'view_mode': 'form',
+                    'view_id': res[1],
+                    'res_model': 'quy.trinh',
+                    'domain': [],
+                    'context': {},
+                    'type': 'ir.actions.act_window',
+                    'target': 'current',
+                }
 quy_trinh()
 
 class buoc_thuc_hien_line(osv.osv):
     _name = "buoc.thuc.hien.line"
-    
+    _order = 'stt'
     def _data_get(self, cr, uid, ids, name, arg, context=None):
         if context is None:
             context = {}
@@ -652,7 +713,8 @@ class buoc_thuc_hien_line(osv.osv):
     
     _columns = {
         'quy_trinh_id':fields.many2one('quy.trinh','Quy trình', ondelete = 'cascade'),
-        'name': fields.char('Tên chi tiết', size = 100, required=True),
+        'stt': fields.integer('STT', required=True),
+        'name': fields.char('Tên bước thực hiện', size = 100, required=True),
         'yeu_cau_kq':fields.text('Yêu cầu kết quả đạt được'),
         'cach_thuc_hien': fields.text('Cách thức thực hiện'),
         'datas_fname': fields.char('File Name',size=256),
@@ -662,6 +724,45 @@ class buoc_thuc_hien_line(osv.osv):
         'file_size': fields.integer('File Size'),
                 }
     
+#     def create(self, cr, uid, vals, context=None):
+#         new_id = super(buoc_thuc_hien_line, self).create(cr, uid, vals, context)
+#         phong = self.browse(cr,uid,new_id)
+#         for line in phong.ds_nhan_vien_line:
+#             sql = '''
+#                 update nhan_vien set phong_ban_id = %s where id = %s
+#             '''%(new_id, line.nhan_vien_id.id)
+#             cr.execute(sql)
+#         return new_id
+    
+    def write(self, cr, uid, ids, vals, context=None):
+        for line in self.browse(cr,uid,ids):
+            if 'stt' in vals:
+                sql = '''
+                    select id from buoc_thuc_hien_line where quy_trinh_id = %s
+                '''%(line.quy_trinh_id.id)
+                cr.execute(sql)
+                line_ids = cr.fetchall()
+                
+                sql = '''
+                    select id from buoc_thuc_hien_line where stt = %s and quy_trinh_id = %s
+                '''%(vals['stt'], line.quy_trinh_id.id)
+                cr.execute(sql)
+                tam = cr.dictfetchone()
+                tam_id = tam and tam['id'] or False
+                if tam_id:
+                    if ids:
+                        for i in range(vals['stt']+1,len(line_ids)+1):
+                            # di lui tu tren cao xuong
+                            for l in range(tam_id,ids[-1]):
+                                sql = '''
+                                    update buoc_thuc_hien_line set stt = %s where quy_trinh_id = %s and id = %s
+                                '''%(i,line.quy_trinh_id.id,l)
+                                cr.execute(sql)
+                                
+                                tam_id+=1
+                                break
+            
+        return super(buoc_thuc_hien_line, self).write(cr, uid,ids, vals, context)
 
     
 buoc_thuc_hien_line()

@@ -29,28 +29,12 @@ class phong_ban(osv.osv):
     _name = "phong.ban"
     _columns = {
         'name': fields.char('Tên phòng ban', size = 100, required=True),
-        'truong_phong_id': fields.many2one('nhan.vien','Trưởng phòng', required=True),
         'ds_nhan_vien_line': fields.one2many('ds.nhan.vien.line','phong_ban_id','Các nhân viên'),
                 }
-    def _check_truong_phong_id(self, cr, uid, ids, context=None):
-        for nhan_vien in self.browse(cr, uid, ids, context=context):
-            nhan_vien_ids = self.search(cr, uid, [('id','!=',nhan_vien.id),('truong_phong_id', '=',nhan_vien.truong_phong_id.id)])
-            if nhan_vien_ids:
-                raise osv.except_osv(_('Warning!'),_('Trưởng phòng %s đã thuộc một phòng ban !')%(nhan_vien.truong_phong_id.name))
-                return False
-            return True
-         
-    _constraints = [
-        (_check_truong_phong_id, 'Identical Data',[]),
-    ]   
     
     def create(self, cr, uid, vals, context=None):
         new_id = super(phong_ban, self).create(cr, uid, vals, context)
         phong = self.browse(cr,uid,new_id)
-        sql = '''
-            update nhan_vien set phong_ban_id = %s where id = %s
-        '''%(new_id, phong.truong_phong_id.id)
-        cr.execute(sql)
         for line in phong.ds_nhan_vien_line:
             sql = '''
                 update nhan_vien set phong_ban_id = %s where id = %s
@@ -61,14 +45,10 @@ class phong_ban(osv.osv):
     def write(self, cr, uid, ids, vals, context=None):
         new_write = super(phong_ban, self).write(cr, uid,ids, vals, context)
         for phong in self.browse(cr,uid,ids):
-            sql = '''
-                update nhan_vien set phong_ban_id = %s where id = %s
-            '''%(new_id, phong.truong_phong_id.id)
-            cr.execute(sql)
             for line in phong.ds_nhan_vien_line:
                 sql = '''
                     update nhan_vien set phong_ban_id = %s where id = %s
-                '''%(new_id, line.nhan_vien_id.id)
+                '''%(phong.id, line.nhan_vien_id.id)
                 cr.execute(sql)
         return new_write
 phong_ban()

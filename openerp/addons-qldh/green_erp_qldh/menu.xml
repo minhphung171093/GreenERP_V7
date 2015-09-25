@@ -8,14 +8,12 @@
 			
 			<menuitem id="menu_chuyen_vien" parent="quan_ly" name="Menu Chuyên viên" sequence = '4'/>  
 				<menuitem action="action_nhom_cong_viec_moi_giao" id="menu_action_nhom_cong_viec_moi_giao_cv" parent="menu_chuyen_vien" name="Mới giao"  sequence="1"/>
-				<menuitem action="action_nhom_cong_viec_da_nhan" id="menu_action_nhom_cong_viec_da_nhan_cv" parent="menu_chuyen_vien" name="Đã nhận"  sequence="2"/>
 				<menuitem action="action_nhom_cong_viec_dang_lam" id="menu_action_nhom_cong_viec_dang_lam_cv" parent="menu_chuyen_vien" name="Đang làm"  sequence="3"/>
 				<menuitem action="action_nhom_cong_viec_cho_duyet" id="menu_action_nhom_cong_viec_cho_duyet_cv" parent="menu_chuyen_vien" name="Chờ duyệt"  sequence="4"/>
 				<menuitem action="action_nhom_cong_viec_da_ban_hanh" id="menu_action_nhom_cong_viec_da_ban_hanh_cv" parent="menu_chuyen_vien" name="Đã ban hành"  sequence="5"/> 
 			
 			<menuitem id="menu_lanh_dao_phong" parent="quan_ly" name="Menu Lãnh đạo phòng" sequence = '3'/>       
 				<menuitem action="action_nhom_cong_viec_moi_giao" id="menu_action_nhom_cong_viec_moi_giao" parent="menu_lanh_dao_phong" name="Mới giao"  sequence="1"/>
-				<menuitem action="action_nhom_cong_viec_da_nhan" id="menu_action_nhom_cong_viec_da_nhan" parent="menu_lanh_dao_phong" name="Đã nhận"  sequence="2"/>
 				<menuitem action="action_nhom_cong_viec_dang_lam" id="menu_action_nhom_cong_viec_dang_lam" parent="menu_lanh_dao_phong" name="Đang làm"  sequence="3"/>
 				<menuitem action="action_nhom_cong_viec_cho_duyet" id="menu_action_nhom_cong_viec_cho_duyet" parent="menu_lanh_dao_phong" name="Chờ duyệt"  sequence="4"/>
 				<menuitem action="action_nhom_cong_viec_da_ban_hanh" id="menu_action_nhom_cong_viec_da_ban_hanh" parent="menu_lanh_dao_phong" name="Đã ban hành"  sequence="5"/>

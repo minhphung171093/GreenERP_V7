@@ -26,7 +26,6 @@
 			<field name="arch" type="xml">
 				<tree string="Phòng ban">
 					<field name="name"/>
-					<field name="truong_phong_id" options="{'create': false, 'create_edit': false}"/>
 				</tree>
 			</field>
 		</record>
@@ -39,7 +38,6 @@
 					<sheet>
 						<group col="4" colspan="2" string = 'Phòng ban'>  
 							<field name="name"/>
-							<field name="truong_phong_id" context="{'search_nhan_vien_id':True}" options="{'create': false, 'create_edit': false}"/>  
 						</group>
 							<notebook>
 								<page string = "Danh sách nhân viên">
