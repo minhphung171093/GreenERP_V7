@@ -70,6 +70,8 @@ class huongdan_sudung(osv.osv):
         'store_fname': fields.char('Stored Filename', size=256),
         'db_datas': fields.binary('Database Data'),
         'file_size': fields.integer('File Size'),
+        'model': fields.many2one('ir.model', string='Model'),
+    'object_id': fields.integer("Resource")
     }
 
 huongdan_sudung()
