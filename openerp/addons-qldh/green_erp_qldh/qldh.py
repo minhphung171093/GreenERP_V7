@@ -738,18 +738,6 @@ class buoc_thuc_hien_line(osv.osv):
         for line in self.browse(cr,uid,ids):
             if 'stt' in vals:
                 sql = '''
-                    select id from buoc_thuc_hien_line where quy_trinh_id = %s
-                '''%(line.quy_trinh_id.id)
-                cr.execute(sql)
-                line_ids = cr.fetchall()
-                
-                sql = '''
-                    select id from buoc_thuc_hien_line where stt = %s and quy_trinh_id = %s
-                '''%(vals['stt'], line.quy_trinh_id.id)
-                cr.execute(sql)
-                tam = cr.dictfetchone()
-                tam_id = tam and tam['id'] or False
-                sql = '''
                     select stt from buoc_thuc_hien_line where id = %s and quy_trinh_id = %s
                 '''%(ids[0], line.quy_trinh_id.id)
                 cr.execute(sql)
