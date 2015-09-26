@@ -749,19 +749,38 @@ class buoc_thuc_hien_line(osv.osv):
                 cr.execute(sql)
                 tam = cr.dictfetchone()
                 tam_id = tam and tam['id'] or False
-                if tam_id:
-                    if ids:
-                        for i in range(vals['stt']+1,len(line_ids)+1):
-                            # di lui tu tren cao xuong
-                            for l in range(tam_id,ids[-1]):
-                                sql = '''
-                                    update buoc_thuc_hien_line set stt = %s where quy_trinh_id = %s and id = %s
-                                '''%(i,line.quy_trinh_id.id,l)
-                                cr.execute(sql)
-                                
-                                tam_id+=1
-                                break
-            
+                sql = '''
+                    select stt from buoc_thuc_hien_line where id = %s and quy_trinh_id = %s
+                '''%(ids[0], line.quy_trinh_id.id)
+                cr.execute(sql)
+                stt = cr.dictfetchone()
+                stt_tam = stt and stt['stt'] or False
+                if vals['stt']+1<stt_tam+1:
+                    for i in range(vals['stt']+1,stt_tam+1):
+                        sql = '''
+                            select id from buoc_thuc_hien_line where stt = %s and quy_trinh_id = %s
+                        '''%(i-1,line.quy_trinh_id.id)
+                        cr.execute(sql)
+                        tam_2 = cr.dictfetchone()
+                        tam_id_2 = tam_2 and tam_2['id'] or False
+                        if tam_id_2:
+                            sql = '''
+                                update buoc_thuc_hien_line set stt = %s where quy_trinh_id = %s and id = %s
+                            '''%(i,line.quy_trinh_id.id,tam_id_2)
+                            cr.execute(sql)
+                if vals['stt']+1>stt_tam+1:
+                    for i in range(stt_tam+1,vals['stt']+1):
+                        sql = '''
+                            select id from buoc_thuc_hien_line where stt = %s and quy_trinh_id = %s
+                        '''%(i,line.quy_trinh_id.id)
+                        cr.execute(sql)
+                        tam_2 = cr.dictfetchone()
+                        tam_id_2 = tam_2 and tam_2['id'] or False
+                        if tam_id_2:
+                            sql = '''
+                                update buoc_thuc_hien_line set stt = %s where quy_trinh_id = %s and id = %s
+                            '''%(i-1,line.quy_trinh_id.id,tam_id_2)
+                            cr.execute(sql)
         return super(buoc_thuc_hien_line, self).write(cr, uid,ids, vals, context)
 
     
