@@ -143,9 +143,10 @@
                 	<field name="phong_ban_ids" />
                 	<field name="state" />
                 	<field name="loai" />
+                	<field name="color" />
                     <templates>
                     <t t-name="kanban-box">
-                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                    	<div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click oe_semantic_html_override">
                             <div class="oe_dropdown_toggle oe_dropdown_kanban" groups="base.group_user">
                                 <span class="oe_e">í</span>
                                 <ul class="oe_dropdown_menu">
@@ -153,11 +154,13 @@
                                     <t t-if="widget.view.is_action_enabled('delete')"><li><a type="delete">Delete</a></li></t>
                                     <li>
                                     </li>
+                                    <li><ul class="oe_kanban_colorpicker" data-field="color"/></li>
                                 </ul>
+                                 
                             </div>
 
                             <div class="oe_kanban_content">
-                                <div><b><field name="name"/></b></div>
+                                <div><b><field name="name_kanban"/></b></div>
                             </div>
                             <div class="oe_clear"></div>
                         </div>
@@ -261,6 +264,10 @@
 	                    <button name="bt_hoan_thanh_ncv" string="Hoàn Thành" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','1_nhom_cv'),('state','!=','dang_lam'),('trangthai_ncv','!=','xong')]}"/>
 	                    <button name="bt_cho_duyet" string="Ban Hành" type="object" class="oe_highlight" attrs="{'invisible':['|',('loai','!=','1_nhom_cv'), ('state','!=','cho_duyet')]}"/>
 	                    
+	                    <button name="%(action_tao_congviec)d" string="Tạo công việc" type="action" class="oe_highlight" attrs="{'invisible':['|','|','|',('ho_tro','=','co'),('loai','not in',['1_nhom_cv']),('quy_trinh_id','!=',False),('state','in',['nhap','da_giao','cho_duyet', 'duyet'])]}"/> 
+	                	<button name="%(action_tao_congviec_phancong)d" string="Tạo công việc" type="action" class="oe_highlight" attrs="{'invisible':['|','|',('loai','not in',['2_nhom_cv_tg']),('quy_trinh_id','!=',False),('state','in',['da_giao','cho_duyet', 'duyet'])]}"/> 
+	                	<button name="%(action_tao_congviec_con)d" string="Tạo công việc con" type="action" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','3_cv'),('quy_trinh_id','!=',False),('state','in',['da_giao','cho_duyet', 'duyet'])]}"/> 
+	                	<button name="%(action_phancong_phongban)d" string="Phân công công việc" type="action" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','1_nhom_cv'),('ho_tro','=','khong'),('state','in',['nhap','da_giao','cho_duyet', 'duyet'])]}"/> 
 	                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
 	            </header>  
 	                <sheet>
@@ -272,13 +279,7 @@
 						<label string='Tên công việc phân công PBHT' attrs="{'invisible':[('loai','!=','2_nhom_cv_tg')]}"/>
 						<field name="name" nolabel='1' attrs="{'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
 	                </h2>
-	                <group>
-	                	<button name="%(action_tao_congviec)d" string="Tạo công việc" type="action" class="oe_highlight oe_right" attrs="{'invisible':['|','|','|',('ho_tro','=','co'),('loai','not in',['1_nhom_cv']),('quy_trinh_id','!=',False),('state','in',['nhap','da_giao','cho_duyet', 'duyet'])]}"/> 
-	                	<button name="%(action_tao_congviec_phancong)d" string="Tạo công việc" type="action" class="oe_highlight oe_right" attrs="{'invisible':['|','|',('loai','not in',['2_nhom_cv_tg']),('quy_trinh_id','!=',False),('state','in',['da_giao','cho_duyet', 'duyet'])]}"/> 
-	                	<button name="%(action_tao_congviec_con)d" string="Tạo công việc con" type="action" class="oe_highlight oe_right" attrs="{'invisible':['|','|',('loai','!=','3_cv'),('quy_trinh_id','!=',False),('state','in',['da_giao','cho_duyet', 'duyet'])]}"/> 
-	                	<button name="%(action_phancong_phongban)d" string="Phân công công việc" type="action" class="oe_highlight oe_right" attrs="{'invisible':['|','|',('loai','!=','1_nhom_cv'),('ho_tro','=','khong'),('state','in',['nhap','da_giao','cho_duyet', 'duyet'])]}"/> 
-	                </group>
- 					<group>
+	  <!--              <group>
  						<group >
  							<field name="ho_tro" invisible = '1' widget="radio" attrs="{'invisible':[('loai','!=','1_nhom_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
  							<field name="nhan_vien_ids" widget="many2many_tags" attrs="{'invisible':[('loai','!=','3_cv')],'required':[('loai','=','3_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" options="{'create': false, 'create_edit': false}"/>
@@ -310,217 +311,265 @@
 	                	<group>
 		                	<field name="loai" invisible = '1'/>
 	                	</group>
-	                </group>
+		            </group>
 	               	<group col="4" colspan="2" >
 	                	<field name="ghi_chu" attrs="{'invisible':[('loai','not in',['1_nhom_cv','2_nhom_cv_tg'])], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
-	                </group>
-                		<notebook attrs="{'invisible':[('loai','not in',['1_nhom_cv'])]}">
-		                     <page string="Chi tiết thực hiện" attrs="{'invisible':['|',('ho_tro','=','co'),('ho_tro','=','khong'),('quy_trinh_id','=',False)]}">
-		                    	<field name="ct_th_nhom_cv_line" attrs="{'readonly':[('state','in',['cho_duyet', 'duyet'])]}" context = "{'default_loai': '5_ct_th', 'default_state': 'da_giao'}" nolabel='1' >
-		                    		<tree>
-		                    			<field name="stt"/>
-			                			<field name="name" string = 'Tên chi tiết'/>
-			                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
-			                			<field name="yeu_cau_kq" />
-			                            <field name="cach_thuc_hien" />
-			                            <field name="ngay_het_han" />
-			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" invisible="1"/>
-			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-			                            <field name="state" />
-			                            <field name="loai" invisible = '1'/>
-			                        </tree>
-			                        <form version="7.0">
-				                        <header>
-						                		<button name="bt_nhan_cttth" states="da_giao" string="Nhận chi tiết thực hiện" type="object" class="oe_highlight"/>
-							                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
-							                    <field name="loai" invisible='1'/>
-							            </header>  
-							            <sheet>
-					                        <group col="4" colspan="2">
-					                        	<field name="stt"/>
-					                        	<field name="name" string = 'Tên chi tiết'/>
-					                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
-					                			<field name="yeu_cau_kq" />
-					                            <field name="cach_thuc_hien" />
-					                            <field name="ngay_het_han" />
-					        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
-					                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-					                         </group>  
-					                   </sheet>
-			                        </form>
-		                		</field>
-		                    </page>
-		                     <page string="Công việc" attrs="{'invisible':['|',('quy_trinh_id','!=',False),('ho_tro','=','co')]}">
-		                    	<field name="cong_viec_line" nolabel='1' context = "{'default_loai': '3_cv'}" >
-		                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
-			                			<field name="name" string = 'Tên công việc'/>
-			             <!--               <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}"/>  -->
-			                            <field name="nhan_vien_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}"/>
-			        					<field name="ghi_chu"/>
-			        					<field name="ngay_het_han" />
-			                            <field name="state" readonly = '1'/>
-			                            <field name="loai" invisible = '1'/> 
-			                        </tree>
-						         </field>
-						      </page> 
-						      
-						     <page string="Phân Công Phòng Ban" attrs="{'invisible':['|','&amp;',('quy_trinh_id','!=',False),('ho_tro','=','khong'),'&amp;',('ho_tro','=','khong'),('quy_trinh_id','=',False)]}">
-		                    	<field name="phan_cong_phong_ban_line" nolabel='1' context = "{'default_loai': '2_nhom_cv_tg', 'default_state': 'nhap'}">
-		                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
-			                			<field name="name" string = 'Tên công việc'/>
-			                			<field name="phong_ban_id" required = '1' options="{'create': false, 'create_edit': false}"/>
-			               <!--             <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}"/>   -->
-			        					<field name="ghi_chu"/>
-			                            <field name="ngay_het_han" />
-			                            <field name="state" readonly = '1'/>
-			                            <field name="loai" invisible = '1'/>
-			                        </tree>
-						         </field>
-						      </page>
-						 </notebook>
-						 
-						 <notebook attrs="{'invisible':[('loai','not in',['2_nhom_cv_tg'])]}">
-		                     <page string="Chi tiết thực hiện" attrs="{'invisible':[('quy_trinh_id','=',False)]}">
-		                    	<field name="ct_th_cv_tg_line" attrs="{'readonly':[('state','in',['cho_duyet', 'duyet'])]}" context = "{'default_loai': '5_ct_th', 'default_state': 'da_giao'}" nolabel='1' >
-		                    		<tree>
-		                    			<field name="stt"/>
-			                			<field name="name" string = 'Tên chi tiết'/>
-			                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
-			                			<field name="yeu_cau_kq" />
-			                            <field name="cach_thuc_hien" />
-			                            <field name="ngay_het_han" />
-			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" invisible="1"/>
-			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-			                            <field name="state" />
-			                            <field name="loai" invisible = '1'/>
-			                        </tree>
-			                        <form version="7.0">
-				                        <header>
-						                		<button name="bt_nhan_cttth" states="da_giao" string="Nhận chi tiết thực hiện" type="object" class="oe_highlight"/>
-							                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
-							                    <field name="loai" invisible='1'/>
-							            </header>  
-							            <sheet>
-					                        <group col="4" colspan="2">
-					                        	<field name="stt"/>
-					                        	<field name="name" string = 'Tên chi tiết'/>
-					                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
-					                			<field name="yeu_cau_kq" />
-					                            <field name="cach_thuc_hien" />
-					                            <field name="ngay_het_han" />
-					        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
-					                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-					                         </group>  
-				                        </sheet>  
-			                        </form>
-		                		</field>
-		                    </page>
-		                     <page string="Công việc" attrs="{'invisible':[('quy_trinh_id','!=',False)]}">
-		                    	<field name="cong_viec_pc_line" nolabel='1' context = "{'default_loai': '3_cv'}" >
-		                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
-			                			<field name="name" string = 'Tên công việc'/>
-			             <!--               <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}"/>  -->
-			                            <field name="nhan_vien_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}"/>
-			        					<field name="ghi_chu"/>
-			        					<field name="ngay_het_han" />
-			                            <field name="state" readonly = '1'/>
-			                            <field name="loai" invisible = '1'/> 
-			                        </tree>
-						         </field>
-						      </page> 
-						 </notebook>
-						 
-						 <notebook attrs="{'invisible':[('loai','!=','3_cv')]}">
-		                    <page string="Chi tiết thực hiện" attrs="{'invisible':[('quy_trinh_id','=',False)]}">
-		                    	<field name="ct_th_cv_line" context = "{'default_loai': '5_ct_th', 'default_state': 'da_giao'}" nolabel='1' >
-		                    		<tree>
-		                    			<field name="stt"/>
-			                			<field name="name" string = 'Tên chi tiết'/>
-			                			<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
-			                			<field name="yeu_cau_kq" />
-			                            <field name="cach_thuc_hien" />
-			                            <field name="ngay_het_han" />
-			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" invisible="1"/>
-			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-			                            <field name="state" />
-			                            <field name="loai" invisible = '1'/>
-			                        </tree>
-			                        <form version="7.0">
-				                        <header>
-						                		<button name="bt_nhan_cttth" states="da_giao" string="Nhận chi tiết thực hiện" type="object" class="oe_highlight"/>
-							                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
-							                    <field name="loai" invisible='1'/>
-							            </header>  
-							           	<sheet>
-					                        <group col="4" colspan="2">
-					                        	<field name="stt"/>
-					                        	<field name="name" string = 'Tên chi tiết'/>
-					                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
-					                			<field name="yeu_cau_kq" />
-					                            <field name="cach_thuc_hien" />
-					                            <field name="ngay_het_han" />
-					        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
-					                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-					                         </group>  
-				                         </sheet>  
-			                        </form>
-		                		</field>
-		                    </page>
-		                    
-		                    
-		                     <page string="Công việc con" attrs="{'invisible':[('quy_trinh_id','!=',False)]}">
-		                    	<field name="cong_viec_con_line" nolabel='1' context = "{'default_loai': '4_cv_con'}" >
-		                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
-			                			<field name="name" string = 'Tên công việc con'/>
-			                <!--            <field name="quy_trinh_id" options="{'create': false, 'create_edit': false}"/>  -->
-			                            <field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
-			        					<field name="ghi_chu"/>
-			        					<field name="ngay_het_han" />
-			                            <field name="state" readonly = '1'/>
-			                            <field name="loai" invisible = '1'/>
-			                        </tree>
-		                		</field>
-		                    </page>
-		                </notebook>
-		                
-		                <notebook attrs="{'invisible':[('loai','!=','4_cv_con')]}">
-		                    <page string="Chi tiết thực hiện">
-		                    	<field name="ct_th_cv_con_line" context = "{'default_loai': '5_ct_th', 'default_state': 'da_giao'}" nolabel='1' >
-		                    		<tree>
-		                    			<field name="stt"/>
-			                			<field name="name" string = 'Tên chi tiết'/>
-			                			<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
-			                			<field name="yeu_cau_kq" />
-			                            <field name="cach_thuc_hien" />
-			                            <field name="ngay_het_han" />
-			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" invisible="1"/>
-			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-			                            <field name="state" />
-			                            <field name="loai" invisible = '1'/>
-			                        </tree>
-			                        <form version="7.0">
-				                        <header>
-						                		<button name="bt_nhan_cttth" states="da_giao" string="Nhận chi tiết thực hiện" type="object" class="oe_highlight"/>
-							                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
-							                    <field name="loai" invisible='1'/>
-							            </header>  
-							            <sheet>
-					                        <group col="4" colspan="2">
-					                        	<field name="stt"/>
-					                        	<field name="name" string = 'Tên chi tiết'/>
-					                			<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
-					                			<field name="yeu_cau_kq" />
-					                            <field name="cach_thuc_hien" />
-					                            <field name="ngay_het_han" />
-					        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
-					                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-					                         </group>  
-				                         </sheet>  
-			                        </form>
-		                		</field>
-		                    </page>
-		                    
-		                </notebook>
+	                </group> -->
+ 					
+            		<notebook>
+            		
+        <!-- Loai: Nhóm CV  -->
+        
+	                     <page string="Chi tiết thực hiện" attrs="{'invisible':['|',('loai','not in',['1_nhom_cv']),'|',('ho_tro','=','co'),'&amp;',('ho_tro','=','khong'),('quy_trinh_id','=',False)]}">
+	                    	<field name="ct_th_nhom_cv_line" attrs="{'readonly':[('state','in',['cho_duyet', 'duyet'])]}" context = "{'default_loai': '5_ct_th', 'default_state': 'da_giao'}" nolabel='1' >
+	                    		<tree>
+	                    			<field name="stt"/>
+		                			<field name="name" string = 'Tên chi tiết'/>
+		                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
+		                			<field name="yeu_cau_kq" />
+		                            <field name="cach_thuc_hien" />
+		                            <field name="ngay_het_han" />
+		        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" invisible="1"/>
+		                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+		                            <field name="state" />
+		                            <field name="loai" invisible = '1'/>
+		                        </tree>
+		                        <form version="7.0">
+			                        <header>
+					                		<button name="bt_nhan_cttth" states="da_giao" string="Nhận chi tiết thực hiện" type="object" class="oe_highlight"/>
+						                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
+						                    <field name="loai" invisible='1'/>
+						            </header>  
+						            <sheet>
+				                        <group col="4" colspan="2">
+				                        	<field name="stt"/>
+				                        	<field name="name" string = 'Tên chi tiết'/>
+				                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
+				                			<field name="yeu_cau_kq" />
+				                            <field name="cach_thuc_hien" />
+				                            <field name="ngay_het_han" />
+				        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+				                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+				                         </group>  
+				                   </sheet>
+		                        </form>
+	                		</field>
+	                    </page>
+	                     <page string="Công việc" attrs="{'invisible':['|',('loai','not in',['1_nhom_cv']),'|',('quy_trinh_id','!=',False),('ho_tro','=','co')]}">
+	                    	<field name="cong_viec_line" nolabel='1' context = "{'default_loai': '3_cv'}" >
+	                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
+		                			<field name="name" string = 'Tên công việc'/>
+		             <!--               <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}"/>  -->
+		                            <field name="nhan_vien_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}"/>
+		        					<field name="ghi_chu"/>
+		        					<field name="ngay_het_han" />
+		                            <field name="state" readonly = '1'/>
+		                            <field name="loai" invisible = '1'/> 
+		                        </tree>
+					         </field>
+					      </page> 
+					      
+					     <page string="Phân Công Phòng Ban" attrs="{'invisible':['|',('loai','not in',['1_nhom_cv']),'|','&amp;',('quy_trinh_id','!=',False),('ho_tro','=','khong'),'&amp;',('ho_tro','=','khong'),('quy_trinh_id','=',False)]}">
+	                    	<field name="phan_cong_phong_ban_line" nolabel='1' context = "{'default_loai': '2_nhom_cv_tg', 'default_state': 'nhap'}">
+	                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
+		                			<field name="name" string = 'Tên công việc'/>
+		                			<field name="phong_ban_id" required = '1' options="{'create': false, 'create_edit': false}"/>
+		               <!--             <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}"/>   -->
+		        					<field name="ghi_chu"/>
+		                            <field name="ngay_het_han" />
+		                            <field name="state" readonly = '1'/>
+		                            <field name="loai" invisible = '1'/>
+		                        </tree>
+					         </field>
+					      </page>
+		<!-- End Loai: Nhóm CV  -->
+					      
+		<!-- Loai: Nhóm CV trung gian  -->
+					      
+					      <page string="Chi tiết thực hiện" attrs="{'invisible':['|',('loai','not in',['2_nhom_cv_tg']),('quy_trinh_id','=',False)]}">
+	                    	<field name="ct_th_cv_tg_line" attrs="{'readonly':[('state','in',['cho_duyet', 'duyet'])]}" context = "{'default_loai': '5_ct_th', 'default_state': 'da_giao'}" nolabel='1' >
+	                    		<tree>
+	                    			<field name="stt"/>
+		                			<field name="name" string = 'Tên chi tiết'/>
+		                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
+		                			<field name="yeu_cau_kq" />
+		                            <field name="cach_thuc_hien" />
+		                            <field name="ngay_het_han" />
+		        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" invisible="1"/>
+		                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+		                            <field name="state" />
+		                            <field name="loai" invisible = '1'/>
+		                        </tree>
+		                        <form version="7.0">
+			                        <header>
+					                		<button name="bt_nhan_cttth" states="da_giao" string="Nhận chi tiết thực hiện" type="object" class="oe_highlight"/>
+						                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
+						                    <field name="loai" invisible='1'/>
+						            </header>  
+						            <sheet>
+				                        <group col="4" colspan="2">
+				                        	<field name="stt"/>
+				                        	<field name="name" string = 'Tên chi tiết'/>
+				                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
+				                			<field name="yeu_cau_kq" />
+				                            <field name="cach_thuc_hien" />
+				                            <field name="ngay_het_han" />
+				        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+				                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+				                         </group>  
+			                        </sheet>  
+		                        </form>
+	                		</field>
+	                    </page>
+	                     <page string="Công việc" attrs="{'invisible':['|',('loai','not in',['2_nhom_cv_tg']),('quy_trinh_id','!=',False)]}">
+	                    	<field name="cong_viec_pc_line" nolabel='1' context = "{'default_loai': '3_cv'}" >
+	                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
+		                			<field name="name" string = 'Tên công việc'/>
+		             <!--               <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}"/>  -->
+		                            <field name="nhan_vien_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}"/>
+		        					<field name="ghi_chu"/>
+		        					<field name="ngay_het_han" />
+		                            <field name="state" readonly = '1'/>
+		                            <field name="loai" invisible = '1'/> 
+		                        </tree>
+					         </field>
+					      </page> 
+		
+		<!-- End Loai: Nhóm CV trung gian  -->
+		
+		<!-- Loai: CV -->
+		
+						<page string="Chi tiết thực hiện" attrs="{'invisible':['|',('loai','!=','3_cv'),('quy_trinh_id','=',False)]}">
+	                    	<field name="ct_th_cv_line" context = "{'default_loai': '5_ct_th', 'default_state': 'da_giao'}" nolabel='1' >
+	                    		<tree>
+	                    			<field name="stt"/>
+		                			<field name="name" string = 'Tên chi tiết'/>
+		                			<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
+		                			<field name="yeu_cau_kq" />
+		                            <field name="cach_thuc_hien" />
+		                            <field name="ngay_het_han" />
+		        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" invisible="1"/>
+		                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+		                            <field name="state" />
+		                            <field name="loai" invisible = '1'/>
+		                        </tree>
+		                        <form version="7.0">
+			                        <header>
+					                		<button name="bt_nhan_cttth" states="da_giao" string="Nhận chi tiết thực hiện" type="object" class="oe_highlight"/>
+						                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
+						                    <field name="loai" invisible='1'/>
+						            </header>  
+						           	<sheet>
+				                        <group col="4" colspan="2">
+				                        	<field name="stt"/>
+				                        	<field name="name" string = 'Tên chi tiết'/>
+				                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
+				                			<field name="yeu_cau_kq" />
+				                            <field name="cach_thuc_hien" />
+				                            <field name="ngay_het_han" />
+				        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+				                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+				                         </group>  
+			                         </sheet>  
+		                        </form>
+	                		</field>
+	                    </page>
+	                    
+	                    <page string="Công việc con" attrs="{'invisible':['|',('loai','!=','3_cv'),('quy_trinh_id','!=',False)]}">
+	                    	<field name="cong_viec_con_line" nolabel='1' context = "{'default_loai': '4_cv_con'}" >
+	                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
+		                			<field name="name" string = 'Tên công việc con'/>
+		                <!--            <field name="quy_trinh_id" options="{'create': false, 'create_edit': false}"/>  -->
+		                            <field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
+		        					<field name="ghi_chu"/>
+		        					<field name="ngay_het_han" />
+		                            <field name="state" readonly = '1'/>
+		                            <field name="loai" invisible = '1'/>
+		                        </tree>
+	                		</field>
+	                    </page>
+		
+		<!-- End Loai: CV -->
+		
+		<!-- Loai: CV con -->
+		
+						<page string="Chi tiết thực hiện" attrs="{'invisible':[('loai','!=','4_cv_con')]}">
+	                    	<field name="ct_th_cv_con_line" context = "{'default_loai': '5_ct_th', 'default_state': 'da_giao'}" nolabel='1' >
+	                    		<tree>
+	                    			<field name="stt"/>
+		                			<field name="name" string = 'Tên chi tiết'/>
+		                			<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
+		                			<field name="yeu_cau_kq" />
+		                            <field name="cach_thuc_hien" />
+		                            <field name="ngay_het_han" />
+		        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" invisible="1"/>
+		                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+		                            <field name="state" />
+		                            <field name="loai" invisible = '1'/>
+		                        </tree>
+		                        <form version="7.0">
+			                        <header>
+					                		<button name="bt_nhan_cttth" states="da_giao" string="Nhận chi tiết thực hiện" type="object" class="oe_highlight"/>
+						                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
+						                    <field name="loai" invisible='1'/>
+						            </header>  
+						            <sheet>
+				                        <group col="4" colspan="2">
+				                        	<field name="stt"/>
+				                        	<field name="name" string = 'Tên chi tiết'/>
+				                			<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
+				                			<field name="yeu_cau_kq" />
+				                            <field name="cach_thuc_hien" />
+				                            <field name="ngay_het_han" />
+				        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+				                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+				                         </group>  
+			                         </sheet>  
+		                        </form>
+	                		</field>
+	                    </page>
+	                    
+		<!-- End Loai: CV con -->
+		
+					      <page string="Thông tin chi tiết" >
+		                    	<group>
+			 						<group >
+			 							<field name="ho_tro" invisible = '1' widget="radio" attrs="{'invisible':[('loai','!=','1_nhom_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
+			 							<field name="nhan_vien_ids" widget="many2many_tags" attrs="{'invisible':[('loai','!=','3_cv')],'required':[('loai','=','3_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" options="{'create': false, 'create_edit': false}"/>
+			 							<field name="cong_viec_con_id" string = 'Công việc' options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('loai','!=','4_cv_con')],'required':[('loai','=','4_cv_con')],'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
+			 							<field name="stt" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
+			 							<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('loai','not in',['4_cv_con', '5_ct_th'])],'required':[('loai','in',['4_cv_con', '5_ct_th'])],'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
+			                			<field name="yeu_cau_kq" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
+			                			<field name="trangthai_ncv" invisible='1'/>
+					                	<field name="trangthai_cv" invisible='1'/>
+					                	<field name="trangthai_cvc" invisible='1'/>
+					                	<field name="trangthai_cv_tg" invisible='1'/>
+					                	<field name="tt_lanhdao" invisible='1' />
+					                	<field name="cv_tg_id" attrs="{'invisible':[('loai','not in',['4_cv_con'])], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','2_nhom_cv_tg')]" string = 'Công việc phân công PBHT' options="{'create': false, 'create_edit': false}"/>
+					                	<field name="phong_ban_id" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('loai','not in',['1_nhom_cv','2_nhom_cv_tg'])],'required':[('loai','in',['1_nhom_cv','2_nhom_cv_tg'])],'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
+					                	<field name="phong_ban_ids" on_change = "onchange_phong_ban_ids(phong_ban_ids)" widget="many2many_tags" options="{'create': false, 'create_edit': false}" attrs="{'invisible':['|',('quy_trinh_id','!=',False),('loai','!=','1_nhom_cv')],'readonly':[('state','in',['cho_duyet', 'duyet'])]}" />
+			 							<field name="cong_viec_pc_id" attrs="{'invisible':['|',('loai','not in',['3_cv']),('cong_viec_id','!=',False)],'required':[('cong_viec_id','=',False),('loai','=','3_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','2_nhom_cv_tg')]" string = 'Công việc phân công PBHT' options="{'create': false, 'create_edit': false}"/>
+						                <field name="nhom_cv_pc_id" attrs="{'invisible':['|',('loai','not in',['3_cv']),('cong_viec_id','!=',False)],'required':[('cong_viec_id','=',False),('loai','=','3_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','1_nhom_cv')]" string = 'Nhóm công việc' options="{'create': false, 'create_edit': false}"/>
+			 							<field name="phan_cong_phong_ban_id" attrs="{'invisible':[('loai','not in',['2_nhom_cv_tg'])],'required':[('loai','=','2_nhom_cv_tg')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','1_nhom_cv')]" options="{'create': false, 'create_edit': false}"/>
+						                <field name="cong_viec_id" attrs="{'invisible':['|',('cong_viec_pc_id','!=',False),('loai','not in',['3_cv'])],'required':[('cong_viec_pc_id','=',False),('loai','=','3_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','1_nhom_cv')]" string = 'Nhóm công việc' options="{'create': false, 'create_edit': false}"/>
+			 						</group>
+				                	<group>
+					                	<field name="quy_trinh_id"  on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}" attrs="{'invisible':['|',('ho_tro','=','co'),('loai','=','5_ct_th')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" />
+						                <field name="ngay_het_han" />
+				                		<field name="nhom_cv_id" attrs="{'invisible':[('loai','not in',['4_cv_con'])],'required':[('loai','=','4_cv_con')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','1_nhom_cv')]" string = 'Nhóm công việc' options="{'create': false, 'create_edit': false}"/>
+				                		<field name="cach_thuc_hien" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
+			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
+			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
+				                	</group>
+				                	<group>
+					                	<field name="loai" invisible = '1'/>
+				                	</group>
+					            </group>
+				               	<group col="4" colspan="2" >
+				                	<field name="ghi_chu" attrs="{'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
+				                </group>
+					      </page>
+					 </notebook>
 	                </sheet>
 	                
                 </form>
@@ -642,6 +691,7 @@
 											<field name="nguoi_duyet" options="{'create': false, 'create_edit': false}"/>
 											<field name="ngay_bh"/>
 											<field name="lan_bh"/>
+											<button name = "bt_lay_quy_trinh" icon = "STOCK_APPLY" string="Lấy QT" type="object" />
 										</tree>
 										<form version = "7.0" edit = 'false' create = 'false' delete = 'false'>
 											<header>
@@ -805,12 +855,16 @@
             <field name="arch" type="xml">
                 <kanban default_group_by="loai" create = 'false' edit = 'false'>
                     <field name="name" />
+                    <field name="name_kanban" />
                 	<field name="phong_ban_id" />
                 	<field name="quy_trinh_id" />
                 	<field name="ho_tro" />
                 	<field name="phong_ban_ids" />
+                	<field name="ghi_chu" />
                 	<field name="state" />
                 	<field name="loai" />
+                	<field name="tt_lanhdao" />
+                	<field name="color" />
                     <templates>
                     <t t-name="kanban-box">
                         <div t-attf-class="oe_kanban_card oe_kanban_global_click">
@@ -833,7 +887,7 @@
                     </templates>
                 </kanban>
             </field>
-         </record>
+         </record>     
   
         <record model="ir.ui.view" id="nhom_cong_viec_dang_lam_tree">
             <field name="name">nhom.cong.viec.dang.lam.tree</field>
@@ -878,6 +932,10 @@
 	                    <button name="bt_hoan_thanh_ncv" string="Hoàn Thành" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','1_nhom_cv'),('state','!=','dang_lam'),('trangthai_ncv','!=','xong')]}"/>
 	                    <button name="bt_cho_duyet" string="Ban Hành" type="object" class="oe_highlight" attrs="{'invisible':['|',('loai','!=','1_nhom_cv'), ('state','!=','cho_duyet')]}"/>
 	                    
+	                    <button name="%(action_tao_congviec)d" string="Tạo công việc" type="action" class="oe_highlight" attrs="{'invisible':['|','|','|',('ho_tro','=','co'),('loai','not in',['1_nhom_cv']),('quy_trinh_id','!=',False),('state','in',['nhap','da_giao','cho_duyet', 'duyet'])]}"/>
+	                    <button name="%(action_tao_congviec_phancong)d" string="Tạo công việc" type="action" class="oe_highlight" attrs="{'invisible':['|','|',('loai','not in',['2_nhom_cv_tg']),('quy_trinh_id','!=',False),('state','in',['da_giao','cho_duyet', 'duyet'])]}"/>
+	                    <button name="%(action_tao_congviec_con)d" string="Tạo công việc con" type="action" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','3_cv'),('quy_trinh_id','!=',False),('state','in',['da_giao','cho_duyet', 'duyet'])]}"/>
+	                    <button name="%(action_phancong_phongban)d" string="Phân công công việc" type="action" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','1_nhom_cv'),('ho_tro','=','khong'),('state','in',['nhap','da_giao','cho_duyet', 'duyet'])]}"/>
 	                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
 	            </header>  
 	                <sheet>
@@ -889,254 +947,260 @@
 						<label string='Tên công việc phân công PBHT' attrs="{'invisible':[('loai','!=','2_nhom_cv_tg')]}"/>
 						<field name="name" nolabel='1' attrs="{'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
 	                </h2>
-	                <group>
-	                	<button name="%(action_tao_congviec)d" string="Tạo công việc" type="action" class="oe_highlight oe_right" attrs="{'invisible':['|','|','|',('ho_tro','=','co'),('loai','not in',['1_nhom_cv']),('quy_trinh_id','!=',False),('state','in',['nhap','da_giao','cho_duyet', 'duyet'])]}"/> 
-	                	<button name="%(action_tao_congviec_phancong)d" string="Tạo công việc" type="action" class="oe_highlight oe_right" attrs="{'invisible':['|','|',('loai','not in',['2_nhom_cv_tg']),('quy_trinh_id','!=',False),('state','in',['da_giao','cho_duyet', 'duyet'])]}"/> 
-	                	<button name="%(action_tao_congviec_con)d" string="Tạo công việc con" type="action" class="oe_highlight oe_right" attrs="{'invisible':['|','|',('loai','!=','3_cv'),('quy_trinh_id','!=',False),('state','in',['da_giao','cho_duyet', 'duyet'])]}"/> 
-	                	<button name="%(action_phancong_phongban)d" string="Phân công công việc" type="action" class="oe_highlight oe_right" attrs="{'invisible':['|','|',('loai','!=','1_nhom_cv'),('ho_tro','=','khong'),('state','in',['nhap','da_giao','cho_duyet', 'duyet'])]}"/> 
-	                </group>
- 					<group>
- 						<group >
- 							<field name="ho_tro" invisible = '1' widget="radio" attrs="{'invisible':[('loai','!=','1_nhom_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
- 							<field name="nhan_vien_ids" widget="many2many_tags" attrs="{'invisible':[('loai','!=','3_cv')],'required':[('loai','=','3_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" options="{'create': false, 'create_edit': false}"/>
- 							<field name="cong_viec_con_id" string = 'Công việc' options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('loai','!=','4_cv_con')],'required':[('loai','=','4_cv_con')],'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
- 							<field name="stt" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
- 							<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('loai','not in',['4_cv_con', '5_ct_th'])],'required':[('loai','in',['4_cv_con', '5_ct_th'])],'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
-                			<field name="yeu_cau_kq" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
-                			<field name="trangthai_ncv" invisible='1'/>
-		                	<field name="trangthai_cv" invisible='1'/>
-		                	<field name="trangthai_cvc" invisible='1'/>
-		                	<field name="trangthai_cv_tg" invisible='1'/>
-		                	<field name="cv_tg_id" attrs="{'invisible':[('loai','not in',['4_cv_con'])], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','2_nhom_cv_tg')]" string = 'Công việc phân công PBHT' options="{'create': false, 'create_edit': false}"/>
-		                	<field name="phong_ban_id" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('loai','not in',['1_nhom_cv','2_nhom_cv_tg'])],'required':[('loai','in',['1_nhom_cv','2_nhom_cv_tg'])],'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
-		                	<field name="phong_ban_ids" on_change = "onchange_phong_ban_ids(phong_ban_ids)" widget="many2many_tags" options="{'create': false, 'create_edit': false}" attrs="{'invisible':['|',('quy_trinh_id','!=',False),('loai','!=','1_nhom_cv')],'readonly':[('state','in',['cho_duyet', 'duyet'])]}" />
- 							<field name="cong_viec_pc_id" attrs="{'invisible':['|',('loai','not in',['3_cv']),('cong_viec_id','!=',False)],'required':[('cong_viec_id','=',False),('loai','=','3_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','2_nhom_cv_tg')]" string = 'Công việc phân công PBHT' options="{'create': false, 'create_edit': false}"/>
-			                <field name="nhom_cv_pc_id" attrs="{'invisible':['|',('loai','not in',['3_cv']),('cong_viec_id','!=',False)],'required':[('cong_viec_id','=',False),('loai','=','3_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','1_nhom_cv')]" string = 'Nhóm công việc' options="{'create': false, 'create_edit': false}"/>
- 						</group>
-	                	<group>
-		                	<field name="quy_trinh_id"  on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}" attrs="{'invisible':['|',('ho_tro','=','co'),('loai','=','5_ct_th')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" />
-			                <field name="ngay_het_han" />
-			                <field name="phan_cong_phong_ban_id" attrs="{'invisible':[('loai','not in',['2_nhom_cv_tg'])],'required':[('loai','=','2_nhom_cv_tg')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','1_nhom_cv')]" options="{'create': false, 'create_edit': false}"/>
-			                <field name="cong_viec_id" attrs="{'invisible':['|',('cong_viec_pc_id','!=',False),('loai','not in',['3_cv'])],'required':[('cong_viec_pc_id','=',False),('loai','=','3_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','1_nhom_cv')]" string = 'Nhóm công việc' options="{'create': false, 'create_edit': false}"/>
-	                		<field name="nhom_cv_id" attrs="{'invisible':[('loai','not in',['4_cv_con'])],'required':[('loai','=','4_cv_con')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','1_nhom_cv')]" string = 'Nhóm công việc' options="{'create': false, 'create_edit': false}"/>
-	                		<field name="cach_thuc_hien" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
-        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
-                            <field name="datas_fname" invisible="1" class="oe_inline oe_right" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
-	                	</group>
-	                	<group>
-		                	<field name="loai" invisible = '1'/>
-	                	</group>
-	                </group>
-	               	<group col="4" colspan="2" >
-	                	<field name="ghi_chu" attrs="{'invisible':[('loai','not in',['1_nhom_cv','2_nhom_cv_tg'])], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
-	                </group>
-                		<notebook attrs="{'invisible':[('loai','not in',['1_nhom_cv'])]}">
-		                     <page string="Chi tiết thực hiện" attrs="{'invisible':['|',('ho_tro','=','co'),('ho_tro','=','khong'),('quy_trinh_id','=',False)]}">
-		                    	<field name="ct_th_nhom_cv_line" attrs="{'readonly':[('state','in',['cho_duyet', 'duyet'])]}" context = "{'default_loai': '5_ct_th', 'default_state': 'da_giao'}" nolabel='1' >
-		                    		<tree>
-		                    			<field name="stt"/>
-			                			<field name="name" string = 'Tên chi tiết'/>
-			                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
-			                			<field name="yeu_cau_kq" />
-			                            <field name="cach_thuc_hien" />
-			                            <field name="ngay_het_han" />
-			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" invisible="1"/>
-			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-			                            <field name="state" />
-			                            <field name="loai" invisible = '1'/>
-			                        </tree>
-			                        <form version="7.0">
-				                        <header>
-						                		<button name="bt_nhan_cttth" states="da_giao" string="Nhận chi tiết thực hiện" type="object" class="oe_highlight"/>
-							                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
-							                    <field name="loai" invisible='1'/>
-							            </header>  
-							            <sheet>
-					                        <group col="4" colspan="2">
-					                        	<field name="stt"/>
-					                        	<field name="name" string = 'Tên chi tiết'/>
-					                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
-					                			<field name="yeu_cau_kq" />
-					                            <field name="cach_thuc_hien" />
-					                            <field name="ngay_het_han" />
-					        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
-					                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-					                         </group>  
-				                         </sheet>  
-			                        </form>
-		                		</field>
-		                    </page>
-		                     <page string="Công việc" attrs="{'invisible':['|',('quy_trinh_id','!=',False),('ho_tro','=','co')]}">
-		                    	<field name="cong_viec_line" nolabel='1' context = "{'default_loai': '3_cv'}" >
-		                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
-			                			<field name="name" string = 'Tên công việc'/>
-			             <!--               <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}"/>  -->
-			                            <field name="nhan_vien_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}"/>
-			        					<field name="ghi_chu"/>
-			        					<field name="ngay_het_han" />
-			                            <field name="state" readonly = '1'/>
-			                            <field name="loai" invisible = '1'/> 
-			                        </tree>
-						         </field>
-						      </page> 
-						      
-						     <page string="Phân Công Phòng Ban" attrs="{'invisible':['|','&amp;',('quy_trinh_id','!=',False),('ho_tro','=','khong'),'&amp;',('ho_tro','=','khong'),('quy_trinh_id','=',False)]}">
-		                    	<field name="phan_cong_phong_ban_line" nolabel='1' context = "{'default_loai': '2_nhom_cv_tg', 'default_state': 'nhap'}">
-		                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
-			                			<field name="name" string = 'Tên công việc'/>
-			                			<field name="phong_ban_id" required = '1' options="{'create': false, 'create_edit': false}"/>
-			               <!--             <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}"/>   -->
-			        					<field name="ghi_chu"/>
-			        					<field name="ngay_het_han" />
-			                            <field name="state" readonly = '1'/>
-			                            <field name="loai" invisible = '1'/>
-			                        </tree>
-						         </field>
-						      </page>
-						 </notebook>
-						 
-						 <notebook attrs="{'invisible':[('loai','not in',['2_nhom_cv_tg'])]}">
-		                     <page string="Chi tiết thực hiện" attrs="{'invisible':[('quy_trinh_id','=',False)]}">
-		                    	<field name="ct_th_cv_tg_line" attrs="{'readonly':[('state','in',['cho_duyet', 'duyet'])]}" context = "{'default_loai': '5_ct_th', 'default_state': 'da_giao'}" nolabel='1' >
-		                    		<tree>
-		                    			<field name="stt"/>
-			                			<field name="name" string = 'Tên chi tiết'/>
-			                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
-			                			<field name="yeu_cau_kq" />
-			                            <field name="cach_thuc_hien" />
-			                            <field name="ngay_het_han" />
-			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" invisible="1"/>
-			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-			                            <field name="state" />
-			                            <field name="loai" invisible = '1'/>
-			                        </tree>
-			                        <form version="7.0">
-				                        <header>
-						                		<button name="bt_nhan_cttth" states="da_giao" string="Nhận chi tiết thực hiện" type="object" class="oe_highlight"/>
-							                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
-							                    <field name="loai" invisible='1'/>
-							            </header>  
-							            <sheet>
-					                        <group col="4" colspan="2">
-					                        	<field name="stt"/>
-					                        	<field name="name" string = 'Tên chi tiết'/>
-					                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
-					                			<field name="yeu_cau_kq" />
-					                            <field name="cach_thuc_hien" />
-					                            <field name="ngay_het_han" />
-					        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
-					                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-					                         </group>  
-				                         </sheet>  
-			                        </form>
-		                		</field>
-		                    </page>
-		                     <page string="Công việc" attrs="{'invisible':[('quy_trinh_id','!=',False)]}">
-		                    	<field name="cong_viec_pc_line" nolabel='1' context = "{'default_loai': '3_cv'}" >
-		                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
-			                			<field name="name" string = 'Tên công việc'/>
-			             <!--               <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}"/>  -->
-			                            <field name="nhan_vien_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}"/>
-			        					<field name="ghi_chu"/>
-			        					<field name="ngay_het_han" />
-			                            <field name="state" readonly = '1'/>
-			                            <field name="loai" invisible = '1'/> 
-			                        </tree>
-						         </field>
-						      </page> 
-						 </notebook>
-						 
-						 <notebook attrs="{'invisible':[('loai','!=','3_cv')]}">
-		                    <page string="Chi tiết thực hiện" attrs="{'invisible':[('quy_trinh_id','=',False)]}">
-		                    	<field name="ct_th_cv_line" context = "{'default_loai': '5_ct_th', 'default_state': 'da_giao'}" nolabel='1' >
-		                    		<tree>
-		                    			<field name="stt"/>
-			                			<field name="name" string = 'Tên chi tiết'/>
-			                			<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
-			                			<field name="yeu_cau_kq" />
-			                            <field name="cach_thuc_hien" />
-			                            <field name="ngay_het_han" />
-			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" invisible="1"/>
-			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-			                            <field name="state" />
-			                            <field name="loai" invisible = '1'/>
-			                        </tree>
-			                        <form version="7.0">
-				                        <header>
-						                		<button name="bt_nhan_cttth" states="da_giao" string="Nhận chi tiết thực hiện" type="object" class="oe_highlight"/>
-							                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
-							                    <field name="loai" invisible='1'/>
-							            </header>  
-							            <sheet>
-					                        <group col="4" colspan="2">
-					                        	<field name="stt"/>
-					                        	<field name="name" string = 'Tên chi tiết'/>
-					                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
-					                			<field name="yeu_cau_kq" />
-					                            <field name="cach_thuc_hien" />
-					                            <field name="ngay_het_han" />
-					        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
-					                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-					                         </group>  
-				                         </sheet>  
-			                        </form>
-		                		</field>
-		                    </page>
-		                    
-		                    
-		                     <page string="Công việc con" attrs="{'invisible':[('quy_trinh_id','!=',False)]}">
-		                    	<field name="cong_viec_con_line" nolabel='1' context = "{'default_loai': '4_cv_con'}" >
-		                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
-			                			<field name="name" string = 'Tên công việc con'/>
-			                <!--            <field name="quy_trinh_id" options="{'create': false, 'create_edit': false}"/>  -->
-			                            <field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
-			        					<field name="ghi_chu"/>
-			        					<field name="ngay_het_han" />
-			                            <field name="state" readonly = '1'/>
-			                            <field name="loai" invisible = '1'/>
-			                        </tree>
-		                		</field>
-		                    </page>
-		                </notebook>
-		                
-		                <notebook attrs="{'invisible':[('loai','!=','4_cv_con')]}">
-		                    <page string="Chi tiết thực hiện">
-		                    	<field name="ct_th_cv_con_line" context = "{'default_loai': '5_ct_th', 'default_state': 'da_giao'}" nolabel='1' >
-		                    		<tree>
-		                    			<field name="stt"/>
-			                			<field name="name" string = 'Tên chi tiết'/>
-			                			<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
-			                			<field name="yeu_cau_kq" />
-			                            <field name="cach_thuc_hien" />
-			                            <field name="ngay_het_han" />
-			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" invisible="1"/>
-			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-			                            <field name="state" />
-			                            <field name="loai" invisible = '1'/>
-			                        </tree>
-			                        <form version="7.0">
-				                        <header>
-						                		<button name="bt_nhan_cttth" states="da_giao" string="Nhận chi tiết thực hiện" type="object" class="oe_highlight"/>
-							                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
-							                    <field name="loai" invisible='1'/>
-							            </header>  
-							            <sheet>
-					                        <group col="4" colspan="2">
-					                        	<field name="stt"/>
-					                        	<field name="name" string = 'Tên chi tiết'/>
-					                			<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
-					                			<field name="yeu_cau_kq" />
-					                            <field name="cach_thuc_hien" />
-					                            <field name="ngay_het_han" />
-					        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
-					                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-					                         </group>  
-				                         </sheet>  
-			                        </form>
-		                		</field>
-		                    </page>
-		                    
-		                </notebook>
+                		<notebook>
+            		
+        <!-- Loai: Nhóm CV  -->
+        
+	                     <page string="Chi tiết thực hiện" attrs="{'invisible':['|',('loai','not in',['1_nhom_cv']),'|',('ho_tro','=','co'),'&amp;',('ho_tro','=','khong'),('quy_trinh_id','=',False)]}">
+	                    	<field name="ct_th_nhom_cv_line" attrs="{'readonly':[('state','in',['cho_duyet', 'duyet'])]}" context = "{'default_loai': '5_ct_th', 'default_state': 'da_giao'}" nolabel='1' >
+	                    		<tree>
+	                    			<field name="stt"/>
+		                			<field name="name" string = 'Tên chi tiết'/>
+		                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
+		                			<field name="yeu_cau_kq" />
+		                            <field name="cach_thuc_hien" />
+		                            <field name="ngay_het_han" />
+		        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" invisible="1"/>
+		                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+		                            <field name="state" />
+		                            <field name="loai" invisible = '1'/>
+		                        </tree>
+		                        <form version="7.0">
+			                        <header>
+					                		<button name="bt_nhan_cttth" states="da_giao" string="Nhận chi tiết thực hiện" type="object" class="oe_highlight"/>
+						                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
+						                    <field name="loai" invisible='1'/>
+						            </header>  
+						            <sheet>
+				                        <group col="4" colspan="2">
+				                        	<field name="stt"/>
+				                        	<field name="name" string = 'Tên chi tiết'/>
+				                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
+				                			<field name="yeu_cau_kq" />
+				                            <field name="cach_thuc_hien" />
+				                            <field name="ngay_het_han" />
+				        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+				                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+				                         </group>  
+				                   </sheet>
+		                        </form>
+	                		</field>
+	                    </page>
+	                     <page string="Công việc" attrs="{'invisible':['|',('loai','not in',['1_nhom_cv']),'|',('quy_trinh_id','!=',False),('ho_tro','=','co')]}">
+	                    	<field name="cong_viec_line" nolabel='1' context = "{'default_loai': '3_cv'}" >
+	                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
+		                			<field name="name" string = 'Tên công việc'/>
+		             <!--               <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}"/>  -->
+		                            <field name="nhan_vien_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}"/>
+		        					<field name="ghi_chu"/>
+		        					<field name="ngay_het_han" />
+		                            <field name="state" readonly = '1'/>
+		                            <field name="loai" invisible = '1'/> 
+		                        </tree>
+					         </field>
+					      </page> 
+					      
+					     <page string="Phân Công Phòng Ban" attrs="{'invisible':['|',('loai','not in',['1_nhom_cv']),'|','&amp;',('quy_trinh_id','!=',False),('ho_tro','=','khong'),'&amp;',('ho_tro','=','khong'),('quy_trinh_id','=',False)]}">
+	                    	<field name="phan_cong_phong_ban_line" nolabel='1' context = "{'default_loai': '2_nhom_cv_tg', 'default_state': 'nhap'}">
+	                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
+		                			<field name="name" string = 'Tên công việc'/>
+		                			<field name="phong_ban_id" required = '1' options="{'create': false, 'create_edit': false}"/>
+		               <!--             <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}"/>   -->
+		        					<field name="ghi_chu"/>
+		                            <field name="ngay_het_han" />
+		                            <field name="state" readonly = '1'/>
+		                            <field name="loai" invisible = '1'/>
+		                        </tree>
+					         </field>
+					      </page>
+		<!-- End Loai: Nhóm CV  -->
+					      
+		<!-- Loai: Nhóm CV trung gian  -->
+					      
+					      <page string="Chi tiết thực hiện" attrs="{'invisible':['|',('loai','not in',['2_nhom_cv_tg']),('quy_trinh_id','=',False)]}">
+	                    	<field name="ct_th_cv_tg_line" attrs="{'readonly':[('state','in',['cho_duyet', 'duyet'])]}" context = "{'default_loai': '5_ct_th', 'default_state': 'da_giao'}" nolabel='1' >
+	                    		<tree>
+	                    			<field name="stt"/>
+		                			<field name="name" string = 'Tên chi tiết'/>
+		                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
+		                			<field name="yeu_cau_kq" />
+		                            <field name="cach_thuc_hien" />
+		                            <field name="ngay_het_han" />
+		        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" invisible="1"/>
+		                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+		                            <field name="state" />
+		                            <field name="loai" invisible = '1'/>
+		                        </tree>
+		                        <form version="7.0">
+			                        <header>
+					                		<button name="bt_nhan_cttth" states="da_giao" string="Nhận chi tiết thực hiện" type="object" class="oe_highlight"/>
+						                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
+						                    <field name="loai" invisible='1'/>
+						            </header>  
+						            <sheet>
+				                        <group col="4" colspan="2">
+				                        	<field name="stt"/>
+				                        	<field name="name" string = 'Tên chi tiết'/>
+				                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
+				                			<field name="yeu_cau_kq" />
+				                            <field name="cach_thuc_hien" />
+				                            <field name="ngay_het_han" />
+				        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+				                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+				                         </group>  
+			                        </sheet>  
+		                        </form>
+	                		</field>
+	                    </page>
+	                     <page string="Công việc" attrs="{'invisible':['|',('loai','not in',['2_nhom_cv_tg']),('quy_trinh_id','!=',False)]}">
+	                    	<field name="cong_viec_pc_line" nolabel='1' context = "{'default_loai': '3_cv'}" >
+	                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
+		                			<field name="name" string = 'Tên công việc'/>
+		             <!--               <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}"/>  -->
+		                            <field name="nhan_vien_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}"/>
+		        					<field name="ghi_chu"/>
+		        					<field name="ngay_het_han" />
+		                            <field name="state" readonly = '1'/>
+		                            <field name="loai" invisible = '1'/> 
+		                        </tree>
+					         </field>
+					      </page> 
+		
+		<!-- End Loai: Nhóm CV trung gian  -->
+		
+		<!-- Loai: CV -->
+		
+						<page string="Chi tiết thực hiện" attrs="{'invisible':['|',('loai','!=','3_cv'),('quy_trinh_id','=',False)]}">
+	                    	<field name="ct_th_cv_line" context = "{'default_loai': '5_ct_th', 'default_state': 'da_giao'}" nolabel='1' >
+	                    		<tree>
+	                    			<field name="stt"/>
+		                			<field name="name" string = 'Tên chi tiết'/>
+		                			<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
+		                			<field name="yeu_cau_kq" />
+		                            <field name="cach_thuc_hien" />
+		                            <field name="ngay_het_han" />
+		        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" invisible="1"/>
+		                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+		                            <field name="state" />
+		                            <field name="loai" invisible = '1'/>
+		                        </tree>
+		                        <form version="7.0">
+			                        <header>
+					                		<button name="bt_nhan_cttth" states="da_giao" string="Nhận chi tiết thực hiện" type="object" class="oe_highlight"/>
+						                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
+						                    <field name="loai" invisible='1'/>
+						            </header>  
+						           	<sheet>
+				                        <group col="4" colspan="2">
+				                        	<field name="stt"/>
+				                        	<field name="name" string = 'Tên chi tiết'/>
+				                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
+				                			<field name="yeu_cau_kq" />
+				                            <field name="cach_thuc_hien" />
+				                            <field name="ngay_het_han" />
+				        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+				                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+				                         </group>  
+			                         </sheet>  
+		                        </form>
+	                		</field>
+	                    </page>
+	                    
+	                    <page string="Công việc con" attrs="{'invisible':['|',('loai','!=','3_cv'),('quy_trinh_id','!=',False)]}">
+	                    	<field name="cong_viec_con_line" nolabel='1' context = "{'default_loai': '4_cv_con'}" >
+	                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
+		                			<field name="name" string = 'Tên công việc con'/>
+		                <!--            <field name="quy_trinh_id" options="{'create': false, 'create_edit': false}"/>  -->
+		                            <field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
+		        					<field name="ghi_chu"/>
+		        					<field name="ngay_het_han" />
+		                            <field name="state" readonly = '1'/>
+		                            <field name="loai" invisible = '1'/>
+		                        </tree>
+	                		</field>
+	                    </page>
+		
+		<!-- End Loai: CV -->
+		
+		<!-- Loai: CV con -->
+		
+						<page string="Chi tiết thực hiện" attrs="{'invisible':[('loai','!=','4_cv_con')]}">
+	                    	<field name="ct_th_cv_con_line" context = "{'default_loai': '5_ct_th', 'default_state': 'da_giao'}" nolabel='1' >
+	                    		<tree>
+	                    			<field name="stt"/>
+		                			<field name="name" string = 'Tên chi tiết'/>
+		                			<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
+		                			<field name="yeu_cau_kq" />
+		                            <field name="cach_thuc_hien" />
+		                            <field name="ngay_het_han" />
+		        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" invisible="1"/>
+		                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+		                            <field name="state" />
+		                            <field name="loai" invisible = '1'/>
+		                        </tree>
+		                        <form version="7.0">
+			                        <header>
+					                		<button name="bt_nhan_cttth" states="da_giao" string="Nhận chi tiết thực hiện" type="object" class="oe_highlight"/>
+						                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
+						                    <field name="loai" invisible='1'/>
+						            </header>  
+						            <sheet>
+				                        <group col="4" colspan="2">
+				                        	<field name="stt"/>
+				                        	<field name="name" string = 'Tên chi tiết'/>
+				                			<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
+				                			<field name="yeu_cau_kq" />
+				                            <field name="cach_thuc_hien" />
+				                            <field name="ngay_het_han" />
+				        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+				                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+				                         </group>  
+			                         </sheet>  
+		                        </form>
+	                		</field>
+	                    </page>
+	                    
+		<!-- End Loai: CV con -->
+		
+					      <page string="Thông tin chi tiết" >
+		                    	<group>
+			 						<group >
+			 							<field name="ho_tro" invisible = '1' widget="radio" attrs="{'invisible':[('loai','!=','1_nhom_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
+			 							<field name="nhan_vien_ids" widget="many2many_tags" attrs="{'invisible':[('loai','!=','3_cv')],'required':[('loai','=','3_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" options="{'create': false, 'create_edit': false}"/>
+			 							<field name="cong_viec_con_id" string = 'Công việc' options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('loai','!=','4_cv_con')],'required':[('loai','=','4_cv_con')],'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
+			 							<field name="stt" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
+			 							<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('loai','not in',['4_cv_con', '5_ct_th'])],'required':[('loai','in',['4_cv_con', '5_ct_th'])],'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
+			                			<field name="yeu_cau_kq" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
+			                			<field name="trangthai_ncv" invisible='1'/>
+					                	<field name="trangthai_cv" invisible='1'/>
+					                	<field name="trangthai_cvc" invisible='1'/>
+					                	<field name="trangthai_cv_tg" invisible='1'/>
+					                	<field name="tt_lanhdao" invisible='1' />
+					                	<field name="cv_tg_id" attrs="{'invisible':[('loai','not in',['4_cv_con'])], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','2_nhom_cv_tg')]" string = 'Công việc phân công PBHT' options="{'create': false, 'create_edit': false}"/>
+					                	<field name="phong_ban_id" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('loai','not in',['1_nhom_cv','2_nhom_cv_tg'])],'required':[('loai','in',['1_nhom_cv','2_nhom_cv_tg'])],'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
+					                	<field name="phong_ban_ids" on_change = "onchange_phong_ban_ids(phong_ban_ids)" widget="many2many_tags" options="{'create': false, 'create_edit': false}" attrs="{'invisible':['|',('quy_trinh_id','!=',False),('loai','!=','1_nhom_cv')],'readonly':[('state','in',['cho_duyet', 'duyet'])]}" />
+			 							<field name="cong_viec_pc_id" attrs="{'invisible':['|',('loai','not in',['3_cv']),('cong_viec_id','!=',False)],'required':[('cong_viec_id','=',False),('loai','=','3_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','2_nhom_cv_tg')]" string = 'Công việc phân công PBHT' options="{'create': false, 'create_edit': false}"/>
+						                <field name="nhom_cv_pc_id" attrs="{'invisible':['|',('loai','not in',['3_cv']),('cong_viec_id','!=',False)],'required':[('cong_viec_id','=',False),('loai','=','3_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','1_nhom_cv')]" string = 'Nhóm công việc' options="{'create': false, 'create_edit': false}"/>
+			 							<field name="phan_cong_phong_ban_id" attrs="{'invisible':[('loai','not in',['2_nhom_cv_tg'])],'required':[('loai','=','2_nhom_cv_tg')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','1_nhom_cv')]" options="{'create': false, 'create_edit': false}"/>
+						                <field name="cong_viec_id" attrs="{'invisible':['|',('cong_viec_pc_id','!=',False),('loai','not in',['3_cv'])],'required':[('cong_viec_pc_id','=',False),('loai','=','3_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','1_nhom_cv')]" string = 'Nhóm công việc' options="{'create': false, 'create_edit': false}"/>
+			 						</group>
+				                	<group>
+					                	<field name="quy_trinh_id"  on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}" attrs="{'invisible':['|',('ho_tro','=','co'),('loai','=','5_ct_th')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" />
+						                <field name="ngay_het_han" />
+				                		<field name="nhom_cv_id" attrs="{'invisible':[('loai','not in',['4_cv_con'])],'required':[('loai','=','4_cv_con')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','1_nhom_cv')]" string = 'Nhóm công việc' options="{'create': false, 'create_edit': false}"/>
+				                		<field name="cach_thuc_hien" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
+			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
+			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
+				                	</group>
+				                	<group>
+					                	<field name="loai" invisible = '1'/>
+				                	</group>
+					            </group>
+				               	<group col="4" colspan="2" >
+				                	<field name="ghi_chu" attrs="{'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
+				                </group>
+					      </page>
+					 </notebook>
 	                </sheet>
 	                
                 </form>
@@ -1247,6 +1311,10 @@
                 		<button name="bt_duyet_cvc" string="Duyệt" type="object" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','4_cv_con'),('state','!=','cho_duyet')]}"/>
 	                    
 	                    <button name="bt_cho_duyet" string="Ban Hành" type="object" class="oe_highlight" attrs="{'invisible':['|',('loai','!=','1_nhom_cv'), ('state','!=','cho_duyet')]}"/>
+	                    <button name="%(action_tao_congviec)d" string="Tạo công việc" type="action" class="oe_highlight" attrs="{'invisible':['|','|','|',('ho_tro','=','co'),('loai','not in',['1_nhom_cv']),('quy_trinh_id','!=',False),('state','in',['nhap','da_giao','cho_duyet', 'duyet'])]}"/> 
+	                	<button name="%(action_tao_congviec_phancong)d" string="Tạo công việc" type="action" class="oe_highlight" attrs="{'invisible':['|','|',('loai','not in',['2_nhom_cv_tg']),('quy_trinh_id','!=',False),('state','in',['da_giao','cho_duyet', 'duyet'])]}"/> 
+	                	<button name="%(action_tao_congviec_con)d" string="Tạo công việc con" type="action" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','3_cv'),('quy_trinh_id','!=',False),('state','in',['da_giao','cho_duyet', 'duyet'])]}"/> 
+	                	<button name="%(action_phancong_phongban)d" string="Phân công công việc" type="action" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','1_nhom_cv'),('ho_tro','=','khong'),('state','in',['nhap','da_giao','cho_duyet', 'duyet'])]}"/> 
 	                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
 	            </header>  
 	                <sheet>
@@ -1258,254 +1326,260 @@
 						<label string='Tên công việc phân công PBHT' attrs="{'invisible':[('loai','!=','2_nhom_cv_tg')]}"/>
 						<field name="name" nolabel='1' attrs="{'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
 	                </h2>
-	                <group>
-	                	<button name="%(action_tao_congviec)d" string="Tạo công việc" type="action" class="oe_highlight oe_right" attrs="{'invisible':['|','|','|',('ho_tro','=','co'),('loai','not in',['1_nhom_cv']),('quy_trinh_id','!=',False),('state','in',['nhap','da_giao','cho_duyet', 'duyet'])]}"/> 
-	                	<button name="%(action_tao_congviec_phancong)d" string="Tạo công việc" type="action" class="oe_highlight oe_right" attrs="{'invisible':['|','|',('loai','not in',['2_nhom_cv_tg']),('quy_trinh_id','!=',False),('state','in',['da_giao','cho_duyet', 'duyet'])]}"/> 
-	                	<button name="%(action_tao_congviec_con)d" string="Tạo công việc con" type="action" class="oe_highlight oe_right" attrs="{'invisible':['|','|',('loai','!=','3_cv'),('quy_trinh_id','!=',False),('state','in',['da_giao','cho_duyet', 'duyet'])]}"/> 
-	                	<button name="%(action_phancong_phongban)d" string="Phân công công việc" type="action" class="oe_highlight oe_right" attrs="{'invisible':['|','|',('loai','!=','1_nhom_cv'),('ho_tro','=','khong'),('state','in',['nhap','da_giao','cho_duyet', 'duyet'])]}"/> 
-	                </group>
- 					<group>
- 						<group >
- 							<field name="ho_tro" invisible = '1' widget="radio" attrs="{'invisible':[('loai','!=','1_nhom_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
- 							<field name="nhan_vien_ids" widget="many2many_tags" attrs="{'invisible':[('loai','!=','3_cv')],'required':[('loai','=','3_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" options="{'create': false, 'create_edit': false}"/>
- 							<field name="cong_viec_con_id" string = 'Công việc' options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('loai','!=','4_cv_con')],'required':[('loai','=','4_cv_con')],'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
- 							<field name="stt" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
- 							<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('loai','not in',['4_cv_con', '5_ct_th'])],'required':[('loai','in',['4_cv_con', '5_ct_th'])],'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
-                			<field name="yeu_cau_kq" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
-                			<field name="trangthai_ncv" invisible='1'/>
-		                	<field name="trangthai_cv" invisible='1'/>
-		                	<field name="trangthai_cvc" invisible='1'/>
-		                	<field name="trangthai_cv_tg" invisible='1'/>
-		                	<field name="cv_tg_id" attrs="{'invisible':[('loai','not in',['4_cv_con'])], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','2_nhom_cv_tg')]" string = 'Công việc phân công PBHT' options="{'create': false, 'create_edit': false}"/>
-		                	<field name="phong_ban_id" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('loai','not in',['1_nhom_cv','2_nhom_cv_tg'])],'required':[('loai','in',['1_nhom_cv','2_nhom_cv_tg'])],'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
-		                	<field name="phong_ban_ids" on_change = "onchange_phong_ban_ids(phong_ban_ids)" widget="many2many_tags" options="{'create': false, 'create_edit': false}" attrs="{'invisible':['|',('quy_trinh_id','!=',False),('loai','!=','1_nhom_cv')],'readonly':[('state','in',['cho_duyet', 'duyet'])]}" />
- 							<field name="cong_viec_pc_id" attrs="{'invisible':['|',('loai','not in',['3_cv']),('cong_viec_id','!=',False)],'required':[('cong_viec_id','=',False),('loai','=','3_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','2_nhom_cv_tg')]" string = 'Công việc phân công PBHT' options="{'create': false, 'create_edit': false}"/>
-			                <field name="nhom_cv_pc_id" attrs="{'invisible':['|',('loai','not in',['3_cv']),('cong_viec_id','!=',False)],'required':[('cong_viec_id','=',False),('loai','=','3_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','1_nhom_cv')]" string = 'Nhóm công việc' options="{'create': false, 'create_edit': false}"/>
- 						</group>
-	                	<group>
-		                	<field name="quy_trinh_id"  on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}" attrs="{'invisible':['|',('ho_tro','=','co'),('loai','=','5_ct_th')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" />
-			                <field name="ngay_het_han" />
-			                <field name="phan_cong_phong_ban_id" attrs="{'invisible':[('loai','not in',['2_nhom_cv_tg'])],'required':[('loai','=','2_nhom_cv_tg')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','1_nhom_cv')]" options="{'create': false, 'create_edit': false}"/>
-			                <field name="cong_viec_id" attrs="{'invisible':['|',('cong_viec_pc_id','!=',False),('loai','not in',['3_cv'])],'required':[('cong_viec_pc_id','=',False),('loai','=','3_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','1_nhom_cv')]" string = 'Nhóm công việc' options="{'create': false, 'create_edit': false}"/>
-	                		<field name="nhom_cv_id" attrs="{'invisible':[('loai','not in',['4_cv_con'])],'required':[('loai','=','4_cv_con')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','1_nhom_cv')]" string = 'Nhóm công việc' options="{'create': false, 'create_edit': false}"/>
-	                		<field name="cach_thuc_hien" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
-        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
-                            <field name="datas_fname" invisible="1" class="oe_inline oe_right" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
-	                	</group>
-	                	<group>
-		                	<field name="loai" invisible = '1'/>
-	                	</group>
-	                </group>
-	               	<group col="4" colspan="2" >
-	                	<field name="ghi_chu" attrs="{'invisible':[('loai','not in',['1_nhom_cv','2_nhom_cv_tg'])], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
-	                </group>
-                		<notebook attrs="{'invisible':[('loai','not in',['1_nhom_cv'])]}">
-		                     <page string="Chi tiết thực hiện" attrs="{'invisible':['|',('ho_tro','=','co'),('ho_tro','=','khong'),('quy_trinh_id','=',False)]}">
-		                    	<field name="ct_th_nhom_cv_line" attrs="{'readonly':[('state','in',['cho_duyet', 'duyet'])]}" context = "{'default_loai': '5_ct_th', 'default_state': 'da_giao'}" nolabel='1' >
-		                    		<tree>
-		                    			<field name="stt"/>
-			                			<field name="name" string = 'Tên chi tiết'/>
-			                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
-			                			<field name="yeu_cau_kq" />
-			                            <field name="cach_thuc_hien" />
-			                            <field name="ngay_het_han" />
-			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" invisible="1"/>
-			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-			                            <field name="state" />
-			                            <field name="loai" invisible = '1'/>
-			                        </tree>
-			                        <form version="7.0">
-				                        <header>
-						                		<button name="bt_nhan_cttth" states="da_giao" string="Nhận chi tiết thực hiện" type="object" class="oe_highlight"/>
-							                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
-							                    <field name="loai" invisible='1'/>
-							            </header>  
-							            <sheet>
-					                        <group col="4" colspan="2">
-					                        	<field name="stt"/>
-					                        	<field name="name" string = 'Tên chi tiết'/>
-					                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
-					                			<field name="yeu_cau_kq" />
-					                            <field name="cach_thuc_hien" />
-					                            <field name="ngay_het_han" />
-					        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
-					                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-					                         </group>  
-				                         </sheet>  
-			                        </form>
-		                		</field>
-		                    </page>
-		                     <page string="Công việc" attrs="{'invisible':['|',('quy_trinh_id','!=',False),('ho_tro','=','co')]}">
-		                    	<field name="cong_viec_line" nolabel='1' context = "{'default_loai': '3_cv'}" >
-		                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
-			                			<field name="name" string = 'Tên công việc'/>
-			             <!--               <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}"/>  -->
-			                            <field name="nhan_vien_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}"/>
-			        					<field name="ghi_chu"/>
-			        					<field name="ngay_het_han" />
-			                            <field name="state" readonly = '1'/>
-			                            <field name="loai" invisible = '1'/> 
-			                        </tree>
-						         </field>
-						      </page> 
-						      
-						     <page string="Phân Công Phòng Ban" attrs="{'invisible':['|','&amp;',('quy_trinh_id','!=',False),('ho_tro','=','khong'),'&amp;',('ho_tro','=','khong'),('quy_trinh_id','=',False)]}">
-		                    	<field name="phan_cong_phong_ban_line" nolabel='1' context = "{'default_loai': '2_nhom_cv_tg', 'default_state': 'nhap'}">
-		                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
-			                			<field name="name" string = 'Tên công việc'/>
-			                			<field name="phong_ban_id" required = '1' options="{'create': false, 'create_edit': false}"/>
-			               <!--             <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}"/>   -->
-			        					<field name="ghi_chu"/>
-			        					<field name="ngay_het_han" />
-			                            <field name="state" readonly = '1'/>
-			                            <field name="loai" invisible = '1'/>
-			                        </tree>
-						         </field>
-						      </page>
-						 </notebook>
-						 
-						 <notebook attrs="{'invisible':[('loai','not in',['2_nhom_cv_tg'])]}">
-		                     <page string="Chi tiết thực hiện" attrs="{'invisible':[('quy_trinh_id','=',False)]}">
-		                    	<field name="ct_th_cv_tg_line" attrs="{'readonly':[('state','in',['cho_duyet', 'duyet'])]}" context = "{'default_loai': '5_ct_th', 'default_state': 'da_giao'}" nolabel='1' >
-		                    		<tree>
-		                    			<field name="stt"/>
-			                			<field name="name" string = 'Tên chi tiết'/>
-			                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
-			                			<field name="yeu_cau_kq" />
-			                            <field name="cach_thuc_hien" />
-			                            <field name="ngay_het_han" />
-			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" invisible="1"/>
-			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-			                            <field name="state" />
-			                            <field name="loai" invisible = '1'/>
-			                        </tree>
-			                        <form version="7.0">
-				                        <header>
-						                		<button name="bt_nhan_cttth" states="da_giao" string="Nhận chi tiết thực hiện" type="object" class="oe_highlight"/>
-							                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
-							                    <field name="loai" invisible='1'/>
-							            </header>  
-							            <sheet>
-					                        <group col="4" colspan="2">
-					                        	<field name="stt"/>
-					                        	<field name="name" string = 'Tên chi tiết'/>
-					                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
-					                			<field name="yeu_cau_kq" />
-					                            <field name="cach_thuc_hien" />
-					                            <field name="ngay_het_han" />
-					        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
-					                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-					                         </group>  
-				                         </sheet>  
-			                        </form>
-		                		</field>
-		                    </page>
-		                     <page string="Công việc" attrs="{'invisible':[('quy_trinh_id','!=',False)]}">
-		                    	<field name="cong_viec_pc_line" nolabel='1' context = "{'default_loai': '3_cv'}" >
-		                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
-			                			<field name="name" string = 'Tên công việc'/>
-			             <!--               <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}"/>  -->
-			                            <field name="nhan_vien_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}"/>
-			        					<field name="ghi_chu"/>
-			        					<field name="ngay_het_han" />
-			                            <field name="state" readonly = '1'/>
-			                            <field name="loai" invisible = '1'/> 
-			                        </tree>
-						         </field>
-						      </page> 
-						 </notebook>
-						 
-						 <notebook attrs="{'invisible':[('loai','!=','3_cv')]}">
-		                    <page string="Chi tiết thực hiện" attrs="{'invisible':[('quy_trinh_id','=',False)]}">
-		                    	<field name="ct_th_cv_line" context = "{'default_loai': '5_ct_th', 'default_state': 'da_giao'}" nolabel='1' >
-		                    		<tree>
-		                    			<field name="stt"/>
-			                			<field name="name" string = 'Tên chi tiết'/>
-			                			<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
-			                			<field name="yeu_cau_kq" />
-			                            <field name="cach_thuc_hien" />
-			                            <field name="ngay_het_han" />
-			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" invisible="1"/>
-			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-			                            <field name="state" />
-			                            <field name="loai" invisible = '1'/>
-			                        </tree>
-			                        <form version="7.0">
-				                        <header>
-						                		<button name="bt_nhan_cttth" states="da_giao" string="Nhận chi tiết thực hiện" type="object" class="oe_highlight"/>
-							                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
-							                    <field name="loai" invisible='1'/>
-							            </header>  
-							            <sheet>
-					                        <group col="4" colspan="2">
-					                        	<field name="stt"/>
-					                        	<field name="name" string = 'Tên chi tiết'/>
-					                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
-					                			<field name="yeu_cau_kq" />
-					                            <field name="cach_thuc_hien" />
-					                            <field name="ngay_het_han" />
-					        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
-					                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-					                         </group>  
-				                         </sheet>  
-			                        </form>
-		                		</field>
-		                    </page>
-		                    
-		                    
-		                     <page string="Công việc con" attrs="{'invisible':[('quy_trinh_id','!=',False)]}">
-		                    	<field name="cong_viec_con_line" nolabel='1' context = "{'default_loai': '4_cv_con'}" >
-		                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
-			                			<field name="name" string = 'Tên công việc con'/>
-			                <!--            <field name="quy_trinh_id" options="{'create': false, 'create_edit': false}"/>  -->
-			                            <field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
-			        					<field name="ghi_chu"/>
-			        					<field name="ngay_het_han" />
-			                            <field name="state" readonly = '1'/>
-			                            <field name="loai" invisible = '1'/>
-			                        </tree>
-		                		</field>
-		                    </page>
-		                </notebook>
-		                
-		                <notebook attrs="{'invisible':[('loai','!=','4_cv_con')]}">
-		                    <page string="Chi tiết thực hiện">
-		                    	<field name="ct_th_cv_con_line" context = "{'default_loai': '5_ct_th', 'default_state': 'da_giao'}" nolabel='1' >
-		                    		<tree>
-		                    			<field name="stt"/>
-			                			<field name="name" string = 'Tên chi tiết'/>
-			                			<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
-			                			<field name="yeu_cau_kq" />
-			                            <field name="cach_thuc_hien" />
-			                            <field name="ngay_het_han" />
-			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" invisible="1"/>
-			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-			                            <field name="state" />
-			                            <field name="loai" invisible = '1'/>
-			                        </tree>
-			                        <form version="7.0">
-				                        <header>
-						                		<button name="bt_nhan_cttth" states="da_giao" string="Nhận chi tiết thực hiện" type="object" class="oe_highlight"/>
-							                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
-							                    <field name="loai" invisible='1'/>
-							            </header>  
-							            <sheet>
-					                        <group col="4" colspan="2">
-					                        	<field name="stt"/>
-					                        	<field name="name" string = 'Tên chi tiết'/>
-					                			<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
-					                			<field name="yeu_cau_kq" />
-					                            <field name="cach_thuc_hien" />
-					                            <field name="ngay_het_han" />
-					        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
-					                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-					                         </group>  
-				                         </sheet>  
-			                        </form>
-		                		</field>
-		                    </page>
-		                    
-		                </notebook>
+                		<notebook>
+            		
+        <!-- Loai: Nhóm CV  -->
+        
+	                     <page string="Chi tiết thực hiện" attrs="{'invisible':['|',('loai','not in',['1_nhom_cv']),'|',('ho_tro','=','co'),'&amp;',('ho_tro','=','khong'),('quy_trinh_id','=',False)]}">
+	                    	<field name="ct_th_nhom_cv_line" attrs="{'readonly':[('state','in',['cho_duyet', 'duyet'])]}" context = "{'default_loai': '5_ct_th', 'default_state': 'da_giao'}" nolabel='1' >
+	                    		<tree>
+	                    			<field name="stt"/>
+		                			<field name="name" string = 'Tên chi tiết'/>
+		                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
+		                			<field name="yeu_cau_kq" />
+		                            <field name="cach_thuc_hien" />
+		                            <field name="ngay_het_han" />
+		        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" invisible="1"/>
+		                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+		                            <field name="state" />
+		                            <field name="loai" invisible = '1'/>
+		                        </tree>
+		                        <form version="7.0">
+			                        <header>
+					                		<button name="bt_nhan_cttth" states="da_giao" string="Nhận chi tiết thực hiện" type="object" class="oe_highlight"/>
+						                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
+						                    <field name="loai" invisible='1'/>
+						            </header>  
+						            <sheet>
+				                        <group col="4" colspan="2">
+				                        	<field name="stt"/>
+				                        	<field name="name" string = 'Tên chi tiết'/>
+				                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
+				                			<field name="yeu_cau_kq" />
+				                            <field name="cach_thuc_hien" />
+				                            <field name="ngay_het_han" />
+				        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+				                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+				                         </group>  
+				                   </sheet>
+		                        </form>
+	                		</field>
+	                    </page>
+	                     <page string="Công việc" attrs="{'invisible':['|',('loai','not in',['1_nhom_cv']),'|',('quy_trinh_id','!=',False),('ho_tro','=','co')]}">
+	                    	<field name="cong_viec_line" nolabel='1' context = "{'default_loai': '3_cv'}" >
+	                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
+		                			<field name="name" string = 'Tên công việc'/>
+		             <!--               <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}"/>  -->
+		                            <field name="nhan_vien_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}"/>
+		        					<field name="ghi_chu"/>
+		        					<field name="ngay_het_han" />
+		                            <field name="state" readonly = '1'/>
+		                            <field name="loai" invisible = '1'/> 
+		                        </tree>
+					         </field>
+					      </page> 
+					      
+					     <page string="Phân Công Phòng Ban" attrs="{'invisible':['|',('loai','not in',['1_nhom_cv']),'|','&amp;',('quy_trinh_id','!=',False),('ho_tro','=','khong'),'&amp;',('ho_tro','=','khong'),('quy_trinh_id','=',False)]}">
+	                    	<field name="phan_cong_phong_ban_line" nolabel='1' context = "{'default_loai': '2_nhom_cv_tg', 'default_state': 'nhap'}">
+	                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
+		                			<field name="name" string = 'Tên công việc'/>
+		                			<field name="phong_ban_id" required = '1' options="{'create': false, 'create_edit': false}"/>
+		               <!--             <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}"/>   -->
+		        					<field name="ghi_chu"/>
+		                            <field name="ngay_het_han" />
+		                            <field name="state" readonly = '1'/>
+		                            <field name="loai" invisible = '1'/>
+		                        </tree>
+					         </field>
+					      </page>
+		<!-- End Loai: Nhóm CV  -->
+					      
+		<!-- Loai: Nhóm CV trung gian  -->
+					      
+					      <page string="Chi tiết thực hiện" attrs="{'invisible':['|',('loai','not in',['2_nhom_cv_tg']),('quy_trinh_id','=',False)]}">
+	                    	<field name="ct_th_cv_tg_line" attrs="{'readonly':[('state','in',['cho_duyet', 'duyet'])]}" context = "{'default_loai': '5_ct_th', 'default_state': 'da_giao'}" nolabel='1' >
+	                    		<tree>
+	                    			<field name="stt"/>
+		                			<field name="name" string = 'Tên chi tiết'/>
+		                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
+		                			<field name="yeu_cau_kq" />
+		                            <field name="cach_thuc_hien" />
+		                            <field name="ngay_het_han" />
+		        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" invisible="1"/>
+		                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+		                            <field name="state" />
+		                            <field name="loai" invisible = '1'/>
+		                        </tree>
+		                        <form version="7.0">
+			                        <header>
+					                		<button name="bt_nhan_cttth" states="da_giao" string="Nhận chi tiết thực hiện" type="object" class="oe_highlight"/>
+						                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
+						                    <field name="loai" invisible='1'/>
+						            </header>  
+						            <sheet>
+				                        <group col="4" colspan="2">
+				                        	<field name="stt"/>
+				                        	<field name="name" string = 'Tên chi tiết'/>
+				                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
+				                			<field name="yeu_cau_kq" />
+				                            <field name="cach_thuc_hien" />
+				                            <field name="ngay_het_han" />
+				        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+				                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+				                         </group>  
+			                        </sheet>  
+		                        </form>
+	                		</field>
+	                    </page>
+	                     <page string="Công việc" attrs="{'invisible':['|',('loai','not in',['2_nhom_cv_tg']),('quy_trinh_id','!=',False)]}">
+	                    	<field name="cong_viec_pc_line" nolabel='1' context = "{'default_loai': '3_cv'}" >
+	                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
+		                			<field name="name" string = 'Tên công việc'/>
+		             <!--               <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}"/>  -->
+		                            <field name="nhan_vien_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}"/>
+		        					<field name="ghi_chu"/>
+		        					<field name="ngay_het_han" />
+		                            <field name="state" readonly = '1'/>
+		                            <field name="loai" invisible = '1'/> 
+		                        </tree>
+					         </field>
+					      </page> 
+		
+		<!-- End Loai: Nhóm CV trung gian  -->
+		
+		<!-- Loai: CV -->
+		
+						<page string="Chi tiết thực hiện" attrs="{'invisible':['|',('loai','!=','3_cv'),('quy_trinh_id','=',False)]}">
+	                    	<field name="ct_th_cv_line" context = "{'default_loai': '5_ct_th', 'default_state': 'da_giao'}" nolabel='1' >
+	                    		<tree>
+	                    			<field name="stt"/>
+		                			<field name="name" string = 'Tên chi tiết'/>
+		                			<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
+		                			<field name="yeu_cau_kq" />
+		                            <field name="cach_thuc_hien" />
+		                            <field name="ngay_het_han" />
+		        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" invisible="1"/>
+		                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+		                            <field name="state" />
+		                            <field name="loai" invisible = '1'/>
+		                        </tree>
+		                        <form version="7.0">
+			                        <header>
+					                		<button name="bt_nhan_cttth" states="da_giao" string="Nhận chi tiết thực hiện" type="object" class="oe_highlight"/>
+						                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
+						                    <field name="loai" invisible='1'/>
+						            </header>  
+						           	<sheet>
+				                        <group col="4" colspan="2">
+				                        	<field name="stt"/>
+				                        	<field name="name" string = 'Tên chi tiết'/>
+				                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
+				                			<field name="yeu_cau_kq" />
+				                            <field name="cach_thuc_hien" />
+				                            <field name="ngay_het_han" />
+				        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+				                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+				                         </group>  
+			                         </sheet>  
+		                        </form>
+	                		</field>
+	                    </page>
+	                    
+	                    <page string="Công việc con" attrs="{'invisible':['|',('loai','!=','3_cv'),('quy_trinh_id','!=',False)]}">
+	                    	<field name="cong_viec_con_line" nolabel='1' context = "{'default_loai': '4_cv_con'}" >
+	                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
+		                			<field name="name" string = 'Tên công việc con'/>
+		                <!--            <field name="quy_trinh_id" options="{'create': false, 'create_edit': false}"/>  -->
+		                            <field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
+		        					<field name="ghi_chu"/>
+		        					<field name="ngay_het_han" />
+		                            <field name="state" readonly = '1'/>
+		                            <field name="loai" invisible = '1'/>
+		                        </tree>
+	                		</field>
+	                    </page>
+		
+		<!-- End Loai: CV -->
+		
+		<!-- Loai: CV con -->
+		
+						<page string="Chi tiết thực hiện" attrs="{'invisible':[('loai','!=','4_cv_con')]}">
+	                    	<field name="ct_th_cv_con_line" context = "{'default_loai': '5_ct_th', 'default_state': 'da_giao'}" nolabel='1' >
+	                    		<tree>
+	                    			<field name="stt"/>
+		                			<field name="name" string = 'Tên chi tiết'/>
+		                			<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
+		                			<field name="yeu_cau_kq" />
+		                            <field name="cach_thuc_hien" />
+		                            <field name="ngay_het_han" />
+		        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" invisible="1"/>
+		                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+		                            <field name="state" />
+		                            <field name="loai" invisible = '1'/>
+		                        </tree>
+		                        <form version="7.0">
+			                        <header>
+					                		<button name="bt_nhan_cttth" states="da_giao" string="Nhận chi tiết thực hiện" type="object" class="oe_highlight"/>
+						                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
+						                    <field name="loai" invisible='1'/>
+						            </header>  
+						            <sheet>
+				                        <group col="4" colspan="2">
+				                        	<field name="stt"/>
+				                        	<field name="name" string = 'Tên chi tiết'/>
+				                			<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
+				                			<field name="yeu_cau_kq" />
+				                            <field name="cach_thuc_hien" />
+				                            <field name="ngay_het_han" />
+				        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+				                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+				                         </group>  
+			                         </sheet>  
+		                        </form>
+	                		</field>
+	                    </page>
+	                    
+		<!-- End Loai: CV con -->
+		
+					      <page string="Thông tin chi tiết" >
+		                    	<group>
+			 						<group >
+			 							<field name="ho_tro" invisible = '1' widget="radio" attrs="{'invisible':[('loai','!=','1_nhom_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
+			 							<field name="nhan_vien_ids" widget="many2many_tags" attrs="{'invisible':[('loai','!=','3_cv')],'required':[('loai','=','3_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" options="{'create': false, 'create_edit': false}"/>
+			 							<field name="cong_viec_con_id" string = 'Công việc' options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('loai','!=','4_cv_con')],'required':[('loai','=','4_cv_con')],'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
+			 							<field name="stt" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
+			 							<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('loai','not in',['4_cv_con', '5_ct_th'])],'required':[('loai','in',['4_cv_con', '5_ct_th'])],'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
+			                			<field name="yeu_cau_kq" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
+			                			<field name="trangthai_ncv" invisible='1'/>
+					                	<field name="trangthai_cv" invisible='1'/>
+					                	<field name="trangthai_cvc" invisible='1'/>
+					                	<field name="trangthai_cv_tg" invisible='1'/>
+					                	<field name="tt_lanhdao" invisible='1' />
+					                	<field name="cv_tg_id" attrs="{'invisible':[('loai','not in',['4_cv_con'])], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','2_nhom_cv_tg')]" string = 'Công việc phân công PBHT' options="{'create': false, 'create_edit': false}"/>
+					                	<field name="phong_ban_id" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('loai','not in',['1_nhom_cv','2_nhom_cv_tg'])],'required':[('loai','in',['1_nhom_cv','2_nhom_cv_tg'])],'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
+					                	<field name="phong_ban_ids" on_change = "onchange_phong_ban_ids(phong_ban_ids)" widget="many2many_tags" options="{'create': false, 'create_edit': false}" attrs="{'invisible':['|',('quy_trinh_id','!=',False),('loai','!=','1_nhom_cv')],'readonly':[('state','in',['cho_duyet', 'duyet'])]}" />
+			 							<field name="cong_viec_pc_id" attrs="{'invisible':['|',('loai','not in',['3_cv']),('cong_viec_id','!=',False)],'required':[('cong_viec_id','=',False),('loai','=','3_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','2_nhom_cv_tg')]" string = 'Công việc phân công PBHT' options="{'create': false, 'create_edit': false}"/>
+						                <field name="nhom_cv_pc_id" attrs="{'invisible':['|',('loai','not in',['3_cv']),('cong_viec_id','!=',False)],'required':[('cong_viec_id','=',False),('loai','=','3_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','1_nhom_cv')]" string = 'Nhóm công việc' options="{'create': false, 'create_edit': false}"/>
+			 							<field name="phan_cong_phong_ban_id" attrs="{'invisible':[('loai','not in',['2_nhom_cv_tg'])],'required':[('loai','=','2_nhom_cv_tg')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','1_nhom_cv')]" options="{'create': false, 'create_edit': false}"/>
+						                <field name="cong_viec_id" attrs="{'invisible':['|',('cong_viec_pc_id','!=',False),('loai','not in',['3_cv'])],'required':[('cong_viec_pc_id','=',False),('loai','=','3_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','1_nhom_cv')]" string = 'Nhóm công việc' options="{'create': false, 'create_edit': false}"/>
+			 						</group>
+				                	<group>
+					                	<field name="quy_trinh_id"  on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}" attrs="{'invisible':['|',('ho_tro','=','co'),('loai','=','5_ct_th')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" />
+						                <field name="ngay_het_han" />
+				                		<field name="nhom_cv_id" attrs="{'invisible':[('loai','not in',['4_cv_con'])],'required':[('loai','=','4_cv_con')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','1_nhom_cv')]" string = 'Nhóm công việc' options="{'create': false, 'create_edit': false}"/>
+				                		<field name="cach_thuc_hien" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
+			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
+			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
+				                	</group>
+				                	<group>
+					                	<field name="loai" invisible = '1'/>
+				                	</group>
+					            </group>
+				               	<group col="4" colspan="2" >
+				                	<field name="ghi_chu" attrs="{'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
+				                </group>
+					      </page>
+					 </notebook>
 	                </sheet>
                 </form>
             </field>
@@ -1607,6 +1681,10 @@
             <field name="arch" type="xml">
                 <form string="Nhóm công việc đã ban hành" version="7.0" create = 'false' edit = 'false'>
                 <header>
+                		<button name="%(action_tao_congviec)d" string="Tạo công việc" type="action" class="oe_highlight" attrs="{'invisible':['|','|','|',('ho_tro','=','co'),('loai','not in',['1_nhom_cv']),('quy_trinh_id','!=',False),('state','in',['nhap','da_giao','cho_duyet', 'duyet'])]}"/> 
+	                	<button name="%(action_tao_congviec_phancong)d" string="Tạo công việc" type="action" class="oe_highlight" attrs="{'invisible':['|','|',('loai','not in',['2_nhom_cv_tg']),('quy_trinh_id','!=',False),('state','in',['da_giao','cho_duyet', 'duyet'])]}"/> 
+	                	<button name="%(action_tao_congviec_con)d" string="Tạo công việc con" type="action" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','3_cv'),('quy_trinh_id','!=',False),('state','in',['da_giao','cho_duyet', 'duyet'])]}"/> 
+	                	<button name="%(action_phancong_phongban)d" string="Phân công công việc" type="action" class="oe_highlight" attrs="{'invisible':['|','|',('loai','!=','1_nhom_cv'),('ho_tro','=','khong'),('state','in',['nhap','da_giao','cho_duyet', 'duyet'])]}"/> 
 	                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
 	            </header>  
 	                <sheet>
@@ -1618,254 +1696,260 @@
 						<label string='Tên công việc phân công PBHT' attrs="{'invisible':[('loai','!=','2_nhom_cv_tg')]}"/>
 						<field name="name" nolabel='1' attrs="{'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
 	                </h2>
-	                <group>
-	                	<button name="%(action_tao_congviec)d" string="Tạo công việc" type="action" class="oe_highlight oe_right" attrs="{'invisible':['|','|','|',('ho_tro','=','co'),('loai','not in',['1_nhom_cv']),('quy_trinh_id','!=',False),('state','in',['nhap','da_giao','cho_duyet', 'duyet'])]}"/> 
-	                	<button name="%(action_tao_congviec_phancong)d" string="Tạo công việc" type="action" class="oe_highlight oe_right" attrs="{'invisible':['|','|',('loai','not in',['2_nhom_cv_tg']),('quy_trinh_id','!=',False),('state','in',['da_giao','cho_duyet', 'duyet'])]}"/> 
-	                	<button name="%(action_tao_congviec_con)d" string="Tạo công việc con" type="action" class="oe_highlight oe_right" attrs="{'invisible':['|','|',('loai','!=','3_cv'),('quy_trinh_id','!=',False),('state','in',['da_giao','cho_duyet', 'duyet'])]}"/> 
-	                	<button name="%(action_phancong_phongban)d" string="Phân công công việc" type="action" class="oe_highlight oe_right" attrs="{'invisible':['|','|',('loai','!=','1_nhom_cv'),('ho_tro','=','khong'),('state','in',['nhap','da_giao','cho_duyet', 'duyet'])]}"/> 
-	                </group>
- 					<group>
- 						<group >
- 							<field name="ho_tro" invisible = '1' widget="radio" attrs="{'invisible':[('loai','!=','1_nhom_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
- 							<field name="nhan_vien_ids" widget="many2many_tags" attrs="{'invisible':[('loai','!=','3_cv')],'required':[('loai','=','3_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" options="{'create': false, 'create_edit': false}"/>
- 							<field name="cong_viec_con_id" string = 'Công việc' options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('loai','!=','4_cv_con')],'required':[('loai','=','4_cv_con')],'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
- 							<field name="stt" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
- 							<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('loai','not in',['4_cv_con', '5_ct_th'])],'required':[('loai','in',['4_cv_con', '5_ct_th'])],'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
-                			<field name="yeu_cau_kq" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
-                			<field name="trangthai_ncv" invisible='1'/>
-		                	<field name="trangthai_cv" invisible='1'/>
-		                	<field name="trangthai_cvc" invisible='1'/>
-		                	<field name="trangthai_cv_tg" invisible='1'/>
-		                	<field name="cv_tg_id" attrs="{'invisible':[('loai','not in',['4_cv_con'])], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','2_nhom_cv_tg')]" string = 'Công việc phân công PBHT' options="{'create': false, 'create_edit': false}"/>
-		                	<field name="phong_ban_id" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('loai','not in',['1_nhom_cv','2_nhom_cv_tg'])],'required':[('loai','in',['1_nhom_cv','2_nhom_cv_tg'])],'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
-		                	<field name="phong_ban_ids" on_change = "onchange_phong_ban_ids(phong_ban_ids)" widget="many2many_tags" options="{'create': false, 'create_edit': false}" attrs="{'invisible':['|',('quy_trinh_id','!=',False),('loai','!=','1_nhom_cv')],'readonly':[('state','in',['cho_duyet', 'duyet'])]}" />
- 							<field name="cong_viec_pc_id" attrs="{'invisible':['|',('loai','not in',['3_cv']),('cong_viec_id','!=',False)],'required':[('cong_viec_id','=',False),('loai','=','3_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','2_nhom_cv_tg')]" string = 'Công việc phân công PBHT' options="{'create': false, 'create_edit': false}"/>
-			                <field name="nhom_cv_pc_id" attrs="{'invisible':['|',('loai','not in',['3_cv']),('cong_viec_id','!=',False)],'required':[('cong_viec_id','=',False),('loai','=','3_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','1_nhom_cv')]" string = 'Nhóm công việc' options="{'create': false, 'create_edit': false}"/>
- 						</group>
-	                	<group>
-		                	<field name="quy_trinh_id"  on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}" attrs="{'invisible':['|',('ho_tro','=','co'),('loai','=','5_ct_th')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" />
-			                <field name="ngay_het_han" />
-			                <field name="phan_cong_phong_ban_id" attrs="{'invisible':[('loai','not in',['2_nhom_cv_tg'])],'required':[('loai','=','2_nhom_cv_tg')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','1_nhom_cv')]" options="{'create': false, 'create_edit': false}"/>
-			                <field name="cong_viec_id" attrs="{'invisible':['|',('cong_viec_pc_id','!=',False),('loai','not in',['3_cv'])],'required':[('cong_viec_pc_id','=',False),('loai','=','3_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','1_nhom_cv')]" string = 'Nhóm công việc' options="{'create': false, 'create_edit': false}"/>
-	                		<field name="nhom_cv_id" attrs="{'invisible':[('loai','not in',['4_cv_con'])],'required':[('loai','=','4_cv_con')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','1_nhom_cv')]" string = 'Nhóm công việc' options="{'create': false, 'create_edit': false}"/>
-	                		<field name="cach_thuc_hien" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
-        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
-                            <field name="datas_fname" invisible="1" class="oe_inline oe_right" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
-	                	</group>
-	                	<group>
-		                	<field name="loai" invisible = '1'/>
-	                	</group>
-	                </group>
-	               	<group col="4" colspan="2" >
-	                	<field name="ghi_chu" attrs="{'invisible':[('loai','not in',['1_nhom_cv','2_nhom_cv_tg'])], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
-	                </group>
-                		<notebook attrs="{'invisible':[('loai','not in',['1_nhom_cv'])]}">
-		                     <page string="Chi tiết thực hiện" attrs="{'invisible':['|',('ho_tro','=','co'),('ho_tro','=','khong'),('quy_trinh_id','=',False)]}">
-		                    	<field name="ct_th_nhom_cv_line" attrs="{'readonly':[('state','in',['cho_duyet', 'duyet'])]}" context = "{'default_loai': '5_ct_th', 'default_state': 'da_giao'}" nolabel='1' >
-		                    		<tree>
-		                    			<field name="stt"/>
-			                			<field name="name" string = 'Tên chi tiết'/>
-			                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
-			                			<field name="yeu_cau_kq" />
-			                            <field name="cach_thuc_hien" />
-			                            <field name="ngay_het_han" />
-			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" invisible="1"/>
-			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-			                            <field name="state" />
-			                            <field name="loai" invisible = '1'/>
-			                        </tree>
-			                        <form version="7.0">
-				                        <header>
-						                		<button name="bt_nhan_cttth" states="da_giao" string="Nhận chi tiết thực hiện" type="object" class="oe_highlight"/>
-							                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
-							                    <field name="loai" invisible='1'/>
-							            </header>  
-							            <sheet>
-					                        <group col="4" colspan="2">
-					                        	<field name="stt"/>
-					                        	<field name="name" string = 'Tên chi tiết'/>
-					                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
-					                			<field name="yeu_cau_kq" />
-					                            <field name="cach_thuc_hien" />
-					                            <field name="ngay_het_han" />
-					        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
-					                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-					                         </group>  
-				                         </sheet>  
-			                        </form>
-		                		</field>
-		                    </page>
-		                     <page string="Công việc" attrs="{'invisible':['|',('quy_trinh_id','!=',False),('ho_tro','=','co')]}">
-		                    	<field name="cong_viec_line" nolabel='1' context = "{'default_loai': '3_cv'}" >
-		                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
-			                			<field name="name" string = 'Tên công việc'/>
-			             <!--               <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}"/>  -->
-			                            <field name="nhan_vien_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}"/>
-			        					<field name="ghi_chu"/>
-			        					<field name="ngay_het_han" />
-			                            <field name="state" readonly = '1'/>
-			                            <field name="loai" invisible = '1'/> 
-			                        </tree>
-						         </field>
-						      </page> 
-						      
-						     <page string="Phân Công Phòng Ban" attrs="{'invisible':['|','&amp;',('quy_trinh_id','!=',False),('ho_tro','=','khong'),'&amp;',('ho_tro','=','khong'),('quy_trinh_id','=',False)]}">
-		                    	<field name="phan_cong_phong_ban_line" nolabel='1' context = "{'default_loai': '2_nhom_cv_tg', 'default_state': 'nhap'}">
-		                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
-			                			<field name="name" string = 'Tên công việc'/>
-			                			<field name="phong_ban_id" required = '1' options="{'create': false, 'create_edit': false}"/>
-			               <!--             <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}"/>   -->
-			        					<field name="ghi_chu"/>
-			        					<field name="ngay_het_han" />
-			                            <field name="state" readonly = '1'/>
-			                            <field name="loai" invisible = '1'/>
-			                        </tree>
-						         </field>
-						      </page>
-						 </notebook>
-						 
-						 <notebook attrs="{'invisible':[('loai','not in',['2_nhom_cv_tg'])]}">
-		                     <page string="Chi tiết thực hiện" attrs="{'invisible':[('quy_trinh_id','=',False)]}">
-		                    	<field name="ct_th_cv_tg_line" attrs="{'readonly':[('state','in',['cho_duyet', 'duyet'])]}" context = "{'default_loai': '5_ct_th', 'default_state': 'da_giao'}" nolabel='1' >
-		                    		<tree>
-		                    			<field name="stt"/>
-			                			<field name="name" string = 'Tên chi tiết'/>
-			                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
-			                			<field name="yeu_cau_kq" />
-			                            <field name="cach_thuc_hien" />
-			                            <field name="ngay_het_han" />
-			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" invisible="1"/>
-			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-			                            <field name="state" />
-			                            <field name="loai" invisible = '1'/>
-			                        </tree>
-			                        <form version="7.0">
-				                        <header>
-						                		<button name="bt_nhan_cttth" states="da_giao" string="Nhận chi tiết thực hiện" type="object" class="oe_highlight"/>
-							                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
-							                    <field name="loai" invisible='1'/>
-							            </header>  
-							            <sheet>
-					                        <group col="4" colspan="2">
-					                        	<field name="stt"/>
-					                        	<field name="name" string = 'Tên chi tiết'/>
-					                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
-					                			<field name="yeu_cau_kq" />
-					                            <field name="cach_thuc_hien" />
-					                            <field name="ngay_het_han" />
-					        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
-					                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-					                         </group>  
-				                         </sheet>  
-			                        </form>
-		                		</field>
-		                    </page>
-		                     <page string="Công việc" attrs="{'invisible':[('quy_trinh_id','!=',False)]}">
-		                    	<field name="cong_viec_pc_line" nolabel='1' context = "{'default_loai': '3_cv'}" >
-		                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
-			                			<field name="name" string = 'Tên công việc'/>
-			             <!--               <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}"/>  -->
-			                            <field name="nhan_vien_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}"/>
-			        					<field name="ghi_chu"/>
-			        					<field name="ngay_het_han" />
-			                            <field name="state" readonly = '1'/>
-			                            <field name="loai" invisible = '1'/> 
-			                        </tree>
-						         </field>
-						      </page> 
-						 </notebook>
-						 
-						 <notebook attrs="{'invisible':[('loai','!=','3_cv')]}">
-		                    <page string="Chi tiết thực hiện" attrs="{'invisible':[('quy_trinh_id','=',False)]}">
-		                    	<field name="ct_th_cv_line" context = "{'default_loai': '5_ct_th', 'default_state': 'da_giao'}" nolabel='1' >
-		                    		<tree>
-		                    			<field name="stt"/>
-			                			<field name="name" string = 'Tên chi tiết'/>
-			                			<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
-			                			<field name="yeu_cau_kq" />
-			                            <field name="cach_thuc_hien" />
-			                            <field name="ngay_het_han" />
-			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" invisible="1"/>
-			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-			                            <field name="state" />
-			                            <field name="loai" invisible = '1'/>
-			                        </tree>
-			                        <form version="7.0">
-				                        <header>
-						                		<button name="bt_nhan_cttth" states="da_giao" string="Nhận chi tiết thực hiện" type="object" class="oe_highlight"/>
-							                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
-							                    <field name="loai" invisible='1'/>
-							            </header>  
-							            <sheet>
-					                        <group col="4" colspan="2">
-					                        	<field name="stt"/>
-					                        	<field name="name" string = 'Tên chi tiết'/>
-					                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
-					                			<field name="yeu_cau_kq" />
-					                            <field name="cach_thuc_hien" />
-					                            <field name="ngay_het_han" />
-					        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
-					                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-					                         </group>  
-				                         </sheet>  
-			                        </form>
-		                		</field>
-		                    </page>
-		                    
-		                    
-		                     <page string="Công việc con" attrs="{'invisible':[('quy_trinh_id','!=',False)]}">
-		                    	<field name="cong_viec_con_line" nolabel='1' context = "{'default_loai': '4_cv_con'}" >
-		                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
-			                			<field name="name" string = 'Tên công việc con'/>
-			                <!--            <field name="quy_trinh_id" options="{'create': false, 'create_edit': false}"/>  -->
-			                            <field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
-			        					<field name="ghi_chu"/>
-			        					<field name="ngay_het_han" />
-			                            <field name="state" readonly = '1'/>
-			                            <field name="loai" invisible = '1'/>
-			                        </tree>
-		                		</field>
-		                    </page>
-		                </notebook>
-		                
-		                <notebook attrs="{'invisible':[('loai','!=','4_cv_con')]}">
-		                    <page string="Chi tiết thực hiện">
-		                    	<field name="ct_th_cv_con_line" context = "{'default_loai': '5_ct_th', 'default_state': 'da_giao'}" nolabel='1' >
-		                    		<tree>
-		                    			<field name="stt"/>
-			                			<field name="name" string = 'Tên chi tiết'/>
-			                			<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
-			                			<field name="yeu_cau_kq" />
-			                            <field name="cach_thuc_hien" />
-			                            <field name="ngay_het_han" />
-			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" invisible="1"/>
-			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-			                            <field name="state" />
-			                            <field name="loai" invisible = '1'/>
-			                        </tree>
-			                        <form version="7.0">
-				                        <header>
-						                		<button name="bt_nhan_cttth" states="da_giao" string="Nhận chi tiết thực hiện" type="object" class="oe_highlight"/>
-							                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
-							                    <field name="loai" invisible='1'/>
-							            </header>  
-							            <sheet>
-					                        <group col="4" colspan="2">
-					                        	<field name="stt"/>
-					                        	<field name="name" string = 'Tên chi tiết'/>
-					                			<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
-					                			<field name="yeu_cau_kq" />
-					                            <field name="cach_thuc_hien" />
-					                            <field name="ngay_het_han" />
-					        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
-					                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
-					                         </group>  
-				                         </sheet>  
-			                        </form>
-		                		</field>
-		                    </page>
-		                    
-		                </notebook>
+                		<notebook>
+            		
+        <!-- Loai: Nhóm CV  -->
+        
+	                     <page string="Chi tiết thực hiện" attrs="{'invisible':['|',('loai','not in',['1_nhom_cv']),'|',('ho_tro','=','co'),'&amp;',('ho_tro','=','khong'),('quy_trinh_id','=',False)]}">
+	                    	<field name="ct_th_nhom_cv_line" attrs="{'readonly':[('state','in',['cho_duyet', 'duyet'])]}" context = "{'default_loai': '5_ct_th', 'default_state': 'da_giao'}" nolabel='1' >
+	                    		<tree>
+	                    			<field name="stt"/>
+		                			<field name="name" string = 'Tên chi tiết'/>
+		                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
+		                			<field name="yeu_cau_kq" />
+		                            <field name="cach_thuc_hien" />
+		                            <field name="ngay_het_han" />
+		        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" invisible="1"/>
+		                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+		                            <field name="state" />
+		                            <field name="loai" invisible = '1'/>
+		                        </tree>
+		                        <form version="7.0">
+			                        <header>
+					                		<button name="bt_nhan_cttth" states="da_giao" string="Nhận chi tiết thực hiện" type="object" class="oe_highlight"/>
+						                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
+						                    <field name="loai" invisible='1'/>
+						            </header>  
+						            <sheet>
+				                        <group col="4" colspan="2">
+				                        	<field name="stt"/>
+				                        	<field name="name" string = 'Tên chi tiết'/>
+				                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
+				                			<field name="yeu_cau_kq" />
+				                            <field name="cach_thuc_hien" />
+				                            <field name="ngay_het_han" />
+				        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+				                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+				                         </group>  
+				                   </sheet>
+		                        </form>
+	                		</field>
+	                    </page>
+	                     <page string="Công việc" attrs="{'invisible':['|',('loai','not in',['1_nhom_cv']),'|',('quy_trinh_id','!=',False),('ho_tro','=','co')]}">
+	                    	<field name="cong_viec_line" nolabel='1' context = "{'default_loai': '3_cv'}" >
+	                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
+		                			<field name="name" string = 'Tên công việc'/>
+		             <!--               <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}"/>  -->
+		                            <field name="nhan_vien_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}"/>
+		        					<field name="ghi_chu"/>
+		        					<field name="ngay_het_han" />
+		                            <field name="state" readonly = '1'/>
+		                            <field name="loai" invisible = '1'/> 
+		                        </tree>
+					         </field>
+					      </page> 
+					      
+					     <page string="Phân Công Phòng Ban" attrs="{'invisible':['|',('loai','not in',['1_nhom_cv']),'|','&amp;',('quy_trinh_id','!=',False),('ho_tro','=','khong'),'&amp;',('ho_tro','=','khong'),('quy_trinh_id','=',False)]}">
+	                    	<field name="phan_cong_phong_ban_line" nolabel='1' context = "{'default_loai': '2_nhom_cv_tg', 'default_state': 'nhap'}">
+	                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
+		                			<field name="name" string = 'Tên công việc'/>
+		                			<field name="phong_ban_id" required = '1' options="{'create': false, 'create_edit': false}"/>
+		               <!--             <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}"/>   -->
+		        					<field name="ghi_chu"/>
+		                            <field name="ngay_het_han" />
+		                            <field name="state" readonly = '1'/>
+		                            <field name="loai" invisible = '1'/>
+		                        </tree>
+					         </field>
+					      </page>
+		<!-- End Loai: Nhóm CV  -->
+					      
+		<!-- Loai: Nhóm CV trung gian  -->
+					      
+					      <page string="Chi tiết thực hiện" attrs="{'invisible':['|',('loai','not in',['2_nhom_cv_tg']),('quy_trinh_id','=',False)]}">
+	                    	<field name="ct_th_cv_tg_line" attrs="{'readonly':[('state','in',['cho_duyet', 'duyet'])]}" context = "{'default_loai': '5_ct_th', 'default_state': 'da_giao'}" nolabel='1' >
+	                    		<tree>
+	                    			<field name="stt"/>
+		                			<field name="name" string = 'Tên chi tiết'/>
+		                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
+		                			<field name="yeu_cau_kq" />
+		                            <field name="cach_thuc_hien" />
+		                            <field name="ngay_het_han" />
+		        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" invisible="1"/>
+		                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+		                            <field name="state" />
+		                            <field name="loai" invisible = '1'/>
+		                        </tree>
+		                        <form version="7.0">
+			                        <header>
+					                		<button name="bt_nhan_cttth" states="da_giao" string="Nhận chi tiết thực hiện" type="object" class="oe_highlight"/>
+						                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
+						                    <field name="loai" invisible='1'/>
+						            </header>  
+						            <sheet>
+				                        <group col="4" colspan="2">
+				                        	<field name="stt"/>
+				                        	<field name="name" string = 'Tên chi tiết'/>
+				                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
+				                			<field name="yeu_cau_kq" />
+				                            <field name="cach_thuc_hien" />
+				                            <field name="ngay_het_han" />
+				        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+				                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+				                         </group>  
+			                        </sheet>  
+		                        </form>
+	                		</field>
+	                    </page>
+	                     <page string="Công việc" attrs="{'invisible':['|',('loai','not in',['2_nhom_cv_tg']),('quy_trinh_id','!=',False)]}">
+	                    	<field name="cong_viec_pc_line" nolabel='1' context = "{'default_loai': '3_cv'}" >
+	                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
+		                			<field name="name" string = 'Tên công việc'/>
+		             <!--               <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}"/>  -->
+		                            <field name="nhan_vien_ids" widget="many2many_tags" options="{'create': false, 'create_edit': false}"/>
+		        					<field name="ghi_chu"/>
+		        					<field name="ngay_het_han" />
+		                            <field name="state" readonly = '1'/>
+		                            <field name="loai" invisible = '1'/> 
+		                        </tree>
+					         </field>
+					      </page> 
+		
+		<!-- End Loai: Nhóm CV trung gian  -->
+		
+		<!-- Loai: CV -->
+		
+						<page string="Chi tiết thực hiện" attrs="{'invisible':['|',('loai','!=','3_cv'),('quy_trinh_id','=',False)]}">
+	                    	<field name="ct_th_cv_line" context = "{'default_loai': '5_ct_th', 'default_state': 'da_giao'}" nolabel='1' >
+	                    		<tree>
+	                    			<field name="stt"/>
+		                			<field name="name" string = 'Tên chi tiết'/>
+		                			<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
+		                			<field name="yeu_cau_kq" />
+		                            <field name="cach_thuc_hien" />
+		                            <field name="ngay_het_han" />
+		        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" invisible="1"/>
+		                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+		                            <field name="state" />
+		                            <field name="loai" invisible = '1'/>
+		                        </tree>
+		                        <form version="7.0">
+			                        <header>
+					                		<button name="bt_nhan_cttth" states="da_giao" string="Nhận chi tiết thực hiện" type="object" class="oe_highlight"/>
+						                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
+						                    <field name="loai" invisible='1'/>
+						            </header>  
+						           	<sheet>
+				                        <group col="4" colspan="2">
+				                        	<field name="stt"/>
+				                        	<field name="name" string = 'Tên chi tiết'/>
+				                			<field name="nhan_vien_id" required = '1' options="{'create': false, 'create_edit': false}"/>
+				                			<field name="yeu_cau_kq" />
+				                            <field name="cach_thuc_hien" />
+				                            <field name="ngay_het_han" />
+				        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+				                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+				                         </group>  
+			                         </sheet>  
+		                        </form>
+	                		</field>
+	                    </page>
+	                    
+	                    <page string="Công việc con" attrs="{'invisible':['|',('loai','!=','3_cv'),('quy_trinh_id','!=',False)]}">
+	                    	<field name="cong_viec_con_line" nolabel='1' context = "{'default_loai': '4_cv_con'}" >
+	                    		<tree editable = 'bottom' create = 'false' edit = 'false' delete = 'false'>
+		                			<field name="name" string = 'Tên công việc con'/>
+		                <!--            <field name="quy_trinh_id" options="{'create': false, 'create_edit': false}"/>  -->
+		                            <field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
+		        					<field name="ghi_chu"/>
+		        					<field name="ngay_het_han" />
+		                            <field name="state" readonly = '1'/>
+		                            <field name="loai" invisible = '1'/>
+		                        </tree>
+	                		</field>
+	                    </page>
+		
+		<!-- End Loai: CV -->
+		
+		<!-- Loai: CV con -->
+		
+						<page string="Chi tiết thực hiện" attrs="{'invisible':[('loai','!=','4_cv_con')]}">
+	                    	<field name="ct_th_cv_con_line" context = "{'default_loai': '5_ct_th', 'default_state': 'da_giao'}" nolabel='1' >
+	                    		<tree>
+	                    			<field name="stt"/>
+		                			<field name="name" string = 'Tên chi tiết'/>
+		                			<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
+		                			<field name="yeu_cau_kq" />
+		                            <field name="cach_thuc_hien" />
+		                            <field name="ngay_het_han" />
+		        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" invisible="1"/>
+		                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+		                            <field name="state" />
+		                            <field name="loai" invisible = '1'/>
+		                        </tree>
+		                        <form version="7.0">
+			                        <header>
+					                		<button name="bt_nhan_cttth" states="da_giao" string="Nhận chi tiết thực hiện" type="object" class="oe_highlight"/>
+						                    <field name="state" widget="statusbar" statusbar_visible="nhap,da_giao,dang_lam,cho_duyet,duyet" />
+						                    <field name="loai" invisible='1'/>
+						            </header>  
+						            <sheet>
+				                        <group col="4" colspan="2">
+				                        	<field name="stt"/>
+				                        	<field name="name" string = 'Tên chi tiết'/>
+				                			<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}"/>
+				                			<field name="yeu_cau_kq" />
+				                            <field name="cach_thuc_hien" />
+				                            <field name="ngay_het_han" />
+				        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả"/>
+				                            <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+				                         </group>  
+			                         </sheet>  
+		                        </form>
+	                		</field>
+	                    </page>
+	                    
+		<!-- End Loai: CV con -->
+		
+					      <page string="Thông tin chi tiết" >
+		                    	<group>
+			 						<group >
+			 							<field name="ho_tro" invisible = '1' widget="radio" attrs="{'invisible':[('loai','!=','1_nhom_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
+			 							<field name="nhan_vien_ids" widget="many2many_tags" attrs="{'invisible':[('loai','!=','3_cv')],'required':[('loai','=','3_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" options="{'create': false, 'create_edit': false}"/>
+			 							<field name="cong_viec_con_id" string = 'Công việc' options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('loai','!=','4_cv_con')],'required':[('loai','=','4_cv_con')],'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
+			 							<field name="stt" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
+			 							<field name="nhan_vien_id" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('loai','not in',['4_cv_con', '5_ct_th'])],'required':[('loai','in',['4_cv_con', '5_ct_th'])],'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
+			                			<field name="yeu_cau_kq" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
+			                			<field name="trangthai_ncv" invisible='1'/>
+					                	<field name="trangthai_cv" invisible='1'/>
+					                	<field name="trangthai_cvc" invisible='1'/>
+					                	<field name="trangthai_cv_tg" invisible='1'/>
+					                	<field name="tt_lanhdao" invisible='1' />
+					                	<field name="cv_tg_id" attrs="{'invisible':[('loai','not in',['4_cv_con'])], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','2_nhom_cv_tg')]" string = 'Công việc phân công PBHT' options="{'create': false, 'create_edit': false}"/>
+					                	<field name="phong_ban_id" options="{'create': false, 'create_edit': false}" attrs="{'invisible':[('loai','not in',['1_nhom_cv','2_nhom_cv_tg'])],'required':[('loai','in',['1_nhom_cv','2_nhom_cv_tg'])],'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
+					                	<field name="phong_ban_ids" on_change = "onchange_phong_ban_ids(phong_ban_ids)" widget="many2many_tags" options="{'create': false, 'create_edit': false}" attrs="{'invisible':['|',('quy_trinh_id','!=',False),('loai','!=','1_nhom_cv')],'readonly':[('state','in',['cho_duyet', 'duyet'])]}" />
+			 							<field name="cong_viec_pc_id" attrs="{'invisible':['|',('loai','not in',['3_cv']),('cong_viec_id','!=',False)],'required':[('cong_viec_id','=',False),('loai','=','3_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','2_nhom_cv_tg')]" string = 'Công việc phân công PBHT' options="{'create': false, 'create_edit': false}"/>
+						                <field name="nhom_cv_pc_id" attrs="{'invisible':['|',('loai','not in',['3_cv']),('cong_viec_id','!=',False)],'required':[('cong_viec_id','=',False),('loai','=','3_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','1_nhom_cv')]" string = 'Nhóm công việc' options="{'create': false, 'create_edit': false}"/>
+			 							<field name="phan_cong_phong_ban_id" attrs="{'invisible':[('loai','not in',['2_nhom_cv_tg'])],'required':[('loai','=','2_nhom_cv_tg')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','1_nhom_cv')]" options="{'create': false, 'create_edit': false}"/>
+						                <field name="cong_viec_id" attrs="{'invisible':['|',('cong_viec_pc_id','!=',False),('loai','not in',['3_cv'])],'required':[('cong_viec_pc_id','=',False),('loai','=','3_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','1_nhom_cv')]" string = 'Nhóm công việc' options="{'create': false, 'create_edit': false}"/>
+			 						</group>
+				                	<group>
+					                	<field name="quy_trinh_id"  on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}" attrs="{'invisible':['|',('ho_tro','=','co'),('loai','=','5_ct_th')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" />
+						                <field name="ngay_het_han" />
+				                		<field name="nhom_cv_id" attrs="{'invisible':[('loai','not in',['4_cv_con'])],'required':[('loai','=','4_cv_con')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','1_nhom_cv')]" string = 'Nhóm công việc' options="{'create': false, 'create_edit': false}"/>
+				                		<field name="cach_thuc_hien" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
+			        					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
+			                            <field name="datas_fname" invisible="1" class="oe_inline oe_right" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
+				                	</group>
+				                	<group>
+					                	<field name="loai" invisible = '1'/>
+				                	</group>
+					            </group>
+				               	<group col="4" colspan="2" >
+				                	<field name="ghi_chu" attrs="{'readonly':[('state','in',['cho_duyet', 'duyet'])]}"/>
+				                </group>
+					      </page>
+					 </notebook>
 	                </sheet>
 	                
                 </form>

@@ -20,6 +20,7 @@ base_path = os.path.dirname(modules.get_module_path('green_erp_qldh_base'))
 class nhom_cong_viec(osv.osv):
     _name = "nhom.cong.viec"
     _order = 'loai desc'
+    _order = 'stt'
     def default_get(self, cr, uid, fields, context=None):
         if context is None:
             context = {}
@@ -93,6 +94,9 @@ class nhom_cong_viec(osv.osv):
         res = {}
         for record in self.browse(cr, uid, ids, context):
             color = 0
+            now = time.strftime('%Y-%m-%d')
+            if record.ngay_het_han > now:
+                color=2
             if record.tt_lanhdao == '2_phan_cong':
                 if record.state == 'da_giao':
                     color=3
@@ -191,17 +195,39 @@ class nhom_cong_viec(osv.osv):
                  }
     
     
-    
-    def _check_nhan_vien(self, cr, uid, ids, context=None):
-        for line in self.browse(cr, uid, ids, context=context):
-            for nv in line.ct_nhom_cv_line:
-                if not nv.nhan_vien_id and line.state in ['moi_nhan','cho_duyet','duyet'] :
-                    raise osv.except_osv(_('Cảnh Báo!'),_('Cần chọn nhân viên cho công việc'))
-                    return False
-        return True
-    _constraints = [
-        (_check_nhan_vien, 'Identical Data', []),
-    ]   
+    def write(self, cr, uid, ids, vals, context=None):
+        if 'ct_th_cv_line' in vals:
+            for line in vals['ct_th_cv_line']:
+                if line[2]:
+                    if 'stt' in line[2]:
+                        cv_id = self.browse(cr,uid,line[1]).ct_th_cv_id.id
+                        sql = '''
+                            select stt from nhom_cong_viec where id = %s and ct_th_cv_id = %s
+                        '''%(line[1], cv_id)
+                        cr.execute(sql)
+                        stt = cr.dictfetchone()
+                        stt_tam = stt and stt['stt'] or False
+                        if line[2]['stt']+1<stt_tam+1:
+                            tam_ids = []
+                            for i in range(line[2]['stt']+1,stt_tam+1):
+                                sql = '''
+                                    select id from nhom_cong_viec where stt = %s and ct_th_cv_id = %s
+                                '''%(i-1,cv_id)
+                                cr.execute(sql)
+                                tam_2 = cr.dictfetchone()
+                                tam_id_2 = tam_2 and tam_2['id'] or False
+                                if tam_id_2:
+                                    tam_ids.append((0,0,{
+                                                    'stt': i,
+                                                    'buoc_id': tam_id_2,
+                                                    }))
+                            for mang in tam_ids:
+                                sql = '''
+                                    update nhom_cong_viec set stt = %s where ct_th_cv_id = %s and id = %s
+                                '''%(mang[2]['stt'] ,cv_id,mang[2]['buoc_id'])
+                                cr.execute(sql)
+                                              
+        return super(nhom_cong_viec, self).write(cr, uid,ids, vals, context=context)
     
     def bt_hoan_thanh_ctth(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids,{'state':'cho_duyet'})
@@ -534,72 +560,7 @@ class nhom_cong_viec(osv.osv):
         
 nhom_cong_viec()
 
-class ct_nhom_cong_viec(osv.osv):
-    _name = "ct.nhom.cong.viec"
-    
-    def _data_get(self, cr, uid, ids, name, arg, context=None):
-        if context is None:
-            context = {}
-        result = {}
-        location = self.pool.get('ir.config_parameter').get_param(cr, SUPERUSER_ID, 'ir_attachment.location')
-        bin_size = context.get('bin_size')
-        for attach in self.browse(cr, uid, ids, context=context):
-            if location and attach.store_fname:
-                result[attach.id] = self._file_read(cr, uid, location, attach.store_fname, bin_size)
-            else:
-                result[attach.id] = attach.db_datas
-                if bin_size:
-                    result[attach.id] = int(result[attach.id])
 
-        return result
-
-    def _data_set(self, cr, uid, id, name, value, arg, context=None):
-        # We dont handle setting data to null
-        if not value:
-            return True
-        if context is None:
-            context = {}
-        location = self.pool.get('ir.config_parameter').get_param(cr, SUPERUSER_ID, 'ir_attachment.location')
-        file_size = len(value.decode('base64'))
-        if location:
-            attach = self.browse(cr, uid, id, context=context)
-            if attach.store_fname:
-                self._file_delete(cr, uid, location, attach.store_fname)
-            fname = self._file_write(cr, uid, location, value)
-            # SUPERUSER_ID as probably don't have write access, trigger during create
-            super(ct_nhom_cong_viec, self).write(cr, SUPERUSER_ID, [id], {'store_fname': fname, 'file_size': file_size}, context=context)
-        else:
-            super(ct_nhom_cong_viec, self).write(cr, SUPERUSER_ID, [id], {'db_datas': value, 'file_size': file_size}, context=context)
-        return True
-    _columns = {
-        'nhom_cv_id':fields.many2one('nhom.cong.viec','nhom cong viec',ondelete='cascade'),
-        'name':fields.char('Tên chi tiết',size=1024, required = True),
-        'datas_fname': fields.char('File Name',size=256),
-        'datas': fields.function(_data_get, fnct_inv=_data_set, string='File Content', type="binary", nodrop=True),
-        'store_fname': fields.char('Stored Filename', size=256),
-        'db_datas': fields.binary('Database Data'),
-        'file_size': fields.integer('File Size'),
-        'yeu_cau_kq':fields.text('Yêu cầu kết quả'),
-        'cach_thuc_hien':fields.text('Cách thức thực hiện'),
-        'nhan_vien_id':fields.many2one('nhan.vien','Nhân viên'),
-        'hoan_thanh': fields.boolean('Hoàn thành'),
-    }
-    _defaults = {
-         'hoan_thanh': False,
-         }
-#     def _check_nhan_vien(self, cr, uid, ids, context=None):
-#         for line in self.browse(cr, uid, ids, context=context):
-#             if not line.nhan_vien_id and line.nhom_cv_id.state != 'nhap' and line.nhom_cv_id.state != 'moi_tao':
-#                 raise osv.except_osv(_('Cảnh Báo!'),_('Cần chọn nhân viên cho công việc'))
-#                 return False
-#         return True
-#     _constraints = [
-#         (_check_nhan_vien, 'Identical Data', []),
-#     ]
-   
-
-    
-ct_nhom_cong_viec()
 
 class quy_trinh(osv.osv):
     _name = "quy.trinh"
@@ -645,6 +606,7 @@ class quy_trinh(osv.osv):
     def bt_lay_quy_trinh(self, cr, uid, ids, context=None):
         res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
                                         'green_erp_qldh', 'quy_trinh_form_view')
+        
         default = {}
         for qt in self.browse(cr,uid,ids):
             sql = '''
@@ -666,6 +628,7 @@ class quy_trinh(osv.osv):
                     'view_mode': 'form',
                     'view_id': res[1],
                     'res_model': 'quy.trinh',
+                    'res_id': ids[0],
                     'domain': [],
                     'context': {},
                     'type': 'ir.actions.act_window',
@@ -724,16 +687,6 @@ class buoc_thuc_hien_line(osv.osv):
         'file_size': fields.integer('File Size'),
                 }
     
-#     def create(self, cr, uid, vals, context=None):
-#         new_id = super(buoc_thuc_hien_line, self).create(cr, uid, vals, context)
-#         phong = self.browse(cr,uid,new_id)
-#         for line in phong.ds_nhan_vien_line:
-#             sql = '''
-#                 update nhan_vien set phong_ban_id = %s where id = %s
-#             '''%(new_id, line.nhan_vien_id.id)
-#             cr.execute(sql)
-#         return new_id
-    
     def write(self, cr, uid, ids, vals, context=None):
         for line in self.browse(cr,uid,ids):
             if 'stt' in vals:
@@ -744,6 +697,7 @@ class buoc_thuc_hien_line(osv.osv):
                 stt = cr.dictfetchone()
                 stt_tam = stt and stt['stt'] or False
                 if vals['stt']+1<stt_tam+1:
+                    tam_ids = []
                     for i in range(vals['stt']+1,stt_tam+1):
                         sql = '''
                             select id from buoc_thuc_hien_line where stt = %s and quy_trinh_id = %s
@@ -752,11 +706,20 @@ class buoc_thuc_hien_line(osv.osv):
                         tam_2 = cr.dictfetchone()
                         tam_id_2 = tam_2 and tam_2['id'] or False
                         if tam_id_2:
-                            sql = '''
-                                update buoc_thuc_hien_line set stt = %s where quy_trinh_id = %s and id = %s
-                            '''%(i,line.quy_trinh_id.id,tam_id_2)
-                            cr.execute(sql)
+#                             name = self.browse(cr,uid,tam_id_2).name
+#                             print str(i) + ' - ' + name
+                            tam_ids.append((0,0,{
+                                            'stt': i,
+                                            'buoc_id': tam_id_2,
+                                            }))
+                    for mang in tam_ids:
+                        sql = '''
+                            update buoc_thuc_hien_line set stt = %s where quy_trinh_id = %s and id = %s
+                        '''%(mang[2]['stt'] ,line.quy_trinh_id.id,mang[2]['buoc_id'])
+                        cr.execute(sql)
+                                 
                 if vals['stt']+1>stt_tam+1:
+                    tam_ids = []
                     for i in range(stt_tam+1,vals['stt']+1):
                         sql = '''
                             select id from buoc_thuc_hien_line where stt = %s and quy_trinh_id = %s
@@ -765,10 +728,15 @@ class buoc_thuc_hien_line(osv.osv):
                         tam_2 = cr.dictfetchone()
                         tam_id_2 = tam_2 and tam_2['id'] or False
                         if tam_id_2:
-                            sql = '''
-                                update buoc_thuc_hien_line set stt = %s where quy_trinh_id = %s and id = %s
-                            '''%(i-1,line.quy_trinh_id.id,tam_id_2)
-                            cr.execute(sql)
+                            tam_ids.append((0,0,{
+                                            'stt': i-1,
+                                            'buoc_id': tam_id_2,
+                                            }))
+                    for mang in tam_ids:
+                        sql = '''
+                            update buoc_thuc_hien_line set stt = %s where quy_trinh_id = %s and id = %s
+                        '''%(mang[2]['stt'] ,line.quy_trinh_id.id,mang[2]['buoc_id'])
+                        cr.execute(sql)
         return super(buoc_thuc_hien_line, self).write(cr, uid,ids, vals, context)
 
     
