@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		<menuitem id="admin"
+			name="Quản trị" sequence="175"/>
+    		
+    		<menuitem id="menu_items"
+    			name="Danh mục"
+    			parent="green_erp_base.admin" sequence="10"/>
+    			
+    			<menuitem id="menu_action_res_users_greenerps"
+	    			name="Người dùng"
+	    			action="action_res_users_greenerp"
+	    			parent="green_erp_base.menu_items" sequence="100"/>
+    </data>
+</openerp>
