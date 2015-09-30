@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    	
+    	<record id="loto_view_company_form" model="ir.ui.view">
+            <field name="name">res.company.inherit</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+            	<data>
+                	<xpath expr="//page[@string='Configuration']" position="after">
+                		<page string="Thông tin liên kết">
+                            <group>
+                                <group string="Web Service">
+                                    <field name="web_url"/>
+                                    <field name="web_port"/>
+                                    <field name="web_db_name"/>
+                                    <field name="web_user"/>
+                                    <field name="web_pass" password="1"/>
+                                </group>
+                                <group string="Database">
+                                    <field name="db_url"/>
+                                    <field name="db_port"/>
+                                    <field name="db_name"/>
+                                    <field name="db_user"/>
+                                    <field name="db_pass" password="1"/>
+                                </group>
+                            </group>
+                        </page>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+    	
+        <record id="lichsu_dongbo_tree_view" model="ir.ui.view">
+            <field name="name">lichsu.dongbo.tree</field>
+            <field name="model">lichsu.dongbo</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Lịch sử liên thông" >
+                    <field name="create_date" />
+                    <field name="create_uid" />
+                    <field name="type" />
+                    <field name="update_fields" />
+                    <field name="f_table" />
+                    <field name="f_object" />
+                    <field name="f_id" />
+                    <field name="state" />
+                    <field name="message" />
+                </tree>
+            </field>
+        </record>
+        
+        <record id="action_lichsu_dongbo" model="ir.actions.act_window">
+            <field name="name">Lịch sử đồng bộ</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">lichsu.dongbo</field>
+            <field name="view_type">tree</field>
+            <field name="view_mode">tree</field>
+            <field name="domain">[('state','!=','done')]</field>
+            <field name="view_id" ref="lichsu_dongbo_tree_view"/>
+        </record>
+        
+        <menuitem name="Cấu hình" id="menu_cau_hinh" parent="ql_ve_loto" sequence="100" groups="group_ql_ve_loto_man"/>
+        
+        <menuitem action="action_lichsu_dongbo"
+            id="menu_action_lichsu_dongbo"
+            parent="menu_cau_hinh" sequence="10" groups="group_ql_ve_loto_man"/>
+    	
+    	<record id="dongbo_veloto_tree_view" model="ir.ui.view">
+            <field name="name">dongbo.veloto.tree</field>
+            <field name="model">dongbo.veloto</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Đồng bộ vé loto" editable='top'>
+                    <field name="name" />
+                    <field name="ket_qua_id" />
+                    <field name="state" />
+                    <button name="dongbo" type="object" states="waiting,error" icon="STOCK_GO_UP" string="Đồng bộ" class="oe_highlight"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="action_dongbo_veloto" model="ir.actions.act_window">
+            <field name="name">Đồng bộ vé loto</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dongbo.veloto</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="domain">[('state','!=','done')]</field>
+            <field name="view_id" ref="dongbo_veloto_tree_view"/>
+        </record>
+        
+        <menuitem action="action_dongbo_veloto"
+            id="menu_action_dongbo_veloto"
+            parent="menu_cau_hinh" sequence="20" groups="group_ql_ve_loto_man"/>
+    	
+    	<record id="dongbo_daily_trungthuong_tree_view" model="ir.ui.view">
+            <field name="name">dongbo.daily.trungthuong.tree</field>
+            <field name="model">dongbo.daily.trungthuong</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Đồng bộ đại lý trúng thưởng" editable='top'>
+                    <field name="name" />
+                    <field name="ket_qua_id" />
+                    <field name="state" />
+                    <button name="dongbo" type="object" states="waiting,error" icon="STOCK_GO_UP" string="Đồng bộ" class="oe_highlight"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="action_dongbo_daily_trungthuong" model="ir.actions.act_window">
+            <field name="name">Đồng bộ đại lý trúng thưởng</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dongbo.daily.trungthuong</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="domain">[('state','!=','done')]</field>
+            <field name="view_id" ref="dongbo_daily_trungthuong_tree_view"/>
+        </record>
+        
+        <menuitem action="action_dongbo_daily_trungthuong"
+            id="menu_action_dongbo_daily_trungthuong"
+            parent="menu_cau_hinh" sequence="30" groups="group_ql_ve_loto_man"/>
+    	
+    </data>
+</openerp>

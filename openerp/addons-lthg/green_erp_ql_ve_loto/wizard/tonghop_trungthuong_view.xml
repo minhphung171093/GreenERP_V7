@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>   
+        <record id="view_tonghop_trungthuong_report" model="ir.ui.view">
+            <field name="name">tonghop.trungthuong.report</field>
+            <field name="model">tonghop.trungthuong</field>
+            <field name="arch" type="xml">
+                <form string="BIÊN BẢN TỔNG HỢP GIAO NHẬN CÙI TRÚNG THƯỞNG VÉ SỐ TỰ CHỌN TÂY NINH" version="7.0">
+                    <group colspan='4'>
+                    	<field name='date'/>
+                    </group>
+                    <group string="Đai Dien Phong Ve So Tu Chon">
+	                    <group>
+	                    	<field name='ddphongve_1'/>
+	                    	<field name='ddphongve_2'/>
+	                    </group>
+	                    <group>
+	                    	<field name='cv_ddphongve_1'/>
+	                    	<field name='cv_ddphongve_2'/>
+                    	</group>
+                    </group>
+                    <group string="Đai Dien Phong Tra Thuong">
+	                    <group>
+	                    	<field name='ddphong_trathuong_1'/>
+	                    	<field name='ddphong_trathuong_2'/>
+	                    </group>
+	                    <group>
+	                    	<field name='cv_ddphong_trathuong_1'/>
+	                    	<field name='cv_ddphong_trathuong_2'/>
+                    	</group>
+                    </group>             
+                    <footer>
+                        <button name="print_report" string="In" type="object" class="oe_highlight" context="{'type':'appointments'}"/>
+                        hoặc
+                        <button string="Hủy bỏ" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>        
+        <record id="action_tonghop_trungthuong" model="ir.actions.act_window">
+            <field name="name">Tổng hợp trúng thưởng</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">tonghop.trungthuong</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        
+        <menuitem id="menu_action_action_tonghop_trungthuong" action="action_tonghop_trungthuong" parent="menu_baocao" sequence="31" groups="group_ql_ve_loto_man"/>
+        
+    </data>
+</openerp>
+

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+    	<record id="tonghop_trungthuong_theongay_report" model="ir.actions.report.xml">
+	        <field name="name">tonghop.trungthuong.report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">tonghop.trungthuong.theongay</field>
+	        <field name="report_name">Tổng hợp trúng thưởng theo ngày</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-odt</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-doc'),('compatible_types','=','oo-odt')]"/>
+	        <field name="parser_loc">green_erp_ql_ve_loto/report/tonghop_trungthuong_theongay.py</field>
+	        <field name="report_rml">green_erp_ql_ve_loto/report/tonghop_trungthuong_theongay.odt</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record> 
+    	   
+    	<report 
+			auto="False" 
+			menu="False"
+			id="tonghop_trungthuong_theongay_report" 
+			model="tonghop.trungthuong.theongay" 
+			name="tonghop_trungthuong_theongay_report"
+	        string="Tổng hợp trúng thưởng theo ngày"
+	        rml="green_erp_ql_ve_loto/report/tonghop_trungthuong_theongay.odt"/> 	
+	</data>
+</openerp>

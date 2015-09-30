@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+        <record id="view_vetuchon_dangluuhanh_report" model="ir.ui.view">
+            <field name="name">vetuchon.dangluuhanh.report</field>
+            <field name="model">vetuchon.dangluuhanh</field>
+            <field name="arch" type="xml">
+                <form string="Vé tự chọn đang lưu hành" version="7.0">
+                    <group colspan='4'>
+                    	<field name='date'/>
+                    </group>
+                    <group>
+	                    <group string="Đại lý">
+	                    	<field name='dai_ly_ids' nolabel='1'/>
+	                    </group>
+	                    <group string="Mệnh giá">
+	                    	<field name='menh_gia_ids' nolabel='1'>
+	                    		<tree>
+	                    			<field name='name'/>
+	                    		</tree>
+	                    	</field>
+                    	</group>
+                    </group>
+                    <footer>
+                        <button name="print_report" string="In" type="object" class="oe_highlight" context="{'type':'appointments'}"/>
+                        hoặc
+                        <button string="Hủy bỏ" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_vetuchon_dangluuhanh_report" model="ir.actions.act_window">
+            <field name="name">Vé đang lưu hành</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">vetuchon.dangluuhanh</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        
+        <menuitem id="menu_action_vetuchon_dangluuhanh_report" action="action_vetuchon_dangluuhanh_report" parent="menu_baocao" sequence="60" groups="group_ql_ve_loto_man"/>
+        
+    </data>
+</openerp>
+

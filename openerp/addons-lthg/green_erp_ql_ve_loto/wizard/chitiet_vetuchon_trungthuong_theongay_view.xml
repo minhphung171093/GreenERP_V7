@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>   
+        <record id="view_chitiet_vetuchon_trungthuong_theongay_report" model="ir.ui.view">
+            <field name="name">chitiet.vetuchon.trungthuong.theongay.report</field>
+            <field name="model">chitiet.vetuchon.trungthuong.theongay</field>
+            <field name="arch" type="xml">
+                <form string="Vé tự chọn trúng thưởng" version="7.0">
+                    <field name='date'/>             
+                    <footer>
+                        <button name="print_report" string="In" type="object" class="oe_highlight" context="{'type':'appointments'}"/>
+                        hoặc
+                        <button string="Hủy bỏ" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>        
+        <record id="action_chitiet_vetuchon_trungthuong_theongay_report" model="ir.actions.act_window">
+            <field name="name">Vé tự chọn trúng thưởng theo ngay</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">chitiet.vetuchon.trungthuong.theongay</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        
+        <menuitem id="menu_action_chitiet_vetuchon_trungthuong_theongay_report" action="action_chitiet_vetuchon_trungthuong_theongay_report" parent="menu_baocao" sequence="11" groups="group_ql_ve_loto_man"/>
+        
+    </data>
+</openerp>
+
