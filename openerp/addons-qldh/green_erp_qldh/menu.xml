@@ -4,17 +4,21 @@
 		<menuitem id="quan_ly" name="Quản Lý"/>
 			    
 			<menuitem id="menu_gd_dh" parent="quan_ly" name="Menu Giám đốc / Lãnh đạo" sequence = '2'/>    
-			    <menuitem action="action_nhom_cong_viec_tao" id="menu_action_nhom_cong_viec_tao" parent="menu_gd_dh" name="Nhóm công việc"  sequence="1"/>
+			    <menuitem action="action_nhom_cong_viec_total" id="menu_action_nhom_cong_viec_total" parent="menu_gd_dh" name="Nhóm công việc"  sequence="1"/>
+			    	<menuitem action="action_nhom_cong_viec_du_thao" id="menu_action_nhom_cong_viec_du_thao" parent="menu_action_nhom_cong_viec_total" name="Dự thảo"  sequence="1"/>
+			    	<menuitem action="action_nhom_cong_viec_pc_xu_ly" id="menu_action_nhom_cong_viec_pc_xu_ly" parent="menu_action_nhom_cong_viec_total" name="Phân công xử lý"  sequence="2"/>
+			    	<menuitem action="action_nhom_cong_viec_cho_duyet_ld" id="menu_action_nhom_cong_viec_cho_duyet_ld" parent="menu_action_nhom_cong_viec_total" name="Chờ duyệt"  sequence="3"/>
+			    	<menuitem action="action_nhom_cong_viec_duyet_ld" id="menu_action_nhom_cong_viec_duyet_ld" parent="menu_action_nhom_cong_viec_total" name="Duyệt"  sequence="4"/>
 			
 			<menuitem id="menu_chuyen_vien" parent="quan_ly" name="Menu Chuyên viên" sequence = '4'/>  
 				<menuitem action="action_nhom_cong_viec_moi_giao" id="menu_action_nhom_cong_viec_moi_giao_cv" parent="menu_chuyen_vien" name="Mới giao"  sequence="1"/>
-				<menuitem action="action_nhom_cong_viec_dang_lam" id="menu_action_nhom_cong_viec_dang_lam_cv" parent="menu_chuyen_vien" name="Đang làm"  sequence="3"/>
+				<menuitem action="action_nhom_cong_viec_dang_lam" id="menu_action_nhom_cong_viec_dang_lam_cv" parent="menu_chuyen_vien" name="Đang xử lý"  sequence="3"/>
 				<menuitem action="action_nhom_cong_viec_cho_duyet" id="menu_action_nhom_cong_viec_cho_duyet_cv" parent="menu_chuyen_vien" name="Chờ duyệt"  sequence="4"/>
 				<menuitem action="action_nhom_cong_viec_da_ban_hanh" id="menu_action_nhom_cong_viec_da_ban_hanh_cv" parent="menu_chuyen_vien" name="Đã ban hành"  sequence="5"/> 
 			
 			<menuitem id="menu_lanh_dao_phong" parent="quan_ly" name="Menu Lãnh đạo phòng" sequence = '3'/>       
 				<menuitem action="action_nhom_cong_viec_moi_giao" id="menu_action_nhom_cong_viec_moi_giao" parent="menu_lanh_dao_phong" name="Mới giao"  sequence="1"/>
-				<menuitem action="action_nhom_cong_viec_dang_lam" id="menu_action_nhom_cong_viec_dang_lam" parent="menu_lanh_dao_phong" name="Đang làm"  sequence="3"/>
+				<menuitem action="action_nhom_cong_viec_dang_lam" id="menu_action_nhom_cong_viec_dang_lam" parent="menu_lanh_dao_phong" name="Đang xử lý"  sequence="3"/>
 				<menuitem action="action_nhom_cong_viec_cho_duyet" id="menu_action_nhom_cong_viec_cho_duyet" parent="menu_lanh_dao_phong" name="Chờ duyệt"  sequence="4"/>
 				<menuitem action="action_nhom_cong_viec_da_ban_hanh" id="menu_action_nhom_cong_viec_da_ban_hanh" parent="menu_lanh_dao_phong" name="Đã ban hành"  sequence="5"/>
 				
