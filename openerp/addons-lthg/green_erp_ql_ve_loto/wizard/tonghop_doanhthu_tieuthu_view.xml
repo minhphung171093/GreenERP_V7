@@ -20,7 +20,7 @@
         </record>
         
         <record id="action_view_tonghop_doanhthu_tieuthu_report" model="ir.actions.act_window">
-            <field name="name">Tổng Hợp Doanh Thu Tiêu Thụ</field>
+            <field name="name">Tổng hợp doanh thu tiêu thụ</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">tonghop.doanhthu.tieuthu</field>
             <field name="view_type">form</field>
@@ -28,7 +28,7 @@
             <field name="target">new</field>
         </record>
         
-        <menuitem id="menu_action_view_tonghop_doanhthu_tieuthu_report" action="action_view_tonghop_doanhthu_tieuthu_report" parent="menu_baocao" sequence="20" groups="group_ql_ve_loto_man"/>
+        <menuitem name="Doanh thu tiêu thụ" id="menu_action_view_tonghop_doanhthu_tieuthu_report" action="action_view_tonghop_doanhthu_tieuthu_report" parent="menu_baocao" sequence="30" groups="group_ql_ve_loto_man"/>
         
     </data>
 </openerp>

@@ -87,7 +87,7 @@ class Parser(report_sxw.rml_parse):
         menh_gia_ids = wizard_data['menh_gia_ids']
         res =[]
         if ky_ve:
-            sql ='''  
+            self.cr.execute('''  
             SELECT pp.name_template,pp.id,
                 sum(ton_dauky) ton_dauky,
                 sum(nhan_trongky) nhan_trongky
@@ -95,13 +95,13 @@ class Parser(report_sxw.rml_parse):
                 (SELECT
                     stm.product_id,    
                     
-                    case when loc1.usage = 'internal' and loc2.usage != 'internal' and stm.date < '%s'
-                    then 1*stm.primary_qty 
+                    case when loc1.usage = 'internal' and loc2.usage != 'internal' and stm.date < %s
+                    then 1*stm.product_qty 
                     else 0.0
                     end ton_dauky,
                     
-                    case when loc1.usage = 'internal' and loc2.usage != 'internal' and stm.date between '%s' and '%s'
-                    then 1*stm.primary_qty 
+                    case when loc1.usage = 'internal' and loc2.usage != 'internal' and stm.date between %s and %s
+                    then 1*stm.product_qty 
                     else 0.0
                     end nhan_trongky
                     
@@ -113,9 +113,8 @@ class Parser(report_sxw.rml_parse):
                 WHERE (pp.id in %s)
                 group by pp.name_template,pp.id
                 order by pp.id
-            ''' %(ky_ve.start_date,ky_ve.start_date,ky_ve.end_date,dai_ly_id,dai_ly_id,
-                  tuple(menh_gia_ids),)
-            self.cr.execute(sql)
+            ''' ,(ky_ve.start_date,ky_ve.start_date,ky_ve.end_date,dai_ly_id,dai_ly_id,
+                  tuple(menh_gia_ids),))
             for i in self.cr.dictfetchall():
                 sql = '''
                     select sum(tong_cong) tong_cong
@@ -147,7 +146,7 @@ class Parser(report_sxw.rml_parse):
         dai_ly_ids = wizard_data['dai_ly_ids']
         res =[]
         if ky_ve:
-            sql ='''  
+            self.cr.execute('''  
             SELECT pp.name_template,pp.id,
                 sum(ton_dauky) ton_dauky,
                 sum(nhan_trongky) nhan_trongky
@@ -155,13 +154,13 @@ class Parser(report_sxw.rml_parse):
                 (SELECT
                     stm.product_id,    
                     
-                    case when loc1.usage = 'internal' and loc2.usage != 'internal' and stm.date < '%s'
-                    then 1*stm.primary_qty 
+                    case when loc1.usage = 'internal' and loc2.usage != 'internal' and stm.date < %s
+                    then 1*stm.product_qty 
                     else 0.0
                     end ton_dauky,
                     
-                    case when loc1.usage = 'internal' and loc2.usage != 'internal' and stm.date between '%s' and '%s'
-                    then 1*stm.primary_qty 
+                    case when loc1.usage = 'internal' and loc2.usage != 'internal' and stm.date between %s and %s
+                    then 1*stm.product_qty 
                     else 0.0
                     end nhan_trongky
                     
@@ -173,19 +172,17 @@ class Parser(report_sxw.rml_parse):
                 WHERE (pp.id in %s)
                 group by pp.name_template,pp.id
                 order by pp.id
-            ''' %(ky_ve.start_date,ky_ve.start_date,ky_ve.end_date,tuple(dai_ly_ids),tuple(dai_ly_ids),
-                  tuple(menh_gia_ids),)
-            self.cr.execute(sql)
+            ''',(ky_ve.start_date,ky_ve.start_date,ky_ve.end_date,tuple(dai_ly_ids),tuple(dai_ly_ids),
+                  tuple(menh_gia_ids),))
             for i in self.cr.dictfetchall():
-                sql = '''
+                self.cr.execute('''
                     select sum(tong_cong) tong_cong
                     from ve_loto
-                    where ngay between '%s' and '%s'
+                    where ngay between %s and %s
                         and state='done'
                         and daily_id in (select id from res_partner where id in %s or parent_id in %s)
                         and product_id = %s
-                    '''%(ky_ve.start_date,ky_ve.end_date,tuple(dai_ly_ids),tuple(dai_ly_ids),i['id'])
-                self.cr.execute(sql)
+                    ''',(ky_ve.start_date,ky_ve.end_date,tuple(dai_ly_ids),tuple(dai_ly_ids),i['id'],))
                 line = self.cr.dictfetchone()
                 ve_cuoiky = (i['ton_dauky'] or 0.0)+(i['nhan_trongky'] or 0.0)-(line['tong_cong'] or 0.0)
                 tien_cuoiky = ve_cuoiky*self.pool.get('product.product').browse(self.cr, self.uid, i['id']).standard_price

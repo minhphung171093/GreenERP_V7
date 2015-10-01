@@ -28,7 +28,7 @@
             <field name="target">new</field>
         </record>
         
-        <menuitem id="menu_action_veban_theolo_report" action="action_veban_theolo_report" parent="menu_baocao" sequence="30" groups="group_ql_ve_loto_man"/>
+        <menuitem id="menu_action_veban_theolo_report" action="action_veban_theolo_report" parent="menu_baocao" sequence="45" groups="group_ql_ve_loto_man"/>
         
     </data>
 </openerp>

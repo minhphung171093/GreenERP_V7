@@ -21,7 +21,7 @@
         </record>
         
         <record id="action_doanhthu_xoso_tuchon_theothoigian_report" model="ir.actions.act_window">
-            <field name="name">DT XSTC theo thời gian</field>
+            <field name="name">Doanh thu xổ số tự chọn theo thời gian</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">doanhthu.xoso.tuchon.theothoigian</field>
             <field name="view_type">form</field>
@@ -29,7 +29,7 @@
             <field name="target">new</field>
         </record>
         
-        <menuitem id="menu_action_doanhthu_xoso_tuchon_theothoigian_report" action="action_doanhthu_xoso_tuchon_theothoigian_report" parent="menu_baocao" sequence="22" groups="group_ql_ve_loto_man"/>
+        <menuitem name="DT XSTC theo thời gian" id="menu_action_doanhthu_xoso_tuchon_theothoigian_report" action="action_doanhthu_xoso_tuchon_theothoigian_report" parent="menu_baocao" sequence="25" groups="group_ql_ve_loto_man"/>
         
     </data>
 </openerp>

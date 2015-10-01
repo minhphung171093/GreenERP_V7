@@ -46,7 +46,7 @@
             <field name="target">new</field>
         </record>
         
-        <menuitem id="menu_action_action_tonghop_trungthuong" action="action_tonghop_trungthuong" parent="menu_baocao" sequence="31" groups="group_ql_ve_loto_man"/>
+        <menuitem id="menu_action_action_tonghop_trungthuong" action="action_tonghop_trungthuong" parent="menu_baocao" sequence="55" groups="group_ql_ve_loto_man"/>
         
     </data>
 </openerp>

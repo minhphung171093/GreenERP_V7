@@ -274,7 +274,7 @@ instance.web.CrashManager = instance.web.Class.extend({
             return;
         }
         instance.web.dialog($('<div>' + QWeb.render('CrashManager.warning', {error: error}) + '</div>'), {
-            title: "OpenERP " + _.str.capitalize(error.type),
+            title: "GreenERP " + _.str.capitalize(error.type),
             buttons: [
                 {text: _t("Ok"), click: function() { $(this).dialog("close"); }}
             ]
@@ -289,7 +289,7 @@ instance.web.CrashManager = instance.web.Class.extend({
             $(this).dialog("close");
         };
         var dialog = new instance.web.Dialog(this, {
-            title: "OpenERP " + _.str.capitalize(error.type),
+            title: "GreenERP " + _.str.capitalize(error.type),
             width: '80%',
             height: '50%',
             min_width: '800px',
@@ -1278,7 +1278,7 @@ instance.web.WebClient = instance.web.Client.extend({
     set_title: function(title) {
         title = _.str.clean(title);
         var sep = _.isEmpty(title) ? '' : ' - ';
-        document.title = title + sep + 'OpenERP';
+        document.title = title + sep + 'GreenERP';
     },
     show_common: function() {
         var self = this;

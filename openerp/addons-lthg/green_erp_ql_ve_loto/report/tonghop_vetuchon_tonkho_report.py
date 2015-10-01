@@ -90,7 +90,7 @@ class Parser(report_sxw.rml_parse):
         menh_gia_ids = wizard_data['menh_gia_ids']
         res =[]
         if ky_ve:
-            sql ='''  
+            self.cr.execute('''  
             SELECT pp.name_template,sum(start_onhand_qty) start_onhand_qty, sum(start_val) start_val, 
                 sum(nhaptk_qty) nhaptk_qty, sum(nhaptk_val) nhaptk_val,
                 sum(xuattk_qty) xuattk_qty, sum(xuattk_val) xuattk_val,    
@@ -99,52 +99,52 @@ class Parser(report_sxw.rml_parse):
                 From
                 (SELECT
                     stm.product_id,stm.product_uom,    
-                    case when loc1.usage != 'internal' and loc2.usage = 'internal' and stm.date < '%s'
-                    then stm.primary_qty
+                    case when loc1.usage != 'internal' and loc2.usage = 'internal' and stm.date < %s
+                    then stm.product_qty
                     else
-                    case when loc1.usage = 'internal' and loc2.usage != 'internal' and stm.date < '%s'
-                    then -1*stm.primary_qty 
+                    case when loc1.usage = 'internal' and loc2.usage != 'internal' and stm.date < %s
+                    then -1*stm.product_qty 
                     else 0.0 end
                     end start_onhand_qty,
                     
-                    case when loc1.usage != 'internal' and loc2.usage = 'internal' and stm.date < '%s'
+                    case when loc1.usage != 'internal' and loc2.usage = 'internal' and stm.date < %s
                     then (stm.price_unit * stm.product_qty)
                     else
-                    case when loc1.usage = 'internal' and loc2.usage != 'internal' and stm.date < '%s'
+                    case when loc1.usage = 'internal' and loc2.usage != 'internal' and stm.date < %s
                     then -1*(stm.price_unit * stm.product_qty)
                     else 0.0 end
                     end start_val,
                     
-                    case when loc1.usage != 'internal' and loc2.usage = 'internal' and stm.date between '%s' and '%s'
-                    then stm.primary_qty
+                    case when loc1.usage != 'internal' and loc2.usage = 'internal' and stm.date between %s and %s
+                    then stm.product_qty
                     else 0.0 end nhaptk_qty,
                     
-                    case when loc1.usage = 'internal' and loc2.usage != 'internal' and stm.date between '%s' and '%s'
-                    then 1*stm.primary_qty 
+                    case when loc1.usage = 'internal' and loc2.usage != 'internal' and stm.date between %s and %s
+                    then 1*stm.product_qty 
                     else 0.0
                     end xuattk_qty,
             
-                    case when loc1.usage != 'internal' and loc2.usage = 'internal' and stm.date between '%s' and '%s'
+                    case when loc1.usage != 'internal' and loc2.usage = 'internal' and stm.date between %s and %s
                     then (stm.price_unit * stm.product_qty)
                     else 0.0 end nhaptk_val,
                     
-                    case when loc1.usage = 'internal' and loc2.usage != 'internal' and stm.date between '%s' and '%s'
+                    case when loc1.usage = 'internal' and loc2.usage != 'internal' and stm.date between %s and %s
                     then 1*(stm.price_unit * stm.product_qty)
                     else 0.0
                     end xuattk_val,        
                      
-                    case when loc1.usage != 'internal' and loc2.usage = 'internal' and stm.date < '%s'
-                    then stm.primary_qty
+                    case when loc1.usage != 'internal' and loc2.usage = 'internal' and stm.date < %s
+                    then stm.product_qty
                     else
-                    case when loc1.usage = 'internal' and loc2.usage != 'internal' and stm.date < '%s'
-                    then -1*stm.primary_qty 
+                    case when loc1.usage = 'internal' and loc2.usage != 'internal' and stm.date < %s
+                    then -1*stm.product_qty 
                     else 0.0 end
                     end end_onhand_qty,
                     
-                    case when loc1.usage != 'internal' and loc2.usage = 'internal' and stm.date < '%s'
+                    case when loc1.usage != 'internal' and loc2.usage = 'internal' and stm.date < %s
                     then (stm.price_unit * stm.product_qty)
                     else
-                    case when loc1.usage = 'internal' and loc2.usage != 'internal' and stm.date < '%s'
+                    case when loc1.usage = 'internal' and loc2.usage != 'internal' and stm.date < %s
                     then -1*(stm.price_unit * stm.product_qty)
                     else 0.0 end
                     end end_val            
@@ -157,11 +157,10 @@ class Parser(report_sxw.rml_parse):
                 WHERE (pp.id in %s)
                 group by pp.name_template
             
-            ''' %(ky_ve.start_date,ky_ve.start_date,ky_ve.start_date,ky_ve.start_date,
+            ''',(ky_ve.start_date,ky_ve.start_date,ky_ve.start_date,ky_ve.start_date,
                   ky_ve.start_date,ky_ve.end_date,ky_ve.start_date,ky_ve.end_date,ky_ve.start_date,ky_ve.end_date,ky_ve.start_date,ky_ve.end_date,
                   ky_ve.end_date,ky_ve.end_date,ky_ve.end_date,ky_ve.end_date,
-                  tuple(menh_gia_ids),)
-            self.cr.execute(sql)
+                  tuple(menh_gia_ids),))
             for i in self.cr.dictfetchall():
                 self.total_start_qty = self.total_start_qty + (i['start_onhand_qty'] or 0)
                 self.total_nhap_qty = self.total_nhap_qty +(i['nhaptk_qty'] or 0.0)

@@ -21,7 +21,7 @@
         </record>
         
         <record id="action_view_tonghop_doanhthu_tieuthu_theothoigian_report" model="ir.actions.act_window">
-            <field name="name">THDTTT theo thời gian</field>
+            <field name="name">Tổng hợp doanh thu tiêu thụ theo thời gian</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">tonghop.doanhthu.tieuthu.theothoigian</field>
             <field name="view_type">form</field>
@@ -29,7 +29,7 @@
             <field name="target">new</field>
         </record>
         
-        <menuitem id="menu_action_view_tonghop_doanhthu_tieuthu_theothoigian_report" action="action_view_tonghop_doanhthu_tieuthu_theothoigian_report" parent="menu_baocao" sequence="20" groups="group_ql_ve_loto_man"/>
+        <menuitem name="DTTT theo thời gian" id="menu_action_view_tonghop_doanhthu_tieuthu_theothoigian_report" action="action_view_tonghop_doanhthu_tieuthu_theothoigian_report" parent="menu_baocao" sequence="35" groups="group_ql_ve_loto_man"/>
         
     </data>
 </openerp>
