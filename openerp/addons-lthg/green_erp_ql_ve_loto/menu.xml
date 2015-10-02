@@ -10,5 +10,66 @@
 		<record model="ir.ui.menu" id="green_erp_ql_ve_loto.menu_cau_hinh">
 			<field name="active" eval="False"/>
 		</record>
+		
+		
+<!--  PURCHASE MENU  -->
+
+		<record model="ir.ui.menu" id="purchase.menu_procurement_management_inventory">
+			<field name="active" eval="False"/>
+		</record>
+		
+		<record model="ir.ui.menu" id="purchase.menu_procurement_management_invoice">
+			<field name="active" eval="False"/>
+		</record>
+		
+		<record model="ir.ui.menu" id="purchase.menu_procurement_management_product">
+			<field name="active" eval="False"/>
+		</record>
+		
+		<record model="ir.ui.menu" id="purchase.menu_purchase_config_purchase">
+			<field name="active" eval="False"/>
+		</record>
+		
+		
+<!--  WAREHOUSE MENU  -->		
+		
+		<record model="ir.ui.menu" id="stock.menu_stock_products_moves">
+			<field name="active" eval="False"/>
+		</record>
+		
+		<record model="ir.ui.menu" id="procurement.menu_stock_sched">
+			<field name="active" eval="False"/>
+		</record>
+		
+		<record model="ir.ui.menu" id="stock.menu_stock_product">
+			<field name="active" eval="False"/>
+		</record>
+		
+		<record model="ir.ui.menu" id="stock.menu_stock_configuration">
+			<field name="active" eval="False"/>
+		</record>
+		
+	
+<!--  SALE MENU  -->		
+		
+		<record model="ir.ui.menu" id="base.menu_product">
+			<field name="active" eval="False"/>
+		</record>
+		
+		<record model="ir.ui.menu" id="base.menu_base_config">
+			<field name="active" eval="False"/>
+		</record>
+		
+		<record model="ir.ui.menu" id="base.menu_partner_form">
+			<field name="active" eval="False"/>
+		</record>
+		
+<!--  REPORTING MENU  -->	
+
+		<record model="ir.ui.menu" id="base.menu_reporting">
+			<field name="active" eval="False"/>
+		</record>
+		
+		
     </data>
 </openerp>
