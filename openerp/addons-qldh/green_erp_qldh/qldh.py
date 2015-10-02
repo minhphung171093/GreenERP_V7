@@ -260,8 +260,78 @@ class nhom_cong_viec(osv.osv):
     
     def write(self, cr, uid, ids, vals, context=None):
         if 'ct_th_nhom_cv_line' in vals:
+            dem_nhom_cv = len(vals['ct_th_nhom_cv_line'])
             for line in vals['ct_th_nhom_cv_line']:
-                if line[2]:
+                if line[0]==2 and line[1]:
+                    ncv_id = self.browse(cr,uid,line[1]).ct_th_nhom_cv_id.id
+                    tam_ids = []
+                    sql = '''
+                        select stt from nhom_cong_viec where id = %s and ct_th_nhom_cv_id = %s
+                    '''%(line[1],ncv_id)
+                    cr.execute(sql)
+                    stt_tam = cr.dictfetchone()
+                    stt = stt_tam and stt_tam['stt'] or False
+                    for i in range(stt,dem_nhom_cv):
+                        sql = '''
+                            select id from nhom_cong_viec where stt = %s and ct_th_nhom_cv_id = %s
+                        '''%(i+1,ncv_id)
+                        cr.execute(sql)
+                        tam_2 = cr.dictfetchone()
+                        tam_id_2 = tam_2 and tam_2['id'] or False
+                        if tam_id_2:
+                            tam_ids.append((0,0,{
+                                            'stt': i,
+                                            'buoc_id': tam_id_2,
+                                            }))
+                    for mang in tam_ids:
+                        sql = '''
+                            update nhom_cong_viec set stt = %s where ct_th_nhom_cv_id = %s and id = %s
+                        '''%(mang[2]['stt'] ,ncv_id,mang[2]['buoc_id'])
+                        cr.execute(sql)
+                        
+                if not line[1] and line[2] and line[0]==0:
+                    dem_nhom_cv += 1
+                    if 'stt' in line[2]:
+                        if line[2]['stt']+1<dem_nhom_cv+1:
+                            tam_ids = []
+                            for i in range(line[2]['stt']+1,dem_nhom_cv+1):
+                                sql = '''
+                                    select id from nhom_cong_viec where stt = %s and ct_th_nhom_cv_id = %s
+                                '''%(i-1,ids[0])
+                                cr.execute(sql)
+                                tam_2 = cr.dictfetchone()
+                                tam_id_2 = tam_2 and tam_2['id'] or False
+                                if tam_id_2:
+                                    tam_ids.append((0,0,{
+                                                    'stt': i,
+                                                    'buoc_id': tam_id_2,
+                                                    }))
+                            for mang in tam_ids:
+                                sql = '''
+                                    update nhom_cong_viec set stt = %s where ct_th_nhom_cv_id = %s and id = %s
+                                '''%(mang[2]['stt'] ,ids[0],mang[2]['buoc_id'])
+                                cr.execute(sql)
+                        if line[2]['stt']+1>dem_nhom_cv+1:
+                            tam_ids = []
+                            for i in range(dem_nhom_cv+1,line[2]['stt']+1):
+                                sql = '''
+                                    select id from nhom_cong_viec where stt = %s and ct_th_nhom_cv_id = %s
+                                '''%(i,ids[0])
+                                cr.execute(sql)
+                                tam_2 = cr.dictfetchone()
+                                tam_id_2 = tam_2 and tam_2['id'] or False
+                                if tam_id_2:
+                                    tam_ids.append((0,0,{
+                                                    'stt': i-1,
+                                                    'buoc_id': tam_id_2,
+                                                    }))
+                            for mang in tam_ids:
+                                sql = '''
+                                    update nhom_cong_viec set stt = %s where ct_th_nhom_cv_id = %s and id = %s
+                                '''%(mang[2]['stt'] ,ids[0],mang[2]['buoc_id'])
+                                cr.execute(sql)
+                
+                if line[2] and line[1]:
                     if 'stt' in line[2]:
                         if line[1]:
                             ncv_id = self.browse(cr,uid,line[1]).ct_th_nhom_cv_id.id
@@ -311,8 +381,78 @@ class nhom_cong_viec(osv.osv):
                                     cr.execute(sql) 
         
         if 'ct_th_cv_tg_line' in vals:
+            dem_cv_tg = len(vals['ct_th_cv_tg_line'])
             for line in vals['ct_th_cv_tg_line']:
-                if line[2]:
+                if line[0]==2 and line[1]:
+                    cv_tg_id = self.browse(cr,uid,line[1]).ct_th_cv_tg_id.id
+                    tam_ids = []
+                    sql = '''
+                        select stt from nhom_cong_viec where id = %s and ct_th_cv_tg_id = %s
+                    '''%(line[1],cv_tg_id)
+                    cr.execute(sql)
+                    stt_tam = cr.dictfetchone()
+                    stt = stt_tam and stt_tam['stt'] or False
+                    for i in range(stt,dem_cv_tg):
+                        sql = '''
+                            select id from nhom_cong_viec where stt = %s and ct_th_cv_tg_id = %s
+                        '''%(i+1,cv_tg_id)
+                        cr.execute(sql)
+                        tam_2 = cr.dictfetchone()
+                        tam_id_2 = tam_2 and tam_2['id'] or False
+                        if tam_id_2:
+                            tam_ids.append((0,0,{
+                                            'stt': i,
+                                            'buoc_id': tam_id_2,
+                                            }))
+                    for mang in tam_ids:
+                        sql = '''
+                            update nhom_cong_viec set stt = %s where ct_th_cv_tg_id = %s and id = %s
+                        '''%(mang[2]['stt'] ,cv_tg_id,mang[2]['buoc_id'])
+                        cr.execute(sql)
+                        
+                if not line[1] and line[2] and line[0]==0:
+                    dem_cv_tg += 1
+                    if 'stt' in line[2]:
+                        if line[2]['stt']+1<dem_cv_tg+1:
+                            tam_ids = []
+                            for i in range(line[2]['stt']+1,dem_cv_tg+1):
+                                sql = '''
+                                    select id from nhom_cong_viec where stt = %s and ct_th_cv_tg_id = %s
+                                '''%(i-1,ids[0])
+                                cr.execute(sql)
+                                tam_2 = cr.dictfetchone()
+                                tam_id_2 = tam_2 and tam_2['id'] or False
+                                if tam_id_2:
+                                    tam_ids.append((0,0,{
+                                                    'stt': i,
+                                                    'buoc_id': tam_id_2,
+                                                    }))
+                            for mang in tam_ids:
+                                sql = '''
+                                    update nhom_cong_viec set stt = %s where ct_th_cv_tg_id = %s and id = %s
+                                '''%(mang[2]['stt'] ,ids[0],mang[2]['buoc_id'])
+                                cr.execute(sql)
+                        if line[2]['stt']+1>dem_cv_tg+1:
+                            tam_ids = []
+                            for i in range(dem_cv_tg+1,line[2]['stt']+1):
+                                sql = '''
+                                    select id from nhom_cong_viec where stt = %s and ct_th_cv_tg_id = %s
+                                '''%(i,ids[0])
+                                cr.execute(sql)
+                                tam_2 = cr.dictfetchone()
+                                tam_id_2 = tam_2 and tam_2['id'] or False
+                                if tam_id_2:
+                                    tam_ids.append((0,0,{
+                                                    'stt': i-1,
+                                                    'buoc_id': tam_id_2,
+                                                    }))
+                            for mang in tam_ids:
+                                sql = '''
+                                    update nhom_cong_viec set stt = %s where ct_th_cv_tg_id = %s and id = %s
+                                '''%(mang[2]['stt'] ,ids[0],mang[2]['buoc_id'])
+                                cr.execute(sql)
+                
+                if line[2] and line[1]:
                     if 'stt' in line[2]:
                         if line[1]:
                             ncv_tg_id = self.browse(cr,uid,line[1]).ct_th_cv_tg_id.id
@@ -362,8 +502,77 @@ class nhom_cong_viec(osv.osv):
                                     cr.execute(sql)                         
                                 
         if 'ct_th_cv_line' in vals:
+            dem_cv = len(vals['ct_th_cv_line'])
             for line in vals['ct_th_cv_line']:
-                if line[2]:
+                if line[0]==2 and line[1]:
+                    cv_id = self.browse(cr,uid,line[1]).ct_th_cv_id.id
+                    tam_ids = []
+                    sql = '''
+                        select stt from nhom_cong_viec where id = %s and ct_th_cv_id = %s
+                    '''%(line[1],cv_id)
+                    cr.execute(sql)
+                    stt_tam = cr.dictfetchone()
+                    stt = stt_tam and stt_tam['stt'] or False
+                    for i in range(stt,dem_cv):
+                        sql = '''
+                            select id from nhom_cong_viec where stt = %s and ct_th_cv_id = %s
+                        '''%(i+1,cv_id)
+                        cr.execute(sql)
+                        tam_2 = cr.dictfetchone()
+                        tam_id_2 = tam_2 and tam_2['id'] or False
+                        if tam_id_2:
+                            tam_ids.append((0,0,{
+                                            'stt': i,
+                                            'buoc_id': tam_id_2,
+                                            }))
+                    for mang in tam_ids:
+                        sql = '''
+                            update nhom_cong_viec set stt = %s where ct_th_cv_id = %s and id = %s
+                        '''%(mang[2]['stt'],cv_id,mang[2]['buoc_id'])
+                        cr.execute(sql)
+                        
+                if not line[1] and line[2] and line[0]==0:
+                    dem_cv += 1
+                    if 'stt' in line[2]:
+                        if line[2]['stt']+1<dem_cv+1:
+                            tam_ids = []
+                            for i in range(line[2]['stt']+1,dem_cv+1):
+                                sql = '''
+                                    select id from nhom_cong_viec where stt = %s and ct_th_cv_id = %s
+                                '''%(i-1,ids[0])
+                                cr.execute(sql)
+                                tam_2 = cr.dictfetchone()
+                                tam_id_2 = tam_2 and tam_2['id'] or False
+                                if tam_id_2:
+                                    tam_ids.append((0,0,{
+                                                    'stt': i,
+                                                    'buoc_id': tam_id_2,
+                                                    }))
+                            for mang in tam_ids:
+                                sql = '''
+                                    update nhom_cong_viec set stt = %s where ct_th_cv_id = %s and id = %s
+                                '''%(mang[2]['stt'] ,ids[0],mang[2]['buoc_id'])
+                                cr.execute(sql)
+                        if line[2]['stt']+1>dem_cv+1:
+                            tam_ids = []
+                            for i in range(dem_cv+1,line[2]['stt']+1):
+                                sql = '''
+                                    select id from nhom_cong_viec where stt = %s and ct_th_cv_id = %s
+                                '''%(i,ids[0])
+                                cr.execute(sql)
+                                tam_2 = cr.dictfetchone()
+                                tam_id_2 = tam_2 and tam_2['id'] or False
+                                if tam_id_2:
+                                    tam_ids.append((0,0,{
+                                                    'stt': i-1,
+                                                    'buoc_id': tam_id_2,
+                                                    }))
+                            for mang in tam_ids:
+                                sql = '''
+                                    update nhom_cong_viec set stt = %s where ct_th_cv_id = %s and id = %s
+                                '''%(mang[2]['stt'] ,ids[0],mang[2]['buoc_id'])
+                                cr.execute(sql)
+                if line[2] and line[1]:
                     if 'stt' in line[2]:
                         if line[1]:
                             cv_id = self.browse(cr,uid,line[1]).ct_th_cv_id.id
@@ -411,9 +620,80 @@ class nhom_cong_viec(osv.osv):
                                         update nhom_cong_viec set stt = %s where ct_th_cv_id = %s and id = %s
                                     '''%(mang[2]['stt'] ,cv_id,mang[2]['buoc_id'])
                                     cr.execute(sql)  
+                                    
         if 'ct_th_cv_con_line' in vals:
+            dem_cv_con = len(vals['ct_th_cv_con_line'])
             for line in vals['ct_th_cv_con_line']:
-                if line[2]:
+                if line[0]==2 and line[1]:
+                    cv_con_id = self.browse(cr,uid,line[1]).ct_th_cv_con_id.id
+                    tam_ids = []
+                    sql = '''
+                        select stt from nhom_cong_viec where id = %s and ct_th_cv_con_id = %s
+                    '''%(line[1],cv_con_id)
+                    cr.execute(sql)
+                    stt_tam = cr.dictfetchone()
+                    stt = stt_tam and stt_tam['stt'] or False
+                    for i in range(stt,dem_cv_con):
+                        sql = '''
+                            select id from nhom_cong_viec where stt = %s and ct_th_cv_con_id = %s
+                        '''%(i+1,cv_con_id)
+                        cr.execute(sql)
+                        tam_2 = cr.dictfetchone()
+                        tam_id_2 = tam_2 and tam_2['id'] or False
+                        if tam_id_2:
+                            tam_ids.append((0,0,{
+                                            'stt': i,
+                                            'buoc_id': tam_id_2,
+                                            }))
+                    for mang in tam_ids:
+                        sql = '''
+                            update nhom_cong_viec set stt = %s where ct_th_cv_con_id = %s and id = %s
+                        '''%(mang[2]['stt'],cv_con_id,mang[2]['buoc_id'])
+                        cr.execute(sql)
+                        
+                if not line[1] and line[2] and line[0]==0:
+                    dem_cv_con += 1
+                    if 'stt' in line[2]:
+                        if line[2]['stt']+1<dem_cv_con+1:
+                            tam_ids = []
+                            for i in range(line[2]['stt']+1,dem_cv_con+1):
+                                sql = '''
+                                    select id from nhom_cong_viec where stt = %s and ct_th_cv_con_id = %s
+                                '''%(i-1,ids[0])
+                                cr.execute(sql)
+                                tam_2 = cr.dictfetchone()
+                                tam_id_2 = tam_2 and tam_2['id'] or False
+                                if tam_id_2:
+                                    tam_ids.append((0,0,{
+                                                    'stt': i,
+                                                    'buoc_id': tam_id_2,
+                                                    }))
+                            for mang in tam_ids:
+                                sql = '''
+                                    update nhom_cong_viec set stt = %s where ct_th_cv_con_id = %s and id = %s
+                                '''%(mang[2]['stt'] ,ids[0],mang[2]['buoc_id'])
+                                cr.execute(sql)
+                        if line[2]['stt']+1>dem_cv_con+1:
+                            tam_ids = []
+                            for i in range(dem_cv_con+1,line[2]['stt']+1):
+                                sql = '''
+                                    select id from nhom_cong_viec where stt = %s and ct_th_cv_con_id = %s
+                                '''%(i,ids[0])
+                                cr.execute(sql)
+                                tam_2 = cr.dictfetchone()
+                                tam_id_2 = tam_2 and tam_2['id'] or False
+                                if tam_id_2:
+                                    tam_ids.append((0,0,{
+                                                    'stt': i-1,
+                                                    'buoc_id': tam_id_2,
+                                                    }))
+                            for mang in tam_ids:
+                                sql = '''
+                                    update nhom_cong_viec set stt = %s where ct_th_cv_con_id = %s and id = %s
+                                '''%(mang[2]['stt'] ,ids[0],mang[2]['buoc_id'])
+                                cr.execute(sql)
+                                
+                if line[2] and line[1]:
                     if 'stt' in line[2]:
                         if line[1]:
                             cv_con_id = self.browse(cr,uid,line[1]).ct_th_cv_con_id.id
@@ -637,6 +917,10 @@ class nhom_cong_viec(osv.osv):
             if ncv.quy_trinh_id and ncv.loai == '1_nhom_cv':
                 for ctth in ncv.ct_th_nhom_cv_line:
                     self.write(cr, uid, [ctth.id],{'state':'da_giao'})
+                for cv in ncv.cong_viec_line:
+                    self.write(cr, uid, [cv.id],{'state':'da_giao'})
+                for pcpb in ncv.phan_cong_phong_ban_line:
+                    self.write(cr, uid, [pcpb.id],{'state':'da_giao'})
         return self.write(cr, uid, ids,{'state':'da_giao'})
     
     def bt_nhan_ncv(self, cr, uid, ids, context=None):
@@ -862,6 +1146,7 @@ class quy_trinh(osv.osv):
         for qt in self.browse(cr,uid,ids):
             if 'buoc_thuc_hien_line' in vals:
                 dem = len(vals['buoc_thuc_hien_line'])
+                count = 1
                 for line in vals['buoc_thuc_hien_line']:
                     if line[0]==2 and line[1]:
                         tam_ids = []
@@ -933,7 +1218,12 @@ class quy_trinh(osv.osv):
                                         update buoc_thuc_hien_line set stt = %s where quy_trinh_id = %s and id = %s
                                     '''%(mang[2]['stt'] ,qt.id,mang[2]['buoc_id'])
                                     cr.execute(sql)
-                    
+#                             if line[2]['stt'] == count:
+#                                 count+=1
+#                             else:
+#                                 line[2]['stt'] = count
+#                                 count+=1
+                        
                     
                     if line[2] and line[1] and line[0]==4:
                         if 'stt' in line[2]:
@@ -984,6 +1274,22 @@ class quy_trinh(osv.osv):
                                         update buoc_thuc_hien_line set stt = %s where quy_trinh_id = %s and id = %s
                                     '''%(mang[2]['stt'] ,qt.id,mang[2]['buoc_id'])
                                     cr.execute(sql)
+                    
+#                     if line[1]:
+#                         q_trinh = self.pool.get('buoc.thuc.hien.line').browse(cr,uid,line[1])
+#                         if q_trinh.stt == count:
+#                             count+=1
+#                         else:
+#                             q_trinh.stt = count
+#                             count+=1
+#                         
+#                     if line[2]:
+#                         if 'stt' in line[2]:                
+#                             if line[2]['stt'] == count:
+#                                 count+=1
+#                             else:
+#                                 line[2]['stt'] = count
+#                                 count+=1                
         return super(quy_trinh, self).write(cr, uid,ids, vals, context)
     
     def bt_lay_quy_trinh(self, cr, uid, ids, context=None):
