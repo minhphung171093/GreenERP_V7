@@ -101,6 +101,30 @@
 	        string="Account Ledger"
 	        rml="green_erp_report_account/report/account_ledger_report.ods"/>
 	        
+	    <record id="review_account_ledger_report" model="ir.actions.report.xml">
+	        <field name="name">review_account_ledger_report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">account.ledger.report.review</field>
+	        <field name="report_name">review_account_ledger_report</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">green_erp_report_account/report/account_detail_ledger_report.py</field>
+	        <field name="report_rml">green_erp_report_account/report/review_account_ledger_report.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record>		    
+		
+		<report 
+			auto="False" 
+			menu="False"
+			id="review_account_ledger_report" 
+			model="account.ledger.report.review" 
+			name="review_account_ledger_report"
+	        string="Account Ledger"
+	        rml="green_erp_report_account/report/review_account_ledger_report.ods"/>
+	        
 	        
 <!--  ========================= Account Ledger Report Detail ================= -->
 		<record id="account_detail_ledger_report" model="ir.actions.report.xml">
@@ -126,6 +150,30 @@
 			name="account_detail_ledger_report"
 	        string="Account Ledger Detail"
 	        rml="green_erp_report_account/report/account_detail_ledger_report.ods"/>
+	        
+	    <record id="review_account_detail_ledger_report" model="ir.actions.report.xml">
+	        <field name="name">review_account_detail_ledger_report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">account.ledger.report.review</field>
+	        <field name="report_name">review_account_detail_ledger_report</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">green_erp_report_account/report/account_detail_ledger_report.py</field>
+	        <field name="report_rml">green_erp_report_account/report/review_account_detail_ledger_report.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record>		    
+		
+		<report 
+			auto="False" 
+			menu="False"
+			id="review_account_detail_ledger_report" 
+			model="account.ledger.report.review" 
+			name="review_account_detail_ledger_report"
+	        string="Account Ledger Detail"
+	        rml="green_erp_report_account/report/review_account_detail_ledger_report.ods"/>
 	        
 <!--  ========================= General Ledger Report ================= -->
     	<record id="general_ledger_report" model="ir.actions.report.xml">
