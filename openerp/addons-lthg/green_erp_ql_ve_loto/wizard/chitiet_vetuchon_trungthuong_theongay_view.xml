@@ -6,7 +6,9 @@
             <field name="model">chitiet.vetuchon.trungthuong.theongay</field>
             <field name="arch" type="xml">
                 <form string="Vé tự chọn trúng thưởng" version="7.0">
-                    <field name='date'/>             
+                    <group colspan='4'>
+                    	<field name='date'/>
+                    </group>            
                     <footer>
                         <button name="print_report" string="In" type="object" class="oe_highlight" context="{'type':'appointments'}"/>
                         hoặc
