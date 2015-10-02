@@ -1375,6 +1375,9 @@ class buoc_thuc_hien_line(osv.osv):
         'db_datas': fields.binary('Database Data'),
         'file_size': fields.integer('File Size'),
                 }
+    _defaults = {
+        'stt': 1,
+                 }
     
 #     def create (self, cr, uid, vals, context=None):
 #         new_id = super(buoc_thuc_hien_line, self).create(cr, uid,vals, context)

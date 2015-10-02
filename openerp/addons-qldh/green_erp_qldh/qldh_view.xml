@@ -263,12 +263,12 @@
 		                	<field name="phong_ban_ids" on_change = "onchange_phong_ban_ids(phong_ban_ids)" widget="many2many_tags" options="{'create': false, 'create_edit': false}" attrs="{'invisible':['|',('quy_trinh_id','!=',False),('loai','!=','1_nhom_cv')],'readonly':[('state','in',['cho_duyet', 'duyet'])]}" />
  							<field name="cong_viec_pc_id" attrs="{'invisible':['|',('loai','not in',['3_cv']),('cong_viec_id','!=',False)],'required':[('cong_viec_id','=',False),('loai','=','3_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','2_nhom_cv_tg')]" string = 'Công việc phân công PBHT' options="{'create': false, 'create_edit': false}"/>
 			                <field name="nhom_cv_pc_id" attrs="{'invisible':['|',('loai','not in',['3_cv']),('cong_viec_id','!=',False)],'required':[('cong_viec_id','=',False),('loai','=','3_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','1_nhom_cv')]" string = 'Nhóm công việc' options="{'create': false, 'create_edit': false}"/>
+ 							<field name="phan_cong_phong_ban_id" attrs="{'invisible':[('loai','not in',['2_nhom_cv_tg'])],'required':[('loai','=','2_nhom_cv_tg')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','1_nhom_cv')]" options="{'create': false, 'create_edit': false}"/>
+			                <field name="cong_viec_id" attrs="{'invisible':['|',('cong_viec_pc_id','!=',False),('loai','not in',['3_cv'])],'required':[('cong_viec_pc_id','=',False),('loai','=','3_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','1_nhom_cv')]" string = 'Nhóm công việc' options="{'create': false, 'create_edit': false}"/>
  						</group>
 	                	<group>
 		                	<field name="quy_trinh_id" domain="[('quy_trinh_id','=',False)]" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}" attrs="{'invisible':['|',('ho_tro','=','co'),('loai','=','5_ct_th')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" />
 			                <field name="ngay_het_han" />
-			                <field name="phan_cong_phong_ban_id" attrs="{'invisible':[('loai','not in',['2_nhom_cv_tg'])],'required':[('loai','=','2_nhom_cv_tg')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','1_nhom_cv')]" options="{'create': false, 'create_edit': false}"/>
-			                <field name="cong_viec_id" attrs="{'invisible':['|',('cong_viec_pc_id','!=',False),('loai','not in',['3_cv'])],'required':[('cong_viec_pc_id','=',False),('loai','=','3_cv')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','1_nhom_cv')]" string = 'Nhóm công việc' options="{'create': false, 'create_edit': false}"/>
 	                		<field name="nhom_cv_id" attrs="{'invisible':[('loai','not in',['4_cv_con'])],'required':[('loai','=','4_cv_con')], 'readonly':[('state','in',['cho_duyet', 'duyet'])]}" domain="[('loai','=','1_nhom_cv')]" string = 'Nhóm công việc' options="{'create': false, 'create_edit': false}"/>
 	                		<field name="cach_thuc_hien" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
         					<field name="datas" filename="datas_fname" string="Biểu mẫu kết quả" attrs="{'invisible':[('loai','!=','5_ct_th')]}"/>
@@ -322,7 +322,7 @@
 	                		</field>
 	                    </page>
 	                     <page string="Công việc" attrs="{'invisible':['|',('loai','not in',['1_nhom_cv']),'|',('quy_trinh_id','!=',False),('ho_tro','=','co')]}">
-	                    	<field name="cong_viec_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_loai': '3_cv', 'default_state':'nhap', 'default_cong_viec_id':active_id, 'form_view_ref':'nhom_cong_viec_nhap_form'}" >
+	                    	<field name="cong_viec_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_loai': '3_cv', 'default_state':'nhap', 'default_cong_viec_id':active_id, 'form_view_ref':'green_erp_qldh.nhom_cong_viec_nhap_form'}" >
 	                    		<tree>
 		                			<field name="name" string = 'Tên công việc'/>
 		             <!--               <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}"/>  -->
@@ -337,7 +337,7 @@
 					      </page> 
 					      
 					     <page string="Phân Công Phòng Ban" attrs="{'invisible':['|',('loai','not in',['1_nhom_cv']),'|','&amp;',('quy_trinh_id','!=',False),('ho_tro','=','khong'),'&amp;',('ho_tro','=','khong'),('quy_trinh_id','=',False)]}">
-	                    	<field name="phan_cong_phong_ban_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_phan_cong_phong_ban_id': active_id, 'default_loai': '2_nhom_cv_tg', 'default_state': 'nhap', 'form_view_ref':'nhom_cong_viec_nhap_form'}">
+	                    	<field name="phan_cong_phong_ban_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_phan_cong_phong_ban_id': active_id, 'default_loai': '2_nhom_cv_tg', 'default_state': 'nhap', 'form_view_ref':'green_erp_qldh.nhom_cong_viec_nhap_form'}">
 	                    		<tree>
 		                			<field name="name" string = 'Tên công việc'/>
 		                			<field name="phong_ban_id" required = '1' options="{'create': false, 'create_edit': false}"/>
@@ -390,7 +390,7 @@
 	                		</field>
 	                    </page>
 	                     <page string="Công việc" attrs="{'invisible':['|',('loai','not in',['2_nhom_cv_tg']),('quy_trinh_id','!=',False)]}">
-	                    	<field name="cong_viec_pc_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_cong_viec_pc_id': active_id, 'default_loai': '3_cv', 'default_state': 'nhap', 'form_view_ref':'nhom_cong_viec_nhap_form'}" >
+	                    	<field name="cong_viec_pc_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_cong_viec_pc_id': active_id, 'default_loai': '3_cv', 'default_state': 'nhap', 'form_view_ref':'green_erp_qldh.nhom_cong_viec_nhap_form'}" >
 	                    		<tree>
 		                			<field name="name" string = 'Tên công việc'/>
 		             <!--               <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}"/>  -->
@@ -445,7 +445,7 @@
 	                    </page>
 	                    
 	                    <page string="Công việc con" attrs="{'invisible':['|',('loai','!=','3_cv'),('quy_trinh_id','!=',False)]}">
-	                    	<field name="cong_viec_con_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_cong_viec_con_id': active_id, 'default_loai': '4_cv_con', 'default_state': 'nhap', 'form_view_ref':'nhom_cong_viec_nhap_form'}" >
+	                    	<field name="cong_viec_con_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_cong_viec_con_id': active_id, 'default_loai': '4_cv_con', 'default_state': 'nhap', 'form_view_ref':'green_erp_qldh.nhom_cong_viec_nhap_form'}" >
 	                    		<tree>
 		                			<field name="name" string = 'Tên công việc con'/>
 		                <!--            <field name="quy_trinh_id" options="{'create': false, 'create_edit': false}"/>  -->
@@ -556,6 +556,7 @@
             <field eval="0" name="sequence"/>
             <field name="view_mode">kanban</field>
             <field name="view_id" ref="nhom_cong_viec_nhap_kanban"/>
+            <field name="context">{'default_loai': '1_nhom_cv', 'default_state': 'nhap'}</field>
             <field name="act_window_id" ref="action_nhom_cong_viec_du_thao"/>
         </record>
         
@@ -866,7 +867,7 @@
 	                		</field>
 	                    </page>
 	                     <page string="Công việc" attrs="{'invisible':['|',('loai','not in',['1_nhom_cv']),'|',('quy_trinh_id','!=',False),('ho_tro','=','co')]}">
-	                    	<field name="cong_viec_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_loai': '3_cv', 'default_state':'da_giao', 'default_cong_viec_id':active_id, 'form_view_ref':'nhom_cong_viec_moi_giao_form'}" >
+	                    	<field name="cong_viec_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_loai': '3_cv', 'default_state':'da_giao', 'default_cong_viec_id':active_id, 'form_view_ref':'green_erp_qldh.nhom_cong_viec_moi_giao_form'}" >
 	                    		<tree>
 		                			<field name="name" string = 'Tên công việc'/>
 		             <!--               <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}"/>  -->
@@ -881,7 +882,7 @@
 					      </page> 
 					      
 					     <page string="Phân Công Phòng Ban" attrs="{'invisible':['|',('loai','not in',['1_nhom_cv']),'|','&amp;',('quy_trinh_id','!=',False),('ho_tro','=','khong'),'&amp;',('ho_tro','=','khong'),('quy_trinh_id','=',False)]}">
-	                    	<field name="phan_cong_phong_ban_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_phan_cong_phong_ban_id': active_id, 'default_loai': '2_nhom_cv_tg', 'default_state': 'da_giao', 'form_view_ref':'nhom_cong_viec_moi_giao_form'}">
+	                    	<field name="phan_cong_phong_ban_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_phan_cong_phong_ban_id': active_id, 'default_loai': '2_nhom_cv_tg', 'default_state': 'da_giao', 'form_view_ref':'green_erp_qldh.nhom_cong_viec_moi_giao_form'}">
 	                    		<tree>
 		                			<field name="name" string = 'Tên công việc'/>
 		                			<field name="phong_ban_id" required = '1' options="{'create': false, 'create_edit': false}"/>
@@ -934,7 +935,7 @@
 	                		</field>
 	                    </page>
 	                     <page string="Công việc" attrs="{'invisible':['|',('loai','not in',['2_nhom_cv_tg']),('quy_trinh_id','!=',False)]}">
-	                    	<field name="cong_viec_pc_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_cong_viec_pc_id': active_id, 'default_loai': '3_cv', 'default_state': 'da_giao', 'form_view_ref':'nhom_cong_viec_moi_giao_form'}" >
+	                    	<field name="cong_viec_pc_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_cong_viec_pc_id': active_id, 'default_loai': '3_cv', 'default_state': 'da_giao', 'form_view_ref':'green_erp_qldh.nhom_cong_viec_moi_giao_form'}" >
 	                    		<tree>
 		                			<field name="name" string = 'Tên công việc'/>
 		             <!--               <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}"/>  -->
@@ -989,7 +990,7 @@
 	                    </page>
 	                    
 	                    <page string="Công việc con" attrs="{'invisible':['|',('loai','!=','3_cv'),('quy_trinh_id','!=',False)]}">
-	                    	<field name="cong_viec_con_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_cong_viec_con_id': active_id, 'default_loai': '4_cv_con', 'default_state': 'da_giao', 'form_view_ref':'nhom_cong_viec_moi_giao_form'}" >
+	                    	<field name="cong_viec_con_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_cong_viec_con_id': active_id, 'default_loai': '4_cv_con', 'default_state': 'da_giao', 'form_view_ref':'green_erp_qldh.nhom_cong_viec_moi_giao_form'}" >
 	                    		<tree>
 		                			<field name="name" string = 'Tên công việc con'/>
 		                <!--            <field name="quy_trinh_id" options="{'create': false, 'create_edit': false}"/>  -->
@@ -1467,7 +1468,7 @@
 	                		</field>
 	                    </page>
 	                     <page string="Công việc" attrs="{'invisible':['|',('loai','not in',['1_nhom_cv']),'|',('quy_trinh_id','!=',False),('ho_tro','=','co')]}">
-	                    	<field name="cong_viec_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_loai': '3_cv', 'default_state':'da_giao', 'default_cong_viec_id':active_id, 'form_view_ref':'nhom_cong_viec_moi_giao_form'}" >
+	                    	<field name="cong_viec_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_loai': '3_cv', 'default_state':'da_giao', 'default_cong_viec_id':active_id, 'form_view_ref':'green_erp_qldh.nhom_cong_viec_moi_giao_form'}" >
 	                    		<tree>
 		                			<field name="name" string = 'Tên công việc'/>
 		             <!--               <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}"/>  -->
@@ -1482,7 +1483,7 @@
 					      </page> 
 					      
 					     <page string="Phân Công Phòng Ban" attrs="{'invisible':['|',('loai','not in',['1_nhom_cv']),'|','&amp;',('quy_trinh_id','!=',False),('ho_tro','=','khong'),'&amp;',('ho_tro','=','khong'),('quy_trinh_id','=',False)]}">
-	                    	<field name="phan_cong_phong_ban_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_phan_cong_phong_ban_id': active_id, 'default_loai': '2_nhom_cv_tg', 'default_state': 'da_giao', 'form_view_ref':'nhom_cong_viec_moi_giao_form'}">
+	                    	<field name="phan_cong_phong_ban_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_phan_cong_phong_ban_id': active_id, 'default_loai': '2_nhom_cv_tg', 'default_state': 'da_giao', 'form_view_ref':'green_erp_qldh.nhom_cong_viec_moi_giao_form'}">
 	                    		<tree>
 		                			<field name="name" string = 'Tên công việc'/>
 		                			<field name="phong_ban_id" required = '1' options="{'create': false, 'create_edit': false}"/>
@@ -1535,7 +1536,7 @@
 	                		</field>
 	                    </page>
 	                     <page string="Công việc" attrs="{'invisible':['|',('loai','not in',['2_nhom_cv_tg']),('quy_trinh_id','!=',False)]}">
-	                    	<field name="cong_viec_pc_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_cong_viec_pc_id': active_id, 'default_loai': '3_cv', 'default_state': 'da_giao', 'form_view_ref':'nhom_cong_viec_moi_giao_form'}" >
+	                    	<field name="cong_viec_pc_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_cong_viec_pc_id': active_id, 'default_loai': '3_cv', 'default_state': 'da_giao', 'form_view_ref':'green_erp_qldh.nhom_cong_viec_moi_giao_form'}" >
 	                    		<tree>
 		                			<field name="name" string = 'Tên công việc'/>
 		             <!--               <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}"/>  -->
@@ -1590,7 +1591,7 @@
 	                    </page>
 	                    
 	                    <page string="Công việc con" attrs="{'invisible':['|',('loai','!=','3_cv'),('quy_trinh_id','!=',False)]}">
-	                    	<field name="cong_viec_con_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_cong_viec_con_id': active_id, 'default_loai': '4_cv_con', 'default_state': 'da_giao', 'form_view_ref':'nhom_cong_viec_moi_giao_form'}" >
+	                    	<field name="cong_viec_con_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_cong_viec_con_id': active_id, 'default_loai': '4_cv_con', 'default_state': 'da_giao', 'form_view_ref':'green_erp_qldh.nhom_cong_viec_moi_giao_form'}" >
 	                    		<tree>
 		                			<field name="name" string = 'Tên công việc con'/>
 		                <!--            <field name="quy_trinh_id" options="{'create': false, 'create_edit': false}"/>  -->
@@ -1853,7 +1854,7 @@
 	                		</field>
 	                    </page>
 	                     <page string="Công việc" attrs="{'invisible':['|',('loai','not in',['1_nhom_cv']),'|',('quy_trinh_id','!=',False),('ho_tro','=','co')]}">
-	                    	<field name="cong_viec_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_loai': '3_cv', 'default_state':'da_giao', 'default_cong_viec_id':active_id, 'form_view_ref':'nhom_cong_viec_moi_giao_form'}" >
+	                    	<field name="cong_viec_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_loai': '3_cv', 'default_state':'da_giao', 'default_cong_viec_id':active_id, 'form_view_ref':'green_erp_qldh.nhom_cong_viec_moi_giao_form'}" >
 	                    		<tree>
 		                			<field name="name" string = 'Tên công việc'/>
 		             <!--               <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}"/>  -->
@@ -1868,7 +1869,7 @@
 					      </page> 
 					      
 					     <page string="Phân Công Phòng Ban" attrs="{'invisible':['|',('loai','not in',['1_nhom_cv']),'|','&amp;',('quy_trinh_id','!=',False),('ho_tro','=','khong'),'&amp;',('ho_tro','=','khong'),('quy_trinh_id','=',False)]}">
-	                    	<field name="phan_cong_phong_ban_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_phan_cong_phong_ban_id': active_id, 'default_loai': '2_nhom_cv_tg', 'default_state': 'da_giao', 'form_view_ref':'nhom_cong_viec_moi_giao_form'}">
+	                    	<field name="phan_cong_phong_ban_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_phan_cong_phong_ban_id': active_id, 'default_loai': '2_nhom_cv_tg', 'default_state': 'da_giao', 'form_view_ref':'green_erp_qldh.nhom_cong_viec_moi_giao_form'}">
 	                    		<tree>
 		                			<field name="name" string = 'Tên công việc'/>
 		                			<field name="phong_ban_id" required = '1' options="{'create': false, 'create_edit': false}"/>
@@ -1921,7 +1922,7 @@
 	                		</field>
 	                    </page>
 	                     <page string="Công việc" attrs="{'invisible':['|',('loai','not in',['2_nhom_cv_tg']),('quy_trinh_id','!=',False)]}">
-	                    	<field name="cong_viec_pc_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_cong_viec_pc_id': active_id, 'default_loai': '3_cv', 'default_state': 'da_giao', 'form_view_ref':'nhom_cong_viec_moi_giao_form'}" >
+	                    	<field name="cong_viec_pc_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_cong_viec_pc_id': active_id, 'default_loai': '3_cv', 'default_state': 'da_giao', 'form_view_ref':'green_erp_qldh.nhom_cong_viec_moi_giao_form'}" >
 	                    		<tree>
 		                			<field name="name" string = 'Tên công việc'/>
 		             <!--               <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}"/>  -->
@@ -1976,7 +1977,7 @@
 	                    </page>
 	                    
 	                    <page string="Công việc con" attrs="{'invisible':['|',('loai','!=','3_cv'),('quy_trinh_id','!=',False)]}">
-	                    	<field name="cong_viec_con_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_cong_viec_con_id': active_id, 'default_loai': '4_cv_con', 'default_state': 'da_giao', 'form_view_ref':'nhom_cong_viec_moi_giao_form'}" >
+	                    	<field name="cong_viec_con_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_cong_viec_con_id': active_id, 'default_loai': '4_cv_con', 'default_state': 'da_giao', 'form_view_ref':'green_erp_qldh.nhom_cong_viec_moi_giao_form'}" >
 	                    		<tree>
 		                			<field name="name" string = 'Tên công việc con'/>
 		                <!--            <field name="quy_trinh_id" options="{'create': false, 'create_edit': false}"/>  -->
@@ -2230,7 +2231,7 @@
 	                		</field>
 	                    </page>
 	                     <page string="Công việc" attrs="{'invisible':['|',('loai','not in',['1_nhom_cv']),'|',('quy_trinh_id','!=',False),('ho_tro','=','co')]}">
-	                    	<field name="cong_viec_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_loai': '3_cv', 'default_state':'da_giao', 'default_cong_viec_id':active_id, 'form_view_ref':'nhom_cong_viec_moi_giao_form'}" >
+	                    	<field name="cong_viec_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_loai': '3_cv', 'default_state':'da_giao', 'default_cong_viec_id':active_id, 'form_view_ref':'green_erp_qldh.nhom_cong_viec_moi_giao_form'}" >
 	                    		<tree>
 		                			<field name="name" string = 'Tên công việc'/>
 		             <!--               <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}"/>  -->
@@ -2245,7 +2246,7 @@
 					      </page> 
 					      
 					     <page string="Phân Công Phòng Ban" attrs="{'invisible':['|',('loai','not in',['1_nhom_cv']),'|','&amp;',('quy_trinh_id','!=',False),('ho_tro','=','khong'),'&amp;',('ho_tro','=','khong'),('quy_trinh_id','=',False)]}">
-	                    	<field name="phan_cong_phong_ban_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_phan_cong_phong_ban_id': active_id, 'default_loai': '2_nhom_cv_tg', 'default_state': 'da_giao', 'form_view_ref':'nhom_cong_viec_moi_giao_form'}">
+	                    	<field name="phan_cong_phong_ban_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_phan_cong_phong_ban_id': active_id, 'default_loai': '2_nhom_cv_tg', 'default_state': 'da_giao', 'form_view_ref':'green_erp_qldh.nhom_cong_viec_moi_giao_form'}">
 	                    		<tree>
 		                			<field name="name" string = 'Tên công việc'/>
 		                			<field name="phong_ban_id" required = '1' options="{'create': false, 'create_edit': false}"/>
@@ -2298,7 +2299,7 @@
 	                		</field>
 	                    </page>
 	                     <page string="Công việc" attrs="{'invisible':['|',('loai','not in',['2_nhom_cv_tg']),('quy_trinh_id','!=',False)]}">
-	                    	<field name="cong_viec_pc_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_cong_viec_pc_id': active_id, 'default_loai': '3_cv', 'default_state': 'da_giao', 'form_view_ref':'nhom_cong_viec_moi_giao_form'}" >
+	                    	<field name="cong_viec_pc_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_cong_viec_pc_id': active_id, 'default_loai': '3_cv', 'default_state': 'da_giao', 'form_view_ref':'green_erp_qldh.nhom_cong_viec_moi_giao_form'}" >
 	                    		<tree>
 		                			<field name="name" string = 'Tên công việc'/>
 		             <!--               <field name="quy_trinh_id" on_change = "onchange_quy_trinh_id(quy_trinh_id,loai,state)" options="{'create': false, 'create_edit': false}"/>  -->
@@ -2353,7 +2354,7 @@
 	                    </page>
 	                    
 	                    <page string="Công việc con" attrs="{'invisible':['|',('loai','!=','3_cv'),('quy_trinh_id','!=',False)]}">
-	                    	<field name="cong_viec_con_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_cong_viec_con_id': active_id, 'default_loai': '4_cv_con', 'default_state': 'da_giao', 'form_view_ref':'nhom_cong_viec_moi_giao_form'}" >
+	                    	<field name="cong_viec_con_line" attrs="{'readonly':[('state','in',['da_giao', 'cho_duyet', 'duyet'])]}" nolabel='1' context = "{'default_cong_viec_con_id': active_id, 'default_loai': '4_cv_con', 'default_state': 'da_giao', 'form_view_ref':'green_erp_qldh.nhom_cong_viec_moi_giao_form'}" >
 	                    		<tree>
 		                			<field name="name" string = 'Tên công việc con'/>
 		                <!--            <field name="quy_trinh_id" options="{'create': false, 'create_edit': false}"/>  -->
