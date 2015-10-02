@@ -28,7 +28,7 @@
     'sequence': 1,
     'description': """
     """,
-    'depends': ['green_erp_base','product','report_aeroo','report_aeroo_ooo'],
+    'depends': ['green_erp_base','product','sale','purchase','account_accountant','report_aeroo','report_aeroo_ooo'],
     'data': [
         'security/ql_ve_loto_security.xml',
         'security/ir.model.access.csv',
