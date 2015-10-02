@@ -329,6 +329,7 @@
 		            </group>
 		            <footer>
                         <button string="Print" type="object" name="finance_report" context="{'type_report':'soquy_tienmat_report'}" icon='gtk-execute'/>
+                        <button string="Review" type="object" name="review_report" context="{'type_report':'soquy_tienmat_report'}" icon='gtk-execute'/>
                         or
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
@@ -371,6 +372,7 @@
 		            </group>
 		            <footer>
                         <button string="Print" type="object" name="finance_report" context="{'type_report':'so_tiengui_nganhang_report'}" icon='gtk-execute'/>
+                        <button string="Review" type="object" name="review_report" context="{'type_report':'so_tiengui_nganhang_report'}" icon='gtk-execute'/>
                         or
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>

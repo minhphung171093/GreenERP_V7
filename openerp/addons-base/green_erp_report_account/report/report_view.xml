@@ -330,6 +330,30 @@
 	        string="Sổ quỹ tiền mặt"
 	        rml="green_erp_report_account/report/soquy_tienmat_report.ods"/>
 	        
+	    <record id="so_quy_chung_review_report" model="ir.actions.report.xml">
+	        <field name="name">so_quy_chung_review_report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">so.quy.review</field>
+	        <field name="report_name">so_quy_chung_review_report</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">green_erp_report_account/report/soquy_tienmat_report.py</field>
+	        <field name="report_rml">green_erp_report_account/report/review_soquy_tienmat_report.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record>		    
+		
+		<report 
+			auto="False" 
+			menu="False"
+			id="so_quy_chung_review_report" 
+			model="so.quy.review" 
+			name="so_quy_chung_review_report"
+	        string="Sổ quỹ tiền mặt"
+	        rml="green_erp_report_account/report/review_soquy_tienmat_report.ods"/>
+	        
 <!--  ========================= Sổ quỹ tiền mặt chi tiết ================= -->
 		<record id="soquy_tienmat_chitiet_report" model="ir.actions.report.xml">
 	        <field name="name">soquy_tienmat_chitiet_report</field>
@@ -355,6 +379,30 @@
 	        string="Sổ quỹ tiền mặt chi tiết"
 	        rml="green_erp_report_account/report/soquy_tienmat_chitiet_report.ods"/>
 	        
+	    <record id="soquy_tienmat_chitiet_review_report" model="ir.actions.report.xml">
+	        <field name="name">soquy_tienmat_chitiet_review_report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">so.quy.review</field>
+	        <field name="report_name">soquy_tienmat_chitiet_review_report</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">green_erp_report_account/report/soquy_tienmat_chitiet_report.py</field>
+	        <field name="report_rml">green_erp_report_account/report/review_soquy_tienmat_chitiet_report.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record>		    
+		
+		<report 
+			auto="False" 
+			menu="False"
+			id="soquy_tienmat_chitiet_review_report" 
+			model="so.quy.review" 
+			name="soquy_tienmat_chitiet_review_report"
+	        string="Sổ quỹ tiền mặt chi tiết"
+	        rml="green_erp_report_account/report/review_soquy_tienmat_chitiet_report.ods"/>
+	        
 <!--  ========================= Sổ tiền gửi ngân hàng ================= -->
 		<record id="so_tiengui_nganhang_report" model="ir.actions.report.xml">
 	        <field name="name">so_tiengui_nganhang_report</field>
@@ -379,6 +427,30 @@
 			name="so_tiengui_nganhang_report"
 	        string="Sổ tiền gửi ngân hàng"
 	        rml="green_erp_report_account/report/so_tiengui_nganhang_report.ods"/>
+	        
+	    <record id="so_tiengui_nganhang_review_report" model="ir.actions.report.xml">
+	        <field name="name">so_tiengui_nganhang_review_report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">so.quy.review</field>
+	        <field name="report_name">so_tiengui_nganhang_review_report</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">green_erp_report_account/report/so_tiengui_nganhang_report.py</field>
+	        <field name="report_rml">green_erp_report_account/report/review_so_tiengui_nganhang_report.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record>		    
+		
+		<report 
+			auto="False" 
+			menu="False"
+			id="so_tiengui_nganhang_review_report" 
+			model="so.quy.review" 
+			name="so_tiengui_nganhang_review_report"
+	        string="Sổ tiền gửi ngân hàng"
+	        rml="green_erp_report_account/report/review_so_tiengui_nganhang_report.ods"/>
 	        
 	</data>
 </openerp>
