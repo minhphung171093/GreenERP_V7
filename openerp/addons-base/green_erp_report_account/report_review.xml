@@ -624,7 +624,7 @@
             <field name="delete_after">7</field>
         </record> 
         
-<!--  ========================= Create So Quy Chi Tiet Report Review ================= -->     
+<!--  ========================= Create So tien gui ngan hang Report Review ================= -->     
          <record id="so_tiengui_nganhang_review" model="ir.ui.view">
             <field name="name">so.tiengui.nganhang.review</field>
             <field name="model">so.quy.review</field>
