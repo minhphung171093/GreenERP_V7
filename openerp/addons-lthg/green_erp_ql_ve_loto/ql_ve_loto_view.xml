@@ -14,9 +14,8 @@
                 	<xpath expr="//field[@name='website']" position="after">
                 		<field name="ma_daily" attrs="{'invisible':[('supplier','!=',False)], 'required':[('supplier','=',False)]}"/>
                 		<field name="parent_id" attrs="{'invisible':[('supplier','!=',False)]}"/>
-                    </xpath>
-                    <xpath expr="//field[@name='customer']" position="before">
-                		<field name="dai_ly"/>
+                		<field name="dai_ly" attrs="{'invisible':[('supplier','!=',False)], 'required':[('supplier','=',False)]}"/>
+                		<field name="account_tra_thuong_id" domain="[('type','!=','view')]" attrs="{'invisible':[('supplier','!=',False)], 'required':[('supplier','=',False)]}"/>
                     </xpath>
                 </data>
             </field>

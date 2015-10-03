@@ -1,7 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-
+	
+		<menuitem name="Báo cáo" id="menu_tra_thuong_baocao" parent="ql_tra_thuong" sequence="10"/>
+        	
+        	<menuitem id="menu_action_action_trathuong_bctt"
+        		action="action_trathuong_bctt"
+        		parent="menu_tra_thuong_baocao" sequence="5"
+        		/>
+        		
+    		<menuitem id="menu_action_action_trathuong_theolo"
+        		action="action_trathuong_theolo"
+        		parent="menu_tra_thuong_baocao" sequence="15"
+        		/>
+        	
+        	<menuitem id="menu_action_action_trathuong_theongay"
+        		action="action_trathuong_theongay"
+        		parent="menu_tra_thuong_baocao" sequence="20"
+        		/>
+        		
+        	<menuitem id="menu_action_trathuong_vetrungthuong"
+        		action="action_trathuong_vetrungthuong"
+        		parent="menu_tra_thuong_baocao" sequence="25"
+        		/>
+	
 <!-- Sale and Purchase Receipt -->
 		<menuitem id="menu_sale_purchase_receipt"
 			name="Sale and Purchase Receipt"
@@ -10,10 +32,12 @@
 
 <!-- Phiếu chi -->
 		<menuitem id="menu_action_purchase_receipt_batch_cash" icon="STOCK_JUSTIFY_FILL"
+			name="Phiếu chi tiền mặt"
 	        action="action_purchase_receipt_batch_cash" 
 	        parent="menu_sale_purchase_receipt" sequence="5"/>
 	        
 	    <menuitem id="menu_action_purchase_receipt_batch_bank" icon="STOCK_JUSTIFY_FILL"
+	        name="Phiếu chi tiền gửi NH"
 	        action="action_purchase_receipt_batch_bank" 
 	        parent="menu_sale_purchase_receipt" sequence="10"/>
         
@@ -24,11 +48,13 @@
    		
 <!-- Phieu Thu -->
 		<menuitem id="menu_action_sale_receipt_batch_cash" icon="STOCK_JUSTIFY_FILL"
+			name="Phiếu thu tiền mặt"
 	        action="action_sale_receipt_batch_cash" 
 	        parent="menu_sale_purchase_receipt"
 	        sequence="30"/>
 	            
         <menuitem id="menu_action_sale_receipt_batch_bank" icon="STOCK_JUSTIFY_FILL"
+        	name="Phiếu thu tiền gửi NH"
             action="action_sale_receipt_batch_bank" 
             parent="menu_sale_purchase_receipt"
             sequence="40"/>

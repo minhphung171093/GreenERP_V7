@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_chinhsua_trathuong" model="ir.ui.view">
+            <field name="name">chinhsua.trathuong</field>
+            <field name="model">chinhsua.trathuong</field>
+            <field name="arch" type="xml">
+                <form string="Chỉnh Sửa Trả Thưởng" version="7.0">
+                    <group>
+                        <field name="so_vanban"/>
+                        <field name="date"/>
+                    </group>
+                    <footer>
+                        <button name="chinhsua" string="Xác nhận" type="object" class="oe_highlight"/>
+                        hoặc
+                        <button string="Hủy bỏ" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</openerp>
+

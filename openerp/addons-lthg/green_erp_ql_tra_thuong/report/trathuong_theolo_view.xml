@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+    	<record id="trathuong_theolo_report" model="ir.actions.report.xml">
+	        <field name="name">trathuong_theolo.report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">trathuong.theolo</field>
+	        <field name="report_name">Trả thưởng theo lô</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">green_erp_ql_tra_thuong/report/trathuong_theolo.py</field>
+	        <field name="report_rml">green_erp_ql_tra_thuong/report/trathuong_theolo.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record> 
+    	   
+    	<report 
+			auto="False" 
+			menu="False"
+			id="trathuong_theolo_report" 
+			model="trathuong.theolo" 
+			name="trathuong_theolo_report"
+	        string="Trả thưởng theo lô"
+	        rml="green_erp_ql_tra_thuong/report/trathuong_theolo.ods"/> 	
+	</data>
+</openerp>

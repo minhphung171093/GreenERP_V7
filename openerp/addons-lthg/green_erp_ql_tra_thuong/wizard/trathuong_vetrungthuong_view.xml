@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>   
+        <record id="view_trathuong_vetrungthuong_report" model="ir.ui.view">
+            <field name="name">trathuong.vetrungthuong.report</field>
+            <field name="model">trathuong.vetrungthuong</field>
+            <field name="arch" type="xml">
+                <form string="Báo cáo vé trúng thưởng" version="7.0">
+                    <group col='4' colspan='2'>
+                    	<field name='date_from'/>
+                    	<field name='date_to'/>
+                    	<field name='menhgia_id' domain="[('menh_gia','=',True)]"/>
+                    </group>
+                    <footer>
+                        <button name="print_report" string="In" type="object" class="oe_highlight" context="{'type':'appointments'}"/>
+                        hoặc
+                        <button string="Hủy bỏ" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>        
+        <record id="action_trathuong_vetrungthuong" model="ir.actions.act_window">
+            <field name="name">Báo cáo vé trúng thưởng</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">trathuong.vetrungthuong</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        
+    </data>
+</openerp>
+

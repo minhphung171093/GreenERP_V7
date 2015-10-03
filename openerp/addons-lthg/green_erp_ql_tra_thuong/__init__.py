@@ -22,4 +22,6 @@
 import ql_tra_thuong
 import account_voucher_batch
 import account_voucher
+import wizard
+import report
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
