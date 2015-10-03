@@ -12,8 +12,8 @@
             <field name="arch" type="xml">
             	<data>
                 	<xpath expr="//field[@name='website']" position="after">
-                		<field name="ma_daily"/>
-                		<field name="parent_id"/>
+                		<field name="ma_daily" attrs="{'invisible':[('supplier','!=',False)], 'required':[('supplier','=',False)]}"/>
+                		<field name="parent_id" attrs="{'invisible':[('supplier','!=',False)]}"/>
                     </xpath>
                     <xpath expr="//field[@name='customer']" position="before">
                 		<field name="dai_ly"/>

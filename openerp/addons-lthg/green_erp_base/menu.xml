@@ -12,5 +12,10 @@
 	    			name="Người dùng"
 	    			action="action_res_users_greenerp"
 	    			parent="green_erp_base.menu_items" sequence="100"/>
+	    			
+	    		<menuitem id="base.menu_procurement_management_supplier_name"
+	    			name="Supplier"
+	    			action="base.action_partner_supplier_form"
+	    			parent="green_erp_base.menu_items" sequence="200"/>
     </data>
 </openerp>
