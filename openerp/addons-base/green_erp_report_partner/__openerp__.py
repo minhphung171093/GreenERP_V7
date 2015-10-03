@@ -23,7 +23,7 @@
     "update_xml" : [
         "report/report_view.xml",
         "wizard/print_report.xml",
-        
+        "report_review.xml",
         "menu.xml",
     ],
     "test" : [

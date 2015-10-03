@@ -66,6 +66,7 @@
                     </group>
 	                <footer>
                         <button string="Print" type="object" name="finance_report" context="{'type_report':'tax_vat_output'}" icon='gtk-execute'/>
+                        <button string="Review" type="object" name="review_report_out" context="{'type_report':'tax_vat_output'}" icon='gtk-execute'/>
                         or
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
@@ -183,6 +184,7 @@
                     </group>
 	                <footer>
                         <button string="Print" type="object" name="finance_report" context="{'type_report':'fin_general_trial_balance_report'}" icon='gtk-execute'/>
+                        <button string="Review" type="object" name="review_report_in" context="{'type_report':'fin_general_trial_balance_report'}" icon='gtk-execute'/>
                         or
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
@@ -218,6 +220,7 @@
                     </group>
 	                <footer>
                         <button string="Print" type="object" name="finance_report" context="{'type_report':'fin_general_balance_sheet_report'}" icon='gtk-execute'/>
+                        <button string="Review" type="object" name="review_report_in" context="{'type_report':'fin_general_balance_sheet_report'}" icon='gtk-execute'/>
                         or
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
@@ -252,6 +255,7 @@
                     </group>
 	                <footer>
                         <button string="Print" type="object" name="finance_report" context="{'type_report':'fin_general_account_profit_loss_report'}" icon='gtk-execute'/>
+                        <button string="Review" type="object" name="review_report_in" context="{'type_report':'fin_general_account_profit_loss_report'}" icon='gtk-execute'/>
                         or
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
@@ -286,6 +290,7 @@
                     </group>
 	                <footer>
                         <button string="Print" type="object" name="finance_report" context="{'type_report':'luuchuyen_tiente_tructiep_report'}" icon='gtk-execute'/>
+                        <button string="Review" type="object" name="review_report_in" context="{'type_report':'luuchuyen_tiente_tructiep_report'}" icon='gtk-execute'/>
                         or
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>

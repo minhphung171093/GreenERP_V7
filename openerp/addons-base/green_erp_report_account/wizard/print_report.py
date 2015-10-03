@@ -11,6 +11,8 @@ from tools.misc import DEFAULT_SERVER_DATETIME_FORMAT
 import decimal_precision as dp
 from tools.translate import _
 from openerp import SUPERUSER_ID
+DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
+DATE_FORMAT = "%Y-%m-%d"
 
 class report_account_in_out_tax(osv.osv_memory):
     _name = "report.account.in.out.tax"
@@ -36,6 +38,7 @@ class report_account_in_out_tax(osv.osv_memory):
         'filter_type': fields.selection([
             ('1', 'Hợp lệ'),
             ('2','Tất cả')], 'Hiển thị', required=True ),
+        
      }
     
     def _get_company(self, cr, uid, context=None):
@@ -69,9 +72,287 @@ class report_account_in_out_tax(osv.osv_memory):
     def review_report_in(self, cr, uid, ids, context=None):
         report_obj = self.pool.get('report.account.in.out.tax.review')
         report = self.browse(cr, uid, ids[0])
+        self.account_id =False
+        self.times = False
+        self.start_date = False
+        self.end_date = False
+        self.company_name = False
+        self.company_address = False
+        self.vat = False 
+        self.cr = cr
+        self.uid = uid
+        self.amount = 0
+        self.amount_tax = 0
+        self.sum_amount = 0
+        self.sum_amount_tax = 0
+        self.shop_ids =False
+        self.sum_no_tax_0 = 0
+        self.sum_tax_0 = 0
+        self.sum_no_tax_5 = 0
+        self.sum_tax_5 = 0
+        self.sum_no_tax_10 = 0
+        self.sum_tax_10 = 0
+        
+        def get_company(o, company_id):
+            if company_id:
+                company_obj = self.pool.get('res.company').browse(cr,uid,company_id)
+                self.company_name = company_obj.name or ''
+                self.company_address = company_obj.street or ''
+                self.vat = company_obj.vat or ''
+            return True
+          
+        def get_company_name(o):
+            get_header(o)
+            return self.company_name
+     
+        def get_company_address(o):
+            return self.company_address     
+         
+        def get_company_vat(o):
+            return self.vat    
+#         
+        def get_vietname_date(o, date):
+            if not date:
+                return ''
+            date = datetime.strptime(date, DATE_FORMAT)
+            return date.strftime('%d/%m/%Y')
+        
+        def get_sum_amount(o):
+            return self.sum_amount 
+         
+        def get_sum_amount_tax(o):
+            return self.sum_amount_tax
+        def get_id(o,get_id):
+            period_id = get_id.id
+            if not period_id:
+                return 1
+            else:
+                return period_id
+            
+        def get_header(o):
+            self.times = o.times
+            #Get company info
+            company_id = o.company_id and o.company_id.id or False
+            get_company(o,company_id)
+            self.shop_ids = o.shop_ids 
+            if self.shop_ids:
+                self.shop_ids = (','.join(map(str,self.shop_ids)))
+            
+            if self.times =='periods':
+                self.start_date = self.pool.get('account.period').browse(self.cr,self.uid,get_id(o,o.period_id_start)).date_start
+                self.end_date   = self.pool.get('account.period').browse(self.cr,self.uid,get_id(o,o.period_id_end)).date_stop
+                
+            elif self.times == 'years':
+                self.start_date = self.pool.get('account.fiscalyear').browse(self.cr,self.uid,get_id(o,o.fiscalyear_start)).date_start
+                self.end_date   = self.pool.get('account.fiscalyear').browse(self.cr,self.uid,get_id(o,o.fiscalyear_stop)).date_stop
+            else:
+                self.start_date = o.date_start
+                self.end_date = o.date_end
+            
+            return True
+
+        def get_sum(o,num):
+            amount = 0
+            tax = 0
+            if num=='0':
+                for line in o.accout_in_out_review_0_line:
+                    amount += line['price_subtotal']
+                    tax += line['price_tax']
+            return {
+                   'amount':amount,
+                   'tax':tax,
+                   }
+        
+        def get_line_tax_0(o):
+            self.shop_ids = o.shop_ids
+            res = []
+            self.amount = 0
+            self.amount_tax = 0
+            if self.shop_ids:
+                sql='''
+                     SELECT agi.reference,agi.supplier_invoice_number,agi.date_invoice,rp.name partner_name,rp.vat vat_code,
+                     SUM(CASE WHEN agi.type ='in_invoice' then agil.price_subtotal else agil.price_subtotal * (-1) end) as price_subtotal,                        
+                     SUM(CASE WHEN agi.type ='in_invoice' then agil.price_subtotal *0.05 else agil.price_subtotal *0 end) as price_tax  
+                    FROM account_invoice agi 
+                    inner join account_invoice_line agil on agi.id = agil.invoice_id 
+                    inner join res_partner rp on rp.id = agi.partner_id  
+                    inner join account_invoice_line_tax agilt on agil.id = agilt.invoice_line_id
+                    inner join account_tax atx on atx.id = agilt.tax_id 
+                    WHERE agi.state in ('open','paid')
+                    AND atx.amount = 0
+                    AND agi.date_invoice between '%s' and '%s'
+                    AND agi.shop_id in (%s)
+                    AND agi.type in ('in_invoice','in_refund')
+                    GROUP BY agi.reference,agi.supplier_invoice_number,agi.date_invoice,rp.name,rp.vat
+                    ORDER BY date_invoice
+                '''%(self.start_date,self.end_date,self.shop_ids)
+            else:
+                sql='''
+                     SELECT agi.reference,agi.supplier_invoice_number,agi.date_invoice,rp.name partner_name,rp.vat vat_code,
+                     SUM(CASE WHEN agi.type ='in_invoice' then agil.price_subtotal else agil.price_subtotal * (-1) end) as price_subtotal,                        
+                     SUM(CASE WHEN agi.type ='in_invoice' then agil.price_subtotal *0.05 else agil.price_subtotal *0 end) as price_tax  
+                    FROM account_invoice agi 
+                    inner join account_invoice_line agil on agi.id = agil.invoice_id 
+                    inner join res_partner rp on rp.id = agi.partner_id  
+                    inner join account_invoice_line_tax agilt on agil.id = agilt.invoice_line_id
+                    inner join account_tax atx on atx.id = agilt.tax_id 
+                    WHERE agi.state in ('open','paid')
+                    AND atx.amount = 0
+                    AND agi.date_invoice between '%s' and '%s'
+                    AND agi.type in ('in_invoice','in_refund')
+                    GROUP BY agi.reference,agi.supplier_invoice_number,agi.date_invoice,rp.name,rp.vat
+                    ORDER BY date_invoice
+                '''%(self.start_date,self.end_date)
+            cr.execute(sql)
+            for line in cr.dictfetchall():
+                res.append((0,0,{
+                    'reference':line['reference'] or '',
+                    'number':line['supplier_invoice_number'] or '',
+                    'date_invoice':line['date_invoice'],
+                    'partner_name':line['partner_name'],
+                    'vat_code':line['vat_code'] or '',
+                    'price_subtotal':line['price_subtotal'] or '' ,
+                    'amount_tax': line['price_tax'],
+                     }))
+                self.amount += line['price_subtotal']
+                self.sum_amount += self.amount
+                self.amount_tax += line['price_tax']
+                self.sum_amount_tax += self.amount_tax
+            self.sum_no_tax_0 = self.amount
+            self.sum_tax_0 = self.amount_tax
+            return res
+        
+        def get_line_tax_5(o):
+            self.shop_ids = o.shop_ids
+            res = []
+            self.amount = 0
+            self.amount_tax = 0
+            if self.shop_ids:
+                sql='''
+                        SELECT agi.reference,agi.supplier_invoice_number,agi.date_invoice,rp.name partner_name,rp.vat vat_code,
+                         SUM(CASE WHEN agi.type ='in_invoice' then agil.price_subtotal else agil.price_subtotal * (-1) end) as price_subtotal,                        
+                         SUM(CASE WHEN agi.type ='in_invoice' then agil.price_subtotal *0.05 else agil.price_subtotal *0.05 * (-1) end) as price_tax  
+                        FROM account_invoice agi 
+                        inner join account_invoice_line agil on agi.id = agil.invoice_id 
+                        inner join res_partner rp on rp.id = agi.partner_id  
+                        inner join account_invoice_line_tax agilt on agil.id = agilt.invoice_line_id
+                        inner join account_tax atx on atx.id = agilt.tax_id 
+                        WHERE agi.state in ('open','paid')
+                        AND atx.amount = 0.05
+                        AND agi.date_invoice between '%s' and '%s'
+                        AND agi.shop_id in (%s)
+                        AND agi.type in ('in_invoice','in_refund')
+                        GROUP BY agi.reference,agi.supplier_invoice_number,agi.date_invoice,rp.name,rp.vat
+                        ORDER BY date_invoice
+                '''%(self.start_date,self.end_date,self.shop_ids)
+            else:
+                sql='''
+                        SELECT agi.reference,agi.supplier_invoice_number,agi.date_invoice,rp.name partner_name,rp.vat vat_code,
+                         SUM(CASE WHEN agi.type ='in_invoice' then agil.price_subtotal else agil.price_subtotal * (-1) end) as price_subtotal,                        
+                         SUM(CASE WHEN agi.type ='in_invoice' then agil.price_subtotal *0.05 else agil.price_subtotal *0.05 * (-1) end) as price_tax  
+                        FROM account_invoice agi 
+                        inner join account_invoice_line agil on agi.id = agil.invoice_id 
+                        inner join res_partner rp on rp.id = agi.partner_id  
+                        inner join account_invoice_line_tax agilt on agil.id = agilt.invoice_line_id
+                        inner join account_tax atx on atx.id = agilt.tax_id 
+                        WHERE agi.state in ('open','paid')
+                        AND atx.amount = 0.05
+                        AND agi.date_invoice between '%s' and '%s'
+                        AND agi.type in ('in_invoice','in_refund')
+                        GROUP BY agi.reference,agi.supplier_invoice_number,agi.date_invoice,rp.name,rp.vat
+                        ORDER BY date_invoice
+                '''%(self.start_date,self.end_date)
+            cr.execute(sql)
+            for line in cr.dictfetchall():
+                res.append((0,0,{
+                    'reference':line['reference'] or '',
+                    'number':line['supplier_invoice_number'] or '',
+                    'date_invoice':line['date_invoice'],
+                    'partner_name':line['partner_name'],
+                    'vat_code':line['vat_code'] or '',
+                    'price_subtotal':line['price_subtotal'] or '' ,
+                    'amount_tax': line['price_tax'],
+                     }))
+                self.amount += line['price_subtotal']
+                self.sum_amount += self.amount
+                self.amount_tax += line['price_tax']
+                self.sum_amount_tax += self.amount_tax
+            self.sum_no_tax_5 = self.amount
+            self.sum_tax_5 = self.amount_tax
+            return res
+         
+        def get_line_tax_10(o):
+            self.shop_ids = o.shop_ids
+            res = []
+            self.amount = 0
+            self.amount_tax = 0
+            if self.shop_ids:
+                sql='''
+                        SELECT agi.reference,agi.supplier_invoice_number,agi.date_invoice,rp.name partner_name,rp.vat vat_code,
+                         SUM(CASE WHEN agi.type ='in_invoice' then agil.price_subtotal else agil.price_subtotal * (-1) end) as price_subtotal,                        
+                         SUM(CASE WHEN agi.type ='in_invoice' then agil.price_subtotal *0.05 else agil.price_subtotal *0.1 * (-1) end) as price_tax  
+                        FROM account_invoice agi 
+                        inner join account_invoice_line agil on agi.id = agil.invoice_id 
+                        inner join res_partner rp on rp.id = agi.partner_id  
+                        inner join account_invoice_line_tax agilt on agil.id = agilt.invoice_line_id
+                        inner join account_tax atx on atx.id = agilt.tax_id 
+                        WHERE agi.state in ('open','paid')
+                        AND atx.amount = 0.1
+                        AND agi.date_invoice between '%s' and '%s'
+                        AND agi.shop_id in (%s)
+                        AND agi.type in ('in_invoice','in_refund')
+                        GROUP BY agi.reference,agi.supplier_invoice_number,agi.date_invoice,rp.name,rp.vat
+                        ORDER BY date_invoice
+                '''%(self.start_date,self.end_date,self.shop_ids)
+            else:
+                sql='''
+                        SELECT agi.reference,agi.supplier_invoice_number,agi.date_invoice,rp.name partner_name,rp.vat vat_code,
+                         SUM(CASE WHEN agi.type ='in_invoice' then agil.price_subtotal else agil.price_subtotal * (-1) end) as price_subtotal,                        
+                         SUM(CASE WHEN agi.type ='in_invoice' then agil.price_subtotal *0.05 else agil.price_subtotal *0.1 * (-1) end) as price_tax  
+                        FROM account_invoice agi 
+                        inner join account_invoice_line agil on agi.id = agil.invoice_id 
+                        inner join res_partner rp on rp.id = agi.partner_id  
+                        inner join account_invoice_line_tax agilt on agil.id = agilt.invoice_line_id
+                        inner join account_tax atx on atx.id = agilt.tax_id 
+                        WHERE agi.state in ('open','paid')
+                        AND atx.amount = 0.1
+                        AND agi.date_invoice between '%s' and '%s'
+                        AND agi.type in ('in_invoice','in_refund')
+                        GROUP BY agi.reference,agi.supplier_invoice_number,agi.date_invoice,rp.name,rp.vat
+                        ORDER BY date_invoice
+                '''%(self.start_date,self.end_date)
+            cr.execute(sql)
+            for line in cr.dictfetchall():
+                res.append((0,0,{
+                    'reference':line['reference'] or '',
+                    'number':line['supplier_invoice_number'] or '',
+                    'date_invoice':line['date_invoice'],
+                    'partner_name':line['partner_name'],
+                    'vat_code':line['vat_code'] or '',
+                    'price_subtotal':line['price_subtotal'] or '' ,
+                    'amount_tax': line['price_tax'],
+                     }))
+                self.amount += line['price_subtotal']
+                self.sum_amount += self.amount
+                self.amount_tax += line['price_tax']
+                self.sum_amount_tax += self.amount_tax
+            self.sum_no_tax_10 = self.amount
+            self.sum_tax_10 = self.amount_tax
+            return res
         vals = {
-            'nguoi_nop_thue': report.company_id.name or '',
-            'ms_thue': report.company_id.vat or '',
+            'nguoi_nop_thue': get_company_name(report),
+            'ms_thue': get_company_vat(report),
+            'accout_in_out_review_0_line':get_line_tax_0(report),
+            'accout_in_out_review_5_line':get_line_tax_5(report),
+            'accout_in_out_review_10_line':get_line_tax_10(report),
+            'tong_no_tax_0': self.sum_no_tax_0,
+            'tong_tax_0': self.sum_tax_0,
+            'tong_no_tax_5': self.sum_no_tax_5,
+            'tong_tax_5': self.sum_tax_5,
+            'tong_no_tax_10': self.sum_no_tax_10,
+            'tong_tax_10': self.sum_tax_10,            
+            'tong_chua_thue':get_sum_amount(report),
+            'tong_thue':get_sum_amount_tax(report),
         }
         report_id = report_obj.create(cr, uid, vals)
         res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
@@ -82,12 +363,316 @@ class report_account_in_out_tax(osv.osv_memory):
                     'view_mode': 'form',
                     'res_model': 'report.account.in.out.tax.review',
                     'domain': [],
+                    'view_id': res and res[1] or False,
                     'type': 'ir.actions.act_window',
                     'target': 'current',
                     'res_id': report_id,
                 }
+        
+    def review_report_out(self, cr, uid, ids, context=None):
+        report_obj = self.pool.get('report.account.in.out.tax.review')
+        report = self.browse(cr, uid, ids[0])
+        self.account_id =False
+        self.times = False
+        self.start_date = False
+        self.end_date = False
+        self.company_name = False
+        self.company_address = False
+        self.vat = False 
+        self.cr = cr
+        self.uid = uid
+        self.amount = 0
+        self.amount_tax = 0
+        self.sum_amount = 0
+        self.sum_amount_tax = 0
+        self.shop_ids =False
+        self.sum_no_tax_0 = 0
+        self.sum_tax_0 = 0
+        self.sum_no_tax_5 = 0
+        self.sum_tax_5 = 0
+        self.sum_no_tax_10 = 0
+        self.sum_tax_10 = 0
+        
+        def get_company(o, company_id):
+            if company_id:
+                company_obj = self.pool.get('res.company').browse(cr,uid,company_id)
+                self.company_name = company_obj.name or ''
+                self.company_address = company_obj.street or ''
+                self.vat = company_obj.vat or ''
+            return True
+          
+        def get_company_name(o):
+            get_header(o)
+            return self.company_name
+     
+        def get_company_address(o):
+            return self.company_address     
+         
+        def get_company_vat(o):
+            return self.vat    
+#         
+        def get_vietname_date(o, date):
+            if not date:
+                return ''
+            date = datetime.strptime(date, DATE_FORMAT)
+            return date.strftime('%d/%m/%Y')
+        
+        def get_sum_amount(o):
+            return self.sum_amount 
+         
+        def get_sum_amount_tax(o):
+            return self.sum_amount_tax
+        def get_id(o,get_id):
+            period_id = get_id.id
+            if not period_id:
+                return 1
+            else:
+                return period_id
+            
+        def get_header(o):
+            self.times = o.times
+            #Get company info
+            company_id = o.company_id and o.company_id.id or False
+            get_company(o,company_id)
+            self.shop_ids = o.shop_ids 
+            if self.shop_ids:
+                self.shop_ids = (','.join(map(str,self.shop_ids)))
+            
+            if self.times =='periods':
+                self.start_date = self.pool.get('account.period').browse(self.cr,self.uid,get_id(o,o.period_id_start)).date_start
+                self.end_date   = self.pool.get('account.period').browse(self.cr,self.uid,get_id(o,o.period_id_end)).date_stop
+                
+            elif self.times == 'years':
+                self.start_date = self.pool.get('account.fiscalyear').browse(self.cr,self.uid,get_id(o,o.fiscalyear_start)).date_start
+                self.end_date   = self.pool.get('account.fiscalyear').browse(self.cr,self.uid,get_id(o,o.fiscalyear_stop)).date_stop
+            else:
+                self.start_date = o.date_start
+                self.end_date = o.date_end
+            
+            return True
+
+        def get_sum(o,num):
+            amount = 0
+            tax = 0
+            if num=='0':
+                for line in o.accout_in_out_review_0_line:
+                    amount += line['price_subtotal']
+                    tax += line['price_tax']
+            return {
+                   'amount':amount,
+                   'tax':tax,
+                   }
+        
+        def get_line_tax_0(o):
+            self.shop_ids = o.shop_ids
+            res = []
+            self.amount = 0
+            self.amount_tax = 0
+            if self.shop_ids:
+                sql='''
+                     SELECT agi.reference,agi.reference_number,agi.date_invoice,rp.name partner_name,rp.vat vat_code,
+                     SUM(CASE WHEN agi.type ='out_invoice' then agil.price_subtotal else agil.price_subtotal * (-1) end) as price_subtotal,                        
+                     SUM(CASE WHEN agi.type ='out_invoice' then agil.price_subtotal *0.05 else agil.price_subtotal *0 end) as price_tax  
+                    FROM account_invoice agi 
+                    inner join account_invoice_line agil on agi.id = agil.invoice_id 
+                    inner join res_partner rp on rp.id = agi.partner_id  
+                    inner join account_invoice_line_tax agilt on agil.id = agilt.invoice_line_id
+                    inner join account_tax atx on atx.id = agilt.tax_id 
+                    WHERE agi.state in ('open','paid')
+                    AND atx.amount = 0
+                    AND agi.date_invoice between '%s' and '%s'
+                    AND agi.shop_id in (%s)
+                    AND agi.type in ('out_invoice','out_refund')
+                    GROUP BY agi.reference,agi.reference_number,agi.date_invoice,rp.name,rp.vat
+                    ORDER BY date_invoice
+                '''%(self.start_date,self.end_date,self.shop_ids)
+            else:
+                sql='''
+                     SELECT agi.reference,agi.reference_number,agi.date_invoice,rp.name partner_name,rp.vat vat_code,
+                     SUM(CASE WHEN agi.type ='out_invoice' then agil.price_subtotal else agil.price_subtotal * (-1) end) as price_subtotal,                        
+                     SUM(CASE WHEN agi.type ='out_invoice' then agil.price_subtotal *0.05 else agil.price_subtotal *0 end) as price_tax  
+                    FROM account_invoice agi 
+                    inner join account_invoice_line agil on agi.id = agil.invoice_id 
+                    inner join res_partner rp on rp.id = agi.partner_id  
+                    inner join account_invoice_line_tax agilt on agil.id = agilt.invoice_line_id
+                    inner join account_tax atx on atx.id = agilt.tax_id 
+                    WHERE agi.state in ('open','paid')
+                    AND atx.amount = 0
+                    AND agi.date_invoice between '%s' and '%s'
+                    AND agi.type in ('out_invoice','out_refund')
+                    GROUP BY agi.reference,agi.reference_number,agi.date_invoice,rp.name,rp.vat
+                    ORDER BY date_invoice
+                '''%(self.start_date,self.end_date)
+            self.cr.execute(sql)
+            for line in cr.dictfetchall():
+                res.append((0,0,{
+                    'reference':line['reference'] or '',
+                    'number':line['reference_number'] or '',
+                    'date_invoice':line['date_invoice'],
+                    'partner_name':line['partner_name'],
+                    'vat_code':line['vat_code'] or '',
+                    'price_subtotal':line['price_subtotal'] or '' ,
+                    'amount_tax': line['price_tax'],
+                     }))
+                self.amount += line['price_subtotal']
+                self.sum_amount += self.amount
+                self.amount_tax += line['price_tax']
+                self.sum_amount_tax += self.amount_tax
+            self.sum_no_tax_0 = self.amount
+            self.sum_tax_0 = self.amount_tax
+            return res
+        
+        def get_line_tax_5(o):
+            self.shop_ids = o.shop_ids
+            res = []
+            self.amount = 0
+            self.amount_tax = 0
+            if self.shop_ids:
+                sql='''
+                        SELECT agi.reference,agi.reference_number,agi.date_invoice,rp.name partner_name,rp.vat vat_code,
+                         SUM(CASE WHEN agi.type ='out_invoice' then agil.price_subtotal else agil.price_subtotal * (-1) end) as price_subtotal,                        
+                         SUM(CASE WHEN agi.type ='out_invoice' then agil.price_subtotal *0.05 else agil.price_subtotal *0.05 * (-1) end) as price_tax  
+                        FROM account_invoice agi 
+                        inner join account_invoice_line agil on agi.id = agil.invoice_id 
+                        inner join res_partner rp on rp.id = agi.partner_id  
+                        inner join account_invoice_line_tax agilt on agil.id = agilt.invoice_line_id
+                        inner join account_tax atx on atx.id = agilt.tax_id 
+                        WHERE agi.state in ('open','paid')
+                        AND atx.amount = 0.05
+                        AND agi.date_invoice between '%s' and '%s'
+                        AND agi.shop_id in (%s)
+                        AND agi.type in ('out_invoice','out_refund')
+                        GROUP BY agi.reference,agi.reference_number,agi.date_invoice,rp.name,rp.vat
+                        ORDER BY date_invoice
+                '''%(self.start_date,self.end_date,self.shop_ids)
+            else:
+                sql='''
+                        SELECT agi.reference,agi.reference_number,agi.date_invoice,rp.name partner_name,rp.vat vat_code,
+                         SUM(CASE WHEN agi.type ='out_invoice' then agil.price_subtotal else agil.price_subtotal * (-1) end) as price_subtotal,                        
+                         SUM(CASE WHEN agi.type ='out_invoice' then agil.price_subtotal *0.05 else agil.price_subtotal *0.05 * (-1) end) as price_tax  
+                        FROM account_invoice agi 
+                        inner join account_invoice_line agil on agi.id = agil.invoice_id 
+                        inner join res_partner rp on rp.id = agi.partner_id  
+                        inner join account_invoice_line_tax agilt on agil.id = agilt.invoice_line_id
+                        inner join account_tax atx on atx.id = agilt.tax_id 
+                        WHERE agi.state in ('open','paid')
+                        AND atx.amount = 0.05
+                        AND agi.date_invoice between '%s' and '%s'
+                        AND agi.type in ('out_invoice','out_refund')
+                        GROUP BY agi.reference,agi.reference_number,agi.date_invoice,rp.name,rp.vat
+                        ORDER BY date_invoice
+                '''%(self.start_date,self.end_date)
+            self.cr.execute(sql)
+            for line in cr.dictfetchall():
+                res.append((0,0,{
+                    'reference':line['reference'] or '',
+                    'number':line['reference_number'] or '',
+                    'date_invoice':line['date_invoice'],
+                    'partner_name':line['partner_name'],
+                    'vat_code':line['vat_code'] or '',
+                    'price_subtotal':line['price_subtotal'] or '' ,
+                    'amount_tax': line['price_tax'],
+                     }))
+                self.amount += line['price_subtotal']
+                self.sum_amount += self.amount
+                self.amount_tax += line['price_tax']
+                self.sum_amount_tax += self.amount_tax
+            self.sum_no_tax_5 = self.amount
+            self.sum_tax_5 = self.amount_tax
+            return res
+         
+        def get_line_tax_10(o):
+            self.shop_ids = o.shop_ids
+            res = []
+            self.amount = 0
+            self.amount_tax = 0
+            if self.shop_ids:
+                sql='''
+                        SELECT agi.reference,agi.reference_number,agi.date_invoice,rp.name partner_name,rp.vat vat_code,
+                         SUM(CASE WHEN agi.type ='out_invoice' then agil.price_subtotal else agil.price_subtotal * (-1) end) as price_subtotal,                        
+                         SUM(CASE WHEN agi.type ='out_invoice' then agil.price_subtotal *0.05 else agil.price_subtotal *0.1 * (-1) end) as price_tax  
+                        FROM account_invoice agi 
+                        inner join account_invoice_line agil on agi.id = agil.invoice_id 
+                        inner join res_partner rp on rp.id = agi.partner_id  
+                        inner join account_invoice_line_tax agilt on agil.id = agilt.invoice_line_id
+                        inner join account_tax atx on atx.id = agilt.tax_id 
+                        WHERE agi.state in ('open','paid')
+                        AND atx.amount = 0.1
+                        AND agi.date_invoice between '%s' and '%s'
+                        AND agi.shop_id in (%s)
+                        AND agi.type in ('out_invoice','out_refund')
+                        GROUP BY agi.reference,agi.reference_number,agi.date_invoice,rp.name,rp.vat
+                        ORDER BY date_invoice
+                '''%(self.start_date,self.end_date,self.shop_ids)
+            else:
+                sql='''
+                        SELECT agi.reference,agi.reference_number,agi.date_invoice,rp.name partner_name,rp.vat vat_code,
+                         SUM(CASE WHEN agi.type ='out_invoice' then agil.price_subtotal else agil.price_subtotal * (-1) end) as price_subtotal,                        
+                         SUM(CASE WHEN agi.type ='out_invoice' then agil.price_subtotal *0.05 else agil.price_subtotal *0.1 * (-1) end) as price_tax  
+                        FROM account_invoice agi 
+                        inner join account_invoice_line agil on agi.id = agil.invoice_id 
+                        inner join res_partner rp on rp.id = agi.partner_id  
+                        inner join account_invoice_line_tax agilt on agil.id = agilt.invoice_line_id
+                        inner join account_tax atx on atx.id = agilt.tax_id 
+                        WHERE agi.state in ('open','paid')
+                        AND atx.amount = 0.1
+                        AND agi.date_invoice between '%s' and '%s'
+                        AND agi.type in ('out_invoice','out_refund')
+                        GROUP BY agi.reference,agi.reference_number,agi.date_invoice,rp.name,rp.vat
+                        ORDER BY date_invoice
+                '''%(self.start_date,self.end_date)
+            self.cr.execute(sql)
+            for line in cr.dictfetchall():
+                res.append((0,0,{
+                    'reference':line['reference'] or '',
+                    'number':line['reference_number'] or '',
+                    'date_invoice':line['date_invoice'],
+                    'partner_name':line['partner_name'],
+                    'vat_code':line['vat_code'] or '',
+                    'price_subtotal':line['price_subtotal'] or '' ,
+                    'amount_tax': line['price_tax'],
+                     }))
+                self.amount += line['price_subtotal']
+                self.sum_amount += self.amount
+                self.amount_tax += line['price_tax']
+                self.sum_amount_tax += self.amount_tax
+            self.sum_no_tax_10 = self.amount
+            self.sum_tax_10 = self.amount_tax
+            return res
+        vals = {
+            'nguoi_nop_thue': get_company_name(report),
+            'ms_thue': get_company_vat(report),
+            'accout_in_out_review_0_line':get_line_tax_0(report),
+            'accout_in_out_review_5_line':get_line_tax_5(report),
+            'accout_in_out_review_10_line':get_line_tax_10(report),
+            'tong_no_tax_0': self.sum_no_tax_0,
+            'tong_tax_0': self.sum_tax_0,
+            'tong_no_tax_5': self.sum_no_tax_5,
+            'tong_tax_5': self.sum_tax_5,
+            'tong_no_tax_10': self.sum_no_tax_10,
+            'tong_tax_10': self.sum_tax_10,            
+            'tong_chua_thue':get_sum_amount(report),
+            'tong_thue':get_sum_amount_tax(report),
+        }
+        report_id = report_obj.create(cr, uid, vals)
+        res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
+                                        'green_erp_report_account', 'report_tax_vat_output_review')
+        return {
+                    'name': 'Taxes VAT OUTPUT',
+                    'view_type': 'form',
+                    'view_mode': 'form',
+                    'res_model': 'report.account.in.out.tax.review',
+                    'view_id': res and res[1] or False,
+                    'domain': [],
+                    'type': 'ir.actions.act_window',
+                    'target': 'current',
+                    'res_id': report_id,
+                }        
+
     
 report_account_in_out_tax()
+
+
 
 class account_ledger_report(osv.osv_memory):
     _name = "account.ledger.report"    
@@ -228,7 +813,7 @@ class general_trial_balance(osv.osv_memory):
         now = time.strftime('%Y-%m-%d')
         fiscalyears = self.pool.get('account.fiscalyear').search(cr, uid, [('date_start', '<', now), ('date_stop', '>', now)], limit=1 )
         return fiscalyears and fiscalyears[0] or False
-    
+   
     def _get_company(self, cr, uid, context=None):
         user = self.pool.get('res.users').browse(cr, uid, uid, context=context)
         return user.company_id and user.company_id.id or False
@@ -266,7 +851,291 @@ class general_trial_balance(osv.osv_memory):
         datas['form'] = self.read(cr, uid, ids)[0]        
         report_name = context['type_report']             
         return {'type': 'ir.actions.report.xml', 'report_name': report_name , 'datas': datas}
-    
+
+    def review_report_in(self, cr, uid, ids, context=None):
+        report_obj = self.pool.get('general.trial.balance.review')
+        report = self.browse(cr, uid, ids[0])    
+        self.account_id =False
+        self.times = False
+        self.start_date = False
+        self.end_date = False
+        self.company_name = False
+        self.company_address = False
+        self.company_id = False
+        self.vat = False 
+        self.cr = cr
+        self.uid = uid
+        self.amount = 0
+        self.amount_tax = 0
+        self.sum_amount = 0
+        self.sum_amount_tax = 0
+        self.shop_ids =False
+        self.sum_no_tax_0 = 0
+        self.sum_tax_0 = 0
+        self.sum_no_tax_5 = 0
+        self.sum_tax_5 = 0
+        self.sum_no_tax_10 = 0
+        self.sum_tax_10 = 0
+        
+        def get_company(o, company_id):
+            if company_id:
+                company_obj = self.pool.get('res.company').browse(cr,uid,company_id)
+                self.company_name = company_obj.name or ''
+                self.company_address = company_obj.street or ''
+                self.vat = company_obj.vat or ''
+            return True
+          
+        def get_company_name(o):
+            get_header(o)
+            return self.company_name
+     
+        def get_company_address(o):
+            return self.company_address     
+         
+        def get_company_vat(o):
+            return self.vat    
+#         
+        def get_vietname_date(o, date):
+            if not date:
+                return ''
+            date = datetime.strptime(date, DATE_FORMAT)
+            return date.strftime('%d/%m/%Y')
+#         def get_start_date(o):
+#             return get_vietname_date(o,o.start_date) 
+#         
+#         def get_end_date(o):
+#             return get_vietname_date(o,o.end_date)         
+        def get_sum_amount(o):
+            return self.sum_amount 
+         
+        def get_sum_amount_tax(o):
+            return self.sum_amount_tax
+        def get_id(o,get_id):
+            period_id = get_id.id
+            if not period_id:
+                return 1
+            else:
+                return period_id
+            
+        def get_header(o):
+            self.times = o.times
+            #Get company info
+            company_id = o.company_id and o.company_id.id or False
+            get_company(o,company_id)
+            self.shop_ids = o.shop_ids 
+            if self.shop_ids:
+                self.shop_ids = (','.join(map(str,self.shop_ids)))
+            
+            if self.times =='periods':
+                self.start_date = self.pool.get('account.period').browse(self.cr,self.uid,get_id(o,o.period_id_start)).date_start
+                self.end_date   = self.pool.get('account.period').browse(self.cr,self.uid,get_id(o,o.period_id_end)).date_stop
+                
+            elif self.times == 'years':
+                self.start_date = self.pool.get('account.fiscalyear').browse(self.cr,self.uid,get_id(o,o.fiscalyear_start)).date_start
+                self.end_date   = self.pool.get('account.fiscalyear').browse(self.cr,self.uid,get_id(o,o.fiscalyear_stop)).date_stop
+            else:
+                self.start_date = o.date_start
+                self.end_date = o.date_end
+            
+            return True
+        def get_total_line(o):
+            return self.pool.get('sql.trial.balance').get_total_line(self.cr, self.start_date,self.end_date,o.company_id.id)
+        
+        def get_total_line1(o):
+            return self.pool.get('sql.trial.balance').get_total_line1(self.cr, self.start_date,self.end_date,o.company_id.id)
+        
+        def get_line(o):
+            return self.pool.get('sql.trial.balance').get_line(self.cr, self.start_date,self.end_date,o.company_id.id)
+        
+        def get_line1(o):
+            return self.pool.get('sql.trial.balance').get_line1(self.cr, self.start_date,self.end_date,o.company_id.id)
+        
+        def get_total_line3(o):
+            return self.pool.get('sql.trial.balance').get_total_line3(self.cr, self.start_date,self.end_date,o.company_id.id)
+        def get_info(o):
+            mang=[]
+            self.amount=0
+            self.sum_amount=0
+            self.amount_2=0
+            self.sum_amount_2=0
+            self.amount_3=0
+            self.sum_amount_3=0
+            self.amount_4=0
+            self.sum_amount_4=0
+            self.amount_5=0
+            self.sum_amount_5=0
+            self.amount_6=0
+            self.sum_amount_6=0
+            for line in get_line(o):
+                if line['acc_level']!=10:
+                    if len(line['coa_code'])==3:
+                        mang.append((0,0,{
+                                'coa_code': line['coa_code'] or '',
+                                'coa_name': line['coa_name'] or '',
+                                'begin_dr':line['begin_dr'] ,
+                                'begin_cr':line['begin_cr'] ,
+                                'period_dr':line['period_dr'] ,
+                                'period_cr':line['period_cr'] ,
+                                'end_dr':line['end_dr'] ,
+                                'end_cr':line['end_cr'] ,
+                                         }))
+                        self.amount += line['begin_dr'] or False
+                        self.sum_amount += self.amount
+                        self.amount_2 += line['period_dr'] or False
+                        self.sum_amount_2 += self.amount_2
+                        self.amount_3 += line['end_dr'] or False
+                        self.sum_amount_3 += self.amount_3  
+                        self.amount_4 += line['begin_cr'] or False
+                        self.sum_amount += self.amount_4
+                        self.amount_5 += line['period_cr'] or False
+                        self.sum_amount_2 += self.amount_5
+                        self.amount_6 += line['end_cr'] or False
+                        self.sum_amount_6 += self.amount_6                                                    
+                    if len(line['coa_code'])!=3:
+                        mang.append((0,0,{
+                                'coa_code': line['coa_code'] or '',
+                                'coa_name': line['coa_name'] or '',
+                                'begin_dr':line['begin_dr'] ,
+                                'begin_cr':line['begin_cr'] ,
+                                'period_dr':line['period_dr'] ,
+                                'period_cr':line['period_cr'] ,
+                                'end_dr':line['end_dr'] ,
+                                'end_cr':line['end_cr'] ,
+                                         }))
+            mang.append((0,0,{
+                    'coa_code':'Sub Total',
+                    'begin_dr': self.amount ,
+                    'begin_cr':self.amount_4 ,
+                    'period_dr':self.amount_2 ,
+                    'period_cr':self.amount_5  ,
+                    'end_dr':self.amount_3  ,
+                    'end_cr':self.amount_6 ,
+                             }))    
+            return mang
+        def get_info_1(o):
+            mang=[]
+            self.amount=0
+            self.sum_amount=0
+            self.amount_2=0
+            self.sum_amount_2=0
+            self.amount_3=0
+            self.sum_amount_3=0
+            self.amount_4=0
+            self.sum_amount_4=0
+            self.amount_5=0
+            self.sum_amount_5=0
+            self.amount_6=0
+            self.sum_amount_6=0
+            for line in get_line1(o):
+                if line['acc_level']!=10:
+                    if len(line['coa_code'])==3:
+                        mang.append((0,0,{
+                                'coa_code': line['coa_code'] or '',
+                                'coa_name': line['coa_name'] or '',
+                                'begin_dr':line['begin_dr'] or '',
+                                'begin_cr':line['begin_cr'] or '',
+                                'period_dr':line['period_dr'] or '',
+                                'period_cr':line['period_cr'] or '',
+                                'end_dr':line['end_dr'] or '',
+                                'end_cr':line['end_cr'] or '',
+                                         }))
+                        self.amount += line['begin_dr'] or False
+                        self.sum_amount += self.amount
+                        self.amount_2 += line['period_dr'] or False
+                        self.sum_amount_2 += self.amount_2
+                        self.amount_3 += line['end_dr'] or False
+                        self.sum_amount_3 += self.amount_3  
+                        self.amount_4 += line['begin_cr'] or False
+                        self.sum_amount += self.amount_4
+                        self.amount_5 += line['period_cr'] or False
+                        self.sum_amount_2 += self.amount_5
+                        self.amount_6 += line['end_cr'] or False
+                        self.sum_amount_6 += self.amount_6                                                    
+                    if len(line['coa_code'])!=3:
+                        mang.append((0,0,{
+                                'coa_code': line['coa_code'] or '',
+                                'coa_name': line['coa_name'] or '',
+                                'begin_dr':line['begin_dr'] or '',
+                                'begin_cr':line['begin_cr'] or '',
+                                'period_dr':line['period_dr'] or '',
+                                'period_cr':line['period_cr'] or '',
+                                'end_dr':line['end_dr'] or '',
+                                'end_cr':line['end_cr'] or '',
+                                         }))
+            mang.append((0,0,{
+                    'coa_code':'Sub Total',
+                    'begin_dr': self.amount ,
+                    'begin_cr':self.amount_4 ,
+                    'period_dr':self.amount_2 ,
+                    'period_cr':self.amount_5  ,
+                    'end_dr':self.amount_3  ,
+                    'end_cr':self.amount_6 ,
+                             }))    
+            return mang
+
+        def get_info_2(o):
+            mang=[]
+            self.amount=0
+            self.sum_amount=0
+            self.amount_2=0
+            self.sum_amount_2=0
+            self.amount_3=0
+            self.sum_amount_3=0
+            self.amount_4=0
+            self.sum_amount_4=0
+            self.amount_5=0
+            self.sum_amount_5=0
+            self.amount_6=0
+            self.sum_amount_6=0
+            for line in get_total_line3(o):
+                mang.append((0,0,{
+                        'coa_code': 'Total',
+#                         'coa_name': line['coa_name'] or '',
+                        'begin_dr':line['begin_dr'] or '',
+                        'begin_cr':line['begin_cr'] or '',
+                        'period_dr':line['period_dr'] or '',
+                        'period_cr':line['period_cr'] or '',
+                        'end_dr':line['end_dr'] or '',
+                        'end_cr':line['end_cr'] or '',
+                                 }))
+                self.amount += line['begin_dr'] or False
+                self.sum_amount += self.amount
+                self.amount_2 += line['period_dr'] or False
+                self.sum_amount_2 += self.amount_2
+                self.amount_3 += line['end_dr'] or False
+                self.sum_amount_3 += self.amount_3  
+                self.amount_4 += line['begin_cr'] or False
+                self.sum_amount += self.amount_4
+                self.amount_5 += line['period_cr'] or False
+                self.sum_amount_2 += self.amount_5
+                self.amount_6 += line['end_cr'] or False
+                self.sum_amount_6 += self.amount_6                                                    
+            return mang
+        vals = {
+            'nguoi_nop_thue': get_company_name(report),
+            'dia_chi': get_company_vat(report),
+            'start_date':report.start_date,
+            'end_date':report.end_date,
+#             'tong_begin_dr':get_info(report)[self.sum_amount],
+#             'tong_period_dr':get_info(report)[self.sum_amount_2],
+            'general_trial_balance_review_line':get_info(report),
+            'general_trial_balance_review_line_1':get_info_1(report),
+            'general_trial_balance_review_line_2':get_info_2(report),
+        }
+        report_id = report_obj.create(cr, uid, vals)
+        res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
+                                        'green_erp_report_account', 'report_general_trial_balance_review')
+        return {
+                    'name': 'Trial Balance',
+                    'view_type': 'form',
+                    'view_mode': 'form',
+                    'res_model': 'general.trial.balance.review',
+                    'domain': [],
+                    'view_id': res and res[1] or False,
+                    'type': 'ir.actions.act_window',
+                    'target': 'current',
+                    'res_id': report_id,
+                }
 general_trial_balance()
 
 class general_balance_sheet(osv.osv_memory):
@@ -320,6 +1189,179 @@ class general_balance_sheet(osv.osv_memory):
         datas['form'] = self.read(cr, uid, ids)[0]        
         report_name = context['type_report']             
         return {'type': 'ir.actions.report.xml', 'report_name': report_name , 'datas': datas}
+
+    def review_report_in(self, cr, uid, ids, context=None):
+        report_obj = self.pool.get('general.balance.sheet.review')
+        report = self.browse(cr, uid, ids[0])    
+        self.account_id =False
+        self.times = False
+        self.start_date = False
+        self.end_date = False
+        self.company_name = False
+        self.company_address = False
+        self.showdetail = False
+        self.vat = False
+        self.title_fist = False
+        self.title_last = False
+        self.title = False
+        self.cr = cr
+        self.uid = uid
+        def get_company(o, company_id):
+            if company_id:
+                company_obj = self.pool.get('res.company').browse(cr,uid,company_id)
+                self.company_name = company_obj.name or ''
+                self.company_address = company_obj.street or ''
+                self.vat = company_obj.vat or ''
+            return True
+          
+        def get_company_name(o):
+            get_header(o)
+            return self.company_name
+     
+        def get_company_address(o):
+            return self.company_address     
+         
+        def get_company_vat(o):
+            return self.vat    
+#         
+        def get_vietname_date(o, date):
+            if not date:
+                return ''
+            date = datetime.strptime(date, DATE_FORMAT)
+            return date.strftime('%d/%m/%Y')
+#         def get_start_date(o):
+#             return get_vietname_date(o,o.start_date) 
+#         
+#         def get_end_date(o):
+#             return get_vietname_date(o,o.end_date)         
+        def get_sum_amount(o):
+            return self.sum_amount 
+         
+        def get_sum_amount_tax(o):
+            return self.sum_amount_tax
+        def get_id(o,get_id):
+            period_id = get_id.id
+            if not period_id:
+                return 1
+            else:
+                return period_id
+
+        def get_title(o):
+            if self.times =='years':
+                self.title_fist = u'Số đầu năm'
+                self.title_last = u'Số cuối năm'
+            else:
+                self.title_fist = u'Số đầu kỳ'
+                self.title_last = u'Số cuối kỳ'
+                return 
+    
+        def get_title_fist(o):
+            if not self.title_fist:
+                o.get_title()
+            return  self.title_fist
+        
+        def get_title_last(o):
+            if not self.title_last:
+                o.get_title()
+            return  self.title_last            
+
+        def get_quarter_date(o,year,quarter):
+            self.start_date = False
+            self.end_date  = False
+            if quarter == '1':
+                self.start_date = '''%s-01-01'''%(year)
+                self.end_date = year + '-03-31'
+            elif quarter == '2':
+                self.start_date = year+'-04-01'
+                self.end_date =year+'-06-30'
+            elif quarter == '3':
+                self.start_date = year+'-07-01'
+                self.end_date = year+'-09-30'
+            else:
+                self.start_date = year+'-10-01'
+                self.end_date = year+'-12-31'
+            
+        def get_header(o):
+            self.times = o.times
+            #Get company info
+            company_id = o.company_id and o.company_id.id or False
+            get_company(o,company_id)
+#             self.shop_ids = o.shop_ids 
+#             if self.shop_ids:
+#                 self.shop_ids = (','.join(map(str,self.shop_ids)))
+            
+            if self.times =='periods':
+                self.start_date = self.pool.get('account.period').browse(self.cr,self.uid,get_id(o,o.period_id_start)).date_start
+                self.end_date   = self.pool.get('account.period').browse(self.cr,self.uid,get_id(o,o.period_id_end)).date_stop
+                
+            elif self.times == 'years':
+                self.start_date = self.pool.get('account.fiscalyear').browse(self.cr,self.uid,get_id(o,o.fiscalyear_start)).date_start
+                self.end_date   = self.pool.get('account.fiscalyear').browse(self.cr,self.uid,get_id(o,o.fiscalyear_stop)).date_stop
+            else:
+                quarter = o.quarter
+                year = self.pool.get('account.fiscalyear').browse(self.cr,self.uid,get_id(o,o.fiscalyear_start)).name
+                get_quarter_date(o,year, quarter)
+            return True
+        
+        def get_line(o):
+            res = self.pool.get('sql.balance.sheet').get_line(self.cr, self.start_date,self.end_date,self.times,o.company_id.id)
+            return res
+        
+        def get_line_nv(o):
+            res = self.pool.get('sql.balance.sheet').get_line_nv(self.cr, self.start_date,self.end_date,self.times,o.company_id.id)
+            return res
+
+        def get_info(o):
+            mang=[]
+            for line in get_line(o):
+                mang.append((0,0,{
+                        'line_no': line['line_no'] or '',
+                        'description': line['description'] or '',
+                        'code':line['code'] or '',
+                        'illustrate':line['illustrate'] or '',
+                        'current_amount':line['current_amount'] or '',
+                        'prior_amount':line['prior_amount'] or '',
+                        'format':line['format'] or '',
+                                 }))
+            return mang
+
+        def get_info_1(o):
+            mang=[]
+            for line in get_line_nv(o):
+                mang.append((0,0,{
+                        'line_no': line['line_no'] or '',
+                        'description': line['description'] or '',
+                        'code':line['code'] or '',
+                        'illustrate':line['illustrate'] or '',
+                        'current_amount':line['current_amount'] or '',
+                        'prior_amount':line['prior_amount'] or '',
+                        'format':line['format'] or '',                            
+                                 }))
+            return mang
+        vals = {
+            'dia_chi_title':'Địa chỉ: ',
+            'nguoi_nop_thue_title':'Đơn vị báo cáo: ',
+            'nguoi_nop_thue': get_company_name(report),
+            'dia_chi': get_company_vat(report),
+            'start_date':report.start_date,
+            'end_date':report.end_date,
+            'general_balance_sheet_review_line':get_info(report),
+            'general_balance_sheet_review_line_1':get_info_1(report),
+        }
+        report_id = report_obj.create(cr, uid, vals)
+        res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
+                                        'green_erp_report_account', 'report_general_balance_sheet_review')
+        return {
+                    'name': 'General Balance Sheet',
+                    'view_type': 'form',
+                    'view_mode': 'form',
+                    'res_model': 'general.balance.sheet.review',
+                    'domain': [],
+                    'view_id': res and res[1] or False,
+                    'type': 'ir.actions.act_window',
+                    'target': 'current',
+                    'res_id': report_id,
+                }
     
 general_balance_sheet()
 
@@ -374,7 +1416,305 @@ class general_account_profit_loss(osv.osv_memory):
         datas['form'] = self.read(cr, uid, ids)[0]        
         report_name = context['type_report']             
         return {'type': 'ir.actions.report.xml', 'report_name': report_name , 'datas': datas}
+
+    def review_report_in(self, cr, uid, ids, context=None):
+        report_obj = self.pool.get('general.account.profit.loss.review')
+        report = self.browse(cr, uid, ids[0])    
+        self.account_id =False
+        self.times = False
+        self.start_date = False
+        self.end_date = False
+        self.company_name = False
+        self.company_address = False
+        self.showdetail = False
+        self.vat = False
+        self.title_fist = False
+        self.title_last = False
+        self.title = False
+        self.cr = cr
+        self.uid = uid
+        def get_company(o, company_id):
+            if company_id:
+                company_obj = self.pool.get('res.company').browse(cr,uid,company_id)
+                self.company_name = company_obj.name or ''
+                self.company_address = company_obj.street or ''
+                self.vat = company_obj.vat or ''
+            return True
+          
+        def get_company_name(o):
+            get_header(o)
+            return self.company_name
+     
+        def get_company_address(o):
+            return self.company_address     
+         
+        def get_company_vat(o):
+            return self.vat    
+#         
+        def get_vietname_date(o, date):
+            if not date:
+                return ''
+            date = datetime.strptime(date, DATE_FORMAT)
+            return date.strftime('%d/%m/%Y')
+#         def get_start_date(o):
+#             return get_vietname_date(o,o.start_date) 
+#         
+#         def get_end_date(o):
+#             return get_vietname_date(o,o.end_date)         
+        def get_sum_amount(o):
+            return self.sum_amount 
+         
+        def get_sum_amount_tax(o):
+            return self.sum_amount_tax
+        def get_id(o,get_id):
+            period_id = get_id.id
+            if not period_id:
+                return 1
+            else:
+                return period_id
+
+        def get_title(o):
+            if self.times =='years':
+                self.title_fist = u'Số đầu năm'
+                self.title_last = u'Số cuối năm'
+            else:
+                self.title_fist = u'Số đầu kỳ'
+                self.title_last = u'Số cuối kỳ'
+                return 
     
+        def get_title_fist(o):
+            if not self.title_fist:
+                o.get_title()
+            return  self.title_fist
+        
+        def get_title_last(o):
+            if not self.title_last:
+                o.get_title()
+            return  self.title_last            
+
+        def get_quarter_date(o,year,quarter):
+            self.start_date = False
+            self.end_date  = False
+            if quarter == '1':
+                self.start_date = '''%s-01-01'''%(year)
+                self.end_date = year + '-03-31'
+            elif quarter == '2':
+                self.start_date = year+'-04-01'
+                self.end_date =year+'-06-30'
+            elif quarter == '3':
+                self.start_date = year+'-07-01'
+                self.end_date = year+'-09-30'
+            else:
+                self.start_date = year+'-10-01'
+                self.end_date = year+'-12-31'
+            
+        def get_header(o):
+            self.times = o.times
+            #Get company info
+            company_id = o.company_id and o.company_id.id or False
+            get_company(o,company_id)
+#             self.shop_ids = o.shop_ids 
+#             if self.shop_ids:
+#                 self.shop_ids = (','.join(map(str,self.shop_ids)))
+            
+            if self.times =='periods':
+                self.start_date = self.pool.get('account.period').browse(self.cr,self.uid,get_id(o,o.period_id_start)).date_start
+                self.end_date   = self.pool.get('account.period').browse(self.cr,self.uid,get_id(o,o.period_id_end)).date_stop
+                
+            elif self.times == 'years':
+                self.start_date = self.pool.get('account.fiscalyear').browse(self.cr,self.uid,get_id(o,o.fiscalyear_start)).date_start
+                self.end_date   = self.pool.get('account.fiscalyear').browse(self.cr,self.uid,get_id(o,o.fiscalyear_stop)).date_stop
+            else:
+                quarter = o.quarter
+                year = self.pool.get('account.fiscalyear').browse(self.cr,self.uid,get_id(o,o.fiscalyear_start)).name
+                get_quarter_date(o,year, quarter)
+            return True
+        
+        def get_line(o):
+            if not self.start_date:
+                get_header()
+            return self.pool.get('sql.profit.loss').get_line(self.cr, self.start_date,self.end_date,self.times,o.company_id.id)
+
+        def get_info(o):
+            mang=[]
+            for line in get_line(o):
+                mang.append((0,0,{
+                        'line_no': '1',
+                        'description': 'Doanh thu bán hàng và cung cấp dịch vụ',
+                        'code':'01',
+                        'illustrate':'VII.01',
+                        'curr_amt':line['curr_amt1'] or '',
+                        'prior_amt':line['prior_amt1'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'line_no': '2',
+                        'description': 'Các khoản giảm trừ doanh thu',
+                        'code':'02',
+                        'illustrate':'VII.02',
+                        'curr_amt':line['curr_amt2'] or '',
+                        'prior_amt':line['prior_amt2'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'line_no': '3',
+                        'description': 'Doanh thu thuần về bán hàng và cung cấp dịch vụ (10=01-02)',
+                        'code':'10',
+                        'curr_amt':line['curr_amt3'] or '',
+                        'prior_amt':line['prior_amt3'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'line_no': '4',
+                        'description': 'Giá vốn hàng bán',
+                        'code':'11',
+                        'illustrate':'VII.03',
+                        'curr_amt':line['curr_amt4'] or '',
+                        'prior_amt':line['prior_amt4'] or '',
+                                 }))    
+                mang.append((0,0,{
+                        'line_no': '5',
+                        'description': 'Lợi nhuận gộp về bán hàng và cung cấp dịch vụ (20=10-11)',
+                        'code':'20',
+                        'curr_amt':line['curr_amt5'] or '',
+                        'prior_amt':line['prior_amt5'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'line_no': '6',
+                        'description': 'Doanh thu hoạt động tài chính',
+                        'code':'21',
+                        'illustrate':'VII.04',
+                        'curr_amt':line['curr_amt6'] or '',
+                        'prior_amt':line['prior_amt6'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'line_no': '7',
+                        'description': 'Chi phí tài chính',
+                        'code':'22',
+                        'illustrate':'VII.05',
+                        'curr_amt':line['curr_amt7'] or '',
+                        'prior_amt':line['prior_amt7'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'description': '- Trong đó: Chi phí lãi vay',
+                        'code':'23',
+                        'curr_amt':line['curr_amt71'] or '',
+                        'prior_amt':line['prior_amt71'] or '',
+                                 }))  
+                mang.append((0,0,{
+                        'line_no': '8',
+                        'description': 'Chi phí bán hàng',
+                        'code':'24',
+                        'illustrate':'VII.08',
+                        'curr_amt':line['curr_amt8'] or '',
+                        'prior_amt':line['prior_amt8'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'line_no': '9',
+                        'description': 'Chi phí quản lý doanh nghiệp',
+                        'code':'25',
+                        'illustrate':'VII.08',
+                        'curr_amt':line['curr_amt9'] or '',
+                        'prior_amt':line['prior_amt9'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'line_no': '10',
+                        'description': 'Lợi nhuận thuần từ hoạt động kinh doanh  (30=20+21-22-24-25)',
+                        'code':'30',
+                        'curr_amt':line['curr_amt10'] or '',
+                        'prior_amt':line['prior_amt10'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'line_no': '11',
+                        'description': 'Thu nhập khác',
+                        'code':'31',
+                        'illustrate':'VII.06',
+                        'curr_amt':line['curr_amt11'] or '',
+                        'prior_amt':line['prior_amt11'] or '',
+                                 }))     
+                mang.append((0,0,{
+                        'line_no': '12',
+                        'description': 'Chi phí khác',
+                        'code':'32',
+                        'illustrate':'VII.06',
+                        'curr_amt':line['curr_amt12'] or '',
+                        'prior_amt':line['prior_amt12'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'line_no': '13',
+                        'description': 'Lợi nhuận khác (40=31-32)',
+                        'code':'40',
+                        'curr_amt':line['curr_amt13'] or '',
+                        'prior_amt':line['prior_amt13'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'line_no': '14',
+                        'description': 'Tổng lợi nhuận kế toán trước thuế (50=30+40)',
+                        'code':'50',
+                        'curr_amt':line['curr_amt14'] or '',
+                        'prior_amt':line['prior_amt14'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'line_no': '15',
+                        'description': 'Chi phí thuế TNDN hiện hành',
+                        'code':'51',
+                        'illustrate':'VII.10',
+                        'curr_amt':line['curr_amt15'] or '',
+                        'prior_amt':line['prior_amt15'] or '',
+                                 }))    
+                mang.append((0,0,{
+                        'line_no': '16',
+                        'description': 'Chi phí thuế TNDN hoãn lại',
+                        'code':'52',
+                        'illustrate':'VII.11',
+                        'curr_amt':line['curr_amt16'] or '',
+                        'prior_amt':line['prior_amt16'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'line_no': '17',
+                        'description': 'Lợi nhuận sau thuế thu nhập doanh nghiệp (60=50-51-52)',
+                        'code':'60',
+                        'illustrate':'VII.01',
+                        'curr_amt':line['curr_amt17'] or '',
+                        'prior_amt':line['prior_amt17'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'line_no': '18',
+                        'description': 'Lãi cơ bản trên cổ phiếu (*)',
+                        'code':'70',
+                        'curr_amt':line['curr_amt18'] or '',
+                        'prior_amt':line['prior_amt18'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'line_no': '19',
+                        'description': 'Lãi suy giảm trên cổ phiếu (*)',
+                        'code':'71',
+                                 }))  
+            return mang
+
+        vals = {
+            'dia_chi_title':'Địa chỉ: ',
+            'nguoi_nop_thue_title':'Đơn vị báo cáo: ',
+            'nguoi_nop_thue': get_company_name(report),
+            'dia_chi': get_company_vat(report),
+            'start_date_title':'Từ ngày: ',
+            'start_date':report.start_date,
+            'end_date_title':' Đến ngày: ',
+            'end_date':report.end_date,
+            'general_account_profit_loss_review_line':get_info(report),
+        }
+        report_id = report_obj.create(cr, uid, vals)
+        res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
+                                        'green_erp_report_account', 'report_general_account_profit_loss_review')
+        return {
+                    'name': 'General Account Profit Loss',
+                    'view_type': 'form',
+                    'view_mode': 'form',
+                    'res_model': 'general.account.profit.loss.review',
+                    'domain': [],
+                    'view_id': res and res[1] or False,
+                    'type': 'ir.actions.act_window',
+                    'target': 'current',
+                    'res_id': report_id,
+                }
+   
 general_account_profit_loss()
 
 class luuchuyen_tiente(osv.osv_memory):
@@ -429,6 +1769,349 @@ class luuchuyen_tiente(osv.osv_memory):
         report_name = context['type_report']             
         return {'type': 'ir.actions.report.xml', 'report_name': report_name , 'datas': datas}
     
+    def review_report_in(self, cr, uid, ids, context=None):
+        report_obj = self.pool.get('luuchuyen.tiente.review')
+        report = self.browse(cr, uid, ids[0])    
+        self.account_id =False
+        self.times = False
+        self.start_date = False
+        self.end_date = False
+        self.company_name = False
+        self.company_address = False
+        self.showdetail = False
+        self.vat = False
+        self.title_fist = False
+        self.title_last = False
+        self.title = False
+        self.cr = cr
+        self.uid = uid
+        def get_company(o, company_id):
+            if company_id:
+                company_obj = self.pool.get('res.company').browse(cr,uid,company_id)
+                self.company_name = company_obj.name or ''
+                self.company_address = company_obj.street or ''
+                self.vat = company_obj.vat or ''
+            return True
+          
+        def get_company_name(o):
+            get_header(o)
+            return self.company_name
+     
+        def get_company_address(o):
+            return self.company_address     
+         
+        def get_company_vat(o):
+            return self.vat    
+#         
+        def get_vietname_date(o, date):
+            if not date:
+                return ''
+            date = datetime.strptime(date, DATE_FORMAT)
+            return date.strftime('%d/%m/%Y')
+#         def get_start_date(o):
+#             return get_vietname_date(o,o.start_date) 
+#         
+#         def get_end_date(o):
+#             return get_vietname_date(o,o.end_date)         
+        def get_sum_amount(o):
+            return self.sum_amount 
+         
+        def get_sum_amount_tax(o):
+            return self.sum_amount_tax
+        def get_id(o,get_id):
+            period_id = get_id.id
+            if not period_id:
+                return 1
+            else:
+                return period_id
+
+        def get_title(o):
+            if self.times =='years':
+                self.title_fist = u'Số đầu năm'
+                self.title_last = u'Số cuối năm'
+            else:
+                self.title_fist = u'Số đầu kỳ'
+                self.title_last = u'Số cuối kỳ'
+                return 
+    
+        def get_title_fist(o):
+            if not self.title_fist:
+                o.get_title()
+            return  self.title_fist
+        
+        def get_title_last(o):
+            if not self.title_last:
+                o.get_title()
+            return  self.title_last            
+
+        def get_quarter_date(o,year,quarter):
+            self.start_date = False
+            self.end_date  = False
+            if quarter == '1':
+                self.start_date = '''%s-01-01'''%(year)
+                self.end_date = year + '-03-31'
+            elif quarter == '2':
+                self.start_date = year+'-04-01'
+                self.end_date =year+'-06-30'
+            elif quarter == '3':
+                self.start_date = year+'-07-01'
+                self.end_date = year+'-09-30'
+            else:
+                self.start_date = year+'-10-01'
+                self.end_date = year+'-12-31'
+            
+        def get_header(o):
+            self.times = o.times
+            #Get company info
+            company_id = o.company_id and o.company_id.id or False
+            get_company(o,company_id)
+#             self.shop_ids = o.shop_ids 
+#             if self.shop_ids:
+#                 self.shop_ids = (','.join(map(str,self.shop_ids)))
+            
+            if self.times =='periods':
+                self.start_date = self.pool.get('account.period').browse(self.cr,self.uid,get_id(o,o.period_id_start)).date_start
+                self.end_date   = self.pool.get('account.period').browse(self.cr,self.uid,get_id(o,o.period_id_end)).date_stop
+                
+            elif self.times == 'years':
+                self.start_date = self.pool.get('account.fiscalyear').browse(self.cr,self.uid,get_id(o,o.fiscalyear_start)).date_start
+                self.end_date   = self.pool.get('account.fiscalyear').browse(self.cr,self.uid,get_id(o,o.fiscalyear_stop)).date_stop
+            else:
+                quarter = o.quarter
+                year = self.pool.get('account.fiscalyear').browse(self.cr,self.uid,get_id(o,o.fiscalyear_start)).name
+                get_quarter_date(o,year, quarter)
+            return True
+        
+
+        def get_line(o):
+            if not self.start_date:
+                get_header()
+            return self.pool.get('sql.luuhuyen.tiente').get_line_tructiep(self.cr, self.start_date,self.end_date,self.times,o.company_id.id)
+
+        def get_info(o):
+            mang=[]
+            for line in get_line(o):
+                mang.append((0,0,{
+                        'line_no': 'I.',
+                        'description': 'Lưu chuyển tiền từ hoạt động kinh doanh',
+                                 }))
+                mang.append((0,0,{
+                        'line_no': '1.',
+                        'description': 'Tiền thu từ bán hàng, cung cấp dịch vụ và doanh thu khác',
+                        'code':'01',
+                        'curr_amt':line['curr_amt01'] or '',
+                        'prior_amt':line['prior_amt01'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'line_no': '2.',
+                        'description': 'Tiền chi trả cho người cung cấp hàng hóa và dịch vụ',
+                        'code':'02',
+                        'curr_amt':line['curr_amt02'] or '',
+                        'prior_amt':line['prior_amt02'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'line_no': '3.',
+                        'description': 'Tiền chi trả cho người lao động',
+                        'code':'03',
+                        'curr_amt':line['curr_amt03'] or '',
+                        'prior_amt':line['prior_amt03'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'line_no': '4.',
+                        'description': 'Tiền chi trả lãi vay',
+                        'code':'04',
+                        'curr_amt':line['curr_amt04'] or '',
+                        'prior_amt':line['prior_amt04'] or '',
+                                 }))    
+                mang.append((0,0,{
+                        'line_no': '5.',
+                        'description': 'Tiền chi nộp thuế thu nhập doanh nghiệp',
+                        'code':'05',
+                        'curr_amt':line['curr_amt05'] or '',
+                        'prior_amt':line['prior_amt05'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'line_no': '6.',
+                        'description': 'Tiền thu khác từ hoạt động kinh doanh',
+                        'code':'06',
+                        'curr_amt':line['curr_amt06'] or '',
+                        'prior_amt':line['prior_amt06'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'line_no': '7.',
+                        'description': 'Tiền chi khác cho hoạt động kinh doanh',
+                        'code':'07',
+                        'curr_amt':line['curr_amt07'] or '',
+                        'prior_amt':line['prior_amt07'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'description': 'Lưu chuyển tiền thuần từ hoạt động kinh doanh',
+                        'code':'20',
+                        'curr_amt':line['curr_amt20'] or '',
+                        'prior_amt':line['prior_amt20'] or '',
+                                 }))  
+                mang.append((0,0,{
+                        'line_no': 'II.',
+                        'description': 'Lưu chuyển tiền từ hoạt động đầu tư',
+                                 }))
+                mang.append((0,0,{
+                        'line_no': '1.',
+                        'description': 'Tiền chi để mua sắm, xây dựng TSCĐ và các tài sản dài hạn khác',
+                        'code':'21',
+                        'curr_amt':line['curr_amt21'] or '',
+                        'prior_amt':line['prior_amt21'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'line_no': '2.',
+                        'description': 'Tiền thu từ thanh lý, nhượng bán TSCĐ và các tài sản dài hạn khác',
+                        'code':'22',
+                        'curr_amt':line['curr_amt22'] or '',
+                        'prior_amt':line['prior_amt22'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'line_no': '3.',
+                        'description': 'Tiền chi cho vay, mua các công cụ nợ của đơn vị khác',
+                        'code':'23',
+                        'curr_amt':line['curr_amt23'] or '',
+                        'prior_amt':line['prior_amt23'] or '',
+                                 }))     
+                mang.append((0,0,{
+                        'line_no': '4.',
+                        'description': 'Tiền thu hồi cho vay, bán lại các công cụ nợ của đơn vị khác',
+                        'code':'24',
+                        'curr_amt':line['curr_amt24'] or '',
+                        'prior_amt':line['prior_amt24'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'line_no': '5.',
+                        'description': 'Tiền chi đầu tư góp vốn vào đơn vị khác',
+                        'code':'25',
+                        'curr_amt':line['curr_amt25'] or '',
+                        'prior_amt':line['prior_amt25'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'line_no': '6.',
+                        'description': 'Tiền thu hồi đầu tư góp vốn vào đơn vị khác',
+                        'code':'26',
+                        'curr_amt':line['curr_amt26'] or '',
+                        'prior_amt':line['prior_amt26'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'line_no': '7.',
+                        'description': 'Tiền thu lãi cho vay, cổ tức và lợi nhuận được chia',
+                        'code':'27',
+                        'curr_amt':line['curr_amt27'] or '',
+                        'prior_amt':line['prior_amt27'] or '',
+                                 }))    
+                mang.append((0,0,{
+                        'description': 'Lưu chuyển tiền thuần từ hoạt động đầu tư',
+                        'code':'30',
+                        'curr_amt':line['curr_amt30'] or '',
+                        'prior_amt':line['prior_amt30'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'line_no': 'III.',
+                        'description': 'Lưu chuyển tiền từ hoạt động tài chính',
+                                 }))
+                mang.append((0,0,{
+                        'line_no': '1.',
+                        'description': 'Tiền thu từ phát hành cổ phiếu, nhận vốn góp của chủ sở hữu',
+                        'code':'31',
+                        'curr_amt':line['curr_amt31'] or '',
+                        'prior_amt':line['prior_amt31'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'line_no': '2.',
+                        'description': 'Tiền chi trả vốn góp cho các chủ sở hữu, mua lại cổ phiếu của doanh nghiệp đã phát hành',
+                        'code':'32',
+                        'curr_amt':line['curr_amt32'] or '',
+                        'prior_amt':line['prior_amt32'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'line_no': '3.',
+                        'description': 'Tiền vay ngắn hạn, dài hạn nhận được',
+                        'code':'33',
+                        'curr_amt':line['curr_amt33'] or '',
+                        'prior_amt':line['prior_amt33'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'line_no': '4.',
+                        'description': 'Tiền chi trả nợ gốc vay',
+                        'code':'34',
+                        'curr_amt':line['curr_amt34'] or '',
+                        'prior_amt':line['prior_amt34'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'line_no': '5.',
+                        'description': 'Tiền chi trả nợ thuê tài chính',
+                        'code':'35',
+                        'curr_amt':line['curr_amt35'] or '',
+                        'prior_amt':line['prior_amt35'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'line_no': '6.',
+                        'description': 'Cổ tức, lợi nhuận đã trả cho chủ sở hữu',
+                        'code':'36',
+                        'curr_amt':line['curr_amt36'] or '',
+                        'prior_amt':line['prior_amt36'] or '',
+                                 }))                
+                mang.append((0,0,{
+                        'description': 'Lưu chuyển tiền thuần từ hoạt động tài chính',
+                        'code':'40',
+                        'curr_amt':line['curr_amt40'] or '',
+                        'prior_amt':line['prior_amt40'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'description': 'Lưu chuyển tiền thuần trong kỳ (50 = 20+30+40)',
+                        'code':'50',
+                        'curr_amt':line['curr_amt50'] or '',
+                        'prior_amt':line['prior_amt50'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'description': 'Tiền và tương đương tiền đầu kỳ',
+                        'code':'60',
+                        'curr_amt':line['curr_amt60'] or '',
+                        'prior_amt':line['prior_amt60'] or '',
+                                 }))    
+                mang.append((0,0,{
+                        'description': 'Ảnh hưởng của thay đổi tỷ giá hối đoái quy đổi ngoại tệ',
+                        'code':'61',
+                        'curr_amt':line['curr_amt61'] or '',
+                        'prior_amt':line['prior_amt61'] or '',
+                                 }))
+                mang.append((0,0,{
+                        'description': 'Tiền và tương đương tiền cuối kỳ (70 = 50+60+61)',
+                        'code':'70',
+                        'curr_amt':line['curr_amt70'] or '',
+                        'prior_amt':line['prior_amt70'] or '',
+                                 }))   
+            return mang
+
+        vals = {
+            'dia_chi_title':'Địa chỉ: ',
+            'nguoi_nop_thue_title':'Đơn vị báo cáo: ',
+            'nguoi_nop_thue': get_company_name(report),
+            'dia_chi': get_company_vat(report),
+            'start_date_title':'Từ ngày: ',
+            'start_date':report.start_date,
+            'end_date_title':' Đến ngày: ',
+            'end_date':report.end_date,
+            'luuchuyen_tiente_review_line':get_info(report),
+        }
+        report_id = report_obj.create(cr, uid, vals)
+        res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
+                                        'green_erp_report_account', 'report_luuchuyen_tiente_review')
+        return {
+                    'name': 'Lưu Chuyển Tiền Tệ',
+                    'view_type': 'form',
+                    'view_mode': 'form',
+                    'res_model': 'luuchuyen.tiente.review',
+                    'domain': [],
+                    'view_id': res and res[1] or False,
+                    'type': 'ir.actions.act_window',
+                    'target': 'current',
+                    'res_id': report_id,
+                }    
 luuchuyen_tiente()
 
 class so_quy(osv.osv_memory):

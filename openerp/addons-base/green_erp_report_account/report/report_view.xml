@@ -52,16 +52,40 @@
 	        rml="green_erp_report_account/report/tax_vat_input_review_xls.ods"/>
 	        
 <!--  ========================= Create General Account VAT OUT Report ================= -->
-    	<record id="tax_vat_output" model="ir.actions.report.xml">
-	        <field name="name">tax_vat_output</field>
+		<record id="tax_vat_output" model="ir.actions.report.xml">
+			        <field name="name">tax_vat_output</field>
+			        <field name="type">ir.actions.report.xml</field>
+			        <field name="model">report.account.in.out.tax</field>
+			        <field name="report_name">tax_vat_output</field>
+			        <field name="report_type">aeroo</field>
+			        <field name="in_format">oo-ods</field>
+			        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+			        <field name="parser_loc">green_erp_report_account/report/tax_vat_output.py</field>
+			        <field name="report_rml">green_erp_report_account/report/tax_vat_output.ods</field>
+			        <field name="parser_state">loc</field>
+			        <field name="tml_source">file</field>
+			        <field name="attachment_use" eval="0"/>
+		    	</record>		    
+				
+				<report 
+					auto="False" 
+					menu="False"
+					id="tax_vat_output" 
+					model="report.account.in.out.tax" 
+					name="tax_vat_output"
+			        string="Bảng kê bán ra"
+			        rml="green_erp_report_account/report/tax_vat_output.ods"/>
+
+    	<record id="tax_vat_output_review_xls" model="ir.actions.report.xml">
+	        <field name="name">tax_vat_output_review_xls</field>
 	        <field name="type">ir.actions.report.xml</field>
-	        <field name="model">report.account.in.out.tax</field>
-	        <field name="report_name">tax_vat_output</field>
+	        <field name="model">report.account.in.out.tax.review</field>
+	        <field name="report_name">tax_vat_output_review_xls</field>
 	        <field name="report_type">aeroo</field>
 	        <field name="in_format">oo-ods</field>
 	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
-	        <field name="parser_loc">green_erp_report_account/report/tax_vat_output.py</field>
-	        <field name="report_rml">green_erp_report_account/report/tax_vat_output.ods</field>
+	        <field name="parser_loc">green_erp_report_account/report/tax_vat_output_review_xls.py</field>
+	        <field name="report_rml">green_erp_report_account/report/tax_vat_output_review_xls.ods</field>
 	        <field name="parser_state">loc</field>
 	        <field name="tml_source">file</field>
 	        <field name="attachment_use" eval="0"/>
@@ -70,11 +94,11 @@
 		<report 
 			auto="False" 
 			menu="False"
-			id="tax_vat_output" 
-			model="report.account.in.out.tax" 
-			name="tax_vat_output"
+			id="tax_vat_output_review_xls" 
+			model="report.account.in.out.tax.review" 
+			name="tax_vat_output_review_xls"
 	        string="Bảng kê bán ra"
-	        rml="green_erp_report_account/report/tax_vat_output.ods"/>
+	        rml="green_erp_report_account/report/tax_vat_output_review_xls.ods"/>
 		
 <!--  ========================= Account Ledger Report ================= -->
 		<record id="account_ledger_report" model="ir.actions.report.xml">
@@ -179,6 +203,30 @@
 	        string="General Trial Balance"
 	        rml="green_erp_report_account/report/general_trial_balance_report.ods"/>
 	        
+    	<record id="general_trial_balance_xls" model="ir.actions.report.xml">
+	        <field name="name">general_trial_balance_xls</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">general.trial.balance.review</field>
+	        <field name="report_name">general_trial_balance_xls</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">green_erp_report_account/report/general_trial_balance_review_report.py</field>
+	        <field name="report_rml">green_erp_report_account/report/general_trial_balance_review_report.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record>		    
+		
+		<report 
+			auto="False" 
+			menu="False"
+			id="general_trial_balance_xls" 
+			model="general.trial.balance.review" 
+			name="general_trial_balance_xls"
+	        string="General Trial Balance"
+	        rml="green_erp_report_account/report/general_trial_balance_review_report.ods"/>	        
+	        
 <!--  ========================= REPORT FINANCIAL General Balance Sheet ================= -->	   	   
 	   <!-- Create New General Balance Sheet Report -->
     	<record id="fin_general_balance_sheet_report" model="ir.actions.report.xml">
@@ -204,6 +252,30 @@
 			name="fin_general_balance_sheet_report"
 	        string="General Balance Sheet"
 	        rml="green_erp_report_account/report/general_balance_sheet_bcdkt_report.ods"/>
+
+    	<record id="general_balance_sheet_xls" model="ir.actions.report.xml">
+	        <field name="name">general_balance_sheet_xls</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">general.balance.sheet.review</field>
+	        <field name="report_name">general_balance_sheet_xls</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">green_erp_report_account/report/general_balance_sheet_bcdkt_review_report.py</field>
+	        <field name="report_rml">green_erp_report_account/report/general_balance_sheet_bcdkt_review_report.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record>		    
+		
+		<report 
+			auto="False" 
+			menu="False"
+			id="general_balance_sheet_xls" 
+			model="general.balance.sheet.review" 
+			name="general_balance_sheet_xls"
+	        string="General Balance Sheet"
+	        rml="green_erp_report_account/report/general_balance_sheet_bcdkt_review_report.ods"/>
 	        
 <!--  =========== REPORT GENERAL ACCOUNTt PROFIT LOSS REPORT ============ -->	   	   
 	   <!-- Create New General Account Profit loss Report -->
@@ -231,6 +303,31 @@
 	        string="General Account Profit Loss"
 	        rml="green_erp_report_account/report/general_account_profit_loss_report.ods"/>
 	        
+	        
+    	<record id="general_account_profit_loss_xls" model="ir.actions.report.xml">
+	        <field name="name">general_account_profit_loss_xls</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">general.account.profit.loss.review</field>
+	        <field name="report_name">general_account_profit_loss_xls</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">green_erp_report_account/report/general_account_profit_loss_review_report.py</field>
+	        <field name="report_rml">green_erp_report_account/report/general_account_profit_loss_review_report.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record>		    
+		
+		<report 
+			auto="False" 
+			menu="False"
+			id="general_account_profit_loss_xls" 
+			model="general.account.profit.loss.review" 
+			name="general_account_profit_loss_xls"
+	        string="General Account Profit Loss"
+	        rml="green_erp_report_account/report/general_account_profit_loss_review_report.ods"/>	        
+	        
 <!--  =========== REPORT Luu Chuyen tien te ============ -->	   	   
 	   <!-- Create New Luu Chuyen tien te Report truc tiep -->
     	<record id="luuchuyen_tiente_tructiep_report" model="ir.actions.report.xml">
@@ -256,6 +353,31 @@
 			name="luuchuyen_tiente_tructiep_report"
 	        string="Lưu chuyển tiền tệ (trực tiếp)"
 	        rml="green_erp_report_account/report/luuchuyen_tiente_tructiep_report.ods"/>
+	        
+	        
+    	<record id="luuchuyen_tiente_xls" model="ir.actions.report.xml">
+	        <field name="name">luuchuyen_tiente_xls</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">luuchuyen.tiente.review</field>
+	        <field name="report_name">luuchuyen_tiente_xls</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">green_erp_report_account/report/luuchuyen_tiente_tructiep_review_report.py</field>
+	        <field name="report_rml">green_erp_report_account/report/luuchuyen_tiente_tructiep_review_report.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record>		    
+		
+		<report 
+			auto="False" 
+			menu="False"
+			id="luuchuyen_tiente_xls" 
+			model="luuchuyen.tiente.review" 
+			name="luuchuyen_tiente_xls"
+	        string="Lưu Chuyển Tiền Tệ"
+	        rml="green_erp_report_account/report/luuchuyen_tiente_tructiep_review_report.ods"/>	 	        
 	        
 <!--  ========================= Sổ quỹ tiền mặt ================= -->
 		<record id="soquy_tienmat_report" model="ir.actions.report.xml">

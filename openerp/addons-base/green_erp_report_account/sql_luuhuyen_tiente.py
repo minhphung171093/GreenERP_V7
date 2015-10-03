@@ -271,8 +271,8 @@ class sql_luuhuyen_tiente(osv.osv):
                         where aml.account_id in ('||lst_account_du||') and aml.move_id=$1
                             ' using rec.id
                     loop
-                        bal_dr = bal_dr + coalesce(rec.balance_dr, 0);
-                        bal_cr = bal_cr + coalesce(rec.balance_cr, 0);
+                        bal_dr = bal_dr + coalesce(rec2.balance_dr, 0);
+                        bal_cr = bal_cr + coalesce(rec2.balance_cr, 0);
                     end loop;
                 end loop;
             else
