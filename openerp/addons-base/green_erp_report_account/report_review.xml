@@ -172,6 +172,60 @@
             <field name="name">report_account_in_out_tax_review</field>
             <field name="delete_after">7</field>
         </record>
+		
+ <!--  ========================= Create Account Ledger Report Review ================= -->     
+         <record id="account_ledger_report_review" model="ir.ui.view">
+            <field name="name">gen.account.ledger.report.review</field>
+            <field name="model">account.ledger.report.review</field>
+            <field name="arch" type="xml">
+                <form string="Account Ledger Review" version="7.0" create="false">
+                	<header>
+                        <button string="Print (.xls)" type="object" name="print_xls" icon='gtk-execute'/>
+                    </header>
+                	<group class="oe_left">
+                		<field name="don_vi"/>
+                		<field name="dia_chi"/>
+                		<field name="ms_thue"/>
+                    </group>
+                	<div class="oe_text_center">
+                    	<b> SỔ CÁI </b>
+                	</div>
+                	<group>
+	                	<div class="oe_text_center">
+	                		<label for="account_code" class="oe_inline"/>
+	                		<field name="account_code" class="oe_inline"/>
+	                		<field name="account_name" nolabel="1" class="oe_inline"/>
+	                	</div>
+	                </group>
+	                
+            		<div class="oe_text_center">
+            			<label for="date_from" class="oe_inline"/>
+                		<field name="date_from" class="oe_inline"/>
+                		<label for="date_to" class="oe_inline"/>
+                		<field name="date_to" class="oe_inline"/>
+                	</div>
+                    <div class="oe_right">
+                		ĐVT: Đồng
+                    </div>
+                    <field name="ledger_review_line" nolabel='1'>
+                    	<tree editable="top">
+                    		<field name="ngay_ghso"/>
+	                		<field name="ngay_thang"/>
+	                		<field name="so_hieu"/>
+	                		<field name="dien_giai"/>
+	                		<field name="tk_doi_ung"/>
+	                		<field name="so_ps_no"/>
+	                		<field name="so_ps_co"/>
+                    	</tree>
+                    </field>
+                </form>
+            </field>
+        </record>
+        
+        <record id="greenerp_report_account_ledger_report_review" model="greenerp.report">
+            <field name="name">gen_account_ledger_report_review</field>
+            <field name="delete_after">7</field>
+        </record>
 
  <!--  ========================= Create General Trial Balance Report Review ================= -->     
          <record id="report_general_trial_balance_review" model="ir.ui.view">
@@ -236,15 +290,70 @@
 		                		</tree>
 		                	</field>
 	                	</group> 		                	
-			       </sheet>       	                	
+			       </sheet>
                 </form>
             </field>
-        </record>
-        
+        </record>      	                	
        <record id="green_report_general_trial_balance_review" model="greenerp.report">
             <field name="name">general_trial_balance_review</field>
             <field name="delete_after">7</field>
         </record> 
+        
+ <!--  ========================= Create Account Detail Ledger Report Review ================= -->     
+         <record id="account_detail_ledger_report_review" model="ir.ui.view">
+            <field name="name">detail.account.ledger.report.review</field>
+            <field name="model">account.ledger.report.review</field>
+            <field name="arch" type="xml">
+                <form string="Account Detail Ledger Review" version="7.0" create="false">
+                	<header>
+                        <button string="Print (.xls)" type="object" name="print_detail_xls" icon='gtk-execute'/>
+                    </header>
+                	<group class="oe_left">
+                		<field name="don_vi"/>
+                		<field name="dia_chi"/>
+                		<field name="ms_thue"/>
+                    </group>
+                	<div class="oe_text_center">
+                    	<b> SỔ CÁI </b>
+                    	<b> (Dùng cho hình thức kế toán Chứng từ ghi sổ) </b>
+                	</div>
+                	<group>
+	                	<div class="oe_text_center">
+	                		<label for="account_code" class="oe_inline"/>
+	                		<field name="account_code" class="oe_inline"/>
+	                		<field name="account_name" nolabel="1" class="oe_inline"/>
+	                	</div>
+	                </group>
+	                
+            		<div class="oe_text_center">
+            			<label for="date_from" class="oe_inline"/>
+                		<field name="date_from" class="oe_inline"/>
+                		<label for="date_to" class="oe_inline"/>
+                		<field name="date_to" class="oe_inline"/>
+                	</div>
+                    <div class="oe_right">
+                		ĐVT: Đồng
+                    </div>
+                    <field name="ledger_review_line" nolabel='1'>
+                    	<tree editable="top">
+                    		<field name="ngay_ghso"/>
+                    		<field name="so_hieu"/>
+	                		<field name="ngay_thang"/>
+	                		<field name="dien_giai"/>
+	                		<field name="tk_doi_ung"/>
+	                		<field name="so_ps_no"/>
+	                		<field name="so_ps_co"/> 
+	                		<field name="ghi_chu"/>
+                    	</tree>
+                    </field>
+                </form>
+            </field>
+        </record>
+
+        <record id="greenerp_report_account_detail_ledger_report_review" model="greenerp.report">
+            <field name="name">account_detail_ledger_report_review</field>
+            <field name="delete_after">7</field>
+        </record>        
         
  <!--  ========================= Create General Balance Sheet Report Review ================= -->     
          <record id="report_general_balance_sheet_review" model="ir.ui.view">
@@ -293,15 +402,71 @@
 		                		</tree>
 		                	</field>
 	                	</group> 	
-			       </sheet>       	                	
+			       </sheet>
+                </form>
+            </field>
+        </record>      	                	
+       <record id="green_general_balance_sheet_review" model="greenerp.report">
+            <field name="name">general_balance_sheet_review</field>
+            <field name="delete_after">7</field>
+        </record>    
+        
+ <!--  ========================= Create So Quy Report Review ================= -->     
+         <record id="so_quy_chung_review" model="ir.ui.view">
+            <field name="name">so.quy.chung.review</field>
+            <field name="model">so.quy.review</field>
+            <field name="arch" type="xml">
+                <form string="So Quy" version="7.0" create="false">
+                	<header>
+                        <button string="Print (.xls)" type="object" name="print_xls" icon='gtk-execute'/>
+                    </header>
+                	<group class="oe_left">
+                		<field name="don_vi"/>
+                		<field name="dia_chi"/>
+                    </group>
+                	<div class="oe_text_center">
+                    	<b> SỔ QUỸ TIỀN MẶT </b>
+                	</div>
+                	<group>
+	                	<div class="oe_text_center">
+	                		<label for="account_code" class="oe_inline"/>
+	                		<field name="account_code" class="oe_inline"/>
+	                		<field name="account_name" nolabel="1" class="oe_inline"/>
+	                	</div>
+	                </group>
+	                <div class="oe_text_center">
+                    	<b> Loại quỹ: Quỹ tiền mặt </b>
+                	</div>
+            		<div class="oe_text_center">
+            			<label for="date_from" class="oe_inline"/>
+                		<field name="date_from" class="oe_inline"/>
+                		<label for="date_to" class="oe_inline"/>
+                		<field name="date_to" class="oe_inline"/>
+                	</div>
+                    <div class="oe_right">
+                		ĐVT: Đồng
+                    </div>
+                    <field name="so_quy_line" nolabel='1'>
+                    	<tree editable="top">
+                    		<field name="ngay_ghso"/>
+	                		<field name="ngay_thang"/>
+	                		<field name="so_hieu_thu"/>
+	                		<field name="so_hieu_chi"/>
+	                		<field name="dien_giai"/>
+	                		<field name="so_ps_no" string="Số tiền Thu"/>
+	                		<field name="so_ps_co" string="Số tiền Chi"/> 
+	                		<field name="so_ps_ton" string="Số tiền Tồn"/>
+	                		<field name="ghi_chu"/>
+                    	</tree>
+                    </field>
                 </form>
             </field>
         </record>
         
-       <record id="green_general_balance_sheet_review" model="greenerp.report">
-            <field name="name">general_balance_sheet_review</field>
+        <record id="greenerp_report_so_quy_review" model="greenerp.report">
+            <field name="name">so_quy_chung_review</field>
             <field name="delete_after">7</field>
-        </record>         
+        </record>       
 
  <!--  ========================= Create General Account Profit Loss Report Review ================= -->     
          <record id="report_general_account_profit_loss_review" model="ir.ui.view">
@@ -347,11 +512,68 @@
                 </form>
             </field>
         </record>
-        
        <record id="green_general_account_profit_loss_review" model="greenerp.report">
             <field name="name">general_account_profit_loss_review</field>
             <field name="delete_after">7</field>
         </record> 
+        
+ <!--  ========================= Create So Quy Chi Tiet Report Review ================= -->     
+         <record id="so_quy_chi_tiet_review" model="ir.ui.view">
+            <field name="name">so.quy.chung.review</field>
+            <field name="model">so.quy.review</field>
+            <field name="arch" type="xml">
+                <form string="So Quy Chi Tiet" version="7.0" create="false">
+                	<header>
+                        <button string="Print (.xls)" type="object" name="print_detail_xls" icon='gtk-execute'/>
+                    </header>
+                	<group class="oe_left">
+                		<field name="don_vi"/>
+                		<field name="dia_chi"/>
+                    </group>
+                	<div class="oe_text_center">
+                    	<b> SỔ QUỸ TIỀN MẶT </b>
+                	</div>
+                	<group>
+	                	<div class="oe_text_center">
+	                		<label for="account_code" class="oe_inline"/>
+	                		<field name="account_code" class="oe_inline"/>
+	                		<field name="account_name" nolabel="1" class="oe_inline"/>
+	                	</div>
+	                </group>
+	                <div class="oe_text_center">
+                    	<b> Loại quỹ: Quỹ tiền mặt </b>
+                	</div>
+            		<div class="oe_text_center">
+            			<label for="date_from" class="oe_inline"/>
+                		<field name="date_from" class="oe_inline"/>
+                		<label for="date_to" class="oe_inline"/>
+                		<field name="date_to" class="oe_inline"/>
+                	</div>
+                    <div class="oe_right">
+                		ĐVT: Đồng
+                    </div>
+                    <field name="so_quy_line" nolabel='1'>
+                    	<tree editable="top">
+                    		<field name="ngay_ghso"/>
+	                		<field name="ngay_thang"/>
+	                		<field name="so_hieu_thu"/>
+	                		<field name="so_hieu_chi"/>
+	                		<field name="dien_giai"/>
+	                		<field name="tk_doi_ung"/>
+	                		<field name="so_ps_no" string="Số phát sinh Nợ"/>
+	                		<field name="so_ps_co" string="Số phát sinh Có"/> 
+	                		<field name="so_ps_ton" string="Số Tồn"/>
+	                		<field name="ghi_chu"/>
+                    	</tree>
+                    </field>
+                </form>
+            </field>
+        </record>
+        
+        <record id="greenerp_report_so_quy_chi_tiet_review" model="greenerp.report">
+            <field name="name">so_quy_chi_tiet_review</field>
+            <field name="delete_after">7</field>
+        </record>
  
  <!--  ========================= Create Luu Chuyen Tien Te Report Review ================= -->     
          <record id="report_luuchuyen_tiente_review" model="ir.ui.view">
@@ -398,12 +620,58 @@
                 </form>
             </field>
         </record>
-        
         <record id="green_luuchuyen_tiente_review" model="greenerp.report">
             <field name="name">luuchuyen_tiente_review</field>
             <field name="delete_after">7</field>
         </record> 
         
+<!--  ========================= Create So Quy Chi Tiet Report Review ================= -->     
+         <record id="so_tiengui_nganhang_review" model="ir.ui.view">
+            <field name="name">so.tiengui.nganhang.review</field>
+            <field name="model">so.quy.review</field>
+            <field name="arch" type="xml">
+                <form string="SỔ TIỀN GỬI NGÂN HÀNG" version="7.0" create="false">
+                	<header>
+                        <button string="Print (.xls)" type="object" name="print_tienmat_xls" icon='gtk-execute'/>
+                    </header>
+                	<group class="oe_left">
+                		<field name="don_vi"/>
+                		<field name="dia_chi"/>
+                    </group>
+                	<div class="oe_text_center">
+                    	<b> SỔ TIỀN GỬI NGÂN HÀNG </b>
+                    	<div>Nơi mở tài khoản giao dich:</div>
+                    	<div>Số hiệu tài khoản tại nơi gửi:</div>
+                	</div>
+            		<div class="oe_text_center">
+            			<label for="date_from" class="oe_inline"/>
+                		<field name="date_from" class="oe_inline"/>
+                		<label for="date_to" class="oe_inline"/>
+                		<field name="date_to" class="oe_inline"/>
+                	</div>
+                    <div class="oe_right">
+                		ĐVT: Đồng
+                    </div>
+                    <field name="so_quy_line" nolabel='1'>
+                    	<tree editable="top">
+                    		<field name="ngay_ghso"/>
+                    		<field name="so_hieu_thu" string="Số hiệu Chứng từ"/>
+	                		<field name="ngay_thang"/>
+	                		<field name="dien_giai"/>
+	                		<field name="tk_doi_ung"/>
+	                		<field name="so_ps_no" string="Số tiền Thu (gửi vào)"/>
+	                		<field name="so_ps_co" string="Số tiền Chi (rút ra)"/> 
+	                		<field name="so_ps_ton" string="Số tiền Còn lại"/>
+	                		<field name="ghi_chu"/>
+                    	</tree>
+                    </field>
+                </form>
+            </field>
+        </record>
+        <record id="greenerp_report_so_tiengui_nganhang_review" model="greenerp.report">
+            <field name="name">so_tiengui_nganhang_review</field>
+            <field name="delete_after">7</field>
+        </record>
    </data>
 </openerp>
         

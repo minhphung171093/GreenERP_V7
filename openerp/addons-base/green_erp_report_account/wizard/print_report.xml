@@ -88,7 +88,7 @@
 		    <field name="name">account.ledger.report.form</field>
 		    <field name="model">account.ledger.report</field>
 		    <field name="arch" type="xml">
-		         <form string="Account Ledger" version="7.0">
+		         <form string="Account Ledger Report" version="7.0">
 		        	<group>
 		        		<group>
 		        			<field name="shop_ids" widget="many2many_tags"/>
@@ -109,6 +109,7 @@
 		            </group>
 		            <footer>
                         <button string="Print" type="object" name="finance_report" icon='gtk-execute'/>
+                        <button string="Review" type="object" name="review_report" icon="gtk-execute"/>
                         or
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
@@ -333,6 +334,7 @@
 		            </group>
 		            <footer>
                         <button string="Print" type="object" name="finance_report" context="{'type_report':'soquy_tienmat_report'}" icon='gtk-execute'/>
+                        <button string="Review" type="object" name="review_report" context="{'type_report':'soquy_tienmat_report'}" icon='gtk-execute'/>
                         or
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
@@ -375,6 +377,7 @@
 		            </group>
 		            <footer>
                         <button string="Print" type="object" name="finance_report" context="{'type_report':'so_tiengui_nganhang_report'}" icon='gtk-execute'/>
+                        <button string="Review" type="object" name="review_report" context="{'type_report':'so_tiengui_nganhang_report'}" icon='gtk-execute'/>
                         or
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
