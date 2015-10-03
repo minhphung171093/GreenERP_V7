@@ -51,7 +51,7 @@ class greenerp_report(osv.osv):
             date = date_now.strftime('%Y-%m-%d')
             sql = '''
                 delete from %s where create_date <= '%s'
-            '''%(line.table,date)
+            '''%(line.name,date)
             cr.execute(sql)
         return True
 
