@@ -672,15 +672,6 @@
   		
        <!-- End Nhóm công việc menu lãnh đạo -->     
        
-       
-        
-        
-        
-        
-        
-        
-        
-         
          <record model="ir.ui.view" id="nhom_cong_viec_moi_giao_kanban">
             <field name="name">nhom.cong.viec.moi.giao.kanban</field>
             <field name="model">nhom.cong.viec</field>

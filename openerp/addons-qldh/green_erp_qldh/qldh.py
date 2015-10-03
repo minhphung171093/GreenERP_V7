@@ -914,7 +914,7 @@ class nhom_cong_viec(osv.osv):
     
     def bt_tao_ncv(self, cr, uid, ids, context=None):
         for ncv in self.browse(cr,uid,ids):
-            if ncv.quy_trinh_id and ncv.loai == '1_nhom_cv':
+            if ncv.state == 'nhap' and ncv.loai == '1_nhom_cv':
                 for ctth in ncv.ct_th_nhom_cv_line:
                     self.write(cr, uid, [ctth.id],{'state':'da_giao'})
                 for cv in ncv.cong_viec_line:
