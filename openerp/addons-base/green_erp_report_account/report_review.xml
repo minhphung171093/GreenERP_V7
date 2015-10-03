@@ -74,7 +74,7 @@
         </record>
         
         <record id="greenerp_report_account_ledger_report_review" model="greenerp.report">
-            <field name="name">gen_account_ledger_report_review</field>
+            <field name="name">account_ledger_report_review</field>
             <field name="delete_after">7</field>
         </record>
         
@@ -130,10 +130,10 @@
             </field>
         </record>
         
-        <record id="greenerp_report_account_detail_ledger_report_review" model="greenerp.report">
-            <field name="name">account_detail_ledger_report_review</field>
+        <!--<record id="greenerp_report_account_detail_ledger_report_review" model="greenerp.report">
+            <field name="name">account_ledger_report_review</field>
             <field name="delete_after">7</field>
-        </record>
+        </record>-->
         
  <!--  ========================= Create So Quy Report Review ================= -->     
          <record id="so_quy_chung_review" model="ir.ui.view">
@@ -189,7 +189,7 @@
         </record>
         
         <record id="greenerp_report_so_quy_review" model="greenerp.report">
-            <field name="name">so_quy_chung_review</field>
+            <field name="name">so_quy_review</field>
             <field name="delete_after">7</field>
         </record>
         
@@ -247,10 +247,10 @@
             </field>
         </record>
         
-        <record id="greenerp_report_so_quy_chi_tiet_review" model="greenerp.report">
-            <field name="name">so_quy_chi_tiet_review</field>
+        <!--<record id="greenerp_report_so_quy_chi_tiet_review" model="greenerp.report">
+            <field name="name">so_quy_review</field>
             <field name="delete_after">7</field>
-        </record>
+        </record>-->
         
 <!--  ========================= Create So Quy Chi Tiet Report Review ================= -->     
          <record id="so_tiengui_nganhang_review" model="ir.ui.view">
@@ -297,10 +297,10 @@
             </field>
         </record>
         
-        <record id="greenerp_report_so_tiengui_nganhang_review" model="greenerp.report">
-            <field name="name">so_tiengui_nganhang_review</field>
+        <!--<record id="greenerp_report_so_tiengui_nganhang_review" model="greenerp.report">
+            <field name="name">so_quy_review</field>
             <field name="delete_after">7</field>
-        </record>
+        </record>-->
         
    </data>
 </openerp>
