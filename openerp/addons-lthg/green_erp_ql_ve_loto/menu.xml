@@ -7,7 +7,10 @@
 		<record model="ir.ui.menu" id="green_erp_ql_ve_loto.menu_action_import_ve_loto">
 			<field name="active" eval="False"/>
 		</record>
-		<record model="ir.ui.menu" id="green_erp_ql_ve_loto.menu_cau_hinh">
+		<record model="ir.ui.menu" id="green_erp_ql_ve_loto.menu_action_lichsu_dongbo">
+			<field name="active" eval="False"/>
+		</record>
+		<record model="ir.ui.menu" id="green_erp_ql_ve_loto.menu_action_dongbo_veloto">
 			<field name="active" eval="False"/>
 		</record>
     </data>

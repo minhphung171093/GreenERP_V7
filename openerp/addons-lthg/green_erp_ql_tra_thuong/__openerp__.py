@@ -19,11 +19,25 @@
 #
 ##############################################################################
 
-import ql_ve_loto
-import report
-import wizard
-import import_ve_loto
-import dongbo
-import sale
-import purchase
+{
+    'name': 'GreenERP QL Trả thưởng',
+    'version': '1.1',
+    "author" : "nguyentoanit@gmail.com",
+    'website': 'http://incomtech.com/',
+    "category": 'GreenERP',
+    'sequence': 1,
+    'description': """
+    """,
+    'depends': ['green_erp_base','account_voucher','account_accountant','product','report_aeroo','report_aeroo_ooo'],
+    'data': [
+        'security/ql_tra_thuong_security.xml',
+        'security/ir.model.access.csv',
+        'ql_tra_thuong_view.xml',
+        'account_voucher_batch_view.xml',
+        'menu.xml',
+    ],
+    'installable': True,
+    'application': True,
+    'auto_install': False,
+}
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

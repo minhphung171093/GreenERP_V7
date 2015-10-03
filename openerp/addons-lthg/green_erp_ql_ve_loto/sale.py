@@ -2,7 +2,8 @@
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
+#    Copyright (C) 2004-2009 Tiny SPRL (<http://tiny.be>).
+#    Copyright (C) 2010-2012 OpenERP SA (<http://openerp.com>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,11 +20,24 @@
 #
 ##############################################################################
 
-import ql_ve_loto
-import report
-import wizard
-import import_ve_loto
-import dongbo
-import sale
-import purchase
+import base64
+import re
+import threading
+from openerp.tools.safe_eval import safe_eval as eval
+from openerp import tools
+import openerp.modules
+from openerp.osv import fields, osv
+from openerp.tools.translate import _
+from openerp import SUPERUSER_ID
+
+class sale_order(osv.osv):
+    _inherit = 'sale.order'
+
+    def init(self, cr):
+        ir_values = self.pool.get('ir.values')
+        ir_values.set_default(cr, SUPERUSER_ID, 'sale.order', 'order_policy', 'picking')
+        return True
+    
+sale_order()
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

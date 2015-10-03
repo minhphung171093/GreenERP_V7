@@ -100,7 +100,7 @@
             <field name="model">dongbo.daily.trungthuong</field>
             <field eval="1" name="priority"/>
             <field name="arch" type="xml">
-                <tree string="Đồng bộ đại lý trúng thưởng" editable='top'>
+                <tree string="Đồng bộ đại lý trúng thưởng" editable='top' create='false' edit='false' delete='false'>
                     <field name="name" />
                     <field name="ket_qua_id" />
                     <field name="state" />
@@ -120,8 +120,9 @@
         </record>
         
         <menuitem action="action_dongbo_daily_trungthuong"
+        	name="Tạo dữ liệu trả thưởng"
             id="menu_action_dongbo_daily_trungthuong"
-            parent="menu_cau_hinh" sequence="30" groups="group_ql_ve_loto_man"/>
+            parent="menu_ve_loto" sequence="60" groups="group_ql_ve_loto_man"/>
     	
     </data>
 </openerp>

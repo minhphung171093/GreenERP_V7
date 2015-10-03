@@ -351,7 +351,7 @@ class dongbo_daily_trungthuong(osv.osv):
                 thanhtien = (700000*gt_menhgia)
                 vals.append({
                     'name': (line.so_dt_2_d),
-                    'product_id': ve_loto.product_id.external_id,
+                    'product_id': ve_loto.product_id.id,
                     'sl_trung': sluong_trung,
                     'slan_trung': slan_trung,
                     'loai': '2_so',
@@ -364,7 +364,7 @@ class dongbo_daily_trungthuong(osv.osv):
                 thanhtien = (700000*gt_menhgia)
                 vals.append({
                     'name': (line.so_dt_2_c),
-                    'product_id': ve_loto.product_id.external_id,
+                    'product_id': ve_loto.product_id.id,
                     'sl_trung': sluong_trung,
                     'slan_trung': slan_trung,
                     'loai': '2_so',
@@ -377,7 +377,7 @@ class dongbo_daily_trungthuong(osv.osv):
                 thanhtien = (350000*gt_menhgia)
                 vals.append({
                     'name': (line.so_dt_2_dc),
-                    'product_id': ve_loto.product_id.external_id,
+                    'product_id': ve_loto.product_id.id,
                     'sl_trung': sluong_trung,
                     'slan_trung': slan_trung,
                     'loai': '2_so',
@@ -390,7 +390,7 @@ class dongbo_daily_trungthuong(osv.osv):
                 thanhtien = (40000*gt_menhgia)
                 vals.append({
                     'name': (line.so_dt_2_18),
-                    'product_id': ve_loto.product_id.external_id,
+                    'product_id': ve_loto.product_id.id,
                     'sl_trung': sluong_trung,
                     'slan_trung': slan_trung,
                     'loai': '2_so',
@@ -405,7 +405,7 @@ class dongbo_daily_trungthuong(osv.osv):
                 thanhtien = (5000000*gt_menhgia)
                 vals.append({
                     'name': (line.so_dt_3_d),
-                    'product_id': ve_loto.product_id.external_id,
+                    'product_id': ve_loto.product_id.id,
                     'sl_trung': sluong_trung,
                     'slan_trung': slan_trung,
                     'loai': '3_so',
@@ -418,7 +418,7 @@ class dongbo_daily_trungthuong(osv.osv):
                 thanhtien = (5000000*gt_menhgia)
                 vals.append({
                     'name': (line.so_dt_3_c),
-                    'product_id': ve_loto.product_id.external_id,
+                    'product_id': ve_loto.product_id.id,
                     'sl_trung': sluong_trung,
                     'slan_trung': slan_trung,
                     'loai': '3_so',
@@ -431,7 +431,7 @@ class dongbo_daily_trungthuong(osv.osv):
                 thanhtien = (2500000*gt_menhgia)
                 vals.append({
                     'name': (line.so_dt_3_dc),
-                    'product_id': ve_loto.product_id.external_id,
+                    'product_id': ve_loto.product_id.id,
                     'sl_trung': sluong_trung,
                     'slan_trung': slan_trung,
                     'loai': '3_so',
@@ -444,7 +444,7 @@ class dongbo_daily_trungthuong(osv.osv):
                 thanhtien = (700000*gt_menhgia)
                 vals.append({
                     'name': (line.so_dt_3_7),
-                    'product_id': ve_loto.product_id.external_id,
+                    'product_id': ve_loto.product_id.id,
                     'sl_trung': sluong_trung,
                     'slan_trung': slan_trung,
                     'loai': '3_so',
@@ -457,7 +457,7 @@ class dongbo_daily_trungthuong(osv.osv):
                 thanhtien = (300000*gt_menhgia)
                 vals.append({
                     'name': (line.so_dt_3_17),
-                    'product_id': ve_loto.product_id.external_id,
+                    'product_id': ve_loto.product_id.id,
                     'sl_trung': sluong_trung,
                     'slan_trung': slan_trung,
                     'loai': '3_so',
@@ -472,7 +472,7 @@ class dongbo_daily_trungthuong(osv.osv):
                 thanhtien = (2000000*gt_menhgia)
                 vals.append({
                     'name': (line.so_dt_4_16),
-                    'product_id': ve_loto.product_id.external_id,
+                    'product_id': ve_loto.product_id.id,
                     'sl_trung': sluong_trung,
                     'slan_trung': slan_trung,
                     'loai': '4_so',
@@ -484,57 +484,30 @@ class dongbo_daily_trungthuong(osv.osv):
     def dongbo_daily_trungthuong(self, cr, uid, ids,context=None):
         context = context or {}
         vals = {}
-        company_obj = self.pool.get('res.company')
-        company = self.pool.get('res.users').browse(cr, uid, uid).company_id
         try:
             for line in self.browse(cr, uid, ids):
-                oorpc = company_obj.connect_web_service(cr, uid, company.id)
-                if oorpc:
-                    ket_qua_id = oorpc.search('ketqua.xoso',[('name','=',line['name'])])
-                    if not ket_qua_id:
-                        line_vals = []
-                        for ketqua_line in line.ket_qua_id.ketqua_xoso_line:
-                            line_vals.append((0,0,{
-                                'name': ketqua_line.name,
-                                'ma': ketqua_line.ma,
-                                'so': ketqua_line.so,
-                                'dm_7_so': ketqua_line.dm_7_so,
-                            }))
+                tra_thuong_obj = self.pool.get('tra.thuong')
+                ve_loto_obj = self.pool.get('ve.loto')
+                daily_obj = self.pool.get('res.partner')
+                daily_ids = daily_obj.search(cr, 1, [('dai_ly','=',True)])
+                for daily in daily_obj.browse(cr, 1, daily_ids):
+                    ve_loto_ids = ve_loto_obj.search(cr, 1, [('ngay','=',line.ket_qua_id.name),('daily_id','=',daily.id),('state','=','done')])
+                    linevals = []
+                    for ve_loto in ve_loto_obj.browse(cr, 1, ve_loto_ids):
+                        val_trung = self.get_val_trung(ve_loto)
+                        for val in val_trung:
+                            linevals.append((0,0,val))
+                    if linevals:
                         vals = {
-                            'name': line.ket_qua_id.name,
-                            'dai_duthuong_id': line.ket_qua_id.dai_duthuong_id.external_id,
-                            'state': line.ket_qua_id.state,
-                            'ketqua_xoso_line': line_vals,
+                            'ngay': line.ket_qua_id.name,
+                            'daily_id': daily.id,
+                            'tra_thuong_line': linevals,
                         }
-                        ket_qua_id = oorpc.create('ketqua.xoso',vals)
-                        if ket_qua_id:
-                            sql='''
-                                UPDATE ketqua_xoso SET external_id=%s WHERE id=%s 
-                            '''%(ket_qua_id,line.ket_qua_id.id)
-                            cr.execute(sql)
-                    if ket_qua_id:
-                        ve_loto_obj = self.pool.get('ve.loto')
-                        daily_obj = self.pool.get('res.partner')
-                        daily_ids = daily_obj.search(cr, uid, [('dai_ly','=',True)])
-                        for daily in daily_obj.browse(cr, uid, daily_ids):
-                            ve_loto_ids = ve_loto_obj.search(cr, uid, [('ngay','=',line.ket_qua_id.name),('daily_id','=',daily.id),('state','=','done')])
-                            linevals = []
-                            for ve_loto in ve_loto_obj.browse(cr, uid, ve_loto_ids):
-                                val_trung = self.get_val_trung(ve_loto)
-                                for val in val_trung:
-                                    linevals.append((0,0,val))
-                            if linevals:
-                                vals = {
-                                    'ngay': line.ket_qua_id.name,
-                                    'daily_id': daily.external_id,
-                                    'tra_thuong_line': linevals,
-                                }
-                                oorpc.create('tra.thuong',vals)
-                        sql='''
-                            UPDATE dongbo_daily_trungthuong SET state='done' WHERE id=%s 
-                        '''%(line.id)
-                        cr.execute(sql)
-                            
+                        tra_thuong_obj.create(cr,1,vals)
+                sql='''
+                    UPDATE dongbo_daily_trungthuong SET state='done' WHERE id=%s 
+                '''%(line.id)
+                cr.execute(sql)
         except Exception, e:
             print e
         return True

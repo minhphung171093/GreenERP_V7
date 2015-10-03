@@ -19,11 +19,7 @@
 #
 ##############################################################################
 
-import ql_ve_loto
-import report
-import wizard
-import import_ve_loto
-import dongbo
-import sale
-import purchase
+import ql_tra_thuong
+import account_voucher_batch
+import account_voucher
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
