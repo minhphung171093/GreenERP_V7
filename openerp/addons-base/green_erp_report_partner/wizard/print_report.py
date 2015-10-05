@@ -403,6 +403,167 @@ class general_report_partner_ledger_detail(osv.osv_memory):
         'company_id': _get_company
         }
     
+    def review_report(self, cr, uid, ids, context=None):
+        report_obj = self.pool.get('general.report.partner.ledger.detail.review')
+        report = self.browse(cr, uid, ids[0])
+        self.account_id =False
+        self.account_code = False
+        self.account_name = False
+        self.start_date = False
+        self.end_date = False
+        self.partner_id = False
+        self.partner_name = False
+        self.uid = uid
+        self.cr = cr
+        self.company_name = False
+        self.company_address = False
+        self.vat = False
+        self.total_residual = 0
+        self.type = False
+        
+        def get_total_residual(o):
+            return self.total_residual
+    
+        def get_company(o, company_id):
+            if company_id:
+                company_obj = self.pool.get('res.company').browse(self.cr, self.uid,company_id)
+                self.company_name = company_obj.name or ''
+                self.company_address = company_obj.street or ''
+                self.vat = company_obj.vat or ''
+            return True
+                 
+        def get_company_name(o):
+            get_header(o)
+            return self.company_name
+        
+        def get_company_address(o):
+            return self.company_address     
+        
+        def get_company_vat(o):
+            return self.vat    
+        
+        def get_account_name(o):
+            if not self.account_code:
+                get_account(o)
+            return self.account_name
+        
+        def get_account_code(o):
+            if not self.account_code:
+                get_account(o)
+            return self.account_code
+            
+#         def get_id(o,get_id):
+#             wizard_data = self.localcontext['data']['form']
+#             period_id = wizard_data[get_id][0] or wizard_data[get_id][0] or False
+#             if not period_id:
+#                 return 1
+#             else:
+#                 return period_id
+                
+        def get_header(o):
+            self.times = o.times
+            #Get company info
+            self.company_id = o.company_id and o.company_id.id or False
+            get_company(o,self.company_id)
+            
+            if self.times =='periods':
+                self.start_date = self.pool.get('account.period').browse(self.cr,self.uid,o.period_id_start.id).date_start
+                self.end_date   = self.pool.get('account.period').browse(self.cr,self.uid,o.period_id_end.id).date_stop
+                
+            elif self.times == 'years':
+                self.start_date = self.pool.get('account.fiscalyear').browse(self.cr,self.uid,o.fiscalyear_start.id).date_start
+                self.end_date   = self.pool.get('account.fiscalyear').browse(self.cr,self.uid,o.fiscalyear_stop.id).date_stop
+            else:
+                self.start_date = o.date_start
+                self.end_date = o.date_end
+        
+        def get_start_date(o):
+            if not self.start_date:
+                get_header(o)
+            return get_vietname_date(o,self.start_date) 
+        
+        def get_end_date(o):
+            if not self.end_date:
+                get_header(o)
+            return get_vietname_date(o,self.end_date) 
+        
+        def get_account(o):
+            self.account_id = o.account_id and o.account_id or False
+            if self.account_id:
+                sql ='''
+                    select id,code,name from account_account where id = %s
+                '''%(self.account_id)
+                cr.execute(sql)
+                
+                for line in cr.dictfetchall():
+                    self.account_code = line['code']
+                    self.account_name = line['name']
+            
+        
+        def get_vietname_date(o, date):
+            if not date:
+                date = time.strftime(DATE_FORMAT)
+            date = datetime.strptime(date, DATE_FORMAT)
+            return date.strftime('%d/%m/%Y')
+        
+        def get_total_line(o):
+            res = self.pool.get('sql.partner.ledger.detail').get_total_line(self.cr, self.start_date,self.end_date,self.account_id)
+            return res
+        
+        def get_line(o):
+            res = self.pool.get('sql.partner.ledger.detail').get_line(self.cr, self.start_date,self.end_date,self.account_id)
+            return res
+        
+        def get_line_review(o):
+            res = []
+            for line in get_line(o): 
+                res.append((0,0,{
+                    'seq':line['seq'],
+                    'partner_code':line['partner_code'],
+                    'partner_name':line['partner_name'],
+                    'begin_dr':line['begin_dr'],
+                    'begin_cr':line['begin_cr'],
+                    'period_dr':line['period_dr'],
+                    'period_cr':line['period_cr'],
+                    'end_dr':line['end_dr'],
+                    'end_cr':line['end_cr'],
+                     }))
+            for line2 in get_total_line(o):
+                res.append((0,0,{
+                    'partner_name':'Tổng cộng',
+                    'begin_dr':line2['begin_dr'],
+                    'begin_cr':line2['begin_cr'],
+                    'period_dr':line2['period_dr'],
+                    'period_cr':line2['period_cr'],
+                    'end_dr':line2['end_dr'],
+                    'end_cr':line2['end_cr'],
+                     }))
+            return res
+        
+        vals = {
+            'name': get_company_name(report),
+            'address_company': get_company_address(report),
+            'vat_company': get_company_vat(report),
+            'account_code': get_account_code(report),
+            'account_name': get_account_name(report),
+            'start_date': get_start_date(report),
+            'end_date': get_end_date(report),
+            'general_report_partner_ledger_detail_review_line':get_line_review(report),
+        }
+        report_id = report_obj.create(cr, uid, vals)
+        res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
+                                        'green_erp_report_partner', 'report_general_report_partner_ledger_detail_review')
+        return {
+                    'name': 'General Report Partner Ledger Detail Review',
+                    'view_type': 'form',
+                    'view_mode': 'form',
+                    'res_model': 'general.report.partner.ledger.detail.review',
+                    'domain': [],
+                    'view_id': res and res[1] or False,
+                    'type': 'ir.actions.act_window',
+                    'target': 'current',
+                    'res_id': report_id,
+                }
     
     def print_report(self, cr, uid, ids, context=None): 
         datas = {'ids': context.get('active_ids', [])}

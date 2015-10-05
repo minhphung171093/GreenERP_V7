@@ -100,6 +100,7 @@
                     </group>
 	                <footer>
                         <button string="Print" type="object" name="print_report" context="{'type_report':'general_report_partner_ledger_detail'}" icon='gtk-execute'/>
+                        <button string="Review" type="object" name="review_report" context="{'type_report':'general_report_partner_ledger_detail'}" icon='gtk-execute'/>
                         or
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
