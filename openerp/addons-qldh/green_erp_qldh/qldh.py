@@ -70,9 +70,9 @@ class nhom_cong_viec(osv.osv):
                 self._file_delete(cr, uid, location, attach.store_fname)
             fname = self._file_write(cr, uid, location, value)
             # SUPERUSER_ID as probably don't have write access, trigger during create
-            super(ct_nhom_cong_viec, self).write(cr, SUPERUSER_ID, [id], {'store_fname': fname, 'file_size': file_size}, context=context)
+            super(nhom_cong_viec, self).write(cr, SUPERUSER_ID, [id], {'store_fname': fname, 'file_size': file_size}, context=context)
         else:
-            super(ct_nhom_cong_viec, self).write(cr, SUPERUSER_ID, [id], {'db_datas': value, 'file_size': file_size}, context=context)
+            super(nhom_cong_viec, self).write(cr, SUPERUSER_ID, [id], {'db_datas': value, 'file_size': file_size}, context=context)
         return True
     
     def _get_tt_lanhdao(self, cr, uid, ids, field_name, args, context=None):
