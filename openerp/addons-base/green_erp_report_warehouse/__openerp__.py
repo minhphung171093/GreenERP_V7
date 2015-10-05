@@ -15,7 +15,7 @@
     "category": 'GreenERP',
     "sequence": 1,
     "images" : [],
-    "depends" : ["stock","sale",'green_erp_stock'],
+    "depends" : ["stock","sale",'green_erp_stock','green_erp_report'],
     "init_xml" : [],
     "demo_xml" : [],
     "update_xml" : [
