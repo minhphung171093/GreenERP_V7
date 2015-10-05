@@ -27,26 +27,16 @@ class general_aged_partner_balance_review(osv.osv):
         'general_aged_partner_balance_review_line':fields.one2many('general.aged.partner.balance.review.line','review_id','Each Line'),
     }
      
-#     def print_xls(self, cr, uid, ids, context=None):
-#         if context is None:
-#             context = {}
-# #         datas = {'ids': context.get('active_ids', [])}
-#         datas = {'ids': ids}
-#         datas['model'] = 'report.account.in.out.tax.review'
-#         datas['form'] = self.read(cr, uid, ids)[0]
-#         datas['form'].update({'active_id':context.get('active_ids',False)})
-#         return {'type': 'ir.actions.report.xml', 'report_name': 'tax_vat_input_review_xls', 'datas': datas}
-#  
-#     def print_xls_out(self, cr, uid, ids, context=None):
-#         if context is None:
-#             context = {}
-# #         datas = {'ids': context.get('active_ids', [])}
-#         datas = {'ids': ids}
-#         datas['model'] = 'report.account.in.out.tax.review'
-#         datas['form'] = self.read(cr, uid, ids)[0]
-#         datas['form'].update({'active_id':context.get('active_ids',False)})
-#         return {'type': 'ir.actions.report.xml', 'report_name': 'tax_vat_output_review_xls', 'datas': datas}
-     
+    def print_xls(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+#         datas = {'ids': context.get('active_ids', [])}
+        datas = {'ids': ids}
+        datas['model'] = 'general.aged.partner.balance.review'
+        datas['form'] = self.read(cr, uid, ids)[0]
+        datas['form'].update({'active_id':context.get('active_ids',False)})
+        return {'type': 'ir.actions.report.xml', 'report_name': 'general_aged_partner_balance_review_xls', 'datas': datas}
+    
 general_aged_partner_balance_review()
 class general_aged_partner_balance_review_line(osv.osv):
     _name = "general.aged.partner.balance.review.line"

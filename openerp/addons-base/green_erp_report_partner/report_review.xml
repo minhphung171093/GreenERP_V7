@@ -8,7 +8,7 @@
             <field name="arch" type="xml">
                 <form string="Aged Partner Balance Review" version="7.0">
                 	<header>
-                        <button string="Print (.xls)" type="object" name="print_xls" context="{'type_report':'tax_vat_input'}" icon='gtk-execute'/>
+                        <button string="Print (.xls)" type="object" name="print_xls" icon='gtk-execute'/>
                     </header>
                     <sheet>
                     <group class = 'oe_left'>
@@ -17,14 +17,27 @@
                 		<field name="vat_company"/>
                     </group>
                     
-                    <h1>
+                    <h1 class = 'oe_text_center'>
                     	<b>Báo cáo công nợ theo tuổi nợ</b>
                     </h1>
                     
-                    <group class = 'oe_left'>
-                		<field name="account_code"/>
-                		<field name="account_name"/>
-                		<field name="start_date"/>
+                    <group>
+                    	<div class="oe_text_center">
+	                    	<label for="account_code" class="oe_inline"/>
+	                		<field name="account_code" class="oe_inline"/>
+                		</div>
+                    </group>
+                    <group>
+                		<div class="oe_text_center">
+	                		<label for="account_name" class="oe_inline"/>
+	                		<field name="account_name" nolabel="1" class="oe_inline"/>
+                		</div>
+                    </group>
+                    <group>
+                		<div class="oe_text_center">
+	                		<label for="start_date" class="oe_inline"/>
+	                		<field name="start_date" nolabel="1" class="oe_inline"/>
+                		</div>
                     </group>
                     
                     <group >

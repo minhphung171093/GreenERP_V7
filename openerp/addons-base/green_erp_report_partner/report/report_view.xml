@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
 	<data>
-	
+<!--  ========================= Aged Partner Balance Report ================= -->	
     	<record id="general_aged_partner_balance" model="ir.actions.report.xml">
 	        <field name="name">general_aged_partner_balance</field>
 	        <field name="type">ir.actions.report.xml</field>
@@ -25,6 +25,36 @@
 			name="general_aged_partner_balance"
 	        string="Aged Partner Balance"
 	        rml="green_erp_report_partner/report/aged_partner_balance.ods"/>
+	        
+	    
+	    
+	    <record id="general_aged_partner_balance_review_xls" model="ir.actions.report.xml">
+	        <field name="name">general_aged_partner_balance_review_xls</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">general.aged.partner.balance.review</field>
+	        <field name="report_name">general_aged_partner_balance_review_xls</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">green_erp_report_partner/report/general_aged_partner_balance_review_xls.py</field>
+	        <field name="report_rml">green_erp_report_partner/report/general_aged_partner_balance_review_xls.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record>		    
+		
+		<report 
+			auto="False" 
+			menu="False"
+			id="general_aged_partner_balance_review_xls" 
+			model="general.aged.partner.balance.review" 
+			name="general_aged_partner_balance_review_xls"
+	        string="General Aged Partner Balance Review"
+	        rml="green_erp_report_partner/report/general_aged_partner_balance_review_xls.ods"/>
+	        
+	        
+	        
+	        
 		
 		
 		<record id="general_report_partner_ledger" model="ir.actions.report.xml">
