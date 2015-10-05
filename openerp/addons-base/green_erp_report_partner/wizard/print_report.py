@@ -11,6 +11,10 @@ from osv import fields, osv
 from tools.misc import DEFAULT_SERVER_DATETIME_FORMAT
 import decimal_precision as dp
 from tools.translate import _
+from datetime import datetime
+DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
+DATE_FORMAT = "%Y-%m-%d"
+
 
 class general_aged_partner_balance(osv.osv_memory):
     
@@ -79,6 +83,150 @@ class general_aged_partner_balance(osv.osv_memory):
         'times': 'dates',
         'company_id': _get_company,
         }
+    
+    def review_report(self, cr, uid, ids, context=None):
+        report_obj = self.pool.get('general.aged.partner.balance.review')
+        report = self.browse(cr, uid, ids[0])
+        self.account_id =False
+        self.account_code = False
+        self.account_name = False
+        self.start_date = False
+        self.end_date = False
+        self.partner_id = False
+        self.cr = cr
+        self.uid = uid
+        
+        self.company_name = False
+        self.company_address = False
+        self.vat = False
+        self.total_residual = 0
+        self.type = False
+        
+        def get_company(o, company_id):
+            if company_id:
+                company_obj = self.pool.get('res.company').browse(self.cr, self.uid,company_id)
+                self.company_name = company_obj.name or ''
+                self.company_address = company_obj.street or ''
+                self.vat = company_obj.vat or ''
+            return True
+             
+        def get_company_name(o):
+            get_header(o)
+            return self.company_name
+        
+        def get_company_address(o):
+            return self.company_address     
+        
+        def get_company_vat(o):
+            return self.vat    
+        
+        def get_total_residual(o):
+            return self.total_residual
+        
+        def get_account_name(o):
+            if not self.account_code:
+                get_account(o)
+            return self.account_name
+        
+        def get_account_code(o):
+            if not self.account_code:
+                get_account(o)
+            return self.account_code
+            
+        def get_header(o):
+            #Get company info
+            self.company_id = o.company_id and o.company_id.id or False
+            get_company(o,self.company_id)
+            
+            self.account_id = o.account_id
+            self.start_date = o.date_start and o.date_start or ''
+            self.partner_id = o.partner_id and o.partner_id.id or 'null'
+            self.type = o.check and o.check or False
+            
+        def get_start_date(o):
+            if not self.start_date:
+                get_header(o)
+            return get_vietname_date(o,self.start_date) 
+        
+        
+        def get_account(o):
+            self.account_id = o.account_id and o.account_id or False
+            if self.account_id:
+                sql ='''
+                    select id,code,name from account_account where id = %s
+                '''%(self.account_id)
+                cr.execute(sql)
+                
+                for line in cr.dictfetchall():
+                    self.account_code = line['code']
+                    self.account_name = line['name']
+            
+        
+        def get_total_line(o):
+            res = self.pool.get('sql.aged.partner.balance').get_total_line(self.cr, self.start_date,self.account_id,self.partner_id,self.type)
+            return res
+        
+        def get_line(o):
+            res = self.pool.get('sql.aged.partner.balance').get_line(self.cr, self.start_date,self.account_id,self.partner_id,self.type)
+            return res
+        
+        def get_vietname_date(o, date):
+            if not date:
+                date = time.strftime(DATE_FORMAT)
+            date = datetime.strptime(date, DATE_FORMAT)
+            return date.strftime('%d/%m/%Y')
+        
+        def get_line_review(o):
+            res = []
+            for seq,line in enumerate(get_line(o)): 
+                res.append((0,0,{
+                    'seq':line['seq'],
+                    'partner_code':line['partner_code'],
+                    'partner_name':line['partner_name'],
+                    'voucher_no':line['voucher_no'],
+                    'date_document':get_vietname_date(o,line['date_document']),
+                    'date_due':get_vietname_date(o,line['date_due']),
+                    'description':line['description'],
+                    'origin_amount':line['origin_amount'],
+                    'residual_30':line['residual_30'],
+                    'residual_90':line['residual_90'],
+                    'residual_180':line['residual_180'],
+                    'residual_else':line['residual_else'],
+                    'aging_day':line['aging_day'],
+                     }))
+            for line2 in get_total_line(o):
+                res.append((0,0,{
+                    'partner_name':'Tổng cộng',
+                    'origin_amount':line2['origin_amount'],
+                    'residual_30':line2['residual_30'],
+                    'residual_90':line2['residual_90'],
+                    'residual_180':line2['residual_180'],
+                    'residual_else':line2['residual_else'],
+                     }))
+            return res
+        vals = {
+            'name': get_company_name(report),
+            'address_company': get_company_address(report),
+            'vat_company': get_company_vat(report),
+            'account_code': get_account_code(report),
+            'account_name': get_account_name(report),
+            'start_date': get_start_date(report),
+            'general_aged_partner_balance_review_line':get_line_review(report),
+        }
+        report_id = report_obj.create(cr, uid, vals)
+        res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
+                                        'green_erp_report_partner', 'report_aged_partner_balance_review')
+        return {
+                    'name': 'Aged Partner Balance Review',
+                    'view_type': 'form',
+                    'view_mode': 'form',
+                    'res_model': 'general.aged.partner.balance.review',
+                    'domain': [],
+                    'view_id': res and res[1] or False,
+                    'type': 'ir.actions.act_window',
+                    'target': 'current',
+                    'res_id': report_id,
+                }
     
     
     def print_report(self,cr,uid,ids,context=None):

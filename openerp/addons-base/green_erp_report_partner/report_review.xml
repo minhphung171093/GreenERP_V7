@@ -1,7 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
+<!--  ========================= Aged Partner Balance Review ================= -->     
+        <record id="report_aged_partner_balance_review" model="ir.ui.view">
+            <field name="name">report.aged.partner.balance.review</field>
+            <field name="model">general.aged.partner.balance.review</field>
+            <field name="arch" type="xml">
+                <form string="Aged Partner Balance Review" version="7.0">
+                	<header>
+                        <button string="Print (.xls)" type="object" name="print_xls" icon='gtk-execute'/>
+                    </header>
+                    <sheet>
+                    <group class = 'oe_left'>
+                		<field name="name" nolabel = '1'/>
+                		<field name="address_company" nolabel = '1'/>
+                		<field name="vat_company"/>
+                    </group>
+                    
+                    <h1 class = 'oe_text_center'>
+                    	<b>Báo cáo công nợ theo tuổi nợ</b>
+                    </h1>
+                    
+                    <group>
+                    	<div class="oe_text_center">
+	                    	<label for="account_code" class="oe_inline"/>
+	                		<field name="account_code" class="oe_inline"/>
+                		</div>
+                    </group>
+                    <group>
+                		<div class="oe_text_center">
+	                		<label for="account_name" class="oe_inline"/>
+	                		<field name="account_name" nolabel="1" class="oe_inline"/>
+                		</div>
+                    </group>
+                    <group>
+                		<div class="oe_text_center">
+	                		<label for="start_date" class="oe_inline"/>
+	                		<field name="start_date" nolabel="1" class="oe_inline"/>
+                		</div>
+                    </group>
+                    
+                    <group >
+	                	<field name="general_aged_partner_balance_review_line" nolabel='1'>
+	                		<tree create="false" edit="false" delete="false">          
+	                			<field name="seq"/>
+	                			<field name="partner_code"/>
+	                			<field name="partner_name"/>
+	                			<field name="voucher_no"/>
+	                			<field name="date_document"/>
+	                			<field name="date_due" />
+	                			<field name="description"/>
+	                			<field name="origin_amount"/>
+	                			<field name="residual_30"/>
+	                			<field name="residual_90"/>
+	                			<field name="residual_180"/>
+	                			<field name="residual_else"/>
+	                			<field name="aging_day"/>
+	                		</tree>
+	                	</field>
+	                </group> 
+			       </sheet>       	                	
+                </form>
+            </field>
+        </record>
         
+        <record id="greenerp_report_general_aged_partner_balance_review" model="greenerp.report">
+            <field name="name">general_aged_partner_balance_review</field>
+            <field name="delete_after">7</field>
+        </record>
    </data>
 </openerp>
         
