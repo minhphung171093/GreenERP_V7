@@ -15,7 +15,7 @@
     "category": 'GreenERP',
     "sequence": 1,
     "images" : [],
-    "depends" : ["base","account_accountant","report_aeroo",'green_erp_base'],
+    "depends" : ["base","account_accountant","report_aeroo",'green_erp_base','green_erp_report'],
     "init_xml" : [],
 
     "demo_xml" : [],
