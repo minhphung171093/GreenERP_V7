@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate='1'>
+    	
+    	<record id="hr_payroll.BASIC" model="hr.salary.rule.category">
+            <field name="name">Lương cơ bản</field>
+            <field name="code">BASIC</field>
+        </record>
+        
+        <record id="hr_payroll.ALW" model="hr.salary.rule.category">
+            <field name="name">Tổng phụ cấp</field>
+            <field name="code">ALW</field>
+        </record>
+        
+        <record id="hr_payroll.GROSS" model="hr.salary.rule.category">
+            <field name="name">Tổng thu nhập</field>
+            <field name="code">GROSS</field>
+        </record>
+        
+        <record id="hr_payroll.DED" model="hr.salary.rule.category">
+            <field name="name">Tổng khấu trừ</field>
+            <field name="code">DED</field>
+        </record>
+        
+        <record id="hr_payroll.NET" model="hr.salary.rule.category">
+            <field name="name">Thục lãnh</field>
+            <field name="code">NET</field>
+        </record>
+        
+        <record id="hr_payroll.COMP" model="hr.salary.rule.category">
+            <field name="name">Điều chỉnh lương</field>
+            <field name="code">DCL</field>
+        </record>
+        
+        <record id="hr_salary_rule_category_1" model="hr.salary.rule.category">
+            <field name="name">Bảo hiểm xã hội cá nhân</field>
+            <field name="code">BHXH_CN</field>
+        </record>
+        
+        <record id="hr_salary_rule_category_2" model="hr.salary.rule.category">
+            <field name="name">Bảo hiểm y tế cá nhân</field>
+            <field name="code">BHYT_CN</field>
+        </record>
+        
+        <record id="hr_salary_rule_category_3" model="hr.salary.rule.category">
+            <field name="name">Bảo hiểm thất nghiệp cá nhân</field>
+            <field name="code">BHTN_CN</field>
+        </record>
+        
+        <record id="hr_salary_rule_category_4" model="hr.salary.rule.category">
+            <field name="name">Phí công đoàn</field>
+            <field name="code">PCD</field>
+        </record>
+        
+        <record id="hr_salary_rule_category_5" model="hr.salary.rule.category">
+            <field name="name">Tổng thu nhập chịu thuế</field>
+            <field name="code">BEFORE_TAX_INCOME</field>
+        </record>
+        
+        <record id="hr_salary_rule_category_6" model="hr.salary.rule.category">
+            <field name="name">Giảm trừ bản thân</field>
+            <field name="code">GTBT</field>
+        </record>
+        
+        <record id="hr_salary_rule_category_7" model="hr.salary.rule.category">
+            <field name="name">Giảm trừ gia cảnh</field>
+            <field name="code">GTGC</field>
+        </record>
+        
+        <record id="hr_salary_rule_category_8" model="hr.salary.rule.category">
+            <field name="name">Thuế TNCN</field>
+            <field name="code">INCOME_TAX</field>
+        </record>
+        
+        <record id="hr_salary_rule_category_9" model="hr.salary.rule.category">
+            <field name="name">Bảo hiểm xã hội công ty</field>
+            <field name="code">BHXH_CTY</field>
+        </record>
+        
+        <record id="hr_salary_rule_category_10" model="hr.salary.rule.category">
+            <field name="name">Bảo hiểm y tế công ty</field>
+            <field name="code">BHYT_CTY</field>
+        </record>
+        
+        <record id="hr_salary_rule_category_11" model="hr.salary.rule.category">
+            <field name="name">Bảo hiểm thất nghiệp công ty</field>
+            <field name="code">BHTN_CTY</field>
+        </record>
+        
+        <record id="hr_payroll.hr_rule_basic" model="hr.salary.rule">
+            <field name="name">Lương cơ bản</field>
+            <field name="category_id" eval="ref('hr_payroll.BASIC')"/>
+            <field name="code">BASIC</field>
+            <field name="sequence">1</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.wage</field>
+        </record>
+        
+        <record id="hr_payroll.hr_rule_taxable" model="hr.salary.rule">
+            <field name="name">Tổng thu nhập</field>
+            <field name="category_id" eval="ref('hr_payroll.GROSS')"/>
+            <field name="code">GROSS</field>
+            <field name="sequence">100</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = worked_days.Normal and  worked_days.Normal.number_of_days*(categories.BASIC + categories.ALW)/26 or 0</field>
+        </record>
+        
+        <record id="hr_payroll.hr_rule_net" model="hr.salary.rule">
+            <field name="name">Thực lãnh</field>
+            <field name="category_id" eval="ref('hr_payroll.NET')"/>
+            <field name="code">NET</field>
+            <field name="sequence">200</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = categories.GROSS - categories.DED + categories.DCL - categories.BHXH_CN - categories.BHYT_CN - categories.BHTN_CN - categories.INCOME_TAX - categories.PCD</field>
+            <field name="register_id" eval="False"/>
+        </record>
+        
+        <record id="hr_salary_rule_1" model="hr.salary.rule">
+            <field name="name">Tiền cơm</field>
+            <field name="category_id" eval="ref('hr_payroll.ALW')"/>
+            <field name="code">TC</field>
+            <field name="sequence">3</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">fix</field>
+            <field name="quantity">1</field>
+            <field name="amount_fix">0</field>
+        </record>
+        
+        <record id="hr_salary_rule_2" model="hr.salary.rule">
+            <field name="name">Phụ cấp xăng</field>
+            <field name="category_id" eval="ref('hr_payroll.ALW')"/>
+            <field name="code">PCX</field>
+            <field name="sequence">4</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.travel_allowance</field>
+        </record>
+        
+        <record id="hr_salary_rule_3" model="hr.salary.rule">
+            <field name="name">Phụ cấp điện thoại</field>
+            <field name="category_id" eval="ref('hr_payroll.ALW')"/>
+            <field name="code">PCDT</field>
+            <field name="sequence">5</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.phone_allowance</field>
+            <field name="input_ids" eval="[
+            	(0,0,{'name':'Phụ cấp khác' ,'code': 'PCK'}),
+            	(0,0,{'name':'Tạm ứng' ,'code': 'TU'}),
+            	(0,0,{'name':'Điều chỉnh lương' ,'code': 'DCL'}),
+            	(0,0,{'name':'Tiền thưởng' ,'code': 'TT'})
+            ]"/>
+        </record>
+        
+        <record id="hr_salary_rule_4" model="hr.salary.rule">
+            <field name="name">Tạm ứng</field>
+            <field name="category_id" eval="ref('hr_payroll.DED')"/>
+            <field name="code">TU</field>
+            <field name="sequence">8</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.TU and inputs.TU.amount or 0</field>
+        </record>
+        
+        <record id="hr_salary_rule_5" model="hr.salary.rule">
+            <field name="name">Phụ cấp khác</field>
+            <field name="category_id" eval="ref('hr_payroll.ALW')"/>
+            <field name="code">PCK</field>
+            <field name="sequence">6</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.PCK and inputs.PCK.amount or 0</field>
+        </record>
+        
+        <record id="hr_salary_rule_6" model="hr.salary.rule">
+            <field name="name">Điều chỉnh lương</field>
+            <field name="category_id" eval="ref('hr_payroll.COMP')"/>
+            <field name="code">DCL</field>
+            <field name="sequence">7</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.DCL and inputs.DCL.amount or 0</field>
+        </record>
+        
+        <record id="hr_salary_rule_7" model="hr.salary.rule">
+            <field name="name">Tiền thưởng</field>
+            <field name="category_id" eval="ref('hr_payroll.ALW')"/>
+            <field name="code">TT</field>
+            <field name="sequence">9</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result =  inputs.TT and inputs.TT.amount or 0</field>
+        </record>
+        
+        <record id="hr_salary_rule_8" model="hr.salary.rule">
+            <field name="name">Bảo hiểm xã hội cá nhân</field>
+            <field name="category_id" eval="ref('hr_salary_rule_category_1')"/>
+            <field name="code">BHXH_CN</field>
+            <field name="sequence">10</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.wage * 0.08</field>
+        </record>
+        
+        <record id="hr_salary_rule_9" model="hr.salary.rule">
+            <field name="name">Bảo hiểm xã hội công ty</field>
+            <field name="category_id" eval="ref('hr_salary_rule_category_9')"/>
+            <field name="code">BHXH_CTY</field>
+            <field name="sequence">10</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.wage * 0.18</field>
+        </record>
+        
+        <record id="hr_salary_rule_10" model="hr.salary.rule">
+            <field name="name">Bảo hiểm y tế cá nhân</field>
+            <field name="category_id" eval="ref('hr_salary_rule_category_2')"/>
+            <field name="code">BHYT_CN</field>
+            <field name="sequence">11</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.wage * 0.015</field>
+        </record>
+        
+        <record id="hr_salary_rule_11" model="hr.salary.rule">
+            <field name="name">Bảo hiểm y tế công ty</field>
+            <field name="category_id" eval="ref('hr_salary_rule_category_10')"/>
+            <field name="code">BHYT_CTY</field>
+            <field name="sequence">11</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.wage * 0.03</field>
+        </record>
+        
+        <record id="hr_salary_rule_12" model="hr.salary.rule">
+            <field name="name">Bảo hiểm thất nghiệp cá nhân</field>
+            <field name="category_id" eval="ref('hr_salary_rule_category_3')"/>
+            <field name="code">BHTN_CN</field>
+            <field name="sequence">12</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.wage * 0.01</field>
+        </record>
+        
+        <record id="hr_salary_rule_13" model="hr.salary.rule">
+            <field name="name">Bảo hiểm thất nghiệp công ty</field>
+            <field name="category_id" eval="ref('hr_salary_rule_category_11')"/>
+            <field name="code">BHTN_CTY</field>
+            <field name="sequence">12</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.wage * 0.01</field>
+        </record>
+        
+        <record id="hr_salary_rule_14" model="hr.salary.rule">
+            <field name="name">Phí công đoàn</field>
+            <field name="category_id" eval="ref('hr_salary_rule_category_4')"/>
+            <field name="code">PCD</field>
+            <field name="sequence">13</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.wage * 0.02</field>
+        </record>
+        
+        <record id="hr_salary_rule_15" model="hr.salary.rule">
+            <field name="name">Tổng thu nhập chịu thuế</field>
+            <field name="category_id" eval="ref('hr_salary_rule_category_5')"/>
+            <field name="code">BEFORE_TAX_INCOME</field>
+            <field name="sequence">150</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = categories.GROSS - categories.DED  - categories.GTBT  - categories.GTGC &gt; 0</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = categories.GROSS  - categories.DED - categories.GTBT  - categories.GTGC</field>
+        </record>
+        
+        <record id="hr_salary_rule_16" model="hr.salary.rule">
+            <field name="name">Giảm trừ bản thân</field>
+            <field name="category_id" eval="ref('hr_salary_rule_category_6')"/>
+            <field name="code">GTBT</field>
+            <field name="sequence">120</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">fix</field>
+            <field name="quantity">1</field>
+            <field name="amount_fix">9000000</field>
+        </record>
+        
+        <record id="hr_salary_rule_17" model="hr.salary.rule">
+            <field name="name">Giảm trừ gia cảnh</field>
+            <field name="category_id" eval="ref('hr_salary_rule_category_7')"/>
+            <field name="code">GTGC</field>
+            <field name="sequence">120</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = inputs.DEPEND and inputs.DEPEND.amount &gt; 0</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = inputs.DEPEND and inputs.DEPEND.amount*3600000 or 0</field>
+        </record>
+        
+        <record id="hr_salary_rule_18" model="hr.salary.rule">
+            <field name="name">Thuế TNCN</field>
+            <field name="category_id" eval="ref('hr_salary_rule_category_8')"/>
+            <field name="code">INCOME_TAX</field>
+            <field name="sequence">160</field>
+            <field name="condition_select">python</field>
+            <field name="condition_python">result = categories.BEFORE_TAX_INCOME &gt; 0</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = round((categories.BEFORE_TAX_INCOME &lt; 0 and 0 or (categories.BEFORE_TAX_INCOME &gt; 80000000 and categories.BEFORE_TAX_INCOME*0.35 - 9850000 or (categories.BEFORE_TAX_INCOME &gt; 52000000 and categories.BEFORE_TAX_INCOME*0.3 - 5850000 or (categories.BEFORE_TAX_INCOME &gt; 32000000 and categories.BEFORE_TAX_INCOME*0.25 - 3250000 or (categories.BEFORE_TAX_INCOME &gt; 18000000 and categories.BEFORE_TAX_INCOME*0.2 - 1650000 or (categories.BEFORE_TAX_INCOME &gt; 10000000 and categories.BEFORE_TAX_INCOME*0.15 - 750000 or (categories.BEFORE_TAX_INCOME &gt; 5000000 and categories.BEFORE_TAX_INCOME*0.1 - 250000 or (categories.BEFORE_TAX_INCOME*0.05)))))))))</field>
+        </record>
+        
+        <record id="hr_salary_rule_19" model="hr.salary.rule">
+            <field name="name">Trách nhiệm chức vụ</field>
+            <field name="category_id" eval="ref('hr_payroll.ALW')"/>
+            <field name="code">TNCV</field>
+            <field name="sequence">2</field>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = contract.responsibility</field>
+        </record>
+        
+        <record id="hr_payroll.structure_base" model="hr.payroll.structure">
+            <field name="name">Base for new structures</field>
+            <field name="code">BASE</field>
+            <field name="rule_ids" eval="[(6,0,[
+				ref('hr_payroll.hr_rule_basic'),
+				ref('hr_payroll.hr_rule_taxable'),
+				ref('hr_payroll.hr_rule_net'),
+				ref('hr_salary_rule_1'),
+				ref('hr_salary_rule_2'),
+				ref('hr_salary_rule_3'),
+				ref('hr_salary_rule_4'),
+				ref('hr_salary_rule_5'),
+				ref('hr_salary_rule_6'),
+				ref('hr_salary_rule_7'),
+				ref('hr_salary_rule_8'),
+				ref('hr_salary_rule_9'),
+				ref('hr_salary_rule_10'),
+				ref('hr_salary_rule_11'),
+				ref('hr_salary_rule_12'),
+				ref('hr_salary_rule_13'),
+				ref('hr_salary_rule_14'),
+				ref('hr_salary_rule_15'),
+				ref('hr_salary_rule_16'),
+				ref('hr_salary_rule_17'),
+				ref('hr_salary_rule_18'),
+				ref('hr_salary_rule_19')
+            ])]"/>
+        </record>
+        
+        <record id="hr_template_1" model="hr.template">
+            <field name="name">Bảng lương</field>
+            <field name="template_line" eval="[
+				(0,0,{'name':ref('hr_payroll.hr_rule_basic'),'sequence':0}),
+				(0,0,{'name':ref('hr_payroll.hr_rule_taxable'),'sequence':1}),
+				(0,0,{'name':ref('hr_payroll.hr_rule_net'),'sequence':2}),
+				(0,0,{'name':ref('hr_salary_rule_1'),'sequence':3}),
+				(0,0,{'name':ref('hr_salary_rule_2'),'sequence':4}),
+				(0,0,{'name':ref('hr_salary_rule_3'),'sequence':5}),
+				(0,0,{'name':ref('hr_salary_rule_4'),'sequence':6}),
+				(0,0,{'name':ref('hr_salary_rule_5'),'sequence':7}),
+				(0,0,{'name':ref('hr_salary_rule_6'),'sequence':8}),
+				(0,0,{'name':ref('hr_salary_rule_7'),'sequence':9}),
+				(0,0,{'name':ref('hr_salary_rule_8'),'sequence':10}),
+				(0,0,{'name':ref('hr_salary_rule_9'),'sequence':11}),
+				(0,0,{'name':ref('hr_salary_rule_10'),'sequence':12}),
+				(0,0,{'name':ref('hr_salary_rule_11'),'sequence':13}),
+				(0,0,{'name':ref('hr_salary_rule_12'),'sequence':14}),
+				(0,0,{'name':ref('hr_salary_rule_13'),'sequence':15}),
+				(0,0,{'name':ref('hr_salary_rule_14'),'sequence':16}),
+				(0,0,{'name':ref('hr_salary_rule_15'),'sequence':17}),
+				(0,0,{'name':ref('hr_salary_rule_16'),'sequence':18}),
+				(0,0,{'name':ref('hr_salary_rule_17'),'sequence':19}),
+				(0,0,{'name':ref('hr_salary_rule_18'),'sequence':20}),
+				(0,0,{'name':ref('hr_salary_rule_19'),'sequence':21})
+            ]"/>
+        </record>
+
+    </data>
+</openerp>
