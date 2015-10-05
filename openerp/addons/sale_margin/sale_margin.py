@@ -36,11 +36,7 @@ class sale_order_line(osv.osv):
         frm_cur = self.pool.get('res.users').browse(cr, uid, uid).company_id.currency_id.id
         to_cur = self.pool.get('product.pricelist').browse(cr, uid, [pricelist])[0].currency_id.id
         if product:
-            product = self.pool['product.product'].browse(cr, uid, product, context=context)
-            purchase_price = product.standard_price
-            to_uom = res.get('product_uom', uom)
-            if to_uom != product.uom_id.id:
-                purchase_price = self.pool['product.uom']._compute_price(cr, uid, product.uom_id.id, purchase_price, to_uom)
+            purchase_price = self.pool.get('product.product').browse(cr, uid, product).standard_price
             ctx = context.copy()
             ctx['date'] = date_order
             price = self.pool.get('res.currency').compute(cr, uid, frm_cur, to_cur, purchase_price, round=False, context=ctx)
@@ -52,7 +48,10 @@ class sale_order_line(osv.osv):
         for line in self.browse(cr, uid, ids, context=context):
             res[line.id] = 0
             if line.product_id:
-                res[line.id] = round(line.price_subtotal - ((line.purchase_price or line.product_id.standard_price) * line.product_uos_qty), 2)
+                if line.purchase_price:
+                    res[line.id] = round((line.price_unit*line.product_uos_qty*(100.0-line.discount)/100.0) -(line.purchase_price*line.product_uos_qty), 2)
+                else:
+                    res[line.id] = round((line.price_unit*line.product_uos_qty*(100.0-line.discount)/100.0) -(line.product_id.standard_price*line.product_uos_qty), 2)
         return res
 
     _columns = {

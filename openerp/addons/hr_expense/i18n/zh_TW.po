@@ -1,22 +1,21 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * hr_expense
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2012
+# Chinese (Traditional) translation for openobject-addons
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-14 00:10+0000\n"
-"PO-Revision-Date: 2015-05-29 13:00+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/odoo-7/language/zh_TW/)\n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2013-06-07 19:36+0000\n"
+"PO-Revision-Date: 2013-12-29 17:03+0000\n"
+"Last-Translator: Andy Cheng <andy@dobtor.com>\n"
+"Language-Team: Chinese (Traditional) <zh_TW@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: zh_TW\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-12-30 05:07+0000\n"
+"X-Generator: Launchpad (build 16877)\n"
 
 #. module: hr_expense
 #: view:hr.expense.expense:0
@@ -25,7 +24,7 @@ msgid "Confirmed Expenses"
 msgstr "已確認費用報支"
 
 #. module: hr_expense
-#: code:addons/hr_expense/hr_expense.py:351
+#: code:addons/hr_expense/hr_expense.py:349
 #, python-format
 msgid ""
 "No purchase account found for the product %s (or for his category), please "
@@ -54,7 +53,8 @@ msgid "Confirmation Date"
 msgstr "確認日期"
 
 #. module: hr_expense
-#: view:hr.expense.expense:0 view:hr.expense.report:0
+#: view:hr.expense.expense:0
+#: view:hr.expense.report:0
 msgid "Group By..."
 msgstr "分組..."
 
@@ -69,8 +69,10 @@ msgid "Validated By"
 msgstr "已完成審核"
 
 #. module: hr_expense
-#: view:hr.expense.expense:0 field:hr.expense.expense,department_id:0
-#: view:hr.expense.report:0 field:hr.expense.report,department_id:0
+#: view:hr.expense.expense:0
+#: field:hr.expense.expense,department_id:0
+#: view:hr.expense.report:0
+#: field:hr.expense.report,department_id:0
 msgid "Department"
 msgstr "部門"
 
@@ -80,7 +82,8 @@ msgid "New Expense"
 msgstr "新增費用報支"
 
 #. module: hr_expense
-#: field:hr.expense.line,uom_id:0 view:product.product:0
+#: field:hr.expense.line,uom_id:0
+#: view:product.product:0
 msgid "Unit of Measure"
 msgstr "度量單位"
 
@@ -100,7 +103,8 @@ msgid "Waiting Payment"
 msgstr "等待付款中"
 
 #. module: hr_expense
-#: field:hr.expense.expense,company_id:0 view:hr.expense.report:0
+#: field:hr.expense.expense,company_id:0
+#: view:hr.expense.report:0
 #: field:hr.expense.report,company_id:0
 msgid "Company"
 msgstr "公司"
@@ -116,7 +120,7 @@ msgid "To Pay"
 msgstr "應付款"
 
 #. module: hr_expense
-#: code:addons/hr_expense/hr_expense.py:170
+#: code:addons/hr_expense/hr_expense.py:172
 #, python-format
 msgid ""
 "No expense journal found. Please make sure you have a journal with type "
@@ -129,7 +133,8 @@ msgid "Expenses Statistics"
 msgstr "費用報支統計"
 
 #. module: hr_expense
-#: view:hr.expense.report:0 field:hr.expense.report,day:0
+#: view:hr.expense.report:0
+#: field:hr.expense.report,day:0
 msgid "Day"
 msgstr "日"
 
@@ -151,11 +156,11 @@ msgid "Messages"
 msgstr "訊息"
 
 #. module: hr_expense
-#: code:addons/hr_expense/hr_expense.py:170
-#: code:addons/hr_expense/hr_expense.py:236
+#: code:addons/hr_expense/hr_expense.py:172
 #: code:addons/hr_expense/hr_expense.py:238
-#: code:addons/hr_expense/hr_expense.py:351
-#: code:addons/hr_expense/hr_expense.py:355
+#: code:addons/hr_expense/hr_expense.py:240
+#: code:addons/hr_expense/hr_expense.py:349
+#: code:addons/hr_expense/hr_expense.py:353
 #, python-format
 msgid "Error!"
 msgstr "錯誤！"
@@ -224,7 +229,8 @@ msgid ""
 msgstr ""
 
 #. module: hr_expense
-#: view:hr.expense.report:0 field:hr.expense.report,nbr:0
+#: view:hr.expense.report:0
+#: field:hr.expense.report,nbr:0
 msgid "# of Lines"
 msgstr "項目數量"
 
@@ -233,10 +239,10 @@ msgstr "項目數量"
 msgid ""
 "Holds the Chatter summary (number of messages, ...). This summary is "
 "directly in html format in order to be inserted in kanban views."
-msgstr "保留談話摘要(訊息數量等等)。為了放入看板檢視模式，此摘要直接存為HTML格式。"
+msgstr ""
 
 #. module: hr_expense
-#: code:addons/hr_expense/hr_expense.py:455
+#: code:addons/hr_expense/hr_expense.py:453
 #, python-format
 msgid "Warning"
 msgstr "警告"
@@ -265,9 +271,11 @@ msgstr "平均價格"
 #: help:hr.expense.expense,state:0
 msgid ""
 "When the expense request is created the status is 'Draft'.\n"
-" It is confirmed by the user and request is sent to admin, the status is 'Waiting Confirmation'.            \n"
+" It is confirmed by the user and request is sent to admin, the status is "
+"'Waiting Confirmation'.            \n"
 "If the admin accepts it, the status is 'Accepted'.\n"
-" If the accounting entries are made for the expense request, the status is 'Waiting Payment'."
+" If the accounting entries are made for the expense request, the status is "
+"'Waiting Payment'."
 msgstr ""
 
 #. module: hr_expense
@@ -292,13 +300,15 @@ msgid "Gives the sequence order when displaying a list of expense lines."
 msgstr ""
 
 #. module: hr_expense
-#: field:hr.expense.expense,state:0 view:hr.expense.report:0
+#: field:hr.expense.expense,state:0
+#: view:hr.expense.report:0
 #: field:hr.expense.report,state:0
 msgid "Status"
 msgstr "狀態"
 
 #. module: hr_expense
-#: field:hr.expense.line,analytic_account:0 view:hr.expense.report:0
+#: field:hr.expense.line,analytic_account:0
+#: view:hr.expense.report:0
 #: field:hr.expense.report,analytic_account:0
 msgid "Analytic account"
 msgstr "分析科目"
@@ -319,23 +329,28 @@ msgid "Followers"
 msgstr "關注者"
 
 #. module: hr_expense
-#: report:hr.expense:0 view:hr.expense.expense:0
-#: field:hr.expense.expense,employee_id:0 view:hr.expense.report:0
+#: report:hr.expense:0
+#: view:hr.expense.expense:0
+#: field:hr.expense.expense,employee_id:0
+#: view:hr.expense.report:0
 msgid "Employee"
 msgstr "員工"
 
 #. module: hr_expense
-#: view:hr.expense.expense:0 selection:hr.expense.expense,state:0
+#: view:hr.expense.expense:0
+#: selection:hr.expense.expense,state:0
 msgid "New"
 msgstr "新增"
 
 #. module: hr_expense
-#: report:hr.expense:0 field:hr.expense.report,product_qty:0
+#: report:hr.expense:0
+#: field:hr.expense.report,product_qty:0
 msgid "Qty"
 msgstr "數量"
 
 #. module: hr_expense
-#: view:hr.expense.report:0 field:hr.expense.report,price_total:0
+#: view:hr.expense.report:0
+#: field:hr.expense.report,price_total:0
 msgid "Total Price"
 msgstr "總價"
 
@@ -345,13 +360,14 @@ msgid "Some costs may be reinvoices to the customer"
 msgstr ""
 
 #. module: hr_expense
-#: code:addons/hr_expense/hr_expense.py:236
+#: code:addons/hr_expense/hr_expense.py:238
 #, python-format
 msgid "The employee must have a home address."
 msgstr "員工必須要有住家住址"
 
 #. module: hr_expense
-#: view:board.board:0 view:hr.expense.expense:0
+#: view:board.board:0
+#: view:hr.expense.expense:0
 #: model:ir.actions.act_window,name:hr_expense.action_my_expense
 msgid "My Expenses"
 msgstr "我的費用報支"
@@ -377,12 +393,14 @@ msgid "Reimburse expense"
 msgstr "報銷費用"
 
 #. module: hr_expense
-#: field:hr.expense.expense,journal_id:0 field:hr.expense.report,journal_id:0
+#: field:hr.expense.expense,journal_id:0
+#: field:hr.expense.report,journal_id:0
 msgid "Force Journal"
 msgstr ""
 
 #. module: hr_expense
-#: view:hr.expense.report:0 field:hr.expense.report,no_of_products:0
+#: view:hr.expense.report:0
+#: field:hr.expense.report,no_of_products:0
 msgid "# of Products"
 msgstr "產品數"
 
@@ -397,7 +415,7 @@ msgid "After creating invoice, reimburse expenses"
 msgstr "建立發票後，報銷費用"
 
 #. module: hr_expense
-#: code:addons/hr_expense/hr_expense.py:119
+#: code:addons/hr_expense/hr_expense.py:121
 #, python-format
 msgid "Warning!"
 msgstr "警告！"
@@ -408,18 +426,19 @@ msgid "Reimbursement"
 msgstr "報銷"
 
 #. module: hr_expense
-#: field:hr.expense.expense,date_valid:0 field:hr.expense.report,date_valid:0
+#: field:hr.expense.expense,date_valid:0
+#: field:hr.expense.report,date_valid:0
 msgid "Validation Date"
 msgstr "核可日期"
 
 #. module: hr_expense
-#: code:addons/hr_expense/hr_expense.py:380
+#: code:addons/hr_expense/hr_expense.py:378
 #, python-format
 msgid "Expense Account Move"
 msgstr ""
 
 #. module: hr_expense
-#: code:addons/hr_expense/hr_expense.py:238
+#: code:addons/hr_expense/hr_expense.py:240
 #, python-format
 msgid "The employee must have a payable account set on his home address."
 msgstr ""
@@ -432,17 +451,19 @@ msgid "Expenses Analysis"
 msgstr "費用分析"
 
 #. module: hr_expense
-#: view:hr.expense.expense:0 field:hr.expense.line,expense_id:0
+#: view:hr.expense.expense:0
+#: field:hr.expense.line,expense_id:0
 #: model:ir.model,name:hr_expense.model_hr_expense_expense
 #: model:process.process,name:hr_expense.process_process_expenseprocess0
 msgid "Expense"
-msgstr "費用"
+msgstr ""
 
 #. module: hr_expense
-#: view:hr.expense.expense:0 field:hr.expense.expense,line_ids:0
+#: view:hr.expense.expense:0
+#: field:hr.expense.expense,line_ids:0
 #: view:hr.expense.line:0
 msgid "Expense Lines"
-msgstr "支出明細"
+msgstr ""
 
 #. module: hr_expense
 #: field:hr.expense.report,delay_confirm:0
@@ -452,24 +473,25 @@ msgstr ""
 #. module: hr_expense
 #: selection:hr.expense.report,month:0
 msgid "September"
-msgstr "9月"
+msgstr ""
 
 #. module: hr_expense
 #: selection:hr.expense.report,month:0
 msgid "December"
-msgstr "12月"
+msgstr ""
 
 #. module: hr_expense
-#: view:hr.expense.expense:0 view:hr.expense.report:0
+#: view:hr.expense.expense:0
+#: view:hr.expense.report:0
 #: field:hr.expense.report,month:0
 msgid "Month"
-msgstr "月份"
+msgstr ""
 
 #. module: hr_expense
 #: field:hr.expense.expense,currency_id:0
 #: field:hr.expense.report,currency_id:0
 msgid "Currency"
-msgstr "貨幣"
+msgstr ""
 
 #. module: hr_expense
 #: field:hr.expense.expense,voucher_id:0
@@ -479,7 +501,7 @@ msgstr ""
 #. module: hr_expense
 #: selection:hr.expense.expense,state:0
 msgid "Waiting Approval"
-msgstr "待審核"
+msgstr ""
 
 #. module: hr_expense
 #: model:process.node,note:hr_expense.process_node_draftexpenses0
@@ -492,11 +514,11 @@ msgid "Free Notes"
 msgstr ""
 
 #. module: hr_expense
-#: code:addons/hr_expense/hr_expense.py:455
+#: code:addons/hr_expense/hr_expense.py:453
 #, python-format
 msgid ""
-"Selected Unit of Measure does not belong to the same category as the product"
-" Unit of Measure"
+"Selected Unit of Measure does not belong to the same category as the product "
+"Unit of Measure"
 msgstr ""
 
 #. module: hr_expense
@@ -507,7 +529,7 @@ msgstr ""
 #. module: hr_expense
 #: field:hr.expense.expense,note:0
 msgid "Note"
-msgstr "備註"
+msgstr ""
 
 #. module: hr_expense
 #: model:process.transition,note:hr_expense.process_transition_reimbursereinvoice0
@@ -517,15 +539,15 @@ msgstr ""
 #. module: hr_expense
 #: selection:hr.expense.report,state:0
 msgid "Draft"
-msgstr "草稿"
+msgstr ""
 
 #. module: hr_expense
 #: selection:hr.expense.expense,state:0
 msgid "Paid"
-msgstr "已付款"
+msgstr ""
 
 #. module: hr_expense
-#: code:addons/hr_expense/hr_expense.py:355
+#: code:addons/hr_expense/hr_expense.py:353
 #, python-format
 msgid ""
 "Please configure Default Expense account for Product purchase: "
@@ -540,7 +562,7 @@ msgstr ""
 #. module: hr_expense
 #: selection:hr.expense.report,month:0
 msgid "August"
-msgstr "8月"
+msgstr ""
 
 #. module: hr_expense
 #: model:process.node,note:hr_expense.process_node_approved0
@@ -548,14 +570,15 @@ msgid "The direct manager approves the sheet"
 msgstr ""
 
 #. module: hr_expense
-#: view:hr.expense.expense:0 field:hr.expense.expense,amount:0
+#: view:hr.expense.expense:0
+#: field:hr.expense.expense,amount:0
 msgid "Total Amount"
-msgstr "總額"
+msgstr ""
 
 #. module: hr_expense
 #: selection:hr.expense.report,month:0
 msgid "June"
-msgstr "6月"
+msgstr ""
 
 #. module: hr_expense
 #: model:process.node,name:hr_expense.process_node_draftexpenses0
@@ -565,7 +588,7 @@ msgstr "費用報支草稿"
 #. module: hr_expense
 #: field:hr.expense.expense,message_is_follower:0
 msgid "Is a Follower"
-msgstr "為關注者"
+msgstr ""
 
 #. module: hr_expense
 #: model:ir.actions.act_window,name:hr_expense.product_normal_form_view_installer
@@ -573,25 +596,26 @@ msgid "Review Your Expenses Products"
 msgstr ""
 
 #. module: hr_expense
-#: report:hr.expense:0 field:hr.expense.expense,date:0
+#: report:hr.expense:0
+#: field:hr.expense.expense,date:0
 #: field:hr.expense.line,date_value:0
 msgid "Date"
-msgstr "日期"
+msgstr ""
 
 #. module: hr_expense
 #: selection:hr.expense.report,month:0
 msgid "November"
-msgstr "11月"
+msgstr ""
 
 #. module: hr_expense
 #: view:hr.expense.report:0
 msgid "Extended Filters..."
-msgstr "增加篩選條件..."
+msgstr ""
 
 #. module: hr_expense
 #: field:hr.expense.expense,user_id:0
 msgid "User"
-msgstr "使用者"
+msgstr ""
 
 #. module: hr_expense
 #: model:ir.ui.menu,name:hr_expense.menu_hr_product
@@ -601,7 +625,7 @@ msgstr ""
 #. module: hr_expense
 #: selection:hr.expense.report,month:0
 msgid "October"
-msgstr "10月"
+msgstr ""
 
 #. module: hr_expense
 #: model:ir.actions.act_window,help:hr_expense.expense_all
@@ -609,8 +633,10 @@ msgid ""
 "<p class=\"oe_view_nocontent_create\">\n"
 "                Click to register new expenses. \n"
 "              </p><p>\n"
-"                OpenERP will ensure the whole process is followed; the expense\n"
-"                sheet is validated by manager(s), the employee is reimbursed\n"
+"                OpenERP will ensure the whole process is followed; the "
+"expense\n"
+"                sheet is validated by manager(s), the employee is "
+"reimbursed\n"
 "                from his expenses, some expenses must be re-invoiced to the\n"
 "                customers.\n"
 "              </p>\n"
@@ -625,7 +651,7 @@ msgstr ""
 #. module: hr_expense
 #: selection:hr.expense.report,month:0
 msgid "January"
-msgstr "1月"
+msgstr ""
 
 #. module: hr_expense
 #: report:hr.expense:0
@@ -635,12 +661,12 @@ msgstr "人資費用報支"
 #. module: hr_expense
 #: field:hr.expense.expense,message_summary:0
 msgid "Summary"
-msgstr "摘要"
+msgstr ""
 
 #. module: hr_expense
 #: model:ir.model,name:hr_expense.model_account_move_line
 msgid "Journal Items"
-msgstr "借貸項"
+msgstr ""
 
 #. module: hr_expense
 #: model:product.template,name:hr_expense.car_travel_product_template
@@ -671,7 +697,7 @@ msgstr ""
 #: model:process.node,name:hr_expense.process_node_supplierinvoice0
 #: model:process.transition,name:hr_expense.process_transition_approveinvoice0
 msgid "Supplier Invoice"
-msgstr "供應商發票"
+msgstr ""
 
 #. module: hr_expense
 #: view:hr.expense.expense:0
@@ -681,7 +707,7 @@ msgstr "費用報支表"
 #. module: hr_expense
 #: field:hr.expense.report,voucher_id:0
 msgid "Receipt"
-msgstr "收據"
+msgstr ""
 
 #. module: hr_expense
 #: view:hr.expense.report:0
@@ -689,24 +715,27 @@ msgid "Approved Expenses"
 msgstr ""
 
 #. module: hr_expense
-#: report:hr.expense:0 field:hr.expense.line,unit_amount:0
+#: report:hr.expense:0
+#: field:hr.expense.line,unit_amount:0
 msgid "Unit Price"
-msgstr "單價"
+msgstr ""
 
 #. module: hr_expense
-#: view:hr.expense.report:0 selection:hr.expense.report,state:0
+#: view:hr.expense.report:0
+#: selection:hr.expense.report,state:0
 msgid "Done"
-msgstr "完成"
+msgstr ""
 
 #. module: hr_expense
 #: model:process.transition.action,name:hr_expense.process_transition_action_supplierinvoice0
 msgid "Invoice"
-msgstr "發票"
+msgstr ""
 
 #. module: hr_expense
-#: view:hr.expense.report:0 field:hr.expense.report,year:0
+#: view:hr.expense.report:0
+#: field:hr.expense.report,year:0
 msgid "Year"
-msgstr "年"
+msgstr ""
 
 #. module: hr_expense
 #: model:process.transition,name:hr_expense.process_transition_reimbursereinvoice0
@@ -727,7 +756,7 @@ msgstr ""
 #: view:hr.expense.expense:0
 #: model:process.transition.action,name:hr_expense.process_transition_action_refuse0
 msgid "Refuse"
-msgstr "拒絕"
+msgstr ""
 
 #. module: hr_expense
 #: model:process.transition,name:hr_expense.process_transition_confirmexpense0
@@ -742,7 +771,7 @@ msgstr ""
 #. module: hr_expense
 #: model:process.transition.action,name:hr_expense.process_transition_action_accept0
 msgid "Accept"
-msgstr "接受"
+msgstr ""
 
 #. module: hr_expense
 #: report:hr.expense:0
@@ -774,29 +803,33 @@ msgid ""
 msgstr ""
 
 #. module: hr_expense
-#: selection:hr.expense.expense,state:0 view:hr.expense.report:0
+#: selection:hr.expense.expense,state:0
+#: view:hr.expense.report:0
 #: model:mail.message.subtype,name:hr_expense.mt_expense_approved
 #: model:process.node,name:hr_expense.process_node_approved0
 msgid "Approved"
-msgstr "已核可"
+msgstr ""
 
 #. module: hr_expense
-#: field:hr.expense.line,product_id:0 view:hr.expense.report:0
+#: field:hr.expense.line,product_id:0
+#: view:hr.expense.report:0
 #: field:hr.expense.report,product_id:0
 #: model:ir.model,name:hr_expense.model_product_product
 msgid "Product"
-msgstr "產品"
+msgstr ""
 
 #. module: hr_expense
-#: report:hr.expense:0 view:hr.expense.expense:0
-#: field:hr.expense.expense,name:0 field:hr.expense.line,description:0
+#: report:hr.expense:0
+#: view:hr.expense.expense:0
+#: field:hr.expense.expense,name:0
+#: field:hr.expense.line,description:0
 msgid "Description"
-msgstr "說明"
+msgstr ""
 
 #. module: hr_expense
 #: selection:hr.expense.report,month:0
 msgid "May"
-msgstr "5月"
+msgstr ""
 
 #. module: hr_expense
 #: field:hr.expense.line,unit_quantity:0
@@ -806,7 +839,7 @@ msgstr ""
 #. module: hr_expense
 #: report:hr.expense:0
 msgid "Price"
-msgstr "價格"
+msgstr ""
 
 #. module: hr_expense
 #: field:hr.expense.report,no_of_account:0
@@ -818,7 +851,7 @@ msgstr ""
 #: model:mail.message.subtype,name:hr_expense.mt_expense_refused
 #: model:process.node,name:hr_expense.process_node_refused0
 msgid "Refused"
-msgstr "遭拒"
+msgstr ""
 
 #. module: hr_expense
 #: field:product.product,hr_expense_ok:0
@@ -833,7 +866,7 @@ msgstr ""
 #. module: hr_expense
 #: report:hr.expense:0
 msgid "Ref."
-msgstr "單號"
+msgstr ""
 
 #. module: hr_expense
 #: field:hr.expense.report,employee_id:0
@@ -841,7 +874,8 @@ msgid "Employee's Name"
 msgstr ""
 
 #. module: hr_expense
-#: view:hr.expense.report:0 field:hr.expense.report,user_id:0
+#: view:hr.expense.report:0
+#: field:hr.expense.report,user_id:0
 msgid "Validation User"
 msgstr ""
 
@@ -853,15 +887,15 @@ msgstr ""
 #. module: hr_expense
 #: selection:hr.expense.report,month:0
 msgid "February"
-msgstr "2月"
+msgstr ""
 
 #. module: hr_expense
 #: report:hr.expense:0
 msgid "Name"
-msgstr "名稱"
+msgstr ""
 
 #. module: hr_expense
-#: code:addons/hr_expense/hr_expense.py:119
+#: code:addons/hr_expense/hr_expense.py:121
 #, python-format
 msgid "You can only delete draft expenses!"
 msgstr ""
@@ -884,7 +918,7 @@ msgstr ""
 #. module: hr_expense
 #: selection:hr.expense.report,month:0
 msgid "April"
-msgstr "4月"
+msgstr ""
 
 #. module: hr_expense
 #: field:hr.expense.line,name:0
@@ -894,17 +928,17 @@ msgstr ""
 #. module: hr_expense
 #: view:hr.expense.expense:0
 msgid "Approve"
-msgstr "核准"
+msgstr ""
 
 #. module: hr_expense
 #: help:hr.expense.expense,message_ids:0
 msgid "Messages and communication history"
-msgstr "訊息及聯絡紀錄"
+msgstr ""
 
 #. module: hr_expense
 #: field:hr.expense.line,sequence:0
 msgid "Sequence"
-msgstr "序列"
+msgstr ""
 
 #. module: hr_expense
 #: model:process.transition,note:hr_expense.process_transition_confirmexpense0
@@ -928,19 +962,20 @@ msgstr ""
 #. module: hr_expense
 #: view:hr.expense.expense:0
 msgid "Accounting"
-msgstr "會計"
+msgstr ""
 
 #. module: hr_expense
 #: view:hr.expense.expense:0
 #: model:mail.message.subtype,name:hr_expense.mt_expense_confirmed
 msgid "To Approve"
-msgstr "批准"
+msgstr ""
 
 #. module: hr_expense
-#: view:hr.expense.expense:0 view:hr.expense.line:0
+#: view:hr.expense.expense:0
+#: view:hr.expense.line:0
 #: field:hr.expense.line,total_amount:0
 msgid "Total"
-msgstr "總計"
+msgstr ""
 
 #. module: hr_expense
 #: model:process.node,name:hr_expense.process_node_reinvoicing0

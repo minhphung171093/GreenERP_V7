@@ -1,27 +1,26 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * account_bank_statement_extensions
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2012
+# Finnish translation for openobject-addons
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-06-07 19:36+0000\n"
-"PO-Revision-Date: 2015-05-23 13:50+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Finnish (http://www.transifex.com/projects/p/odoo-7/language/fi/)\n"
+"PO-Revision-Date: 2014-02-18 15:35+0000\n"
+"Last-Translator: Harri Luuppala <Unknown>\n"
+"Language-Team: Finnish <fi@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: fi\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2014-02-19 05:40+0000\n"
+"X-Generator: Launchpad (build 16916)\n"
 
 #. module: account_bank_statement_extensions
 #: help:account.bank.statement.line.global,name:0
 msgid "Originator to Beneficiary Information"
-msgstr "Alkuperäinen lähde edunsaajatiedoille"
+msgstr ""
 
 #. module: account_bank_statement_extensions
 #: view:account.bank.statement.line:0
@@ -30,7 +29,8 @@ msgid "Confirmed"
 msgstr "Vahvistettu"
 
 #. module: account_bank_statement_extensions
-#: view:account.bank.statement:0 view:account.bank.statement.line:0
+#: view:account.bank.statement:0
+#: view:account.bank.statement.line:0
 msgid "Glob. Id"
 msgstr ""
 
@@ -42,7 +42,7 @@ msgstr ""
 #. module: account_bank_statement_extensions
 #: field:account.bank.statement.line.global,parent_id:0
 msgid "Parent Code"
-msgstr "Ylätason koodi"
+msgstr ""
 
 #. module: account_bank_statement_extensions
 #: view:account.bank.statement.line:0
@@ -117,7 +117,7 @@ msgstr ""
 #. module: account_bank_statement_extensions
 #: view:confirm.statement.line:0
 msgid "or"
-msgstr "tai"
+msgstr ""
 
 #. module: account_bank_statement_extensions
 #: view:confirm.statement.line:0
@@ -127,17 +127,18 @@ msgstr "Vahvista rivit"
 #. module: account_bank_statement_extensions
 #: view:account.bank.statement.line.global:0
 msgid "Transactions"
-msgstr "Tapahtumat"
+msgstr ""
 
 #. module: account_bank_statement_extensions
 #: field:account.bank.statement.line.global,type:0
 msgid "Type"
-msgstr "Tyyppi"
+msgstr ""
 
 #. module: account_bank_statement_extensions
-#: view:account.bank.statement.line:0 report:bank.statement.balance.report:0
+#: view:account.bank.statement.line:0
+#: report:bank.statement.balance.report:0
 msgid "Journal"
-msgstr "Päiväkirja"
+msgstr ""
 
 #. module: account_bank_statement_extensions
 #: view:account.bank.statement.line:0
@@ -162,12 +163,12 @@ msgstr ""
 #. module: account_bank_statement_extensions
 #: report:bank.statement.balance.report:0
 msgid "Closing Balance"
-msgstr "Loppusaldo"
+msgstr ""
 
 #. module: account_bank_statement_extensions
 #: report:bank.statement.balance.report:0
 msgid "Date"
-msgstr "Päiväys"
+msgstr ""
 
 #. module: account_bank_statement_extensions
 #: view:account.bank.statement.line:0
@@ -183,7 +184,7 @@ msgstr "Veloitustapahtumat."
 #. module: account_bank_statement_extensions
 #: view:account.bank.statement.line:0
 msgid "Extended Filters..."
-msgstr "Laajennetut suodattimet..."
+msgstr ""
 
 #. module: account_bank_statement_extensions
 #: view:confirm.statement.line:0
@@ -198,7 +199,7 @@ msgstr ""
 #. module: account_bank_statement_extensions
 #: report:bank.statement.balance.report:0
 msgid "Name"
-msgstr "Nimi"
+msgstr ""
 
 #. module: account_bank_statement_extensions
 #: field:account.bank.statement.line.global,name:0
@@ -218,7 +219,7 @@ msgstr "Muistiinpanot"
 #. module: account_bank_statement_extensions
 #: selection:account.bank.statement.line.global,type:0
 msgid "Manual"
-msgstr "Manuaalinen"
+msgstr ""
 
 #. module: account_bank_statement_extensions
 #: view:account.bank.statement.line:0
@@ -228,12 +229,12 @@ msgstr ""
 #. module: account_bank_statement_extensions
 #: view:account.bank.statement.line:0
 msgid "Credit"
-msgstr "Kredit"
+msgstr ""
 
 #. module: account_bank_statement_extensions
 #: field:account.bank.statement.line.global,amount:0
 msgid "Amount"
-msgstr "Summa"
+msgstr ""
 
 #. module: account_bank_statement_extensions
 #: view:account.bank.statement.line:0
@@ -248,12 +249,12 @@ msgstr ""
 #. module: account_bank_statement_extensions
 #: field:account.bank.statement.line,counterparty_bic:0
 msgid "Counterparty BIC"
-msgstr "Vastapuolen BIC"
+msgstr ""
 
 #. module: account_bank_statement_extensions
 #: field:account.bank.statement.line.global,child_ids:0
 msgid "Child Codes"
-msgstr "Alikoodit"
+msgstr ""
 
 #. module: account_bank_statement_extensions
 #: view:account.bank.statement.line:0
@@ -285,12 +286,12 @@ msgstr ""
 #. module: account_bank_statement_extensions
 #: model:ir.model,name:account_bank_statement_extensions.model_account_bank_statement_line
 msgid "Bank Statement Line"
-msgstr "Pankin tiliotteen rivi"
+msgstr ""
 
 #. module: account_bank_statement_extensions
 #: field:account.bank.statement.line.global,code:0
 msgid "Code"
-msgstr "Koodi"
+msgstr ""
 
 #. module: account_bank_statement_extensions
 #: field:account.bank.statement.line,counterparty_name:0
@@ -300,12 +301,12 @@ msgstr ""
 #. module: account_bank_statement_extensions
 #: model:ir.model,name:account_bank_statement_extensions.model_res_partner_bank
 msgid "Bank Accounts"
-msgstr "Pankkitilit"
+msgstr ""
 
 #. module: account_bank_statement_extensions
 #: model:ir.model,name:account_bank_statement_extensions.model_account_bank_statement
 msgid "Bank Statement"
-msgstr "Pankin tiliote"
+msgstr ""
 
 #. module: account_bank_statement_extensions
 #: view:account.bank.statement.line:0
@@ -328,7 +329,7 @@ msgstr ""
 #: code:addons/account_bank_statement_extensions/account_bank_statement.py:129
 #, python-format
 msgid "Warning!"
-msgstr "Varoitus!"
+msgstr ""
 
 #. module: account_bank_statement_extensions
 #: view:account.bank.statement.line.global:0
@@ -338,7 +339,7 @@ msgstr ""
 #. module: account_bank_statement_extensions
 #: view:confirm.statement.line:0
 msgid "Cancel"
-msgstr "Peruuta"
+msgstr ""
 
 #. module: account_bank_statement_extensions
 #: view:account.bank.statement.line:0
@@ -348,9 +349,9 @@ msgstr ""
 #. module: account_bank_statement_extensions
 #: view:account.bank.statement.line:0
 msgid "Total Amount"
-msgstr "Kokonaismäärä"
+msgstr ""
 
 #. module: account_bank_statement_extensions
 #: field:account.bank.statement.line,globalisation_id:0
 msgid "Globalisation ID"
-msgstr "ID"
+msgstr ""

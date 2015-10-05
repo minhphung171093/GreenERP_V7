@@ -27,7 +27,6 @@ import openerp
 from openerp import SUPERUSER_ID
 from openerp.osv import fields, osv
 from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
-from openerp.tools.safe_eval import safe_eval as eval
 
 _logger = logging.getLogger(__name__)
 
@@ -200,7 +199,7 @@ class base_action_rule(osv.osv):
         for action_rule in self.browse(cr, SUPERUSER_ID, ids):
             model = action_rule.model_id.model
             model_obj = self.pool.get(model)
-            if model_obj and not hasattr(model_obj, 'base_action_ruled'):
+            if not hasattr(model_obj, 'base_action_ruled'):
                 model_obj.create = self._wrap_create(model_obj.create, model)
                 model_obj.write = self._wrap_write(model_obj.write, model)
                 model_obj.base_action_ruled = True

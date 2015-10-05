@@ -41,9 +41,7 @@ def decode(text):
     """Returns unicode() string conversion of the the given encoded smtp header text"""
     if text:
         text = decode_header(text.replace('\r', ''))
-        # The joining space will not be needed as of Python 3.3
-        # See https://hg.python.org/cpython/rev/8c03fe231877
-        return ' '.join([tools.ustr(x[0], x[1]) for x in text])
+        return ''.join([tools.ustr(x[0], x[1]) for x in text])
 
 
 class mail_message(osv.Model):
@@ -574,8 +572,7 @@ class mail_message(osv.Model):
 
     def _find_allowed_model_wise(self, cr, uid, doc_model, doc_dict, context=None):
         doc_ids = doc_dict.keys()
-        ctx = dict(context or {}, active_test=False)
-        allowed_doc_ids = self.pool.get(doc_model).search(cr, uid, [('id', 'in', doc_ids)], context=ctx)
+        allowed_doc_ids = self.pool.get(doc_model).search(cr, uid, [('id', 'in', doc_ids)], context=context)
         return set([message_id for allowed_doc_id in allowed_doc_ids for message_id in doc_dict[allowed_doc_id]])
 
     def _find_allowed_doc_ids(self, cr, uid, model_ids, context=None):

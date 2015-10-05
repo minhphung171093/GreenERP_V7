@@ -1,26 +1,26 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * report_intrastat
-# 
-# Translators:
+# Dutch (Belgium) translation for openobject-addons
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-06-07 19:37+0000\n"
-"PO-Revision-Date: 2015-05-22 16:02+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Dutch (Belgium) (http://www.transifex.com/projects/p/odoo-7/language/nl_BE/)\n"
+"PO-Revision-Date: 2012-12-21 23:00+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Dutch (Belgium) <nl_BE@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: nl_BE\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-11-21 06:32+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Cancelled Invoice"
-msgstr "Geannuleerde factuur"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
@@ -30,28 +30,28 @@ msgstr ""
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Disc. (%)"
-msgstr "Korting(%)"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Supplier Invoice"
-msgstr "Aankoopfactuur"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Unit Price"
-msgstr "Eenheidsprijs"
+msgstr ""
 
 #. module: report_intrastat
 #: selection:report.intrastat,type:0
 msgid "Import"
-msgstr "Importeren"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 #: field:report.intrastat.code,description:0
 msgid "Description"
-msgstr "Omschrijving"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
@@ -61,37 +61,37 @@ msgstr ""
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Document"
-msgstr "Document"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "PRO-FORMA"
-msgstr "PRO FORMA"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Taxes:"
-msgstr "Btw:"
+msgstr ""
 
 #. module: report_intrastat
 #: selection:report.intrastat,month:0
 msgid "March"
-msgstr "Maart"
+msgstr ""
 
 #. module: report_intrastat
 #: selection:report.intrastat,month:0
 msgid "August"
-msgstr "Augustus"
+msgstr ""
 
 #. module: report_intrastat
 #: selection:report.intrastat,month:0
 msgid "May"
-msgstr "Mei"
+msgstr ""
 
 #. module: report_intrastat
 #: field:report.intrastat,type:0
 msgid "Type"
-msgstr "Type"
+msgstr ""
 
 #. module: report_intrastat
 #: model:ir.actions.report.xml,name:report_intrastat.invoice_intrastat_id
@@ -101,37 +101,37 @@ msgstr ""
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Invoice Date"
-msgstr "Factuurdatum"
+msgstr ""
 
 #. module: report_intrastat
 #: selection:report.intrastat,month:0
 msgid "June"
-msgstr "Juni"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Tel. :"
-msgstr "Tel.:"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Base"
-msgstr "Basis"
+msgstr ""
 
 #. module: report_intrastat
 #: selection:report.intrastat,month:0
 msgid "January"
-msgstr "Januari"
+msgstr ""
 
 #. module: report_intrastat
 #: selection:report.intrastat,month:0
 msgid "July"
-msgstr "Juli"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Quantity"
-msgstr "Hoeveelheid"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
@@ -141,12 +141,12 @@ msgstr ""
 #. module: report_intrastat
 #: selection:report.intrastat,month:0
 msgid "February"
-msgstr "Februari"
+msgstr ""
 
 #. module: report_intrastat
 #: selection:report.intrastat,month:0
 msgid "October"
-msgstr "Oktober"
+msgstr ""
 
 #. module: report_intrastat
 #: model:ir.model,name:report_intrastat.model_report_intrastat
@@ -156,32 +156,32 @@ msgstr ""
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Invoice"
-msgstr "Factuur"
+msgstr ""
 
 #. module: report_intrastat
 #: model:ir.model,name:report_intrastat.model_res_country
 msgid "Country"
-msgstr "Land"
+msgstr ""
 
 #. module: report_intrastat
 #: selection:report.intrastat,month:0
 msgid "September"
-msgstr "September"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Taxes"
-msgstr "Btw"
+msgstr ""
 
 #. module: report_intrastat
 #: selection:report.intrastat,month:0
 msgid "April"
-msgstr "April"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Amount"
-msgstr "Bedrag"
+msgstr ""
 
 #. module: report_intrastat
 #: view:report.intrastat:0
@@ -191,7 +191,7 @@ msgstr ""
 #. module: report_intrastat
 #: field:report.intrastat,value:0
 msgid "Value"
-msgstr "Waarde"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
@@ -203,7 +203,7 @@ msgstr ""
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Draft Invoice"
-msgstr "Voorlopige factuur"
+msgstr ""
 
 #. module: report_intrastat
 #: field:report.intrastat,supply_units:0
@@ -213,11 +213,12 @@ msgstr ""
 #. module: report_intrastat
 #: selection:report.intrastat,month:0
 msgid "November"
-msgstr "November"
+msgstr ""
 
 #. module: report_intrastat
 #: model:ir.model,name:report_intrastat.model_report_intrastat_code
-#: field:product.template,intrastat_id:0 field:report.intrastat,intrastat_id:0
+#: field:product.template,intrastat_id:0
+#: field:report.intrastat,intrastat_id:0
 #: view:report.intrastat.code:0
 msgid "Intrastat code"
 msgstr ""
@@ -225,7 +226,7 @@ msgstr ""
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Refund"
-msgstr "Creditnota"
+msgstr ""
 
 #. module: report_intrastat
 #: field:report.intrastat,ref:0
@@ -235,17 +236,18 @@ msgstr ""
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Fiscal Position Remark :"
-msgstr "Opmerking fiscale positie:"
+msgstr ""
 
 #. module: report_intrastat
-#: report:account.invoice.intrastat:0 field:report.intrastat,weight:0
+#: report:account.invoice.intrastat:0
+#: field:report.intrastat,weight:0
 msgid "Weight"
-msgstr "Gewicht"
+msgstr ""
 
 #. module: report_intrastat
 #: model:ir.model,name:report_intrastat.model_product_template
 msgid "Product Template"
-msgstr "Productsjabloon"
+msgstr ""
 
 #. module: report_intrastat
 #: field:res.country,intrastat:0
@@ -255,12 +257,12 @@ msgstr ""
 #. module: report_intrastat
 #: selection:report.intrastat,month:0
 msgid "December"
-msgstr "December"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Tax"
-msgstr "Btw"
+msgstr ""
 
 #. module: report_intrastat
 #: field:report.intrastat,code:0
@@ -270,32 +272,32 @@ msgstr ""
 #. module: report_intrastat
 #: field:report.intrastat,month:0
 msgid "Month"
-msgstr "Maand"
+msgstr ""
 
 #. module: report_intrastat
 #: field:report.intrastat,currency_id:0
 msgid "Currency"
-msgstr "Valuta"
+msgstr ""
 
 #. module: report_intrastat
 #: selection:report.intrastat,type:0
 msgid "Export"
-msgstr "Exporteren"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Fax :"
-msgstr "Fax:"
+msgstr ""
 
 #. module: report_intrastat
 #: field:report.intrastat,name:0
 msgid "Year"
-msgstr "Jaar"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Supplier Refund"
-msgstr "Aankoopcreditnota"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
@@ -305,11 +307,12 @@ msgstr ""
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Price"
-msgstr "Prijs"
+msgstr ""
 
 #. module: report_intrastat
 #: model:ir.actions.act_window,name:report_intrastat.action_report_intrastat_code_tree
 #: model:ir.ui.menu,name:report_intrastat.menu_report_intrastat_code
-#: view:report.intrastat.code:0 field:report.intrastat.code,name:0
+#: view:report.intrastat.code:0
+#: field:report.intrastat.code,name:0
 msgid "Intrastat Code"
 msgstr ""

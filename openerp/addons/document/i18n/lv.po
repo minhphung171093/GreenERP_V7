@@ -1,22 +1,21 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * document
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2012
+# Latvian translation for openobject-addons
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-14 00:10+0000\n"
-"PO-Revision-Date: 2015-05-29 13:00+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Latvian (http://www.transifex.com/projects/p/odoo-7/language/lv/)\n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2013-06-07 19:36+0000\n"
+"PO-Revision-Date: 2013-03-11 18:53+0000\n"
+"Last-Translator: Arnis Putniņš <Unknown>\n"
+"Language-Team: Latvian <lv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: lv\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-11-21 06:07+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #. module: document
 #: field:document.directory,parent_id:0
@@ -24,7 +23,7 @@ msgid "Parent Directory"
 msgstr "Virsmape"
 
 #. module: document
-#: code:addons/document/document.py:348
+#: code:addons/document/document.py:350
 #, python-format
 msgid "Directory name contains special characters!"
 msgstr "Mapes nosaukumā ir speciālie simboli!"
@@ -39,7 +38,9 @@ msgstr "Meklēt dokumentu mapē"
 msgid ""
 "Field to be used as name on resource directories. If empty, the \"name\" "
 "will be used."
-msgstr "Lauks tiks lietots kā vārds resursu mapēs. Ja šis laus būs tukšs, tiks lietots \"name\"."
+msgstr ""
+"Lauks tiks lietots kā vārds resursu mapēs. Ja šis laus būs tukšs, tiks "
+"lietots \"name\"."
 
 #. module: document
 #: view:document.directory:0
@@ -57,7 +58,8 @@ msgid "Resources"
 msgstr "Resursi"
 
 #. module: document
-#: field:document.directory,file_ids:0 view:report.document.user:0
+#: field:document.directory,file_ids:0
+#: view:report.document.user:0
 msgid "Files"
 msgstr "Faili"
 
@@ -77,7 +79,8 @@ msgid "Expression"
 msgstr "Izteiksme"
 
 #. module: document
-#: view:document.directory:0 field:document.directory,company_id:0
+#: view:document.directory:0
+#: field:document.directory,company_id:0
 msgid "Company"
 msgstr "Uzņēmums"
 
@@ -100,7 +103,8 @@ msgstr "Dokumentu vadība"
 #: help:document.directory.dctx,expr:0
 msgid ""
 "A python expression used to evaluate the field.\n"
-"You can use 'dir_id' for current dir, 'res_id', 'res_model' as a reference to the current record, in dynamic folders"
+"You can use 'dir_id' for current dir, 'res_id', 'res_model' as a reference "
+"to the current record, in dynamic folders"
 msgstr ""
 
 #. module: document
@@ -109,7 +113,8 @@ msgid "The name of the field."
 msgstr "Lauka vārds"
 
 #. module: document
-#: code:addons/document/document.py:338 code:addons/document/document.py:343
+#: code:addons/document/document.py:340
+#: code:addons/document/document.py:345
 #, python-format
 msgid "Directory name must be unique!"
 msgstr "Mapes nosaukumam jābūt unikālam!"
@@ -120,7 +125,8 @@ msgid "Filter on my documents"
 msgstr ""
 
 #. module: document
-#: view:ir.attachment:0 field:ir.attachment,index_content:0
+#: view:ir.attachment:0
+#: field:ir.attachment,index_content:0
 msgid "Indexed Content"
 msgstr "Indeksēts saturs"
 
@@ -129,7 +135,9 @@ msgstr "Indeksēts saturs"
 msgid ""
 "If true, all attachments that match this resource will  be located. If "
 "false, only ones that have this as parent."
-msgstr "Ja atzīmēts kā true, tiks atrasti visi pielikumi, kas atbilst šim resursam. Ja atzīmēts kā false, tiks atrasti tikai tie, kam šis ir virsresurss."
+msgstr ""
+"Ja atzīmēts kā true, tiks atrasti visi pielikumi, kas atbilst šim resursam. "
+"Ja atzīmēts kā false, tiks atrasti tikai tie, kam šis ir virsresurss."
 
 #. module: document
 #: view:document.directory:0
@@ -169,7 +177,8 @@ msgid "Knowledge Application Configuration"
 msgstr "Zināšanu sistēmas konfigurācija"
 
 #. module: document
-#: view:ir.attachment:0 field:ir.attachment,partner_id:0
+#: view:ir.attachment:0
+#: field:ir.attachment,partner_id:0
 msgid "Partner"
 msgstr "Partneris"
 
@@ -185,15 +194,17 @@ msgid ""
 "<p class=\"oe_view_nocontent_create\">\n"
 "            Click to create a new document. \n"
 "          </p><p>\n"
-"            The Documents repository gives you access to all attachments, such\n"
+"            The Documents repository gives you access to all attachments, "
+"such\n"
 "            as mails, project documents, invoices etc.\n"
 "          </p>\n"
 "        "
 msgstr ""
 
 #. module: document
-#: code:addons/document/document.py:338 code:addons/document/document.py:343
-#: code:addons/document/document.py:348
+#: code:addons/document/document.py:340
+#: code:addons/document/document.py:345
+#: code:addons/document/document.py:350
 #, python-format
 msgid "ValidateError"
 msgstr "Validācijas Kļūda"
@@ -228,7 +239,8 @@ msgid "Content Type"
 msgstr "Satura tips"
 
 #. module: document
-#: view:document.directory:0 field:document.directory,type:0
+#: view:document.directory:0
+#: field:document.directory,type:0
 msgid "Type"
 msgstr "Tips"
 
@@ -238,17 +250,20 @@ msgid "The filename must be unique in a directory !"
 msgstr ""
 
 #. module: document
-#: code:addons/document/document.py:118 code:addons/document/document.py:308
+#: code:addons/document/document.py:110
+#: code:addons/document/document.py:310
 #, python-format
 msgid "%s (copy)"
-msgstr "%s (kopēt)"
+msgstr ""
 
 #. module: document
 #: help:document.directory,ressource_type_id:0
 msgid ""
 "Select an object here and there will be one folder per record of that "
 "resource."
-msgstr "Izvēlēties objektu šeit un tad tiks izveidota mape katram šī objekta ierakstam."
+msgstr ""
+"Izvēlēties objektu šeit un tad tiks izveidota mape katram šī objekta "
+"ierakstam."
 
 #. module: document
 #: help:document.directory,domain:0
@@ -272,7 +287,8 @@ msgid "Context fields"
 msgstr "Konteksta lauki"
 
 #. module: document
-#: view:document.directory:0 field:report.document.user,type:0
+#: view:document.directory:0
+#: field:report.document.user,type:0
 msgid "Directory Type"
 msgstr "Mapes tips"
 
@@ -297,7 +313,7 @@ msgid "Virtual Files"
 msgstr "Virtuāli faili"
 
 #. module: document
-#: code:addons/document/document.py:574
+#: code:addons/document/document.py:576
 #, python-format
 msgid "Error at doc write!"
 msgstr "Klūda rakstot dokumentu!"
@@ -310,15 +326,16 @@ msgstr "Ģenerēti faili"
 #. module: document
 #: view:document.configuration:0
 msgid ""
-"When executing this wizard, it will configure your directories automatically"
-" according to modules installed."
+"When executing this wizard, it will configure your directories automatically "
+"according to modules installed."
 msgstr ""
 
 #. module: document
 #: field:document.directory.content,directory_id:0
 #: field:document.directory.dctx,dir_id:0
 #: model:ir.actions.act_window,name:document.action_document_file_directory_form
-#: view:ir.attachment:0 field:ir.attachment,parent_id:0
+#: view:ir.attachment:0
+#: field:ir.attachment,parent_id:0
 #: model:ir.model,name:document.model_document_directory
 #: field:report.document.user,directory:0
 msgid "Directory"
@@ -330,7 +347,8 @@ msgid "Security"
 msgstr "Drošība"
 
 #. module: document
-#: field:document.directory,write_uid:0 field:ir.attachment,write_uid:0
+#: field:document.directory,write_uid:0
+#: field:ir.attachment,write_uid:0
 msgid "Last Modification User"
 msgstr "Pēdējo izmaiņu lietotājs"
 
@@ -351,7 +369,8 @@ msgid "Domain"
 msgstr "Joma"
 
 #. module: document
-#: field:document.directory,write_date:0 field:ir.attachment,write_date:0
+#: field:document.directory,write_date:0
+#: field:ir.attachment,write_date:0
 msgid "Date Modified"
 msgstr "Izmaiņu datums"
 
@@ -382,7 +401,8 @@ msgid "Static Directory"
 msgstr "Statiska mape"
 
 #. module: document
-#: field:report.document.file,month:0 field:report.document.user,month:0
+#: field:report.document.file,month:0
+#: field:report.document.user,month:0
 msgid "Month"
 msgstr "Mēnesis"
 
@@ -399,11 +419,13 @@ msgstr "Statisks"
 #. module: document
 #: field:report.document.user,user:0
 msgid "unknown"
-msgstr "nezināms"
+msgstr ""
 
 #. module: document
-#: view:document.directory:0 field:document.directory,user_id:0
-#: view:ir.attachment:0 field:ir.attachment,user_id:0
+#: view:document.directory:0
+#: field:document.directory,user_id:0
+#: view:ir.attachment:0
+#: field:ir.attachment,user_id:0
 #: field:report.document.user,user_id:0
 msgid "Owner"
 msgstr "Īpašnieks"
@@ -427,7 +449,8 @@ msgstr "Izveides datums"
 #. module: document
 #: help:document.directory.content,include_name:0
 msgid ""
-"Check this field if you want that the name of the file to contain the record name.\n"
+"Check this field if you want that the name of the file to contain the record "
+"name.\n"
 "If set, the directory will have to be a resource one."
 msgstr ""
 
@@ -450,8 +473,8 @@ msgstr "Modeļa ID"
 #. module: document
 #: help:document.directory,ressource_tree:0
 msgid ""
-"Check this if you want to use the same tree structure as the object selected"
-" in the system."
+"Check this if you want to use the same tree structure as the object selected "
+"in the system."
 msgstr ""
 
 #. module: document
@@ -506,8 +529,8 @@ msgstr "Novembris"
 #. module: document
 #: help:document.directory,ressource_parent_type_id:0
 msgid ""
-"If you put an object here, this directory template will appear bellow all of"
-" these objects. Such directories are \"attached\" to the specific model or "
+"If you put an object here, this directory template will appear bellow all of "
+"these objects. Such directories are \"attached\" to the specific model or "
 "record, just like attachments. Don't put a parent directory if you select a "
 "parent model."
 msgstr ""
@@ -550,7 +573,7 @@ msgstr "Mapes nosaukumam jābūt unikālam!"
 #. module: document
 #: view:ir.attachment:0
 msgid "Attachments"
-msgstr "Pielikumi"
+msgstr ""
 
 #. module: document
 #: field:document.directory,create_uid:0
@@ -644,8 +667,8 @@ msgstr ""
 msgid ""
 "Each directory can either have the type Static or be linked to another "
 "resource. A static directory, as with Operating Systems, is the classic "
-"directory that can contain a set of files. The directories linked to systems"
-" resources automatically possess sub-directories for each of resource types "
+"directory that can contain a set of files. The directories linked to systems "
+"resources automatically possess sub-directories for each of resource types "
 "defined in the parent directory."
 msgstr ""
 
@@ -670,7 +693,8 @@ msgid "April"
 msgstr "Aprīlis"
 
 #. module: document
-#: field:report.document.file,nbr:0 field:report.document.user,nbr:0
+#: field:report.document.file,nbr:0
+#: field:report.document.user,nbr:0
 msgid "# of Files"
 msgstr "Failu skaits"
 
@@ -684,7 +708,8 @@ msgstr "Mapes satura tips"
 msgid ""
 "Only members of these groups will have access to this directory and its "
 "files."
-msgstr "Tikai šo grupu dalībniekiem būs pieeja pie šīs mapes un failiem tajā."
+msgstr ""
+"Tikai šo grupu dalībniekiem būs pieeja pie šīs mapes un failiem tajā."
 
 #. module: document
 #. openerp-web
@@ -727,7 +752,7 @@ msgstr "Mapju struktūra"
 #. module: document
 #: field:report.document.user,name:0
 msgid "Year"
-msgstr "Gads"
+msgstr ""
 
 #. module: document
 #: model:ir.model,name:document.model_document_storage

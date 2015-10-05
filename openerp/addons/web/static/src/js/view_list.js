@@ -294,24 +294,21 @@ instance.web.ListView = instance.web.View.extend( /** @lends instance.web.ListVi
             this.$pager
                 .on('click', 'a[data-pager-action]', function () {
                     var $this = $(this);
-                    var max_page_index = Math.ceil(self.dataset.size() / self.limit()) - 1;
+                    var max_page = Math.floor(self.dataset.size() / self.limit());
                     switch ($this.data('pager-action')) {
                         case 'first':
-                            self.page = 0;
-                            break;
+                            self.page = 0; break;
                         case 'last':
-                            self.page = max_page_index;
+                            self.page = max_page - 1;
                             break;
                         case 'next':
-                            self.page += 1;
-                            break;
+                            self.page += 1; break;
                         case 'previous':
-                            self.page -= 1;
-                            break;
+                            self.page -= 1; break;
                     }
                     if (self.page < 0) {
-                        self.page = max_page_index;
-                    } else if (self.page > max_page_index) {
+                        self.page = max_page;
+                    } else if (self.page > max_page) {
                         self.page = 0;
                     }
                     self.reload_content();
@@ -514,7 +511,7 @@ instance.web.ListView = instance.web.View.extend( /** @lends instance.web.ListVi
                         self.dataset.index = 0;
                     }
                 } else if (self.dataset.index >= self.records.length) {
-                    self.dataset.index = self.records.length ? 0 : null;
+                    self.dataset.index = 0;
                 }
 
                 self.compute_aggregates();
@@ -531,24 +528,19 @@ instance.web.ListView = instance.web.View.extend( /** @lends instance.web.ListVi
     },
     reload_record: function (record) {
         var self = this;
-        var fields = this.fields_view.fields;
-        // Use of search_read instead of read to check if we can still read the record (security rules)
         return this.dataset.read_ids(
             [record.get('id')],
             _.pluck(_(this.columns).filter(function (r) {
                     return r.tag === 'field';
-                }), 'name'),
-            {check_access_rule: true}
+                }), 'name')
         ).done(function (records) {
             var values = records[0];
             if (!values) {
                 self.records.remove(record);
                 return;
             }
-            _.each(values, function (value, key) {
-                if (fields[key] && fields[key].type === 'many2many')
-                    record.set(key + '__display', false, {silent: true});
-                record.set(key, value, {silent: true});            
+            _(_.keys(values)).each(function(key){
+                record.set(key, values[key], {silent: true});
             });
             record.trigger('change', record);
         });
@@ -1081,7 +1073,7 @@ instance.web.ListView.List = instance.web.Class.extend( /** @lends instance.web.
                     ids = value;
                 }
                 new instance.web.Model(column.relation)
-                    .call('name_get', [ids, this.dataset.context]).done(function (names) {
+                    .call('name_get', [ids]).done(function (names) {
                         // FIXME: nth horrible hack in this poor listview
                         record.set(column.id + '__display',
                                    _(names).pluck(1).join(', '));
@@ -1581,9 +1573,6 @@ instance.web.ListView.Groups = instance.web.Class.extend( /** @lends instance.we
                 .filter(function (column) { return column.tag === 'field' })
                 .pluck('name').value(),
             function (groups) {
-                // page count is irrelevant on grouped page, replace by limit
-                self.view.$pager.find('.oe_pager_group').hide();
-                self.view.$pager.find('.oe_list_pager_state').text(self.view._limit ? self.view._limit : '∞');
                 $el[0].appendChild(
                     self.render_groups(groups));
                 if (post_render) { post_render(); }

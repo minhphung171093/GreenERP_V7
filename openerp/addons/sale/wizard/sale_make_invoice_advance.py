@@ -58,9 +58,6 @@ class sale_advance_payment_inv(osv.osv_memory):
         'product_id': _get_advance_product,
     }
 
-    def _translate_advance(self, cr, uid, percentage=False, context=None):
-        return _("Advance of %s %%") if percentage else _("Advance of %s %s")
-
     def onchange_method(self, cr, uid, ids, advance_payment_method, product_id, context=None):
         if advance_payment_method == 'percentage':
             return {'value': {'amount':0, 'product_id':False }}
@@ -105,19 +102,18 @@ class sale_advance_payment_inv(osv.osv_memory):
                 raise osv.except_osv(_('Incorrect Data'),
                     _('The value of Advance Amount must be positive.'))
             if wizard.advance_payment_method == 'percentage':
-                inv_amount = sale.amount_untaxed * wizard.amount / 100
+                inv_amount = sale.amount_total * wizard.amount / 100
                 if not res.get('name'):
-                    res['name'] = self._translate_advance(cr, uid, percentage=True, context=dict(context, lang=sale.partner_id.lang)) % (wizard.amount)
+                    res['name'] = _("Advance of %s %%") % (wizard.amount)
             else:
                 inv_amount = wizard.amount
                 if not res.get('name'):
                     #TODO: should find a way to call formatLang() from rml_parse
                     symbol = sale.pricelist_id.currency_id.symbol
                     if sale.pricelist_id.currency_id.position == 'after':
-                        symbol_order = (inv_amount, symbol)
+                        res['name'] = _("Advance of %s %s") % (inv_amount, symbol)
                     else:
-                        symbol_order = (symbol, inv_amount)
-                    res['name'] = self._translate_advance(cr, uid, context=dict(context, lang=sale.partner_id.lang)) % symbol_order
+                        res['name'] = _("Advance of %s %s") % (symbol, inv_amount)
 
             # determine taxes
             if res.get('invoice_line_tax_id'):
@@ -162,6 +158,7 @@ class sale_advance_payment_inv(osv.osv_memory):
         # add the invoice to the sales order's invoices
         sale_obj.write(cr, uid, sale_id, {'invoice_ids': [(4, inv_id)]}, context=context)
         return inv_id
+
 
     def create_invoices(self, cr, uid, ids, context=None):
         """ create invoices for the active sales orders """

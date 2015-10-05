@@ -1,21 +1,21 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * subscription
-# 
-# Translators:
+# Albanian translation for openobject-addons
+# Copyright (c) 2010 Rosetta Contributors and Canonical Ltd 2010
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2010.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-14 00:11+0000\n"
-"PO-Revision-Date: 2015-05-22 16:06+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Albanian (http://www.transifex.com/projects/p/odoo-7/language/sq/)\n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2013-06-07 19:37+0000\n"
+"PO-Revision-Date: 2012-12-21 23:00+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Albanian <sq@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: sq\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-11-21 06:37+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #. module: subscription
 #: field:subscription.subscription,doc_source:0
@@ -26,12 +26,6 @@ msgstr ""
 #. module: subscription
 #: field:subscription.document,model:0
 msgid "Object"
-msgstr ""
-
-#. module: subscription
-#: code:addons/subscription/subscription.py:147
-#, python-format
-msgid "You cannot delete an active subscription!"
 msgstr ""
 
 #. module: subscription
@@ -70,9 +64,10 @@ msgid "Weeks"
 msgstr ""
 
 #. module: subscription
-#: view:subscription.subscription:0 field:subscription.subscription,state:0
+#: view:subscription.subscription:0
+#: field:subscription.subscription,state:0
 msgid "Status"
-msgstr "Statusi"
+msgstr ""
 
 #. module: subscription
 #: model:ir.ui.menu,name:subscription.config_recuuring_event
@@ -85,11 +80,6 @@ msgstr ""
 #: model:ir.ui.menu,name:subscription.menu_action_subscription_form
 #: view:subscription.subscription:0
 msgid "Subscriptions"
-msgstr ""
-
-#. module: subscription
-#: view:subscription.subscription:0
-msgid "Subsription Data"
 msgstr ""
 
 #. module: subscription
@@ -119,7 +109,8 @@ msgid "Subscription History"
 msgstr ""
 
 #. module: subscription
-#: view:subscription.subscription:0 field:subscription.subscription,user_id:0
+#: view:subscription.subscription:0
+#: field:subscription.subscription,user_id:0
 msgid "User"
 msgstr ""
 
@@ -146,8 +137,15 @@ msgid ""
 msgstr ""
 
 #. module: subscription
-#: field:subscription.document,name:0 field:subscription.subscription,name:0
+#: field:subscription.document,name:0
+#: field:subscription.subscription,name:0
 msgid "Name"
+msgstr ""
+
+#. module: subscription
+#: code:addons/subscription/subscription.py:147
+#, python-format
+msgid "You cannot delete an active subscription !"
 msgstr ""
 
 #. module: subscription
@@ -156,7 +154,8 @@ msgid "Fields"
 msgstr ""
 
 #. module: subscription
-#: view:subscription.subscription:0 field:subscription.subscription,note:0
+#: view:subscription.subscription:0
+#: field:subscription.subscription,note:0
 #: field:subscription.subscription,notes:0
 msgid "Notes"
 msgstr ""
@@ -193,7 +192,7 @@ msgstr ""
 #: view:subscription.subscription:0
 #: field:subscription.subscription,partner_id:0
 msgid "Partner"
-msgstr "Partner"
+msgstr ""
 
 #. module: subscription
 #: help:subscription.subscription,cron_id:0
@@ -201,17 +200,8 @@ msgid "Scheduler which runs on subscription"
 msgstr ""
 
 #. module: subscription
-#: code:addons/subscription/subscription.py:120
-#, python-format
-msgid "Wrong Source Document!"
-msgstr ""
-
-#. module: subscription
-#: code:addons/subscription/subscription.py:120
-#, python-format
-msgid ""
-"Please provide another source document.\n"
-"This one does not exist!"
+#: view:subscription.subscription:0
+msgid "Subsription Data"
 msgstr ""
 
 #. module: subscription
@@ -266,6 +256,12 @@ msgid "Document Types"
 msgstr ""
 
 #. module: subscription
+#: code:addons/subscription/subscription.py:120
+#, python-format
+msgid "Wrong Source Document !"
+msgstr ""
+
+#. module: subscription
 #: model:ir.model,name:subscription.model_subscription_document_fields
 #: view:subscription.document.fields:0
 msgid "Subscription Document Fields"
@@ -274,6 +270,14 @@ msgstr ""
 #. module: subscription
 #: selection:subscription.subscription,state:0
 msgid "Done"
+msgstr ""
+
+#. module: subscription
+#: code:addons/subscription/subscription.py:120
+#, python-format
+msgid ""
+"Please provide another source document.\n"
+"This one does not exist !"
 msgstr ""
 
 #. module: subscription

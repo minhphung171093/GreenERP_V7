@@ -1,0 +1,680 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		<record id="view_picking_form_inherit" model="ir.ui.view">
+            <field name="name">stock.picking.form</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@string='Additional Info']" position="after">
+					<page string="Đóng gói" attrs="{'invisible':[('type','!=','out')]}">
+						<field name="picking_packaging_line" nolabel='1'>
+							<tree editable='top'>
+								<field name="loai_thung_id" on_change="onchange_loai_thung_id(loai_thung_id, context)"/>
+								<field name="sl_thung" sum="SL thùng"/>
+								<field name="chi_phi_thung" sum="CP thùng"/>
+								<field name="sl_da" sum="SL đá"/>
+								<field name="chi_phi_da" sum="CP đá"/>
+								<field name="sl_nhietke" sum="SL Nhiệt kế"/>
+								<field name="sl_nhietke_conlai" sum="SL Nhiệt kế Còn lại"/>
+								<field name="chi_phi_nhiet_ke" sum="CP nhiệt kế"/>
+								<field name="chi_phi_gui_hang" sum="CP gửi hàng"/>
+								<field name="employee_id"/>
+								<field name="nhietdo_packaging_di"/>
+								<field name="nhietdo_packaging_den"/>
+							</tree>
+                        </field>
+                    </page>
+                </xpath>
+                <xpath expr="//field[@name='stock_journal_id']" position="after">
+                	<field name="description" attrs="{'invisible':[('type','!=','out')]}"/>
+                </xpath>
+                <xpath expr="//field[@name='origin']" position="after">
+                	<field name="ngay_gui" attrs="{'invisible':[('type','!=','out')]}"/>
+                	<field name="ngay_nhan" attrs="{'invisible':[('type','!=','out')]}"/>
+                	<field name="daidien_khachhang" attrs="{'invisible':[('type','!=','out')]}"/>
+                	<field name="nguoi_giao_hang" attrs="{'invisible':[('type','!=','out')]}"/>
+                	<field name="nguoi_van_chuyen" attrs="{'invisible':[('type','!=','out')]}" on_change="on_change_nguoivanchuyen(nguoi_van_chuyen)"/>
+                	<field name="phuongtien_giaohang" attrs="{'invisible':[('type','!=','out')]}"/>
+                	<field name="ly_do_xuat_id" attrs="{'invisible':[('type','!=','out')]}"/>
+                	<field name="nhiet_do" attrs="{'invisible':[('type','!=','in')]}"/>
+                	<field name="so_luong_thung" attrs="{'invisible':[('type','!=','in')]}"/>
+                	<field name="time_nhan" attrs="{'invisible':[('type','!=','in')]}"/>
+                	<field name="time_ketthuc" attrs="{'invisible':[('type','!=','in')]}"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                	<field name="nhietdo_di" attrs="{'invisible':[('type','!=','out')]}"/>
+                	<field name="nhietdo_den" attrs="{'invisible':[('type','!=','out')]}"/>
+                </xpath>
+                <xpath expr="///sheet" position="after">
+                	<div class="oe_chatter">
+	                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+	                    <field name="message_ids" widget="mail_thread"/>
+                	</div>
+                </xpath>
+                
+            </field>
+        </record>
+		
+		<record id="view_picking_out_tree_inherit" model="ir.ui.view">
+            <field name="name">stock.picking.tree</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_out_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='state']" position="after">
+                	<field name="sampham_lanh" invisible="1"/>
+                	<field name="ngay_gui"/>
+                	<field name="ngay_nhan"/>
+                	<field name="state_receive" invisible="1"/>
+					<button name="status_send" attrs="{'invisible':[('state_receive','!=','draft')]}" string="Send" icon="gtk-go-up" type="object" class="oe_highlight"/>
+					<button name="status_receive" attrs="{'invisible':[('state_receive','!=','da_gui')]}" string="Receive" icon="gtk-goto-bottom" type="object" class="oe_highlight"/>
+					<button name="status_refresh" attrs="{'invisible':[('state_receive','=','draft')]}" string="Refresh" icon="gtk-refresh" type="object" class="oe_highlight"/>
+                </xpath>
+            </field>
+        </record>
+		
+		<record id="view_picking_in_search_inherit" model="ir.ui.view">
+	            <field name="name">stock.picking.in.search.inherit</field>
+	            <field name="model">stock.picking</field>
+	            <field name="inherit_id" ref="general_stock.view_picking_in_search_today"/>
+	            <field name="arch" type="xml">
+	                <xpath expr="/search/group/filter[@string='Return Reason']" position="after">
+	                    <filter string="Sản phẩm lạnh" icon="terp-go-partner" domain="[]" context="{'group_by':'sampham_lanh'}"/>
+	                </xpath>
+	            </field>
+	    </record>
+	        
+		<record id="loai_thung_tree_view" model="ir.ui.view">
+			<field name="name">loai.thung.tree</field>
+			<field name="model">loai.thung</field>
+			<field name="arch" type="xml">
+				<tree string="Loại thùng">
+					<field name="name"/>
+					<field name="the_tich"/>
+					<field name="sl_da"/>
+					<field name="chi_phi_da"/>
+					<field name="chi_phi_thung"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="loai_thung_form_view" model="ir.ui.view">
+            <field name="name">loai.thung.form</field>
+            <field name="model">loai.thung</field>
+            <field name="arch" type="xml">
+	            <form string="Loại thùng" version="7.0"> 
+	            	<sheet>
+	            		<group>
+		                    <field name="name"/>
+		                </group>
+		                <div>
+			                <group>
+								<field name="the_tich"/>
+								<field name="kich_thuoc"/>
+							</group>
+							<group>
+								<field name="sl_da"/>
+								<field name="chi_phi_da"/>
+								<field name="chi_phi_thung"/>
+							</group>
+						</div>
+		         	</sheet>
+		         </form>
+			</field>
+		</record>
+		
+		<record id="action_loai_thung" model="ir.actions.act_window">
+            <field name="name">Loại thùng</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">loai.thung</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="loai_thung_tree_view"/>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+		<menuitem id="menu_loai_thung" name="Loại thùng" action="action_loai_thung" parent="stock.menu_stock_warehouse_mgmt" sequence="600"/>
+		
+		<record id="loai_congtac_phi_tree_view" model="ir.ui.view">
+			<field name="name">loai.congtac.phi.tree</field>
+			<field name="model">product.product</field>
+			<field name="arch" type="xml">
+				<tree string="Loai cong tac phi">
+					<field name="name" string="Tên công tác phí"/>
+					<field name="categ_id" string="Loại công tác phí"/>
+					<field name="default_code" string="Mã công tác phí"/>
+					<field name="list_price"/>
+					<field name="hr_expense_ok"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="loai_congtac_phi_form_view" model="ir.ui.view">
+            <field name="name">loai.congtac.phi.form</field>
+            <field name="model">product.product</field>
+            <field name="arch" type="xml">
+	            <form string="Loai cong tac phi" version="7.0"> 
+	            	<sheet>
+	            		<div class="oe_title">
+                            <div class="oe_edit_only">
+                                <label for="name" string="Tên công tác phí"/>
+                            </div>
+                            <h1>
+                                <field name="name" string="Tên công tác phí"/>
+                            </h1>
+                            <label for="categ_id" class="oe_edit_only"/>
+                            <h2><field name="categ_id" string="Loại công tác phí"/></h2>
+                            <label for="default_code" class="oe_edit_only" string="Mã công tác phí"/>
+                            <h4><field name="default_code" string="Mã công tác phí"/></h4>
+                            <div name="options" groups="base.group_user">
+                                <field name="hr_expense_ok"/>
+                                <label for="hr_expense_ok"/>
+                            </div>
+                        </div>
+                        <div class="oe_right oe_button_box" name="buttons">
+                        </div>
+                        <notebook>
+                            <page string="Thông tin">
+                                <group>
+                                    <group>
+                                        <field name="list_price"/>
+                                    </group>
+                            	</group>
+                          	</page>
+                        </notebook>
+		         	</sheet>
+		         </form>
+			</field>
+		</record>
+		
+		<record id="action_loai_congtac_phi" model="ir.actions.act_window">
+            <field name="name">Loai cong tac phi</field>
+            <field name="res_model">product.product</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="view_id" ref="loai_congtac_phi_tree_view"/>
+            <field name="context">{"default_hr_expense_ok":1}</field>
+            <field name="domain">[('hr_expense_ok','=',True)]</field>
+            <field name="search_view_id" ref="product.product_search_form_view"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a new expense category. 
+             </p>
+            </field>
+        </record>
+        
+        <record id="action_loai_congtac_phi1" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="loai_congtac_phi_tree_view"/>
+            <field name="act_window_id" ref="action_loai_congtac_phi"/>
+        </record>
+        <record id="action_loai_congtac_phi2" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="loai_congtac_phi_form_view"/>
+            <field name="act_window_id" ref="action_loai_congtac_phi"/>
+        </record>
+       
+        <menuitem id="hr_expense.menu_hr_product" name="Loại công tác phí" parent="hr.menu_hr_configuration" 
+        action="action_loai_congtac_phi"/>
+		
+		<record id="phucthien_view_picking_subinventory_form" model="ir.ui.view">
+			<field name="name">stock.picking.phucthien.form</field>
+			<field name="model">stock.picking</field>
+			<field name="inherit_id" ref="general_stock.view_picking_subinventory_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='location_id']" position="attributes">
+				 <attribute name="context">{'phucthien_search_khochoxuly_formanager':1,'stock_journal_id':stock_journal_id,'location_id':'location'}</attribute>
+				</xpath>
+				<xpath expr="///sheet" position="after">
+                	<div class="oe_chatter">
+	                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+	                    <field name="message_ids" widget="mail_thread"/>
+                	</div>
+                </xpath>
+			</field>
+		</record>
+		
+    <record model='ir.ui.view' id='view_ly_do_xuat_tree'>
+            <field name="name">ly.do.xuat.tree</field>
+            <field name="model">ly.do.xuat</field>
+            <field name="arch" type="xml">
+                <tree string="Lý do xuất">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record model='ir.ui.view' id='view_ly_do_xuat_form'>
+            <field name="name">ly.do.xuat.form</field>
+            <field name="model">ly.do.xuat</field>
+            <field name="arch" type="xml">
+                <form string="Lý do xuất">
+                	<group>
+	                    <field name="name"/>
+                   </group>
+                </form>
+            </field>
+        </record>
+      
+       	<record id="action_ly_do_xuat" model="ir.actions.act_window">
+            <field name="name">Lý do xuất</field>
+            <field name="res_model">ly.do.xuat</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create
+              </p>
+            </field>
+        </record>
+       <menuitem name="Lý do xuất" action="action_ly_do_xuat" parent="base.menu_base_config" id = "ly_do_xuat_menu" sequence="27"/>
+
+    <record model='ir.ui.view' id='view_so_lan_in_tree'>
+            <field name="name">so.lan.in.tree</field>
+            <field name="model">so.lan.in</field>
+            <field name="arch" type="xml">
+                <tree string="Số lần in">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record model='ir.ui.view' id='view_so_lan_in_form'>
+            <field name="name">so.lan.in.form</field>
+            <field name="model">so.lan.in</field>
+            <field name="arch" type="xml">
+                <form string="Số lần in">
+                	<group>
+	                    <field name="name"/>
+                   </group>
+                </form>
+            </field>
+        </record>
+      
+       	<record id="action_so_lan_in" model="ir.actions.act_window">
+            <field name="name">Số lần in</field>
+            <field name="res_model">so.lan.in</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create
+              </p>
+            </field>
+        </record>
+       <menuitem name="Số lần in" action="action_so_lan_in" parent="base.menu_base_config" id = "so_lan_in_menu" sequence="28"/>
+	   
+	   <!--chuyen kho noi bo lam moi-->
+	   <record id="chuyenkho_noibo_tree_view" model="ir.ui.view">
+			<field name="name">chuyenkho.noibo.tree</field>
+			<field name="model">chuyenkho.noibo</field>
+			<field name="arch" type="xml">
+				<tree string="Chuyển kho nội bộ">
+					<field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="origin"/>
+                    <field name="date"/>
+                    <field name="location_id"/>
+                    <field name="location_dest_id"/>
+                    <field name="state"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="chuyenkho_noibo_filter" model="ir.ui.view">
+            <field name="name">chuyenkho.noibo.select</field>
+            <field name="model">chuyenkho.noibo</field>
+            <field name="arch" type="xml">
+                <search string="Tìm kiếm chuyển kho nội bộ">
+                    <field name="name" string="Phiếu xuất"/>
+                    <field name="partner_id"/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Khách hàng" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'partner_id'}"/>
+                        <filter string="Status" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>
+		
+		<record id="chuyenkho_noibo_form_view" model="ir.ui.view">
+            <field name="name">chuyenkho.noibo.form</field>
+            <field name="model">chuyenkho.noibo</field>
+            <field name="arch" type="xml">
+	            <form string="Chuyển kho nội bộ" version="7.0"> 
+					<header>
+						<button name="force_assign" states="draft" string="Confirm" type="object" class="oe_highlight" groups="base.group_user"/>
+						<button name="action_assign" states="confirmed" string="Check Availability" type="object" class="oe_highlight"/>
+						<button name="action_process" states="assigned" string="Confirm &amp; Transfer" groups="stock.group_stock_user" type="object" class="oe_highlight"/>
+						<button name="action_cancel" states="done" string="Cancel Transfer" type="object"/>
+						<field name="state" widget="statusbar" statusbar_visible="draft,da_gui,da_nhan"/>
+					</header>
+	            	<sheet>
+	            		<h1>
+	                        <field name="name" class="oe_inline" attrs="{'invisible': [('name','=','/')]}" readonly="1"/>
+	                    </h1>
+	                    <group>
+	                        <group>
+	                            <field name="partner_id"/>
+	                            <field name="location_id"/>
+	                            <field name="location_dest_id"/>
+	                        </group>
+	                        <group>
+	                            <field name="date"/>
+	                            <field name="origin" placeholder="e.g. PO0032" class="oe_inline"/>
+	                            <field name="nhietdo_di"/>
+	                            <field name="nhietdo_den"/>
+	                        </group>
+	                    </group>
+	                    <notebook>
+	                        <page string="Products">
+	                            <field name="lines" string="Stock Move" context="{'default_location_id':location_id,
+	                            'default_location_dest_id':location_dest_id}" options='{"reload_on_button": true}'>
+		                            <tree editable='top'>
+										<field name="product_id" on_change="onchange_product_id(product_id,location_id,location_dest_id, False)"/>
+		                                <field name="name"/>
+		                                <field name="date"/>
+		                                <field name="date_expected" invisible="1"/>
+		                                <field name="product_uom"/>
+		                                <field name="product_qty"/>
+		                                <field name="location_id"/>
+	                            		<field name="location_dest_id"/>
+		                                <field name="prodlot_id" domain="[('product_id','=?',product_id)]" on_change="onchange_lot_id(prodlot_id,product_qty, location_id, product_id, product_uom)"/>
+		                                <field name="source_tracking_id"/>
+		                                <field name="dest_tracking_id"/>
+		                                <field name="state"/>
+		                            </tree>
+	                            </field>
+	                            <field name="note" placeholder="Add an internal note..." class="oe_inline"/>
+	                        </page>
+	                    </notebook>
+		         	</sheet>
+		         	<div class="oe_chatter">
+	                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+	                    <field name="message_ids" widget="mail_thread"/>
+	                </div>
+		         </form>
+			</field>
+		</record>
+	                
+	    <record id="action_chuyenkho_noibo" model="ir.actions.act_window">
+            <field name="name">Chuyển kho nội bộ</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">chuyenkho.noibo</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="chuyenkho_noibo_tree_view"/>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+		<menuitem action="action_chuyenkho_noibo" id="menu_action_chuyenkho_noibo" parent="stock.menu_stock_warehouse_mgmt" sequence="2"/>
+			
+		<!-- Vệ sinh kho dược -->
+		<record id="ve_sinh_kho_filter" model="ir.ui.view">
+            <field name="name">ve.sinh.kho.select</field>
+            <field name="model">ve.sinh.kho</field>
+            <field name="arch" type="xml">
+                <search string="Vệ sinh kho">
+                    <field name="name"/>
+                    <field name="location_id"/>
+                    <field name="state"/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Kho" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'location_id'}"/>
+                        <filter string="Trạng thái" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>
+		
+		<record id="ve_sinh_kho_duoc_tree_view" model="ir.ui.view">
+			<field name="name">ve.sinh.kho.tree</field>
+			<field name="model">ve.sinh.kho</field>
+			<field name="arch" type="xml">
+				<tree string="Vệ sinh kho dược">
+					<field name="name"/>
+					<field name="location_id"/>
+					<field name="state"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="ve_sinh_kho_duoc_form_view" model="ir.ui.view">
+            <field name="name">ve.sinh.kho.form</field>
+            <field name="model">ve.sinh.kho</field>
+            <field name="arch" type="xml">
+	            <form string="Vệ sinh kho dược" version="7.0"> 
+					<header>
+						<button name="kiem_tra" states='draft' string="Đã kiểm tra" type="object" class="oe_highlight" groups="stock.group_stock_manager"/>
+						<button name="in_phieu" string="In phiếu" type="object" class="oe_highlight"/>
+						<field name="state" widget="statusbar" statusbar_visible="draft,da_kiemtra"/>
+						<field name="type" invisible='1'/>
+					</header>
+	            	<sheet>
+	                    <group col='4' colspan='2'>
+	                    	<field name="name"/>
+	                        <field name="location_id" domain="[('name','like','dược')]"/>
+	                        <field name="user_id"/>
+	                        <field name="nguoi_kiemtra_id"/>
+	                    </group>
+						<group string="Nội dung">
+	          				<field name = "vesinhkho_line" nolabel="1">
+	          					<tree editable='bottom'>
+									<field name="noi_dung" />
+	                                <field name="thu_hien"/>
+	                                <field name="tinhtrang_sauvesinh"/>
+	                                <field name="ghi_chu"/>
+	                            </tree>
+	          				</field>
+	                	</group>
+		         	</sheet>
+		         </form>
+			</field>
+		</record>
+		
+		<record id="action_ve_sinh_kho_duoc" model="ir.actions.act_window">
+            <field name="name">Vệ sinh kho dược</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">ve.sinh.kho</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="ve_sinh_kho_duoc_tree_view"/>
+            <field name="domain">[('type','=','kho_duoc')]</field>
+            <field name="context">{'default_type':'kho_duoc'}</field>
+        </record>
+        <record id="action_ve_sinh_kho_duoc1" model="ir.actions.act_window.view">
+            <field eval="0" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="ve_sinh_kho_duoc_tree_view"/>
+            <field name="act_window_id" ref="action_ve_sinh_kho_duoc"/>
+        </record>
+        <record id="action_ve_sinh_kho_duoc2" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="ve_sinh_kho_duoc_form_view"/>
+            <field name="act_window_id" ref="action_ve_sinh_kho_duoc"/>
+        </record>
+        
+        <!-- Vệ sinh kho lạnh-->
+		<record id="ve_sinh_kho_lanh_tree_view" model="ir.ui.view">
+			<field name="name">ve.sinh.kho.lanh.tree</field>
+			<field name="model">ve.sinh.kho</field>
+			<field name="arch" type="xml">
+				<tree string="Vệ sinh kho lạnh">
+					<field name="name"/>
+					<field name="location_id"/>
+					<field name="state"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="ve_sinh_kho_lanh_form_view" model="ir.ui.view">
+            <field name="name">ve.sinh.kho.lanh.form</field>
+            <field name="model">ve.sinh.kho</field>
+            <field name="arch" type="xml">
+	            <form string="Vệ sinh kho lạnh" version="7.0"> 
+					<header>
+						<button name="kiem_tra" states='draft' string="Đã kiểm tra" type="object" class="oe_highlight" groups="stock.group_stock_manager"/>
+						<button name="in_phieu" string="In phiếu" type="object" class="oe_highlight"/>
+						<field name="state" widget="statusbar" statusbar_visible="draft,da_kiemtra"/>
+						<field name="type" invisible='1'/>
+					</header>
+	            	<sheet>
+	                    <group col='4' colspan='2'>
+	                    	<field name="name"/>
+	                        <field name="location_id" domain="[('name','like','lạnh')]"/>
+	                        <field name="thoigian_di"/>
+	                        <field name="nhietdo_di"/>
+	                        <field name="thoigian_ve"/>
+	                        <field name="nhietdo_ve"/>
+	                        <field name="user_id"/>
+	                        <field name="nguoi_kiemtra_id"/>
+	                    </group>
+						<group string="Nội dung">
+	          				<field name = "vesinhkho_line" nolabel="1">
+	          					<tree editable='bottom'>
+									<field name="noi_dung" />
+	                                <field name="thu_hien"/>
+	                                <field name="tinhtrang_sauvesinh"/>
+	                                <field name="ghi_chu"/>
+	                            </tree>
+	          				</field>
+	                	</group>
+		         	</sheet>
+		         </form>
+			</field>
+		</record>
+		
+		<record id="action_ve_sinh_kho_lanh" model="ir.actions.act_window">
+            <field name="name">Vệ sinh kho lạnh</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">ve.sinh.kho</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="ve_sinh_kho_lanh_tree_view"/>
+            <field name="domain">[('type','=','kho_lanh')]</field>
+            <field name="context">{'default_type':'kho_lanh'}</field>
+        </record>
+        <record id="action_ve_sinh_kho_lanh1" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="ve_sinh_kho_lanh_tree_view"/>
+            <field name="act_window_id" ref="action_ve_sinh_kho_lanh"/>
+        </record>
+        <record id="action_ve_sinh_kho_lanh2" model="ir.actions.act_window.view">
+            <field eval="3" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="ve_sinh_kho_lanh_form_view"/>
+            <field name="act_window_id" ref="action_ve_sinh_kho_lanh"/>
+        </record>
+        
+        <!-- Phòng chống mối mọt -->
+        <record id="phongchong_moi_mot_filter" model="ir.ui.view">
+            <field name="name">phongchong.moi.mot.select</field>
+            <field name="model">phongchong.moi.mot</field>
+            <field name="arch" type="xml">
+                <search string="Phòng chống mối mọt">
+                    <field name="name"/>
+                    <field name="user_id"/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Tháng" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'name'}"/>
+                        <filter string="Người xử lý" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'user_id'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>
+		
+		<record id="phongchong_moi_mot_tree_view" model="ir.ui.view">
+			<field name="name">phongchong.moi.mot.tree</field>
+			<field name="model">phongchong.moi.mot</field>
+			<field name="arch" type="xml">
+				<tree string="Phòng chống mối mọt" editable='top'>
+					<field name="name"/>
+					<field name="khuvuc_thuhien"/>
+					<field name="bienphap_thuchien"/>
+					<field name="tinhtrang_sauxuly"/>
+					<field name="user_id"/>
+					<field name="ghi_chu"/>
+				</tree>
+			</field>
+		</record>
+		<record id="action_phongchong_moi_mot" model="ir.actions.act_window">
+            <field name="name">Phòng chống mối mọt</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">phongchong.moi.mot</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="phongchong_moi_mot_tree_view"/>
+        </record>
+        
+        <menuitem id="menu_ve_sinh_kho" name="Vệ sinh kho" parent="stock.menu_stock_root" sequence="3"/>
+		<menuitem id="menu_ve_sinh_kho_duoc" name="Vệ sinh kho dược" action="action_ve_sinh_kho_duoc" parent="menu_ve_sinh_kho" sequence="10"/>
+		<menuitem id="menu_ve_sinh_kho_lanh" name="Vệ sinh kho lạnh" action="action_ve_sinh_kho_lanh" parent="menu_ve_sinh_kho" sequence="20"/>
+		<menuitem id="menu_action_phongchong_moi_mot" name="Phòng chống mối mọt" action="action_phongchong_moi_mot" parent="menu_ve_sinh_kho" sequence="30"/>
+		
+		<!-- BÁO CÁO KẾ HOẠCH SỬA CHỮA VÀ HÀNH ĐỘNG -->
+        <record id="suachua_hanhdong_filter" model="ir.ui.view">
+            <field name="name">suachua.hanhdong.select</field>
+            <field name="model">suachua.hanhdong</field>
+            <field name="arch" type="xml">
+                <search string="Báo cáo sửa chữa hành động">
+                    <field name="name"/>
+                    <field name="ngay_kt"/>
+                    <field name="ngay_bc"/>
+               </search>
+            </field>
+        </record>
+		
+		<record id="suachua_hanhdong_tree_view" model="ir.ui.view">
+			<field name="name">suachua.hanhdong.tree</field>
+			<field name="model">suachua.hanhdong</field>
+			<field name="arch" type="xml">
+				<tree string="Báo cáo sửa chữa hành động">
+					<field name="name"/>
+                    <field name="ngay_kt"/>
+                    <field name="ngay_bc"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="suachua_hanhdong_form_view" model="ir.ui.view">
+            <field name="name">suachua.hanhdong.form</field>
+            <field name="model">suachua.hanhdong</field>
+            <field name="arch" type="xml">
+	            <form string="Báo cáo sửa chữa hành động" version="7.0"> 
+	            	<sheet>
+	                    <group col='4' colspan='2'>
+	                    	<field name="name"/>
+	                    	<newline/>
+	                        <field name="ngay_kt"/>
+	                        <field name="ngay_bc"/>
+	                    </group>
+						<group string="Nội dung">
+	          				<field name = "sc_hd_line" nolabel="1">
+	          					<tree editable='bottom'>
+									<field name="name" />
+	                                <field name="doan_thanhtra"/>
+	                                <field name="nguyen_nhan"/>
+	                                <field name="hanh_dong"/>
+	                                <field name="thoi_gian"/>
+	                                <field name="tinh_trang"/>
+	                            </tree>
+	          				</field>
+	                	</group>
+		         	</sheet>
+		         </form>
+			</field>
+		</record>
+		
+		<record id="action_suachua_hanhdong" model="ir.actions.act_window">
+            <field name="name">Báo cáo sửa chữa hành động</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">suachua.hanhdong</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="suachua_hanhdong_tree_view"/>
+        </record>
+        
+        <menuitem id="menu_bao_cao_suachua_hanhdong" name="Báo cáo sửa chữa hành động" parent="stock.menu_stock_root" sequence="3"/>
+		<menuitem id="menu_action_suachua_hanhdong" name="Báo cáo sửa chữa hành động" action="action_suachua_hanhdong" parent="menu_bao_cao_suachua_hanhdong" sequence="10"/>
+		
+    </data>
+</openerp>

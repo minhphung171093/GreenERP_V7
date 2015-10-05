@@ -1,22 +1,21 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * project_long_term
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2012
+# Latvian translation for openobject-addons
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-06-07 19:37+0000\n"
-"PO-Revision-Date: 2015-05-29 13:01+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Latvian (http://www.transifex.com/projects/p/odoo-7/language/lv/)\n"
+"PO-Revision-Date: 2012-12-21 23:00+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Latvian <lv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: lv\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-11-21 06:30+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #. module: project_long_term
 #: help:project.phase,constraint_date_end:0
@@ -24,7 +23,8 @@ msgid "force the phase to finish before this date"
 msgstr "uzspiest fāzei beigties pirms šī datuma"
 
 #. module: project_long_term
-#: view:project.phase:0 selection:project.phase,state:0
+#: view:project.phase:0
+#: selection:project.phase,state:0
 msgid "In Progress"
 msgstr "Progresā"
 
@@ -38,7 +38,8 @@ msgstr "Fāzes"
 #. module: project_long_term
 #: model:ir.actions.act_window,name:project_long_term.act_resouce_allocation
 #: model:ir.ui.menu,name:project_long_term.menu_resouce_allocation
-#: view:project.phase:0 view:project.user.allocation:0
+#: view:project.phase:0
+#: view:project.user.allocation:0
 msgid "Team Planning"
 msgstr ""
 
@@ -48,7 +49,8 @@ msgid "Assigned Users"
 msgstr ""
 
 #. module: project_long_term
-#: view:project.phase:0 field:project.phase,next_phase_ids:0
+#: view:project.phase:0
+#: field:project.phase,next_phase_ids:0
 msgid "Next Phases"
 msgstr "Nākamās fāzes"
 
@@ -65,7 +67,8 @@ msgstr "Projekta uzdevumi"
 #. module: project_long_term
 #: model:ir.actions.act_window,help:project_long_term.action_project_compute_phases
 msgid ""
-"To schedule phases of all or a specified project. It then open a gantt view.\n"
+"To schedule phases of all or a specified project. It then open a gantt "
+"view.\n"
 "               "
 msgstr ""
 
@@ -89,7 +92,7 @@ msgstr "Secība"
 #. module: project_long_term
 #: field:project.compute.phases,target_project:0
 msgid "Action"
-msgstr "Darbība"
+msgstr ""
 
 #. module: project_long_term
 #: view:project.phase:0
@@ -107,14 +110,16 @@ msgid "Draft"
 msgstr "Melnraksts"
 
 #. module: project_long_term
-#: view:project.compute.phases:0 view:project.compute.tasks:0
+#: view:project.compute.phases:0
+#: view:project.compute.tasks:0
 msgid "C_ompute"
 msgstr "A_prēķināt"
 
 #. module: project_long_term
-#: view:project.phase:0 selection:project.phase,state:0
+#: view:project.phase:0
+#: selection:project.phase,state:0
 msgid "New"
-msgstr "Jauns/-a"
+msgstr ""
 
 #. module: project_long_term
 #: field:project.phase,product_uom:0
@@ -127,7 +132,8 @@ msgid "Resource Leaves"
 msgstr "Resursu lapas"
 
 #. module: project_long_term
-#: view:project.phase:0 selection:project.phase,state:0
+#: view:project.phase:0
+#: selection:project.phase,state:0
 msgid "Pending"
 msgstr "Neizlemts"
 
@@ -145,7 +151,7 @@ msgstr ""
 #: code:addons/project_long_term/project_long_term.py:140
 #, python-format
 msgid "%s (copy)"
-msgstr "%s (kopēt)"
+msgstr ""
 
 #. module: project_long_term
 #: code:addons/project_long_term/wizard/project_compute_phases.py:48
@@ -154,7 +160,8 @@ msgid "Please specify a project to schedule."
 msgstr ""
 
 #. module: project_long_term
-#: view:project.phase:0 view:project.user.allocation:0
+#: view:project.phase:0
+#: view:project.user.allocation:0
 msgid "Group By..."
 msgstr "Grupēt pēc..."
 
@@ -195,14 +202,15 @@ msgstr ""
 msgid ""
 "If the phase is created the status 'Draft'.\n"
 " If the phase is started, the status becomes 'In Progress'.\n"
-" If review is needed the phase is in 'Pending' status.                                  \n"
+" If review is needed the phase is in 'Pending' status.                       "
+"           \n"
 " If the phase is over, the status is set to 'Done'."
 msgstr ""
 
 #. module: project_long_term
 #: field:project.phase,progress:0
 msgid "Progress"
-msgstr "Progress"
+msgstr ""
 
 #. module: project_long_term
 #: model:ir.ui.menu,name:project_long_term.menu_pm_users_project1
@@ -213,10 +221,11 @@ msgstr "Resursi"
 #. module: project_long_term
 #: view:project.phase:0
 msgid "My Projects"
-msgstr "Mani Projekti"
+msgstr ""
 
 #. module: project_long_term
-#: view:project.project:0 view:project.user.allocation:0
+#: view:project.project:0
+#: view:project.user.allocation:0
 msgid "Phase"
 msgstr "Fāze"
 
@@ -248,10 +257,11 @@ msgstr "Saistītie uzdevumi"
 #. module: project_long_term
 #: view:project.phase:0
 msgid "Start Month"
-msgstr "Sākuma mēnesis"
+msgstr ""
 
 #. module: project_long_term
-#: field:project.phase,date_end:0 field:project.user.allocation,date_end:0
+#: field:project.phase,date_end:0
+#: field:project.user.allocation,date_end:0
 msgid "End Date"
 msgstr "Beigu datums"
 
@@ -277,7 +287,8 @@ msgid "Compute a Single Project"
 msgstr "Aprēķināt vienu projektu"
 
 #. module: project_long_term
-#: view:project.phase:0 field:project.phase,previous_phase_ids:0
+#: view:project.phase:0
+#: field:project.phase,previous_phase_ids:0
 msgid "Previous Phases"
 msgstr "Iepriekš. fāzes"
 
@@ -299,8 +310,7 @@ msgstr ""
 #. module: project_long_term
 #: help:project.phase,date_end:0
 msgid ""
-" It's computed by the scheduler according to the start date and the "
-"duration."
+" It's computed by the scheduler according to the start date and the duration."
 msgstr ""
 
 #. module: project_long_term
@@ -309,21 +319,26 @@ msgid "Loops in phases not allowed"
 msgstr "Cilpas fāzēs nav atļautas"
 
 #. module: project_long_term
-#: view:project.user.allocation:0 field:project.user.allocation,user_id:0
+#: view:project.user.allocation:0
+#: field:project.user.allocation,user_id:0
 msgid "User"
 msgstr "Lietotājs"
 
 #. module: project_long_term
 #: model:ir.model,name:project_long_term.model_project_project
 #: field:project.compute.phases,project_id:0
-#: field:project.compute.tasks,project_id:0 view:project.phase:0
-#: field:project.phase,project_id:0 view:project.task:0
-#: view:project.user.allocation:0 field:project.user.allocation,project_id:0
+#: field:project.compute.tasks,project_id:0
+#: view:project.phase:0
+#: field:project.phase,project_id:0
+#: view:project.task:0
+#: view:project.user.allocation:0
+#: field:project.user.allocation,project_id:0
 msgid "Project"
 msgstr "Projekts"
 
 #. module: project_long_term
-#: view:project.compute.phases:0 view:project.compute.tasks:0
+#: view:project.compute.phases:0
+#: view:project.compute.tasks:0
 msgid "Cancel"
 msgstr "Atcelt"
 
@@ -334,7 +349,9 @@ msgstr ""
 
 #. module: project_long_term
 #: model:ir.model,name:project_long_term.model_project_phase
-#: view:project.phase:0 view:project.task:0 field:project.task,phase_id:0
+#: view:project.phase:0
+#: view:project.task:0
+#: field:project.task,phase_id:0
 #: field:project.user.allocation,phase_id:0
 msgid "Project Phase"
 msgstr "Projekta fāze"
@@ -365,7 +382,8 @@ msgid "Project Compute Phases"
 msgstr "Projekts: aprēķināt fāzes"
 
 #. module: project_long_term
-#: field:project.phase,date_start:0 field:project.user.allocation,date_start:0
+#: field:project.phase,date_start:0
+#: field:project.user.allocation,date_start:0
 msgid "Start Date"
 msgstr "Sākuma datums"
 
@@ -375,9 +393,10 @@ msgid "Constraints"
 msgstr "Ierobežojumi"
 
 #. module: project_long_term
-#: view:project.phase:0 field:project.phase,state:0
+#: view:project.phase:0
+#: field:project.phase,state:0
 msgid "Status"
-msgstr "Statuss"
+msgstr ""
 
 #. module: project_long_term
 #: help:project.phase,sequence:0
@@ -387,7 +406,7 @@ msgstr "Fāžu sarakstā attēlo secībā pēc kārtas."
 #. module: project_long_term
 #: model:ir.actions.act_window,name:project_long_term.project_phase_task_list
 msgid "Tasks"
-msgstr "Uzdevumi"
+msgstr ""
 
 #. module: project_long_term
 #: help:project.user.allocation,date_end:0
@@ -403,8 +422,8 @@ msgstr "Kļūda!"
 #. module: project_long_term
 #: help:project.phase,date_start:0
 msgid ""
-"It's computed by the scheduler according the project date or the end date of"
-" the previous phase."
+"It's computed by the scheduler according the project date or the end date of "
+"the previous phase."
 msgstr ""
 
 #. module: project_long_term
@@ -412,7 +431,8 @@ msgstr ""
 #: model:ir.actions.act_window,name:project_long_term.act_project_phase_list
 #: model:ir.ui.menu,name:project_long_term.menu_project_phase
 #: model:ir.ui.menu,name:project_long_term.menu_project_phase_list
-#: view:project.phase:0 field:project.project,phase_ids:0
+#: view:project.phase:0
+#: field:project.project,phase_ids:0
 msgid "Project Phases"
 msgstr "Projekta fāzes"
 
@@ -429,7 +449,7 @@ msgstr "Mēnesis"
 #. module: project_long_term
 #: model:ir.model,name:project_long_term.model_account_analytic_account
 msgid "Analytic Account"
-msgstr "Analītiskais Konts"
+msgstr ""
 
 #. module: project_long_term
 #: field:project.phase,constraint_date_end:0
@@ -449,7 +469,8 @@ msgid "Schedule Tasks"
 msgstr "Ieplānot uzdevumus"
 
 #. module: project_long_term
-#: view:project.phase:0 selection:project.phase,state:0
+#: view:project.phase:0
+#: selection:project.phase,state:0
 msgid "Done"
 msgstr "Pabeigts"
 
@@ -464,14 +485,15 @@ msgid "Force Assigned Users"
 msgstr ""
 
 #. module: project_long_term
-#: view:project.phase:0 field:project.phase,duration:0
+#: view:project.phase:0
+#: field:project.phase,duration:0
 msgid "Duration"
 msgstr "Ilgums"
 
 #. module: project_long_term
 #: view:project.user.allocation:0
 msgid "Users"
-msgstr "Lietotāji"
+msgstr ""
 
 #. module: project_long_term
 #: field:project.phase,name:0
@@ -479,6 +501,7 @@ msgid "Name"
 msgstr "Nosaukums"
 
 #. module: project_long_term
-#: view:project.compute.phases:0 view:project.compute.tasks:0
+#: view:project.compute.phases:0
+#: view:project.compute.tasks:0
 msgid "or"
-msgstr "vai"
+msgstr ""

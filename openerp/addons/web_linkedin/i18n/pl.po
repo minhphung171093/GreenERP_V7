@@ -1,34 +1,33 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * web_linkedin
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2012
+# Polish translation for openobject-addons
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-06-07 19:37+0000\n"
-"PO-Revision-Date: 2015-05-22 16:07+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Polish (http://www.transifex.com/projects/p/odoo-7/language/pl/)\n"
+"PO-Revision-Date: 2012-12-21 23:00+0000\n"
+"Last-Translator: Grzegorz Grzelak (OpenGLOBE.pl) <grzegorz@openglobe.pl>\n"
+"Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: pl\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-11-21 06:38+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #. module: web_linkedin
 #. openerp-web
 #: code:addons/web_linkedin/static/src/js/linkedin.js:263
 #, python-format
 msgid "LinkedIn search"
-msgstr "Wyszukiwanie w LinkedIn"
+msgstr ""
 
 #. module: web_linkedin
 #: view:sale.config.settings:0
 msgid "The programming tool is Javascript"
-msgstr "Narzędziem programowania jest Javascript"
+msgstr ""
 
 #. module: web_linkedin
 #. openerp-web
@@ -37,19 +36,19 @@ msgstr "Narzędziem programowania jest Javascript"
 msgid ""
 "Please ask your administrator to configure it in Settings > Configuration > "
 "Sales > Social Network Integration."
-msgstr "Poproś swojego administratora o skonfigurowanie tego w Ustawienia > Konfiguracja > Sprzedaż > Integracja sieci społecznościowych."
+msgstr ""
 
 #. module: web_linkedin
 #. openerp-web
 #: code:addons/web_linkedin/static/src/xml/linkedin.xml:35
 #, python-format
 msgid "LinkedIn:"
-msgstr "LinkedIn:"
+msgstr ""
 
 #. module: web_linkedin
 #: field:sale.config.settings,api_key:0
 msgid "API Key"
-msgstr "Klucz API"
+msgstr ""
 
 #. module: web_linkedin
 #: field:sale.config.settings,server_domain:0
@@ -61,19 +60,19 @@ msgstr "nieznane"
 msgid ""
 "To use the LinkedIn module with this database, an API Key is required. "
 "Please follow this procedure:"
-msgstr "Aby używać modułu LinkedIn z tą bazą danych, potrzebny będzie klucz API. Postępuj zgodnie z tą procedurą:"
+msgstr ""
 
 #. module: web_linkedin
 #: view:sale.config.settings:0
 msgid "https://www.linkedin.com/secure/developer"
-msgstr "https://www.linkedin.com/secure/developer"
+msgstr ""
 
 #. module: web_linkedin
 #. openerp-web
 #: code:addons/web_linkedin/static/src/js/linkedin.js:60
 #, python-format
 msgid "LinkedIn is not enabled"
-msgstr "Nie zezwolono na dostęp do LinkedIn"
+msgstr ""
 
 #. module: web_linkedin
 #: view:sale.config.settings:0
@@ -92,17 +91,17 @@ msgstr "Brak wyników"
 #: code:addons/web_linkedin/static/src/js/linkedin.js:62
 #, python-format
 msgid "Ok"
-msgstr "Ok"
+msgstr ""
 
 #. module: web_linkedin
 #: view:sale.config.settings:0
 msgid "Log into LinkedIn."
-msgstr "Zaloguj się za pomocą LinkedIn"
+msgstr ""
 
 #. module: web_linkedin
 #: model:ir.model,name:web_linkedin.model_sale_config_settings
 msgid "sale.config.settings"
-msgstr "sale.config.settings"
+msgstr ""
 
 #. module: web_linkedin
 #. openerp-web
@@ -119,33 +118,33 @@ msgstr ""
 #. module: web_linkedin
 #: view:sale.config.settings:0
 msgid "Go to this URL:"
-msgstr "Przejdź pod ten adres:"
+msgstr ""
 
 #. module: web_linkedin
 #: view:sale.config.settings:0
 msgid "here:"
-msgstr "tu:"
+msgstr ""
 
 #. module: web_linkedin
 #. openerp-web
 #: code:addons/web_linkedin/static/src/xml/linkedin.xml:13
 #, python-format
 msgid "People"
-msgstr "Ludzie"
+msgstr ""
 
 #. module: web_linkedin
 #: view:sale.config.settings:0
 msgid "Copy the"
-msgstr "Skopiuj"
+msgstr ""
 
 #. module: web_linkedin
 #. openerp-web
 #: code:addons/web_linkedin/static/src/xml/linkedin.xml:33
 #, python-format
 msgid "LinkedIn access was not enabled on this server."
-msgstr "Nie zezwolono na dostęp do LinkedIn na tym serwerze."
+msgstr ""
 
 #. module: web_linkedin
 #: view:sale.config.settings:0
 msgid "Add a new application and fill the form:"
-msgstr "Dodaj nową aplikację i wypełnij formularz"
+msgstr ""
