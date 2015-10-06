@@ -77,8 +77,14 @@ class account_move_line(osv.osv):
     
     _columns = {
         'shop_id': fields.related('move_id', 'shop_id', type='many2one', relation='sale.shop', string='Shop', readonly=True, store=True),
+        'type_lctt': fields.selection([('hdkd','Hoạt động kinh doanh'),
+                                       ('hddt','Hoạt động đầu tư'),
+                                       ('hdtc','Hoạt động tài chính')], 'Loại LCTT'),
     }
     
+    _defaults = {
+        'type_lctt': 'hdkd',
+    }
 account_move_line()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

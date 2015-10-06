@@ -1,8 +1,8 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8# -*- coding: utf-8 -*-
 ##############################################################################
 #
-#    Acespritech Solutions Pvt. Ltd.
-#    Copyright (C) 2013-2014
+#    OpenERP, Open Source Management Solution
+#    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -18,27 +18,27 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+
 {
-    'name': 'Viruco Account',
+    'name': 'GreenERP REPORT',
     'version': '1.0',
     'category': 'GreenERP',
-    'description': """Account""",
+    'sequence': 1,
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',
-    'depends': ['green_erp_viruco_base','account_voucher','account','green_erp_account_regularization'],
+    'depends': ['green_erp_viruco_base'],
     'data': [
-        'security/viruco_account_security.xml',
         'security/ir.model.access.csv',
-#         'report/report_view.xml',
-#         'wizard/print_report.xml',
-        'account_invoice_view.xml',
-        'account_voucher_view.xml',
-        'account_voucher_batch_view.xml',
+        'report_view.xml',
+        'report_schedule.xml',
         'menu.xml',
-             ],
-    'demo': [],
-    'test': [],
+    ],
+    'css' : [
+    ],
+    'qweb': [
+    ],
     'installable': True,
     'auto_install': False,
+    'application': True,
 }
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4: -*-

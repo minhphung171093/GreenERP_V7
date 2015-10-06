@@ -10,67 +10,6 @@
 			<field name="active" eval="False"/>
 		</record>
     	
-<!-- New VN Taxes Reports menu -->
-		<menuitem id="menu_report_taxes" 
-	    	name="VN Taxes Reports" 
-	      	sequence="5"
-	      	parent="account.menu_finance_reports"/>
-	      		
-			<menuitem id="menu_action_report_tax_vat_input" 
-				name="Taxes VAT INPUT"
-				action="action_report_tax_vat_input" 
-				icon="terp-graph"  
-				parent="menu_report_taxes" sequence="1"/>
-			  
-			<menuitem id="menu_action_report_tax_vat_output" 
-				name="Taxes VAT OUTPUT"
-				action="action_report_tax_vat_output" 
-				icon="terp-graph"  
-				parent="menu_report_taxes" sequence="5"/>
-		
-<!-- New VN General Journals Reports menu -->
-		<menuitem id="menu_report_general_account" 
-      		name="VN General Journals" 
-      		sequence="7"
-      		parent="account.menu_finance_reports"/>
-      			
-  			<menuitem id="menu_action_account_ledger_report"
-  				name="Account Ledger"
-	      		action="action_account_ledger_report" 
-	      		icon="terp-graph"  
-	      		parent="menu_report_general_account" sequence="6"/>
-	      		
-      		<menuitem id="menu_action_general_ledger_report"
-      			name="General Ledger"
-	      		action="action_general_ledger_report" 
-	      		icon="terp-graph"  
-	      		parent="menu_report_general_account" sequence="10"/>
-	      		
-<!-- New VN Finance Reports menu -->
-		<menuitem id="menu_report_finance" 
-      		name="VN Financial Reports" 
-      		sequence="10"
-      		parent="account.menu_finance_reports" 
-      		/>
-	      	 
-		     <menuitem id="menu_action_report_general_trial_balance"
-		     	name="Trial Balance" 
-	      		action="action_report_general_trial_balance" 
-	      		icon="terp-graph"  
-	      		parent="menu_report_finance" sequence="10"/>
-	      		
-      		<menuitem id="menu_action_report_general_balance_sheet"
-      			name="Balance Sheet"
-	      		action="action_report_general_balance_sheet" 
-	      		icon="terp-graph"  
-	      		parent="menu_report_finance" sequence="15"/>
-	      		
-      		<menuitem id="menu_action_report_general_account_profit_loss"
-      			name="Profit And Loss" 
-	      		action="action_report_general_account_profit_loss" 
-	      		icon="terp-graph"  
-	      		parent="menu_report_finance" sequence="20"/>
-    	
 <!-- Phiếu chi -->
 	<menuitem id="menu_sale_purchase_receipt"
 		name="Sale and Purchase Receipt"

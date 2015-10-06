@@ -21,8 +21,8 @@
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
 import account_voucher
 import account_invoice
-import report
-import wizard
+# import report
+# import wizard
 import account
 import account_voucher_batch
 import sql_functions
