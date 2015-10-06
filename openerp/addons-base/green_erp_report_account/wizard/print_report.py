@@ -1151,6 +1151,7 @@ class account_ledger_report(osv.osv_memory):
                         'type': 'ir.actions.act_window',
                         'target': 'current',
                         'res_id': report_id,
+                        'view_id': res and res[1] or False,
                     }
         else:
             vals = {
@@ -1225,6 +1226,7 @@ class account_ledger_report(osv.osv_memory):
                         'type': 'ir.actions.act_window',
                         'target': 'current',
                         'res_id': report_id,
+                        'view_id': res and res[1] or False,
                     }
             
     
@@ -3293,6 +3295,7 @@ class so_quy(osv.osv_memory):
                             'type': 'ir.actions.act_window',
                             'target': 'current',
                             'res_id': report_id,
+                            'view_id': res and res[1] or False,
                         }
             else:
                 vals = {
@@ -3374,6 +3377,7 @@ class so_quy(osv.osv_memory):
                             'type': 'ir.actions.act_window',
                             'target': 'current',
                             'res_id': report_id,
+                            'view_id': res and res[1] or False,
                         }
         if report_name=='so_tiengui_nganhang_report':
             vals = {
@@ -3452,12 +3456,9 @@ class so_quy(osv.osv_memory):
                         'type': 'ir.actions.act_window',
                         'target': 'current',
                         'res_id': report_id,
+                        'view_id': res and res[1] or False,
                     }
             
-                    
-        
-        
-    
 so_quy()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

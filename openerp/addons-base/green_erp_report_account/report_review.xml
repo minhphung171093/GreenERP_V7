@@ -315,7 +315,7 @@
                     </group>
                 	<div class="oe_text_center">
                     	<b> SỔ CÁI </b>
-                    	<b> (Dùng cho hình thức kế toán Chứng từ ghi sổ) </b>
+                    	<div> (Dùng cho hình thức kế toán Chứng từ ghi sổ) </div>
                 	</div>
                 	<group>
 	                	<div class="oe_text_center">
@@ -530,7 +530,7 @@
                 		<field name="dia_chi"/>
                     </group>
                 	<div class="oe_text_center">
-                    	<b> SỔ QUỸ TIỀN MẶT </b>
+                    	<b> SỔ KẾ TOÁN CHI TIẾT QUỸ TIỀN MẶT </b>
                 	</div>
                 	<group>
 	                	<div class="oe_text_center">
