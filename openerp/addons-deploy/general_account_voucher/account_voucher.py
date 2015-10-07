@@ -588,7 +588,8 @@ class account_voucher(osv.osv):
                 'quantity': 1,
                 'credit': 0.0,
                 'debit': 0.0,
-                'date': voucher.date
+                'date': voucher.date,
+                'type_lctt': line.type_lctt,
             }
             if amount < 0:
                 amount = -amount
@@ -662,6 +663,7 @@ class account_voucher(osv.osv):
                     'credit': 0.0,
                     'debit': 0.0,
                     'date': line.voucher_id.date,
+                    'type_lctt': line.type_lctt,
                 }
                 new_id = move_line_obj.create(cr, uid, move_line_foreign_currency, context=context)
                 rec_ids.append(new_id)
@@ -938,3 +940,17 @@ class account_voucher(osv.osv):
             }
     
 account_voucher()
+
+class account_voucher_line(osv.osv):
+    _inherit = 'account.voucher.line'
+    _columns = {
+        'type_lctt': fields.selection([('hdkd','Hoạt động kinh doanh'),
+                                       ('hddt','Hoạt động đầu tư'),
+                                       ('hdtc','Hoạt động tài chính')], 'Loại LCTT'),
+    }
+      
+    _defaults = {
+        'type_lctt': 'hdkd',
+    }
+      
+account_voucher_line()

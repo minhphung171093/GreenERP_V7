@@ -395,8 +395,12 @@ class account_move_line(osv.osv):
         'ref_number': fields.char('Reference Number', size=64),
 #         'line_type':fields.integer('Line Type'),
 #         'quantity': fields.float('Quantity', digits=(16,3), help="The optional quantity expressed by this line, eg: number of product sold. The quantity is not a legal requirement but is very useful for some reports."),
+        'type_lctt': fields.selection([('hdkd','Hoạt động kinh doanh'),
+                                       ('hddt','Hoạt động đầu tư'),
+                                       ('hdtc','Hoạt động tài chính')], 'Loại LCTT'),
     }
     _defaults = {
+        'type_lctt': 'hdkd',
     }
     
        

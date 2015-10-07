@@ -29,4 +29,5 @@ class account_voucher_batch(osv.osv):
             }
         
 account_voucher_batch()
+
     

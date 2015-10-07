@@ -178,6 +178,9 @@
         	<xpath expr="//field[@name='line_dr_ids']/tree/field[@name='account_analytic_id']" position="attributes">
         		<attribute name="required">False</attribute>
         	</xpath>
+        	<xpath expr="//field[@name='line_dr_ids']/tree/field[@name='account_analytic_id']" position="after">
+	        	<field name="type_lctt" required='1'/>
+	        </xpath>
         	
         	<xpath expr="//field[@name='tax_amount']" position="attributes">
         		<attribute name="on_change">onchange_tax_amount(line_dr_ids, tax_amount)</attribute>
@@ -228,6 +231,10 @@
 	        	</xpath>
 	        	<xpath expr="//field[@name='line_cr_ids']/tree/field[@name='account_analytic_id']" position="attributes">
 	        		<attribute name="required">False</attribute>
+	        	</xpath>
+	        	
+	        	<xpath expr="//field[@name='line_cr_ids']/tree/field[@name='account_analytic_id']" position="after">
+	        		<field name="type_lctt" required='1'/>
 	        	</xpath>
 	        	
 	        	<xpath expr="//field[@name='tax_amount']" position="attributes">
