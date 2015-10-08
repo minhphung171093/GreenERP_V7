@@ -44,6 +44,12 @@
             action="account_voucher.action_sale_receipt"
             parent="menu_sale_purchase_receipt"
             sequence="50"/>
+		
+		
+		
+
+	
+            
     	
     </data>
 </openerp>

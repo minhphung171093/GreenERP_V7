@@ -1,0 +1,66 @@
+# -*- coding: utf-8 -*-
+##############################################################################
+#
+#    HLVSolution, Open Source Management Solution
+#
+##############################################################################
+
+import time
+from report import report_sxw
+import pooler
+from osv import osv
+from tools.translate import _
+import random
+from datetime import datetime
+DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
+DATE_FORMAT = "%Y-%m-%d"
+import amount_to_text_vn
+import amount_to_text_en
+
+class Parser(report_sxw.rml_parse):
+        
+    def __init__(self, cr, uid, name, context):
+        super(Parser, self).__init__(cr, uid, name, context=context)
+        self.account_id =False
+        self.times = False
+        self.start_date = False
+        self.end_date = False
+        self.company_name = False
+        self.company_address = False
+        self.showdetail = False
+        self.vat = False
+        self.shop_ids = []
+        self.localcontext.update({
+            'get_vietname_date':self.get_vietname_date, 
+        })
+    
+    
+    def get_vietname_date(self, date):
+        if not date:
+            date = time.strftime(DATE_FORMAT)
+        date = datetime.strptime(date, DATE_FORMAT)
+        return date.strftime('%d/%m/%Y')
+    
+    def get_line_in(self):
+        wizard_data = self.localcontext['data']['form']
+        tu_ngay = wizard_data['tu_ngay']
+        den_ngay = wizard_data['den_ngay']
+        sql = '''
+            select id from account_invoice_line where invoice_id in (select id from account_invoice 
+            where type = 'in_invoice' and state in ('open', 'paid') and date_invoice between '%s' and '%s')
+        '''%(tu_ngay, den_ngay)
+        self.cr.execute(sql)
+        return self.cr.dictfetchall()
+    
+    def get_line_in(self):
+        wizard_data = self.localcontext['data']['form']
+        tu_ngay = wizard_data['tu_ngay']
+        den_ngay = wizard_data['den_ngay']
+        sql = '''
+            select id from account_invoice_line where invoice_id in (select id from account_invoice 
+            where type = 'out_invoice' and state in ('open', 'paid') and date_invoice between '%s' and '%s')
+        '''%(tu_ngay, den_ngay)
+        self.cr.execute(sql)
+        return self.cr.dictfetchall()
+    
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
