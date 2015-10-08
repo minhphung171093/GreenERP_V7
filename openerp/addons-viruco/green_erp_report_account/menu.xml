@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+<!-- New VN Taxes Reports menu -->
+		<menuitem id="menu_report_taxes" 
+	    	name="VN Taxes Reports" 
+	      	sequence="5"
+	      	parent="account.menu_finance_reports"/>
+	      		
+			<menuitem id="menu_action_report_tax_vat_input" 
+				name="Taxes VAT INPUT"
+				action="action_report_tax_vat_input" 
+				icon="terp-graph"  
+				parent="menu_report_taxes" sequence="1"/>
+			  
+			<menuitem id="menu_action_report_tax_vat_output" 
+				name="Taxes VAT OUTPUT"
+				action="action_report_tax_vat_output" 
+				icon="terp-graph"  
+				parent="menu_report_taxes" sequence="5"/>
+		
+<!-- New VN General Journals Reports menu -->
+		<menuitem id="menu_report_general_account" 
+      		name="VN General Journals" 
+      		sequence="7"
+      		parent="account.menu_finance_reports"/>
+      			
+  			<menuitem id="menu_action_account_ledger_report"
+  				name="Sổ cái"
+	      		action="action_account_ledger_report" 
+	      		icon="terp-graph"  
+	      		parent="menu_report_general_account" sequence="6"/>
+	      		
+      		<!-- <menuitem id="menu_action_general_ledger_report"
+      			name="Bảng cân đối số phát sinh"
+	      		action="action_general_ledger_report" 
+	      		icon="terp-graph"  
+	      		parent="menu_report_general_account" sequence="10"/> -->
+	      		
+	      	<menuitem id="menu_action_soquy_tienmat_report"
+      			name="Sổ quỹ tiền mặt"
+	      		action="action_soquy_tienmat_report" 
+	      		icon="terp-graph"  
+	      		parent="menu_report_general_account" sequence="15"/>
+	      		
+      		<menuitem id="menu_action_so_tiengui_nganhang_report"
+      			name="Sổ tiền gửi ngân hàng"
+	      		action="action_so_tiengui_nganhang_report" 
+	      		icon="terp-graph"  
+	      		parent="menu_report_general_account" sequence="20"/>
+	      		
+<!-- New VN Finance Reports menu -->
+		<menuitem id="menu_report_finance" 
+      		name="VN Financial Reports" 
+      		sequence="10"
+      		parent="account.menu_finance_reports" 
+      		/>
+	      	 
+		     <menuitem id="menu_action_report_general_trial_balance"
+		     	name="Bảng cân đối số phát sinh" 
+	      		action="action_report_general_trial_balance" 
+	      		icon="terp-graph"  
+	      		parent="menu_report_finance" sequence="10"/>
+	      		
+      		<menuitem id="menu_action_report_general_balance_sheet"
+      			name="Bảng cân đối kế toán"
+	      		action="action_report_general_balance_sheet" 
+	      		icon="terp-graph"  
+	      		parent="menu_report_finance" sequence="15"/>
+	      		
+      		<menuitem id="menu_action_report_general_account_profit_loss"
+      			name="Kết quả kinh doanh" 
+	      		action="action_report_general_account_profit_loss" 
+	      		icon="terp-graph"  
+	      		parent="menu_report_finance" sequence="20"/>
+	      		
+      		<menuitem id="menu_action_report_luuchuyen_tiente_tructiep"
+      			name="Lưu chuyển tiền tệ (trực tiếp)" 
+	      		action="action_report_luuchuyen_tiente_tructiep" 
+	      		icon="terp-graph"  
+	      		parent="menu_report_finance" sequence="25"/>
+    	
+            
+    </data>
+</openerp>

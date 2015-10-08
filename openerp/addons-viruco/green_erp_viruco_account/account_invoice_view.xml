@@ -16,6 +16,10 @@
             	<xpath expr="//field[@name='date_invoice']" position="after">
 	        		<field name="date_document"/>
 	        	</xpath>
+	        	<xpath expr="//field[@name='supplier_invoice_number']" position="after">
+	        		<field name="ki_hieu_hd"/>
+	        		<field name="so_hd"/>
+	        	</xpath>
             </field>
         </record>
         
@@ -32,6 +36,8 @@
             	</field>
             	<xpath expr="//field[@name='fiscal_position']" position="after">
 	        		<field name="reference_number" readonly="0"/>
+	        		<field name="ki_hieu_hd"/>
+	        		<field name="so_hd"/>
 	        	</xpath>
             </field>
         </record>
@@ -190,6 +196,9 @@
                 </xpath>
                 <xpath expr="//field[@name='date']" position="after">
                     <field name="date_document"/>
+                </xpath>
+                <xpath expr="//field[@name='line_id']/tree/field[@name='analytic_account_id']" position="after">
+                    <field name="type_lctt" required='1'/>
                 </xpath>
             </field>
         </record>

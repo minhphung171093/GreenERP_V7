@@ -25,6 +25,7 @@
                     </group>
 	                <footer>
                         <button string="Print" type="object" name="finance_report" context="{'type_report':'tax_vat_input'}" icon='gtk-execute'/>
+                        <button string="Review" type="object" name="review_report_in" context="{'type_report':'tax_vat_input'}" icon='gtk-execute'/>
                         or
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
@@ -65,6 +66,7 @@
                     </group>
 	                <footer>
                         <button string="Print" type="object" name="finance_report" context="{'type_report':'tax_vat_output'}" icon='gtk-execute'/>
+                        <button string="Review" type="object" name="review_report_out" context="{'type_report':'tax_vat_output'}" icon='gtk-execute'/>
                         or
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
@@ -86,7 +88,7 @@
 		    <field name="name">account.ledger.report.form</field>
 		    <field name="model">account.ledger.report</field>
 		    <field name="arch" type="xml">
-		         <form string="Account Ledger" version="7.0">
+		         <form string="Account Ledger Report" version="7.0">
 		        	<group>
 		        		<group>
 		        			<field name="shop_ids" widget="many2many_tags"/>
@@ -107,6 +109,7 @@
 		            </group>
 		            <footer>
                         <button string="Print" type="object" name="finance_report" icon='gtk-execute'/>
+                        <button string="Review" type="object" name="review_report" icon="gtk-execute"/>
                         or
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
@@ -182,6 +185,7 @@
                     </group>
 	                <footer>
                         <button string="Print" type="object" name="finance_report" context="{'type_report':'fin_general_trial_balance_report'}" icon='gtk-execute'/>
+                        <button string="Review" type="object" name="review_report_in" context="{'type_report':'fin_general_trial_balance_report'}" icon='gtk-execute'/>
                         or
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
@@ -217,6 +221,7 @@
                     </group>
 	                <footer>
                         <button string="Print" type="object" name="finance_report" context="{'type_report':'fin_general_balance_sheet_report'}" icon='gtk-execute'/>
+                        <button string="Review" type="object" name="review_report_in" context="{'type_report':'fin_general_balance_sheet_report'}" icon='gtk-execute'/>
                         or
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
@@ -251,6 +256,7 @@
                     </group>
 	                <footer>
                         <button string="Print" type="object" name="finance_report" context="{'type_report':'fin_general_account_profit_loss_report'}" icon='gtk-execute'/>
+                        <button string="Review" type="object" name="review_report_in" context="{'type_report':'fin_general_account_profit_loss_report'}" icon='gtk-execute'/>
                         or
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
@@ -267,19 +273,25 @@
             <field name="view_id" ref="report_general_account_profit_loss"/>
         </record>
         
-<!--  ========================= Bảng kê doanh thu ================= -->     
-         <record id="bang_ke_doanh_thu_view" model="ir.ui.view">
-            <field name="name">bang.ke.doanh.thu.view</field>
-            <field name="model">bang.ke.doanh.thu</field>
+<!--  ===================== Create Lưu chuyển tiền tệ  Report ================= -->       
+        <!--   Lưu chuyển tiền tệ trực tiếp Report -->
+        <record id="report_luuchuyen_tiente_tructiep" model="ir.ui.view">
+            <field name="name">report.luuchuyen.tiente.tructiep.form</field>
+            <field name="model">luuchuyen.tiente</field>
+            <field name="type">form</field>
             <field name="arch" type="xml">
-                <form string="Bảng kê doanh thu" version="7.0">
-                	<group col="4" colspan="2">
-                		<field name="tu_ngay" />
-                		<field name="den_ngay"/>
-                		
+                <form string="Lưu chuyển tiền tệ (trực tiếp)" version="7.0">
+                	<group col="6" colspan="3">
+                		<field name="times"/>
+                		<field name="company_id" groups="base.group_multi_company"/>
+                		<newline/>
+                		<field name="quarter" attrs="{'invisible':[('times', 'in', ['dates','years','periods'])],'required':[('times', 'not in', ['dates','years','periods'])]}"/>
+                		<field name="period_id_start" domain="[('company_id','=',company_id)]" context="{'report_type':'1'}" attrs="{'invisible':[('times', 'in', ['dates','years','quarter'])],'required':[('times', 'not in', ['dates','years','quarter'])]}"/>
+                		<field name="fiscalyear_start" domain="[('company_id','=',company_id)]" attrs="{'invisible':[('times', 'in', ['dates','periods'])],'required':[('times','not in', ['dates','periods'])]}"/>
                     </group>
 	                <footer>
-                        <button string="Print" type="object" name="print_report" icon='gtk-execute'/>
+                        <button string="Print" type="object" name="finance_report" context="{'type_report':'luuchuyen_tiente_tructiep_report'}" icon='gtk-execute'/>
+                        <button string="Review" type="object" name="review_report_in" context="{'type_report':'luuchuyen_tiente_tructiep_report'}" icon='gtk-execute'/>
                         or
                         <button string="Cancel" class="oe_link" special="cancel"/>
                     </footer>
@@ -287,20 +299,102 @@
             </field>
         </record>
         
-        <record id="action_bang_ke_doanh_thu_view" model="ir.actions.act_window">
-            <field name="name">Bảng kê doanh thu</field>
-            <field name="res_model">bang.ke.doanh.thu</field>
+        <record id="action_report_luuchuyen_tiente_tructiep" model="ir.actions.act_window">
+            <field name="name">Lưu chuyển tiền tệ (trực tiếp)</field>
+            <field name="res_model">luuchuyen.tiente</field>
             <field name="view_type">form</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
-            <field name="view_id" ref="bang_ke_doanh_thu_view"/>
+            <field name="view_id" ref="report_luuchuyen_tiente_tructiep"/>
         </record>
-        <menuitem id="menu_action_bang_ke_doanh_thu_view" 
-	        action="action_bang_ke_doanh_thu_view" 
-	        parent="account.menu_finance_reporting"
-	        sequence="30"/>
-	        
         
+<!--  ========================= Sổ quỹ tiền mặt ================= -->
+		<record id="view_soquy_tienmat_report_form" model="ir.ui.view">
+		    <field name="name">soquy.tienmat.report.form</field>
+		    <field name="model">so.quy</field>
+		    <field name="arch" type="xml">
+		         <form string="Sổ quỹ tiền mặt" version="7.0">
+		        	<group>
+		        		<group>
+		        			<field name="shop_ids" widget="many2many_tags"/>
+			        		<field name="times"/>
+			        		<field name="company_id" groups="base.group_multi_company"/>
+			        		<field name="showdetails"/>
+		        		</group>
+		        		<group>
+			        		<field name="quarter" attrs="{'invisible':[('times', 'in', ['dates','years','periods'])],'required':[('times', 'not in', ['dates','years','periods'])]}"/>
+			        		<field name="period_id_start" context="{'report_type':'1'}" attrs="{'invisible':[('times', 'in', ['dates','years','quarter'])],'required':[('times', 'not in', ['dates','years','quarter'])]}"/>
+			        		<field name="fiscalyear_start"  attrs="{'invisible':[('times', 'in', ['dates','periods','quarter'])],'required':[('times','not in', ['dates','periods'])]}"/>
+			        		<field name="date_start"  attrs="{'invisible':[('times', 'in', ['years','periods','quarter'])],'required':[('times','not in', ['years','periods'])]}"/>
+			        		<field name="date_end"  attrs="{'invisible':[('times', 'in', ['years','periods','quarter'])],'required':[('times','not in', ['years','periods'])]}"/>
+		           		</group>
+		           		<group>
+		           			<field name="account_id" domain="[('code','like','111')]" invisible='1'/>
+		           		</group>
+		            </group>
+		            <footer>
+                        <button string="Print" type="object" name="finance_report" context="{'type_report':'soquy_tienmat_report'}" icon='gtk-execute'/>
+                        <button string="Review" type="object" name="review_report" context="{'type_report':'soquy_tienmat_report'}" icon='gtk-execute'/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+		        </form>
+		    </field>
+		</record>
+		
+		<record id="action_soquy_tienmat_report" model="ir.actions.act_window">
+		    <field name="name">Sổ quỹ tiền mặt</field>
+		    <field name="res_model">so.quy</field>
+		    <field name="view_type">form</field>
+		    <field name="view_mode">form</field>
+		    <field name="target">new</field>
+		    <field name="view_id" ref="view_soquy_tienmat_report_form"/>
+		    <field name="context">{'report_type':'soquy_tienmat_report'}</field>
+		</record>
+
+<!--  ========================= Sổ tiền gửi ngân hàng ================= -->
+		<record id="view_so_tiengui_nganhang_report_form" model="ir.ui.view">
+		    <field name="name">so.tiengui.nganhang.report.form</field>
+		    <field name="model">so.quy</field>
+		    <field name="arch" type="xml">
+		         <form string="Sổ tiền gửi ngân hàng" version="7.0">
+		        	<group>
+		        		<group>
+		        			<field name="shop_ids" widget="many2many_tags"/>
+			        		<field name="times"/>
+			        		<field name="company_id" groups="base.group_multi_company"/>
+		        		</group>
+		        		<group>
+			        		<field name="quarter" attrs="{'invisible':[('times', 'in', ['dates','years','periods'])],'required':[('times', 'not in', ['dates','years','periods'])]}"/>
+			        		<field name="period_id_start" context="{'report_type':'1'}" attrs="{'invisible':[('times', 'in', ['dates','years','quarter'])],'required':[('times', 'not in', ['dates','years','quarter'])]}"/>
+			        		<field name="fiscalyear_start"  attrs="{'invisible':[('times', 'in', ['dates','periods','quarter'])],'required':[('times','not in', ['dates','periods'])]}"/>
+			        		<field name="date_start"  attrs="{'invisible':[('times', 'in', ['years','periods','quarter'])],'required':[('times','not in', ['years','periods'])]}"/>
+			        		<field name="date_end"  attrs="{'invisible':[('times', 'in', ['years','periods','quarter'])],'required':[('times','not in', ['years','periods'])]}"/>
+		           		</group>
+		           		<group>
+		           			<field name="account_id" domain="[('code','like','112')]" invisible='1'/>
+		           		</group>
+		            </group>
+		            <footer>
+                        <button string="Print" type="object" name="finance_report" context="{'type_report':'so_tiengui_nganhang_report'}" icon='gtk-execute'/>
+                        <button string="Review" type="object" name="review_report" context="{'type_report':'so_tiengui_nganhang_report'}" icon='gtk-execute'/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+		        </form>
+		    </field>
+		</record>
+		
+		<record id="action_so_tiengui_nganhang_report" model="ir.actions.act_window">
+		    <field name="name">Sổ tiền gửi ngân hàng</field>
+		    <field name="res_model">so.quy</field>
+		    <field name="view_type">form</field>
+		    <field name="view_mode">form</field>
+		    <field name="target">new</field>
+		    <field name="view_id" ref="view_so_tiengui_nganhang_report_form"/>
+		    <field name="context">{'report_type':'so_tiengui_nganhang_report'}</field>
+		</record>
+		
    </data>
 </openerp>
         

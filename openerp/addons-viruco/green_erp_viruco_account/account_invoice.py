@@ -24,6 +24,8 @@ class account_invoice(osv.osv):
         'shop_id': fields.many2one('sale.shop', 'Shop', readonly=True, states={'draft':[('readonly',False)]}),
         'date_document': fields.date('Document Date', readonly=True, states={'draft':[('readonly',False)]}),
         'reference_number': fields.char('Reference Number', size=64, readonly=True, states={'draft':[('readonly',False)]}),
+        'ki_hieu_hd': fields.char('Kí hiệu hóa đơn', size=64, states={'draft':[('readonly',False)]}),
+        'so_hd': fields.char('Số hóa đơn', size=64, states={'draft':[('readonly',False)]}),
     }
     
     def _get_shop_id(self, cr, uid, context=None):
