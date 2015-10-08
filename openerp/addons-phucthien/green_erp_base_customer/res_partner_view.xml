@@ -8,7 +8,7 @@
             <field name="inherit_id" ref="base.view_partner_tree"/>
             <field name="arch" type="xml">
             	<xpath expr="//field[@name='name']" position="before">
-            		<field name="gsk_code"/>
+            		<field name="gsk_code" invisible = '1'/>
             		<field name="kv_benh_vien"/> 
             		<field name="image" widget='image'/>
                 </xpath>
@@ -42,7 +42,7 @@
 
                     <group>
                         <group>
-                        	<field name="gsk_code"/>
+                        	<field name="gsk_code" invisible = '1'/>
                         	<field name="kv_benh_vien"/>  
                             <label for="type" attrs="{'invisible': [('parent_id','=', False)]}"/>
                             <div attrs="{'invisible': [('parent_id','=', False)]}" name="div_type">

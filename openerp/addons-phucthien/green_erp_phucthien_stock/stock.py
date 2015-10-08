@@ -373,6 +373,7 @@ class stock_picking_packaging(osv.osv):
                         'chi_phi_thung':False,
                         'sl_da':False,
                         'chi_phi_da':False,
+                        'chi_phi_nhiet_ke': False,
                       }
                }
         if loai_thung_id:
@@ -381,6 +382,7 @@ class stock_picking_packaging(osv.osv):
                                 'chi_phi_thung':loai_thung.chi_phi_thung,
                                 'sl_da':loai_thung.sl_da,
                                 'chi_phi_da':loai_thung.chi_phi_da,
+                                'chi_phi_nhiet_ke': loai_thung.chi_phi_nhiet_ke,
                                 })
             
         return res
@@ -413,7 +415,7 @@ class loai_thung(osv.osv):
         'sl_da':fields.float('Số lượng đá'),
         'chi_phi_da':fields.float('Chi phí đá'),
         'chi_phi_thung': fields.float('Chi phí thùng'),
-        
+        'chi_phi_nhiet_ke': fields.float('Chi phí nhiệt kế'),
     }
     
     
@@ -1102,5 +1104,52 @@ class suachua_hanhdong_line(osv.osv):
     }
     
 suachua_hanhdong_line()
+
+class dulieu_donghang(osv.osv):
+    _name = "dulieu.donghang"
+    
+    def _get_sum_sl_nhietke(self, cr, uid, ids, name, args, context=None):
+        res = {}
+        if context is None:
+            context = {}
+        for dulieu in self.browse(cr, uid, ids, context=context):
+            amount = 0
+            sql = '''
+                select case when sum(sl_nhietke)!=0 then sum(sl_nhietke) else 0 end sl_nhietke from stock_picking_packaging
+                where picking_id in (select id from stock_picking where partner_id = %s and type = 'out' and state = 'done')
+            '''%(dulieu.partner_id.id)
+            cr.execute(sql)
+            sl_nhietke = cr.dictfetchone()['sl_nhietke']
+            res[dulieu.id] = sl_nhietke
+        return res
+    
+    def _get_sl_nhietke_conlai(self, cr, uid, ids, name, args, context=None):
+        res = {}
+        if context is None:
+            context = {}
+        for dulieu in self.browse(cr, uid, ids, context=context):
+            amount = 0
+            res[dulieu.id] = dulieu.sl_nhietke - dulieu.sl_nhietke_thuhoi
+        return res
+    
+    _columns = {
+        'partner_id': fields.many2one('res.partner', 'Đối tác', required = True),
+        'sl_nhietke':fields.function(_get_sum_sl_nhietke,type='float',string='Số lượng nhiệt kế'),
+        'sl_nhietke_thuhoi': fields.integer('Số lượng nhiệt kế thu hồi'),
+        'sl_nhietke_conlai': fields.function(_get_sl_nhietke_conlai,type='float',string='Số lượng nhiệt kế còn lại'),
+    }
+    
+    def _check_sl_nhietke_thuhoi(self, cr, uid, ids, context=None):
+        for sl in self.browse(cr, uid, ids, context=context):
+            if sl.sl_nhietke_thuhoi>sl.sl_nhietke:
+                raise osv.except_osv(_('Warning!'),_(' Số lượng nhiệt kế thu hồi không được lớn hơn số lượng nhiệt kế'))
+                return False
+        return True
+        
+    _constraints = [
+        (_check_sl_nhietke_thuhoi, 'Identical Data', []),
+    ] 
+    
+dulieu_donghang()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

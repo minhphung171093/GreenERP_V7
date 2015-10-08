@@ -56,8 +56,8 @@ class Parser(report_sxw.rml_parse):
             'get_hd':self.get_hd,
             'get_solo':self.get_solo,
             'get_date_hd':self.get_date_hd,
-            'get_so_hd':self.get_so_hd
-            
+            'get_so_hd':self.get_so_hd,
+            'get_note_chuyen_kho_noi_bo': self.get_note_chuyen_kho_noi_bo,
         })
         
     def get_company(self,cr,uid):
@@ -273,6 +273,14 @@ class Parser(report_sxw.rml_parse):
                    'note':i['note']
                    })
         return res
+    
+    def get_note_chuyen_kho_noi_bo(self,chuyen_kho_name):
+        cknb_ids = self.pool.get('chuyenkho.noibo').search(self.cr,self.uid,[('name', '=', chuyen_kho_name)])
+        if cknb_ids:
+            cknb = self.pool.get('chuyenkho.noibo').browse(self.cr,self.uid,cknb_ids[0])
+            return cknb.note
+        else:
+            return 'Chuyển kho nội bộ'
     
     def get_sum_rcv(self):
         return self.sum_nhap_qty

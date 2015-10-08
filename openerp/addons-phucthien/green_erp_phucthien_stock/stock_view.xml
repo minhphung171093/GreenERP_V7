@@ -16,7 +16,7 @@
 								<field name="sl_da" sum="SL đá"/>
 								<field name="chi_phi_da" sum="CP đá"/>
 								<field name="sl_nhietke" sum="SL Nhiệt kế"/>
-								<field name="sl_nhietke_conlai" sum="SL Nhiệt kế Còn lại"/>
+								<field name="sl_nhietke_conlai" invisible = '1' sum="SL Nhiệt kế Còn lại"/>
 								<field name="chi_phi_nhiet_ke" sum="CP nhiệt kế"/>
 								<field name="chi_phi_gui_hang" sum="CP gửi hàng"/>
 								<field name="employee_id"/>
@@ -94,6 +94,7 @@
 					<field name="sl_da"/>
 					<field name="chi_phi_da"/>
 					<field name="chi_phi_thung"/>
+					<field name="chi_phi_nhiet_ke"/>
 				</tree>
 			</field>
 		</record>
@@ -116,6 +117,7 @@
 								<field name="sl_da"/>
 								<field name="chi_phi_da"/>
 								<field name="chi_phi_thung"/>
+								<field name="chi_phi_nhiet_ke"/>
 							</group>
 						</div>
 		         	</sheet>
@@ -675,6 +677,47 @@
         
         <menuitem id="menu_bao_cao_suachua_hanhdong" name="Báo cáo sửa chữa hành động" parent="stock.menu_stock_root" sequence="3"/>
 		<menuitem id="menu_action_suachua_hanhdong" name="Báo cáo sửa chữa hành động" action="action_suachua_hanhdong" parent="menu_bao_cao_suachua_hanhdong" sequence="10"/>
+		
+		<record id="dulieu_donghang_tree_view" model="ir.ui.view">
+			<field name="name">dulieu.donghang.tree</field>
+			<field name="model">dulieu.donghang</field>
+			<field name="arch" type="xml">
+				<tree string="Dữ liệu đóng hàng">
+					<field name="partner_id"/>
+                    <field name="sl_nhietke"/>
+                    <field name="sl_nhietke_thuhoi"/>
+                    <field name="sl_nhietke_conlai"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="dulieu_donghang_form_view" model="ir.ui.view">
+            <field name="name">dulieu.donghang.form</field>
+            <field name="model">dulieu.donghang</field>
+            <field name="arch" type="xml">
+	            <form string="Dữ liệu đóng hàng" version="7.0"> 
+	            	<sheet>
+	                    <group col='4' colspan='2'>
+	                    	<field name="partner_id" context="{'search_partner_dldh_id':1}"/>
+                    		<field name="sl_nhietke"/>
+                    		<field name="sl_nhietke_thuhoi"/>
+                    		<field name="sl_nhietke_conlai"/>
+	                    </group>
+		         	</sheet>
+		         </form>
+			</field>
+		</record>
+		
+		<record id="action_dulieu_donghang" model="ir.actions.act_window">
+            <field name="name">Dữ liệu đóng hàng</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dulieu.donghang</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="dulieu_donghang_tree_view"/>
+        </record>
+        
+		<menuitem id="menu_action_dulieu_donghang" action="action_dulieu_donghang" parent="stock.menu_traceability" sequence="10"/>
 		
     </data>
 </openerp>
