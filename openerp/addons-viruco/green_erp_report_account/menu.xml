@@ -74,6 +74,12 @@
 	      		icon="terp-graph"  
 	      		parent="menu_report_finance" sequence="20"/>
 	      		
+	      	<menuitem id="menu_action_report_pt_bc_taichinh"
+      			name="Phân tích báo cáo tài chánh" 
+	      		action="action_report_pt_bc_taichinh" 
+	      		icon="terp-graph"  
+	      		parent="menu_report_finance" sequence="22"/>
+	      		
       		<menuitem id="menu_action_report_luuchuyen_tiente_tructiep"
       			name="Lưu chuyển tiền tệ (trực tiếp)" 
 	      		action="action_report_luuchuyen_tiente_tructiep" 

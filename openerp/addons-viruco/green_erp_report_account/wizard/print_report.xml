@@ -247,10 +247,9 @@
             <field name="arch" type="xml">
                 <form string="Profit And Loss" version="7.0">
                 	<group col="6" colspan="3">
-                		<field name="times" readonly='1'/>
+                		<field name="times"/>
                 		<field name="company_id" groups="base.group_multi_company"/>
                 		<newline/>
-                		<field name="fiscalyear"/>
                 		<field name="quarter" attrs="{'invisible':[('times', 'in', ['dates','years','periods'])],'required':[('times', 'not in', ['dates','years','periods'])]}"/>
                 		<field name="period_id_start" domain="[('company_id','=',company_id)]" context="{'report_type':'1'}" attrs="{'invisible':[('times', 'in', ['dates','years','quarter'])],'required':[('times', 'not in', ['dates','years','quarter'])]}"/>
                 		<field name="fiscalyear_start" domain="[('company_id','=',company_id)]" attrs="{'invisible':[('times', 'in', ['dates','periods'])],'required':[('times','not in', ['dates','periods'])]}"/>
@@ -395,6 +394,40 @@
 		    <field name="view_id" ref="view_so_tiengui_nganhang_report_form"/>
 		    <field name="context">{'report_type':'so_tiengui_nganhang_report'}</field>
 		</record>
+		
+<!--  ===================== Phân tích báo cáo tài chánh Report ================= -->       
+        <record id="report_pt_bc_taichinh" model="ir.ui.view">
+            <field name="name">report.pt.bc.taichinh.form</field>
+            <field name="model">pt.bc.taichinh</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Phân tích báo cáo tài chánh" version="7.0">
+                	<group col="6" colspan="3">
+                		<field name="times" readonly='1'/>
+                		<field name="company_id" groups="base.group_multi_company"/>
+                		<newline/>
+                		<field name="fiscalyear"/>
+                		<field name="quarter" attrs="{'invisible':[('times', 'in', ['dates','years','periods'])],'required':[('times', 'not in', ['dates','years','periods'])]}"/>
+                		<field name="period_id_start" domain="[('company_id','=',company_id)]" context="{'report_type':'1'}" attrs="{'invisible':[('times', 'in', ['dates','years','quarter'])],'required':[('times', 'not in', ['dates','years','quarter'])]}"/>
+                		<field name="fiscalyear_start" domain="[('company_id','=',company_id)]" attrs="{'invisible':[('times', 'in', ['dates','periods'])],'required':[('times','not in', ['dates','periods'])]}"/>
+                    </group>
+	                <footer>
+                        <button string="Print" type="object" name="finance_report" context="{'type_report':'report_pt_bc_taichanh'}" icon='gtk-execute'/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_report_pt_bc_taichinh" model="ir.actions.act_window">
+            <field name="name">Phân tích báo cáo tài chánh</field>
+            <field name="res_model">pt.bc.taichinh</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="report_pt_bc_taichinh"/>
+        </record>
 		
    </data>
 </openerp>
