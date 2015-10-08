@@ -1883,6 +1883,7 @@ class general_account_profit_loss(osv.osv_memory):
             ('4','4')], 'Quarter'),
         
         'company_id': fields.many2one('res.company', 'Company', required=True),
+        'fiscalyear': fields.many2one('account.fiscalyear', 'Fiscalyear', required=True, domain=[('state','=','draft')],),
      }
         
     _defaults = {
@@ -1896,6 +1897,7 @@ class general_account_profit_loss(osv.osv_memory):
         'quarter': '1',
         
         'company_id': _get_company,
+        'fiscalyear': _get_fiscalyear,
         }
     
     def finance_report(self, cr, uid, ids, context=None): 
@@ -2248,6 +2250,7 @@ class luuchuyen_tiente(osv.osv_memory):
         'quarter': '1',
         
         'company_id': _get_company,
+        'fiscalyear_stop': _get_fiscalyear,
         }
     
     def finance_report(self, cr, uid, ids, context=None): 

@@ -100,10 +100,16 @@ class Parser(report_sxw.rml_parse):
             self.get_quarter_date(year, quarter)
             
     def get_start_date(self):
-        return self.get_vietname_date(self.start_date) 
+        wizard_data = self.localcontext['data']['form']
+        fyear = wizard_data['fiscalyear'][0] and wizard_data['fiscalyear'][0] or False
+        if fyear:
+            return self.get_vietname_date(self.pool.get('account.fiscalyear').browse(self.cr,self.uid,fyear).date_start) 
     
     def get_end_date(self):
-        return self.get_vietname_date(self.end_date) 
+        wizard_data = self.localcontext['data']['form']
+        fyear = wizard_data['fiscalyear'][0] and wizard_data['fiscalyear'][0] or False
+        if fyear:
+            return self.get_vietname_date(self.pool.get('account.fiscalyear').browse(self.cr,self.uid,fyear).date_stop) 
     
     def get_account(self):
         values ={}
@@ -124,9 +130,25 @@ class Parser(report_sxw.rml_parse):
         return date.strftime('%d/%m/%Y')
     
         
-    def get_line(self):
+#     def get_line(self):
+#         if not self.start_date:
+#             self.get_header()
+#         return self.pool.get('sql.profit.loss').get_line(self.cr, self.start_date,self.end_date,self.times,self.company_id)
+    
+    def get_line(self,stt):
+        times = 'periods'
+        period = ''
+        period_obj = self.pool.get('account.period')
+        wizard_data = self.localcontext['data']['form']
+        fyear = wizard_data['fiscalyear'][0] and wizard_data['fiscalyear'][0] or False
         if not self.start_date:
             self.get_header()
-        return self.pool.get('sql.profit.loss').get_line(self.cr, self.start_date,self.end_date,self.times,self.company_id)
+        if stt and fyear:
+            period = stt + '/' + self.pool.get('account.fiscalyear').browse(self.cr,self.uid,fyear).code
+            period_ids = period_obj.search(self.cr, self.uid, [('code','=',period),('special','=',False)])
+            if period_ids:
+                period_id = period_obj.browse(self.cr, self.uid,period_ids[0])
+             
+                return self.pool.get('sql.profit.loss').get_line(self.cr, period_id.date_start,period_id.date_stop,times,self.company_id)
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
