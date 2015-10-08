@@ -234,10 +234,14 @@ class account_invoice(osv.osv):
         new_write = super(account_invoice, self).write(cr, uid, ids, vals, context=context)    
         for inv in self.browse(cr, uid, ids, context=context):
             if 'state' in vals and vals['state']=='open':
+                if not inv.ki_hieu_hd:
+                    raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa nhập ký hiệu hoá đơn.!'))
+                if not inv.so_hd:
+                    raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa nhập số hoá đơn.!'))
                 if inv.type=='out_invoice':
                     for line in inv.invoice_line:
-                        if line.stock_move_id and not line.stock_move_id.picking_in_id:
-                            raise osv.except_osv(_('Cảnh báo!'),_('Phiếu nhập %s chưa có hoá đơn.!')%(line.stock_move_id.origin))
+#                         if line.stock_move_id and line.stock_move_id.picking_id.invoice_state!='invoiced':
+#                             raise osv.except_osv(_('Cảnh báo!'),_('Phiếu nhập %s chưa có hoá đơn.!')%(line.stock_move_id.name))
                         if line.stock_move_id:
                             sql = '''
                                 select * from account_invoice
@@ -252,7 +256,7 @@ class account_invoice(osv.osv):
                                 '''%(inv.id)
 
                             else:
-                                raise osv.except_osv(_('Cảnh báo!'),_('Hoá đơn phiếu nhập chưa được duyệt.!'))
+                                raise osv.except_osv(_('Cảnh báo!'),_('Phiếu nhập %s chưa có hoá đơn hoặc hoá đơn chưa được duyệt.!')%(line.stock_move_id.picking_in_id.origin))
         return new_write
 account_invoice()
 

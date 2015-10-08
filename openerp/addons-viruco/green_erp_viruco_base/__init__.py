@@ -6,3 +6,4 @@ import phuluc_hop_dong
 import report
 import product
 import res_user
+import wizard
