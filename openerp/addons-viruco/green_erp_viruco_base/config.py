@@ -127,6 +127,16 @@ class cang_donghang(osv.osv):
     
 cang_donghang()
 
+class dk_thanhtoan(osv.osv):
+    _name = 'dk.thanhtoan'
+    _columns = {
+        'name':fields.char('Name',size=1024,required=True),
+        'description': fields.text('Description'),
+    }
+    
+dk_thanhtoan()
+
+
 class bang_gia(osv.osv):
     _name = 'bang.gia'
     _columns = {

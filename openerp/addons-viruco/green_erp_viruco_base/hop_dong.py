@@ -145,6 +145,8 @@ class hop_dong(osv.osv):
         'ngaygui_hoadon':fields.date('Ngày gửi hóa đơn'),
         'dagui_chungtugoc':fields.boolean('Đã gửi chứng từ gốc'),
         'ngaygui_chungtugoc':fields.date('Ngày gửi chứng từ gốc'),
+        'dk_giaohang_id': fields.many2one('dieukien.giaohang', 'Điều kiện giao hàng'),
+        'dk_thanhtoan_id': fields.many2one('dk.thanhtoan', 'Điều kiện thanh toán'),
         'amount_untaxed': fields.function(_amount_all, digits_compute=dp.get_precision('Account'), string='Cộng',
             store={
                 'hop.dong': (lambda self, cr, uid, ids, c={}: ids, ['hopdong_line'], 10),

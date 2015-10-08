@@ -228,7 +228,30 @@ class account_invoice(osv.osv):
                 'type': inv.type in ('out_invoice','out_refund') and 'receipt' or 'payment'
             }
         }
-    
+    def write(self, cr, uid, ids, vals, context=None):
+        new_write = super(account_invoice, self).write(cr, uid, ids, vals, context=context)    
+        for inv in self.browse(cr, uid, ids, context=context):
+            if 'state' in vals and vals['state']=='open':
+                if inv.type=='out_invoice':
+                    for line in inv.invoice_line:
+                        if line.stock_move_id and not line.stock_move_id.picking_in_id:
+                            raise osv.except_osv(_('Cảnh báo!'),_('Phiếu nhập %s chưa có hoá đơn.!')%(line.stock_move_id.origin))
+                        if line.stock_move_id:
+                            sql = '''
+                                select * from account_invoice
+                                    where type='in_invoice' and state in ('open','paid') and id in (select invoice_id from account_invoice_line where stock_move_id in (
+                                         select id from stock_move where picking_id in(select picking_in_id from stock_move where id = %s)))
+                            '''%(line.stock_move_id.id)
+                            cr.execute(sql)              
+                            inv_ids = cr.fetchall()
+                            if inv_ids:
+                                sql='''
+                                    update account_invoice set state='open' where id = %s
+                                '''%(inv.id)
+
+                            else:
+                                raise osv.except_osv(_('Cảnh báo!'),_('Hoá đơn phiếu nhập chưa được duyệt.!'))
+        return new_write
 account_invoice()
 
 class group_invoice(osv.osv_memory):

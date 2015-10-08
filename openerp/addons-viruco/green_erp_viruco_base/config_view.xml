@@ -476,6 +476,52 @@
             <field name="domain">[]</field>
         </record>
         
+    	<record id="dk_thanhtoan_tree_view" model="ir.ui.view">
+			<field name="name">dk.thanhtoan.tree</field>
+			<field name="model">dk.thanhtoan</field>
+			<field name="arch" type="xml">
+				<tree string="Điều kiện thanh toán">
+					<field name="name"/>
+					<field name="description"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="dk_thanhtoan_filter_view" model="ir.ui.view">
+			<field name="name">dk.thanhtoan.filter</field>
+			<field name="model">dk.thanhtoan</field>
+            <field name="arch" type="xml">
+                <search string="Tìm điều kiện thanh toán">
+                    <field name="name"/>
+               </search>
+            </field>
+        </record>
+		
+		<record id="dk_thanhtoan_form_view" model="ir.ui.view">
+			<field name="name">dk.thanhtoan.form</field>
+			<field name="model">dk.thanhtoan</field>
+            <field name="arch" type="xml">
+	            <form string="Điều kiện thanh toán" version="7.0">
+	            	<sheet>
+	            		<group>
+		                	<field name="name"/>
+							<field name="description"/>
+						</group>
+		         	</sheet>
+		         </form>
+			</field>
+		</record>
+          
+		<record id="action_dk_thanhtoan" model="ir.actions.act_window">
+            <field name="name">Điều kiện thanh toán</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dk.thanhtoan</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="dk_thanhtoan_tree_view"/>
+            <field name="domain">[]</field>
+        </record>
+        
         <record id="bang_gia_mua_tree_view" model="ir.ui.view">
 			<field name="name">bang.gia.mua.tree</field>
 			<field name="model">bang.gia</field>

@@ -47,6 +47,7 @@
 		    	<menuitem id="menu_action_nha_sanxuat" action="action_nha_sanxuat" name="Nhà sản xuất" parent="menu_cac_danh_muc" sequence="90"/>
 		    	<menuitem id="menu_action_noi_giaohang" action="action_noi_giaohang" name="Nơi giao hàng" parent="menu_cac_danh_muc" sequence="100"/>
 		    	<menuitem id="menu_action_dieukien_giaohang" action="action_dieukien_giaohang" name="Điều kiện giao hàng" parent="menu_cac_danh_muc" sequence="101"/>
+		    	<menuitem id="menu_action_dk_thanhtoan" action="action_dk_thanhtoan" name="Điều kiện thanh toán" parent="menu_cac_danh_muc" sequence="102"/>
 		    	<menuitem id="menu_action_hinhthuc_giaohang" action="action_hinhthuc_giaohang" name="Hình thức giao hàng" parent="menu_cac_danh_muc" sequence="110"/>
 				<menuitem id="menu_cauhinh_dieukhoan"
 		    		action="properties.action_model_admin_properties"

@@ -293,6 +293,10 @@
 	                            <div class="oe_clear"/>
 							</page>
 							<page string="Payment terms">
+							<group>
+								<field name="dk_giaohang_id"/>
+								<field name="dk_thanhtoan_id" />
+							</group>
 								<field name="phuongthuc_thanhtoan" nolabel='1'/>
 							</page>
 							<page string="Commission" >
