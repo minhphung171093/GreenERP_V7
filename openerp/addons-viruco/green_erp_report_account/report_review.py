@@ -300,8 +300,8 @@ class general_account_profit_loss_review_line(osv.osv):
         'description': fields.char('Diễn giải', size=1024),
         'code':fields.char('Mã số', size=1024),
         'illustrate':fields.char('Thuyết minh', size=1024),
-        'curr_amt':fields.float('Số cuối kỳ'),
-        'prior_amt':fields.float('Số đầu kỳ'),
+        'curr_amt':fields.float('Kỳ này'),
+        'prior_amt':fields.float('Kỳ trước'),
         }
 general_account_profit_loss_review_line()
 

@@ -574,5 +574,30 @@
 	        string="Sổ tiền gửi ngân hàng"
 	        rml="green_erp_report_account/report/review_so_tiengui_nganhang_report.ods"/>
 	        
+<!--  ===========  Phan tich bao cao tai chanh ============ -->	   	   
+    	<record id="report_pt_bc_taichanh" model="ir.actions.report.xml">
+	        <field name="name">report_pt_bc_taichanh</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">pt.bc.taichinh</field>
+	        <field name="report_name">report_pt_bc_taichanh</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">green_erp_report_account/report/pt_bc_taichinh_report.py</field>
+	        <field name="report_rml">green_erp_report_account/report/pt_bc_taichinh_report.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record>		    
+		
+		<report 
+			auto="False" 
+			menu="False"
+			id="report_pt_bc_taichanh" 
+			model="pt.bc.taichinh" 
+			name="report_pt_bc_taichanh"
+	        string="Phân tích báo cáo tài chánh"
+	        rml="green_erp_report_account/report/pt_bc_taichinh_report.ods"/>
+	        
 	</data>
 </openerp>
