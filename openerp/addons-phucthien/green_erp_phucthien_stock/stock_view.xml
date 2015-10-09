@@ -312,13 +312,13 @@
 			<field name="model">chuyenkho.noibo</field>
 			<field name="arch" type="xml">
 				<tree string="Chuyển kho nội bộ">
-					<field name="name"/>
-                    <field name="partner_id"/>
-                    <field name="origin"/>
-                    <field name="date"/>
-                    <field name="location_id"/>
-                    <field name="location_dest_id"/>
-                    <field name="state"/>
+					<field name="name" string = 'Tham chiếu'/>
+                    <field name="partner_id" string = 'Đối tác'/>
+                    <field name="origin" string = 'Tài liệu gốc'/>
+                    <field name="date" string = 'Ngày tạo'/>
+                    <field name="location_id" string = 'Vị trí kho'/>
+                    <field name="location_dest_id" string = 'Vị trí đích'/>
+                    <field name="state" string = 'Trạng thái'	/>
 				</tree>
 			</field>
 		</record>
@@ -718,6 +718,62 @@
         </record>
         
 		<menuitem id="menu_action_dulieu_donghang" action="action_dulieu_donghang" parent="stock.menu_traceability" sequence="10"/>
+		
+		<record id="dm_thietbi_tree_view" model="ir.ui.view">
+			<field name="name">dm.thietbi.tree</field>
+			<field name="model">dm.thietbi</field>
+			<field name="arch" type="xml">
+				<tree string="Danh mục thiết bị">
+					<field name="dia_diem"/>
+                    <field name="name"/>
+                    <field name="ten"/>
+                    <field name="kich_thuoc"/>
+                    <field name="ngay_mua"/>
+                    <field name="so_luong"/>
+                    <field name="chi_phi"/>
+                    <field name="ngay_bd"/>
+                    <field name="ngay_kt"/>
+                    <field name="ghi_chu"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="dm_thietbi_form_view" model="ir.ui.view">
+            <field name="name">dm.thietbi.form</field>
+            <field name="model">dm.thietbi</field>
+            <field name="arch" type="xml">
+	            <form string="Danh mục thiết bị" version="7.0"> 
+	            	<sheet>
+	            		<h2>
+	            			<label for = "name"/>
+	            			<field name="name"/>
+	            		</h2>
+	                    <group col='4' colspan='2'>
+	                    	<field name="dia_diem"/>
+		                    <field name="ten"/>
+		                    <field name="kich_thuoc"/>
+		                    <field name="ngay_mua"/>
+		                    <field name="so_luong"/>
+		                    <field name="chi_phi"/>
+		                    <field name="ngay_bd"/>
+		                    <field name="ngay_kt"/>
+		                    <field name="ghi_chu"/>
+	                    </group>
+		         	</sheet>
+		         </form>
+			</field>
+		</record>
+		
+		<record id="action_dm_thietbi" model="ir.actions.act_window">
+            <field name="name">Danh mục thiết bị</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dm.thietbi</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="dm_thietbi_tree_view"/>
+        </record>
+        
+		<menuitem id="menu_action_dm_thietbi" action="action_dm_thietbi" parent="stock.menu_traceability" sequence="11"/>
 		
     </data>
 </openerp>

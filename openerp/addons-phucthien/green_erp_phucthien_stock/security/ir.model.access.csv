@@ -7,3 +7,7 @@ access_phucthien_stock_7,ve.sinh.kho.line,model_ve_sinh_kho_line,stock.group_sto
 access_phucthien_stock_8,phongchong.moi.mot,model_phongchong_moi_mot,stock.group_stock_user,True,True,True,True
 access_phucthien_stock_9,suachua.hanhdong.line,model_suachua_hanhdong_line,stock.group_stock_user,True,True,True,True
 access_phucthien_stock_10,suachua.hanhdong,model_suachua_hanhdong,stock.group_stock_user,True,True,True,True
+access_phucthien_stock_11,dulieu.donghang,model_dulieu_donghang,base.group_user,True,True,True,True
+access_phucthien_stock_12,dm.thietbi,model_dm_thietbi,base.group_user,True,True,True,True
+
+

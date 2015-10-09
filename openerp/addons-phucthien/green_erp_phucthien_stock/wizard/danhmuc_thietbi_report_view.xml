@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+        <record id="view_danhmuc_thietbi_report" model="ir.ui.view">
+            <field name="name">view.danhmuc.thietbi.report</field>
+            <field name="model">danhmuc.thietbi.report</field>
+            <field name="arch" type="xml">
+                <form string="Báo cáo danh mục thiết bị" version="7.0">
+                    <group >
+                    	<group>
+                    		<field name="tu_ngay" />
+                    		<field name="den_ngay" />
+                    	</group>
+                    </group>
+                    <footer>
+                        <button name="print_report" string="Print" type="object" class="oe_highlight" />
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_danhmuc_thietbi_report" model="ir.actions.act_window">
+            <field name="name">Báo cáo danh mục thiết bị</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">danhmuc.thietbi.report</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_danhmuc_thietbi_report"/>
+            <field name="target">new</field>
+        </record>
+        <menuitem id="menu_action_danhmuc_thietbi_report" action="action_danhmuc_thietbi_report" parent="stock.menu_traceability" sequence="12"/>
+        
+    </data>
+</openerp>
+

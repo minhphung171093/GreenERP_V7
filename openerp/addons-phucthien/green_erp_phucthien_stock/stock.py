@@ -1152,4 +1152,22 @@ class dulieu_donghang(osv.osv):
     
 dulieu_donghang()
 
+class dm_thietbi(osv.osv):
+    _name = "dm.thietbi"
+    
+    _columns = {
+        'dia_diem': fields.selection([('van_phong', 'Văn phòng'),('kho_lanh', 'Kho lạnh')],'Địa điểm', required=True),
+        'name': fields.char('Mã hiệu', size = 64, required = True),
+        'ten': fields.char('Tên thiết bị', size = 64, required = True),
+        'kich_thuoc':fields.char('Kích thước', size = 64, required = True),
+        'ngay_mua': fields.date('Ngày mua'),
+        'so_luong': fields.integer('Số lượng'),
+        'chi_phi': fields.float('Chi phí'),
+        'ngay_bd': fields.date('Ngày bắt đầu HC/KĐ/Bảo trì'),
+        'ngay_kt': fields.date('Ngày kết thúc HC/KĐ/Bảo trì'),
+        'ghi_chu': fields.text('Ghi chú'),
+    }
+    
+dm_thietbi()
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

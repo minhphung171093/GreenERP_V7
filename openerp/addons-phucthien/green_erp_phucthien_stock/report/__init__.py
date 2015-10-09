@@ -36,4 +36,6 @@ import dulieu_donghang_report
 import report_stock_move
 import ve_sinh_kho
 import suachua_hanhdong
+import danhmuc_thietbi_report_xls
+
 

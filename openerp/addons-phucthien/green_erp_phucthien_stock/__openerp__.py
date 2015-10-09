@@ -31,6 +31,8 @@
     'data': [
             'security/green_erp_phucthien_stock_security.xml',
             'security/ir.model.access.csv',
+            'wizard/dulieu_donghang_report_view.xml',
+            'wizard/danhmuc_thietbi_report_view.xml',
             'report/phieu_xuat_kho.xml',
             'report/bien_ban_giao_nhan.xml',
             'report/dulieu_donghang_report_view.xml',
@@ -42,9 +44,9 @@
             'report/phieu_dieuchuyen_noibo_view.xml',
             'report/ve_sinh_kho_view.xml',
             'report/suachua_hanhdong_view.xml',
+            'report/danhmuc_thietbi_report_xls_view.xml',
             'stock_view.xml',
             'sequence.xml',
-            'wizard/dulieu_donghang_report_view.xml',
             ],
     'demo': [],
     'test': [
