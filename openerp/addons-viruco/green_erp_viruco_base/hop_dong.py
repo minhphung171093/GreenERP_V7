@@ -121,7 +121,7 @@ class hop_dong(osv.osv):
         'transshipment':fields.char('Transshipment'),
         'thongbao_nhanhang':fields.char('Thông báo nhận hàng'),
         'chat_luong':fields.char('Chất lượng'),
-        'destinaltion':fields.char('Destinaltion'),
+        'destinaltion':fields.many2one('res.country','Destinaltion'),
         'arbitration_id': fields.many2one('sale.arbitration','Arbitration',readonly=True, states={'moi_tao': [('readonly', False)]}),
 #         'phucluc_hd':fields.text('Phụ lục Hợp đồng'),
         'phuongthuc_thanhtoan':fields.text('Phương thức thanh toán'),

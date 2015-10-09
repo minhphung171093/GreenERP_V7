@@ -67,7 +67,8 @@
             	</field>
             </field>
         </record>
-        
+      <menuitem action="account_voucher.action_vendor_receipt" icon="STOCK_JUSTIFY_FILL" sequence="12"
+            id="menu_action_vendor_receipt" name="Thu tiền của khách hàng"  parent="account.menu_finance_receivables"/>        
         <record id="view_vendor_payment_form_inherit" model="ir.ui.view">
             <field name="name">account.voucher.payment.form.inherit</field>
             <field name="model">account.voucher</field>
