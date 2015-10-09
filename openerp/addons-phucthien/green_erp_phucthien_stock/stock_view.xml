@@ -318,7 +318,7 @@
                     <field name="date" string = 'Ngày tạo'/>
                     <field name="location_id" string = 'Vị trí kho'/>
                     <field name="location_dest_id" string = 'Vị trí đích'/>
-                    <field name="state" string = 'Trạng thái'	/>
+                    <field name="state" string = 'Trạng thái'/>
 				</tree>
 			</field>
 		</record>
@@ -344,10 +344,10 @@
             <field name="arch" type="xml">
 	            <form string="Chuyển kho nội bộ" version="7.0"> 
 					<header>
-						<button name="force_assign" states="draft" string="Confirm" type="object" class="oe_highlight" groups="base.group_user"/>
-						<button name="action_assign" states="confirmed" string="Check Availability" type="object" class="oe_highlight"/>
-						<button name="action_process" states="assigned" string="Confirm &amp; Transfer" groups="stock.group_stock_user" type="object" class="oe_highlight"/>
-						<button name="action_cancel" states="done" string="Cancel Transfer" type="object"/>
+						<button name="force_assign" states="draft" string="Xác nhận" type="object" class="oe_highlight" groups="base.group_user"/>
+						<button name="action_assign" states="confirmed" string="Sẵn sàng chuyển" type="object" class="oe_highlight"/>
+						<button name="action_process" states="assigned" string="Xác nhận &amp; Chuyển" groups="stock.group_stock_user" type="object" class="oe_highlight"/>
+						<button name="action_cancel" states="done" string="Hủy chuyển" type="object"/>
 						<field name="state" widget="statusbar" statusbar_visible="draft,da_gui,da_nhan"/>
 					</header>
 	            	<sheet>
@@ -356,34 +356,34 @@
 	                    </h1>
 	                    <group>
 	                        <group>
-	                            <field name="partner_id"/>
-	                            <field name="location_id"/>
-	                            <field name="location_dest_id"/>
+	                            <field name="partner_id" string = 'Đối tác'/>
+	                            <field name="location_id" string = 'Vị trí kho'/>
+	                            <field name="location_dest_id" string = 'Vị trí đích'/>
 	                        </group>
 	                        <group>
-	                            <field name="date"/>
-	                            <field name="origin" placeholder="e.g. PO0032" class="oe_inline"/>
+	                            <field name="date" string = 'Ngày tạo'/>
+	                            <field name="origin" string = 'Tài liệu gốc' placeholder="e.g. PO0032" class="oe_inline"/>
 	                            <field name="nhietdo_di"/>
 	                            <field name="nhietdo_den"/>
 	                        </group>
 	                    </group>
 	                    <notebook>
-	                        <page string="Products">
+	                        <page string="Hàng chuyển">
 	                            <field name="lines" string="Stock Move" context="{'default_location_id':location_id,
 	                            'default_location_dest_id':location_dest_id}" options='{"reload_on_button": true}'>
 		                            <tree editable='top'>
-										<field name="product_id" on_change="onchange_product_id(product_id,location_id,location_dest_id, False)"/>
-		                                <field name="name"/>
-		                                <field name="date"/>
+										<field name="product_id" string = 'Mã sản phẩm' on_change="onchange_product_id(product_id,location_id,location_dest_id, False)"/>
+		                                <field name="name" string = 'Sản phẩm'/>
+		                                <field name="date" string = 'Ngày tạo'/>
 		                                <field name="date_expected" invisible="1"/>
-		                                <field name="product_uom"/>
-		                                <field name="product_qty"/>
-		                                <field name="location_id"/>
-	                            		<field name="location_dest_id"/>
-		                                <field name="prodlot_id" domain="[('product_id','=?',product_id)]" on_change="onchange_lot_id(prodlot_id,product_qty, location_id, product_id, product_uom)"/>
+		                                <field name="product_uom" string = 'Đơn vị quy đổi'/>
+		                                <field name="product_qty" string = 'Số lượng'/>
+		                                <field name="location_id" string = 'Vị trí kho'/>
+	                            		<field name="location_dest_id" string = 'Vị trí đích'/>
+		                                <field name="prodlot_id" string = 'Lô hàng' domain="[('product_id','=?',product_id)]" on_change="onchange_lot_id(prodlot_id,product_qty, location_id, product_id, product_uom)"/>
 		                                <field name="source_tracking_id"/>
 		                                <field name="dest_tracking_id"/>
-		                                <field name="state"/>
+		                                <field name="state" string = 'Trạng thái'/>
 		                            </tree>
 	                            </field>
 	                            <field name="note" placeholder="Add an internal note..." class="oe_inline"/>
