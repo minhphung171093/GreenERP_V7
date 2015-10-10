@@ -98,6 +98,33 @@
             <field name="view_id" ref="report_expense_allocation_form"/>
         </record>
         
+        <!--   Bảng tính khấu hao TSCĐ Report -->
+        <record id="bang_tinh_kh_tscd_form" model="ir.ui.view">
+            <field name="name">bang.tinh.kh.tscd.form</field>
+            <field name="model">bang.tinh.kh.tscd</field>
+            <field name="arch" type="xml">
+                <form string="Bảng tính khấu hao TSCĐ Report" version="7.0">
+                	<group col="4" colspan="2">
+                		<field name="tu_ngay" />
+                		<field name="den_ngay" />
+                    </group>
+	                <footer>
+                        <button string="Print" type="object" name="print_report" icon='gtk-execute'/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_bang_tinh_kh_tscd_form" model="ir.actions.act_window">
+            <field name="name">Bảng tính khấu hao TSCĐ Report</field>
+            <field name="res_model">bang.tinh.kh.tscd</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="bang_tinh_kh_tscd_form"/>
+        </record>
    </data>
 </openerp>
         

@@ -138,4 +138,25 @@ class expense_allocation(osv.osv_memory):
         return {'type': 'ir.actions.report.xml', 'report_name': report_name , 'datas': datas}
 expense_allocation()
 
+class bang_tinh_kh_tscd(osv.osv_memory):
+    _name = "bang.tinh.kh.tscd"    
+            
+    _columns = {
+        'tu_ngay': fields.date('Từ ngày', required = True),
+        'den_ngay': fields.date('Đến ngày', required = True),
+     }
+        
+    _defaults = {
+        'tu_ngay': time.strftime('%Y-%m-%d'),
+        'den_ngay': time.strftime('%Y-%m-%d'),
+        }
+    
+    def print_report(self, cr, uid, ids, context=None): 
+        datas = {'ids': context.get('active_ids', [])}
+        datas['model'] = 'bang.tinh.kh.tscd'
+        datas['form'] = self.read(cr, uid, ids)[0]        
+        return {'type': 'ir.actions.report.xml', 'report_name': 'bang_tinh_kh_tscd_report' , 'datas': datas}
+    
+bang_tinh_kh_tscd()
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
