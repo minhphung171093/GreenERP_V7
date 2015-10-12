@@ -78,6 +78,8 @@ class Parser(report_sxw.rml_parse):
     
     def get_cell(self, line):
         key_accounts = self.get_allocation()
+        if self.num>=len(key_accounts):
+            self.num = 0
         index = self.num
         self.cr.execute('''
             select allocation from bdf_allocation 
