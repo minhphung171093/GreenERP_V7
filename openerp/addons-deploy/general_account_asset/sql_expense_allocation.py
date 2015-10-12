@@ -122,9 +122,9 @@ class sql_expense_allocation(osv.osv):
             swh.name warehouse, aas.note, aaa.name account_analytic
           from account_asset_asset aas join account_asset_category aac
            on aas.category_id = aac.id and aac.account_depreciation_id in ('||lst_account||')
-           join stock_warehouse swh on aas.warehouse_id = swh.id
-           join account_analytic_account aaa on aaa.id = aas.account_analytic_id
-           join (
+           left join stock_warehouse swh on aas.warehouse_id = swh.id
+           left join account_analytic_account aaa on aaa.id = aas.account_analytic_id
+           left join (
             select adl.asset_id, sum(adl.amount) depreciation_value,
              min(adl.remaining_value) remain_value
             from account_asset_depreciation_line adl join account_move amh on adl.move_id = amh.id
