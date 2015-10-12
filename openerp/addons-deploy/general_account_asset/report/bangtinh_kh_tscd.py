@@ -95,6 +95,8 @@ class Parser(report_sxw.rml_parse):
         return self.cr.dictfetchall()
     
     def get_line(self, master_id):
+        line_ids = []
+        master = self.pool.get('account.asset.asset').browse(self.cr,self.uid,master_id)
         start_date = self.get_vietname_date(self.start_date)
         end_date = self.get_vietname_date(self.end_date)
         sql = '''
@@ -105,9 +107,20 @@ class Parser(report_sxw.rml_parse):
         '''%(self.start_date, self.end_date, master_id)
         self.cr.execute(sql)
         if self.cr.rowcount:
-            return self.cr.dictfetchall()[0]
-#         else:
-#             raise osv.except_osv(_('Cảnh báo!'),_('Không có tài sản nào phù hợp từ %s đến %s!')%(start_date, end_date))
+            line = self.cr.dictfetchall()[0]
+            line_ids.append(({
+                  'ten_ts': master.name,
+                  'ngay_kh': self.get_vietname_date(line and line['depreciation_date'] or ''),
+                  'nguyengia_dk': master.purchase_value,
+                  'haomonluyke_dk': line and line['depreciated_value'] or '',
+                  'gtconlai_dk': self.get_sum_2_gt(line and line['amount'] or 0,line and line['remaining_value'] or 0),
+                  'sothang_kh': master.method_number,
+                  'khau_hao': line and line['amount'] or '',
+                  'nguyengiacl_ck': master.purchase_value,
+                  'haomonluyke_ck': self.get_sum_2_gt(line and line['depreciated_value'] or 0,line and line['amount'] or 0),
+                  'gtconlai_ck': line and line['remaining_value'] or ''
+                  }))
+        return line_ids
     
     def get_total(self):
         total = []
