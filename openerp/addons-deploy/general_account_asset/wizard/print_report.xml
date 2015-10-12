@@ -103,7 +103,7 @@
             <field name="name">bang.tinh.kh.tscd.form</field>
             <field name="model">bang.tinh.kh.tscd</field>
             <field name="arch" type="xml">
-                <form string="Bảng tính khấu hao TSCĐ Report" version="7.0">
+                <form string="Bảng tính khấu hao TSCĐ" version="7.0">
                 	<group col="4" colspan="2">
                 		<field name="tu_ngay" />
                 		<field name="den_ngay" />
@@ -118,7 +118,7 @@
         </record>
         
         <record id="action_bang_tinh_kh_tscd_form" model="ir.actions.act_window">
-            <field name="name">Bảng tính khấu hao TSCĐ Report</field>
+            <field name="name">Bảng tính khấu hao TSCĐ</field>
             <field name="res_model">bang.tinh.kh.tscd</field>
             <field name="view_type">form</field>
             <field name="view_mode">form</field>

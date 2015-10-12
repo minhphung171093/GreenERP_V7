@@ -9,7 +9,10 @@ from datetime import datetime
 from osv import fields, osv
 from tools.misc import DEFAULT_SERVER_DATETIME_FORMAT
 import decimal_precision as dp
+from dateutil.relativedelta import relativedelta
 from tools.translate import _
+from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT, float_compare
+
 
 class depreciation_asset(osv.osv_memory):
     _name = "depreciation.asset"    
@@ -147,8 +150,8 @@ class bang_tinh_kh_tscd(osv.osv_memory):
      }
         
     _defaults = {
-        'tu_ngay': time.strftime('%Y-%m-%d'),
-        'den_ngay': time.strftime('%Y-%m-%d'),
+        'tu_ngay': time.strftime('%Y-%m-01'),
+        'den_ngay': lambda *a: str(datetime.now() + relativedelta(months=+1, day=1, days=-1))[:10],
         }
     
     def print_report(self, cr, uid, ids, context=None): 
