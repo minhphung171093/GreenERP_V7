@@ -212,9 +212,9 @@ class sql_balance_sheet(osv.osv):
                                     sum(remain_cr) - sum(remain_dr) else 0 end balance_cr
                         from (
                                 select  aml.account_id, sum(aml.debit) remain_dr, sum(aml.credit) remain_cr
-                                from account_move amh join account_move_line aml 
+                                from account_move amh left join account_move_line aml 
                                         on amh.id = aml.move_id
-                                    join account_journal as ajn on aml.journal_id = ajn.id
+                                    left join account_journal as ajn on aml.journal_id = ajn.id
                                 where amh.state = ''posted'' and aml.state = ''valid''
                                     and ajn.type = ''situation'' and aml.account_id in ('||lst_account||')
                                     and date_trunc(''year'', aml.date) = date_trunc(''year'', date($1))
@@ -222,9 +222,9 @@ class sql_balance_sheet(osv.osv):
                                 group by aml.account_id
                                 union all
                                 select  aml.account_id, sum(aml.debit) remain_dr, sum(aml.credit) remain_cr
-                                from account_move amh join account_move_line aml 
+                                from account_move amh left join account_move_line aml 
                                         on amh.id = aml.move_id
-                                    join account_journal as ajn on aml.journal_id = ajn.id
+                                    left join account_journal as ajn on aml.journal_id = ajn.id
                                 where amh.state = ''posted'' and aml.state = ''valid''
                                     and ajn.type != ''situation'' and aml.account_id in ('||lst_account||')
                                     and date_trunc(''day'', aml.date) between date_trunc(''year'', date($1))
@@ -289,8 +289,8 @@ class sql_balance_sheet(osv.osv):
                                 from (
                                         select  aml.account_id, aml.partner_id,
                                                 sum(aml.debit) dr_amount, sum(aml.credit) cr_amount
-                                        from account_move_line aml join account_move amh on aml.move_id = amh.id
-                                            join account_journal ajn on aml.journal_id = ajn.id
+                                        from account_move_line aml left join account_move amh on aml.move_id = amh.id
+                                            left join account_journal ajn on aml.journal_id = ajn.id
                                         where amh.state = ''posted'' and aml.state = ''valid''
                                             and ajn.type = ''situation''
                                             and date_trunc(''year'', aml.date) = date_trunc(''year'', date($1))
@@ -300,8 +300,8 @@ class sql_balance_sheet(osv.osv):
                                         union all
                                         select  aml.account_id, aml.partner_id,
                                                 sum(aml.debit) dr_amount, sum(aml.credit) cr_amount
-                                        from account_move_line aml join account_move amh on aml.move_id = amh.id
-                                            join account_journal ajn on aml.journal_id = ajn.id
+                                        from account_move_line aml left join account_move amh on aml.move_id = amh.id
+                                            left join account_journal ajn on aml.journal_id = ajn.id
                                         where amh.state = ''posted'' and aml.state = ''valid''
                                             and ajn.type != ''situation''
                                             and date_trunc(''year'', aml.date) = date_trunc(''year'', date($1))
@@ -363,8 +363,8 @@ class sql_balance_sheet(osv.osv):
                                 from (
                                         select  aml.account_id, aml.partner_id,
                                                 sum(aml.debit) dr_amount, sum(aml.credit) cr_amount
-                                        from account_move_line aml join account_move amh on aml.move_id = amh.id
-                                            join account_journal ajn on aml.journal_id = ajn.id
+                                        from account_move_line aml left join account_move amh on aml.move_id = amh.id
+                                            left join account_journal ajn on aml.journal_id = ajn.id
                                         where amh.state = ''posted'' and aml.state = ''valid''
                                             and ajn.type = ''situation''
                                             and date_trunc(''year'', aml.date) = date_trunc(''year'', date($1))
@@ -374,8 +374,8 @@ class sql_balance_sheet(osv.osv):
                                         union all
                                         select  aml.account_id, aml.partner_id,
                                                 sum(aml.debit) dr_amount, sum(aml.credit) cr_amount
-                                        from account_move_line aml join account_move amh on aml.move_id = amh.id
-                                            join account_journal ajn on aml.journal_id = ajn.id
+                                        from account_move_line aml left join account_move amh on aml.move_id = amh.id
+                                            left join account_journal ajn on aml.journal_id = ajn.id
                                         where amh.state = ''posted'' and aml.state = ''valid''
                                             and ajn.type != ''situation''
                                             and date_trunc(''year'', aml.date) = date_trunc(''year'', date($1))
@@ -428,18 +428,18 @@ class sql_balance_sheet(osv.osv):
             if lst_account <> '' then
                 for rec in execute '
                         select  sum(aml.debit) balance_dr, sum(aml.credit) balance_cr
-                        from account_move amh join account_move_line aml 
+                        from account_move amh left join account_move_line aml 
                                 on amh.id = aml.move_id
-                            join account_journal ajn on aml.journal_id = ajn.id
+                            left join account_journal ajn on aml.journal_id = ajn.id
                         where amh.state = ''posted'' and aml.state = ''valid''
                             and ajn.type = ''situation'' and aml.account_id in ('||lst_account||')
                             and date_trunc(''year'', aml.date) = date_trunc(''year'', date($1))
                             and amh.company_id = $3
                         union all
                         select  sum(aml.debit) balance_dr, sum(aml.credit) balance_cr
-                        from account_move amh join account_move_line aml 
+                        from account_move amh left join account_move_line aml 
                                 on amh.id = aml.move_id
-                            join account_journal ajn on aml.journal_id = ajn.id
+                            left join account_journal ajn on aml.journal_id = ajn.id
                         where amh.state = ''posted'' and aml.state = ''valid''
                             and ajn.type != ''situation'' and aml.account_id in ('||lst_account||')
                             and date_trunc(''day'', aml.date) between date_trunc(''year'', date($1))
@@ -492,18 +492,18 @@ class sql_balance_sheet(osv.osv):
             if lst_account <> '' then
                 for rec in execute '
                         select  sum(aml.debit) balance_dr, sum(aml.credit) balance_cr
-                        from account_move amh join account_move_line aml 
+                        from account_move amh left join account_move_line aml 
                                 on amh.id = aml.move_id
-                            join account_journal ajn on aml.journal_id = ajn.id
+                            left join account_journal ajn on aml.journal_id = ajn.id
                         where amh.state = ''posted'' and aml.state = ''valid''
                             and ajn.type = ''situation'' and aml.account_id in ('||lst_account||')
                             and date_trunc(''year'', aml.date) = date_trunc(''year'', date($1))
                             and amh.company_id = $3
                         union all
                         select  sum(aml.debit) balance_dr, sum(aml.credit) balance_cr
-                        from account_move amh join account_move_line aml 
+                        from account_move amh left join account_move_line aml 
                                 on amh.id = aml.move_id
-                            join account_journal ajn on aml.journal_id = ajn.id
+                            left join account_journal ajn on aml.journal_id = ajn.id
                         where amh.state = ''posted'' and aml.state = ''valid''
                             and ajn.type != ''situation'' and aml.account_id in ('||lst_account||')
                             and date_trunc(''day'', aml.date) between date_trunc(''year'', date($1))

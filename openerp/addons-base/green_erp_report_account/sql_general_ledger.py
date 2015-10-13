@@ -64,9 +64,9 @@ class sql_general_ledger(osv.osv):
                                     case when acc.type = 'view' or length(acc.code) = 3
                                     then 1 else 0 end format
                             from account_account acc
-                                join account_account acc_parent on acc.parent_id = acc_parent.id
+                                left join account_account acc_parent on acc.parent_id = acc_parent.id
                             where acc.level > 1
-                        ) coa join
+                        ) coa left join
                         (
                             select  code, acc_level,
                                     case when type in ('payable', 'receivable') then
@@ -99,27 +99,27 @@ class sql_general_ledger(osv.osv):
                                                     then 10 else substr(acc.code,1,1)::int
                                                         end acc_level, acc.type, aml.partner_id,
                                                     aml.debit,aml.credit
-                                            from account_move amh join account_move_line aml on amh.id = aml.move_id
+                                            from account_move amh left join account_move_line aml on amh.id = aml.move_id
                                                     and amh.shop_id = any($4)
                                                     and amh.company_id=$3
                                                     and amh.state = 'posted' and aml.state = 'valid'
                                                     and date_trunc('year', aml.date) = date_trunc('year', prev_date)
-                                                join account_journal ajn on amh.journal_id = ajn.id and ajn.type = 'situation'
-                                                join account_account acc on aml.account_id = acc.id
-                                                join account_account acc_parent on acc.parent_id = acc_parent.id
+                                                left join account_journal ajn on amh.journal_id = ajn.id and ajn.type = 'situation'
+                                                left join account_account acc on aml.account_id = acc.id
+                                                left join account_account acc_parent on acc.parent_id = acc_parent.id
                                             union all
                                             select acc.code, case when acc_parent.code in ('X10')
                                                     then 10 else substr(acc.code,1,1)::int
                                                         end acc_level, acc.type, aml.partner_id,
                                                     sum(aml.debit), sum(aml.credit)
-                                            from account_move amh join account_move_line aml on amh.id = aml.move_id
+                                            from account_move amh left join account_move_line aml on amh.id = aml.move_id
                                                     and amh.shop_id = any($4)
                                                     and amh.company_id=$3
                                                     and amh.state = 'posted' and aml.state = 'valid'
                                                     and date(aml.date) between date_trunc('year', prev_date) and date(prev_date)
-                                                join account_journal ajn on amh.journal_id = ajn.id and ajn.type != 'situation'
-                                                join account_account acc on aml.account_id = acc.id
-                                                join account_account acc_parent on acc.parent_id = acc_parent.id
+                                                left join account_journal ajn on amh.journal_id = ajn.id and ajn.type != 'situation'
+                                                left join account_account acc on aml.account_id = acc.id
+                                                left join account_account acc_parent on acc.parent_id = acc_parent.id
                                             group by acc.code, acc.type, aml.partner_id,
                                                      case when acc_parent.code in ('X10')
                                                      then 10 else substr(acc.code,1,1)::int end
@@ -131,14 +131,14 @@ class sql_general_ledger(osv.osv):
                                             then 10 else substr(acc.code,1,1)::int
                                                 end acc_level, acc.type, aml.partner_id,
                                             0, 0, sum(aml.debit), sum(aml.credit), 0, 0
-                                    from account_move amh join account_move_line aml on amh.id = aml.move_id
+                                    from account_move amh left join account_move_line aml on amh.id = aml.move_id
                                             and amh.shop_id = any($4)
                                             and amh.company_id=$3
                                             and amh.state = 'posted' and aml.state = 'valid'
                                             and date(aml.date) between date($1) and date($2)
-                                        join account_journal ajn on amh.journal_id = ajn.id and ajn.type != 'situation'
-                                        join account_account acc on aml.account_id = acc.id
-                                        join account_account acc_parent on acc.parent_id = acc_parent.id
+                                        left join account_journal ajn on amh.journal_id = ajn.id and ajn.type != 'situation'
+                                        left join account_account acc on aml.account_id = acc.id
+                                        left join account_account acc_parent on acc.parent_id = acc_parent.id
                                     group by acc.code, acc.type, aml.partner_id,
                                              case when acc_parent.code in ('X10')
                                              then 10 else substr(acc.code,1,1)::int end
@@ -155,27 +155,27 @@ class sql_general_ledger(osv.osv):
                                                     then 10 else substr(acc.code,1,1)::int
                                                         end acc_level, acc.type, aml.partner_id,
                                                     aml.debit,aml.credit
-                                            from account_move amh join account_move_line aml on amh.id = aml.move_id
+                                            from account_move amh left join account_move_line aml on amh.id = aml.move_id
                                                     and amh.shop_id = any($4)
                                                     and amh.company_id=$3
                                                     and amh.state = 'posted' and aml.state = 'valid'
                                                     and date_trunc('year', aml.date) = date_trunc('year', $2)
-                                                join account_journal ajn on amh.journal_id = ajn.id and ajn.type = 'situation'
-                                                join account_account acc on aml.account_id = acc.id
-                                                join account_account acc_parent on acc.parent_id = acc_parent.id
+                                                left join account_journal ajn on amh.journal_id = ajn.id and ajn.type = 'situation'
+                                                left join account_account acc on aml.account_id = acc.id
+                                                left join account_account acc_parent on acc.parent_id = acc_parent.id
                                             union all
                                             select acc.code, case when acc_parent.code in ('X10')
                                                     then 10 else substr(acc.code,1,1)::int
                                                         end acc_level, acc.type, aml.partner_id,
                                                     sum(aml.debit), sum(aml.credit)
-                                            from account_move amh join account_move_line aml on amh.id = aml.move_id
+                                            from account_move amh left join account_move_line aml on amh.id = aml.move_id
                                                     and amh.shop_id = any($4)
                                                     and amh.company_id=$3
                                                     and amh.state = 'posted' and aml.state = 'valid'
                                                     and date(aml.date) between date_trunc('year', $2) and date($2)
-                                                join account_journal ajn on amh.journal_id = ajn.id and ajn.type != 'situation'
-                                                join account_account acc on aml.account_id = acc.id
-                                                join account_account acc_parent on acc.parent_id = acc_parent.id
+                                                left join account_journal ajn on amh.journal_id = ajn.id and ajn.type != 'situation'
+                                                left join account_account acc on aml.account_id = acc.id
+                                                left join account_account acc_parent on acc.parent_id = acc_parent.id
                                             group by acc.code, acc.type, aml.partner_id,
                                                      case when acc_parent.code in ('X10')
                                                      then 10 else substr(acc.code,1,1)::int end

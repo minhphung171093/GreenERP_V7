@@ -33,42 +33,31 @@ from openerp import SUPERUSER_ID
 class account_invoice(osv.osv):
     _inherit = "account.invoice"
     
-    _columns = {
-        'reference_number': fields.char('Reference Number', size=64, readonly=True, states={'draft':[('readonly',False)]}),
-        'date_document': fields.date('Document Date', readonly=True, states={'draft':[('readonly',False)]}),
-    }
-    
-    _defaults = {
-        'date_document': fields.date.context_today,
-    }
-    
-account_invoice()
-
-class account_journal(osv.osv):
-    _inherit = "account.journal"
- 
-    _columns = {
-        'shop_ids': fields.many2many('sale.shop', 'account_journal_shop_rel', 'journal_id', 'shop_id', 'Shops'),
-    }
-     
-account_journal()
-
-class account_invoice(osv.osv):
-    _inherit = "account.invoice"
- 
-    _columns = {
-        'shop_id': fields.many2one('sale.shop', 'Shop', readonly=True, states={'draft':[('readonly',False)]}),
-    }
-    
     def _get_shop_id(self, cr, uid, context=None):
         if context is None:
             context = {}
         user = self.pool.get('res.users').browse(cr, uid, uid)
         return user.context_shop_id.id or False
     
-    _defaults = {
-         'shop_id': _get_shop_id,
+    _columns = {
+        'reference_number': fields.char('Reference Number', size=250, readonly=True, states={'draft':[('readonly',False)]}),
+        'date_document': fields.date('Document Date', readonly=True, states={'draft':[('readonly',False)]}),
+        'shop_id': fields.many2one('sale.shop', 'Shop', readonly=True, states={'draft':[('readonly',False)]}),
     }
+    
+    _defaults = {
+        'date_document': fields.date.context_today,
+        'shop_id': _get_shop_id,
+    }
+    
+    def write(self, cr, uid, ids, vals, context=None):
+        for inv in self.browse(cr, uid, ids, context=context):
+            if 'state' in vals and vals['state']=='open':
+                if not inv.reference:
+                    raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa nhập ký hiệu hoá đơn.!'))
+                if not inv.reference_number:
+                    raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa nhập số hoá đơn.!'))
+        return super(account_invoice, self).write(cr, uid, ids, vals, context=context)   
     
     def action_move_create(self, cr, uid, ids, context=None):
         """Creates invoice related analytics and financial move lines"""
@@ -261,8 +250,16 @@ class account_invoice(osv.osv):
                 'type': inv.type in ('out_invoice','out_refund') and 'receipt' or 'payment'
             }
         }
-     
 account_invoice()
+
+class account_journal(osv.osv):
+    _inherit = "account.journal"
+ 
+    _columns = {
+        'shop_ids': fields.many2many('sale.shop', 'account_journal_shop_rel', 'journal_id', 'shop_id', 'Shops'),
+    }
+     
+account_journal()
 
 class account_invoice_line(osv.osv):
     _inherit = "account.invoice.line"

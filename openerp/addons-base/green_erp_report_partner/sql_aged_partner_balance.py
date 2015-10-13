@@ -99,12 +99,12 @@ class sql_aged_partner_balance(osv.osv):
                         aih.origin, aml.date_maturity inv_duedate, avh.date_due pay_duedate,
                         aih.name inv_desc, avh.name pay_desc, aml.debit, aml.credit,
                         aih.amount_total, aih.residual, amh.ref
-                    from account_move_line aml join account_move amh on aml.move_id = amh.id
+                    from account_move_line aml left join account_move amh on aml.move_id = amh.id
                             and amh.state = 'posted' and aml.state = 'valid'
-                        join account_journal ajn on amh.journal_id = ajn.id
+                        left join account_journal ajn on amh.journal_id = ajn.id
                             and ajn.type != 'situation'
-                        join fn_get_account_child_id($2) acc on aml.account_id = acc.id
-                        join res_partner rpt on aml.partner_id = rpt.id /* lien ket voi partner */
+                        left join fn_get_account_child_id($2) acc on aml.account_id = acc.id
+                        left join res_partner rpt on aml.partner_id = rpt.id /* lien ket voi partner */
                         left join account_invoice aih on amh.id = aih.move_id /* lien ket voi invoice */
                         left join account_voucher avh on amh.id = avh.move_id /* lien ket voi payment */
                     where amh.date <= $1

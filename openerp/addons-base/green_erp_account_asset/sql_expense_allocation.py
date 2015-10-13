@@ -120,14 +120,14 @@ class sql_expense_allocation(osv.osv):
              (nullif(aas.method_number,0)*aas.method_period)) value_of_month,
             dep.depreciation_value, dep.remain_value, aas.salvage_value hold_value,
             swh.name warehouse, aas.note, aaa.name account_analytic
-          from account_asset_asset aas join account_asset_category aac
+          from account_asset_asset aas left join account_asset_category aac
            on aas.category_id = aac.id and aac.account_depreciation_id in ('||lst_account||')
-           join stock_warehouse swh on aas.warehouse_id = swh.id
-           join account_analytic_account aaa on aaa.id = aas.account_analytic_id
-           join (
+           left join stock_warehouse swh on aas.warehouse_id = swh.id
+           left join account_analytic_account aaa on aaa.id = aas.account_analytic_id
+           left join (
             select adl.asset_id, sum(adl.amount) depreciation_value,
              min(adl.remaining_value) remain_value
-            from account_asset_depreciation_line adl join account_move amh on adl.move_id = amh.id
+            from account_asset_depreciation_line adl left join account_move amh on adl.move_id = amh.id
             where amh.date between date($1) and date($2) group by asset_id
             ) dep on aas.id = dep.asset_id
           where aas.asset_type = ''prepaid'' order by aas.code' using _sdate, _edate

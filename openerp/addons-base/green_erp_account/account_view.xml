@@ -19,8 +19,13 @@
 	        <field name="arch" type="xml">
 	        
 	        	<xpath expr="//field[@name='fiscal_position']" position="after">
-	        		<field name="reference_number" readonly="0"/>
+	        		<field name="reference" readonly="0" string = "Ký hiệu hóa đơn"/>
+	        		<field name="reference_number" readonly="0" string = "Số hóa đơn"/>
 	        	</xpath>
+	        	
+	        	<xpath expr="//field[@name='fiscal_position']" position="attributes">
+					<attribute name='invisible'>1</attribute>
+				</xpath>
 	        	
         	</field>
         </record>
@@ -234,6 +239,24 @@
 	        	<xpath expr="//field[@name='date_invoice']" position="after">
 	        		<field name="date_document"/>
 	        	</xpath>
+	        	<xpath expr="//field[@name='fiscal_position']" position="attributes">
+					<attribute name='invisible'>1</attribute>
+				</xpath>
+				<xpath expr="//field[@name='reference']" position="replace">
+				</xpath>
+				<xpath expr="//field[@name='supplier_invoice_number']" position="after">
+					<field name="reference_number" string = "Số hóa đơn"/>
+					<field name="reference" string = "Ký hiệu hóa đơn"/>
+				</xpath>
+				<xpath expr="//field[@name='supplier_invoice_number']" position="attributes">
+					<attribute name='invisible'>1</attribute>
+				</xpath>
+				<xpath expr="//label[@for='reference_type']" position="attributes">
+					<attribute name='invisible'>1</attribute>
+				</xpath>
+				<xpath expr="//form/sheet/group/group/div" position="attributes">
+					<attribute name='invisible'>1</attribute>
+				</xpath>
 	        </field>
     	</record>
 
@@ -279,31 +302,7 @@
             </field>
         </record>
         
-<!-- Customer Invoice -->
-
-    	<record id="invoice_form_customer_base_inherit" model="ir.ui.view">
-            <field name="name">invoice.form.customer.base.inherit</field>
-            <field name="model">account.invoice</field>
-            <field name="inherit_id" ref="account.invoice_form"/>
-            <field name="arch" type="xml">
-            	<xpath expr="//field[@name='fiscal_position']" position="attributes">
-					<attribute name='invisible'>1</attribute>
-				</xpath>
-			</field>
-		</record>
 		
-<!-- Supplier Invoice -->
-
-    	<record id="invoice_supplier_form_base_inherit" model="ir.ui.view">
-            <field name="name">invoice.supplier.form.base.inherit</field>
-            <field name="model">account.invoice</field>
-            <field name="inherit_id" ref="account.invoice_supplier_form"/>
-            <field name="arch" type="xml">
-            	<xpath expr="//field[@name='fiscal_position']" position="attributes">
-					<attribute name='invisible'>1</attribute>
-				</xpath>
-			</field>
-		</record>
 		
 
 

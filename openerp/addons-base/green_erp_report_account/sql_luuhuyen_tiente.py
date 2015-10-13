@@ -47,18 +47,18 @@ class sql_luuhuyen_tiente(osv.osv):
             if lst_account <> '' then
                 for rec in execute '
                         select  sum(aml.debit) balance_dr, sum(aml.credit) balance_cr
-                        from account_move amh join account_move_line aml 
+                        from account_move amh left join account_move_line aml 
                                 on amh.id = aml.move_id
-                            join account_journal ajn on aml.journal_id = ajn.id
+                            left join account_journal ajn on aml.journal_id = ajn.id
                         where amh.state = ''posted'' and aml.state = ''valid''
                             and ajn.type = ''situation'' and aml.account_id in ('||lst_account||')
                             and date_trunc(''year'', aml.date) = date_trunc(''year'', date($1))
                             and amh.company_id = $3
                         union all
                         select  sum(aml.debit) balance_dr, sum(aml.credit) balance_cr
-                        from account_move amh join account_move_line aml 
+                        from account_move amh left join account_move_line aml 
                                 on amh.id = aml.move_id
-                            join account_journal ajn on aml.journal_id = ajn.id
+                            left join account_journal ajn on aml.journal_id = ajn.id
                         where amh.state = ''posted'' and aml.state = ''valid''
                             and ajn.type != ''situation'' and aml.account_id in ('||lst_account||')
                             and date_trunc(''day'', aml.date) between date_trunc(''year'', date($1))
@@ -176,18 +176,18 @@ class sql_luuhuyen_tiente(osv.osv):
             if lst_account <> '' then
                 for rec in execute '
                         select  sum(aml.debit) balance_dr, sum(aml.credit) balance_cr
-                        from account_move amh join account_move_line aml 
+                        from account_move amh left join account_move_line aml 
                                 on amh.id = aml.move_id
-                            join account_journal ajn on aml.journal_id = ajn.id
+                            left join account_journal ajn on aml.journal_id = ajn.id
                         where amh.state = ''posted'' and aml.state = ''valid''
                             and ajn.type = ''situation'' and aml.account_id in ('||lst_account||')
                             and date_trunc(''year'', aml.date) = date_trunc(''year'', date($1))
                             and amh.company_id = $3
                         union all
                         select  sum(aml.debit) balance_dr, sum(aml.credit) balance_cr
-                        from account_move amh join account_move_line aml 
+                        from account_move amh left join account_move_line aml 
                                 on amh.id = aml.move_id
-                            join account_journal ajn on aml.journal_id = ajn.id
+                            left join account_journal ajn on aml.journal_id = ajn.id
                         where amh.state = ''posted'' and aml.state = ''valid''
                             and ajn.type != ''situation'' and aml.account_id in ('||lst_account||')
                             and date_trunc(''day'', aml.date) between date_trunc(''year'', date($1))
@@ -243,9 +243,9 @@ class sql_luuhuyen_tiente(osv.osv):
             if lst_account <> '' and lst_account_du <> '' then
                 for rec in execute '
                     select amh.id
-                        from account_move amh join account_move_line aml 
+                        from account_move amh left join account_move_line aml 
                                 on amh.id = aml.move_id
-                            join account_journal ajn on aml.journal_id = ajn.id
+                            left join account_journal ajn on aml.journal_id = ajn.id
                         where amh.state = ''posted'' and aml.state = ''valid''
                             and ajn.type = ''situation'' and aml.account_id in ('||lst_account||')
                             and date_trunc(''year'', aml.date) = date_trunc(''year'', date($1))
@@ -253,9 +253,9 @@ class sql_luuhuyen_tiente(osv.osv):
                         group by amh.id
                     union all
                     select amh.id
-                        from account_move amh join account_move_line aml 
+                        from account_move amh left join account_move_line aml 
                                 on amh.id = aml.move_id
-                            join account_journal ajn on aml.journal_id = ajn.id
+                            left join account_journal ajn on aml.journal_id = ajn.id
                         where amh.state = ''posted'' and aml.state = ''valid''
                             and ajn.type != ''situation'' and aml.account_id in ('||lst_account||')
                             and date_trunc(''day'', aml.date) between date_trunc(''year'', date($1))
@@ -267,7 +267,7 @@ class sql_luuhuyen_tiente(osv.osv):
                 loop
                     for rec2 in execute '
                         select sum(aml.debit) balance_dr, sum(aml.credit) balance_cr
-                        from account_move amh join account_move_line aml 
+                        from account_move amh left join account_move_line aml 
                                 on amh.id = aml.move_id
                         where aml.account_id in ('||lst_account_du||') and aml.move_id=$1 and type_lctt=$2 
                             ' using rec.id,$5
@@ -319,7 +319,7 @@ class sql_luuhuyen_tiente(osv.osv):
 #             if lst_account <> '' and lst_account_du <> '' then
 #                 for rec in execute '
 #                     select amh.id
-#                         from account_move amh join account_move_line aml 
+#                         from account_move amh left join account_move_line aml 
 #                                 on amh.id = aml.move_id
 #                             join account_journal ajn on aml.journal_id = ajn.id
 #                         where amh.state = ''posted'' and aml.state = ''valid''
@@ -395,9 +395,9 @@ class sql_luuhuyen_tiente(osv.osv):
             if lst_account <> '' and lst_account_du <> '' then
                 for rec in execute '
                     select amh.id
-                        from account_move amh join account_move_line aml 
+                        from account_move amh left join account_move_line aml 
                                 on amh.id = aml.move_id
-                            join account_journal ajn on aml.journal_id = ajn.id
+                            left join account_journal ajn on aml.journal_id = ajn.id
                         where amh.state = ''posted'' and aml.state = ''valid''
                             and ajn.type = ''situation'' and aml.account_id in ('||lst_account||')
                             and date_trunc(''year'', aml.date) = date_trunc(''year'', date($1))
@@ -405,9 +405,9 @@ class sql_luuhuyen_tiente(osv.osv):
                         group by amh.id
                     union all
                     select amh.id
-                        from account_move amh join account_move_line aml 
+                        from account_move amh left join account_move_line aml 
                                 on amh.id = aml.move_id
-                            join account_journal ajn on aml.journal_id = ajn.id
+                            left join account_journal ajn on aml.journal_id = ajn.id
                         where amh.state = ''posted'' and aml.state = ''valid''
                             and ajn.type != ''situation'' and aml.account_id in ('||lst_account||')
                             and date_trunc(''day'', aml.date) between date_trunc(''year'', date($1))
@@ -426,7 +426,7 @@ class sql_luuhuyen_tiente(osv.osv):
                         if rec2.num_of_amh=0 then
                             for rec3 in execute '
                                 select sum(aml.debit) balance_dr, sum(aml.credit) balance_cr
-                                    from account_move amh join account_move_line aml 
+                                    from account_move amh left join account_move_line aml 
                                             on amh.id = aml.move_id
                                     where aml.account_id in ('||lst_account||') and aml.move_id=$1
                                         ' using rec.id

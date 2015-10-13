@@ -92,24 +92,24 @@ class sql_partner_ledger_detail(osv.osv):
                             select rpt.ref as partner_code, rpt.name as partner_name,
                                     sum(aml.debit) as beg_dr, sum(aml.credit) as beg_cr, 
                                     0 as prd_dr, 0 as prd_cr
-                            from account_move amh join account_move_line aml on amh.id = aml.move_id
+                            from account_move amh left join account_move_line aml on amh.id = aml.move_id
                                     and amh.state = 'posted' and aml.state = 'valid'
-                                join account_journal ajn on amh.journal_id = ajn.id
+                                left join account_journal ajn on amh.journal_id = ajn.id
                                     and ajn.type = 'situation'
-                                join fn_get_account_child_id($3) acc on aml.account_id = acc.id
-                                join res_partner rpt on aml.partner_id = rpt.id /* lien ket voi partner */
+                                left join fn_get_account_child_id($3) acc on aml.account_id = acc.id
+                                left join res_partner rpt on aml.partner_id = rpt.id /* lien ket voi partner */
                             where date_trunc('year', aml.date) = date_trunc('year', $1::date)
                             group by rpt.ref, rpt.name
                         union all
                             select  rpt.ref as partner_code, rpt.name as partner_name,
                                     sum(aml.debit) as beg_dr, sum(aml.credit) as beg_cr, 
                                     0 as prd_dr, 0 as prd_cr
-                            from account_move_line aml join account_move amh on aml.move_id = amh.id
+                            from account_move_line aml left join account_move amh on aml.move_id = amh.id
                                     and amh.state = 'posted' and aml.state = 'valid'
-                                join account_journal ajn on amh.journal_id = ajn.id
+                                left join account_journal ajn on amh.journal_id = ajn.id
                                     and ajn.type != 'situation'
-                                join fn_get_account_child_id($3) acc on aml.account_id = acc.id
-                                join res_partner rpt on aml.partner_id = rpt.id /* lien ket voi partner */
+                                left join fn_get_account_child_id($3) acc on aml.account_id = acc.id
+                                left join res_partner rpt on aml.partner_id = rpt.id /* lien ket voi partner */
                             where aml.date >= date(date_trunc('year', $1::date)) and aml.date < $1
                             group by rpt.ref, rpt.name
                         union all
@@ -117,12 +117,12 @@ class sql_partner_ledger_detail(osv.osv):
                             select  rpt.ref as partner_code, rpt.name as partner_name,
                                     0 as beg_dr, 0 as beg_cr,
                                     sum(aml.debit) as prd_dr, sum(aml.credit) as prd_cr
-                            from account_move_line aml join account_move amh on aml.move_id = amh.id
+                            from account_move_line aml left join account_move amh on aml.move_id = amh.id
                                     and amh.state = 'posted' and aml.state = 'valid'
-                                join account_journal ajn on amh.journal_id = ajn.id
+                                left join account_journal ajn on amh.journal_id = ajn.id
                                     and ajn.type != 'situation'
-                                join fn_get_account_child_id($3) acc on aml.account_id = acc.id
-                                join res_partner rpt on aml.partner_id = rpt.id /* lien ket voi partner */
+                                left join fn_get_account_child_id($3) acc on aml.account_id = acc.id
+                                left join res_partner rpt on aml.partner_id = rpt.id /* lien ket voi partner */
                             where aml.date between $1 and $2
                             group by rpt.ref, rpt.name
                         ) vw
