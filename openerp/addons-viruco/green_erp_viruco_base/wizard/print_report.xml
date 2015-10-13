@@ -2,62 +2,7 @@
 <openerp>
     <data>
         
-<!--  ========================= Bảng kê doanh thu ================= -->     
-         <record id="bang_ke_doanh_thu_view" model="ir.ui.view">
-            <field name="name">bang.ke.doanh.thu.view</field>
-            <field name="model">bang.ke.doanh.thu</field>
-            <field name="arch" type="xml">
-                <form string="Bảng kê doanh thu" version="7.0">
-                	<group col="4" colspan="2">
-                		<field name="tu_ngay" />
-                		<field name="den_ngay"/>
-                		
-                    </group>
-	                <footer>
-                        <button string="Print" type="object" name="print_report" icon='gtk-execute'/>
-                        or
-                        <button string="Cancel" class="oe_link" special="cancel"/>
-                    </footer>
-                </form>
-            </field>
-        </record>
-        
-        <record id="action_bang_ke_doanh_thu_view" model="ir.actions.act_window">
-            <field name="name">Bảng kê doanh thu</field>
-            <field name="res_model">bang.ke.doanh.thu</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">form</field>
-            <field name="target">new</field>
-            <field name="view_id" ref="bang_ke_doanh_thu_view"/>
-        </record>
-        <menuitem id="menu_action_bang_ke_doanh_thu_view" 
-	        action="action_bang_ke_doanh_thu_view" 
-	        parent="account.menu_finance_reporting"
-	        sequence="50"/>
-	        
-    	<record id="bang_ke_doanh_thu_report" model="ir.actions.report.xml">
-	        <field name="name">bang_ke_doanh_thu_report</field>
-	        <field name="type">ir.actions.report.xml</field>
-	        <field name="model">bang.ke.doanh.thu</field>
-	        <field name="report_name">bang_ke_doanh_thu_report</field>
-	        <field name="report_type">aeroo</field>
-	        <field name="in_format">oo-ods</field>
-	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
-	        <field name="parser_loc">green_erp_viruco_base/report/bang_ke_doanh_thu.py</field>
-	        <field name="report_rml">green_erp_viruco_base/report/bang_ke_doanh_thu.ods</field>
-	        <field name="parser_state">loc</field>
-	        <field name="tml_source">file</field>
-	        <field name="attachment_use" eval="0"/>
-    	</record>		    
-		
-		<report 
-			auto="True" 
-			menu="False"
-			id="bang_ke_doanh_thu_report" 
-			model="bang.ke.doanh.thu" 
-			name="bang_ke_doanh_thu_report"
-	        string="Bảng Kê Doanh Thu"
-	        rml="green_erp_viruco_base/report/bang_ke_doanh_thu.ods"/>	       
+	     
    </data>
 </openerp>
         

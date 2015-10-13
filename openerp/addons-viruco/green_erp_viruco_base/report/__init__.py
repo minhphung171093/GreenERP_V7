@@ -30,5 +30,4 @@ import draft_bl_report
 import commercial_invoice_report
 import fumi_report
 import phyto_report
-import bang_ke_doanh_thu
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

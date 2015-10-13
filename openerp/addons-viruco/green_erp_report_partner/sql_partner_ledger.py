@@ -86,22 +86,22 @@ class sql_partner_ledger(osv.osv):
                     select sum(beg_dr) begin_dr, sum(beg_cr) begin_cr
                     from (
                             select sum(aml.debit) as beg_dr, sum(aml.credit) as beg_cr 
-                            from account_move amh join account_move_line aml on amh.id = aml.move_id
+                            from account_move amh left join account_move_line aml on amh.id = aml.move_id
                                     and amh.state = 'posted' and aml.state = 'valid'
-                                join account_journal ajn on amh.journal_id = ajn.id
+                                left join account_journal ajn on amh.journal_id = ajn.id
                                     and ajn.type = 'situation'
-                                join fn_get_account_child_id($3) acc on aml.account_id = acc.id
-                                join res_partner rpt on aml.partner_id = rpt.id /* lien ket voi partner */
+                                left join fn_get_account_child_id($3) acc on aml.account_id = acc.id
+                                left join res_partner rpt on aml.partner_id = rpt.id /* lien ket voi partner */
                             where date_trunc('year', aml.date) = date_trunc('year', $1::date)
                                     and aml.partner_id = $4
                         union all
                             select sum(aml.debit) as beg_dr, sum(aml.credit) as beg_cr
-                            from account_move_line aml join account_move amh on aml.move_id = amh.id
+                            from account_move_line aml left join account_move amh on aml.move_id = amh.id
                                     and amh.state = 'posted' and aml.state = 'valid'
-                                join account_journal ajn on amh.journal_id = ajn.id
+                                left join account_journal ajn on amh.journal_id = ajn.id
                                     and ajn.type != 'situation'
-                                join fn_get_account_child_id($3) acc on aml.account_id = acc.id
-                                join res_partner rpt on aml.partner_id = rpt.id /* lien ket voi partner */
+                                left join fn_get_account_child_id($3) acc on aml.account_id = acc.id
+                                left join res_partner rpt on aml.partner_id = rpt.id /* lien ket voi partner */
                             where aml.date >= date(date_trunc('year', $1::date))
                                 and aml.date < $1 and aml.partner_id = $4
                         ) vw
@@ -130,12 +130,12 @@ class sql_partner_ledger(osv.osv):
                                     else amh.ref end description,
                                 aml.move_id, aml.account_id, acc.code, acc.name,
                                 sum(aml.debit) amt_dr, sum(aml.credit) amt_cr
-                        from account_move_line aml join account_move amh on aml.move_id = amh.id
+                        from account_move_line aml left join account_move amh on aml.move_id = amh.id
                                 and amh.state = 'posted' and aml.state = 'valid'
-                            join account_journal ajn on amh.journal_id = ajn.id
+                            left join account_journal ajn on amh.journal_id = ajn.id
                                 and ajn.type != 'situation'
-                            join fn_get_account_child_id($3) acc on aml.account_id = acc.id
-                            join res_partner rpt on aml.partner_id = rpt.id /* lien ket voi partner */
+                            left join fn_get_account_child_id($3) acc on aml.account_id = acc.id
+                            left join res_partner rpt on aml.partner_id = rpt.id /* lien ket voi partner */
                             left join account_invoice aih on amh.id = aih.move_id /* lien ket voi invoice */
                             left join account_voucher avh on amh.id = avh.move_id /* lien ket voi payment */
                         where aml.partner_id = $4 and aml.date between $1 and $2
@@ -164,9 +164,9 @@ class sql_partner_ledger(osv.osv):
                     
                     for rec_tmp in    select acc.id, acc.code, acc.name, 
                                         sum(aml.debit) dr_amount, sum(aml.credit) cr_amount
-                                    from account_move amh join account_move_line aml 
+                                    from account_move amh left join account_move_line aml 
                                             on amh.id = aml.move_id and amh.id = rec_data.move_id
-                                        join account_account acc on aml.account_id = acc.id
+                                        left join account_account acc on aml.account_id = acc.id
                                             and acc.id != rec_data.account_id
                                             and aml.credit > 0
                                     group by acc.id, acc.code, acc.name
@@ -197,9 +197,9 @@ class sql_partner_ledger(osv.osv):
                     
                     for rec_tmp in    select acc.id, acc.code, acc.name, 
                                         sum(aml.debit) dr_amount, sum(aml.credit) cr_amount
-                                    from account_move amh join account_move_line aml 
+                                    from account_move amh left join account_move_line aml 
                                             on amh.id = aml.move_id and amh.id = rec_data.move_id
-                                        join account_account acc on aml.account_id = acc.id
+                                        left join account_account acc on aml.account_id = acc.id
                                             and acc.id != rec_data.account_id
                                             and aml.debit > 0
                                     group by acc.id, acc.code, acc.name

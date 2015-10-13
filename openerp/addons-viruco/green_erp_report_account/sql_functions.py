@@ -312,22 +312,22 @@ class sql_function(osv.osv):
                         select sum(debit) dr_amount, sum(credit) cr_amount
                         from (
                             select aml.debit,aml.credit
-                            from account_move amh join account_move_line aml 
+                            from account_move amh left join account_move_line aml 
                                     on amh.id = aml.move_id and amh.state = 'posted'
                                     and aml.state = 'valid' -- and aml.warehouse_id = $3
                                     and to_char(aml.date, 'YYYY') = to_char($2,'YYYY')
-                                join account_journal ajn on amh.journal_id = ajn.id
+                                left join account_journal ajn on amh.journal_id = ajn.id
                                     and ajn.type = 'situation'
-                                join fn_get_account_child_id($1) acc on aml.account_id = acc.id
+                                left join fn_get_account_child_id($1) acc on aml.account_id = acc.id
                             union all
                             select aml.debit,aml.credit
-                            from account_move amh join account_move_line aml 
+                            from account_move amh left join account_move_line aml 
                                     on amh.id = aml.move_id and amh.state = 'posted'
                                     and aml.state = 'valid' -- and aml.warehouse_id = $3
                                     and date(aml.date) between date(to_char($2,'YYYY')||'-01-01') and date($2-1)
-                                join account_journal ajn on amh.journal_id = ajn.id
+                                left join account_journal ajn on amh.journal_id = ajn.id
                                     and ajn.type != 'situation'
-                                join fn_get_account_child_id($1) acc on aml.account_id = acc.id
+                                left join fn_get_account_child_id($1) acc on aml.account_id = acc.id
                             ) cashview
                     ) begin_bal
         $BODY$
@@ -364,11 +364,11 @@ class sql_function(osv.osv):
                         select sum(debit) dr_amount, sum(credit) cr_amount
                         from (
                             select aml.debit,aml.credit
-                            from account_move amh join account_move_line aml 
+                            from account_move amh left join account_move_line aml 
                                     on amh.id = aml.move_id and amh.state = 'posted'
                                     and aml.state = 'valid' -- and aml.warehouse_id = $3
                                     and date(aml.date) between date(to_char($2,'YYYY')||'-01-01') and date($2)
-                                join fn_get_account_child_id($1) acc on aml.account_id = acc.id
+                                left join fn_get_account_child_id($1) acc on aml.account_id = acc.id
                             ) cashview
                     ) begin_bal
         $BODY$
@@ -437,13 +437,13 @@ class sql_function(osv.osv):
                                     case when sum(aml.debit) - sum(aml.credit) > 0 
                                         then 1 else 2 end seq,
                                     avh.id voucher_id
-                            from account_move amh join account_move_line aml on amh.id = aml.move_id
+                            from account_move amh left join account_move_line aml on amh.id = aml.move_id
                                     and amh.state = 'posted' and aml.state = 'valid'
                                     -- and amh.warehouse_id = _warehouse_id
                                     and date(aml.date) between _from_date and _to_date
-                                join account_journal ajn on amh.journal_id = ajn.id
+                                left join account_journal ajn on amh.journal_id = ajn.id
                                     and ajn.type != 'situation'
-                                join fn_get_account_child_id(_account_id) acc on aml.account_id = acc.id
+                                left join fn_get_account_child_id(_account_id) acc on aml.account_id = acc.id
                                 left join account_voucher avh on amh.id = avh.move_id
                             group by amh.id, coalesce(avh.number,amh.name), 
                                     -- coalesce(avh.warehouse_id,amh.warehouse_id),

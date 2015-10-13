@@ -45,8 +45,10 @@
             parent="menu_sale_purchase_receipt"
             sequence="50"/>
 		
-		
-		
+		<menuitem id="menu_action_bang_ke_doanh_thu_view" 
+			        action="green_erp_viruco_account.action_bang_ke_doanh_thu_view" 
+			        parent="account.menu_finance_reporting"
+			        sequence="50"/>	
 
 	
             

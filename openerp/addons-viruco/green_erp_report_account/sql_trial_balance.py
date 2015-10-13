@@ -147,7 +147,7 @@ class sql_trial_balance(osv.osv):
                                     end acc_level, code, name
                             from account_account acc where company_id = $3 and "level" > 1
                         ) coa 
-                        join
+                        left join
                         (
                             select  code, acc_level,
                                     sum(debit) dr_beg, sum(credit) cr_beg,
@@ -158,26 +158,26 @@ class sql_trial_balance(osv.osv):
                                                 then 10 else substr(acc.code,1,1)::int
                                                     end acc_level,
                                             aml.debit,aml.credit, 0 dr_val, 0 cr_val
-                                    from account_move amh join account_move_line aml 
+                                    from account_move amh left join account_move_line aml 
                                             on amh.id = aml.move_id and amh.state = 'posted'
                                             and aml.state = 'valid'
                                             and date_trunc('year', aml.date) = date_trunc('year', $1::date)
-                                        join account_journal ajn on amh.journal_id = ajn.id
+                                        left join account_journal ajn on amh.journal_id = ajn.id
                                             and ajn.type = 'situation'
-                                        join account_account acc on aml.account_id = acc.id
+                                        left join account_account acc on aml.account_id = acc.id
                                     where amh.company_id = $3
                                     union all
                                     select acc.code, case when acc.code in ('003','000000','331009')
                                                 then 10 else substr(acc.code,1,1)::int
                                                     end acc_level,
                                             sum(aml.debit), sum(aml.credit), 0, 0
-                                    from account_move amh join account_move_line aml 
+                                    from account_move amh left join account_move_line aml 
                                             on amh.id = aml.move_id and amh.state = 'posted'
                                             and aml.state = 'valid'
                                             and date(aml.date) between date(date_trunc('year', $1::date)) and date($1::date - 1)
-                                        join account_journal ajn on amh.journal_id = ajn.id
+                                        left join account_journal ajn on amh.journal_id = ajn.id
                                             and ajn.type != 'situation'
-                                        join account_account acc on aml.account_id = acc.id
+                                        left join account_account acc on aml.account_id = acc.id
                                     where amh.company_id = $3
                                     group by acc.code,case when acc.code in ('003','000000','331009')
                                             then 10 else substr(acc.code,1,1)::int end
@@ -187,13 +187,13 @@ class sql_trial_balance(osv.osv):
                                                 then 10 else substr(acc.code,1,1)::int
                                                     end acc_level,
                                             0, 0 , sum(aml.debit), sum(aml.credit)
-                                    from account_move amh join account_move_line aml 
+                                    from account_move amh left join account_move_line aml 
                                             on amh.id = aml.move_id and amh.state = 'posted'
                                             and aml.state = 'valid'
                                             and date(aml.date) between date($1::date) and date($2::date)
-                                        join account_journal ajn on amh.journal_id = ajn.id
+                                        left join account_journal ajn on amh.journal_id = ajn.id
                                             and ajn.type != 'situation'
-                                        join account_account acc on aml.account_id = acc.id
+                                        left join account_account acc on aml.account_id = acc.id
                                     where amh.company_id = $3
                                     group by acc.code,case when acc.code in ('003','000000','331009')
                                             then 10 else substr(acc.code,1,1)::int end

@@ -57,25 +57,25 @@ class sql_account_ledger(osv.osv):
                         select sum(debit) dr_amount, sum(credit) cr_amount
                         from (
                             select aml.debit,aml.credit
-                            from account_move amh join account_move_line aml
+                            from account_move amh left join account_move_line aml
                                     on amh.id = aml.move_id
                                     and amh.shop_id = any($6)
                                     and amh.company_id=$5
                                     and amh.state = 'posted'
                                     and aml.state = 'valid' and date_trunc('year', aml.date) = date_trunc('year', $1)
-                                join account_journal ajn on amh.journal_id = ajn.id and ajn.type = 'situation'
-                                join fn_get_account_child_id($3) acc on aml.account_id = acc.id
+                                left join account_journal ajn on amh.journal_id = ajn.id and ajn.type = 'situation'
+                                left join fn_get_account_child_id($3) acc on aml.account_id = acc.id
                             union all
                             select aml.debit,aml.credit
-                            from account_move amh join account_move_line aml
+                            from account_move amh left join account_move_line aml
                                     on amh.id = aml.move_id
                                     and amh.shop_id = any($6)
                                     and amh.company_id=$5
                                     and amh.state = 'posted'
                                     and aml.state = 'valid' and date(aml.date) between
                                     date(date_trunc('year', $1)) and date($1 - 1)
-                                join account_journal ajn on amh.journal_id = ajn.id and ajn.type <> 'situation'
-                                join fn_get_account_child_id($3) acc on aml.account_id = acc.id
+                                left join account_journal ajn on amh.journal_id = ajn.id and ajn.type <> 'situation'
+                                left join fn_get_account_child_id($3) acc on aml.account_id = acc.id
                             )v
                     ) start_bal
             union all
@@ -97,14 +97,14 @@ class sql_account_ledger(osv.osv):
                     aml.debit dr_amount, aml.credit cr_amount,
                     1::int
                 from account_move_line aml
-                    join account_move am on aml.move_id=am.id
+                    left join account_move am on aml.move_id=am.id
             and am.shop_id = any($6)
                         and am.company_id=$5
                         and am.state = 'posted'
                         and aml.state = 'valid' and date(aml.date) between $1 and $2
                     left join account_invoice aih on aml.move_id = aih.move_id -- lien ket voi invoice
                     left join account_voucher avh on aml.move_id = avh.move_id -- lien ket thu/chi
-                    join fn_get_account_child_id($3) acc on aml.account_id = acc.id
+                    left join fn_get_account_child_id($3) acc on aml.account_id = acc.id
                 order by am.date, am.date_document, am.name, acc_code)
             union all
             /*    Add them dong sum detail    */
@@ -115,12 +115,12 @@ class sql_account_ledger(osv.osv):
                     sum(aml.debit) dr_amount, sum(aml.credit) cr_amount,
                     0::int
                 from account_move_line aml
-                    join account_move am on aml.move_id=am.id
+                    left join account_move am on aml.move_id=am.id
             and am.shop_id = any($6)
                         and am.company_id=$5
                         and am.state = 'posted'
                         and aml.state = 'valid' and date(aml.date) between $1 and $2
-                    join fn_get_account_child_id($3) acc on aml.account_id = acc.id
+                    left join fn_get_account_child_id($3) acc on aml.account_id = acc.id
                     
             union all
             /*    Lay so cuoi ky    */
@@ -134,14 +134,14 @@ class sql_account_ledger(osv.osv):
                     0::int
                 from (
                         select sum(aml.debit) dr_amount, sum(aml.credit) cr_amount
-                        from account_move amh join account_move_line aml 
+                        from account_move amh left join account_move_line aml 
                                 on amh.id = aml.move_id
                                 and amh.shop_id = any($6)
                                 and amh.company_id=$5
                                 and amh.state = 'posted'
                                 and aml.state = 'valid' and date(aml.date)
                                 between date(date_trunc('year', $2)) and $2
-                            join fn_get_account_child_id($3) acc on aml.account_id = acc.id
+                            left join fn_get_account_child_id($3) acc on aml.account_id = acc.id
                     ) end_bal;
         $BODY$
           LANGUAGE sql VOLATILE
