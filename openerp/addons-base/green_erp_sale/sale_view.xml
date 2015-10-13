@@ -25,5 +25,30 @@
 	        </field>
 	    </record>
 	    
+	    <record id="view_order_form_sale_stock_base_inherit" model="ir.ui.view">
+            <field name="name">view.order.form.sale.stock.base.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale_stock.view_order_form_inherit"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//field[@name='incoterm']" position="attributes">
+					<attribute name='invisible'>1</attribute>
+				</xpath>
+				<xpath expr="//field[@name='picking_policy']" position="attributes">
+					<attribute name='invisible'>1</attribute>
+				</xpath>
+			</field>
+		</record>
+	    
+	    <record id="view_order_form_base_inherit" model="ir.ui.view">
+            <field name="name">view.order.form.base.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//field[@name='fiscal_position']" position="attributes">
+					<attribute name='invisible'>1</attribute>
+				</xpath>
+			</field>
+		</record>
+		
     </data>
 </openerp>

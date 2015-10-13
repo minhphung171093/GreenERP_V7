@@ -38,6 +38,7 @@ class general_aged_partner_balance_review(osv.osv):
         return {'type': 'ir.actions.report.xml', 'report_name': 'general_aged_partner_balance_review_xls', 'datas': datas}
     
 general_aged_partner_balance_review()
+
 class general_aged_partner_balance_review_line(osv.osv):
     _name = "general.aged.partner.balance.review.line"
     _columns = {
@@ -57,6 +58,54 @@ class general_aged_partner_balance_review_line(osv.osv):
         'aging_day':fields.integer('Quá hạn (ngày)'),
                 }
 general_aged_partner_balance_review_line()
+
+class general_report_partner_ledger_review(osv.osv):
+    _name = "general.report.partner.ledger.review"
+  
+    _columns = {
+        'name': fields.char('Name', size=1024),
+        'start_date':fields.char('Từ ngày'),
+        'end_date':fields.char('đến ngày'),
+        'start_date_title':fields.char('Từ ngày'),
+        'end_date_title':fields.char('đến ngày'),
+        'nguoi_nop_thue': fields.char('Tên công ty', size=1024),
+        'nguoi_nop_thue_title': fields.char('Tên công ty', size=1024),
+        'ms_thue': fields.char('Mã số thuế', size=1024),
+        'ms_thue_title': fields.char('Mã số thuế', size=1024),
+        'sh_tk': fields.char('Số hiệu tài khoản', size=1024),
+        'sh_tk_title': fields.char('Số hiệu tài khoản', size=1024),
+        'ten_tk': fields.char('Tên tài khoản', size=1024),
+        'ten_tk_title': fields.char('Tên tài khoản', size=1024),
+        'partner_title': fields.char('partner_title:', size=1024),
+        'partner_title_title': fields.char('partner_title:', size=1024),
+        'dia_chi': fields.char('Địa chỉ', size=1024),       
+        'dia_chi_title': fields.char('Địa chỉ', size=1024),  
+        'general_report_partner_ledger_review_line':fields.one2many('general.report.partner.ledger.review.line','partner_ledger_id','Review In'),
+    }
+    def print_xls(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+#         datas = {'ids': context.get('active_ids', [])}
+        datas = {'ids': ids}
+        datas['model'] = 'general.report.partner.ledger.review'
+        datas['form'] = self.read(cr, uid, ids)[0]
+        datas['form'].update({'active_id':context.get('active_ids',False)})
+        return {'type': 'ir.actions.report.xml', 'report_name': 'general_report_partner_ledger_review_xls', 'datas': datas}
+      
+general_report_partner_ledger_review()
+class general_report_partner_ledger_review_line(osv.osv):
+    _name = "general.report.partner.ledger.review.line"
+    _columns = {
+        'partner_ledger_id':fields.many2one('general.report.partner.ledger.review','Report In'),
+        'gl_date': fields.char('Ngày ghi sổ', size=1024),
+        'doc_date': fields.char('Ngày chứng từ', size=1024),
+        'doc_no': fields.char('Số hiệu chứng từ', size=1024),
+        'description': fields.char('Diễn giải', size=1024),
+        'acc_code':fields.char('Tài khoản đối ứng', size=1024),
+        'amount_dr':fields.float('Số phát sinh (Nợ)'),
+        'amount_cr':fields.float('Số phát sinh (Có)'),
+        }
+general_report_partner_ledger_review_line()
 
 class general_report_partner_ledger_detail_review(osv.osv):
     _name = "general.report.partner.ledger.detail.review"

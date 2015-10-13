@@ -69,7 +69,7 @@
 	      		parent="menu_report_finance" sequence="15"/>
 	      		
       		<menuitem id="menu_action_report_general_account_profit_loss"
-      			name="Kế quả kinh doanh" 
+      			name="Kết quả kinh doanh" 
 	      		action="action_report_general_account_profit_loss" 
 	      		icon="terp-graph"  
 	      		parent="menu_report_finance" sequence="20"/>

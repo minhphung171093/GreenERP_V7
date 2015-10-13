@@ -278,6 +278,34 @@
               </p>
             </field>
         </record>
+        
+<!-- Customer Invoice -->
+
+    	<record id="invoice_form_customer_base_inherit" model="ir.ui.view">
+            <field name="name">invoice.form.customer.base.inherit</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//field[@name='fiscal_position']" position="attributes">
+					<attribute name='invisible'>1</attribute>
+				</xpath>
+			</field>
+		</record>
+		
+<!-- Supplier Invoice -->
+
+    	<record id="invoice_supplier_form_base_inherit" model="ir.ui.view">
+            <field name="name">invoice.supplier.form.base.inherit</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//field[@name='fiscal_position']" position="attributes">
+					<attribute name='invisible'>1</attribute>
+				</xpath>
+			</field>
+		</record>
+		
+
 
     </data>
 </openerp>

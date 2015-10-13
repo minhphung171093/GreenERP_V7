@@ -53,10 +53,6 @@
 	        rml="green_erp_report_partner/report/general_aged_partner_balance_review_xls.ods"/>
 	        
 	        
-	        
-	        
-		
-		
 		<record id="general_report_partner_ledger" model="ir.actions.report.xml">
 	        <field name="name">general_report_partner_ledger</field>
 	        <field name="type">ir.actions.report.xml</field>
@@ -81,7 +77,30 @@
 	        string="Partner Ledger"
 	        rml="green_erp_report_partner/report/general_report_partner_ledger.ods"/>
 	        
-	        
+	   <record id="general_report_partner_ledger_review_xls" model="ir.actions.report.xml">
+	        <field name="name">general_report_partner_ledger_review_xls</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">general.report.partner.ledger.review</field>
+	        <field name="report_name">general_report_partner_ledger_review_xls</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">green_erp_report_partner/report/general_report_partner_ledger_review.py</field>
+	        <field name="report_rml">green_erp_report_partner/report/general_report_partner_ledger_review.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record>		    
+		
+		<report 
+			auto="False" 
+			menu="False"
+			id="general_report_partner_ledger_review_xls" 
+			model="general.report.partner.ledger.review" 
+			name="general_report_partner_ledger_review_xls"
+	        string="General Report Partner Ledger Review"
+	        rml="green_erp_report_partner/report/general_report_partner_ledger_review.ods"/>	
+	                
 <!--  ========================= General Report Partner Ledger Detail Report ================= -->	
         
         <record id="general_report_partner_ledger_detail" model="ir.actions.report.xml">

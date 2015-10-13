@@ -343,6 +343,214 @@ class general_report_partner_ledger(osv.osv_memory):
         
         report_name = context['type_report'] 
         return {'type': 'ir.actions.report.xml', 'report_name': report_name , 'datas': datas}
+    
+    def review_report_in(self, cr, uid, ids, context=None):
+        report_obj = self.pool.get('general.report.partner.ledger.review')
+        report = self.browse(cr, uid, ids[0])
+        self.account_id =False
+        self.times = False
+        self.start_date = False
+        self.end_date = False
+        self.company_name = False
+        self.company_address = False
+        self.vat = False 
+        self.cr = cr
+        self.uid = uid
+        self.account_code = False
+        self.account_name = False
+        self.partner_id = False
+        self.partner_name = False
+        self.header = False
+        self.total_residual = 0
+        self.type = False
+
+        def get_total_residual(o):
+            return self.total_residual
+        
+        def get_company(o, company_id):
+            if company_id:
+                company_obj = self.pool.get('res.company').browse(cr,uid,company_id)
+                self.company_name = company_obj.name or ''
+                self.company_address = company_obj.street or ''
+                self.vat = company_obj.vat or ''
+            return True
+          
+        def get_company_name(o):
+            get_header(o)
+            return self.company_name
+     
+        def get_company_address(o):
+            return self.company_address     
+         
+        def get_company_vat(o):
+            return self.vat    
+
+        def get_account_name(o):
+            if not self.account_code:
+                get_account(o)
+            return self.account_name
+    
+        def get_account_code(o):
+            if not self.account_code:
+                get_account(o)
+            return self.account_code
+         
+        def get_vietname_date(o, date):
+            if not date:
+                return ''
+            date = datetime.strptime(date, DATE_FORMAT)
+            return date.strftime('%d/%m/%Y')
+        
+         
+        def get_id(self,get_id):
+            if not get_id:
+                return 1
+            else:
+                return get_id
+            
+        def get_header(o):
+            self.times = o.times
+            self.partner_id = o.partner_id and o.partner_id.id or False
+            self.partner_name = o.partner_id and o.partner_id.name or ''
+            #Get company info
+            self.company_id = o.company_id and o.company_id.id or False
+            get_company(o,self.company_id)
+            
+            if self.times =='periods':
+                self.start_date = self.pool.get('account.period').browse(self.cr,self.uid,get_id(o,o.period_id_start.id)).date_start
+                self.end_date   = self.pool.get('account.period').browse(self.cr,self.uid,get_id(o,o.period_id_end.id)).date_stop
+                
+            elif self.times == 'years':
+                self.start_date = self.pool.get('account.fiscalyear').browse(self.cr,self.uid,get_id(o,o.fiscalyear_start.id)).date_start
+                self.end_date   = self.pool.get('account.fiscalyear').browse(self.cr,self.uid,get_id(o,o.fiscalyear_stop.id)).date_stop
+            else:
+                self.start_date = o.date_start
+                self.end_date = o.date_end
+            
+            return True
+
+        def get_partner_title(o):
+            if not self.partner_id: 
+                header()
+            partner_obj = self.pool.get('res.partner').browse(self.cr,1,self.partner_id)
+            if partner_obj and partner_obj.customer == True:
+                return  u"Khách hàng"
+            else:
+                return  u"Nhà cung cấp"
+            
+        def get_partner(o):
+            if not self.partner_name:
+                get_header(o)
+            return self.partner_name
+        
+        def get_start_date(o):
+            if not self.start_date:
+                get_header(o)
+            return get_vietname_date(o,self.start_date) 
+        
+        def get_end_date(o):
+            if not self.end_date:
+                get_header(o)
+            return get_vietname_date(o,self.end_date) 
+        
+        def get_title(o):
+            if not self.header:
+                get_account(o)
+                
+            return self.header
+        
+        
+        def get_account(o):
+            self.account_id = o.account_id
+            if self.account_id:
+                sql ='''
+                    select id,code,name,type from account_account where id = %s
+                '''%(self.account_id)
+                self.cr.execute(sql)
+                for line in self.cr.dictfetchall():
+                    self.account_code = line['code']
+                    self.account_name = line['name']
+                    
+                    if line['type'] =='receivable':
+                        self.header = u'SỔ CHI TIẾT PHẢI THU'
+                    elif line['type'] == 'payable':
+                        self.header = u'SỔ CHI TIẾT PHẢI TRẢ'
+                    else:
+                        if self.account_code[0] == '1':
+                            self.header = u'SỔ CHI TIẾT PHẢI THU'
+                        else:
+                            self.header = u'SỔ CHI TIẾT PHẢI TRẢ'    
+        def get_line(o):
+            res = self.pool.get('sql.partner.ledger').get_line(self.cr, self.start_date,self.end_date,self.account_id,self.partner_id)
+            return res   
+         
+        def get_info(o):
+            mang=[]
+            for line in get_line(o):
+                if line['description']=='Số dư đầu kỳ':
+                    mang.append((0,0,{
+                            'description': line['description'] or '',
+                            'acc_code':line['acc_code'] or '',
+                            'amount_dr':line['amount_dr'] or '',
+                            'amount_cr':line['amount_cr'] or '',
+                                     }))
+                if line['description'] not in ['Số dư đầu kỳ','Cộng số phát sinh','Số dư cuối kỳ']:
+                    mang.append((0,0,{
+                            'gl_date': line['gl_date'] or '',
+                            'doc_date': line['doc_date'] or '',
+                            'doc_no': line['doc_no'] or '',
+                            'description': line['description'] or '',
+                            'acc_code':line['acc_code'] or '',
+                            'amount_dr':line['amount_dr'] or '',
+                            'amount_cr':line['amount_cr'] or '',
+                                     }))
+                if line['description']=='Cộng số phát sinh':
+                    mang.append((0,0,{
+                            'description': line['description'] or '',
+                            'acc_code':line['acc_code'] or '',
+                            'amount_dr':line['amount_dr'] or '',
+                            'amount_cr':line['amount_cr'] or '',
+                                     }))
+                if line['description']=='Số dư cuối kỳ':
+                    mang.append((0,0,{
+                            'description': line['description'] or '',
+                            'acc_code':line['acc_code'] or '',
+                            'amount_dr':line['amount_dr'] or '',
+                            'amount_cr':line['amount_cr'] or '',
+                                     }))
+            return mang
+        vals = {
+            'name':get_title(report),
+            'start_date':get_start_date(report),
+            'end_date':get_end_date(report),
+            'start_date_title':'Từ ngày',
+            'end_date_title':'đến ngày',
+            'ms_thue_title':'MST:',
+            'sh_tk_title':'Số hiệu TK:',
+            'sh_tk':get_account_code(report),
+            'ten_tk_title':'Tên TK:',
+            'ten_tk':get_account_name(report),
+            'partner_title_title':'partner_title:',
+            'partner_title':get_partner(report),
+            'nguoi_nop_thue': get_company_name(report),
+            'ms_thue': get_company_vat(report),
+            'dia_chi': get_company_address(report),
+            'general_report_partner_ledger_review_line':get_info(report),
+        }
+        report_id = report_obj.create(cr, uid, vals)
+        res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
+                                        'green_erp_report_partner', 'general_report_partner_ledger_review')
+        return {
+                    'name': 'General Report Partner Ledger Review',
+                    'view_type': 'form',
+                    'view_mode': 'form',
+                    'res_model': 'general.report.partner.ledger.review',
+                    'domain': [],
+                    'view_id': res and res[1] or False,
+                    'type': 'ir.actions.act_window',
+                    'target': 'current',
+                    'res_id': report_id,
+                }
 
 general_report_partner_ledger()
 

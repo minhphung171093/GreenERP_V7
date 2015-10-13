@@ -30,6 +30,20 @@
 		    <field name="view_id" ref="green_erp_stock.view_stock_picking_in_calendar"/>
 		    <field name="act_window_id" ref="purchase.action_picking_tree4_picking_to_invoice"/>
 		</record>
+		
+		<record id="purchase_order_form_base_inherit" model="ir.ui.view">
+            <field name="name">purchase.order.form.base.inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//field[@name='fiscal_position']" position="attributes">
+					<attribute name='invisible'>1</attribute>
+				</xpath>
+				<xpath expr="//field[@name='dest_address_id']" position="attributes">
+					<attribute name='invisible'>1</attribute>
+				</xpath>
+			</field>
+		</record>
     
     </data>
 </openerp>
