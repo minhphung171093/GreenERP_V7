@@ -9,6 +9,7 @@
     "name" : "Project Property",
     "version" : "1.0",
     "depends" : ["base"],
+    'sequence': 1,
     "author" : "Le Truong Thanh",
     "description": """Project property""",
     'website': 'http://www.openerp.com',

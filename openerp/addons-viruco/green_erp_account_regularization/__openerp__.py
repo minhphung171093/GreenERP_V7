@@ -10,6 +10,7 @@
 	'website' : 'http://incomtech.com/',
 	"license" : "GPL-3",
 	"category" : "GreenERP",
+	'sequence': 1,
 	"description" : """ This module creates a new object in accounting, 
 	very similar to the account models named account.regularization. 
 	Within this object you can define regularization moves, 

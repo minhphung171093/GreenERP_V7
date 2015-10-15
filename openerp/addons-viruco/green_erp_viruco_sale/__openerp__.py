@@ -22,6 +22,7 @@
     'name': 'Viruco Sale',
     'version': '1.0',
     'category': 'GreenERP',
+    'sequence': 1,
     'description': """Sale""",
     'author': "tranhung07081989@gmail.com",
     'website': "www.acespritech.com",

@@ -7,7 +7,7 @@
 {
     "name" : "GreenERP Assets Management",
     'category': 'GreenERP',
-    'sequence': 14,
+    'sequence': 1,
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',
     "depends" : ["account_asset","report_aeroo_ooo",'green_erp_viruco_base','report_aeroo_ooo'],

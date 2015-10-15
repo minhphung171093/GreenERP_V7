@@ -23,7 +23,7 @@
     'name': 'Viruco BASE',
     'version': '1.0',
     'category': 'GreenERP',
-    'sequence': 14,
+    'sequence': 1,
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',
     'depends': ['green_erp_viruco_menu','web','base','purchase','sale','sale_stock','product','properties','report_aeroo','report_aeroo_ooo','stock','account'],

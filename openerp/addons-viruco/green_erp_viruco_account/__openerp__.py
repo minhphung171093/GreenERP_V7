@@ -22,6 +22,7 @@
     'name': 'Viruco Account',
     'version': '1.0',
     'category': 'GreenERP',
+    "sequence": 1,
     'description': """Account""",
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',

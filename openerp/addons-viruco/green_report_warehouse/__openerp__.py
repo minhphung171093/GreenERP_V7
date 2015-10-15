@@ -12,7 +12,7 @@
     "description": """
     """,
     "category": 'General 70',
-    "sequence": 4,
+    "sequence": 1,
     "website" : "",
     "images" : [],
     "depends" : ["stock","sale"],

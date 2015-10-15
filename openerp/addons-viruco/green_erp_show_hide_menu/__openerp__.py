@@ -23,6 +23,7 @@
     'name': 'GreenERP Web Menu Hide/Show',
     'category': 'GreenERP',
     'author': 'nguyentoanit@gmail.com',
+    "sequence": 1,
     'website' : 'http://incomtech.com/',
     'description': """
 Web Menu Hide/Show
