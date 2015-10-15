@@ -47,18 +47,18 @@ class sql_luuhuyen_tiente(osv.osv):
             if lst_account <> '' then
                 for rec in execute '
                         select  sum(aml.debit) balance_dr, sum(aml.credit) balance_cr
-                        from account_move amh join account_move_line aml 
+                        from account_move amh left join account_move_line aml 
                                 on amh.id = aml.move_id
-                            join account_journal ajn on aml.journal_id = ajn.id
+                            left join account_journal ajn on aml.journal_id = ajn.id
                         where amh.state = ''posted'' and aml.state = ''valid''
                             and ajn.type = ''situation'' and aml.account_id in ('||lst_account||')
                             and date_trunc(''year'', aml.date) = date_trunc(''year'', date($1))
                             and amh.company_id = $3
                         union all
                         select  sum(aml.debit) balance_dr, sum(aml.credit) balance_cr
-                        from account_move amh join account_move_line aml 
+                        from account_move amh left join account_move_line aml 
                                 on amh.id = aml.move_id
-                            join account_journal ajn on aml.journal_id = ajn.id
+                            left join account_journal ajn on aml.journal_id = ajn.id
                         where amh.state = ''posted'' and aml.state = ''valid''
                             and ajn.type != ''situation'' and aml.account_id in ('||lst_account||')
                             and date_trunc(''day'', aml.date) between date_trunc(''year'', date($1))
@@ -176,18 +176,18 @@ class sql_luuhuyen_tiente(osv.osv):
             if lst_account <> '' then
                 for rec in execute '
                         select  sum(aml.debit) balance_dr, sum(aml.credit) balance_cr
-                        from account_move amh join account_move_line aml 
+                        from account_move amh left join account_move_line aml 
                                 on amh.id = aml.move_id
-                            join account_journal ajn on aml.journal_id = ajn.id
+                            left join account_journal ajn on aml.journal_id = ajn.id
                         where amh.state = ''posted'' and aml.state = ''valid''
                             and ajn.type = ''situation'' and aml.account_id in ('||lst_account||')
                             and date_trunc(''year'', aml.date) = date_trunc(''year'', date($1))
                             and amh.company_id = $3
                         union all
                         select  sum(aml.debit) balance_dr, sum(aml.credit) balance_cr
-                        from account_move amh join account_move_line aml 
+                        from account_move amh left join account_move_line aml 
                                 on amh.id = aml.move_id
-                            join account_journal ajn on aml.journal_id = ajn.id
+                            left join account_journal ajn on aml.journal_id = ajn.id
                         where amh.state = ''posted'' and aml.state = ''valid''
                             and ajn.type != ''situation'' and aml.account_id in ('||lst_account||')
                             and date_trunc(''day'', aml.date) between date_trunc(''year'', date($1))
@@ -243,9 +243,9 @@ class sql_luuhuyen_tiente(osv.osv):
             if lst_account <> '' and lst_account_du <> '' then
                 for rec in execute '
                     select amh.id
-                        from account_move amh join account_move_line aml 
+                        from account_move amh left join account_move_line aml 
                                 on amh.id = aml.move_id
-                            join account_journal ajn on aml.journal_id = ajn.id
+                            left join account_journal ajn on aml.journal_id = ajn.id
                         where amh.state = ''posted'' and aml.state = ''valid''
                             and ajn.type = ''situation'' and aml.account_id in ('||lst_account||')
                             and date_trunc(''year'', aml.date) = date_trunc(''year'', date($1))
@@ -253,9 +253,9 @@ class sql_luuhuyen_tiente(osv.osv):
                         group by amh.id
                     union all
                     select amh.id
-                        from account_move amh join account_move_line aml 
+                        from account_move amh left join account_move_line aml 
                                 on amh.id = aml.move_id
-                            join account_journal ajn on aml.journal_id = ajn.id
+                            left join account_journal ajn on aml.journal_id = ajn.id
                         where amh.state = ''posted'' and aml.state = ''valid''
                             and ajn.type != ''situation'' and aml.account_id in ('||lst_account||')
                             and date_trunc(''day'', aml.date) between date_trunc(''year'', date($1))
@@ -267,7 +267,7 @@ class sql_luuhuyen_tiente(osv.osv):
                 loop
                     for rec2 in execute '
                         select sum(aml.debit) balance_dr, sum(aml.credit) balance_cr
-                        from account_move amh join account_move_line aml 
+                        from account_move amh left join account_move_line aml 
                                 on amh.id = aml.move_id
                         where aml.account_id in ('||lst_account_du||') and aml.move_id=$1 and type_lctt=$2 
                             ' using rec.id,$5
@@ -319,7 +319,7 @@ class sql_luuhuyen_tiente(osv.osv):
 #             if lst_account <> '' and lst_account_du <> '' then
 #                 for rec in execute '
 #                     select amh.id
-#                         from account_move amh join account_move_line aml 
+#                         from account_move amh left join account_move_line aml 
 #                                 on amh.id = aml.move_id
 #                             join account_journal ajn on aml.journal_id = ajn.id
 #                         where amh.state = ''posted'' and aml.state = ''valid''
@@ -395,9 +395,9 @@ class sql_luuhuyen_tiente(osv.osv):
             if lst_account <> '' and lst_account_du <> '' then
                 for rec in execute '
                     select amh.id
-                        from account_move amh join account_move_line aml 
+                        from account_move amh left join account_move_line aml 
                                 on amh.id = aml.move_id
-                            join account_journal ajn on aml.journal_id = ajn.id
+                            left join account_journal ajn on aml.journal_id = ajn.id
                         where amh.state = ''posted'' and aml.state = ''valid''
                             and ajn.type = ''situation'' and aml.account_id in ('||lst_account||')
                             and date_trunc(''year'', aml.date) = date_trunc(''year'', date($1))
@@ -405,9 +405,9 @@ class sql_luuhuyen_tiente(osv.osv):
                         group by amh.id
                     union all
                     select amh.id
-                        from account_move amh join account_move_line aml 
+                        from account_move amh left join account_move_line aml 
                                 on amh.id = aml.move_id
-                            join account_journal ajn on aml.journal_id = ajn.id
+                            left join account_journal ajn on aml.journal_id = ajn.id
                         where amh.state = ''posted'' and aml.state = ''valid''
                             and ajn.type != ''situation'' and aml.account_id in ('||lst_account||')
                             and date_trunc(''day'', aml.date) between date_trunc(''year'', date($1))
@@ -426,7 +426,7 @@ class sql_luuhuyen_tiente(osv.osv):
                         if rec2.num_of_amh=0 then
                             for rec3 in execute '
                                 select sum(aml.debit) balance_dr, sum(aml.credit) balance_cr
-                                    from account_move amh join account_move_line aml 
+                                    from account_move amh left join account_move_line aml 
                                             on amh.id = aml.move_id
                                     where aml.account_id in ('||lst_account||') and aml.move_id=$1
                                         ' using rec.id
@@ -485,8 +485,8 @@ class sql_luuhuyen_tiente(osv.osv):
             pl_data.curr_amt01 = fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '111 112', '511 131 121 515', 'cr', 'hdkd', $4);
             
             -- 2. lấy chỉ tiêu 02
-            pl_data.prior_amt02 = -1*fin_get_doi_ung_lctt(prior_sdate, prior_edate, '111 112', '331 152 153 154 155 156 157 158 121', 'dr', 'hdkd', $4);
-            pl_data.curr_amt02 = -1*fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '111 112', '331 152 153 154 155 156 157 158 121', 'dr', 'hdkd', $4);
+            pl_data.prior_amt02 = -1*fin_get_doi_ung_lctt(prior_sdate, prior_edate, '111 112', '331 152 153 154 155 156 157 158 121 623 621 622 627 632 242', 'dr', 'hdkd', $4);
+            pl_data.curr_amt02 = -1*fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '111 112', '331 152 153 154 155 156 157 158 121 623 621 622 627 632 242', 'dr', 'hdkd', $4);
             
             -- 3. lấy chỉ tiêu 03
             pl_data.prior_amt03 = -1*fin_get_doi_ung_lctt(prior_sdate, prior_edate, '111 112', '334', 'dr', 'hdkd', $4);
@@ -501,20 +501,20 @@ class sql_luuhuyen_tiente(osv.osv):
             pl_data.curr_amt05 =  -1*fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '111 112 113', '3334', 'dr', 'hdkd', $4);
             
             -- 6. lấy chỉ tiêu 06
-            pl_data.prior_amt06 = fin_get_doi_ung_lctt(prior_sdate, prior_edate, '111 112', '711 133 141 244 1381', 'cr', 'hdkd', $4);
-            pl_data.curr_amt06 =  fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '111 112', '711 133 141 244 1381', 'cr', 'hdkd', $4);
+            pl_data.prior_amt06 = fin_get_doi_ung_lctt(prior_sdate, prior_edate, '111 112', '711 133 141 244 1381 1388 333 136 336', 'cr', 'hdkd', $4);
+            pl_data.curr_amt06 =  fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '111 112', '711 133 141 244 1381 1388 333 136 336', 'cr', 'hdkd', $4);
             
             -- 7. lấy chỉ tiêu 07 -> có dấu ... là còn thêm tài khoản khác nữa hay đã hết?
-            pl_data.prior_amt07 = -1*fin_get_doi_ung_lctt(prior_sdate, prior_edate, '111 112', '811 161 244 333 338 334 352 353 356', 'hdkd', 'dr', $4);
-            pl_data.curr_amt07 =  -1*fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '111 112', '811 161 244 333 338 334 352 353 356', 'hdkd', 'dr', $4);
+            pl_data.prior_amt07 = -1*fin_get_doi_ung_lctt(prior_sdate, prior_edate, '111 112', '811 161 244 333 338 334 352 353 356 136 336', 'hdkd', 'dr', $4);
+            pl_data.curr_amt07 =  -1*fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '111 112', '811 161 244 333 338 334 352 353 356 136 336', 'hdkd', 'dr', $4);
             
             -- 8. lấy chỉ tiêu 20
             pl_data.prior_amt20 = pl_data.prior_amt01 + pl_data.prior_amt02 + pl_data.prior_amt03 + pl_data.prior_amt04 + pl_data.prior_amt05 + pl_data.prior_amt06 + pl_data.prior_amt07;
             pl_data.curr_amt20 = pl_data.curr_amt01 + pl_data.curr_amt02 + pl_data.curr_amt03 + pl_data.curr_amt04 + pl_data.curr_amt05 + pl_data.curr_amt06 + pl_data.curr_amt07;
             
             -- 9. lấy chỉ tiêu 21 -> có dấu ... là còn thêm tài khoản khác nữa hay đã hết?
-            pl_data.prior_amt21 = -1*fin_get_doi_ung_lctt(prior_sdate, prior_edate, '111 112 113', '211 213 217 241 331 152 153 635', 'hddt', 'dr', $4);
-            pl_data.curr_amt21 =  -1*fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '111 112 113', '211 213 217 241 331 152 153 635', 'hddt', 'dr', $4);
+            pl_data.prior_amt21 = -1*fin_get_doi_ung_lctt(prior_sdate, prior_edate, '111 112 113', '211 213 217 241 331 152 153 635 242 244 334 623 338 1388 1381', 'hddt', 'dr', $4);
+            pl_data.curr_amt21 =  -1*fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '111 112 113', '211 213 217 241 331 152 153 635 242 244 334 623 338 1388 1381', 'hddt', 'dr', $4);
                                 
             -- 10. lấy chỉ tiêu 22
             pl_data.prior_amt22 = fin_get_doi_ung_lctt(prior_sdate, prior_edate, '111 112 113', '5117 711 131', 'cr', 'hddt', $4) -
@@ -551,12 +551,16 @@ class sql_luuhuyen_tiente(osv.osv):
             pl_data.curr_amt30 =  pl_data.curr_amt21 + pl_data.curr_amt22 + pl_data.curr_amt23 + pl_data.curr_amt24 + pl_data.curr_amt25 + pl_data.curr_amt26 + pl_data.curr_amt27;
             
             -- 17. lấy chỉ tiêu 31
-            pl_data.prior_amt31 = fin_get_doi_ung_lctt(prior_sdate, prior_edate, '111 112 113', '411 419', 'cr', 'hdtc', $4);
-            pl_data.curr_amt31 =  fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '111 112 113', '411 419', 'cr', 'hdtc', $4);
+            pl_data.prior_amt31 = fin_get_doi_ung_lctt(prior_sdate, prior_edate, '111 112 113', '411 419 1385', 'cr', 'hdtc', $4) -
+                                    fin_get_doi_ung_lctt(prior_sdate, prior_edate, '111 112 113', '41112', 'cr', 'hdtc', $4);
+            pl_data.curr_amt31 =  fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '111 112 113', '411 419 1385', 'cr', 'hdtc', $4) -
+                                    fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '111 112 113', '41112', 'cr', 'hdtc', $4);
             
             -- 18. lấy chỉ tiêu 32
-            pl_data.prior_amt32 = -1*fin_get_doi_ung_lctt(prior_sdate, prior_edate, '111 112 113', '411 419', 'dr', 'hdtc', $4);
-            pl_data.curr_amt32 =  -1*fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '111 112 113', '411 419', 'dr', 'hdtc', $4);
+            pl_data.prior_amt32 = -1*(fin_get_doi_ung_lctt(prior_sdate, prior_edate, '111 112 113', '411 419 1385', 'dr', 'hdtc', $4) -
+                                        fin_get_doi_ung_lctt(prior_sdate, prior_edate, '111 112 113', '41112', 'dr', 'hdtc', $4));
+            pl_data.curr_amt32 =  -1*(fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '111 112 113', '411 419 1385', 'dr', 'hdtc', $4) -
+                                        fin_get_doi_ung_lctt(_cur_sdate, _cur_edate, '111 112 113', '41112', 'dr', 'hdtc', $4));
             
             -- 19. lấy chỉ tiêu 33
             pl_data.prior_amt33 = fin_get_doi_ung_lctt(prior_sdate, prior_edate, '111 112 113', '171 3411 3431 3432 41112', 'cr', 'hdtc', $4);
