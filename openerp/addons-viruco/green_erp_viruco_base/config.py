@@ -277,4 +277,12 @@ class bang_gia_line(osv.osv):
     }
     
 bang_gia_line()
+class bang_tam_init(osv.osv):
+    _name = 'bang.tam.init'
+
+    _columns = {
+        'name': fields.char('Ten OBJ', size=1024),
+        'da_chay': fields.boolean('Đã chạy'),
+    }
+bang_tam_init()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

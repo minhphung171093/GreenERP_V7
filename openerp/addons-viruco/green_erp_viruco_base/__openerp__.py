@@ -40,6 +40,7 @@
             'phuluc_hop_dong_view.xml',
             'product_view.xml',
             'res_users_view.xml',
+            'nhat_ky_tai_san_sequence.xml',
             'menu.xml',
     ],
     'css' : [
