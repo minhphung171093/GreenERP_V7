@@ -35,4 +35,13 @@ class product_category(osv.osv):
     
 product_category()
 
+class bang_tam_init(osv.osv):
+    _name = 'bang.tam.init'
+
+    _columns = {
+        'name': fields.char('Ten OBJ', size=1024),
+        'da_chay': fields.boolean('Đã chạy'),
+    }
+bang_tam_init()
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
