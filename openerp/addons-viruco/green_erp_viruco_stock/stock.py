@@ -408,6 +408,10 @@ class stock_picking(osv.osv):
             if not account_id:
                 account_id = move_line.product_id.categ_id.\
                         property_account_income_categ.id
+            if invoice_vals['type'] == 'out_refund':
+                account_id = move_line.product_id.account_deducted_id.id
+                if not account_id:
+                    account_id = move_line.product_id.categ_id.account_deducted_id.id
         else:
             account_id = move_line.product_id.property_account_expense.id
             if not account_id:
@@ -1248,6 +1252,29 @@ class stock_return_picking(osv.osv):
             location_id = pick.location_id and pick.location_id.id or False
             location_dest_id = pick.location_dest_id and pick.location_dest_id.id or False
             journal_id =  self.pool.get('stock.journal').search(cr,uid,[('source_type','=','return_supplier')])
+            return_history = self.get_return_history(cr, uid, record_id, context)
+            for line in pick.move_lines:
+                sl_da_xuat = 0
+                phieu_xuat = ''
+                if line.state in ('cancel') or line.scrapped:
+                    continue
+                qty = line.product_qty - return_history.get(line.id, 0)
+                sql = '''
+                    select product_qty, picking_id
+                    from stock_move where hop_dong_mua_id is not null and picking_in_id is not null 
+                    and hop_dong_mua_id = %s and picking_in_id = %s and product_id = %s
+                    and picking_id in (select id from stock_picking where type = 'out' and state != 'cancel')
+                '''%(line.hop_dong_mua_id.id, line.picking_id.id, line.product_id.id)
+                cr.execute(sql)
+                for move in cr.dictfetchall():
+                    sl_da_xuat += move['product_qty']
+                    picking = self.pool.get('stock.picking').browse(cr,uid,move['picking_id'])
+                    phieu_xuat+=picking.name+' '
+                qty = qty - sl_da_xuat
+                for return_picking in return_picking_obj.product_return_moves:
+                    if line.product_id.id == return_picking.product_id.id:
+                        if return_picking.quantity > qty:
+                            raise osv.except_osv(_('Cảnh báo!'), _("Đã xuất %s %s sản phẩm %s (%s). Bạn chỉ có thể trả lại %s %s")%(sl_da_xuat, line.product_id.uom_id.name, line.product_id.name, phieu_xuat, qty,line.product_id.uom_id.name))
         else:
             new_type = 'internal'
             journal_id =  [pick.stock_journal_id.id] or False

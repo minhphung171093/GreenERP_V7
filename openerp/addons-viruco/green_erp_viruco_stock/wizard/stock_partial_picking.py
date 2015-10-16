@@ -24,7 +24,12 @@ class stock_partial_picking(osv.osv_memory):
             res.update(picking_id=picking_id)
         if 'move_ids' in fields:
             picking = self.pool.get('stock.picking').browse(cr, uid, picking_id, context=context)
-            if picking.type=='out':
+            sql = '''
+                select id from stock_picking where type = 'out' and return = 'none' and id = %s
+            '''%(picking_id)
+            cr.execute(sql)
+            picking_ids = cr.fetchall()
+            if picking_ids:
                 moves = [self._partial_move_for(cr, uid, m, context=context) for m in picking.move_lines if m.state not in ('done','cancel') and m.hop_dong_mua_id and m.picking_in_id]
             else:
                 moves = [self._partial_move_for(cr, uid, m, context=context) for m in picking.move_lines if m.state not in ('done','cancel')]

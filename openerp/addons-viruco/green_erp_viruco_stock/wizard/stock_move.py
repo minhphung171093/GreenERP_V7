@@ -50,11 +50,13 @@ class split_hop_dong(osv.osv_memory):
                 sql = '''
                     select hop_dong_mua_id,picking_id,sum(product_qty) as product_qty,price_unit
                         from stock_move where state='done' and product_id=%s and location_id!=location_dest_id and location_dest_id=%s and hop_dong_mua_id is not null
+                        and picking_id in (select id from stock_picking where return != 'customer')
                         group by hop_dong_mua_id,picking_id,price_unit
                 '''%(move.product_id.id,location_id)
                 cr.execute(sql)
                 lines = cr.dictfetchall()
                 for line in lines:
+                    picking = self.pool.get('stock.picking').browse(cr,uid,line['picking_id'])
                     sql = '''
                         select case when sum(product_qty)!=0 then sum(product_qty) else 0 end product_qty_out
                             from stock_move
@@ -62,7 +64,26 @@ class split_hop_dong(osv.osv_memory):
                     '''%(move.product_id.id,location_id,line['picking_id'],line['hop_dong_mua_id'],move.id)
                     cr.execute(sql)
                     product_qty_out = cr.fetchone()[0]
-                    if product_qty_out<line['product_qty']:
+                    sql = '''
+                        select case when sum(product_qty)!=0 then sum(product_qty) else 0 end product_qty_return
+                            from stock_move
+                            where state!='cancel' and product_id=%s and location_id!=location_dest_id and location_id=%s and hop_dong_mua_id=%s
+                            and picking_id in (select id from stock_picking where return = 'supplier' and type = 'out' and origin = '%s')
+                    '''%(move.product_id.id,location_id,line['hop_dong_mua_id'], picking.name)
+                    cr.execute(sql)
+                    product_qty_return_to_sup = cr.fetchone()[0]
+                    
+                    sql = '''
+                        select case when sum(product_qty)!=0 then sum(product_qty) else 0 end product_qty_return
+                            from stock_move
+                            where state ='done' and product_id=%s and location_id!=location_dest_id and location_dest_id=%s and hop_dong_mua_id=%s
+                            and picking_id in (select id from stock_picking where return = 'customer' and type = 'in' and origin in (
+                            select name from stock_picking where id in (select picking_id from stock_move where hop_dong_mua_id=%s
+                            and picking_in_id = %s and product_id = %s and location_id = %s)))
+                    '''%(move.product_id.id,location_id,line['hop_dong_mua_id'], line['hop_dong_mua_id'],line['picking_id'],move.product_id.id,location_id)
+                    cr.execute(sql)
+                    product_qty_return_from_cus = cr.fetchone()[0]
+                    if line['product_qty']-product_qty_out-product_qty_return_to_sup+product_qty_return_from_cus>0:
                         picking = self.pool.get('stock.picking').browse(cr, uid, line['picking_id'])
                         chitiet_tonkho_line.append((0,0,{
                             'location_id': location_id,
@@ -71,7 +92,7 @@ class split_hop_dong(osv.osv_memory):
                             'partner_id': picking.partner_id and picking.partner_id.id or False,
                             'ngay_nhaphang': picking.date_done,
                             'don_gia': line['price_unit'],
-                            'quantity_ton': line['product_qty']-product_qty_out,
+                            'quantity_ton': line['product_qty']-product_qty_out-product_qty_return_to_sup+product_qty_return_from_cus,
                         }))
             res.update({'line_ids': chitiet_tonkho_line,'move_id': context['active_id']})
         return res
