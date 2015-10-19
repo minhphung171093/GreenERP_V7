@@ -39,6 +39,12 @@
 	        		<field name="ki_hieu_hd"/>
 	        		<field name="so_hd"/>
 	        	</xpath>
+	        	<xpath expr="//page[@string='Payments']" position="after">
+	        		<page string="Supplier Invoice" groups="base.group_user">
+                        <field name="sup_inv_ids">
+                        </field>
+                    </page>
+	        	</xpath>
             </field>
         </record>
     	

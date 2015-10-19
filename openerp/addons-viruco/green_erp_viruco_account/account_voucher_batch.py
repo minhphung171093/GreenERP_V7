@@ -52,7 +52,22 @@ class account_voucher_batch(osv.osv):
                 ], 'Status', readonly=True, size=32),
             'partner_bank_id':fields.many2one('res.partner.bank', 'Partner Bank', required=False, readonly=True, states={'draft':[('readonly',False)]}),
             'company_bank_id':fields.many2one('res.partner.bank', 'Company Bank', required=False, readonly=True, states={'draft':[('readonly',False)]}),
+            'type_journal_rel': fields.related('journal_id', 'type', type='selection',selection=[('sale', 'Sale'),
+                                                                                                 ('sale_refund','Sale Refund'), 
+                                                                                                 ('purchase', 'Purchase'), 
+                                                                                                 ('purchase_refund','Purchase Refund'), 
+                                                                                                 ('cash', 'Cash'), 
+                                                                                                 ('bank', 'Bank and Checks'), 
+                                                                                                 ('general', 'General'), 
+                                                                                                 ('situation', 'Opening/Closing Situation')], string='Type Rel'),
+        
         }
+    
+    def print_eximbank_report(self, cr, uid, ids, context=None): 
+        datas = {'ids': ids}
+        datas['model'] = 'account.voucher.batch'
+        datas['form'] = self.read(cr, uid, ids)[0]        
+        return {'type': 'ir.actions.report.xml', 'report_name': 'eximbank_report' , 'datas': datas}
     
     def _get_assign_user(self, cr, uid, context=None):
         res = self.pool.get('res.users').read(cr, uid, uid, ['name'])['name']

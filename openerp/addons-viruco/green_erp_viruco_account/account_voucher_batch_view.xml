@@ -110,6 +110,8 @@
                     <field name="amount" sum="Total Amount"/>
                     <field name="assign_user"/>
                     <field name="state"/>
+                    <field name="type" invisible = '1'/>
+                    <field name="type_journal_rel" invisible = '1'/>
                     <field name="company_id" widget="selection" groups="base.group_multi_company"/>
                 </tree>
             </field>
@@ -124,6 +126,7 @@
                     <button name="validate" string="Validate" states="draft" type="object" class="oe_highlight"/>
                     <button name="cancel" string="Cancel Voucher" states="draft,posted" type="object"/>
                     <button name="action_cancel_draft" type="object" states="cancel" string="Set to Draft"/>
+                    <button name="print_eximbank_report" type="object" string="EXIMBANK" attrs="{'invisible': ['|',('type', '!=', 'payment'), ('type_journal_rel', '!=', 'bank')]}" />
                     <field name="state" widget="statusbar" statusbar_visible="draft,posted" statusbar_colors='{"cancel":"red"}'/>
                 </header>
                 <sheet string="Purchase Receipt Batch">
@@ -147,6 +150,8 @@
                         	<field name="shop_id"/>
                             <field name="date"/>
                             <field name="assign_user"/>
+                            <field name="type" invisible = '1'/>
+                            <field name="type_journal_rel" invisible = '1'/>
                         </group>
                     </group>
                     <notebook>

@@ -49,7 +49,7 @@ class depreciation_asset(osv.osv_memory):
         'quarter': '1',
         }
     
-    def print_report(self, cr, uid, ids, context=None): 
+    def print_exim_bank_report(self, cr, uid, ids, context=None): 
         datas = {'ids': context.get('active_ids', [])}
         datas['model'] = 'depreciation.asset'
         datas['form'] = self.read(cr, uid, ids)[0]        

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+    	<record id="eximbank_report" model="ir.actions.report.xml">
+	        <field name="name">eximbank_report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">account.voucher.batch</field>
+	        <field name="report_name">eximbank_report</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-odt</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-pdf'),('compatible_types','=','oo-odt')]"/>
+	        <field name="parser_loc">green_erp_viruco_account/report/eximbank_report.py</field>
+	        <field name="report_rml">green_erp_viruco_account/report/eximbank_report.odt</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record>		    
+		
+		<report 
+			auto="True" 
+			menu="True"
+			id="eximbank_report" 
+			model="account.voucher.batch" 
+			name="eximbank_report"
+	        string="EXIMBANK"
+	        rml="green_erp_viruco_account/report/eximbank_report.odt"/>	      
+	    
+	  
+	</data>
+</openerp>

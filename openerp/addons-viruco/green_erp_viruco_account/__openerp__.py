@@ -32,6 +32,7 @@
         'security/ir.model.access.csv',
         'wizard/print_report.xml',
         'report/bang_ke_doanh_thu_view.xml',
+        'report/eximbank_report_view.xml',
         'account_invoice_view.xml',
         'account_voucher_view.xml',
         'account_voucher_batch_view.xml',

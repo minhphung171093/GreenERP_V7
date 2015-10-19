@@ -89,7 +89,7 @@ def amount_to_text(number):
 #    end_word = vietnam_number(int(list[1]))
     #cents_number = int(list[1])
     #final_result = start_word +' phẩy ' + end_word +' '+'VNĐ'
-    final_result = start_word[0].upper()+ start_word[1:] + u'ĐôLa Mỹ'
+    final_result = start_word[0].upper()+ start_word[1:] + u' đồng/.'
     return final_result
 
 

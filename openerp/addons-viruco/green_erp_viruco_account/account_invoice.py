@@ -19,6 +19,19 @@ from openerp import modules
 class account_invoice(osv.osv):
     _inherit = "account.invoice"
     
+    def _get_sup_inv_ids(self, cr, uid, ids, field_name, arg, context=None):
+        result = {}
+        for record in self.browse(cr, uid, ids, context=context):
+            sql = '''
+                select * from account_invoice
+                    where type='in_invoice' and state in ('open', 'paid') and id in (select invoice_id from account_invoice_line where stock_move_id in (
+                    select id from stock_move where picking_id in(select picking_in_id from stock_move where id in (select stock_move_id from account_invoice_line where invoice_id =%s))))
+            '''%(record.id)
+            cr.execute(sql)
+            account_ids = [r[0] for r in cr.fetchall()]
+            result[record.id] = account_ids
+        return result
+    
     _columns = {
         'hop_dong_id':fields.many2one('hop.dong','Hợp đồng'),
         'shop_id': fields.many2one('sale.shop', 'Shop', readonly=True, states={'draft':[('readonly',False)]}),
@@ -26,6 +39,7 @@ class account_invoice(osv.osv):
         'reference_number': fields.char('Reference Number', size=64, readonly=True, states={'draft':[('readonly',False)]}),
         'ki_hieu_hd': fields.char('Kí hiệu hóa đơn', size=64, states={'draft':[('readonly',False)]}),
         'so_hd': fields.char('Số hóa đơn', size=64, states={'draft':[('readonly',False)]}),
+        'sup_inv_ids': fields.function(_get_sup_inv_ids, type='many2many', relation="account.invoice", string="Supplier Invoice"),
     }
     
     def _get_shop_id(self, cr, uid, context=None):

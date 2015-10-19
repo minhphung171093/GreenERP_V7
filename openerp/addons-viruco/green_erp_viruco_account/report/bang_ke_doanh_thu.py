@@ -49,11 +49,10 @@ class Parser(report_sxw.rml_parse):
         tu_ngay = wizard_data['tu_ngay']
         den_ngay = wizard_data['den_ngay']
         sql = '''
-            select * from account_invoice_line where stock_move_id in (
-                 select id from stock_move where picking_id in(select picking_in_id from stock_move where id in (select stock_move_id from account_invoice_line where id =%s) 
-                 and invoice_id in (select id from account_invoice
-                where type='in_invoice' and state in ('open', 'paid') )))
-        '''%(line_id)
+                select * from account_invoice_line where invoice_id in (select id from account_invoice
+                    where type='in_invoice' and state in ('open', 'paid') and id in (select invoice_id from account_invoice_line where stock_move_id in (
+                    select id from stock_move where picking_id in(select picking_in_id from stock_move where id in (select stock_move_id from account_invoice_line where id =%s)))))
+            '''%(line_id)
         self.cr.execute(sql)
         return self.cr.dictfetchall()
     
