@@ -63,5 +63,44 @@
             <field name="company_id" eval="False"/>
         </record>
         
+        <record id="seq_type_picking_journal_delivery" model="ir.sequence.type">
+            <field name="name">Xuất hàng bán</field>
+            <field name="code">seq.picking.journal.delivery</field>
+        </record>
+
+        <record id="seq_picking_journal_delivery" model="ir.sequence">
+            <field name="name">Xuất hàng bán</field>
+            <field name="code">seq.picking.journal.delivery</field>
+            <field name="prefix">PX</field>
+            <field name="padding">3</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        
+        <record id="seq_type_picking_journal_incoming_shipments" model="ir.sequence.type">
+            <field name="name">Nhập hàng mua</field>
+            <field name="code">seq.picking.journal.in</field>
+        </record>
+
+        <record id="seq_picking_journal_incoming_shipments" model="ir.sequence">
+            <field name="name">Nhập hàng mua</field>
+            <field name="code">seq.picking.journal.in</field>
+            <field name="prefix">PN</field>
+            <field name="padding">3</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        
+        <record id="seq_type_picking_journal_xuly_huhong" model="ir.sequence.type">
+            <field name="name">Xử lý hàng hư hỏng</field>
+            <field name="code">seq.picking.journal.xuly.huhong</field>
+        </record>
+
+        <record id="seq_picking_journal_xuly_huhong" model="ir.sequence">
+            <field name="name">Xử lý hàng hư hỏng</field>
+            <field name="code">seq.picking.journal.xuly.huhong</field>
+            <field name="prefix">XLHH</field>
+            <field name="padding">3</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        
     </data>
 </openerp>
