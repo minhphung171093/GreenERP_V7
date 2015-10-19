@@ -23,3 +23,4 @@ import stock
 import wizard
 import report
 import stock_inventory
+import product_product
