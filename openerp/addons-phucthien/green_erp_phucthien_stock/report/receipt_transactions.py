@@ -11,7 +11,8 @@ import pooler
 from osv import osv
 from tools.translate import _
 import random
-from datetime import datetime
+from datetime import datetime, timedelta
+import datetime
 DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 DATE_FORMAT = "%Y-%m-%d"
 
@@ -36,7 +37,7 @@ class Parser(report_sxw.rml_parse):
             'get_print':self.get_print,
             'get_bien_ban_tp':self.get_bien_ban_tp,
             'get_bien_ban_tp_lanh':self.get_bien_ban_tp_lanh,
-            
+            'get_time': self.get_time,
         })
         
         
@@ -99,7 +100,8 @@ class Parser(report_sxw.rml_parse):
         tong = 0
         for o in self.get_picking():
             for line in o.move_lines:
-                tong += line.purchase_line_id.price_unit * line.product_qty + self.get_tax_amount(line.purchase_line_id or 0)
+                if line.purchase_line_id:
+                    tong += line.purchase_line_id.price_unit * line.product_qty + self.get_tax_amount(line.purchase_line_id or 0)
         return tong
     def get_stt(self,seq_1,seq):
         stt = 1
@@ -114,6 +116,14 @@ class Parser(report_sxw.rml_parse):
     
     def get_date_now(self):
         return time.strftime('%Y-%m-%d')
+    
+        
+    def get_time(self, ngay_gio):
+        if ngay_gio:
+            date_now = datetime.datetime.strptime(ngay_gio, DATETIME_FORMAT) + timedelta(hours=7)
+            return date_now.strftime('%H:%M:%S') 
+        else:
+            return ''
     
     def get_picking(self):
         picking_in_obj = self.pool.get('stock.picking.in')
@@ -141,7 +151,7 @@ class Parser(report_sxw.rml_parse):
     def get_date_hd(self,date):
         if date:
             date = date[:10]
-            date = datetime.strptime(date, DATE_FORMAT)
+            date = datetime.datetime.strptime(date, DATE_FORMAT)
             return date.strftime('%m/%Y')
         else:
             return ''
