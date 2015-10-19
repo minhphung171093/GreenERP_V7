@@ -108,9 +108,9 @@ class sql_expense_allocation(osv.osv):
          lst_account text = 'null';
         BEGIN
          if (_type = 'short term') then
-          lst_account = fin_get_array_accountid('142');
+          lst_account = fin_get_array_accountid('2421');
          elsif (_type = 'long term') then
-          lst_account = fin_get_array_accountid('242');
+          lst_account = fin_get_array_accountid('2422');
          end if;
          
          for rec in execute '
