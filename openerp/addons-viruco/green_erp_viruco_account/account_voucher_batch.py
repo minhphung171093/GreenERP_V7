@@ -69,6 +69,18 @@ class account_voucher_batch(osv.osv):
         datas['form'] = self.read(cr, uid, ids)[0]        
         return {'type': 'ir.actions.report.xml', 'report_name': 'eximbank_report' , 'datas': datas}
     
+    def print_techcombank_report(self, cr, uid, ids, context=None): 
+        datas = {'ids': ids}
+        datas['model'] = 'account.voucher.batch'
+        datas['form'] = self.read(cr, uid, ids)[0]        
+        return {'type': 'ir.actions.report.xml', 'report_name': 'techcombank_report' , 'datas': datas}
+    
+    def print_vietcombank_report(self, cr, uid, ids, context=None): 
+        datas = {'ids': ids}
+        datas['model'] = 'account.voucher.batch'
+        datas['form'] = self.read(cr, uid, ids)[0]        
+        return {'type': 'ir.actions.report.xml', 'report_name': 'vietcombank_report' , 'datas': datas}
+    
     def print_phieu_chi_nh_report(self, cr, uid, ids, context=None): 
         datas = {'ids': ids}
         datas['model'] = 'account.voucher.batch'

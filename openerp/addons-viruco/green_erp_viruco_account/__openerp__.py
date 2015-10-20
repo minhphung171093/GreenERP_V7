@@ -34,6 +34,8 @@
         'report/bang_ke_doanh_thu_view.xml',
         'report/bang_ke_doanh_thu_theo_mat_hang_view.xml',
         'report/eximbank_report_view.xml',
+        'report/techcombank_report_view.xml',
+        'report/vietcombank_report_view.xml',
         'report/phieu_chi_nh_report_view.xml',
         'report/phieu_chi_tm_report_view.xml',
         'report/phieu_thu_nh_report_view.xml',

@@ -36,6 +36,7 @@ class Parser(report_sxw.rml_parse):
             'amount_to_text': self.amount_to_text,
             'get_so_tk': self.get_so_tk,
             'get_ten_nh': self.get_ten_nh,
+            'get_state_id': self.get_state_id,
         })
     
     
@@ -74,6 +75,20 @@ class Parser(report_sxw.rml_parse):
                 line = partner.bank_ids[0]
                 if line.bank_name:
                     return line.bank_name
+                else:
+                    return ''
+            else:
+                return ''
+        else:
+            return ''
+        
+    def get_state_id(self, partner_id):
+        if partner_id:
+            partner = self.pool.get('res.partner').browse(self.cr,self.uid,partner_id)
+            if partner.bank_ids:
+                line = partner.bank_ids[0]
+                if line.state_id:
+                    return line.state_id.name
                 else:
                     return ''
             else:
