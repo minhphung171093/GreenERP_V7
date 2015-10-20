@@ -31,7 +31,33 @@
             <field name="view_id" ref="bang_ke_doanh_thu_view"/>
         </record>
         
+<!--  ========================= Bảng kê doanh thu theo mặt hàng ================= -->     
+         <record id="bang_ke_doanh_thu_theo_mat_hang_view" model="ir.ui.view">
+            <field name="name">bang.ke.doanh.thu.theo.mat.hang.view</field>
+            <field name="model">bang.ke.doanh.thu.theo.mat.hang</field>
+            <field name="arch" type="xml">
+                <form string="Bảng kê doanh thu theo mặt hàng" version="7.0">
+                	<group col="4" colspan="2">
+                		<field name="tu_ngay" />
+                		<field name="den_ngay"/>
+                    </group>
+	                <footer>
+                        <button string="Print" type="object" name="print_report" icon='gtk-execute'/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
         
+        <record id="action_bang_ke_doanh_thu_theo_mat_hang_view" model="ir.actions.act_window">
+            <field name="name">Bảng kê doanh thu theo mặt hàng</field>
+            <field name="res_model">bang.ke.doanh.thu.theo.mat.hang</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="bang_ke_doanh_thu_theo_mat_hang_view"/>
+        </record>        
 	        
         
    </data>

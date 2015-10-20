@@ -34,6 +34,8 @@ class Parser(report_sxw.rml_parse):
             'get_vietname_date':self.get_vietname_date, 
             'get_sum': self.get_sum,
             'amount_to_text': self.amount_to_text,
+            'get_so_tk': self.get_so_tk,
+            'get_ten_nh': self.get_ten_nh,
         })
     
     
@@ -53,7 +55,26 @@ class Parser(report_sxw.rml_parse):
     def amount_to_text(self, nbr, lang='vn'):
         if lang == 'vn':
             return  amount_to_text_vn.amount_to_text(nbr, lang)
-    
         
+    def get_so_tk(self, partner_id):
+        if partner_id:
+            partner = self.pool.get('res.partner').browse(self.cr,self.uid,partner_id)
+            if partner.bank_ids:
+                line = partner.bank_ids[0]
+                return line.acc_number
+            else:
+                return ''
+        else:
+            return ''
     
+    def get_ten_nh(self, partner_id):
+        if partner_id:
+            partner = self.pool.get('res.partner').browse(self.cr,self.uid,partner_id)
+            if partner.bank_ids:
+                line = partner.bank_ids[0]
+                return line.bank_name
+            else:
+                return ''
+        else:
+            return ''
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
