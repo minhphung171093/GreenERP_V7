@@ -127,6 +127,8 @@
                     <button name="cancel" string="Cancel Voucher" states="draft,posted" type="object"/>
                     <button name="action_cancel_draft" type="object" states="cancel" string="Set to Draft"/>
                     <button name="print_eximbank_report" type="object" string="EXIMBANK" attrs="{'invisible': ['|',('type', '!=', 'payment'), ('type_journal_rel', '!=', 'bank')]}" />
+                    <button name="print_phieu_chi_nh_report" type="object" string="Phiếu chi Ngân Hàng" attrs="{'invisible': ['|',('type', '!=', 'payment'), ('type_journal_rel', '!=', 'bank')]}" />
+                    <button name="print_phieu_chi_tm_report" type="object" string="Phiếu chi Tiền Mặt" attrs="{'invisible': ['|',('type', '!=', 'payment'), ('type_journal_rel', '!=', 'cash')]}" />
                     <field name="state" widget="statusbar" statusbar_visible="draft,posted" statusbar_colors='{"cancel":"red"}'/>
                 </header>
                 <sheet string="Purchase Receipt Batch">
@@ -292,6 +294,8 @@
                     <field name="assign_user"/>
                     <field name="state"/>
                     <field name="company_id" widget="selection" groups="base.group_multi_company"/>
+                    <field name="type_journal_rel" invisible = '1'/>
+                    <field name="type" invisible = '1'/>
                 </tree>
             </field>
         </record>
@@ -305,6 +309,8 @@
                     <button name="validate" string="Validate" states="draft" type="object" class="oe_highlight"/>
                     <button name="cancel" string="Cancel Voucher" states="draft,posted" type="object"/>
                     <button name="action_cancel_draft" type="object" states="cancel" string="Set to Draft"/>
+                    <button name="print_phieu_thu_nh_report" type="object" string="Phiếu thu Ngân Hàng" attrs="{'invisible': ['|',('type', '!=', 'receive'), ('type_journal_rel', '!=', 'bank')]}" />
+                    <button name="print_phieu_thu_tm_report" type="object" string="Phiếu thu Tiền Mặt" attrs="{'invisible': ['|',('type', '!=', 'receive'), ('type_journal_rel', '!=', 'cash')]}" />
                     <field name="state" widget="statusbar" statusbar_visible="draft,posted" statusbar_colors='{"cancel":"red"}'/>
                 </header>
                 <sheet string="Sale Receipt Batch">
@@ -328,6 +334,8 @@
                         	<field name="shop_id"/>
                             <field name="date"/>
                             <field name="assign_user"/>
+                            <field name="type" invisible = '1'/>
+                            <field name="type_journal_rel" invisible = '1'/>
                         </group>
                     </group>
                     <notebook>

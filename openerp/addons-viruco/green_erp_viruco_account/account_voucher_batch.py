@@ -69,6 +69,30 @@ class account_voucher_batch(osv.osv):
         datas['form'] = self.read(cr, uid, ids)[0]        
         return {'type': 'ir.actions.report.xml', 'report_name': 'eximbank_report' , 'datas': datas}
     
+    def print_phieu_chi_nh_report(self, cr, uid, ids, context=None): 
+        datas = {'ids': ids}
+        datas['model'] = 'account.voucher.batch'
+        datas['form'] = self.read(cr, uid, ids)[0]        
+        return {'type': 'ir.actions.report.xml', 'report_name': 'phieu_chi_nh_report' , 'datas': datas}
+    
+    def print_phieu_chi_tm_report(self, cr, uid, ids, context=None): 
+        datas = {'ids': ids}
+        datas['model'] = 'account.voucher.batch'
+        datas['form'] = self.read(cr, uid, ids)[0]        
+        return {'type': 'ir.actions.report.xml', 'report_name': 'phieu_chi_tm_report' , 'datas': datas}
+    
+    def print_phieu_thu_nh_report(self, cr, uid, ids, context=None): 
+        datas = {'ids': ids}
+        datas['model'] = 'account.voucher.batch'
+        datas['form'] = self.read(cr, uid, ids)[0]        
+        return {'type': 'ir.actions.report.xml', 'report_name': 'phieu_thu_nh_report' , 'datas': datas}
+    
+    def print_phieu_thu_tm_report(self, cr, uid, ids, context=None): 
+        datas = {'ids': ids}
+        datas['model'] = 'account.voucher.batch'
+        datas['form'] = self.read(cr, uid, ids)[0]        
+        return {'type': 'ir.actions.report.xml', 'report_name': 'phieu_thu_tm_report' , 'datas': datas}
+    
     def _get_assign_user(self, cr, uid, context=None):
         res = self.pool.get('res.users').read(cr, uid, uid, ['name'])['name']
         return res
