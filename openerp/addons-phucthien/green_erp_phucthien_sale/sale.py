@@ -56,7 +56,8 @@ class sale_order(osv.osv):
         'remark':fields.text('Ghi chú'),
         'sale_reason_peding_id': fields.many2one('sale.reason.pending','Lý do không đươc duyệt'),
         'huy_id': fields.many2one('ly.do.huy','Lý do hủy'),
-        'dia_chi_kh':fields.text('Địa chỉ Khách hàng',readonly=True)
+        'dia_chi_kh':fields.text('Địa chỉ Khách hàng',readonly=True),
+        'product_id_rel': fields.related('order_line', 'product_id', type="many2one", relation="product.product", string="Product"),
     }
     
     def onchange_partner_id(self, cr, uid, ids, part, context=None):
@@ -69,14 +70,16 @@ class sale_order(osv.osv):
         pricelist = partner.property_product_pricelist and partner.property_product_pricelist.id or False
         payment_term = partner.property_payment_term and partner.property_payment_term.id or False
         fiscal_position = partner.property_account_position and partner.property_account_position.id or False
-        dedicated_salesman = partner.user_id and partner.user_id.id or uid
+        dedicated_salesman = partner.user_id and partner.user_id.id or False
         val = {
             'partner_invoice_id': addr['invoice'],
             'partner_shipping_id': addr['delivery'],
             'payment_term': payment_term,
             'fiscal_position': fiscal_position,
-#             'user_id': dedicated_salesman,
+            
         }
+        if dedicated_salesman:
+            val.update({'user_id': dedicated_salesman,})
         if pricelist:
             val['pricelist_id'] = pricelist
         if part:
@@ -252,6 +255,9 @@ class sale_order(osv.osv):
         return self.write(cr, uid, ids, {'tp_duyet_id':uid})
     
     def chiu_trach_nhiem(self, cr, uid, ids, context=None):
+        for sale in self.browse(cr,uid,ids):
+            if not sale.sale_reason_peding_id:
+                raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa chọn lý do không được duyệt !'))
         return self.write(cr, uid, ids, {'chiu_trach_nhiem_id':uid})
 
     def print_sale_order(self, cr, uid, ids, context=None): 
