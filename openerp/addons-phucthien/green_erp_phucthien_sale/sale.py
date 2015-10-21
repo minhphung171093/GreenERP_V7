@@ -55,6 +55,7 @@ class sale_order(osv.osv):
         'chiu_trach_nhiem_id': fields.many2one('res.users', 'Người chịu trách nhiệm',readonly=True),
         'remark':fields.text('Ghi chú'),
         'sale_reason_peding_id': fields.many2one('sale.reason.pending','Lý do không đươc duyệt'),
+        'huy_id': fields.many2one('ly.do.huy','Lý do hủy'),
         'dia_chi_kh':fields.text('Địa chỉ Khách hàng',readonly=True)
     }
     
@@ -550,6 +551,15 @@ class sale_reason_pending(osv.osv):
     }
     
 sale_reason_pending()
+
+class ly_do_huy(osv.osv):
+    _name = "ly.do.huy"
+    
+    _columns = {
+        'name': fields.char('Reason Name'),
+    }
+    
+ly_do_huy()
 
 class remind_work_situation(osv.osv):
     _name = "remind.work.situation"

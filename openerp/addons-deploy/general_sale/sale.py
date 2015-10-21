@@ -199,10 +199,10 @@ class sale_order(osv.osv):
         sale_order_line_obj = self.pool.get('sale.order.line')
         proc_obj = self.pool.get('procurement.order')
         for sale in self.browse(cr, uid, ids, context=context):
-            if not sale.note:
+            if not sale.huy_id:
                 raise osv.except_osv(
                         _('Không thể hủy đơn bán hàng'),
-                        _('Bạn chưa nhập lý do hủy đơn bán hàng'))
+                        _('Bạn chưa chọn lý do hủy đơn bán hàng'))
             for pick in sale.picking_ids:
                 if pick.state not in ('draft', 'cancel'):
                     raise osv.except_osv(
@@ -217,6 +217,14 @@ class sale_order(osv.osv):
             for r in self.read(cr, uid, ids, ['picking_ids']):
                 for pick in r['picking_ids']:
                     wf_service.trg_validate(uid, 'stock.picking', pick, 'button_cancel', cr)
+                    sql ='''
+                        DELETE FROM stock_move WHERE picking_id = %s
+                    '''%(pick)
+                    cr.execute(sql)
+                    sql ='''
+                        DELETE FROM stock_picking WHERE id =%s
+                    '''%(pick)
+                    cr.execute(sql)
         return super(sale_order, self).action_cancel(cr, uid, ids, context=context)
 sale_order()
 

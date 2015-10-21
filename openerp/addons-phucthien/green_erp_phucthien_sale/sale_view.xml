@@ -9,6 +9,7 @@
             <field name="arch" type="xml">
             	<xpath expr="//field[@name='state']" position="after">
           			<field name='sale_reason_peding_id'/>
+          			<field name='huy_id'/>
             	</xpath>
             </field>
         </record>
@@ -20,6 +21,10 @@
             <field name="arch" type="xml">
             	<xpath expr="//filter[@string='Order Date']" position="after">
           			<filter string="Reason Pending" icon="terp-go-month" domain="[]" context="{'group_by':'sale_reason_peding_id'}"/>
+          			<filter string="Người chịu trách nhiệm" icon="terp-go-month" domain="[]" context="{'group_by':'chiu_trach_nhiem_id'}"/>
+            	</xpath>
+            	<xpath expr="//field[@name='user_id']" position="after">
+          			<field name="chiu_trach_nhiem_id"/>
             	</xpath>
             </field>
        </record>
@@ -52,6 +57,7 @@
 		        		<field name='nv_duyet_id'/>
 		        		<field name='tp_duyet_id'/>
 		        		<field name='sale_reason_peding_id'/>
+		        		<field name='huy_id'/>
 		        	</group>
 		        </xpath>
 		        <xpath expr="//field[@name='payment_term']" position="after">
@@ -89,7 +95,7 @@
           			<field name="street2"/>
                 </xpath>
                 <xpath expr="//field[@name='name']" position="after">
-                	<field name="gsk_code"/>
+                	<field name="gsk_code" invisible = '1'/>
             		<field name="kv_benh_vien"/>
                 </xpath>  
             </field>
@@ -100,13 +106,17 @@
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_res_partner_filter"/>
             <field name="arch" type="xml">
+            	<xpath expr="//field[@name='category_id']" position="replace">
+            	</xpath>
             	<xpath expr="//field[@name='user_id']" position="after">
           			<field name="internal_code"/>
           			<field name="phone"/>
           			<field name="mobile"/>
           			<field name="vat"/>
+          			<field name="kv_benh_vien"/>
           			<field name="state_id" domain="[]"/>
             	</xpath>
+            	
             	<xpath expr="//filter[@string='Country']" position="after">
           			<filter string="State" icon="terp-go-month" domain="[]" context="{'group_by':'state_id'}"/>
             	</xpath>
@@ -406,6 +416,40 @@
         </record>
        <menuitem name="Reason" action="action_sale_reason_pending" parent="base.menu_base_config" id = "sale_reason_pending_menu" sequence="21"/>
        
+       <record model='ir.ui.view' id='view_ly_do_huy_tree'>
+            <field name="name">ly.do.huy.tree</field>
+            <field name="model">ly.do.huy</field>
+            <field name="arch" type="xml">
+                <tree string="Reason">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record model='ir.ui.view' id='view_ly_do_huy_form'>
+            <field name="name">ly.do.huy.form</field>
+            <field name="model">ly.do.huy</field>
+            <field name="arch" type="xml">
+                <form string="Reason">
+                	<group>
+	                    <field name="name"/>
+                   </group>
+                </form>
+            </field>
+        </record>
+      
+       	<record id="action_ly_do_huy" model="ir.actions.act_window">
+            <field name="name">Reason</field>
+            <field name="res_model">ly.do.huy</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a new reason.
+              </p>
+            </field>
+        </record>
+       <menuitem name="Lý do hủy" action="action_ly_do_huy" parent="base.menu_base_config" id = "menu_action_ly_do_huy" sequence="22"/>
+       
        <record model='ir.ui.view' id='view_remind_work_situation_tree'>
             <field name="name">remind.work.situation.tree</field>
             <field name="model">remind.work.situation</field>
@@ -438,7 +482,7 @@
               </p>
             </field>
         </record>
-       <menuitem name="Tình trạng công việc" action="action_remind_work_situation" parent="base.menu_base_config" id = "remind_work_situation_menu" sequence="22"/>
+       <menuitem name="Tình trạng công việc" action="action_remind_work_situation" parent="base.menu_base_config" id = "remind_work_situation_menu" sequence="23"/>
        
        <record model='ir.ui.view' id='view_remind_work_tree'>
             <field name="name">remind.work.tree</field>
