@@ -21,5 +21,6 @@
 
 import doanhthu_banhang
 import danhsach_canhtranh
+import congno_vacine
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
 

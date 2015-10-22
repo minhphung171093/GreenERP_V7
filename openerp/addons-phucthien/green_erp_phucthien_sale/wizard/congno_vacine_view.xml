@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_congno_vacine_form" model="ir.ui.view">
+            <field name="name">congno.vacine.form</field>
+            <field name="model">congno.vacine</field>
+            <field name="arch" type="xml">
+                <form string="Công Nợ Vacine" version="7.0">
+                	<sheet>
+	                    <group>
+	                    	<field name="date_from"/>
+	                    </group>
+	                </sheet>
+                    <footer>
+                        <button name="print_report" string="In" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Hủy bỏ" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        <record model="ir.actions.act_window" id="action_congno_vacine">
+	        <field name="name">Công Nợ Vacine</field>
+	        <field name="res_model">congno.vacine</field>
+	        <field name="view_type">form</field>
+	        <field name="view_mode">form</field>
+	        <field name="view_id" ref="view_congno_vacine_form" />
+	        <field name="target">new</field>
+	    </record>
+
+    </data>
+</openerp>
+

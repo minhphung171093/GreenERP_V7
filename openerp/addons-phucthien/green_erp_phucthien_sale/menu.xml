@@ -37,6 +37,11 @@
     		name="Báo cáo đối thủ cạnh tranh"
     		parent="phucthien_sale_report"
     		sequence="3"/>
+    	<menuitem id="menu_action_congno_vacine"
+    		action="action_congno_vacine"
+    		name="Báo cáo công nợ vacine"
+    		parent="phucthien_sale_report"
+    		sequence="4"/>
     </data>
     
 </openerp>
