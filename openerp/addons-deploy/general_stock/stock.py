@@ -1333,6 +1333,7 @@ class stock_picking(osv.osv):
         'return_reason_id': fields.many2one('stock.return.reason', 'Return Reason', states={'done':[('readonly', True)], 'cancel':[('readonly',True)]}),
         'nhietdo_di':fields.char('Nhiệt độ khi đi'),
         'nhietdo_den':fields.char('Nhiệt độ khi đến'),
+        'diachi_giaohang_id': fields.many2one('diachi.giaohang','Địa chỉ giao hàng'),
     }
     
     def _get_journal(self, cr, uid, context=None):
@@ -1400,6 +1401,7 @@ class stock_picking(osv.osv):
             
             #Thanh: add more fields
             'shop_id': shop_ids and shop_ids[0] or False,
+            'address': picking.diachi_giaohang_id and picking.diachi_giaohang_id.name or False,
         }
         cur_id = self.get_currency_id(cr, uid, picking)
         if cur_id:
@@ -1970,6 +1972,7 @@ class stock_picking_in(osv.osv):
         'write_uid':  fields.many2one('res.users', 'Updated by', readonly=True),
         'create_uid': fields.many2one('res.users', 'Created by', readonly=True),
         'return_reason_id': fields.many2one('stock.return.reason', 'Return Reason'),
+        'diachi_giaohang_id': fields.many2one('diachi.giaohang','Địa chỉ giao hàng'),
     }
     
     _defaults = {    
@@ -2173,6 +2176,7 @@ class stock_picking_out(osv.osv):
         'return_reason_id': fields.many2one('stock.return.reason', 'Return Reason'),
         'nhietdo_di':fields.char('Nhiệt độ khi đi'),
         'nhietdo_den':fields.char('Nhiệt độ khi đến'),
+        'diachi_giaohang_id': fields.many2one('diachi.giaohang','Địa chỉ giao hàng'),
     }
     
     _defaults = {    

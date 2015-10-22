@@ -29,6 +29,7 @@
     'images': [],
     'depends': ['base','mail','product'],
     'data': [
+        'security/ir.model.access.csv',
         'res_partner_view.xml',
     ],
     'demo': [],

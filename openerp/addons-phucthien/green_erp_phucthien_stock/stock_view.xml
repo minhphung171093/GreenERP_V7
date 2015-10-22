@@ -43,6 +43,7 @@
                 	<field name="time_ketthuc" attrs="{'invisible':[('type','!=','in')]}"/>
                 </xpath>
                 <xpath expr="//field[@name='partner_id']" position="after">
+                	<field name="diachi_giaohang_id" domain="[('partner_id','=',partner_id)]" attrs="{'invisible':[('type','!=','out')]}"/>
                 	<field name="nhietdo_di" attrs="{'invisible':[('type','!=','out')]}"/>
                 	<field name="nhietdo_den" attrs="{'invisible':[('type','!=','out')]}"/>
                 </xpath>

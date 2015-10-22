@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_green_erp_base_customer_1,target_ban_hang,model_target_ban_hang,base.group_user,True,True,True,True
+access_green_erp_base_customer_2,target_ban_hang_line,model_target_bh_line,base.group_user,True,True,True,True
+access_green_erp_base_customer_3,diachi_giaohang,model_diachi_giaohang,base.group_user,True,True,True,True

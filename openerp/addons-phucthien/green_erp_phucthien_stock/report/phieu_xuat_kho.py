@@ -84,6 +84,8 @@ class Parser(report_sxw.rml_parse):
             address += order.partner_id.street or ''
             address += order.partner_id.state_id and ', ' + order.partner_id.state_id.name or ''
             address += order.partner_id.country_id and ', ' + order.partner_id.country_id.name or ''
+        if order.diachi_giaohang_id:
+            address = order.diachi_giaohang_id.name
         return address
     def convert(self, amount):
         amount_text = amount_to_text_vn.amount_to_text(amount, 'vn')

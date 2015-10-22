@@ -15,6 +15,60 @@
             </field>
         </record>-->
         
+        <record id="view_lien_he_form" model="ir.ui.view">
+            <field name="name">lien.he.form</field>
+            <field name="model">lien.he</field>
+            <field eval="1" name="priority"/>
+            <field name="arch" type="xml">
+		        <form string="Liên hệ" version="7.0">
+			        <sheet>
+			            <field name="image" widget='image' class="oe_avatar oe_left" options='{"size": [66, 48]}'/>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1><field name="name" style="width: 70%%"/></h1>
+                        </div>
+                        <group>
+                            <field name="function" placeholder="e.g. Sales Director" required='1'/>
+                            <field name="email"/>
+                            <field name="phone" required='1'/>
+                            <field name="mobile"/>
+                            <field name="ngay_sinh"/>
+                            <field name="so_thich"/>
+                            <field name="gioi_tinh" required='1'/>
+                            <field name="type" invisible='1'/>
+                        </group>
+                        <group>
+                            <label for="street" string="Địa chỉ"/>
+                            <div name="div_address">
+                                <field name="street" required='1' placeholder="Street..."/>
+                                <field name="street2"/>
+                                <div class="address_format">
+                                    <field name="city" placeholder="City" style="width: 40%%"/>
+                                    <field name="state_id" required='1' class="oe_no_button" placeholder="State" style="width: 37%%" options='{"no_open": True}'/>
+                                    <field name="zip" placeholder="ZIP" style="width: 20%%"/>
+                                </div>
+                                <field name="country_id" required='1' placeholder="Country" class="oe_no_button" options='{"no_open": True}'/>
+                            </div>
+                        </group>
+			        </sheet>
+			        <footer>
+                        <button name="luu" string="Lưu" type="object" class="oe_highlight"/>
+                        hoặc
+                        <button string="Hủy bỏ" class="oe_link" special="cancel"/>
+                    </footer>
+			    </form>
+		    </field>
+        </record>
+        <record id="action_lien_he" model="ir.actions.act_window">
+            <field name="name">Check Time Data</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">lien.he</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" eval="view_lien_he_form"/>
+            <field name="target">new</field>
+        </record>
+        
         <record id="base.view_partner_form" model="ir.ui.view">
             <field name="name">res.partner.form</field>
             <field name="model">res.partner</field>
@@ -83,6 +137,17 @@
 
                     <notebook colspan="4">
                         <page string="Contacts" attrs="{'invisible': [('is_company','=',False), ('child_ids', '=', [])]}" autofocus="autofocus">
+                            <button name="%(action_lien_he)d" string="Tạo liên hệ" type='action' context="{'default_email': email, 
+                            'default_phone': phone, 
+                            'default_parent_id': active_id, 
+                            'default_street': street, 
+                            'default_street2': street2, 
+                            'default_city': city, 
+                            'default_state_id': state_id, 
+                            'default_zip': zip, 
+                            'default_type': 'contact', 
+                            'default_country_id': country_id, 
+                            'default_supplier': supplier}"/>
                             <field name="child_ids" mode="kanban" context="{'default_email': email, 
                             'default_phone': phone, 
                             'default_parent_id': active_id, 
@@ -93,7 +158,7 @@
                             'default_zip': zip, 
                             'default_country_id': country_id, 
                             'default_supplier': supplier}">
-                                <kanban>
+                                <kanban create='false'>
                                     <field name="color"/>
                                     <field name="name"/>
                                     <field name="title"/>
@@ -157,19 +222,22 @@
                                         </t>
                                     </templates>
                                 </kanban>
-                                <form string="Contact" version="7.0">
+                                <form string="Contact" version="7.0" create='false'>
                                     <sheet>
                                         <field name="image" widget='image' class="oe_avatar oe_left" options='{"size": [66, 48]}'/>
                                         <div class="oe_title">
                                             <label for="name" class="oe_edit_only"/>
                                             <h1><field name="name" style="width: 70%%"/></h1>
-                                            <field name="category_id" widget="many2many_tags" placeholder="Tags..." style="width: 70%%"/>
+                                            <!--<field name="category_id" widget="many2many_tags" placeholder="Tags..." style="width: 70%%"/>-->
                                         </div>
                                         <group>
-                                            <field name="function" placeholder="e.g. Sales Director"/>
+                                            <field name="function" placeholder="e.g. Sales Director" required='1'/>
                                             <field name="email"/>
-                                            <field name="phone"/>
+                                            <field name="phone" required='1'/>
                                             <field name="mobile"/>
+                                            <field name="ngay_sinh"/>
+                                            <field name="so_thich"/>
+                                            <field name="gioi_tinh" required='1'/>
                                         </group>
                                         <div>
                                             <field name="use_parent_address"/><label for="use_parent_address"/>
@@ -245,6 +313,15 @@
 											</page>
 										</notebook>
 									</form>
+								</field>
+                            </group>
+                        </page>
+                        <page string="Danh sách địa chỉ giao hàng">
+                            <group>
+                            	<field name="diachi_giaohang_line" nolabel='1'>
+									<tree editable='top'>
+										<field name="name"/>
+									</tree>
 								</field>
                             </group>
                         </page>

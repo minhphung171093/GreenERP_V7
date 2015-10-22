@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        
+        <!--
         <record id="base.view_partner_form" model="ir.ui.view">
             <field name="name">res.partner.form</field>
             <field name="model">res.partner</field>
@@ -204,14 +204,13 @@
                                 </group>
                             </group>
                         </page>
-                        <!-- The History page becomes visible as soon as there is something to display inside -->
                         <page string="History" name="page_history" invisible="True">
                         </page>
                     </notebook>
                 </sheet>
                 </form>
             </field>
-        </record>
+        </record>-->
         
     <!-- Modify Action menu for res partner -->
 	    <record id="base.action_partner_supplier_form" model="ir.actions.act_window">

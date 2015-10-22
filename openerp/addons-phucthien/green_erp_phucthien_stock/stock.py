@@ -354,6 +354,7 @@ class stock_picking(osv.osv):
             'hop_dong_t_id': picking.sale_id and picking.sale_id.hop_dong_t_id and picking.sale_id.hop_dong_t_id.id or False,
             'payment_mode_id':payment_mode_id,
             'shop_id': shop_ids and shop_ids[0] or False,
+            'address': picking.diachi_giaohang_id and picking.diachi_giaohang_id.name or False,
         }
         cur_id = self.get_currency_id(cr, uid, picking)
         if cur_id:

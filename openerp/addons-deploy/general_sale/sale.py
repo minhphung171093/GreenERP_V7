@@ -59,6 +59,7 @@ class sale_order(osv.osv):
             'day_user_tz': fields.function(_compute_date_user_tz, type='char', method=True, string='Day User TZ', store={
                 'sale.order': (lambda self, cr, uid, ids, c={}: ids, ['date_order'], 10),
             }, multi='tz'),
+          'diachi_giaohang_id': fields.many2one('diachi.giaohang','Địa chỉ giao hàng'),
     }
     
     def _prepare_order_picking(self, cr, uid, order, context=None):
@@ -87,6 +88,7 @@ class sale_order(osv.osv):
             'location_id': location_id,
             'location_dest_id': output_id,
             'shop_id':order.shop_id and order.shop_id.id or False,
+            'diachi_giaohang_id': order.diachi_giaohang_id and order.diachi_giaohang_id.id or False,
         }
     
     #Thanh: Get Location From Order Line
