@@ -1237,6 +1237,14 @@ dulieu_donghang()
 class dm_thietbi(osv.osv):
     _name = "dm.thietbi"
     
+    def _get_ngay_canhbao(self, cr, uid, ids, fields, arg, context=None):
+        res = {}
+        for line in self.browse(cr, uid, ids):
+            canh_bao = line.canh_bao or 0
+            ngay_canhbao = datetime.strptime(line.ngay_kt,'%Y-%m-%d') + timedelta(days=-canh_bao)
+            res[line.id]=ngay_canhbao.strftime('%Y-%m-%d')
+        return res
+    
     _columns = {
         'dia_diem': fields.selection([('van_phong', 'Văn phòng'),('kho_lanh', 'Kho lạnh')],'Địa điểm', required=True),
         'name': fields.char('Mã hiệu', size = 64, required = True),
@@ -1245,9 +1253,11 @@ class dm_thietbi(osv.osv):
         'ngay_mua': fields.date('Ngày mua'),
         'so_luong': fields.integer('Số lượng'),
         'chi_phi': fields.float('Chi phí'),
-        'ngay_bd': fields.date('Ngày bắt đầu HC/KĐ/Bảo trì'),
-        'ngay_kt': fields.date('Ngày kết thúc HC/KĐ/Bảo trì'),
+        'ngay_bd': fields.date('Ngày bắt đầu HC/KĐ/Bảo trì',required=True),
+        'ngay_kt': fields.date('Ngày kết thúc HC/KĐ/Bảo trì',required=True),
         'ghi_chu': fields.text('Ghi chú'),
+        'canh_bao': fields.integer('Cảnh báo'),
+        'ngay_canhbao': fields.function(_get_ngay_canhbao, type='date', string='Ngày cảnh báo'),
     }
     
 dm_thietbi()

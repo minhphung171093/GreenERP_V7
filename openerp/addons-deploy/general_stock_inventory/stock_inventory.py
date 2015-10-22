@@ -266,7 +266,11 @@ class stock_inventory_line(osv.osv):
             }, readonly=True, multi='pro_info'),
         'description': fields.char('Ghi chú', size=64),
         'tracking_id': fields.many2one('stock.tracking', 'Kệ'),
+        'khong_dat': fields.boolean('Không đạt'),
             }
+    
+    def bt_khong_dat(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {'khong_dat': True})
     
     def onchange_product_ean(self, cr, uid, ids, product_id, product_uom_id, product_ean= False, context=None):
         

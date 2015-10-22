@@ -772,7 +772,7 @@
 			<field name="name">dm.thietbi.tree</field>
 			<field name="model">dm.thietbi</field>
 			<field name="arch" type="xml">
-				<tree string="Danh mục thiết bị">
+				<tree string="Danh mục thiết bị" colors="red:ngay_canhbao &lt; current_date and ngay_kt &gt; current_date">
 					<field name="dia_diem"/>
                     <field name="name"/>
                     <field name="ten"/>
@@ -782,7 +782,8 @@
                     <field name="chi_phi"/>
                     <field name="ngay_bd"/>
                     <field name="ngay_kt"/>
-                    <field name="ghi_chu"/>
+                    <field name="canh_bao"/>
+                    <field name="ngay_canhbao"/>
 				</tree>
 			</field>
 		</record>
@@ -806,7 +807,10 @@
 		                    <field name="chi_phi"/>
 		                    <field name="ngay_bd"/>
 		                    <field name="ngay_kt"/>
-		                    <field name="ghi_chu"/>
+		                    <field name="canh_bao"/>
+	                    </group>
+	                    <group>
+	                    	<field name="ghi_chu"/>
 	                    </group>
 		         	</sheet>
 		         </form>
@@ -822,7 +826,10 @@
             <field name="view_id" ref="dm_thietbi_tree_view"/>
         </record>
         
-		<menuitem id="menu_action_dm_thietbi" action="action_dm_thietbi" parent="stock.menu_traceability" sequence="11"/>
+        <menuitem id="menu_root_ky_thuat" name="Kỹ thuật" sequence="71"/>
+        <menuitem id="menu_thiet_bi" name="Thiết bị" parent="menu_root_ky_thuat" sequence="10"/>
+		<menuitem id="menu_action_dm_thietbi" action="action_dm_thietbi" parent="menu_thiet_bi" sequence="11"/>
+		<menuitem id="menu_action_danhmuc_thietbi_report" action="action_danhmuc_thietbi_report" parent="menu_thiet_bi" sequence="12"/>
 		
     </data>
 </openerp>
