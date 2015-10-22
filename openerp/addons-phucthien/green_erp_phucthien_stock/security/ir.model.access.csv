@@ -9,5 +9,5 @@ access_phucthien_stock_9,suachua.hanhdong.line,model_suachua_hanhdong_line,stock
 access_phucthien_stock_10,suachua.hanhdong,model_suachua_hanhdong,stock.group_stock_user,True,True,True,True
 access_phucthien_stock_11,dulieu.donghang,model_dulieu_donghang,base.group_user,True,True,True,True
 access_phucthien_stock_12,dm.thietbi,model_dm_thietbi,base.group_user,True,True,True,True
-
+access_phucthien_stock_13,nhap_dulieu_donghang,model_nhap_dulieu_donghang,base.group_user,True,True,True,False
 

@@ -369,7 +369,7 @@ stock_picking()
 class stock_picking_packaging(osv.osv):
     _name = 'stock.picking.packaging'
     
-    def onchange_loai_thung_id(self, cr, uid, ids,loai_thung_id=False, context=None):
+    def onchange_loai_thung_id(self, cr, uid, ids,loai_thung_id=False,sl_thung=0, context=None):
         res = {'value':{
                         'chi_phi_thung':False,
                         'sl_da':False,
@@ -380,12 +380,34 @@ class stock_picking_packaging(osv.osv):
         if loai_thung_id:
             loai_thung = self.pool.get('loai.thung').browse(cr, uid, loai_thung_id)
             res['value'].update({
-                                'chi_phi_thung':loai_thung.chi_phi_thung,
-                                'sl_da':loai_thung.sl_da,
-                                'chi_phi_da':loai_thung.chi_phi_da,
-                                'chi_phi_nhiet_ke': loai_thung.chi_phi_nhiet_ke,
+                                'chi_phi_thung':loai_thung.chi_phi_thung*sl_thung,
+                                'sl_da':loai_thung.sl_da*sl_thung,
+                                'chi_phi_da':loai_thung.chi_phi_da*sl_thung,
+                                'chi_phi_nhiet_ke': loai_thung.chi_phi_nhiet_ke*sl_thung,
                                 })
             
+        return res
+    
+    def onchange_sl_nhietke(self, cr, uid, ids,sl_nhietke=0,sl_nhietke_conlai=0, context=None):
+        
+        res = {'value':{
+                        'sl_nhietke_conlai':0,
+                      }
+               }
+        if ids:
+            for line in self.browse(cr, uid, ids):
+                if sl_nhietke<line.sl_nhietke and sl_nhietke<=sl_nhietke_conlai:
+                    res['value'].update({
+                                'sl_nhietke_conlai':0,
+                                })
+                if sl_nhietke>line.sl_nhietke:
+                    res['value'].update({
+                                'sl_nhietke_conlai':sl_nhietke_conlai+sl_nhietke-line.sl_nhietke,
+                                })
+        else:
+            res['value'].update({
+                                'sl_nhietke_conlai':sl_nhietke_conlai+sl_nhietke,
+                                })
         return res
     
     _columns = {
@@ -403,6 +425,15 @@ class stock_picking_packaging(osv.osv):
         'nhietdo_packaging_di':fields.char('Nhiệt độ đi'),
         'nhietdo_packaging_den':fields.char('Nhiệt độ đến'),
     }
+    
+    def create(self, cr, uid, vals, context=None):
+        if vals.get('picking_id', False):
+            picking = self.pool.get('stock.picking').browse(cr, uid, vals['picking_id'])
+            dldh_obj = self.pool.get('dulieu.donghang')
+            dldh_ids = dldh_obj.search(cr, uid, [('partner_id','=',picking.partner_id.id)])
+            if not dldh_ids:
+                dldh_obj.create(cr, uid, {'partner_id':picking.partner_id.id})
+        return super(stock_picking_packaging, self).create(cr, uid, vals, context)
     
 stock_picking_packaging()
 
@@ -1106,6 +1137,50 @@ class suachua_hanhdong_line(osv.osv):
     
 suachua_hanhdong_line()
 
+class nhap_dulieu_donghang(osv.osv):
+    _name = "nhap.dulieu.donghang"
+    
+    _columns = {
+        'partner_id': fields.many2one('res.partner', 'Đối tác', required = True),
+        'ngay': fields.date('Ngày thu hồi', required=True),
+        'sl_nhietke_thuhoi': fields.integer('Số lượng nhiệt kế thu hồi', required=True),
+        'state': fields.selection([('moi_tao','Mới tạo'),('da_capnhat','Đã cập nhật')],'Trạng thái'),
+    }
+    
+    _defaults = {
+        'ngay': time.strftime('%Y-%m-%d'),
+        'state': 'moi_tao',
+    }
+    
+    def create(self, cr, uid, vals, context=None):
+        if vals.get('partner_id', False):
+            dldh_obj = self.pool.get('dulieu.donghang')
+            dldh_ids = dldh_obj.search(cr, uid, [('partner_id','=',vals['partner_id'])])
+            if not dldh_ids:
+                dldh_obj.create(cr, uid, {'partner_id':vals['partner_id']})
+        return super(nhap_dulieu_donghang, self).create(cr, uid, vals, context)
+    
+    def cap_nhat(self, cr, uid, ids, context=None):
+        packaging_obj = self.pool.get('stock.picking.packaging')
+        for line in self.browse(cr, uid, ids):
+            sql = '''
+                select id from stock_picking_packaging where sl_nhietke_conlai is not null and sl_nhietke_conlai>0
+                    and picking_id in (select id from stock_picking where state='done' and type='out' and partner_id=%s) order by create_date
+            '''%(line.partner_id.id)
+            cr.execute(sql)
+            packaging_ids = [r[0] for r in cr.fetchall()]
+            sl_nhietke_thuhoi = line.sl_nhietke_thuhoi
+            for packaging in packaging_obj.browse(cr, uid, packaging_ids):
+                if packaging.sl_nhietke_conlai<=sl_nhietke_thuhoi:
+                    packaging_obj.write(cr, uid, [packaging.id],{'sl_nhietke_conlai':0})
+                    sl_nhietke_thuhoi -= packaging.sl_nhietke_conlai
+                else:
+                    packaging_obj.write(cr, uid, [packaging.id],{'sl_nhietke_conlai':packaging.sl_nhietke_conlai-sl_nhietke_thuhoi})
+                    break
+        return self.write(cr, uid, ids, {'state':'da_capnhat'})
+    
+nhap_dulieu_donghang()
+
 class dulieu_donghang(osv.osv):
     _name = "dulieu.donghang"
     
@@ -1130,7 +1205,13 @@ class dulieu_donghang(osv.osv):
             context = {}
         for dulieu in self.browse(cr, uid, ids, context=context):
             amount = 0
-            res[dulieu.id] = dulieu.sl_nhietke - dulieu.sl_nhietke_thuhoi
+            sql = '''
+                select case when sum(sl_nhietke_conlai)!=0 then sum(sl_nhietke_conlai) else 0 end sl_nhietke from stock_picking_packaging
+                where picking_id in (select id from stock_picking where partner_id = %s and type = 'out' and state = 'done')
+            '''%(dulieu.partner_id.id)
+            cr.execute(sql)
+            sl_nhietke = cr.dictfetchone()['sl_nhietke']
+            res[dulieu.id] = sl_nhietke
         return res
     
     _columns = {
