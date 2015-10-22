@@ -157,7 +157,7 @@
         		<!--<field name="number_register"/>-->
         	</xpath>
         	<xpath expr="//field[@name='reference']" position="after">
-        		<field name="reference_number"/>
+        		<field name="reference_number" string="Số hóa đơn"/>
         		<field name="name"/>
         		<field name="unshow_financial_report"/>
         	</xpath>
@@ -181,7 +181,12 @@
         	<xpath expr="//field[@name='line_dr_ids']/tree/field[@name='account_analytic_id']" position="after">
 	        	<field name="type_lctt" required='1'/>
 	        </xpath>
-        	
+        	<xpath expr="//field[@name='line_dr_ids']/tree/field[@name='name']" position="attributes">
+        		<attribute name="string">Nội dung</attribute>
+        	</xpath>
+        	<xpath expr="//field[@name='line_dr_ids']/tree/field[@name='amount']" position="attributes">
+        		<attribute name="string">Giá trị trước thuế</attribute>
+        	</xpath>
         	<xpath expr="//field[@name='tax_amount']" position="attributes">
         		<attribute name="on_change">onchange_tax_amount(line_dr_ids, tax_amount)</attribute>
         	</xpath>
@@ -211,7 +216,7 @@
 	        	</xpath>
 	        	<xpath expr="//field[@name='partner_id']" position="after">
 	    			<field name="reference"/>
-	        		<field name="reference_number"/>
+	        		<field name="reference_number" string="Số hóa đơn"/>
 	        		
 	        		<field name="pay_now" on_change="onchange_payment(pay_now, journal_id, partner_id)" required="1"/>
 	                <field name="date_due" attrs="{'invisible':[('pay_now','=','pay_now')]}"/>
@@ -235,6 +240,12 @@
 	        	
 	        	<xpath expr="//field[@name='line_cr_ids']/tree/field[@name='account_analytic_id']" position="after">
 	        		<field name="type_lctt" required='1'/>
+	        	</xpath>
+	        	<xpath expr="//field[@name='line_cr_ids']/tree/field[@name='name']" position="attributes">
+	        		<attribute name="string">Nội dung</attribute>
+	        	</xpath>
+	        	<xpath expr="//field[@name='line_cr_ids']/tree/field[@name='amount']" position="attributes">
+	        		<attribute name="string">Giá trị trước thuế</attribute>
 	        	</xpath>
 	        	
 	        	<xpath expr="//field[@name='tax_amount']" position="attributes">

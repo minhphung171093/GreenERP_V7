@@ -55,6 +55,8 @@
                                 <field name="adjust_value"/>
                                 <field name="description"/>
                                 <field name="state" invisible="1"/>
+                                <button name="bt_khong_dat" attrs="{'invisible':['|',('khong_dat','=',True),('state','=','done')]}" string="Không đạt" icon="gtk-cancel" type="object" class="oe_highlight"/>
+                                <field name="khong_dat" invisible="1"/>
                             </tree>
                             <form string="Products" version="7.0">
                                 <group>

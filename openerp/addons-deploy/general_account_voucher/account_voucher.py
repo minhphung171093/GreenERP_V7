@@ -272,7 +272,7 @@ class account_voucher(osv.osv):
             'number': fields.char('Number', size=32, readonly=False),
             'shop_id': fields.many2one('sale.shop', 'Shop', required=True, readonly=True, states={'draft':[('readonly',False)]}),
             'number_register': fields.char('Number Register', size=64, readonly=True, states={'draft':[('readonly',False)]}),
-            'reference_number': fields.char('Number', size=32, readonly=True, states={'draft':[('readonly',False)]}),
+            'reference_number': fields.char('Số hóa đơn', size=32, readonly=True, states={'draft':[('readonly',False)]}),
             'assign_user': fields.char('Assign User', size = 128, required = True, readonly=True, states={'draft':[('readonly',False)]},),
             'partner_id':fields.many2one('res.partner', 'Partner', change_default=1, required = False,readonly=True, states={'draft':[('readonly',False)]}),
             'date':fields.date('Date', required = True, readonly=True, select=True, states={'draft':[('readonly',False)]}, help="Effective date for accounting entries"),
@@ -403,7 +403,63 @@ class account_voucher(osv.osv):
     def create(self, cr, uid, vals, context=None):
         if vals.get('date',False) and not vals.get('date_document',False):
             vals.update({'date_document': vals['date']})
-        return super(account_voucher, self).create(cr, uid, vals, context)
+        new_id = super(account_voucher, self).create(cr, uid, vals, context) 
+        self.compute_tax(cr, uid, [new_id], context)
+        return new_id
+    
+    def compute_tax_pt(self, cr, uid, voucher_id, context=None):
+        tax_pool = self.pool.get('account.tax')
+        partner_pool = self.pool.get('res.partner')
+        position_pool = self.pool.get('account.fiscal.position')
+        voucher_line_pool = self.pool.get('account.voucher.line')
+        voucher_pool = self.pool.get('account.voucher')
+        if context is None: context = {}
+
+        voucher = voucher_pool.browse(cr, uid, voucher_id, context=context)
+        voucher_amount = 0.0
+        for line in voucher.line_ids:
+            voucher_amount += line.untax_amount or line.amount
+            line.amount = line.untax_amount or line.amount
+            voucher_line_pool.write(cr, uid, [line.id], {'amount':line.amount, 'untax_amount':line.untax_amount})
+
+        if not voucher.tax_id:
+            return {'amount':voucher_amount, 'tax_amount':0.0}
+
+        tax = [tax_pool.browse(cr, uid, voucher.tax_id.id, context=context)]
+        partner = partner_pool.browse(cr, uid, voucher.partner_id.id, context=context) or False
+        taxes = position_pool.map_tax(cr, uid, partner and partner.property_account_position or False, tax)
+        tax = tax_pool.browse(cr, uid, taxes, context=context)
+
+        total = voucher_amount
+        total_tax = 0.0
+
+        if not tax[0].price_include:
+            for line in voucher.line_ids:
+                for tax_line in tax_pool.compute_all(cr, uid, tax, line.amount, 1).get('taxes', []):
+                    total_tax += tax_line.get('amount', 0.0)
+            total += total_tax
+        else:
+            for line in voucher.line_ids:
+                line_total = 0.0
+                line_tax = 0.0
+
+                for tax_line in tax_pool.compute_all(cr, uid, tax, line.untax_amount or line.amount, 1).get('taxes', []):
+                    line_tax += tax_line.get('amount', 0.0)
+                    line_total += tax_line.get('price_unit')
+                total_tax += line_tax
+                untax_amount = line.untax_amount or line.amount
+                voucher_line_pool.write(cr, uid, [line.id], {'amount':line_total, 'untax_amount':untax_amount})
+
+        return {'amount':total, 'tax_amount':total_tax}
+    
+    def write(self, cr, uid, ids, vals, context=None):
+        if vals.get('date',False) and not vals.get('date_document',False):
+            vals.update({'date_document': vals['date']})
+        new_id = super(account_voucher, self).write(cr, uid, ids, vals, context)
+        for id in ids: 
+            amount_val = self.compute_tax_pt(cr, uid, id, context)
+            cr.execute('update account_voucher set amount=%s, tax_amount=%s',(amount_val['amount'],amount_val['tax_amount'],))
+        return new_id
     
 #     def onchange_price(self, cr, uid, ids, line_ids, tax_id, partner_id=False, context=None):
 #         context = context or {}

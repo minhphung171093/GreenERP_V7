@@ -31,7 +31,6 @@
             <field name="view_id" ref="view_danhmuc_thietbi_report"/>
             <field name="target">new</field>
         </record>
-        <menuitem id="menu_action_danhmuc_thietbi_report" action="action_danhmuc_thietbi_report" parent="stock.menu_traceability" sequence="12"/>
         
     </data>
 </openerp>

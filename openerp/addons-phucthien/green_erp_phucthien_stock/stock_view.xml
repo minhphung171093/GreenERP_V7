@@ -10,12 +10,12 @@
 					<page string="Đóng gói" attrs="{'invisible':[('type','!=','out')]}">
 						<field name="picking_packaging_line" nolabel='1'>
 							<tree editable='top'>
-								<field name="loai_thung_id" on_change="onchange_loai_thung_id(loai_thung_id, context)"/>
-								<field name="sl_thung" sum="SL thùng"/>
+								<field name="loai_thung_id" on_change="onchange_loai_thung_id(loai_thung_id,sl_thung, context)"/>
+								<field name="sl_thung" sum="SL thùng" on_change="onchange_loai_thung_id(loai_thung_id,sl_thung, context)"/>
 								<field name="chi_phi_thung" sum="CP thùng"/>
 								<field name="sl_da" sum="SL đá"/>
 								<field name="chi_phi_da" sum="CP đá"/>
-								<field name="sl_nhietke" sum="SL Nhiệt kế"/>
+								<field name="sl_nhietke" sum="SL Nhiệt kế" on_change="onchange_sl_nhietke(sl_nhietke,sl_nhietke_conlai)"/>
 								<field name="sl_nhietke_conlai" invisible = '1' sum="SL Nhiệt kế Còn lại"/>
 								<field name="chi_phi_nhiet_ke" sum="CP nhiệt kế"/>
 								<field name="chi_phi_gui_hang" sum="CP gửi hàng"/>
@@ -679,33 +679,81 @@
         <menuitem id="menu_bao_cao_suachua_hanhdong" name="Báo cáo sửa chữa hành động" parent="stock.menu_stock_root" sequence="3"/>
 		<menuitem id="menu_action_suachua_hanhdong" name="Báo cáo sửa chữa hành động" action="action_suachua_hanhdong" parent="menu_bao_cao_suachua_hanhdong" sequence="10"/>
 		
-		<record id="dulieu_donghang_tree_view" model="ir.ui.view">
-			<field name="name">dulieu.donghang.tree</field>
-			<field name="model">dulieu.donghang</field>
+		<record id="nhap_dulieu_donghang_tree_view" model="ir.ui.view">
+			<field name="name">nhap.dulieu.donghang.tree</field>
+			<field name="model">nhap.dulieu.donghang</field>
 			<field name="arch" type="xml">
-				<tree string="Dữ liệu đóng hàng">
+				<tree string="Nhập nhiệt kế thu hồi">
 					<field name="partner_id"/>
-                    <field name="sl_nhietke"/>
+                    <field name="ngay"/>
                     <field name="sl_nhietke_thuhoi"/>
-                    <field name="sl_nhietke_conlai"/>
+                    <field name="state"/>
 				</tree>
 			</field>
 		</record>
 		
-		<record id="dulieu_donghang_form_view" model="ir.ui.view">
-            <field name="name">dulieu.donghang.form</field>
-            <field name="model">dulieu.donghang</field>
+		<record id="nhap_dulieu_donghang_form_view" model="ir.ui.view">
+            <field name="name">nhap.dulieu.donghang.form</field>
+            <field name="model">nhap.dulieu.donghang</field>
             <field name="arch" type="xml">
-	            <form string="Dữ liệu đóng hàng" version="7.0"> 
+	            <form string="Nhập nhiệt kế thu hồi" version="7.0">
+	            	<header>
+	            		<button name="cap_nhat" type='object' states="moi_tao" string="Cập nhật" class="oe_highlight"/>
+	            		<field name="state" widget="statusbar" statusbar_visible="moi_tao,da_capnhat"/>
+	            	</header>
 	            	<sheet>
 	                    <group col='4' colspan='2'>
-	                    	<field name="partner_id" context="{'search_partner_dldh_id':1}"/>
-                    		<field name="sl_nhietke"/>
-                    		<field name="sl_nhietke_thuhoi"/>
-                    		<field name="sl_nhietke_conlai"/>
+	                    	<field name="partner_id"/>
+		                    <field name="ngay"/>
+		                    <field name="sl_nhietke_thuhoi"/>
 	                    </group>
 		         	</sheet>
 		         </form>
+			</field>
+		</record>
+		
+		<record id="action_nhap_dulieu_donghang" model="ir.actions.act_window">
+            <field name="name">Nhập nhiệt kế thu hồi</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">nhap.dulieu.donghang</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="nhap_dulieu_donghang_tree_view"/>
+        </record>
+        
+		<menuitem id="menu_action_nhap_dulieu_donghang" action="action_nhap_dulieu_donghang" parent="stock.menu_traceability" sequence="10"/>
+		
+		<record id="dulieu_donghang_search_view" model="ir.ui.view">
+	        <field name="name">dulieu.donghang.search</field>
+	        <field name="model">dulieu.donghang</field>
+	        <field name="arch" type="xml">
+	            <search string="Dữ liệu đóng hàng">
+	                <group col="10" colspan="12">
+	                    <field name="partner_id"/>
+	                </group>
+	            </search>
+	        </field>
+	    </record>
+		<record id="dulieu_donghang_tree_view" model="ir.ui.view">
+			<field name="name">dulieu.donghang.tree</field>
+			<field name="model">dulieu.donghang</field>
+			<field name="arch" type="xml">
+				<tree string="Dữ liệu đóng hàng" editable='top' create='false' edit='false' delete='false'>
+					<field name="partner_id"/>
+                    <field name="sl_nhietke"/>
+                    <field name="sl_nhietke_conlai"/>
+				</tree>
+			</field>
+		</record>
+		<record id="dulieu_donghang_form_view" model="ir.ui.view">
+			<field name="name">dulieu.donghang.form</field>
+			<field name="model">dulieu.donghang</field>
+			<field name="arch" type="xml">
+				<form string="Dữ liệu đóng hàng" create='false' edit='false' delete='false'>
+					<field name="partner_id"/>
+                    <field name="sl_nhietke"/>
+                    <field name="sl_nhietke_conlai"/>
+				</form>
 			</field>
 		</record>
 		
@@ -718,13 +766,13 @@
             <field name="view_id" ref="dulieu_donghang_tree_view"/>
         </record>
         
-		<menuitem id="menu_action_dulieu_donghang" action="action_dulieu_donghang" parent="stock.menu_traceability" sequence="10"/>
+		<menuitem name="Danh sách nhiệt kế thu hồi" id="menu_action_dulieu_donghang" action="action_dulieu_donghang" parent="stock.menu_traceability" sequence="11"/>
 		
 		<record id="dm_thietbi_tree_view" model="ir.ui.view">
 			<field name="name">dm.thietbi.tree</field>
 			<field name="model">dm.thietbi</field>
 			<field name="arch" type="xml">
-				<tree string="Danh mục thiết bị">
+				<tree string="Danh mục thiết bị" colors="red:ngay_canhbao &lt; current_date and ngay_kt &gt; current_date">
 					<field name="dia_diem"/>
                     <field name="name"/>
                     <field name="ten"/>
@@ -734,7 +782,8 @@
                     <field name="chi_phi"/>
                     <field name="ngay_bd"/>
                     <field name="ngay_kt"/>
-                    <field name="ghi_chu"/>
+                    <field name="canh_bao"/>
+                    <field name="ngay_canhbao"/>
 				</tree>
 			</field>
 		</record>
@@ -758,7 +807,10 @@
 		                    <field name="chi_phi"/>
 		                    <field name="ngay_bd"/>
 		                    <field name="ngay_kt"/>
-		                    <field name="ghi_chu"/>
+		                    <field name="canh_bao"/>
+	                    </group>
+	                    <group>
+	                    	<field name="ghi_chu"/>
 	                    </group>
 		         	</sheet>
 		         </form>
@@ -774,7 +826,10 @@
             <field name="view_id" ref="dm_thietbi_tree_view"/>
         </record>
         
-		<menuitem id="menu_action_dm_thietbi" action="action_dm_thietbi" parent="stock.menu_traceability" sequence="11"/>
+        <menuitem id="menu_root_ky_thuat" name="Kỹ thuật" sequence="71"/>
+        <menuitem id="menu_thiet_bi" name="Thiết bị" parent="menu_root_ky_thuat" sequence="10"/>
+		<menuitem id="menu_action_dm_thietbi" action="action_dm_thietbi" parent="menu_thiet_bi" sequence="11"/>
+		<menuitem id="menu_action_danhmuc_thietbi_report" action="action_danhmuc_thietbi_report" parent="menu_thiet_bi" sequence="12"/>
 		
     </data>
 </openerp>

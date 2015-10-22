@@ -442,7 +442,8 @@ class stock_journal(osv.osv):
                                         ('return_supplier', 'Return to supplier'), 
                                         ('internal', 'Internal'),
                                         ('production', 'Production'),
-                                        ('phys_adj', 'Physical Adjustment'),], 'Source Type', size=16, required=True),
+                                        ('phys_adj', 'Physical Adjustment'),
+                                        ('kiemke_dinhky', 'Kiểm kê định kỳ'),], 'Source Type', size=16, required=True),
         'sequence_id': fields.many2one('ir.sequence', 'Sequence', required=True),
         
         'from_location_id':fields.many2many('stock.location','stock_journal_from_location_ref', 
