@@ -220,6 +220,34 @@
                                 </group>
                             </group>
                         </page>
+                        <page string="Target bán hàng">
+                            <group>
+                            	<field name="target_ban_hang" nolabel='1'>
+									<tree>
+										<field name="tu_ngay"/>
+										<field name="den_ngay" />
+									</tree>
+									<form version = "7.0">
+										<group col="4" colspan="2">
+											<field name="tu_ngay"/>
+											<field name="den_ngay" />
+										</group>
+										<notebook>
+											<page string="Chi tiết Target bán hàng">
+												<field name="target_bh_line" nolabel='1'>
+													<tree editable='bottom'>
+														<field name="product_id" />
+														<field name="loai"/>
+														<field name="gia_tri" />
+														<field name="gt_hien_tai" /> 
+													</tree>
+												</field>
+											</page>
+										</notebook>
+									</form>
+								</field>
+                            </group>
+                        </page>
                         <!-- The History page becomes visible as soon as there is something to display inside -->
                         <!-- Thanh: Add new Tab -->
                         <page string="Alerts" name="alerts">

@@ -301,7 +301,7 @@
 	        <field name="view_id" ref="base.res_partner_kanban_view"/>
 	        <field name="act_window_id" ref="action_partner_person_only"/>
 	    </record>
-	    <menuitem id="menu_action_partner_person_only" parent="base.menu_sales" action="action_partner_person_only" sequence="1"/>
+<!--	    <menuitem id="menu_action_partner_person_only" parent="base.menu_sales" action="action_partner_person_only" sequence="1"/>  -->
         
     </data>
 </openerp>

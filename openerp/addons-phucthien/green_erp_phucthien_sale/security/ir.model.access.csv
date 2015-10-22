@@ -6,3 +6,4 @@ access_phucthien_sale_4;hopdong.kinhte.line;model_hopdong_kinhte_line;base.group
 access_phucthien_sale_5;sale.order.rule;model_sale_order_rule;base.group_sale_salesman;True;True;True;True
 access_phucthien_sale_6;sanpham.canhtranh;model_sanpham_canhtranh;base.group_sale_salesman;True;True;True;True
 access_phucthien_sale_7;danhsach.canhtranh;model_danhsach_canhtranh;base.group_sale_salesman;True;True;True;True
+access_phucthien_sale_8;ly.do.huy;model_ly_do_huy;base.group_user;True;True;True;True

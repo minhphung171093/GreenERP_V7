@@ -27,7 +27,7 @@
     "author" : "nguyentoanit@gmail.com",
     "website" : "http://incomtech.com.vn",
     'images': [],
-    'depends': ['base','mail'],
+    'depends': ['base','mail','product'],
     'data': [
         'res_partner_view.xml',
     ],
