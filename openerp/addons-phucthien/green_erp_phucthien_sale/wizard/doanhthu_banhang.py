@@ -35,6 +35,8 @@ class doanhthu_banhang(osv.osv_memory):
         'nsx_ids': fields.many2many('manufacturer.product','doanhthubanhang_manufacturer_product_ref','dtbh_id','nsx_id', 'Hãng sản xuất'),
         'date_from': fields.date('Từ ngày',required=True),
         'date_to': fields.date('Đến ngày',required=True),
+        'khu_vuc_ids': fields.many2many('kv.benh.vien','doanhthubanhang_khu_vuc_bv_ref','dtbh_id','khu_vuc_id', 'Khu vực'),
+        'tinh_ids': fields.many2many('res.country.state','doanhthubanhang_country_state_ref','dtbh_id','state_id', 'Tỉnh'),
     }
     
     _defaults = {

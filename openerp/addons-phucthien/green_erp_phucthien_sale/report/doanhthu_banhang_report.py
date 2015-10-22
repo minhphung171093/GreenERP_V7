@@ -46,6 +46,11 @@ class Parser(report_sxw.rml_parse):
             'get_lines': self.get_lines,
             'display_address': self.display_address,
             'get_kho': self.get_kho,
+            'get_tong': self.get_tong,
+            'get_tong_dt_truocthue': self.get_tong_dt_truocthue,
+            'get_tong_dt_sauthue': self.get_tong_dt_sauthue,
+            'get_tong_soluong': self.get_tong_soluong,
+            'get_tile': self.get_tile,
         })
     def convert_date(self, date):
         if date:
@@ -62,6 +67,22 @@ class Parser(report_sxw.rml_parse):
         date = datetime.strptime(wizard_data['date_to'], DATE_FORMAT)
         return date.strftime('%d/%m/%Y')
     
+    def get_tile(self, amount):
+        tong = self.get_tong('dt_truocthue')
+        if tong:
+            return amount/tong
+        return 0
+    
+    def get_tong(self, loai):
+        tong = 0
+        if loai=='so_luong':
+            tong = self.get_tong_dt_truocthue()['tong']
+        if loai=='dt_truocthue':
+            tong = self.get_tong_dt_truocthue()['tong']
+        if loai=='dt_sauthue':
+            tong = self.get_tong_dt_truocthue()['tong']
+        return tong
+    
     def get_lines(self):
         wizard_data = self.localcontext['data']['form']
         date_from = wizard_data['date_from']
@@ -72,6 +93,8 @@ class Parser(report_sxw.rml_parse):
         categ_ids = wizard_data['categ_ids']
         loc_ids = wizard_data['loc_ids']
         nsx_ids = wizard_data['nsx_ids']
+        khu_vuc_ids = wizard_data['khu_vuc_ids']
+        tinh_ids = wizard_data['tinh_ids']
         sql = '''
             select ail.id as id,ai.partner_id as partner_id,ai.date_invoice as ngay_hd,ai.reference_number as so_hd,rp.internal_code as ma_kh,rp.name as ten_kh,pp.default_code as ma_sp,
                 pp.name_template as ten_sp,pu.name as dvt,spl.name as so_lo,spl.life_date as han_dung,ail.quantity as so_luong,ail.price_unit as gia_ban,
@@ -97,6 +120,8 @@ class Parser(report_sxw.rml_parse):
                     left join stock_move sm on sm.id=ail.source_id
                     left join stock_location sl on sl.id=sm.location_id
                     left join manufacturer_product mp on pp.manufacturer_product_id = mp.id
+                    left join kv_benh_vien kv on kv.id=rp.kv_benh_vien
+                    left join res_country_state rcs on rcs.id=rp.state_id
                 where ai.date_invoice between '%s' and '%s' and ai.state!='cancel' and ai.type='out_invoice' 
         '''%(date_from,date_to)
         if partner_ids:
@@ -135,11 +160,306 @@ class Parser(report_sxw.rml_parse):
             sql+='''
                 and mp.id in %s 
             '''%(nsx_ids)
+        if khu_vuc_ids:
+            khu_vuc_ids = str(khu_vuc_ids).replace('[', '(')
+            khu_vuc_ids = str(khu_vuc_ids).replace(']', ')')
+            sql+='''
+                and kv.id in %s 
+            '''%(khu_vuc_ids)
+        if tinh_ids:
+            tinh_ids = str(tinh_ids).replace('[', '(')
+            tinh_ids = str(tinh_ids).replace(']', ')')
+            sql+='''
+                and rcs.id in %s 
+            '''%(tinh_ids)
+            
         sql+='''
              order by ai.date_invoice
         '''
         self.cr.execute(sql)
         return self.cr.dictfetchall()
+    
+    def get_tong_dt_truocthue(self):
+        wizard_data = self.localcontext['data']['form']
+        date_from = wizard_data['date_from']
+        date_to = wizard_data['date_to']
+        partner_ids = wizard_data['partner_ids']
+        users_ids = wizard_data['users_ids']
+        product_ids = wizard_data['product_ids']
+        categ_ids = wizard_data['categ_ids']
+        loc_ids = wizard_data['loc_ids']
+        nsx_ids = wizard_data['nsx_ids']
+        khu_vuc_ids = wizard_data['khu_vuc_ids']
+        tinh_ids = wizard_data['tinh_ids']
+        sql = '''
+            select ail.price_unit*ail.quantity as dt_truocthue
+                from account_invoice_line ail
+                    left join account_invoice ai on ail.invoice_id=ai.id
+                    left join res_partner rp on ail.partner_id=rp.id
+                    left join res_users ru on rp.user_id = ru.id
+                    left join res_partner rurp on ru.partner_id=rurp.id
+                    left join product_product pp on ail.product_id=pp.id
+                    left join product_template pt on pp.product_tmpl_id=pt.id
+                    left join product_category pc on pt.categ_id=pc.id
+                    left join product_uom pu on ail.uos_id=pu.id
+                    left join stock_production_lot spl on ail.prodlot_id = spl.id
+                    left join (
+                            select ail.id,sum(at.amount*ail.price_unit*ail.quantity) as amount_tax
+                                from account_invoice_line ail
+                                    left join account_invoice_line_tax ailt on ail.id=ailt.invoice_line_id
+                                    left join account_tax at on ailt.tax_id=at.id
+                                group by ail.id
+                        ) as at on ail.id=at.id
+                    left join stock_move sm on sm.id=ail.source_id
+                    left join stock_location sl on sl.id=sm.location_id
+                    left join manufacturer_product mp on pp.manufacturer_product_id = mp.id
+                    left join kv_benh_vien kv on kv.id=rp.kv_benh_vien
+                    left join res_country_state rcs on rcs.id=rp.state_id
+                where ai.date_invoice between '%s' and '%s' and ai.state!='cancel' and ai.type='out_invoice' 
+        '''%(date_from,date_to)
+        if partner_ids:
+            partner_ids = str(partner_ids).replace('[', '(')
+            partner_ids = str(partner_ids).replace(']', ')')
+            sql+='''
+                and ai.partner_id in %s 
+            '''%(partner_ids)
+        if users_ids:
+            users_ids = str(users_ids).replace('[', '(')
+            users_ids = str(users_ids).replace(']', ')')
+            sql+='''
+                and rp.user_id in %s 
+            '''%(users_ids)
+        if product_ids:
+            product_ids = str(product_ids).replace('[', '(')
+            product_ids = str(product_ids).replace(']', ')')
+            sql+='''
+                and ail.product_id in %s 
+            '''%(product_ids)
+        if categ_ids:
+            categ_ids = str(categ_ids).replace('[', '(')
+            categ_ids = str(categ_ids).replace(']', ')')
+            sql+='''
+                and pc.id in %s 
+            '''%(categ_ids)
+        if loc_ids:
+            loc_ids = str(loc_ids).replace('[', '(')
+            loc_ids = str(loc_ids).replace(']', ')')
+            sql+='''
+                and sl.id in %s 
+            '''%(loc_ids)
+        if nsx_ids:
+            nsx_ids = str(nsx_ids).replace('[', '(')
+            nsx_ids = str(nsx_ids).replace(']', ')')
+            sql+='''
+                and mp.id in %s 
+            '''%(nsx_ids)
+        if khu_vuc_ids:
+            khu_vuc_ids = str(khu_vuc_ids).replace('[', '(')
+            khu_vuc_ids = str(khu_vuc_ids).replace(']', ')')
+            sql+='''
+                and kv.id in %s 
+            '''%(khu_vuc_ids)
+        if tinh_ids:
+            tinh_ids = str(tinh_ids).replace('[', '(')
+            tinh_ids = str(tinh_ids).replace(']', ')')
+            sql+='''
+                and rcs.id in %s 
+            '''%(tinh_ids)
+            
+        sql+='''
+             order by ai.date_invoice
+        '''
+        s= 'select sum(v.dt_truocthue) as tong from ('+sql+')v'
+        self.cr.execute(s)
+        return self.cr.dictfetchone()
+    
+    def get_tong_soluong(self):
+        wizard_data = self.localcontext['data']['form']
+        date_from = wizard_data['date_from']
+        date_to = wizard_data['date_to']
+        partner_ids = wizard_data['partner_ids']
+        users_ids = wizard_data['users_ids']
+        product_ids = wizard_data['product_ids']
+        categ_ids = wizard_data['categ_ids']
+        loc_ids = wizard_data['loc_ids']
+        nsx_ids = wizard_data['nsx_ids']
+        khu_vuc_ids = wizard_data['khu_vuc_ids']
+        tinh_ids = wizard_data['tinh_ids']
+        sql = '''
+            select ail.quantity as so_luong
+                from account_invoice_line ail
+                    left join account_invoice ai on ail.invoice_id=ai.id
+                    left join res_partner rp on ail.partner_id=rp.id
+                    left join res_users ru on rp.user_id = ru.id
+                    left join res_partner rurp on ru.partner_id=rurp.id
+                    left join product_product pp on ail.product_id=pp.id
+                    left join product_template pt on pp.product_tmpl_id=pt.id
+                    left join product_category pc on pt.categ_id=pc.id
+                    left join product_uom pu on ail.uos_id=pu.id
+                    left join stock_production_lot spl on ail.prodlot_id = spl.id
+                    left join (
+                            select ail.id,sum(at.amount*ail.price_unit*ail.quantity) as amount_tax
+                                from account_invoice_line ail
+                                    left join account_invoice_line_tax ailt on ail.id=ailt.invoice_line_id
+                                    left join account_tax at on ailt.tax_id=at.id
+                                group by ail.id
+                        ) as at on ail.id=at.id
+                    left join stock_move sm on sm.id=ail.source_id
+                    left join stock_location sl on sl.id=sm.location_id
+                    left join manufacturer_product mp on pp.manufacturer_product_id = mp.id
+                    left join kv_benh_vien kv on kv.id=rp.kv_benh_vien
+                    left join res_country_state rcs on rcs.id=rp.state_id
+                where ai.date_invoice between '%s' and '%s' and ai.state!='cancel' and ai.type='out_invoice' 
+        '''%(date_from,date_to)
+        if partner_ids:
+            partner_ids = str(partner_ids).replace('[', '(')
+            partner_ids = str(partner_ids).replace(']', ')')
+            sql+='''
+                and ai.partner_id in %s 
+            '''%(partner_ids)
+        if users_ids:
+            users_ids = str(users_ids).replace('[', '(')
+            users_ids = str(users_ids).replace(']', ')')
+            sql+='''
+                and rp.user_id in %s 
+            '''%(users_ids)
+        if product_ids:
+            product_ids = str(product_ids).replace('[', '(')
+            product_ids = str(product_ids).replace(']', ')')
+            sql+='''
+                and ail.product_id in %s 
+            '''%(product_ids)
+        if categ_ids:
+            categ_ids = str(categ_ids).replace('[', '(')
+            categ_ids = str(categ_ids).replace(']', ')')
+            sql+='''
+                and pc.id in %s 
+            '''%(categ_ids)
+        if loc_ids:
+            loc_ids = str(loc_ids).replace('[', '(')
+            loc_ids = str(loc_ids).replace(']', ')')
+            sql+='''
+                and sl.id in %s 
+            '''%(loc_ids)
+        if nsx_ids:
+            nsx_ids = str(nsx_ids).replace('[', '(')
+            nsx_ids = str(nsx_ids).replace(']', ')')
+            sql+='''
+                and mp.id in %s 
+            '''%(nsx_ids)
+        if khu_vuc_ids:
+            khu_vuc_ids = str(khu_vuc_ids).replace('[', '(')
+            khu_vuc_ids = str(khu_vuc_ids).replace(']', ')')
+            sql+='''
+                and kv.id in %s 
+            '''%(khu_vuc_ids)
+        if tinh_ids:
+            tinh_ids = str(tinh_ids).replace('[', '(')
+            tinh_ids = str(tinh_ids).replace(']', ')')
+            sql+='''
+                and rcs.id in %s 
+            '''%(tinh_ids)
+            
+        sql+='''
+             order by ai.date_invoice
+        '''
+        s= 'select sum(dt_truocthue) as tong from ('+sql+')'
+        self.cr.execute(s)
+        return self.cr.dictfetchone()
+    
+    def get_tong_dt_sauthue(self):
+        wizard_data = self.localcontext['data']['form']
+        date_from = wizard_data['date_from']
+        date_to = wizard_data['date_to']
+        partner_ids = wizard_data['partner_ids']
+        users_ids = wizard_data['users_ids']
+        product_ids = wizard_data['product_ids']
+        categ_ids = wizard_data['categ_ids']
+        loc_ids = wizard_data['loc_ids']
+        nsx_ids = wizard_data['nsx_ids']
+        khu_vuc_ids = wizard_data['khu_vuc_ids']
+        tinh_ids = wizard_data['tinh_ids']
+        sql = '''
+            select (ail.price_unit*ail.quantity)+at.amount_tax as dt_sauthue
+                from account_invoice_line ail
+                    left join account_invoice ai on ail.invoice_id=ai.id
+                    left join res_partner rp on ail.partner_id=rp.id
+                    left join res_users ru on rp.user_id = ru.id
+                    left join res_partner rurp on ru.partner_id=rurp.id
+                    left join product_product pp on ail.product_id=pp.id
+                    left join product_template pt on pp.product_tmpl_id=pt.id
+                    left join product_category pc on pt.categ_id=pc.id
+                    left join product_uom pu on ail.uos_id=pu.id
+                    left join stock_production_lot spl on ail.prodlot_id = spl.id
+                    left join (
+                            select ail.id,sum(at.amount*ail.price_unit*ail.quantity) as amount_tax
+                                from account_invoice_line ail
+                                    left join account_invoice_line_tax ailt on ail.id=ailt.invoice_line_id
+                                    left join account_tax at on ailt.tax_id=at.id
+                                group by ail.id
+                        ) as at on ail.id=at.id
+                    left join stock_move sm on sm.id=ail.source_id
+                    left join stock_location sl on sl.id=sm.location_id
+                    left join manufacturer_product mp on pp.manufacturer_product_id = mp.id
+                    left join kv_benh_vien kv on kv.id=rp.kv_benh_vien
+                    left join res_country_state rcs on rcs.id=rp.state_id
+                where ai.date_invoice between '%s' and '%s' and ai.state!='cancel' and ai.type='out_invoice' 
+        '''%(date_from,date_to)
+        if partner_ids:
+            partner_ids = str(partner_ids).replace('[', '(')
+            partner_ids = str(partner_ids).replace(']', ')')
+            sql+='''
+                and ai.partner_id in %s 
+            '''%(partner_ids)
+        if users_ids:
+            users_ids = str(users_ids).replace('[', '(')
+            users_ids = str(users_ids).replace(']', ')')
+            sql+='''
+                and rp.user_id in %s 
+            '''%(users_ids)
+        if product_ids:
+            product_ids = str(product_ids).replace('[', '(')
+            product_ids = str(product_ids).replace(']', ')')
+            sql+='''
+                and ail.product_id in %s 
+            '''%(product_ids)
+        if categ_ids:
+            categ_ids = str(categ_ids).replace('[', '(')
+            categ_ids = str(categ_ids).replace(']', ')')
+            sql+='''
+                and pc.id in %s 
+            '''%(categ_ids)
+        if loc_ids:
+            loc_ids = str(loc_ids).replace('[', '(')
+            loc_ids = str(loc_ids).replace(']', ')')
+            sql+='''
+                and sl.id in %s 
+            '''%(loc_ids)
+        if nsx_ids:
+            nsx_ids = str(nsx_ids).replace('[', '(')
+            nsx_ids = str(nsx_ids).replace(']', ')')
+            sql+='''
+                and mp.id in %s 
+            '''%(nsx_ids)
+        if khu_vuc_ids:
+            khu_vuc_ids = str(khu_vuc_ids).replace('[', '(')
+            khu_vuc_ids = str(khu_vuc_ids).replace(']', ')')
+            sql+='''
+                and kv.id in %s 
+            '''%(khu_vuc_ids)
+        if tinh_ids:
+            tinh_ids = str(tinh_ids).replace('[', '(')
+            tinh_ids = str(tinh_ids).replace(']', ')')
+            sql+='''
+                and rcs.id in %s 
+            '''%(tinh_ids)
+            
+        sql+='''
+             order by ai.date_invoice
+        '''
+        s= 'select sum(dt_truocthue) as tong from ('+sql+')'
+        self.cr.execute(s)
+        return self.cr.dictfetchone()
     
     def display_address(self, partner_id):
         partner = self.pool.get('res.partner').browse(self.cr, self.uid, partner_id)

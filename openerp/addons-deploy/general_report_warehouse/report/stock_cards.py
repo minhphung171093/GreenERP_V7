@@ -280,7 +280,7 @@ class Parser(report_sxw.rml_parse):
             cknb = self.pool.get('chuyenkho.noibo').browse(self.cr,self.uid,cknb_ids[0])
             return cknb.note
         else:
-            return 'Chuyển kho nội bộ'
+            return u'Chuyển kho nội bộ'
     
     def get_sum_rcv(self):
         return self.sum_nhap_qty

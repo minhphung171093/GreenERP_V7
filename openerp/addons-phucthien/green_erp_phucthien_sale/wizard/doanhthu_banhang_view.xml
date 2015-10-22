@@ -12,11 +12,13 @@
 	                    	<field name="date_from"/>
 	                        <field name="date_to"/>
 	                        <field name="partner_ids" widget="many2many_tags" domain="[('customer','=',True)]"/>
-	                        <field name="users_ids" widget="many2many_tags"/>
 	                        <field name="categ_ids" widget="many2many_tags"/>
 	                        <field name="product_ids" widget="many2many_tags"/>
 	                        <field name="loc_ids" widget="many2many_tags"/>
 	                        <field name="nsx_ids" widget="many2many_tags"/>
+	                        <field name="khu_vuc_ids" widget="many2many_tags"/>
+	                        <field name="tinh_ids" widget="many2many_tags"/>
+	                        <field name="users_ids" widget="many2many_tags" invisible='1'/>
 	                    </group>
 	                </sheet>
                     <footer>
@@ -34,6 +36,7 @@
 	        <field name="view_type">form</field>
 	        <field name="view_mode">form</field>
 	        <field name="view_id" ref="view_doanhthu_banhang_form" />
+	        <field name="context">{'default_users_ids':[(6,0,[uid])]}</field>
 	        <field name="target">new</field>
 	    </record>
 
