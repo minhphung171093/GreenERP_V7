@@ -118,29 +118,25 @@ setup(
     include_package_data=True,
     dependency_links=['http://download.gna.org/pychart/'],
     install_requires=[
-        'babel >= 1.0',
+        'babel',
         'docutils',
         'feedparser',
-        'gevent',
+        'gdata',
         'Jinja2',
         'lxml',  # windows binary http://www.lfd.uci.edu/~gohlke/pythonlibs/
         'mako',
         'mock',
-        'pillow',  # windows binary http://www.lfd.uci.edu/~gohlke/pythonlibs/
+        'PIL', # windows binary http://www.lfd.uci.edu/~gohlke/pythonlibs/
         'psutil',  # windows binary code.google.com/p/psutil/downloads/list
-        'psycogreen',
         'psycopg2 >= 2.2',
         'pychart',  # not on pypi, use: pip install http://download.gna.org/pychart/PyChart-1.39.tar.gz
         'pydot',
-        'pyparsing < 2',
-        'pyserial',
-        'python-dateutil',
+        'python-dateutil < 2',
         'python-ldap',  # optional
         'python-openid',
         'pytz',
-        'pyusb >= 1.0.0b1',
+        'pywebdav < 0.9.8',
         'pyyaml',
-        'qrcode',
         'reportlab',  # windows binary pypi.python.org/pypi/reportlab
         'simplejson',
         'unittest2',
@@ -154,7 +150,6 @@ setup(
     },
     tests_require=[
         'unittest2',
-        'mock',
     ],
     **py2exe_options()
 )

@@ -1,26 +1,22 @@
-babel >= 1.0
+babel
 docutils
 feedparser
-gevent
+gdata
 Jinja2
 lxml
 mako
 mock
-pillow
+PIL
 psutil
-psycogreen
 psycopg2 >= 2.2
 pychart
 pydot
-pyparsing < 2
-pyserial
-python-dateutil
+python-dateutil < 2
 python-ldap
 python-openid
 pytz
-pyusb >= 1.0.0b1
+pywebdav < 0.9.8
 pyyaml
-qrcode
 reportlab
 simplejson
 unittest2

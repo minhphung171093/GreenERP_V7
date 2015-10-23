@@ -53,4 +53,5 @@ license = 'AGPL-3'
 nt_service_name = "openerp-server-" + serie
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
-version += '-b42ae34'
+version += '-20150416' 
+# hash = 'd246e36'

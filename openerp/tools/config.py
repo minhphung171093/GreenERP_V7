@@ -192,7 +192,7 @@ class configmanager(object):
         levels = ['info', 'debug_rpc', 'warn', 'test', 'critical',
             'debug_sql', 'error', 'debug', 'debug_rpc_answer', 'notset']
         group.add_option('--log-level', dest='log_level', type='choice', choices=levels,
-            my_default='info', help='specify the level of the logging. Accepted values: ' + str(levels) + ' (deprecated option).')
+            my_default='info', help='specify the level of the logging. Accepted values: ' + str(levels))
 
         parser.add_option_group(group)
 
@@ -220,9 +220,9 @@ class configmanager(object):
         group.add_option("-w", "--db_password", dest="db_password", my_default='openerp',
                          help="specify the database password")
         group.add_option("--pg_path", dest="pg_path", help="specify the pg executable path")
-        group.add_option("--db_host", dest="db_host", my_default=False,#my_default='202.43.110.68',
+        group.add_option("--db_host", dest="db_host", my_default=False,
                          help="specify the database host")
-        group.add_option("--db_port", dest="db_port", my_default=False,#my_default='5432',
+        group.add_option("--db_port", dest="db_port", my_default=False,
                          help="specify the database port", type="int")
         group.add_option("--db_maxconn", dest="db_maxconn", type='int', my_default=64,
                          help="specify the the maximum number of physical connections to posgresql")
@@ -350,8 +350,8 @@ class configmanager(object):
             "the i18n-export option cannot be used without the database (-d) option")
 
         # Check if the config file exists (-c used, but not -s)
-        die(not opt.save and opt.config and not os.path.exists(opt.config),
-            "The config file '%s' selected with -c/--config doesn't exist, "\
+        die(not opt.save and opt.config and not os.access(opt.config, os.R_OK),
+            "The config file '%s' selected with -c/--config doesn't exist or is not readable, "\
             "use -s/--save if you want to generate it"% opt.config)
 
         # place/search the config file on Win32 near the server installation

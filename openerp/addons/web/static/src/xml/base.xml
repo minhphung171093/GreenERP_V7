@@ -78,7 +78,8 @@
                 </ul>
             </form>
             <div class="oe_login_footer">
-                <a href="#" class="oe_login_manage_db">Manage Databases</a>
+                <a href="#" class="oe_login_manage_db">Manage Databases</a> |
+                <a href="http://www.openerp.com" target="_blank">Powered by <span>OpenERP</span></a>
             </div>
         </div>
     </div>
@@ -421,6 +422,8 @@
         <span class="oe_topbar_name"/>
         <ul class="oe_dropdown_menu">
             <li><a href="#" data-menu="settings">Preferences</a></li>
+            <li><a href="#" data-menu="account">My OpenERP.com account</a></li>
+            <li><a href="#" data-menu="about">About OpenERP</a></li>
             <li><a href="#" data-menu="help">Help</a></li>
             <li><a href="#" data-menu="logout">Log out</a></li>
         </ul>
@@ -462,7 +465,7 @@
                 </a>
                 <div class="oe_secondary_menus_container"/>
                 <div class="oe_footer">
-                   
+                    Powered by <a href="http://www.openerp.com" target="_blank"><span>OpenERP</span></a>
                 </div>
             </td>
             <td class="oe_application">
@@ -1199,16 +1202,18 @@
 </t>
 <t t-name="FieldBinaryImage">
     <span class="oe_form_field oe_form_field_image" t-att-style="widget.node.attrs.style">
-        <div class="oe_form_field_image_controls oe_edit_only">
-            <t t-call="HiddenInputFile">
-                <t t-set="fileupload_id" t-value="widget.fileupload_id"/>
-                Edit 
-            </t>
-            <div class="oe_form_binary_progress" style="display: none">
-                <img t-att-src='_s + "/web/static/src/img/throbber.gif"' width="16" height="16"/>
-                <b>Uploading ...</b>
+        <t t-if="!widget.get('effective_readonly')">
+            <div class="oe_form_field_image_controls oe_edit_only">
+                <t t-call="HiddenInputFile">
+                    <t t-set="fileupload_id" t-value="widget.fileupload_id"/>
+                    Edit 
+                </t>
+                <div class="oe_form_binary_progress" style="display: none">
+                    <img t-att-src='_s + "/web/static/src/img/throbber.gif"' width="16" height="16"/>
+                    <b>Uploading ...</b>
+                </div>
             </div>
-        </div>
+        </t>
     </span>
 </t>
 <t t-name="FieldBinaryImage-img">
@@ -1399,8 +1404,9 @@
     <t t-if="! widget.options.disable_multiple_selection">
         <button type="button" class="oe_button oe_selectcreatepopup-search-select oe_highlight" disabled="disabled">Select</button>
     </t>
+    <t t-if="!widget.options.no_create">
     <button type="button" class="oe_button oe_selectcreatepopup-search-create">Create</button>
-    or <a class="oe_button oe_selectcreatepopup-search-close oe_bold oe_form_button_cancel" href="javascript:void(0)">Cancel</a>
+    or </t><a class="oe_button oe_selectcreatepopup-search-close oe_bold oe_form_button_cancel" href="javascript:void(0)">Cancel</a>
 </t>
 <t t-name="AbstractFormPopup.buttons">
     <t t-if="! readonly">
