@@ -36,6 +36,7 @@ class Parser(report_sxw.rml_parse):
         self.qty_fist = 0.0
         self.sum_nhap_qty = 0.0
         self.sum_xuat_qty =0.0
+        self.nsx=False
         self.get_company(cr, uid)
         
         self.localcontext.update({
@@ -58,6 +59,8 @@ class Parser(report_sxw.rml_parse):
             'get_date_hd':self.get_date_hd,
             'get_so_hd':self.get_so_hd,
             'get_note_chuyen_kho_noi_bo': self.get_note_chuyen_kho_noi_bo,
+            'get_ngay_hd': self.get_ngay_hd,
+            'get_nsx': self.get_nsx,
         })
         
     def get_company(self,cr,uid):
@@ -70,6 +73,11 @@ class Parser(report_sxw.rml_parse):
         if not self.product_name:
             self.get_header()
         return self.product_name
+    
+    def get_nsx(self):
+        if not self.nsx:
+            self.get_header()
+        return self.nsx
     
     def get_warehouse_name(self):
         if not self.warehouse_name:
@@ -116,6 +124,8 @@ class Parser(report_sxw.rml_parse):
         self.date_start = wizard_data['date_start']
         self.date_end = wizard_data['date_end']
         self.location_id = wizard_data['location_id'][0]
+        product = self.pool.get('product.product').browse(self.cr, self.uid,wizard_data['product_id'][0])
+        self.nsx = product.manufacturer_product_id and product.manufacturer_product_id.name or ''
         return res
     
     def get_uom_base(self):
@@ -213,7 +223,16 @@ class Parser(report_sxw.rml_parse):
         else:
             so_hd = ''
         return so_hd
-        
+    
+    def get_ngay_hd(self, picking_name):
+        invoice_ids = self.pool.get('account.invoice').search(self.cr,self.uid,[('name','=',picking_name)])
+        if invoice_ids:
+            invoice = self.pool.get('account.invoice').browse(self.cr,self.uid,invoice_ids[0])
+            ngay_hd = self.get_vietname_date(invoice.date_invoice)
+        else:
+            ngay_hd = ''
+        return ngay_hd
+    
     def get_line(self):
         if self.location_id:
             self.get_header()

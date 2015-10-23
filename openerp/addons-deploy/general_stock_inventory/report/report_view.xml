@@ -52,6 +52,29 @@
 	        string="Inventory Accuracy Analysis"
 	        rml="general_stock_inventory/report/inventory_accuracy_analysis.ods"/>
 	        
+        <record id="danhgia_chatluong_hang_trongkho" model="ir.actions.report.xml">
+	        <field name="name">Biên bản đánh giá chất lượng hàng trong kho</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">stock.inventory</field>
+	        <field name="report_name">danhgia_chatluong_hang_trongkho</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-odt</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-doc'),('compatible_types','=','oo-odt')]"/>
+	        <field name="parser_loc">general_stock_inventory/report/danhgia_chatluong_hang_trongkho.py</field>
+	        <field name="report_rml">general_stock_inventory/report/danhgia_chatluong_hang_trongkho.odt</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record>		    
+		
+		<report 
+			auto="True" 
+			menu="True"
+			id="danhgia_chatluong_hang_trongkho" 
+			model="stock.inventory" 
+			name="danhgia_chatluong_hang_trongkho"
+	        string="Biên bản đánh giá chất lượng hàng trong kho"
+	        rml="general_stock_inventory/report/danhgia_chatluong_hang_trongkho.odt"/>
 	        
 	</data>
 </openerp>

@@ -52,7 +52,7 @@ class Parser(report_sxw.rml_parse):
         if not date:
             date = time.strftime('%Y-%m-%d %H:%M:%S')
         date = datetime.strptime(date, DATETIME_FORMAT) + timedelta(hours=7)
-        return date.strftime('%m/%Y') 
+        return date.strftime('%m/%Y')
     
     def get_tax(self, line):
         val = 0.0
