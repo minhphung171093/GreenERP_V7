@@ -28,12 +28,13 @@ class congno_vacine(osv.osv_memory):
      
     _columns = {
         'date_from': fields.date('Tính đến ngày',required=True),
-        'user_id': fields.many2one('res.users', string='Users', readonly=True),
+#         'user_id': fields.many2many('res.users', string='Users', readonly=True),
+        'user_id': fields.many2many('res.users', 'congno_user_ref', 'congno_id', 'user_id', 'Users'),  
     }
      
     _defaults = {
         'date_from': time.strftime('%Y-%m-%d'),
-        'user_id': lambda self,cr, uid, ctx: uid,
+        'user_id': lambda self,cr, uid, ctx: [(6,0,[uid])],
         
     }
      

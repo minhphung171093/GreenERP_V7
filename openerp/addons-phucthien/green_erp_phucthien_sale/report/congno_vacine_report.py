@@ -63,12 +63,103 @@ class Parser(report_sxw.rml_parse):
     def get_lines(self):
         wizard_data = self.localcontext['data']['form']
         date_from = wizard_data['date_from']    
-        user_id = wizard_data['user_id']
+        user_ids = wizard_data['user_id']
         invoice_obj = self.pool.get('account.invoice')
-        sql = '''
-            select id from account_invoice where 
-        '''
-        return []
+        cus_ids = []
+        res = []
+        if not user_ids:
+            sql ='''
+             select partner_id from account_invoice where id in (select distinct invoice_id from account_invoice_line where product_id in (select product_product.id
+                            from product_product,product_template 
+                            where product_template.categ_id in (select id from product_category where code ='VC') 
+                            and product_product.product_tmpl_id = product_template.id) and invoice_id in 
+                                (select id from account_invoice where date_invoice <= '%s' and type ='out_invoice' and state ='open'))
+            '''%(date_from)
+            self.cr.execute(sql)   
+            cus_ids = [r[0] for r in self.cr.fetchall()]
+        else:
+            user_ids = str(user_ids).replace("[","(")
+            user_ids = str(user_ids).replace("]",")")
+            sql = '''
+                select id from res_partner where user_id in %s and customer is True
+            '''%(user_ids)
+            self.cr.execute(sql)
+            cus_ids = [r[0] for r in self.cr.fetchall()]  
+        if cus_ids:
+            for cus in cus_ids:
+                sql = ''' 
+                    select case when sum(residual)!=0 then sum(residual) else 0 end sum30 from account_invoice where id in (select distinct invoice_id from account_invoice_line where product_id in (select product_product.id
+                                from product_product,product_template 
+                                where product_template.categ_id in (select id from product_category where code ='VC') 
+                                and product_product.product_tmpl_id = product_template.id) and invoice_id in 
+                                    (select id from account_invoice where date_invoice <= '%s' and type ='out_invoice' and state ='open'))
+                                    and ('%s'::date - date_invoice) <= 30 and partner_id = %s
+                '''%(date_from,date_from,cus)
+                self.cr.execute(sql) 
+                sum30 = self.cr.fetchone()[0]
+                
+                sql = ''' 
+                    select case when sum(residual)!=0 then sum(residual) else 0 end sum30 from account_invoice where id in (select distinct invoice_id from account_invoice_line where product_id in (select product_product.id
+                                from product_product,product_template 
+                                where product_template.categ_id in (select id from product_category where code ='VC') 
+                                and product_product.product_tmpl_id = product_template.id) and invoice_id in 
+                                    (select id from account_invoice where date_invoice <= '%s' and type ='out_invoice' and state ='open'))
+                                    and ('%s'::date - date_invoice)>=31 and ('%s'::date - date_invoice)<=45 and partner_id = %s
+                '''%(date_from,date_from,date_from,cus)
+                self.cr.execute(sql) 
+                sum31 = self.cr.fetchone()[0]
+                
+                sql = ''' 
+                    select case when sum(residual)!=0 then sum(residual) else 0 end sum30 from account_invoice where id in (select distinct invoice_id from account_invoice_line where product_id in (select product_product.id
+                                from product_product,product_template 
+                                where product_template.categ_id in (select id from product_category where code ='VC') 
+                                and product_product.product_tmpl_id = product_template.id) and invoice_id in 
+                                    (select id from account_invoice where date_invoice <= '%s' and type ='out_invoice' and state ='open'))
+                                    and ('%s'::date - date_invoice)>=46 and ('%s'::date - date_invoice)<=60 and partner_id = %s
+                '''%(date_from,date_from,date_from,cus)
+                self.cr.execute(sql) 
+                sum46 = self.cr.fetchone()[0]
+                
+                sql = ''' 
+                    select case when sum(residual)!=0 then sum(residual) else 0 end sum30 from account_invoice where id in (select distinct invoice_id from account_invoice_line where product_id in (select product_product.id
+                                from product_product,product_template 
+                                where product_template.categ_id in (select id from product_category where code ='VC') 
+                                and product_product.product_tmpl_id = product_template.id) and invoice_id in 
+                                    (select id from account_invoice where date_invoice <= '%s' and type ='out_invoice' and state ='open'))
+                                    and ('%s'::date - date_invoice)>=61 and ('%s'::date - date_invoice)<=90 and partner_id = %s
+                '''%(date_from,date_from,date_from,cus)
+                self.cr.execute(sql) 
+                sum61 = self.cr.fetchone()[0]
+                
+                sql = ''' 
+                    select case when sum(residual)!=0 then sum(residual) else 0 end sum30 from account_invoice where id in (select distinct invoice_id from account_invoice_line where product_id in (select product_product.id
+                                from product_product,product_template 
+                                where product_template.categ_id in (select id from product_category where code ='VC') 
+                                and product_product.product_tmpl_id = product_template.id) and invoice_id in 
+                                    (select id from account_invoice where date_invoice <= '%s' and type ='out_invoice' and state ='open'))
+                                    and ('%s'::date - date_invoice)>=91 and partner_id = %s
+                '''%(date_from,date_from,cus)
+                self.cr.execute(sql) 
+                sum91 = self.cr.fetchone()[0]
+#                 sql = '''
+#                     select res_partner.name as cus, res_users.name as nv from res_partner,res_users where id = %s
+#                 '''%(cus)
+#                 self.cr.execute(sql) 
+#                 cus_name = self.cr.fetchone()[0] or ''
+                
+                cus_name = self.pool.get('res.partner').browse(self.cr,self.uid,cus).name 
+                tdv_name = self.pool.get('res.partner').browse(self.cr,self.uid,cus).user_id and self.pool.get('res.partner').browse(self.cr,self.uid,cus).user_id.name or ''
+                
+                res.append({'cus_name': cus_name,
+                            'sum30':sum30,
+                            'sum31':sum31,
+                            'sum46':sum46,
+                            'sum61':sum61,
+                            'sum91':sum91,
+                            'no_qh': sum31 + sum46 + sum61 + sum91,
+                            'tong_no': sum30 + sum31 + sum46 + sum61 + sum91,
+                            'tdv': tdv_name,})
+        return res
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
 

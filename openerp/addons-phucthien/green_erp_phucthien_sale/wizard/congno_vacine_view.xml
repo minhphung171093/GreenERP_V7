@@ -9,7 +9,7 @@
                 <form string="Công Nợ Vacine" version="7.0">
                     <group>
                     	<field name="date_from"/>
-                    	<field name="user_id" invisible='1'/>
+                    	<field name="user_id" widget="many2many_tags" groups='base.group_sale_salesman_all_leads'/>
                     </group>
                     <footer>
                         <button name="print_report" string="In" type="object" class="oe_highlight"/>
