@@ -64,6 +64,10 @@ class Parser(report_sxw.rml_parse):
         wizard_data = self.localcontext['data']['form']
         date_from = wizard_data['date_from']    
         user_id = wizard_data['user_id']
+        invoice_obj = self.pool.get('account.invoice')
+        sql = '''
+            select id from account_invoice where 
+        '''
         return []
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
