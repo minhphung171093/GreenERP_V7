@@ -141,7 +141,7 @@ class Parser(report_sxw.rml_parse):
     
     def convert(self, amount):
         user = self.pool.get('res.users')
-        amount_text = user.amount_to_text(amount, 'vn', 'VND')
+        amount_text = user.amount_to_text(round(amount), 'vn', 'VND')
         if amount_text and len(amount_text)>1:
             amount = amount_text[1:]
             head = amount_text[:1]

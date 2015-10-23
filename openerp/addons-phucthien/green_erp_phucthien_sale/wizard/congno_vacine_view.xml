@@ -7,11 +7,9 @@
             <field name="model">congno.vacine</field>
             <field name="arch" type="xml">
                 <form string="Công Nợ Vacine" version="7.0">
-                	<sheet>
-	                    <group>
-	                    	<field name="date_from"/>
-	                    </group>
-	                </sheet>
+                    <group>
+                    	<field name="date_from"/>
+                    </group>
                     <footer>
                         <button name="print_report" string="In" type="object" class="oe_highlight"/>
                         or

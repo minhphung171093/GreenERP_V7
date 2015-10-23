@@ -110,7 +110,7 @@ class Parser(report_sxw.rml_parse):
     
     def get_ngay_hethan(self, life_date):
         if life_date:
-            ngay_hh = datetime.strptime(life_date, DATETIME_FORMAT)
+            ngay_hh = datetime.strptime(life_date, DATETIME_FORMAT) + timedelta(hours=7)
             ngay_hh = ngay_hh.strftime('%m-%Y')
         else:
             ngay_hh = ''

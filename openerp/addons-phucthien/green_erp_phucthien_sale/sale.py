@@ -553,7 +553,7 @@ class sale_reason_pending(osv.osv):
     _name = "sale.reason.pending"
     
     _columns = {
-        'name': fields.char('Reason Name'),
+        'name': fields.char('Reason Name', required=True),
     }
     
 sale_reason_pending()
@@ -562,10 +562,19 @@ class ly_do_huy(osv.osv):
     _name = "ly.do.huy"
     
     _columns = {
-        'name': fields.char('Reason Name'),
+        'name': fields.char('Reason Name', required=True),
     }
     
 ly_do_huy()
+
+class noi_dung_chinh(osv.osv):
+    _name = "noi.dung.chinh"
+    
+    _columns = {
+        'name': fields.char('Nội dung chính', required=True),
+    }
+    
+noi_dung_chinh()
 
 class remind_work_situation(osv.osv):
     _name = "remind.work.situation"
@@ -579,22 +588,38 @@ remind_work_situation()
 class remind_work(osv.osv):
     _name = "remind.work"
     _inherit = ['mail.thread']
+    
+    def _get_gancho(self, cr, uid, ids, field_name, arg, context=None):
+        res = {}
+        for line in self.browse(cr, uid, ids):
+            name = ''
+            for u in line.user_ids:
+                name += u.name+','
+            if name:
+                name=name[:-1]
+            res[line.id] = name
+        return res
+    
     _columns = {
         'name': fields.char('Chủ đề', required=True,readonly=True, states={'draft': [('readonly', False)]}),
         'date_start': fields.datetime('Thời gian bắt đầu',readonly=True, states={'draft': [('readonly', False)]}),
         'date_end': fields.datetime('Thời gian kết thúc',readonly=True, states={'draft': [('readonly', False)]}),
-        'user_id': fields.many2one('res.users', 'Gán cho',required=True,readonly=True, states={'draft': [('readonly', False)]}),
         'situation_id': fields.many2one('remind.work.situation', 'Tình trạng công việc',readonly=True, states={'draft': [('readonly', False)]}),
         'note':fields.text('Nội dung',readonly=True, states={'draft': [('readonly', False)]}),
-        'state': fields.selection([ ('draft', 'Draft'),
-                                    ('open', 'Open'),
-                                    ('cancel', 'Cancelled'),
-                                    ('done', 'Done'),],string='Status',readonly=True, states={'draft': [('readonly', False)]}),
+        'state': fields.selection([ ('draft', 'Mới tạo'),
+                                    ('open', 'Đang thực hiện'),
+                                    ('cancel', 'Hủy bỏ'),
+                                    ('done', 'Hoàn thành'),],string='Trạng thái',readonly=True, states={'draft': [('readonly', False)]}),
+        'noidung_chinh_id': fields.many2one('noi.dung.chinh', 'Nội dung chính', required=True,readonly=True, states={'draft': [('readonly', False)]}),
+        'partner_id': fields.many2one('res.partner', 'Khách hàng',readonly=True, states={'draft': [('readonly', False)]}),
+        'lydo_huy':fields.char('Lý do hủy',readonly=True, states={'draft': [('readonly', False)]}),
+        'user_ids': fields.many2many('res.users','remind_work_users_ref','remind_work_id','user_id', 'Gán cho',required=True,readonly=True, states={'draft': [('readonly', False)]}),
+        'gan_cho': fields.function(_get_gancho,type='char', string='Gán cho'),
     }
     _defaults = {
         'date_start': fields.datetime.now,
         'state':  'draft',
-        'user_id': lambda self,cr,uid,ctx: uid,
+        'user_ids': lambda self,cr,uid,ctx: [(6,0,[uid])],
     }
     
     def case_open(self, cr, uid, ids, context=None):
@@ -602,6 +627,9 @@ class remind_work(osv.osv):
     def case_done(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids, {'state': 'done'})
     def case_cancel(self, cr, uid, ids, context=None):
+        for line in self.browse(cr, uid, ids):
+            if not line.lydo_huy:
+                raise osv.except_osv(_('Cảnh báo!'),_('Vui lòng nhập lý do hủy!'))
         return self.write(cr, uid, ids, {'state': 'cancel'})
     
 remind_work()

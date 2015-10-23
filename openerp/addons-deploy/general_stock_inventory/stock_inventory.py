@@ -43,7 +43,7 @@ class stock_inventory(osv.osv):
         'description': fields.char('Description', size=128),
         'freeze_date': fields.datetime('Freeze Date',required=True),
         'user_request_id': fields.many2one('res.users', 'User Request', readonly=True, states={'draft': [('readonly', False)]}),
-        'stock_journal_id': fields.many2one('stock.journal', 'Stock Journal', domain="[('source_type','=','phys_adj')]", required=True),
+        'stock_journal_id': fields.many2one('stock.journal', 'Stock Journal', domain="[('source_type','=','kiemke_dinhky')]", required=True),
         'total_adjustment_value': fields.float('Total Adjustment Value',digits=(16,2), readonly=True),
         'search_product_ean':fields.char('Search Product/EAN', size=300),
         'file': fields.binary('File', help='Choose file Excel'),
