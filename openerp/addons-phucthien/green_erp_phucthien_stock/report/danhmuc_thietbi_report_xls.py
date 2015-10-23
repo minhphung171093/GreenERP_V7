@@ -43,8 +43,21 @@ class Parser(report_sxw.rml_parse):
             'get_dd_kholanh': self.get_dd_kholanh,
             'get_ten_van_phong': self.get_ten_van_phong,
             'get_ten_kho_lanh': self.get_ten_kho_lanh,
+            'get_lines': self.get_lines,
             
         })
+        
+    def get_lines(self):
+        wizard_data = self.localcontext['data']['form']
+        tu_ngay = wizard_data['tu_ngay']
+        den_ngay = wizard_data['den_ngay']
+        svtm_obj = self.pool.get('ve.sinh.thangmay')
+        sql = '''
+            select id from ve_sinh_thangmay where name between '%s' and '%s'
+        '''%(tu_ngay,den_ngay)
+        self.cr.execute(sql)
+        svtm_ids = [r[0] for r in self.cr.fetchall()]
+        return svtm_obj.browse(self.cr, self.uid, svtm_ids)
         
     def get_date_from(self):
         wizard_data = self.localcontext['data']['form']

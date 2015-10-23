@@ -1088,6 +1088,31 @@ class ve_sinh_kho_line(osv.osv):
     
 ve_sinh_kho_line()
 
+class ve_sinh_thangmay(osv.osv):
+    _name = "ve.sinh.thangmay"
+    
+    _columns = {
+        'name': fields.date('Ngày', required=True, states={'da_kiemtra': [('readonly', True)]}),
+        'hutbui': fields.boolean('Hút bụi', states={'da_kiemtra': [('readonly', True)]}),
+        'lauxaphong': fields.boolean('Lau xà phòng', states={'da_kiemtra': [('readonly', True)]}),
+        'launuocsach': fields.boolean('Lau nước sạch', states={'da_kiemtra': [('readonly', True)]}),
+        'user_id': fields.many2one('res.users', 'Người thực hiện', states={'da_kiemtra': [('readonly', True)]}),
+        'nguoi_kiemtra_id': fields.many2one('res.users', 'Người kiểm tra', readonly=True),
+        'ghi_chu': fields.text('Ghi chú', states={'da_kiemtra': [('readonly', True)]}),
+        'state': fields.selection([('draft','Mới tạo'),('da_kiemtra','Đã kiểm tra')],'Trạng thái', readonly=True),
+    }
+    
+    _defaults = {
+        'name': time.strftime('%Y-%m-%d'),
+        'user_id': lambda self, cr, uid, c:uid,
+        'state': 'draft',
+    }
+    
+    def kiem_tra(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {'state': 'da_kiemtra','nguoi_kiemtra_id': uid})
+    
+ve_sinh_thangmay()
+
 class phongchong_moi_mot(osv.osv):
     _name = "phongchong.moi.mot"
     

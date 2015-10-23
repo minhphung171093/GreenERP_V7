@@ -7,8 +7,8 @@ from openerp.tools.translate import _
 import openerp.tools
 from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT, float_compare
 
-class danhmuc_thietbi_report(osv.osv_memory):
-    _name = "danhmuc.thietbi.report"
+class danhsach_vesinh_thangmay(osv.osv_memory):
+    _name = "danhsach.vesinh.thangmay"
     _columns = {
         'tu_ngay':fields.date('Từ ngày', required=True),
         'den_ngay':fields.date('Đến ngày',required=True),
@@ -24,19 +24,9 @@ class danhmuc_thietbi_report(osv.osv_memory):
             context = {}
              
         datas = {'ids': context.get('active_ids', [])}
-        datas['model'] = 'danhmuc.thietbi.report'
-        datas['form'] = self.read(cr, uid, ids)[0]
-        datas['form'].update({'active_id':context.get('active_ids',False)})
-        return {'type': 'ir.actions.report.xml', 'report_name': 'report_danhmuc_thietbi_xls', 'datas': datas}
-        
-    def print_report_dmtb(self, cr, uid, ids, context=None):
-        if context is None:
-            context = {}
-             
-        datas = {'ids': context.get('active_ids', [])}
-        datas['model'] = 'danhmuc.thietbi.report'
+        datas['model'] = 'danhsach.vesinh.thangmay'
         datas['form'] = self.read(cr, uid, ids)[0]
         datas['form'].update({'active_id':context.get('active_ids',False)})
         return {'type': 'ir.actions.report.xml', 'report_name': 'report_vesinh_thangmay', 'datas': datas}
         
-danhmuc_thietbi_report()
+danhsach_vesinh_thangmay()
