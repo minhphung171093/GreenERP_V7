@@ -6,7 +6,7 @@
 			<field name="name">hop.dong.noi.tree</field>
 			<field name="model">hop.dong</field>
 			<field name="arch" type="xml">
-				<tree string="Hợp đồng nội" colors="gray:state== 'huy_bo';red:state== 'het_han'">
+				<tree string="Hợp đồng nội" colors="gray:state== 'huy_bo';red:ngay_canhbao &lt; current_date and den_ngay &gt; current_date" >
 					<field name="name"/>
 					<field name="company_id"/>
 					<field name="partner_id"/>
@@ -15,6 +15,7 @@
 					<field name="ngay_nhanhang"/>
 					<field name="amount_total"/>
 					<field name="type" invisible="1"/>
+					<field name="ngay_canhbao" invisible="1"/>
 					<field name="state"/>
 				</tree>
 			</field>
@@ -183,7 +184,7 @@
 			<field name="name">hop.dong.ngoai.tree</field>
 			<field name="model">hop.dong</field>
 			<field name="arch" type="xml">
-				<tree string="Hợp đồng ngoại" colors="gray:state== 'huy_bo';red:state== 'het_han'">
+				<tree string="Hợp đồng ngoại" colors="gray:state== 'huy_bo';red:ngay_canhbao &lt; current_date and den_ngay &gt; current_date or date_payment_canhbao &lt; current_date and date_payment &gt; current_date">
 					<field name="name"/>
 					<field name="company_id" string="Company"/>
 					<field name="partner_id" string="Partner"/>
@@ -193,7 +194,10 @@
 					<field name="port_of_loading"/>
 					<field name="port_of_charge"/>
 					<field name="amount_total"/>
+					<field name="ngay_canhbao" invisible="1"/>
+					<field name="date_payment_canhbao" invisible="1"/>
 					<field name="type" invisible="1"/>
+					<field name="date_payment" />
 					<field name="state"/>
 				</tree>
 			</field>
@@ -248,6 +252,7 @@
 								<group col='4' colspan='2'>
 									<field name="thanhtoan" />
 									<field name="ngay_thanhtoan" attrs="{'invisible':[('thanhtoan','=',False)]}"/>
+									
 								</group>
 								<group col='4' colspan='2'>
 									<field name="dagui_nganhang" />
@@ -296,6 +301,7 @@
 							<group>
 								<field name="dk_giaohang_id"/>
 								<field name="dk_thanhtoan_id" />
+								<field name="date_payment" />
 							</group>
 								<field name="phuongthuc_thanhtoan" nolabel='1'/>
 							</page>
@@ -647,8 +653,9 @@
 	                    	<field name="user_id"/>
 	                    	<field name="payment_term" widget="selection" string="Điều kiện thanh toán"/>
 	                    	<field name="thoigian_giaohang"/>
-	                    	<field name="noi_giaohang_id"/>
-	                    	<field name="note"/>
+	                    	<field name="noi_giaohang_id" string='Địa chỉ giao hàng'/>
+	                    	<field name="note" string='Điều kiện khác'/>
+	                    	<field name="hinh_thuc_tt"/>
 						</group>
 						<notebook>
 							<page string="Thông tin mặt hàng" >
@@ -784,11 +791,13 @@
 	                    	<field name="pricelist_id" string="Price List" domain="[('currency_id','!=',currency_company_id),('type','=','sale')]" on_change="onchange_pricelist_id(pricelist_id,don_ban_hang_line)"/>
 	                    	<field name="currency_id" string="Currency"/>
 	                    	<field name="user_id" string="User"/>
-	                    	<field name="thoigian_giaohang" string="Shipping Time"/>
+	                    	<field name="thoigian_giaohang" string="Shipment Time"/>
 	                    	<field name="nguoi_gioithieu_id" string="Broker/Agent"/>
-	                    	<field name="noi_giaohang_id" string="Delivery Location"/>
-	                    	<field name="note" string="Description"/>
+	                    	<field name="noi_giaohang_id" string="Delivery Term"/>
+	                    	<field name="destination_port" />
+	                    	
 	                    	<field name="payment_term" widget="selection" string="Payment Term"/>
+	                    	<field name="note" string="Description"/>
 						</group>
 						<notebook>
 							<page string="Product Line" >
@@ -796,7 +805,7 @@
 									<tree editable='top'>
 	                                    <field name="product_id" string="Product" on_change="onchange_product_id(product_qty,parent.ngay,parent.partner_id,parent.pricelist_id,product_id, context)"/>
 	                                    <field name="name" string="Name"/>
-	                                    <field name="chatluong_id" string="Quanlity"/>
+	                                    <field name="chatluong_id" string="Quatity"/>
 	                                    <field name="quycach_donggoi_id" string="Packing"/>
 	                                    <field name="product_uom" string="Unit"/>
 	                                    <field name="product_qty" string="Quantity"/>

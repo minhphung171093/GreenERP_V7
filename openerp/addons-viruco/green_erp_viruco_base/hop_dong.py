@@ -107,7 +107,22 @@ class hop_dong(osv.osv):
             else:
                 res[line.id] = False            
         return res
-    
+    def _get_date_payment_canhbao(self, cr, uid, ids, fields, arg, context=None):
+        res = {}
+        for line in self.browse(cr, uid, ids):
+            canh_bao = 7
+            if line.date_payment:
+                date_payment_canhbao = datetime.strptime(line.date_payment,'%Y-%m-%d') + timedelta(days=-canh_bao)
+                res[line.id]=date_payment_canhbao.strftime('%Y-%m-%d')
+        return res    
+    def _get_ngay_canhbao(self, cr, uid, ids, fields, arg, context=None):
+        res = {}
+        for line in self.browse(cr, uid, ids):
+            canh_bao = 7
+            if line.den_ngay:
+                ngay_canhbao = datetime.strptime(line.den_ngay,'%Y-%m-%d') + timedelta(days=-canh_bao)
+                res[line.id]=ngay_canhbao.strftime('%Y-%m-%d')
+        return res    
     _columns = {
         'name':fields.char('Số', size = 1024,required = True),
         'type':fields.selection([('hd_noi','Hợp đồng nội'),('hd_ngoai','Hợp đồng ngoại'),('hd_mua_trongnuoc','Hợp đồng mua trong nước'),('hd_mua_nhapkhau','Hợp đồng mua nhập khẩu')],'Loại hợp đồng' ,required=True,readonly=True, states={'moi_tao': [('readonly', False)]}),
@@ -191,6 +206,9 @@ class hop_dong(osv.osv):
             ('het_han', 'Hết hạn'),
             ('huy_bo', 'Hủy bỏ'),
             ], 'Trạng thái',readonly=True, states={'moi_tao': [('readonly', False)]}),
+        'ngay_canhbao': fields.function(_get_ngay_canhbao, type='date', string='Ngày cảnh báo'),
+        'date_payment':fields.date('Ngày thanh toán'),
+        'date_payment_canhbao': fields.function(_get_date_payment_canhbao, type='date', string='Ngày cảnh báo'),
     }
     
     _defaults = {
@@ -525,7 +543,7 @@ class don_ban_hang(osv.osv):
         for line in self.pool.get('hopdong.hoahong.line').browse(cr, uid, ids, context=context):
             result[line.hopdong_dh_id.id] = True
         return result.keys()
-    
+
     _columns = {
         'name':fields.char('Số', size = 1024,required = True),
         'type':fields.selection([('dbh_noi','Đơn bán hàng nội'),('dbh_ngoai','Đơn bán hàng ngoại')],'Loại đơn bán hàng'),
@@ -591,6 +609,9 @@ class don_ban_hang(osv.osv):
         'dieukien_giaohang_id':fields.many2one('dieukien.giaohang','Điều kiện giao hàng'),
         'hinhthuc_giaohang_id':fields.many2one('hinhthuc.giaohang','Hình thức giao hàng'),
         'so_chuyenphatnhanh':fields.char('Số chuyển phát nhanh',size=1024),
+        'destination_port':fields.char('Destination port',size=1024),
+        'hinh_thuc_tt':fields.selection([('chuyenkhoan','Chuyển khoản'),('tienmat','Tiền mặt')],'Hình thức thanh toán'),
+
     }
     
     _defaults = {
