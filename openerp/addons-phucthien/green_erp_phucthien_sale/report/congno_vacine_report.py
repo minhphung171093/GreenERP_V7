@@ -149,7 +149,7 @@ class Parser(report_sxw.rml_parse):
                 
                 cus_name = self.pool.get('res.partner').browse(self.cr,self.uid,cus).name 
                 tdv_name = self.pool.get('res.partner').browse(self.cr,self.uid,cus).user_id and self.pool.get('res.partner').browse(self.cr,self.uid,cus).user_id.name or ''
-                
+                kv = self.pool.get('res.partner').browse(self.cr,self.uid,cus).kv_benh_vien and self.pool.get('res.partner').browse(self.cr,self.uid,cus).kv_benh_vien.name or ''
                 res.append({'cus_name': cus_name,
                             'sum30':sum30,
                             'sum31':sum31,
@@ -157,6 +157,7 @@ class Parser(report_sxw.rml_parse):
                             'sum61':sum61,
                             'sum91':sum91,
                             'no_qh': sum31 + sum46 + sum61 + sum91,
+                            'kv': kv,
                             'tong_no': sum30 + sum31 + sum46 + sum61 + sum91,
                             'tdv': tdv_name,})
         return res

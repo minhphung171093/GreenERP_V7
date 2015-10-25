@@ -25,5 +25,52 @@
 	        string="Công nợ vacine"
 	        rml="green_erp_phucthien_sale/report/congno_vacine_report.ods"/>	
 	        
+	    <record id="congno_mypham_report" model="ir.actions.report.xml">
+	        <field name="name">congno_mypham_report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">congno.mypham</field>
+	        <field name="report_name">Công Nợ Mỹ Phẩm</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls')]"/>
+	        <field name="parser_loc">green_erp_phucthien_sale/report/congno_mypham_report.py</field>
+	        <field name="report_rml">green_erp_phucthien_sale/report/congno_mypham_report.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record>		    
+		
+		<report 
+			auto="True" 
+			menu="False"
+			id="congno_mypham_report" 
+			model="congno.mypham" 
+			name="congno_mypham_report"
+	        string="Công Nợ Mỹ Phẩm"
+	        rml="green_erp_phucthien_sale/report/congno_mypham_report.ods"/>	
+	        
+	    <record id="congno_duocpham_report" model="ir.actions.report.xml">
+	        <field name="name">congno_duocpham_report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">congno.duocpham</field>
+	        <field name="report_name">Công Nợ Dược Phẩm</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls')]"/>
+	        <field name="parser_loc">green_erp_phucthien_sale/report/congno_duocpham_report.py</field>
+	        <field name="report_rml">green_erp_phucthien_sale/report/congno_duocpham_report.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record>		    
+		
+		<report 
+			auto="True" 
+			menu="False"
+			id="congno_duocpham_report" 
+			model="congno.duocpham" 
+			name="congno_duocpham_report"
+	        string="Công Nợ Dược Phẩm"
+	        rml="green_erp_phucthien_sale/report/congno_duocpham_report.ods"/>	
     </data>
 </openerp>

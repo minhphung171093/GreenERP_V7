@@ -42,6 +42,16 @@
     		name="Báo cáo công nợ vacine"
     		parent="phucthien_sale_report"
     		sequence="4"/>
+    	<menuitem id="menu_action_congno_mypham"
+    		action="action_congno_mypham"
+    		name="Báo cáo Công Nợ Mỹ Phẩm"
+    		parent="phucthien_sale_report"
+    		sequence="5"/> 
+    	<menuitem id="menu_action_congno_duocpham"
+    		action="action_congno_duocpham"
+    		name="Báo cáo Công Nợ Dược Phẩm"
+    		parent="phucthien_sale_report"
+    		sequence="6"/>
     </data>
     
 </openerp>
