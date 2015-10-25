@@ -608,10 +608,71 @@
             <field name="view_id" ref="phongchong_moi_mot_tree_view"/>
         </record>
         
+        
+        <!-- Vệ sinh thangmay-->
+		<record id="ve_sinh_thangmay_tree_view" model="ir.ui.view">
+			<field name="name">ve.sinh.thangmay.tree</field>
+			<field name="model">ve.sinh.thangmay</field>
+			<field name="arch" type="xml">
+				<tree string="Vệ sinh thang máy">
+					<field name="name"/>
+					<field name="user_id"/>
+					<field name="nguoi_kiemtra_id"/>
+					<field name="state"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="ve_sinh_thangmay_form_view" model="ir.ui.view">
+            <field name="name">ve.sinh.thangmay.form</field>
+            <field name="model">ve.sinh.thangmay</field>
+            <field name="arch" type="xml">
+	            <form string="Vệ sinh thang máy" version="7.0"> 
+					<header>
+						<button name="kiem_tra" states='draft' string="Đã kiểm tra" type="object" class="oe_highlight" groups="stock.group_stock_manager"/>
+						<field name="state" widget="statusbar" statusbar_visible="draft,da_kiemtra"/>
+					</header>
+	            	<sheet>
+	                    <group col='4' colspan='2'>
+	                    	<field name="name"/>
+	                    	<newline/>
+	                        <field name="user_id"/>
+	                        <field name="nguoi_kiemtra_id"/>
+	                    </group>
+	                    <group col='6' colspan='2' string="Nội dung">
+	                    	<group colspan='2'>
+	                    		<field name="hutbui"/>
+	                    	</group>
+	                    	<group colspan='2'>
+	                    		<field name="lauxaphong"/>
+	                    	</group>
+	                    	<group colspan='2'>
+	                    		<field name="launuocsach"/>
+	                    	</group>
+	                    </group>
+	                    <group string="Ghi chú">
+                    		<field name="ghi_chu" nolabel='1'/>
+	                    </group>
+		         	</sheet>
+		         </form>
+			</field>
+		</record>
+		
+		<record id="action_ve_sinh_thangmay" model="ir.actions.act_window">
+            <field name="name">Vệ sinh thang máy</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">ve.sinh.thangmay</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="ve_sinh_thangmay_tree_view"/>
+        </record>
+        
         <menuitem id="menu_ve_sinh_kho" name="Vệ sinh kho" parent="stock.menu_stock_root" sequence="3"/>
 		<menuitem id="menu_ve_sinh_kho_duoc" name="Vệ sinh kho dược" action="action_ve_sinh_kho_duoc" parent="menu_ve_sinh_kho" sequence="10"/>
 		<menuitem id="menu_ve_sinh_kho_lanh" name="Vệ sinh kho lạnh" action="action_ve_sinh_kho_lanh" parent="menu_ve_sinh_kho" sequence="20"/>
 		<menuitem id="menu_action_phongchong_moi_mot" name="Phòng chống mối mọt" action="action_phongchong_moi_mot" parent="menu_ve_sinh_kho" sequence="30"/>
+		<menuitem id="menu_action_ve_sinh_thangmay" name="Vệ sinh thang máy" action="action_ve_sinh_thangmay" parent="menu_ve_sinh_kho" sequence="35"/>
+		<menuitem id="menu_action_danhsach_vesinh_thangmay_report" name="Danh sách vệ sinh thang máy" action="action_danhsach_vesinh_thangmay_report" parent="menu_ve_sinh_kho" sequence="40"/>
 		
 		<!-- BÁO CÁO KẾ HOẠCH SỬA CHỮA VÀ HÀNH ĐỘNG -->
         <record id="suachua_hanhdong_filter" model="ir.ui.view">

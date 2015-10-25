@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+        <record id="view_theodoi_hethan_report" model="ir.ui.view">
+            <field name="name">view.theodoi.hethan</field>
+            <field name="model">theodoi.hethan</field>
+            <field name="arch" type="xml">
+                <form string="Theo dõi hết hạn" version="7.0">
+                	<group col='4' colspan='2'>
+                		<field name="tu_ngay" />
+                		<field name="den_ngay" />
+                		<field name="location_id" domain="[('usage','=','internal')]"/>
+                		<field name="product_id" />
+                	</group>
+                    <footer>
+                        <button name="print_report" string="In" type="object" class="oe_highlight" />
+                        hoặc
+                        <button string="Hủy bỏ" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_theodoi_hethan_report" model="ir.actions.act_window">
+            <field name="name">Theo dõi hết hạn</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">theodoi.hethan</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_theodoi_hethan_report"/>
+            <field name="target">new</field>
+        </record>
+        
+        <menuitem id="menu_action_theodoi_hethan_report" action="action_theodoi_hethan_report" parent="general_stock.menu_report_control" sequence="300"/>
+        
+    </data>
+</openerp>
+

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+    	<record id="report_vesinh_thangmay" model="ir.actions.report.xml">
+	        <field name="name">report_vesinh_thangmay</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">danhmuc.thietbi.report</field>
+	        <field name="report_name">Danh sách vệ sinh thang máy</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-odt</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-doc'),('compatible_types','=','oo-odt')]"/>
+	        <field name="parser_loc">green_erp_phucthien_stock/report/danhmuc_thietbi_report_xls.py</field>
+	        <field name="report_rml">green_erp_phucthien_stock/report/danhsach_vesinh_thangmay_report.odt</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record> 
+    	   
+    	<report 
+			auto="False" 
+			menu="False"
+			id="report_vesinh_thangmay" 
+			model="danhmuc.thietbi.report" 
+			name="report_vesinh_thangmay"
+	        string="Danh sách vệ sinh thang máy"
+	        rml="green_erp_phucthien_stock/report/danhsach_vesinh_thangmay_report.odt"/> 	
+	</data>
+</openerp>
