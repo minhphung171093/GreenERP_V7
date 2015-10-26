@@ -89,6 +89,7 @@ class sale_order(osv.osv):
             'location_dest_id': output_id,
             'shop_id':order.shop_id and order.shop_id.id or False,
             'diachi_giaohang_id': order.diachi_giaohang_id and order.diachi_giaohang_id.id or False,
+            'daidien_khachhang': order.client_order_ref,
         }
     
     #Thanh: Get Location From Order Line

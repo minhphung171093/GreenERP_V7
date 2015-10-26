@@ -11,5 +11,6 @@ import danhmuc_thietbi_report
 import stock_partial_picking
 import danhsach_vesinh_thangmay_report
 import theodoi_hethan_report
+import xuly_hangtra_cuakhachhang
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
 

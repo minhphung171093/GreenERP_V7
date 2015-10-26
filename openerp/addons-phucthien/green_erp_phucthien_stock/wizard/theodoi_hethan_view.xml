@@ -23,7 +23,7 @@
         </record>
         
         <record id="action_theodoi_hethan_report" model="ir.actions.act_window">
-            <field name="name">Theo dõi hết hạn</field>
+            <field name="name">Theo dõi thuốc hết hạn</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">theodoi.hethan</field>
             <field name="view_type">form</field>

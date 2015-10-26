@@ -89,6 +89,10 @@ class stock_picking_out(osv.osv):
         'date_done': fields.datetime('Date of Transfer', help="Date of Completion", states={'done':[('readonly', True)], 'cancel':[('readonly',True)]}, track_visibility='onchange'),
         'auto_picking': fields.boolean('Auto-Picking', states={'done':[('readonly', True)], 'cancel':[('readonly',True)]}, track_visibility='onchange'),
         'ly_do_xuat_id': fields.many2one('ly.do.xuat', 'Lý do xuất'),
+        'xuly_thncc_id': fields.many2one('stock.picking.in', 'Trả hàng nhà cung cấp'),
+        'xuly_huyhang_id': fields.many2one('stock.picking', 'Hủy hàng'),
+        'loai_xuly':fields.selection([('trahang_ncc','Trả hàng cho nhà cung cấp'),('huy_hang','Hủy hàng')],'Loại xử lý'),
+        'tinhtrang_chatluong': fields.char('Tình trạng chất lượng', size=1024),
     }
     _defaults = {
                  'state_receive':'draft',
@@ -117,7 +121,40 @@ class stock_picking_out(osv.osv):
                 'type': 'ir.actions.report.xml',
                 'report_name': 'phieu_xuat_kho_report',
             }
-        
+    
+    def xem_phieu_xu_ly(self, cr, uid, ids, context=None):
+        line = self.browse(cr, uid, ids[0])
+        if line.loai_xuly=='trahang_ncc':
+            picking_ids = self.pool.get('stock.picking').search(cr, uid, [('origin','=',line.xuly_thncc_id.name)])
+            res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
+                                        'stock', 'view_picking_form')
+            return {
+                        'name': 'Phiếu nhập hàng mua',
+                        'view_type': 'form',
+                        'view_mode': 'form',
+                        'res_model': 'stock.picking.in',
+                        'domain': [],
+                        'res_id': picking_ids and picking_ids[0] or False,
+                        'type': 'ir.actions.act_window',
+                        'view_id': res[1],
+                        'target': 'current',
+                    }
+        if line.loai_xuly=='huy_hang':
+            res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
+                                        'general_stock', 'view_picking_subinventory_form')
+            return {
+                        'name': 'Xử lý mất mát, hư hỏng',
+                        'view_type': 'form',
+                        'view_mode': 'form',
+                        'res_model': 'stock.picking',
+                        'domain': [],
+                        'res_id': line.xuly_huyhang_id and line.xuly_huyhang_id.id or False,
+                        'view_id': res[1],
+                        'type': 'ir.actions.act_window',
+                        'target': 'current',
+                    }
+        return True
+    
 stock_picking_out()
 
 class stock_picking_in(osv.osv):
@@ -188,10 +225,44 @@ class stock_picking_in(osv.osv):
         'move_type': fields.selection([('direct', 'Partial'), ('one', 'All at once')], 'Delivery Method', required=True, states={'done':[('readonly', True)], 'cancel':[('readonly',True)]}, help="It specifies goods to be deliver partially or all at once", track_visibility='onchange'),
         'date_done': fields.datetime('Date of Transfer', help="Date of Completion", states={'done':[('readonly', True)], 'cancel':[('readonly',True)]}, track_visibility='onchange'),
         'auto_picking': fields.boolean('Auto-Picking', states={'done':[('readonly', True)], 'cancel':[('readonly',True)]}, track_visibility='onchange'),
-        
+        'xuly_thncc_id': fields.many2one('stock.picking.in', 'Trả hàng nhà cung cấp'),
+        'xuly_huyhang_id': fields.many2one('stock.picking', 'Hủy hàng'),
+        'loai_xuly':fields.selection([('trahang_ncc','Trả hàng cho nhà cung cấp'),('huy_hang','Hủy hàng')],'Loại xử lý'),
+        'tinhtrang_chatluong': fields.char('Tình trạng chất lượng', size=1024),
     }
-     
-        
+    
+    def xem_phieu_xu_ly(self, cr, uid, ids, context=None):
+        line = self.browse(cr, uid, ids[0])
+        if line.loai_xuly=='trahang_ncc':
+            picking_ids = self.pool.get('stock.picking').search(cr, uid, [('origin','=',line.xuly_thncc_id.name)])
+            res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
+                                        'stock', 'view_picking_form')
+            return {
+                        'name': 'Phiếu nhập hàng mua',
+                        'view_type': 'form',
+                        'view_mode': 'form',
+                        'res_model': 'stock.picking.in',
+                        'domain': [],
+                        'res_id': picking_ids and picking_ids[0] or False,
+                        'type': 'ir.actions.act_window',
+                        'view_id': res[1],
+                        'target': 'current',
+                    }
+        if line.loai_xuly=='huy_hang':
+            res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
+                                        'general_stock', 'view_picking_subinventory_form')
+            return {
+                        'name': 'Xử lý mất mát, hư hỏng',
+                        'view_type': 'form',
+                        'view_mode': 'form',
+                        'res_model': 'stock.picking',
+                        'domain': [],
+                        'res_id': line.xuly_huyhang_id and line.xuly_huyhang_id.id or False,
+                        'view_id': res[1],
+                        'type': 'ir.actions.act_window',
+                        'target': 'current',
+                    }
+        return True
 stock_picking_in()
 
 
@@ -272,10 +343,47 @@ class stock_picking(osv.osv):
         'move_type': fields.selection([('direct', 'Partial'), ('one', 'All at once')], 'Delivery Method', required=True, states={'done':[('readonly', True)], 'cancel':[('readonly',True)]}, help="It specifies goods to be deliver partially or all at once", track_visibility='onchange'),
         'date_done': fields.datetime('Date of Transfer', help="Date of Completion", states={'done':[('readonly', True)], 'cancel':[('readonly',True)]}, track_visibility='onchange'),
         'auto_picking': fields.boolean('Auto-Picking', states={'done':[('readonly', True)], 'cancel':[('readonly',True)]}, track_visibility='onchange'),
+        'xuly_thncc_id': fields.many2one('stock.picking.in', 'Trả hàng nhà cung cấp'),
+        'xuly_huyhang_id': fields.many2one('stock.picking', 'Hủy hàng'),
+        'loai_xuly':fields.selection([('trahang_ncc','Trả hàng cho nhà cung cấp'),('huy_hang','Hủy hàng')],'Loại xử lý'),
+        'tinhtrang_chatluong': fields.char('Tình trạng chất lượng', size=1024),
     }
     _defaults = {
                  'state_receive':'draft',
                  }
+    
+    def xem_phieu_xu_ly(self, cr, uid, ids, context=None):
+        line = self.browse(cr, uid, ids[0])
+        if line.loai_xuly=='trahang_ncc':
+            picking_ids = self.pool.get('stock.picking').search(cr, uid, [('origin','=',line.xuly_thncc_id.name)])
+            res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
+                                        'stock', 'view_picking_form')
+            return {
+                        'name': 'Phiếu nhập hàng mua',
+                        'view_type': 'form',
+                        'view_mode': 'form',
+                        'res_model': 'stock.picking.in',
+                        'domain': [],
+                        'res_id': picking_ids and picking_ids[0] or False,
+                        'type': 'ir.actions.act_window',
+                        'view_id': res[1],
+                        'target': 'current',
+                    }
+        if line.loai_xuly=='huy_hang':
+            res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
+                                        'general_stock', 'view_picking_subinventory_form')
+            return {
+                        'name': 'Xử lý mất mát, hư hỏng',
+                        'view_type': 'form',
+                        'view_mode': 'form',
+                        'res_model': 'stock.picking',
+                        'domain': [],
+                        'res_id': line.xuly_huyhang_id and line.xuly_huyhang_id.id or False,
+                        'view_id': res[1],
+                        'type': 'ir.actions.act_window',
+                        'target': 'current',
+                    }
+        return True
     
     def onchange_journal(self, cr, uid, ids, stock_journal_id):
         value ={}
