@@ -29,7 +29,7 @@ class congno_vacine(osv.osv_memory):
     _columns = {
         'date_from': fields.date('Tính đến ngày',required=True),
 #         'user_id': fields.many2many('res.users', string='Users', readonly=True),
-        'user_id': fields.many2many('res.users', 'congno_user_ref', 'congno_id', 'user_id', 'Users'),  
+        'user_id': fields.many2many('res.users', 'congno_user_ref', 'congno_id', 'user_id', 'Nhân Viên Bán Hàng'),  
     }
      
     _defaults = {
@@ -48,6 +48,53 @@ class congno_vacine(osv.osv_memory):
         return {'type': 'ir.actions.report.xml', 'report_name': 'congno_vacine_report', 'datas': datas}
      
 congno_vacine()
+
+class congno_mypham(osv.osv_memory):
+    _name = 'congno.mypham'
+     
+    _columns = {
+        'period_id': fields.many2one('account.period','Tháng:', required=True),
+#         'user_id': fields.many2many('res.users', string='Users', readonly=True),
+        'user_ids': fields.many2many('res.users', 'mypham_user_ref', 'mypham_id', 'user_id', 'Nhân Viên Bán Hàng'),  
+    }
+     
+    _defaults = {
+        'user_ids': lambda self,cr, uid, ctx: [(6,0,[uid])],
+    }
+     
+    def print_report(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        datas = {'ids': context.get('active_ids', [])}
+        datas['model'] = 'congno.mypham' 
+        datas['form'] = self.read(cr, uid, ids)[0]
+        datas['form'].update({'active_id':context.get('active_ids',False)})
+        return {'type': 'ir.actions.report.xml', 'report_name': 'congno_mypham_report', 'datas': datas}
+     
+congno_mypham()
+
+class congno_duocpham(osv.osv_memory):
+    _name = 'congno.duocpham'
+     
+    _columns = {
+        'period_id': fields.many2one('account.period','Tháng:', required=True),
+        'user_ids': fields.many2many('res.users', 'duocpham_user_ref', 'duocpham_id', 'user_id', 'Nhân Viên Bán Hàng'),  
+    }
+     
+    _defaults = {
+        'user_ids': lambda self,cr, uid, ctx: [(6,0,[uid])],
+    }
+     
+    def print_report(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        datas = {'ids': context.get('active_ids', [])}
+        datas['model'] = 'congno.duocpham' 
+        datas['form'] = self.read(cr, uid, ids)[0]
+        datas['form'].update({'active_id':context.get('active_ids',False)})
+        return {'type': 'ir.actions.report.xml', 'report_name': 'congno_duocpham_report', 'datas': datas}
+     
+congno_duocpham()
 
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
