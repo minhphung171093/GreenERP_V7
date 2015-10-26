@@ -61,7 +61,7 @@ report_account_in_out_tax_review()
 class report_account_in_out_tax_line(osv.osv):
     _name = "report.account.in.out.tax.line"
     _columns = {
-        'accout_in_id':fields.many2one('report.account.in.out.tax.review','Report In'),
+        'accout_in_id':fields.many2one('report.account.in.out.tax.review','Report In',ondelete='cascade'),
         'reference':fields.char('STT', size=1024),
         'number':fields.char('Số hoá đơn', size=1024),
         'date_invoice':fields.date('Ngày, tháng, năm phát hành'),
@@ -74,7 +74,7 @@ report_account_in_out_tax_line()
 class report_account_in_out_tax_line_0(osv.osv):
     _name = "report.account.in.out.tax.line.0"
     _columns = {
-        '0_accout_in_id':fields.many2one('report.account.in.out.tax.review','Report In'),
+        '0_accout_in_id':fields.many2one('report.account.in.out.tax.review','Report In',ondelete='cascade'),
         'reference':fields.char('STT', size=1024),
         'number':fields.char('Số hoá đơn', size=1024),
         'date_invoice':fields.date('Ngày, tháng, năm phát hành'),
@@ -88,7 +88,7 @@ report_account_in_out_tax_line_0()
 class report_account_in_out_tax_line_5(osv.osv):
     _name = "report.account.in.out.tax.line.5"
     _columns = {
-        '5_accout_in_id':fields.many2one('report.account.in.out.tax.review','Report In'),
+        '5_accout_in_id':fields.many2one('report.account.in.out.tax.review','Report In',ondelete='cascade'),
         'reference':fields.char('STT', size=1024),
         'number':fields.char('Số hoá đơn', size=1024),
         'date_invoice':fields.date('Ngày, tháng, năm phát hành'),
@@ -102,7 +102,7 @@ report_account_in_out_tax_line_5()
 class report_account_in_out_tax_line_10(osv.osv):
     _name = "report.account.in.out.tax.line.10"
     _columns = {
-        '10_accout_in_id':fields.many2one('report.account.in.out.tax.review','Report In'),
+        '10_accout_in_id':fields.many2one('report.account.in.out.tax.review','Report In',ondelete='cascade'),
         'reference':fields.char('STT', size=1024),
         'number':fields.char('Số hoá đơn', size=1024),
         'date_invoice':fields.date('Ngày, tháng, năm phát hành'),
@@ -155,7 +155,7 @@ general_trial_balance_review()
 class general_trial_balance_review_line(osv.osv):
     _name = "general.trial.balance.review.line"
     _columns = {
-        'general_trial_id':fields.many2one('general.trial.balance.review','Report In'),
+        'general_trial_id':fields.many2one('general.trial.balance.review','Report In',ondelete='cascade'),
         'coa_code': fields.char('Số tài khoản', size=1024),
         'coa_name': fields.char('Tên tài khoản', size=1024),
         'begin_dr':fields.float('Số dư đầu kỳ (nợ)'),
@@ -170,7 +170,7 @@ general_trial_balance_review_line()
 class general_trial_balance_review_line_1(osv.osv):
     _name = "general.trial.balance.review.line.1"
     _columns = {
-        'general_trial_id_1':fields.many2one('general.trial.balance.review','Report In'),
+        'general_trial_id_1':fields.many2one('general.trial.balance.review','Report In',ondelete='cascade'),
         'coa_code': fields.char('Số tài khoản', size=1024),
         'coa_name': fields.char('Tên tài khoản', size=1024),
         'begin_dr':fields.float('Số dư đầu kỳ (nợ)'),
@@ -185,7 +185,7 @@ general_trial_balance_review_line_1()
 class general_trial_balance_review_line_2(osv.osv):
     _name = "general.trial.balance.review.line.2"
     _columns = {
-        'general_trial_id_2':fields.many2one('general.trial.balance.review','Report In'),
+        'general_trial_id_2':fields.many2one('general.trial.balance.review','Report In',ondelete='cascade'),
         'coa_code': fields.char('Số tài khoản', size=1024),
         'coa_name': fields.char('Tên tài khoản', size=1024),
         'begin_dr':fields.float('Số dư đầu kỳ (nợ)'),
@@ -235,7 +235,7 @@ general_balance_sheet_review()
 class general_balance_sheet_review_line(osv.osv):
     _name = "general.balance.sheet.review.line"
     _columns = {
-        'general_sheet_id':fields.many2one('general.balance.sheet.review','Report In'),
+        'general_sheet_id':fields.many2one('general.balance.sheet.review','Report In',ondelete='cascade'),
         'line_no': fields.char('STT', size=1024),
         'description': fields.char('Diễn giải', size=1024),
         'code':fields.char('Mã số', size=1024),
@@ -249,7 +249,7 @@ general_balance_sheet_review_line()
 class general_balance_sheet_review_line_1(osv.osv):
     _name = "general.balance.sheet.review.line.1"
     _columns = {
-        'general_sheet_id_1':fields.many2one('general.balance.sheet.review','Report In'),
+        'general_sheet_id_1':fields.many2one('general.balance.sheet.review','Report In',ondelete='cascade'),
         'line_no': fields.char('STT', size=1024),
         'description': fields.char('Diễn giải', size=1024),
         'code':fields.char('Mã số', size=1024),
@@ -295,7 +295,7 @@ general_account_profit_loss_review()
 class general_account_profit_loss_review_line(osv.osv):
     _name = "general.account.profit.loss.review.line"
     _columns = {
-        'general_account_id':fields.many2one('general.account.profit.loss.review','Report In'),
+        'general_account_id':fields.many2one('general.account.profit.loss.review','Report In',ondelete='cascade'),
         'line_no': fields.char('STT', size=1024),
         'description': fields.char('Diễn giải', size=1024),
         'code':fields.char('Mã số', size=1024),
@@ -340,7 +340,7 @@ luuchuyen_tiente_review()
 class luuchuyen_tiente_review_line(osv.osv):
     _name = "luuchuyen.tiente.review.line"
     _columns = {
-        'luuchuyen_tiente_id':fields.many2one('luuchuyen.tiente.review','Report In'),
+        'luuchuyen_tiente_id':fields.many2one('luuchuyen.tiente.review','Report In',ondelete='cascade'),
         'line_no': fields.char('STT', size=1024),
         'description': fields.char('Diễn giải', size=1024),
         'code':fields.char('Mã số', size=1024),
@@ -392,7 +392,7 @@ class account_ledger_report_review_line(osv.osv):
     _name = "account.ledger.report.review.line"
  
     _columns = {
-        'ledger_review_id': fields.many2one('account.ledger.report.review', 'Ledger', readonly=True),
+        'ledger_review_id': fields.many2one('account.ledger.report.review', 'Ledger',ondelete='cascade', readonly=True),
         'ngay_ghso': fields.char('Ngày, tháng ghi sổ', size=1024),
         'so_hieu': fields.char('Chứng từ ghi sổ Số hiệu', size=1024),
         'ngay_thang': fields.char('Chứng từ ghi sổ Ngày tháng', size=1024),
@@ -451,7 +451,7 @@ class so_quy_review_line(osv.osv):
     _name = "so.quy.review.line"
  
     _columns = {
-        'so_quy_review_id': fields.many2one('so.quy.review', 'so quy', readonly=True),
+        'so_quy_review_id': fields.many2one('so.quy.review', 'so quy',ondelete='cascade', readonly=True),
         'ngay_ghso': fields.char('Ngày, tháng ghi sổ', size=1024),
         'ngay_thang': fields.char('Ngày tháng chứng từ ', size=1024),
         'so_hieu_thu': fields.char('Số hiệu chứng từ Thu', size=1024),

@@ -42,7 +42,7 @@ general_aged_partner_balance_review()
 class general_aged_partner_balance_review_line(osv.osv):
     _name = "general.aged.partner.balance.review.line"
     _columns = {
-        'review_id':fields.many2one('general.aged.partner.balance.review','Review'),
+        'review_id':fields.many2one('general.aged.partner.balance.review','Review',ondelete='cascade'),
         'seq':fields.char('STT', size=1024),
         'partner_code':fields.char('Mã', size=1024),
         'partner_name':fields.char('Tên', size=1024),
@@ -96,7 +96,7 @@ general_report_partner_ledger_review()
 class general_report_partner_ledger_review_line(osv.osv):
     _name = "general.report.partner.ledger.review.line"
     _columns = {
-        'partner_ledger_id':fields.many2one('general.report.partner.ledger.review','Report In'),
+        'partner_ledger_id':fields.many2one('general.report.partner.ledger.review','Report In',ondelete='cascade'),
         'gl_date': fields.char('Ngày ghi sổ', size=1024),
         'doc_date': fields.char('Ngày chứng từ', size=1024),
         'doc_no': fields.char('Số hiệu chứng từ', size=1024),
@@ -136,7 +136,7 @@ general_report_partner_ledger_detail_review()
 class general_report_partner_ledger_detail_review_line(osv.osv):
     _name = "general.report.partner.ledger.detail.review.line"
     _columns = {
-        'review_id':fields.many2one('general.report.partner.ledger.detail.review','Review'),
+        'review_id':fields.many2one('general.report.partner.ledger.detail.review','Review',ondelete='cascade'),
         'seq':fields.char('STT', size=1024),
         'partner_code':fields.char('Mã', size=1024),
         'partner_name':fields.char('Tên', size=1024),
