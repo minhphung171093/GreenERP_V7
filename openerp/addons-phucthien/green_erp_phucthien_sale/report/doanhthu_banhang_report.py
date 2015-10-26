@@ -76,11 +76,11 @@ class Parser(report_sxw.rml_parse):
     def get_tong(self, loai):
         tong = 0
         if loai=='so_luong':
-            tong = self.get_tong_dt_truocthue()['tong']
+            tong = self.get_tong_soluong()['tong']
         if loai=='dt_truocthue':
             tong = self.get_tong_dt_truocthue()['tong']
         if loai=='dt_sauthue':
-            tong = self.get_tong_dt_truocthue()['tong']
+            tong = self.get_tong_dt_sauthue()['tong']
         return tong
     
     def get_lines(self):
@@ -363,7 +363,7 @@ class Parser(report_sxw.rml_parse):
         sql+='''
              order by ai.date_invoice
         '''
-        s= 'select sum(dt_truocthue) as tong from ('+sql+')'
+        s= 'select sum(v.so_luong) as tong from ('+sql+')v'
         self.cr.execute(s)
         return self.cr.dictfetchone()
     
@@ -457,7 +457,7 @@ class Parser(report_sxw.rml_parse):
         sql+='''
              order by ai.date_invoice
         '''
-        s= 'select sum(dt_truocthue) as tong from ('+sql+')'
+        s= 'select sum(v.dt_sauthue) as tong from ('+sql+')v'
         self.cr.execute(s)
         return self.cr.dictfetchone()
     

@@ -23,6 +23,7 @@
 	                </sheet>
                     <footer>
                         <button name="print_report" string="In" type="object" class="oe_highlight"/>
+                        <button name="review_report" string="Xem trước" type="object" class="oe_highlight"/>
                         or
                         <button string="Hủy bỏ" class="oe_link" special="cancel" />
                     </footer>
@@ -39,6 +40,57 @@
 	        <field name="context">{'default_users_ids':[(6,0,[uid])]}</field>
 	        <field name="target">new</field>
 	    </record>
+	    
+<!--  ========================= Báo cáo doanh thu bán hàng Review ================= -->     
+	     <record id="report_doanhthu_banhang_review" model="ir.ui.view">
+	        <field name="name">report.doanhthu.banhang.review</field>
+	        <field name="model">doanhthu.banhang.review</field>
+	        <field name="arch" type="xml">
+	            <form string="Doanh thu bán hàng Review" version="7.0">
+	            	<header>
+	                    <button string="Print (.xls)" type="object" name="print_xls" context="{'type_report':'tax_vat_input'}" icon='gtk-execute'/>
+	                </header>
+	                <sheet>
+	            		<div class="oe_text_center">
+	            			<h2>
+            				<b>Báo cáo doanh thu bán hàng</b>
+            				</h2>
+            			</div>
+            			<div class="oe_text_center">
+            				<label for="tu_ngay" class = 'oe_inline'/>
+            				<field name="tu_ngay" class = 'oe_inline'/>
+            				<label for="den_ngay" class = 'oe_inline'/>
+            				<field name="den_ngay" class = 'oe_inline'/>
+            			</div>
+	                <group>
+		                	<field name="doanhthu_banhang_review_line" nolabel='1'>
+		                		<tree create="false" edit="false" delete="false">          
+		                			<field name="ngay_hd"/>
+		                			<field name="so_hd"/>
+		                			<field name="ten_kh"/>
+		                			<field name="dia_chi"/>
+		                			<field name="ten_sp"/>
+		                			<field name="hang_sx"/>
+		                			<field name="dvt"/>
+		                			<field name="so_lo"/>
+		                			<field name="hsd"/>
+		                			<field name="so_luong"/>
+		                			<field name="gia_ban"/>
+		                			<field name="doanhthu_truocthue"/>
+		                			<field name="doanhthu_sauthue"/>
+		                			<field name="ti_le"/>
+		                		</tree>
+		                	</field>
+	                </group> 
+			       </sheet>       	                	
+	            </form>
+	        </field>
+	    </record>
+	    
+	    <record id="greenerp_report_report_account_in_out_tax_review" model="greenerp.report">
+	        <field name="name">report_account_in_out_tax_review</field>
+	        <field name="delete_after">7</field>
+	    </record>	  
 
     </data>
 </openerp>
