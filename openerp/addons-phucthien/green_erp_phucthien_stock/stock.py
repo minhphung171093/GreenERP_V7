@@ -532,6 +532,8 @@ class stock_picking_packaging(osv.osv):
         'employee_id': fields.many2one('hr.employee','NV giao hàng'),
         'nhietdo_packaging_di':fields.char('Nhiệt độ đi'),
         'nhietdo_packaging_den':fields.char('Nhiệt độ đến'),
+        'chiphi_trungchuyen': fields.float('Chi phí trung chuyển'),
+        'chiphi_vanchuyen': fields.float('Chi phí vận chuyển'),
     }
     
     def create(self, cr, uid, vals, context=None):

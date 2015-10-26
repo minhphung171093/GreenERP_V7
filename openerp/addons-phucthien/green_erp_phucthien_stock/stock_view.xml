@@ -22,6 +22,8 @@
 								<field name="employee_id"/>
 								<field name="nhietdo_packaging_di"/>
 								<field name="nhietdo_packaging_den"/>
+								<field name="chiphi_trungchuyen"/>
+								<field name="chiphi_vanchuyen"/>
 							</tree>
                         </field>
                     </page>
@@ -789,7 +791,7 @@
             <field name="view_id" ref="nhap_dulieu_donghang_tree_view"/>
         </record>
         
-		<menuitem id="menu_action_nhap_dulieu_donghang" action="action_nhap_dulieu_donghang" parent="stock.menu_traceability" sequence="10"/>
+			<menuitem id="menu_action_nhap_dulieu_donghang" action="action_nhap_dulieu_donghang" parent="green_erp_phucthien_stock.menu_dulieu_donghang" sequence="1"/>
 		
 		<record id="dulieu_donghang_search_view" model="ir.ui.view">
 	        <field name="name">dulieu.donghang.search</field>
@@ -834,7 +836,7 @@
             <field name="view_id" ref="dulieu_donghang_tree_view"/>
         </record>
         
-		<menuitem name="Danh sách nhiệt kế thu hồi" id="menu_action_dulieu_donghang" action="action_dulieu_donghang" parent="stock.menu_traceability" sequence="11"/>
+			<menuitem name="Danh sách nhiệt kế thu hồi" id="menu_action_dulieu_donghang" action="action_dulieu_donghang" parent="green_erp_phucthien_stock.menu_dulieu_donghang" sequence="5"/>
 		
 		<record id="dm_thietbi_tree_view" model="ir.ui.view">
 			<field name="name">dm.thietbi.tree</field>
