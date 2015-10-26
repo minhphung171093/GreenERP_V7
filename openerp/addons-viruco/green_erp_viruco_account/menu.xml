@@ -47,8 +47,13 @@
 		
 		<menuitem id="menu_action_bang_ke_doanh_thu_view" 
 			        action="green_erp_viruco_account.action_bang_ke_doanh_thu_view" 
-			        parent="account.menu_finance_reporting"
-			        sequence="50"/>	
+			        parent="account.menu_finance_reports"
+			        sequence="30"/>	
+			        
+		<menuitem id="menu_action_bang_ke_doanh_thu_theo_mat_hang_view" 
+			        action="green_erp_viruco_account.action_bang_ke_doanh_thu_theo_mat_hang_view" 
+			        parent="account.menu_finance_reports"
+			        sequence="40"/>	
 
 	
             

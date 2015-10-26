@@ -32,10 +32,8 @@ class Parser(report_sxw.rml_parse):
         self.shop_ids = []
         self.localcontext.update({
             'get_vietname_date':self.get_vietname_date, 
-            'get_sum': self.get_sum,
+            'get_sum_line_dr': self.get_sum_line_dr,
             'amount_to_text': self.amount_to_text,
-            'get_so_tk': self.get_so_tk,
-            'get_ten_nh': self.get_ten_nh,
         })
     
     
@@ -45,7 +43,7 @@ class Parser(report_sxw.rml_parse):
         date = datetime.strptime(date, DATE_FORMAT)
         return date.strftime('%d/%m/%Y')
     
-    def get_sum(self, line_id):
+    def get_sum_line_dr(self, line_id):
         total = 0
         chi = self.pool.get('account.voucher').browse(self.cr,self.uid,line_id)
         for dr in chi.line_dr_ids:
@@ -56,28 +54,25 @@ class Parser(report_sxw.rml_parse):
         if lang == 'vn':
             return  amount_to_text_vn.amount_to_text(nbr, lang)
         
-    def get_so_tk(self, partner_id):
-        if partner_id:
-            partner = self.pool.get('res.partner').browse(self.cr,self.uid,partner_id)
-            if partner.bank_ids:
-                line = partner.bank_ids[0]
-                return line.acc_number
-            else:
-                return ''
-        else:
-            return ''
-    
-    def get_ten_nh(self, partner_id):
-        if partner_id:
-            partner = self.pool.get('res.partner').browse(self.cr,self.uid,partner_id)
-            if partner.bank_ids:
-                line = partner.bank_ids[0]
-                if line.bank_name:
-                    return line.bank_name
-                else:
-                    return ''
-            else:
-                return ''
-        else:
-            return ''
+#     def get_so_tk(self, partner_id):
+#         if partner_id:
+#             partner = self.pool.get('res.partner').browse(self.cr,self.uid,partner_id)
+#             if partner.bank_ids:
+#                 line = partner.bank_ids[0]
+#                 return line.acc_number
+#             else:
+#                 return ''
+#         else:
+#             return ''
+#     
+#     def get_ten_nh(self, partner_id):
+#         if partner_id:
+#             partner = self.pool.get('res.partner').browse(self.cr,self.uid,partner_id)
+#             if partner.bank_ids:
+#                 line = partner.bank_ids[0]
+#                 return line.bank_name
+#             else:
+#                 return ''
+#         else:
+#             return ''
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

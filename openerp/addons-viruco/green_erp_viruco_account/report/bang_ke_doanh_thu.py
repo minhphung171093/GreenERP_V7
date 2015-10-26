@@ -35,8 +35,20 @@ class Parser(report_sxw.rml_parse):
             'get_line_out':self.get_line_out, 
             'get_info_out':self.get_info_out,
             'get_line_in':self.get_line_in,
+            'get_date_from': self.get_date_from,
+            'get_date_to': self.get_date_to,
         })
     
+    
+    def get_date_from(self):
+        wizard_data = self.localcontext['data']['form']
+        date = datetime.strptime(wizard_data['tu_ngay'], DATE_FORMAT)
+        return date.strftime('%d/%m/%Y')
+    
+    def get_date_to(self):
+        wizard_data = self.localcontext['data']['form']
+        date = datetime.strptime(wizard_data['den_ngay'], DATE_FORMAT)
+        return date.strftime('%d/%m/%Y')
     
     def get_vietname_date(self, date):
         if not date:

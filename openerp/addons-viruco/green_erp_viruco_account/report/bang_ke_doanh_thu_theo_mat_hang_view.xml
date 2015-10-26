@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+    	<record id="bang_ke_doanh_thu_theo_mat_hang_report" model="ir.actions.report.xml">
+	        <field name="name">bang_ke_doanh_thu_theo_mat_hang_report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">bang.ke.doanh.thu.theo.mat.hang</field>
+	        <field name="report_name">bang_ke_doanh_thu_theo_mat_hang_report</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">green_erp_viruco_account/report/bang_ke_doanh_thu_theo_mat_hang.py</field>
+	        <field name="report_rml">green_erp_viruco_account/report/bang_ke_doanh_thu_theo_mat_hang.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record>		    
+		
+		<report 
+			auto="True" 
+			menu="False"
+			id="bang_ke_doanh_thu_theo_mat_hang_report" 
+			model="bang.ke.doanh.thu.theo.mat.hang" 
+			name="bang_ke_doanh_thu_theo_mat_hang_report"
+	        string="Bảng Kê Doanh Thu Theo Mặt Hàng"
+	        rml="green_erp_viruco_account/report/bang_ke_doanh_thu_theo_mat_hang.ods"/>	      
+	    
+	  
+	</data>
+</openerp>
