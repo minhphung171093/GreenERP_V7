@@ -35,7 +35,7 @@
             		<field name="hop_dong_id" readonly='1'/>
             	</field>
             	<xpath expr="//field[@name='fiscal_position']" position="after">
-	        		<field name="reference_number" readonly="0"/>
+	        		<field name="reference_number" invisible="1"/>
 	        		<field name="ki_hieu_hd"/>
 	        		<field name="so_hd"/>
 	        	</xpath>
