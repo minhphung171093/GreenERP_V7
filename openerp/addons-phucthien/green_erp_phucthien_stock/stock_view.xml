@@ -29,6 +29,12 @@
                 <xpath expr="//field[@name='stock_journal_id']" position="after">
                 	<field name="description" attrs="{'invisible':[('type','!=','out')]}"/>
                 </xpath>
+                <xpath expr="//button[@name='button_cancel']" position="after">
+                	<button name="%(action_xuly_hangtra_cuakhachhang)d" type='action' attrs="{'invisible': ['|','|','|',('state','!=','done'),('type','!=','in'),('return','!=','customer'),('loai_xuly','!=',False)]}" string="Xử lý"/>
+                	<button name="xem_phieu_xu_ly" type='object' attrs="{'invisible': [('loai_xuly','=',False)]}" string="Xem phiếu xử lý"/>
+                	<field name="return" invisible='1'/>
+                	<field name="loai_xuly" invisible='1'/>
+                </xpath>
                 <xpath expr="//field[@name='origin']" position="after">
                 	<field name="ngay_gui" attrs="{'invisible':[('type','!=','out')]}"/>
                 	<field name="ngay_nhan" attrs="{'invisible':[('type','!=','out')]}"/>
@@ -41,6 +47,7 @@
                 	<field name="so_luong_thung" attrs="{'invisible':[('type','!=','in')]}"/>
                 	<field name="time_nhan" attrs="{'invisible':[('type','!=','in')]}"/>
                 	<field name="time_ketthuc" attrs="{'invisible':[('type','!=','in')]}"/>
+                	<field name="tinhtrang_chatluong" attrs="{'invisible':['|',('type','!=','in'),('return','!=','customer')]}"/>
                 </xpath>
                 <xpath expr="//field[@name='partner_id']" position="after">
                 	<field name="diachi_giaohang_id" domain="[('partner_id','=',partner_id)]" attrs="{'invisible':[('type','!=','out')]}"/>

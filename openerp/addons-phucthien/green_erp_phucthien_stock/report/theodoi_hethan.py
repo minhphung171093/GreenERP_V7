@@ -43,6 +43,11 @@ class Parser(report_sxw.rml_parse):
             'get_diachi': self.get_diachi,
             'get_hsx': self.get_hsx,
             'get_dvt': self.get_dvt,
+            'get_vietname_date':self.get_vietname_date,
+            'get_date_hd': self.get_date_hd,
+            'get_htxl': self.get_htxl,
+            'get_chungtu': self.get_chungtu,
+            'get_ngayxuat': self.get_ngayxuat,
         })
         
     def display_address_partner(self, partner):
@@ -53,6 +58,12 @@ class Parser(report_sxw.rml_parse):
         if address:
             address = address[:-3]
         return address
+    
+    def get_vietname_date(self, date):
+        if not date:
+            date = time.strftime(DATE_FORMAT)
+        date = datetime.strptime(date, DATE_FORMAT)
+        return date.strftime('%d/%m/%Y')
     
     def get_product(self):
         wizard_data = self.localcontext['data']['form']
@@ -80,10 +91,62 @@ class Parser(report_sxw.rml_parse):
         product = self.pool.get('product.product').browse(self.cr, self.uid, product_id)
         return product.uom_id and product.uom_id.name or ''
     
+    def get_date_hd(self,date):
+        if not date:
+            date = time.strftime('%Y-%m-%d')
+        else:
+            date = date[:10]
+        date = datetime.strptime(date, DATE_FORMAT)
+        return date.strftime('%m/%Y')
+    
+    def get_htxl(self, loaixuly):
+        if loaixuly=='trahang_ncc':
+            return u'Trả hàng cho nhà cung cấp'
+        return u'Hủy hàng'
+    
+    def get_chungtu(self, origin):
+        invoice_ids = self.pool.get('account.invoice').search(self.cr,self.uid,[('name','=',origin)])
+        if invoice_ids:
+            invoice = self.pool.get('account.invoice').browse(self.cr,self.uid,invoice_ids[0])
+            so = invoice.number
+            ngay = self.get_vietname_date(invoice.date_invoice)
+            khachhang = invoice.partner_id.name
+        else:
+            so = ''
+            ngay = ''
+            khachhang = ''
+        return {'so': so,
+                'ngay': ngay,
+                'khachhang': khachhang}
+    
+    def get_ngayxuat(self,picking_id):
+        picking_obj = self.pool.get('stock.picking')
+        picking = picking_obj.browse(self.cr, self.uid, picking_id)
+        date = ''
+        if picking.loai_xuly=='trahang_ncc':
+            trahang_ids = picking_obj.search(self.cr, self.uid, [('origin','=',picking.name),('state','=',done)])
+            if trahang_ids:
+                trahang = picking_obj.browse(self.cr, self.uid, trahang_ids[0])
+                date = self.get_vietname_date(trahang.date[:10])
+        else:
+            if picking.xuly_huyhang_id.state=='done':
+                date = self.get_vietname_date(picking.xuly_huyhang_id.date[:10])
+        return date
+        
     def get_lines(self):
         wizard_data = self.localcontext['data']['form']
         tu_ngay = wizard_data['tu_ngay']
         den_ngay = wizard_data['den_ngay']
         product_id = wizard_data['product_id'][0]
         location_id = wizard_data['location_id'][0]
-        return []
+        sql = '''
+            select sp.id as id, sp.origin as origin, sp.date as ngaynhap, spl.name as solo, spl.life_date as handung, sm.product_qty as soluong,
+                sp.tinhtrang_chatluong as tinhtrangchatluong, sp.note as ghichu, sp.loai_xuly as loaixuly
+                from stock_move sm
+                left join stock_picking sp on sp.id=sm.picking_id
+                left join stock_production_lot spl on spl.id = sm.prodlot_id 
+                where sp.return='customer' and sp.type='in' and sp.state='done' and sm.location_dest_id=%s and sm.product_id=%s
+                    and date(timezone('UTC',sp.date)) between '%s' and '%s'
+        '''%(location_id,product_id,tu_ngay,den_ngay)
+        self.cr.execute(sql)
+        return self.cr.dictfetchall()

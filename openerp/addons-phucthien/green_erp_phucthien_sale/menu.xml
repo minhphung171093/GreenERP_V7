@@ -39,17 +39,17 @@
     		sequence="3"/>
     	<menuitem id="menu_action_congno_vacine"
     		action="action_congno_vacine"
-    		name="Báo cáo công nợ vacine"
+    		name="Công nợ vacine"
     		parent="phucthien_sale_report"
     		sequence="4"/>
     	<menuitem id="menu_action_congno_mypham"
     		action="action_congno_mypham"
-    		name="Báo cáo Công Nợ Mỹ Phẩm"
+    		name="Công nợ mỹ phẩm"
     		parent="phucthien_sale_report"
     		sequence="5"/> 
     	<menuitem id="menu_action_congno_duocpham"
     		action="action_congno_duocpham"
-    		name="Báo cáo Công Nợ Dược Phẩm"
+    		name="Công nợ dược phẩm"
     		parent="phucthien_sale_report"
     		sequence="6"/>
     </data>

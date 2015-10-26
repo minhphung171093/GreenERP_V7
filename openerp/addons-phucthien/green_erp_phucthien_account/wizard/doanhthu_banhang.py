@@ -27,20 +27,20 @@ class tonghop_doanhthu_banhang(osv.osv_memory):
     _name = 'tonghop.doanhthu.banhang'
     
     _columns = {
-        'partner_ids': fields.many2many('res.partner','doanhthubanhang_partner_ref','dtbh_id','partner_id', 'Khách hàng'),
-        'users_ids': fields.many2many('res.users','doanhthubanhang_users_ref','dtbh_id','users_id', 'Nhân viên bán hàng'),
-        'product_ids': fields.many2many('product.product','doanhthubanhang_product_ref','dtbh_id','product_id', 'Sản phẩm'),
-        'categ_ids': fields.many2many('product.category','doanhthubanhang_categ_ref','dtbh_id','categ_id', 'Nhóm sản phẩm'),
-        'loc_ids': fields.many2many('stock.location','doanhthubanhang_location_ref','dtbh_id','loc_id', 'Kho hàng'),
-        'nsx_ids': fields.many2many('manufacturer.product','doanhthubanhang_manufacturer_product_ref','dtbh_id','nsx_id', 'Hãng sản xuất'),
-        'account_ids': fields.many2many('account.account','doanhthubanhang_account_ref','dtbh_id','account_id', 'Tài khoản'),
+        'partner_ids': fields.many2many('res.partner','tonghopdoanhthubanhang_partner_ref','dtbh_id','partner_id', 'Khách hàng'),
+        'users_ids': fields.many2many('res.users','tonghopdoanhthubanhang_users_ref','dtbh_id','users_id', 'Nhân viên bán hàng'),
+        'product_ids': fields.many2many('product.product','tonghopdoanhthubanhang_product_ref','dtbh_id','product_id', 'Sản phẩm'),
+        'categ_ids': fields.many2many('product.category','tonghopdoanhthubanhang_categ_ref','dtbh_id','categ_id', 'Nhóm sản phẩm'),
+        'loc_ids': fields.many2many('stock.location','tonghopdoanhthubanhang_location_ref','dtbh_id','loc_id', 'Kho hàng'),
+        'nsx_ids': fields.many2many('manufacturer.product','tonghopdoanhthubanhang_manufacturer_product_ref','dtbh_id','nsx_id', 'Hãng sản xuất'),
+        'account_ids': fields.many2many('account.account','tonghopdoanhthubanhang_account_ref','dtbh_id','account_id', 'Tài khoản'),
         'date_from': fields.date('Từ ngày',required=True),
         'date_to': fields.date('Đến ngày',required=True),
         'amount_from': fields.float('Số tiền từ'),
         'amount_to': fields.float('Đến'),
         'hd_from': fields.char('Số hóa đơn từ'),
         'hd_to': fields.char('Đến'),
-        'khu_vuc_ids': fields.many2many('kv.benh.vien','doanhthubanhang_khu_vuc_ref','dtbh_id','khu_vuc_id', 'Khu vực'),
+        'khu_vuc_ids': fields.many2many('kv.benh.vien','tonghopdoanhthubanhang_khu_vuc_ref','dtbh_id','khu_vuc_id', 'Khu vực'),
 #         'khu_vuc':fields.many2one('kv.benh.vien','Khu vực'),
     }
     
