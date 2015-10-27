@@ -17,7 +17,7 @@
 	        		<field name="date_document"/>
 	        	</xpath>
 	        	<xpath expr="//field[@name='supplier_invoice_number']" position="after">
-	        		<field name="ki_hieu_hd"/>
+	        		<field name="reference" string="Ký hiệu hóa đơn"/>
 	        	</xpath>
             </field>
         </record>
@@ -35,7 +35,7 @@
             	</field>
             	<xpath expr="//field[@name='fiscal_position']" position="after">
 	        		<field name="reference_number" invisible="0"/>
-	        		<field name="ki_hieu_hd"/>
+	        		<field name="reference" string="Ký hiệu hóa đơn"/>
 	        	</xpath>
 	        	<xpath expr="//page[@string='Payments']" position="after">
 	        		<page string="Supplier Invoice" groups="base.group_user">

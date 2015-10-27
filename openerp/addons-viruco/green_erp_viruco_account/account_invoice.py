@@ -249,17 +249,17 @@ class account_invoice(osv.osv):
         for inv in self.browse(cr, uid, ids, context=context):
             if 'state' in vals and vals['state']=='open':
                 if inv.type=='in_invoice' or inv.type=='in_refund':
-                    if not inv.ki_hieu_hd:
+                    if not inv.reference:
                         raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa nhập ký hiệu hoá đơn.!'))
                     if not inv.supplier_invoice_number:
                         raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa nhập số hoá đơn.!'))
                 if inv.type=='out_refund':
-                    if not inv.ki_hieu_hd:
+                    if not inv.reference:
                         raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa nhập ký hiệu hoá đơn.!'))
                     if not inv.reference_number:
                         raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa nhập số hoá đơn.!'))
                 if inv.type=='out_invoice':
-                    if not inv.ki_hieu_hd:
+                    if not inv.reference:
                         raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa nhập ký hiệu hoá đơn.!'))
                     if not inv.reference_number:
                         raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa nhập số hoá đơn.!'))
