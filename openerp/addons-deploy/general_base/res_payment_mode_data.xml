@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-    <data>
+    <data noupdate='1'>
         
         <!-- Payment Mode -->
 
         <record model="res.payment.mode" id="payment_mode_1">
-            <field name="name">Cash</field>
+            <field name="name">Tiền mặt</field>
         </record>
 		
 		<record model="res.payment.mode" id="payment_mode_2">
-            <field name="name">Bank Transfer</field>
+            <field name="name">Chuyển khoản</field>
         </record>
         
         <record model="res.payment.mode" id="payment_mode_3">
-            <field name="name">Check</field>
+            <field name="name">CK-TM</field>
         </record>
 
-        <record model="res.payment.mode" id="payment_mode_4">
+        <!--<record model="res.payment.mode" id="payment_mode_4">
             <field name="name">Credit Card</field>
-        </record>
+        </record>-->
 
         
         
