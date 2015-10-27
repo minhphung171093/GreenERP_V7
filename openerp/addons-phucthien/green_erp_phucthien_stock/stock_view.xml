@@ -18,12 +18,11 @@
 								<field name="sl_nhietke" sum="SL Nhiệt kế" on_change="onchange_sl_nhietke(sl_nhietke,sl_nhietke_conlai)"/>
 								<field name="sl_nhietke_conlai" invisible = '1' sum="SL Nhiệt kế Còn lại"/>
 								<field name="chi_phi_nhiet_ke" sum="CP nhiệt kế"/>
-								<field name="chi_phi_gui_hang" sum="CP gửi hàng"/>
+								<field name="chi_phi_gui_hang" string = 'CP trung chuyển' sum="CP trung chuyển"/>
+								<field name="chiphi_vanchuyen"/>
 								<field name="employee_id"/>
 								<field name="nhietdo_packaging_di"/>
 								<field name="nhietdo_packaging_den"/>
-								<field name="chiphi_trungchuyen"/>
-								<field name="chiphi_vanchuyen"/>
 							</tree>
                         </field>
                     </page>

@@ -74,9 +74,9 @@ class Parser(report_sxw.rml_parse):
                 sum(spp.sl_thung) as sl_thung,
                 sum(spp.chi_phi_thung) as chi_phi_thung,
                 sum(spp.chi_phi_da) as chi_phi_da,
-                sum(spp.chiphi_trungchuyen) as chiphi_trungchuyen,
+                sum(spp.chi_phi_gui_hang) as chi_phi_gui_hang,
                 sum(spp.chiphi_vanchuyen) as chiphi_vanchuyen,
-                sum(spp.chi_phi_thung)+sum(spp.chi_phi_da)+sum(spp.chiphi_trungchuyen)+sum(spp.chiphi_vanchuyen) as thanh_tien,
+                sum(spp.chi_phi_thung)+sum(spp.chi_phi_da)+sum(spp.chi_phi_gui_hang)+sum(spp.chiphi_vanchuyen) as thanh_tien,
                 case when sp.ngay_nhan is not null then 'danhan' else 'chuanhan' end bb_giaonhan
                 
             from stock_picking_packaging spp
@@ -113,7 +113,7 @@ class Parser(report_sxw.rml_parse):
                         'chi_phi_thung':line['chi_phi_thung'],
                         'chi_phi_da':line['chi_phi_da'],
                         'bb_giaonhan':line['bb_giaonhan'],
-                        'chiphi_trungchuyen': line['chiphi_trungchuyen'],
+                        'chiphi_trungchuyen': line['chi_phi_gui_hang'],
                         'chiphi_vanchuyen': line['chiphi_vanchuyen'],
                         'thanh_tien': line['thanh_tien'],
                         'nguoi_gui':line['employee'],

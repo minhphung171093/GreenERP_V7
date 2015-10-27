@@ -38,6 +38,7 @@ class Parser(report_sxw.rml_parse):
         self.sum_xuat_qty =0.0
         self.nsx=False
         self.get_company(cr, uid)
+        self.quy_cach = False
         
         self.localcontext.update({
             'get_line':self.get_line,
@@ -61,6 +62,7 @@ class Parser(report_sxw.rml_parse):
             'get_note_chuyen_kho_noi_bo': self.get_note_chuyen_kho_noi_bo,
             'get_ngay_hd': self.get_ngay_hd,
             'get_nsx': self.get_nsx,
+            'get_quy_cach': self.get_quy_cach,
         })
         
     def get_company(self,cr,uid):
@@ -73,6 +75,11 @@ class Parser(report_sxw.rml_parse):
         if not self.product_name:
             self.get_header()
         return self.product_name
+    
+    def get_quy_cach(self):
+        if not self.quy_cach:
+            self.get_header()
+        return self.quy_cach
     
     def get_nsx(self):
         if not self.nsx:
@@ -126,6 +133,7 @@ class Parser(report_sxw.rml_parse):
         self.location_id = wizard_data['location_id'][0]
         product = self.pool.get('product.product').browse(self.cr, self.uid,wizard_data['product_id'][0])
         self.nsx = product.manufacturer_product_id and product.manufacturer_product_id.name or ''
+        self.quy_cach = product.quy_cach and product.quy_cach or ''
         return res
     
     def get_uom_base(self):

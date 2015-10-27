@@ -120,6 +120,9 @@
 	    			<field name="manufacturer_product_id" />
 	    			<field name="product_country_id"/>
 	            </xpath>
+	            <xpath expr="//field[@name='list_price']" position="after">
+	    			<field name="quy_cach" />
+	            </xpath>
             </field>
         </record>
         
