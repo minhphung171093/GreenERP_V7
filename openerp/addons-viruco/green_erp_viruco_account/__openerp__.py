@@ -36,6 +36,7 @@
         'report/eximbank_report_view.xml',
         'report/techcombank_report_view.xml',
         'report/vietcombank_report_view.xml',
+        'report/tmcp_hanghai_bank_report_view.xml',
         'report/phieu_chi_nh_report_view.xml',
         'report/phieu_chi_tm_report_view.xml',
         'report/phieu_thu_nh_report_view.xml',
