@@ -21,6 +21,7 @@
     "demo_xml" : [],
 
     "update_xml" : [
+        'security/ir.model.access.csv',
         "report/report_view.xml",
         "wizard/print_report.xml",
         "report_review.xml",
