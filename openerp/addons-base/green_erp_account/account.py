@@ -52,10 +52,15 @@ class account_invoice(osv.osv):
     
     def write(self, cr, uid, ids, vals, context=None):
         for inv in self.browse(cr, uid, ids, context=context):
-            if 'state' in vals and vals['state']=='open':
+            if 'state' in vals and vals['state']=='open' and inv.type in ['out_invoice','out_refund']:
                 if not inv.reference:
                     raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa nhập ký hiệu hoá đơn.!'))
                 if not inv.reference_number:
+                    raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa nhập số hoá đơn.!'))
+            if 'state' in vals and vals['state']=='open' and inv.type in ['in_invoice','in_refund']:
+                if not inv.reference:
+                    raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa nhập ký hiệu hoá đơn.!'))
+                if not inv.supplier_invoice_number:
                     raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa nhập số hoá đơn.!'))
         return super(account_invoice, self).write(cr, uid, ids, vals, context=context)   
     

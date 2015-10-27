@@ -245,12 +245,12 @@
 				<xpath expr="//field[@name='reference']" position="replace">
 				</xpath>
 				<xpath expr="//field[@name='supplier_invoice_number']" position="after">
-					<field name="reference_number" string = "Số hóa đơn"/>
+					<!-- <field name="reference_number" string = "Số hóa đơn"/> -->
 					<field name="reference" string = "Ký hiệu hóa đơn"/>
 				</xpath>
-				<xpath expr="//field[@name='supplier_invoice_number']" position="attributes">
+				<!-- <xpath expr="//field[@name='supplier_invoice_number']" position="attributes">
 					<attribute name='invisible'>1</attribute>
-				</xpath>
+				</xpath> -->
 				<xpath expr="//label[@for='reference_type']" position="attributes">
 					<attribute name='invisible'>1</attribute>
 				</xpath>
