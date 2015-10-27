@@ -248,11 +248,21 @@ class account_invoice(osv.osv):
         new_write = super(account_invoice, self).write(cr, uid, ids, vals, context=context)    
         for inv in self.browse(cr, uid, ids, context=context):
             if 'state' in vals and vals['state']=='open':
-                if not inv.ki_hieu_hd:
-                    raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa nhập ký hiệu hoá đơn.!'))
-                if not inv.so_hd:
-                    raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa nhập số hoá đơn.!'))
+                if inv.type=='in_invoice' or inv.type=='in_refund':
+                    if not inv.ki_hieu_hd:
+                        raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa nhập ký hiệu hoá đơn.!'))
+                    if not inv.supplier_invoice_number:
+                        raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa nhập số hoá đơn.!'))
+                if inv.type=='out_refund':
+                    if not inv.ki_hieu_hd:
+                        raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa nhập ký hiệu hoá đơn.!'))
+                    if not inv.reference_number:
+                        raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa nhập số hoá đơn.!'))
                 if inv.type=='out_invoice':
+                    if not inv.ki_hieu_hd:
+                        raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa nhập ký hiệu hoá đơn.!'))
+                    if not inv.reference_number:
+                        raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa nhập số hoá đơn.!'))
                     for line in inv.invoice_line:
 #                         if line.stock_move_id and line.stock_move_id.picking_id.invoice_state!='invoiced':
 #                             raise osv.except_osv(_('Cảnh báo!'),_('Phiếu nhập %s chưa có hoá đơn.!')%(line.stock_move_id.name))
