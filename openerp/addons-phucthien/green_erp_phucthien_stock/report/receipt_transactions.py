@@ -159,7 +159,7 @@ class Parser(report_sxw.rml_parse):
     def get_date_invoice(self,date):
         if date:
             date = date[:10]
-            date = datetime.strptime(date, DATE_FORMAT)
+            date = datetime.datetime.strptime(date, DATE_FORMAT)
             return date.strftime('%d/%m/%y')
         else:
             return ''
