@@ -126,14 +126,17 @@
                     <button name="validate" string="Validate" states="draft" type="object" class="oe_highlight"/>
                     <button name="cancel" string="Cancel Voucher" states="draft,posted" type="object"/>
                     <button name="action_cancel_draft" type="object" states="cancel" string="Set to Draft"/>
-                    <button name="print_eximbank_report" type="object" string="EXIMBANK" attrs="{'invisible': ['|',('type', '!=', 'payment'), ('type_journal_rel', '!=', 'bank')]}" />
-                    <button name="print_techcombank_report" type="object" string="TECHCOMBANK" attrs="{'invisible': ['|',('type', '!=', 'payment'), ('type_journal_rel', '!=', 'bank')]}" />
-                    <button name="print_vietcombank_report" type="object" string="VIETCOMBANK" attrs="{'invisible': ['|',('type', '!=', 'payment'), ('type_journal_rel', '!=', 'bank')]}" />
-                    <button name="print_tmcp_hanghai_bank_report" type="object" string="TMCP Hàng Hải Bank" attrs="{'invisible': ['|',('type', '!=', 'payment'), ('type_journal_rel', '!=', 'bank')]}" />
                     <button name="print_phieu_chi_nh_report" type="object" string="Phiếu chi Ngân Hàng" attrs="{'invisible': ['|',('type', '!=', 'payment'), ('type_journal_rel', '!=', 'bank')]}" />
                     <button name="print_phieu_chi_tm_report" type="object" string="Phiếu chi Tiền Mặt" attrs="{'invisible': ['|',('type', '!=', 'payment'), ('type_journal_rel', '!=', 'cash')]}" />
                     <field name="state" widget="statusbar" statusbar_visible="draft,posted" statusbar_colors='{"cancel":"red"}'/>
                 </header>
+                <div>
+                	<button name="print_eximbank_report" type="object" string="EXIMBANK" attrs="{'invisible': ['|',('type', '!=', 'payment'), ('type_journal_rel', '!=', 'bank')]}" />
+                    <button name="print_techcombank_report" type="object" string="TECHCOMBANK" attrs="{'invisible': ['|',('type', '!=', 'payment'), ('type_journal_rel', '!=', 'bank')]}" />
+                    <button name="print_vietcombank_report" type="object" string="VIETCOMBANK" attrs="{'invisible': ['|',('type', '!=', 'payment'), ('type_journal_rel', '!=', 'bank')]}" />
+                    <button name="print_tmcp_hanghai_bank_report" type="object" string="TMCP Hàng Hải Bank" attrs="{'invisible': ['|',('type', '!=', 'payment'), ('type_journal_rel', '!=', 'bank')]}" />
+                    <button name="print_maritimebank_report" type="object" string="MARITIMEBANK" attrs="{'invisible': ['|',('type', '!=', 'payment'), ('type_journal_rel', '!=', 'bank')]}" />
+                </div>
                 <sheet string="Purchase Receipt Batch">
                 	<div class="oe_title">
                         <h1>

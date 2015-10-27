@@ -87,6 +87,12 @@ class account_voucher_batch(osv.osv):
         datas['form'] = self.read(cr, uid, ids)[0]        
         return {'type': 'ir.actions.report.xml', 'report_name': 'tmcp_hanghai_bank_report' , 'datas': datas}
     
+    def print_maritimebank_report(self, cr, uid, ids, context=None): 
+        datas = {'ids': ids}
+        datas['model'] = 'account.voucher.batch'
+        datas['form'] = self.read(cr, uid, ids)[0]        
+        return {'type': 'ir.actions.report.xml', 'report_name': 'maritimebank_report' , 'datas': datas}
+    
     def print_phieu_chi_nh_report(self, cr, uid, ids, context=None): 
         datas = {'ids': ids}
         datas['model'] = 'account.voucher.batch'
