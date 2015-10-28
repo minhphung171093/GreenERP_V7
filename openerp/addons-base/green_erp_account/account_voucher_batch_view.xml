@@ -129,7 +129,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree</field>
             <field name="domain">[('journal_id.type','in',['cash','bank']),('type','=','payment')]</field>
-            <field name="context">{'voucher_journal_type':['cash','bank'],'default_type':'payment'}</field>
+            <field name="context">{'voucher_journal_type':['cash','bank'],'default_type':'payment','phieuthu_chi':1}</field>
             <field name="view_id" eval="False"/>
             <field name="search_view_id" eval="view_account_voucher_batch_receipt_filter"/>
             <field name="target">current</field>
@@ -154,7 +154,7 @@
             <field name="res_model">account.voucher.batch</field>
             <field name="view_type">form</field>
             <field name="domain">[('journal_id.type','in',['cash']),('type','=','payment')]</field>
-            <field name="context">{'voucher_journal_type':['cash'],'default_type':'payment'}</field>
+            <field name="context">{'voucher_journal_type':['cash'],'default_type':'payment','phieuthu_chi':1}</field>
             <field name="view_id" eval="False"/>
             <field name="search_view_id" eval="view_account_voucher_batch_receipt_filter"/>
             <field name="target">current</field>
@@ -179,7 +179,7 @@
             <field name="res_model">account.voucher.batch</field>
             <field name="view_type">form</field>
             <field name="domain">[('journal_id.type','in',['bank']),('type','=','payment')]</field>
-            <field name="context">{'voucher_journal_type':['bank'],'default_type':'payment'}</field>
+            <field name="context">{'voucher_journal_type':['bank'],'default_type':'payment','phieuthu_chi':1}</field>
             <field name="view_id" eval="False"/>
             <field name="search_view_id" eval="view_account_voucher_batch_receipt_filter"/>
             <field name="target">current</field>
@@ -304,7 +304,7 @@
             <field name="res_model">account.voucher.batch</field>
             <field name="view_type">form</field>
             <field name="domain">[('journal_id.type','in',['cash']),('type','=','receive')]</field>
-            <field name="context">{'voucher_journal_type':['cash'],'default_type':'receive'}</field>
+            <field name="context">{'voucher_journal_type':['cash'],'default_type':'receive','phieuthu_chi':1}</field>
             <field name="view_id" eval="False"/>
             <field name="search_view_id" eval="view_account_voucher_batch_receipt_filter"/>
             <field name="target">current</field>
@@ -329,7 +329,7 @@
             <field name="res_model">account.voucher.batch</field>
             <field name="view_type">form</field>
             <field name="domain">[('journal_id.type','in',['bank']),('type','=','receive')]</field>
-            <field name="context">{'voucher_journal_type':['bank'],'default_type':'receive'}</field>
+            <field name="context">{'voucher_journal_type':['bank'],'default_type':'receive','phieuthu_chi':1}</field>
             <field name="view_id" eval="False"/>
             <field name="search_view_id" eval="view_account_voucher_batch_receipt_filter"/>
             <field name="target">current</field>
