@@ -39,7 +39,7 @@
     		sequence="3"/>
     	<menuitem id="menu_action_congno_vacine"
     		action="action_congno_vacine"
-    		name="Công nợ vacine"
+    		name="Công nợ vaccine"
     		parent="phucthien_sale_report"
     		sequence="4"/>
     	<menuitem id="menu_action_congno_mypham"

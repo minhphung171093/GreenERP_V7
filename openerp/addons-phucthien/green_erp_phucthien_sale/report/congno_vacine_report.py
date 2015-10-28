@@ -42,6 +42,7 @@ class Parser(report_sxw.rml_parse):
         self.localcontext.update({
             'convert_date': self.convert_date,
             'get_date_from':self.get_date_from,
+            'get_date_to': self.get_date_to,
             'get_month_year': self.get_month_year,
             'get_lines': self.get_lines,
         })
@@ -55,14 +56,20 @@ class Parser(report_sxw.rml_parse):
         date = datetime.strptime(wizard_data['date_from'], DATE_FORMAT)
         return date.strftime('%d/%m/%Y')
     
+    def get_date_to(self):
+        wizard_data = self.localcontext['data']['form']
+        date = datetime.strptime(wizard_data['date_to'], DATE_FORMAT)
+        return date.strftime('%d/%m/%Y')
+    
     def get_month_year(self):
         wizard_data = self.localcontext['data']['form']
-        date = datetime.strptime(wizard_data['date_from'], DATE_FORMAT)
+        date = datetime.strptime(wizard_data['date_to'], DATE_FORMAT)
         return date.strftime('%m/%Y')
     
     def get_lines(self):
         wizard_data = self.localcontext['data']['form']
-        date_from = wizard_data['date_from']    
+        date_from = wizard_data['date_from']   
+        date_to = wizard_data['date_to']  
         user_ids = wizard_data['user_id']
         invoice_obj = self.pool.get('account.invoice')
         cus_ids = []
@@ -73,8 +80,8 @@ class Parser(report_sxw.rml_parse):
                             from product_product,product_template 
                             where product_template.categ_id in (select id from product_category where code ='VC') 
                             and product_product.product_tmpl_id = product_template.id) and invoice_id in 
-                                (select id from account_invoice where date_invoice <= '%s' and type ='out_invoice' and state ='open'))
-            '''%(date_from)
+                                (select id from account_invoice where date_invoice between '%s' and '%s' and type ='out_invoice' and state ='open'))
+            '''%(date_from,date_to)
             self.cr.execute(sql)   
             cus_ids = [r[0] for r in self.cr.fetchall()]
         else:
@@ -92,9 +99,9 @@ class Parser(report_sxw.rml_parse):
                                 from product_product,product_template 
                                 where product_template.categ_id in (select id from product_category where code ='VC') 
                                 and product_product.product_tmpl_id = product_template.id) and invoice_id in 
-                                    (select id from account_invoice where date_invoice <= '%s' and type ='out_invoice' and state ='open'))
+                                    (select id from account_invoice where date_invoice between '%s' and '%s' and type ='out_invoice' and state ='open'))
                                     and ('%s'::date - date_invoice) <= 30 and partner_id = %s
-                '''%(date_from,date_from,cus)
+                '''%(date_from,date_to,date_to,cus)
                 self.cr.execute(sql) 
                 sum30 = self.cr.fetchone()[0]
                 
@@ -103,9 +110,9 @@ class Parser(report_sxw.rml_parse):
                                 from product_product,product_template 
                                 where product_template.categ_id in (select id from product_category where code ='VC') 
                                 and product_product.product_tmpl_id = product_template.id) and invoice_id in 
-                                    (select id from account_invoice where date_invoice <= '%s' and type ='out_invoice' and state ='open'))
+                                    (select id from account_invoice where date_invoice between '%s' and '%s' and type ='out_invoice' and state ='open'))
                                     and ('%s'::date - date_invoice)>=31 and ('%s'::date - date_invoice)<=45 and partner_id = %s
-                '''%(date_from,date_from,date_from,cus)
+                '''%(date_from,date_to,date_to,date_to,cus)
                 self.cr.execute(sql) 
                 sum31 = self.cr.fetchone()[0]
                 
@@ -114,9 +121,9 @@ class Parser(report_sxw.rml_parse):
                                 from product_product,product_template 
                                 where product_template.categ_id in (select id from product_category where code ='VC') 
                                 and product_product.product_tmpl_id = product_template.id) and invoice_id in 
-                                    (select id from account_invoice where date_invoice <= '%s' and type ='out_invoice' and state ='open'))
+                                    (select id from account_invoice where date_invoice between '%s' and '%s' and type ='out_invoice' and state ='open'))
                                     and ('%s'::date - date_invoice)>=46 and ('%s'::date - date_invoice)<=60 and partner_id = %s
-                '''%(date_from,date_from,date_from,cus)
+                '''%(date_from,date_to,date_to,date_to,cus)
                 self.cr.execute(sql) 
                 sum46 = self.cr.fetchone()[0]
                 
@@ -125,9 +132,9 @@ class Parser(report_sxw.rml_parse):
                                 from product_product,product_template 
                                 where product_template.categ_id in (select id from product_category where code ='VC') 
                                 and product_product.product_tmpl_id = product_template.id) and invoice_id in 
-                                    (select id from account_invoice where date_invoice <= '%s' and type ='out_invoice' and state ='open'))
+                                    (select id from account_invoice where date_invoice between '%s' and '%s' and type ='out_invoice' and state ='open'))
                                     and ('%s'::date - date_invoice)>=61 and ('%s'::date - date_invoice)<=90 and partner_id = %s
-                '''%(date_from,date_from,date_from,cus)
+                '''%(date_from,date_to,date_to,date_to,cus)
                 self.cr.execute(sql) 
                 sum61 = self.cr.fetchone()[0]
                 
@@ -136,9 +143,9 @@ class Parser(report_sxw.rml_parse):
                                 from product_product,product_template 
                                 where product_template.categ_id in (select id from product_category where code ='VC') 
                                 and product_product.product_tmpl_id = product_template.id) and invoice_id in 
-                                    (select id from account_invoice where date_invoice <= '%s' and type ='out_invoice' and state ='open'))
+                                    (select id from account_invoice where date_invoice between '%s' and '%s' and type ='out_invoice' and state ='open'))
                                     and ('%s'::date - date_invoice)>=91 and partner_id = %s
-                '''%(date_from,date_from,cus)
+                '''%(date_from,date_to,date_to,cus)
                 self.cr.execute(sql) 
                 sum91 = self.cr.fetchone()[0]
 #                 sql = '''

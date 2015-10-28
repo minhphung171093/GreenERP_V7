@@ -49,11 +49,23 @@ class Parser(report_sxw.rml_parse):
             'get_lines': self.get_lines, 
             'display_address': self.display_address,
             'get_tong':self.get_tong,
+            'get_date_from':self.get_date_from,
+            'get_date_to': self.get_date_to,
         })
     def convert_date(self, date):
         if date:
             date = datetime.strptime(date, DATE_FORMAT)
             return date.strftime('%d/%m/%Y')
+        
+    def get_date_from(self):
+        wizard_data = self.localcontext['data']['form']
+        date = datetime.strptime(wizard_data['date_from'], DATE_FORMAT)
+        return date.strftime('%d/%m/%Y')
+    
+    def get_date_to(self):
+        wizard_data = self.localcontext['data']['form']
+        date = datetime.strptime(wizard_data['date_to'], DATE_FORMAT)
+        return date.strftime('%d/%m/%Y')
         
     def get_period_name(self):
         wizard_data = self.localcontext['data']['form']
@@ -74,12 +86,14 @@ class Parser(report_sxw.rml_parse):
     
     def get_lines(self):
         wizard_data = self.localcontext['data']['form']
-        period_id = wizard_data['period_id']    
+#         period_id = wizard_data['period_id']    
         user_ids = wizard_data['user_ids']
+        date_from = wizard_data['date_from']   
+        date_to = wizard_data['date_to']  
         invoice_obj = self.pool.get('account.invoice') 
         period_obj = self.pool.get('account.period')
-        period_start = period_obj.browse(self.cr,self.uid,period_id[0]).date_start
-        period_stop = period_obj.browse(self.cr,self.uid,period_id[0]).date_stop
+#         period_start = period_obj.browse(self.cr,self.uid,period_id[0]).date_start
+#         period_stop = period_obj.browse(self.cr,self.uid,period_id[0]).date_stop
         cus_ids = []
         res = []
         inv_ids = []
@@ -90,7 +104,7 @@ class Parser(report_sxw.rml_parse):
                             where product_template.categ_id in (select id from product_category where code ='MP') 
                             and product_product.product_tmpl_id = product_template.id) and invoice_id in 
                                 (select id from account_invoice where date_invoice between '%s' and '%s'  and type ='out_invoice' and state in ('open','paid')))
-            '''%(period_start,period_stop)
+            '''%(date_from,date_to)
             self.cr.execute(sql)   
             inv_ids = [r[0] for r in self.cr.fetchall()]
         else:
@@ -111,7 +125,7 @@ class Parser(report_sxw.rml_parse):
                                 and product_product.product_tmpl_id = product_template.id) and invoice_id in 
                                     (select id from account_invoice where date_invoice between '%s' and '%s'  and type ='out_invoice' and state in ('open','paid')))
                                 and partner_id in %s
-                '''%(period_start,period_stop,cus_ids)
+                '''%(date_from,date_to,cus_ids)
                 self.cr.execute(sql)   
                 inv_ids = [r[0] for r in self.cr.fetchall()] 
         if inv_ids:
@@ -133,7 +147,7 @@ class Parser(report_sxw.rml_parse):
                 sql = '''
                     select case when sum(residual)!=0 then sum(residual) else 0 end nodk from account_invoice 
                     where state='open' and date_invoice < '%s' and partner_id = %s
-                '''%(period_start,inv_id['cus_id'])
+                '''%(date_from,inv_id['cus_id'])
                 self.cr.execute(sql) 
                 nodk = self.cr.fetchone()[0]
                 invoice_id = invoice_obj.browse(self.cr,self.uid,inv)
@@ -164,7 +178,7 @@ class Parser(report_sxw.rml_parse):
                 if invoice_id.state != 'paid':
                     sql='''
                         select case when ('%s'::date - date_invoice)!=0 then ('%s'::date - date_invoice) else 0 end ngayno from account_invoice where id = %s
-                    '''%(period_stop,period_stop,inv)
+                    '''%(date_to,date_to,inv)
                     self.cr.execute(sql) 
                     so_ngay_no = self.cr.fetchone()[0]
                 res.append({'cus_name': inv_id['cus'],
@@ -191,12 +205,14 @@ class Parser(report_sxw.rml_parse):
     
     def get_tong(self):
         wizard_data = self.localcontext['data']['form']
-        period_id = wizard_data['period_id']    
+#         period_id = wizard_data['period_id']    
         user_ids = wizard_data['user_ids']
         invoice_obj = self.pool.get('account.invoice') 
         period_obj = self.pool.get('account.period')
-        period_start = period_obj.browse(self.cr,self.uid,period_id[0]).date_start
-        period_stop = period_obj.browse(self.cr,self.uid,period_id[0]).date_stop
+        date_from = wizard_data['date_from']   
+        date_to = wizard_data['date_to']  
+#         period_start = period_obj.browse(self.cr,self.uid,period_id[0]).date_start
+#         period_stop = period_obj.browse(self.cr,self.uid,period_id[0]).date_stop
         cus_ids = []
         res = {}
         inv_ids = []
@@ -208,7 +224,7 @@ class Parser(report_sxw.rml_parse):
                             where product_template.categ_id in (select id from product_category where code ='MP') 
                             and product_product.product_tmpl_id = product_template.id) and invoice_id in 
                                 (select id from account_invoice where date_invoice between '%s' and '%s'  and type ='out_invoice' and state in ('open','paid')))
-            '''%(period_start,period_stop)
+            '''%(date_from,date_to)
             self.cr.execute(sql)   
             inv_ids = [r[0] for r in self.cr.fetchall()]
             if inv_ids:
@@ -237,7 +253,7 @@ class Parser(report_sxw.rml_parse):
                                 and product_product.product_tmpl_id = product_template.id) and invoice_id in 
                                     (select id from account_invoice where date_invoice between '%s' and '%s'  and type ='out_invoice' and state in ('open','paid')))
                                 and partner_id in %s
-                '''%(period_start,period_stop,cus_ids)
+                '''%(date_from,date_to,cus_ids)
                 self.cr.execute(sql)   
                 inv_ids = [r[0] for r in self.cr.fetchall()] 
                 if inv_ids:
@@ -254,14 +270,14 @@ class Parser(report_sxw.rml_parse):
             sql = '''
                 select case when sum(residual)!=0 then sum(residual) else 0 end nodk from account_invoice 
                 where state='open' and date_invoice < '%s' and partner_id in %s
-            '''%(period_start,customer_ids)
+            '''%(date_from,customer_ids)
             self.cr.execute(sql) 
             tong_nodk = self.cr.fetchone()[0]
             if inv_ids:
                 sql = '''
                     select case when sum(amount_total)!=0 then sum(amount_total) else 0 end phatsinh, case when sum(residual)!=0 then sum(residual) else 0 end notrongki from account_invoice 
                     where state in ('open','paid') and date_invoice between '%s' and '%s' and id in %s
-                '''%(period_start,period_stop,inv_ids)
+                '''%(date_from,date_to,inv_ids)
                 self.cr.execute(sql) 
                 tong =self.cr.fetchone()
                 tong_phatsinh = tong[0]

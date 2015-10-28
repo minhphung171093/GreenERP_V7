@@ -9,6 +9,7 @@
                 <form string="Công Nợ Vacine" version="7.0">
                     <group>
                     	<field name="date_from"/>
+                    	<field name="date_to"/>
                     	<field name="user_id" widget="many2many_tags" groups='base.group_sale_salesman_all_leads'/>
                     </group>
                     <footer>
@@ -21,7 +22,7 @@
         </record>
         
         <record model="ir.actions.act_window" id="action_congno_vacine">
-	        <field name="name">Công Nợ Vacine</field>
+	        <field name="name">Công Nợ Vaccine</field>
 	        <field name="res_model">congno.vacine</field>
 	        <field name="view_type">form</field>
 	        <field name="view_mode">form</field>
@@ -35,7 +36,8 @@
             <field name="arch" type="xml">
                 <form string="Công Nợ Mỹ Phẩm" version="7.0">
                     <group>
-                    	<field name="period_id" options="{'create': false, 'create_edit': false}"/>
+                    	<field name="date_from"/>
+                    	<field name="date_to"/>
                     	<field name="user_ids" widget="many2many_tags" groups='base.group_sale_salesman_all_leads'/>
                     </group>
                     <footer>
@@ -62,7 +64,8 @@
             <field name="arch" type="xml">
                 <form string="Công Nợ Dược Phẩm" version="7.0">
                     <group>
-                    	<field name="period_id" options="{'create': false, 'create_edit': false}"/>
+                    	<field name="date_from"/>
+                    	<field name="date_to"/>
                     	<field name="user_ids" widget="many2many_tags" groups='base.group_sale_salesman_all_leads'/>
                     </group>
                     <footer>
