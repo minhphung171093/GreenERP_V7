@@ -127,6 +127,24 @@ class cang_donghang(osv.osv):
     
 cang_donghang()
 
+class shipping_line(osv.osv):
+    _name = 'shipping.line'
+    _columns = {
+        'name':fields.char('Name',size=1024,required=True),
+        'description': fields.text('Description'),
+    }
+    
+shipping_line()
+
+class forwarder_line(osv.osv):
+    _name = 'forwarder.line'
+    _columns = {
+        'name':fields.char('Name',size=1024,required=True),
+        'description': fields.text('Description'),
+    }
+    
+forwarder_line()
+
 class dk_thanhtoan(osv.osv):
     _name = 'dk.thanhtoan'
     _columns = {

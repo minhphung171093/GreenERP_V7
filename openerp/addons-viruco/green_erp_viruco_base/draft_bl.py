@@ -61,6 +61,8 @@ class draft_bl(osv.osv):
         'draft_bl_line': fields.one2many('draft.bl.line','draft_bl_id','Line'),
         'country_id': fields.many2one('res.country','The Country Of Origin'),
         'customs_declaration': fields.char('Customs Declaration', size=1024),
+        'shipping_line_id': fields.many2one('shipping.line','Shipping line'),
+        'forwarder_line_id': fields.many2one('forwarder.line','Forwarder line'),
     }
     
     _defaults = {

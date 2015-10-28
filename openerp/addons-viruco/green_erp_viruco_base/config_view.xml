@@ -476,6 +476,98 @@
             <field name="domain">[]</field>
         </record>
         
+    	<record id="shipping_line_tree_view" model="ir.ui.view">
+			<field name="name">shipping.line.tree</field>
+			<field name="model">shipping.line</field>
+			<field name="arch" type="xml">
+				<tree string="Shipping line">
+					<field name="name"/>
+					<field name="description"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="shipping_line_filter_view" model="ir.ui.view">
+			<field name="name">shipping.line.filter</field>
+			<field name="model">shipping.line</field>
+            <field name="arch" type="xml">
+                <search string="Tìm Shipping line">
+                    <field name="name"/>
+               </search>
+            </field>
+        </record>
+		
+		<record id="shipping_line_form_view" model="ir.ui.view">
+			<field name="name">shipping.line.form</field>
+			<field name="model">shipping.line</field>
+            <field name="arch" type="xml">
+	            <form string="Shipping line" version="7.0">
+	            	<sheet>
+	            		<group>
+		                	<field name="name"/>
+							<field name="description"/>
+						</group>
+		         	</sheet>
+		         </form>
+			</field>
+		</record>
+          
+		<record id="action_shipping_line" model="ir.actions.act_window">
+            <field name="name">Shipping line</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">shipping.line</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="shipping_line_tree_view"/>
+            <field name="domain">[]</field>
+        </record>
+        
+    	<record id="forwarder_line_tree_view" model="ir.ui.view">
+			<field name="name">forwarder.line.tree</field>
+			<field name="model">forwarder.line</field>
+			<field name="arch" type="xml">
+				<tree string="Forwarder line">
+					<field name="name"/>
+					<field name="description"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="forwarder_line_filter_view" model="ir.ui.view">
+			<field name="name">forwarder.line.filter</field>
+			<field name="model">forwarder.line</field>
+            <field name="arch" type="xml">
+                <search string="Tìm Forwarder line">
+                    <field name="name"/>
+               </search>
+            </field>
+        </record>
+		
+		<record id="forwarder_line_form_view" model="ir.ui.view">
+			<field name="name">forwarder.line.form</field>
+			<field name="model">forwarder.line</field>
+            <field name="arch" type="xml">
+	            <form string="Forwarder line" version="7.0">
+	            	<sheet>
+	            		<group>
+		                	<field name="name"/>
+							<field name="description"/>
+						</group>
+		         	</sheet>
+		         </form>
+			</field>
+		</record>
+          
+		<record id="action_forwarder_line" model="ir.actions.act_window">
+            <field name="name">Forwarder line</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">forwarder.line</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="forwarder_line_tree_view"/>
+            <field name="domain">[]</field>
+        </record>
+        
     	<record id="dk_thanhtoan_tree_view" model="ir.ui.view">
 			<field name="name">dk.thanhtoan.tree</field>
 			<field name="model">dk.thanhtoan</field>

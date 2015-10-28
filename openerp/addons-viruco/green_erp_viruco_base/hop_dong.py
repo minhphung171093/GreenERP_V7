@@ -58,7 +58,7 @@ class hop_dong(osv.osv):
                 val += self._amount_line_tax(cr, uid, line, context=context)
             res[order.id]['amount_tax'] = cur_obj.round(cr, uid, cur, val)
             res[order.id]['amount_untaxed'] = cur_obj.round(cr, uid, cur, val1)
-            res[order.id]['amount_total'] = res[order.id]['amount_untaxed'] + res[order.id]['amount_tax']
+            res[order.id]['amount_total'] = res[order.id]['amount_untaxed'] - res[order.id]['amount_tax']
         return res
     
     def _amount_all_hh(self, cr, uid, ids, field_name, arg, context=None):
@@ -77,7 +77,7 @@ class hop_dong(osv.osv):
                 val += self._amount_line_tax_hh(cr, uid, line, context=context)
             res[order.id]['amount_tax_hh'] = cur_obj.round(cr, uid, cur, val)
             res[order.id]['amount_untaxed_hh'] = cur_obj.round(cr, uid, cur, val1)
-            res[order.id]['amount_total_hh'] = res[order.id]['amount_untaxed_hh'] + res[order.id]['amount_tax_hh']
+            res[order.id]['amount_total_hh'] = res[order.id]['amount_untaxed_hh'] - res[order.id]['amount_tax_hh']
         return res
     
     def _get_order(self, cr, uid, ids, context=None):
@@ -136,7 +136,7 @@ class hop_dong(osv.osv):
         'transshipment':fields.char('Transshipment'),
         'thongbao_nhanhang':fields.char('Thông báo nhận hàng'),
         'chat_luong':fields.char('Chất lượng'),
-        'destinaltion':fields.many2one('res.country','Destinaltion'),
+        'destinaltion':fields.many2one('res.country','Country'),
         'arbitration_id': fields.many2one('sale.arbitration','Arbitration',readonly=True, states={'moi_tao': [('readonly', False)]}),
 #         'phucluc_hd':fields.text('Phụ lục Hợp đồng'),
         'phuongthuc_thanhtoan':fields.text('Phương thức thanh toán'),
@@ -648,7 +648,7 @@ class don_ban_hang(osv.osv):
                 hhl = dhl[2]
                 hhl['price_unit'] = False
                 donhang_hoahong_line.append((0,0,hhl))
-            value={'donhang_hoahong_line': donhang_hoahong_line}
+        value={'donhang_hoahong_line': donhang_hoahong_line}
         return {'value': value}
     
     def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):

@@ -70,6 +70,8 @@
 	                    		<field name="place_of_delivery" />
 	                    		<field name="meansurement" />
 	                    		<field name="customs_declaration" />
+	                    		<field name="shipping_line_id" />
+	                    		<field name="forwarder_line_id" />
 	                    	</group>
 	                    </group>
 	                    <group>
