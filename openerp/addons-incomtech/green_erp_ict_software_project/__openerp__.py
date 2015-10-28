@@ -26,7 +26,7 @@
     'sequence': 14,
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',
-    'depends': ['mail','green_erp_ict_base','report_aeroo','report_aeroo_ooo'],
+    'depends': ['mail','green_erp_ict_base','report_aeroo','report_aeroo_ooo','project'],
     'data': [
         'security/ict_project_security.xml',
         'security/ir.model.access.csv',

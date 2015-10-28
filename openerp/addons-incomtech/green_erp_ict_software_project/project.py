@@ -420,9 +420,22 @@ res_users()
 
 class thu_chi(osv.osv):
     _name = 'thu.chi'
-    
+    def _tongtien(self, cr, uid, ids, field_name, arg, context=None):
+        if context is None:
+            context = {}
+        res = {}
+        for line in self.browse(cr, uid, ids, context):
+            res[line.id] = {
+                 'tong_tien': 0.0,
+            }
+            tongtien = 0.0
+            for tong in line.thu_chi_line:
+                if tong.state=='da_duyet':
+                    tongtien += tong.so_tien
+            res[line.id]['tong_tien'] = tongtien
+        return res
     _columns = {
-        'name': fields.char('Tên dự án', required=True, size=1024, track_visibility='onchange'),
+        'name': fields.char('Tên dự án', size=1024, track_visibility='onchange'),
         'ngay': fields.date('Ngày', track_visibility='onchange', required = True),
         'loai_id': fields.many2one('cac.loai', 'Loại', track_visibility='onchange', required = True),
         'noi_dung': fields.text('Nội dung', required = True),
@@ -431,19 +444,39 @@ class thu_chi(osv.osv):
         'du_an_id': fields.many2one('project.project', 'Dự án', track_visibility='onchange'),
         'du_an_pm_id': fields.many2one('duan.phanmem', 'Dự án phần mềm', track_visibility='onchange'),
         'state':fields.selection([('moi_tao', 'Mới tạo'),('da_xac_nhan', 'Đã xác nhận'),('da_tu_choi', 'Đã từ chối'),('da_duyet', 'Đã duyệt'),('huy_bo', 'Hủy bỏ')],'Status', readonly=True),
-#         'tong_tien': ham function
-#         - Chi tiết: one2many đến 1 object khác bao gồm những thông tin sau (Nội dung, số tiền, trạng thái(mới tạo, đã duyệt), nút tick, nút cross)
+        'tong_tien': fields.function(_tongtien, type='float', string="Tổng tiền", multi='sums'),
+        'thu_chi_line': fields.one2many('thu.chi.line','thu_chi_id','Chi tiết'),
+    }
+    _defaults={
+               'state':'moi_tao',
     }
     
-    
 thu_chi()
+
+class thu_chi_line(osv.osv):
+    _name = 'thu.chi.line'
+    
+    _columns = {
+        'thu_chi_id':fields.many2one('thu.chi','Thu chi',ondelete='cascade'),
+        'name': fields.char('Nội dung', required=True, size=1024),
+        'so_tien':fields.float('Số tiền',required=True),
+        'state':fields.selection([('moi_tao', 'Mới tạo'),('da_duyet', 'Đã duyệt'),('tu_choi', 'Từ chối')],'Trạng thái', readonly=True),
+    }
+    _defaults={
+               'state':'moi_tao',
+    }
+    def bt_tick(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids,{'state':'da_duyet'})
+    def bt_cross(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids,{'state':'tu_choi'})
+thu_chi_line()
 
 class cac_loai(osv.osv):
     _name = 'cac.loai'
     
     _columns = {
         'name': fields.char('Tên dự án', required=True, size=1024, track_visibility='onchange'),
-        'loai':fields.selection([('thu', 'Thu'),('chi', 'Chi')],'Status', readonly=True),
+        'loai':fields.selection([('thu', 'Thu'),('chi', 'Chi')],'Loại'),
     }
 cac_loai()
 

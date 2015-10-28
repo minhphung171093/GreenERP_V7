@@ -28,6 +28,11 @@
 		    		name="Công việc"
 		    		parent="menu_duan"
 		            sequence="30"/>
+		        <menuitem id="menu_action_thu_chi_form_view"
+	            	action="action_thu_chi_form_view"
+		    		name="Thu Chi"
+		    		parent="menu_duan"
+		            sequence="40"/>		            
 				
 			<menuitem id="menu_duan_cauhinh"
 	    		name="Cấu hình"
