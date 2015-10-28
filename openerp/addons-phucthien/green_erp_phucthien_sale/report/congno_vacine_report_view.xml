@@ -5,7 +5,7 @@
 	        <field name="name">congno_vacine_report</field>
 	        <field name="type">ir.actions.report.xml</field>
 	        <field name="model">congno.vacine</field>
-	        <field name="report_name">Công nợ vacine</field>
+	        <field name="report_name">Công nợ Vaccine</field>
 	        <field name="report_type">aeroo</field>
 	        <field name="in_format">oo-ods</field>
 	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls')]"/>
@@ -22,7 +22,7 @@
 			id="congno_vacine_report" 
 			model="congno.vacine" 
 			name="congno_vacine_report"
-	        string="Công nợ vacine"
+	        string="Công nợ Vaccine"
 	        rml="green_erp_phucthien_sale/report/congno_vacine_report.ods"/>	
 	        
 	    <record id="congno_mypham_report" model="ir.actions.report.xml">

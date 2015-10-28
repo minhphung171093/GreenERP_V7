@@ -6,7 +6,7 @@
             <field name="name">congno.vacine.form</field>
             <field name="model">congno.vacine</field>
             <field name="arch" type="xml">
-                <form string="Công Nợ Vacine" version="7.0">
+                <form string="Công Nợ Vaccine" version="7.0">
                     <group>
                     	<field name="date_from"/>
                     	<field name="date_to"/>
