@@ -63,13 +63,16 @@ class account_voucher(osv.osv):
         return {'value':vals}
     
     def create(self, cr, uid, vals, context=None):
+        if context is None:
+            context = {}
         if vals.get('date',False) and not vals.get('date_document',False):
             vals.update({'date_document': vals['date']})
         if vals.get('hop_dong_id',False):
             voucher_ids = self.search(cr, uid, [('hop_dong_id','=',vals['hop_dong_id']),('state','=','posted')])
             vals['dot_thanhtoan_ids']=[(6,0,voucher_ids)]
         new_id = super(account_voucher, self).create(cr, uid, vals, context) 
-        self.compute_tax(cr, uid, [new_id], context)
+        if context.get('phieuthu_chi',False):
+            self.compute_tax(cr, uid, [new_id], context)
         return new_id
     
     def compute_tax_pt(self, cr, uid, voucher_id, context=None):
@@ -118,13 +121,16 @@ class account_voucher(osv.osv):
         return {'amount':total, 'tax_amount':total_tax}
     
     def write(self, cr, uid, ids, vals, context=None):
+        if context is None:
+            context = {}
         if vals.get('hop_dong_id',False):
             voucher_ids = self.search(cr, uid, [('hop_dong_id','=',vals['hop_dong_id']),('state','=','posted'),('id','not in',ids)])
             vals['dot_thanhtoan_ids']=[(6,0,voucher_ids)]
         new_id = super(account_voucher, self).write(cr, uid, ids, vals, context)
-        for id in ids: 
-            amount_val = self.compute_tax_pt(cr, uid, id, context)
-            cr.execute('update account_voucher set amount=%s, tax_amount=%s',(amount_val['amount'],amount_val['tax_amount'],))
+        if context.get('phieuthu_chi',False):
+            for id in ids: 
+                amount_val = self.compute_tax_pt(cr, uid, id, context)
+                cr.execute('update account_voucher set amount=%s, tax_amount=%s',(amount_val['amount'],amount_val['tax_amount'],))
         return new_id
     
     def onchange_partner_id(self, cr, uid, ids, partner_id, journal_id, amount, currency_id, ttype, date, hop_dong_id=False, context=None):
