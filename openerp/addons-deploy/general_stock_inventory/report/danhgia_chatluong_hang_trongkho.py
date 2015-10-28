@@ -40,9 +40,12 @@ class Parser(report_sxw.rml_parse):
         return self.pool.get('stock.location').browse(self.cr, self.uid, kho_id).name
     
     def get_line_kho(self,o):
+        parent_thanhpham_ids = self.pool.get('stock.location').search(self.cr, self.uid, [('name','=','Phúc Thiện'),('usage','=','view')])
+        locat_thanhpham_ids = self.pool.get('stock.location').search(self.cr, self.uid, [('name','in',['Kho biệt trữ thành phẩm']),('location_id','=',parent_thanhpham_ids[0])])
+        locat_thanhpham_lanh_ids = self.pool.get('stock.location').search(self.cr, self.uid, [('name','in',['Kho biệt trữ thành phẩm lạnh']),('location_id','=',parent_thanhpham_ids[0])])
         sql = '''
-            select location_id from stock_inventory_line where inventory_id=%s group by location_id
-        '''%(o.id)
+            select location_id from stock_inventory_line where inventory_id=%s and location_id not in (%s,%s) group by location_id
+        '''%(o.id,locat_thanhpham_ids[0],locat_thanhpham_lanh_ids[0])
         self.cr.execute(sql)
         return [r[0] for r in self.cr.fetchall()]
     
