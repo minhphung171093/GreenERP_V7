@@ -104,6 +104,7 @@ class Parser(report_sxw.rml_parse):
                             where product_template.categ_id in (select id from product_category where code ='MP') 
                             and product_product.product_tmpl_id = product_template.id) and invoice_id in 
                                 (select id from account_invoice where date_invoice between '%s' and '%s'  and type ='out_invoice' and state in ('open','paid')))
+                            order by date_invoice
             '''%(date_from,date_to)
             self.cr.execute(sql)   
             inv_ids = [r[0] for r in self.cr.fetchall()]
