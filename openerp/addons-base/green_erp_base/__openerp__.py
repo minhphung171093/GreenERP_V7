@@ -28,6 +28,8 @@
     'website' : 'http://incomtech.com/',
     'depends': ['web','sale','stock','purchase'],
     'data': [
+        'security/security.xml',
+        'security/ir.model.access.csv',
         'ir_ui_menu_view.xml',
         'base_view.xml',
         'res_users_view.xml',

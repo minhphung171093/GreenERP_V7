@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_green_hr_1,hr.template,green_erp_hr.model_hr_template,green_erp_base.group_base_admin,True,True,True,True
+access_green_hr_2,hr.template.line,green_erp_hr.model_hr_template_line,green_erp_base.group_base_admin,True,True,True,True
+access_green_hr_3,hr.family,green_erp_hr.model_hr_family,green_erp_base.group_base_admin,True,True,True,True
+

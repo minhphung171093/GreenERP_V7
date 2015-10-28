@@ -31,6 +31,7 @@
     "description": """
     """,
     'update_xml': [
+        'security/ir.model.access.csv',
         'report/report_view.xml',
         'wizard/hr_wizard.xml',
         'hr_view.xml',

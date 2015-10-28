@@ -28,6 +28,7 @@
     'website' : 'http://incomtech.com/',
     'depends': ['green_erp_account','green_erp_report','report_aeroo','report_aeroo_ooo'],
     'data': [
+        'security/ir.model.access.csv',
         'report/report_view.xml',
         'wizard/print_report.xml',
         'report_review.xml',

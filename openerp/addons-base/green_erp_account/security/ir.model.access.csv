@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_green_account_1,account.voucher.batch,green_erp_account.model_account_voucher_batch,green_erp_base.group_base_admin,True,True,True,True
