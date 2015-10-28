@@ -81,6 +81,18 @@ class account_voucher_batch(osv.osv):
         datas['form'] = self.read(cr, uid, ids)[0]        
         return {'type': 'ir.actions.report.xml', 'report_name': 'vietcombank_report' , 'datas': datas}
     
+    def print_tmcp_hanghai_bank_report(self, cr, uid, ids, context=None): 
+        datas = {'ids': ids}
+        datas['model'] = 'account.voucher.batch'
+        datas['form'] = self.read(cr, uid, ids)[0]        
+        return {'type': 'ir.actions.report.xml', 'report_name': 'tmcp_hanghai_bank_report' , 'datas': datas}
+    
+    def print_maritimebank_report(self, cr, uid, ids, context=None): 
+        datas = {'ids': ids}
+        datas['model'] = 'account.voucher.batch'
+        datas['form'] = self.read(cr, uid, ids)[0]        
+        return {'type': 'ir.actions.report.xml', 'report_name': 'maritimebank_report' , 'datas': datas}
+    
     def print_phieu_chi_nh_report(self, cr, uid, ids, context=None): 
         datas = {'ids': ids}
         datas['model'] = 'account.voucher.batch'
@@ -104,6 +116,7 @@ class account_voucher_batch(osv.osv):
         datas['model'] = 'account.voucher.batch'
         datas['form'] = self.read(cr, uid, ids)[0]        
         return {'type': 'ir.actions.report.xml', 'report_name': 'phieu_thu_tm_report' , 'datas': datas}
+    
     
     def _get_assign_user(self, cr, uid, context=None):
         res = self.pool.get('res.users').read(cr, uid, uid, ['name'])['name']
