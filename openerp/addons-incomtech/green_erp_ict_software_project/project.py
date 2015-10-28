@@ -418,4 +418,33 @@ class res_users(osv.osv):
     
 res_users()
 
+class thu_chi(osv.osv):
+    _name = 'thu.chi'
+    
+    _columns = {
+        'name': fields.char('Tên dự án', required=True, size=1024, track_visibility='onchange'),
+        'ngay': fields.date('Ngày', track_visibility='onchange', required = True),
+        'loai_id': fields.many2one('cac.loai', 'Loại', track_visibility='onchange', required = True),
+        'noi_dung': fields.text('Nội dung', required = True),
+        'nguoi_thuc_hien_id': fields.many2one('res.users', 'Người thực hiện', track_visibility='onchange', required = True),
+        'cong_ty_id': fields.many2one('res.company', 'Công ty', track_visibility='onchange', required = True),
+        'du_an_id': fields.many2one('project.project', 'Dự án', track_visibility='onchange'),
+        'du_an_pm_id': fields.many2one('duan.phanmem', 'Dự án phần mềm', track_visibility='onchange'),
+        'state':fields.selection([('moi_tao', 'Mới tạo'),('da_xac_nhan', 'Đã xác nhận'),('da_tu_choi', 'Đã từ chối'),('da_duyet', 'Đã duyệt'),('huy_bo', 'Hủy bỏ')],'Status', readonly=True),
+#         'tong_tien': ham function
+#         - Chi tiết: one2many đến 1 object khác bao gồm những thông tin sau (Nội dung, số tiền, trạng thái(mới tạo, đã duyệt), nút tick, nút cross)
+    }
+    
+    
+thu_chi()
+
+class cac_loai(osv.osv):
+    _name = 'cac.loai'
+    
+    _columns = {
+        'name': fields.char('Tên dự án', required=True, size=1024, track_visibility='onchange'),
+        'loai':fields.selection([('thu', 'Thu'),('chi', 'Chi')],'Status', readonly=True),
+    }
+cac_loai()
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
