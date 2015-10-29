@@ -47,6 +47,7 @@
             <field name="res_model">huongdan.sudung</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
+            <field name="context">{'readonly_by_pass':['ngay']}</field>
         </record>
 		
 		<menuitem id="menu_hdsd" name="Hướng dẫn sử dụng" sequence="490"/>

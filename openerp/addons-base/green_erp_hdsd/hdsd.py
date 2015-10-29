@@ -22,6 +22,7 @@
 
 from openerp.osv import fields, osv
 from openerp import SUPERUSER_ID
+import time
 
 class huongdan_sudung(osv.osv):
     _name = "huongdan.sudung"
@@ -70,10 +71,8 @@ class huongdan_sudung(osv.osv):
         'store_fname': fields.char('Stored Filename', size=256),
         'db_datas': fields.binary('Database Data'),
         'file_size': fields.integer('File Size'),
-        'model': fields.many2one('ir.model', string='Model'),
-    'object_id': fields.integer("Resource")
     }
-
+    
 huongdan_sudung()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
