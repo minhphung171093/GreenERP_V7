@@ -19,7 +19,7 @@
     	   
     	<report 
 			auto="False" 
-			menu="True"
+			menu="False"
 			id="denghi_xuathang_report" 
 			model="stock.picking.out" 
 			name="denghi_xuathang_report"

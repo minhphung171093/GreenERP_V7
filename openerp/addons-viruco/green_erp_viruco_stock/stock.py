@@ -626,6 +626,41 @@ class stock_picking(osv.osv):
         
         return  {'value': result}
     
+    def print_denghi_nhapkho(self, cr, uid, ids, context=None):
+        hopdong = self.browse(cr, uid, ids[0])
+        datas = {
+             'ids': ids,
+             'model': 'stock.picking',
+             'form': self.read(cr, uid, ids[0], context=context)
+        }
+        return {
+            'type': 'ir.actions.report.xml',
+            'report_name': 'denghi_nhapkho_report',
+            }
+    def print_denghi_xuatkho(self, cr, uid, ids, context=None):
+        hopdong = self.browse(cr, uid, ids[0])
+        datas = {
+             'ids': ids,
+             'model': 'stock.picking',
+             'form': self.read(cr, uid, ids[0], context=context)
+        }
+        return {
+            'type': 'ir.actions.report.xml',
+            'report_name': 'denghi_xuatkho_report',
+            }
+
+    def print_denghi_xuathang(self, cr, uid, ids, context=None):
+        hopdong = self.browse(cr, uid, ids[0])
+        datas = {
+             'ids': ids,
+             'model': 'stock.picking',
+             'form': self.read(cr, uid, ids[0], context=context)
+        }
+        return {
+            'type': 'ir.actions.report.xml',
+            'report_name': 'denghi_xuathang_report',
+            }
+    
 stock_picking()
 
 class stock_picking_in(osv.osv):
@@ -757,6 +792,20 @@ class stock_picking_in(osv.osv):
                 ) % (name,)
             self.log(cr, uid, id, message)
         return True
+
+    def print_denghi_nhapkho(self, cr, uid, ids, context=None):
+        hopdong = self.browse(cr, uid, ids[0])
+        datas = {
+             'ids': ids,
+             'model': 'stock.picking',
+             'form': self.read(cr, uid, ids[0], context=context)
+        }
+        return {
+            'type': 'ir.actions.report.xml',
+            'report_name': 'denghi_nhapkho_report',
+            }
+        
+
     
     def onchange_journal(self, cr, uid, ids, stock_journal_id):
         value ={}
@@ -959,6 +1008,30 @@ class stock_picking_out(osv.osv):
                 
         new_id = super(osv.osv, self).create(cr, user, vals, context)
         return new_id
+    
+    def print_denghi_xuatkho(self, cr, uid, ids, context=None):
+        hopdong = self.browse(cr, uid, ids[0])
+        datas = {
+             'ids': ids,
+             'model': 'stock.picking',
+             'form': self.read(cr, uid, ids[0], context=context)
+        }
+        return {
+            'type': 'ir.actions.report.xml',
+            'report_name': 'denghi_xuatkho_report',
+            }
+
+    def print_denghi_xuathang(self, cr, uid, ids, context=None):
+        hopdong = self.browse(cr, uid, ids[0])
+        datas = {
+             'ids': ids,
+             'model': 'stock.picking',
+             'form': self.read(cr, uid, ids[0], context=context)
+        }
+        return {
+            'type': 'ir.actions.report.xml',
+            'report_name': 'denghi_xuathang_report',
+            }
     
 stock_picking_out()
 
