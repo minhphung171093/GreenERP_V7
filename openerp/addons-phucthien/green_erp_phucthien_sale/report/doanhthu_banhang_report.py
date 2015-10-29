@@ -143,6 +143,8 @@ class Parser(report_sxw.rml_parse):
                 and ail.product_id in %s 
             '''%(product_ids)
         if categ_ids:
+            categ_obj = self.pool.get('product.category')
+            categ_ids = categ_obj.search(self.cr, self.uid, [('parent_id','child_of',categ_ids)])
             categ_ids = str(categ_ids).replace('[', '(')
             categ_ids = str(categ_ids).replace(']', ')')
             sql+='''
@@ -236,6 +238,8 @@ class Parser(report_sxw.rml_parse):
                 and ail.product_id in %s 
             '''%(product_ids)
         if categ_ids:
+            categ_obj = self.pool.get('product.category')
+            categ_ids = categ_obj.search(self.cr, self.uid, [('parent_id','child_of',categ_ids)])
             categ_ids = str(categ_ids).replace('[', '(')
             categ_ids = str(categ_ids).replace(']', ')')
             sql+='''
@@ -330,6 +334,8 @@ class Parser(report_sxw.rml_parse):
                 and ail.product_id in %s 
             '''%(product_ids)
         if categ_ids:
+            categ_obj = self.pool.get('product.category')
+            categ_ids = categ_obj.search(self.cr, self.uid, [('parent_id','child_of',categ_ids)])
             categ_ids = str(categ_ids).replace('[', '(')
             categ_ids = str(categ_ids).replace(']', ')')
             sql+='''
@@ -424,6 +430,8 @@ class Parser(report_sxw.rml_parse):
                 and ail.product_id in %s 
             '''%(product_ids)
         if categ_ids:
+            categ_obj = self.pool.get('product.category')
+            categ_ids = categ_obj.search(self.cr, self.uid, [('parent_id','child_of',categ_ids)])
             categ_ids = str(categ_ids).replace('[', '(')
             categ_ids = str(categ_ids).replace(']', ')')
             sql+='''

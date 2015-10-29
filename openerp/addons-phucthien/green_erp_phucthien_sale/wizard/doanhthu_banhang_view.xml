@@ -18,7 +18,7 @@
 	                        <field name="nsx_ids" widget="many2many_tags"/>
 	                        <field name="khu_vuc_ids" widget="many2many_tags"/>
 	                        <field name="tinh_ids" widget="many2many_tags"/>
-	                        <field name="users_ids" widget="many2many_tags" invisible='1'/>
+	                        <field name="users_ids" widget="many2many_tags" groups='base.group_sale_salesman_all_leads'/>
 	                    </group>
 	                </sheet>
                     <footer>

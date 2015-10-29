@@ -52,6 +52,12 @@
     		name="Công nợ dược phẩm"
     		parent="phucthien_sale_report"
     		sequence="6"/>
+    		
+		<menuitem id="menu_action_danhsach_khachhang"
+    		action="action_danhsach_khachhang"
+    		name="In danh sách khách hàng"
+    		parent="base.menu_sales"
+    		sequence="20"/>
     </data>
     
 </openerp>
