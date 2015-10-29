@@ -209,6 +209,7 @@ class hop_dong(osv.osv):
         'ngay_canhbao': fields.function(_get_ngay_canhbao, type='date', string='Ngày cảnh báo'),
         'date_payment':fields.date('Ngày thanh toán'),
         'date_payment_canhbao': fields.function(_get_date_payment_canhbao, type='date', string='Ngày cảnh báo'),
+#         'thanh_toan_ncc_line': fields.one2many('account.voucher', 'hop_dong_id', 'Line', states={'moi_tao': [('readonly', False)]}),
     }
     
     _defaults = {

@@ -54,6 +54,17 @@
 			        action="green_erp_viruco_account.action_bang_ke_doanh_thu_theo_mat_hang_view" 
 			        parent="account.menu_finance_reports"
 			        sequence="40"/>	
+			        
+			        
+<!-- Phieu Nhap/Phieu Xuat cho hoa don -->
+            
+ 	<menuitem id="menu_nhap_xuat_cho_hoa_don" name = "Phiếu nhập/Phiếu xuất kho chờ hóa đơn" parent="account.menu_finance" sequence="3"/>
+          <menuitem action="purchase.action_picking_tree4_picking_to_invoice"
+            id="menu_action_phieu_nhap_cho_hoa_don_accounting"
+            parent="menu_nhap_xuat_cho_hoa_don" name = "Phiếu nhập kho chờ hóa đơn" sequence="1"/>  
+          <menuitem action="green_erp_viruco_sale.action_picking_tree4_picking_out_to_invoice"
+            id="menu_action_phieu_xuat_cho_hoa_don_accounting"
+            parent="menu_nhap_xuat_cho_hoa_don" name = "Phiếu xuất kho chờ hóa đơn" sequence="2"/>  
 
 	
             

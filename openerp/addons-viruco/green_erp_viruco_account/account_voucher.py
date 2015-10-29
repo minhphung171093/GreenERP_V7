@@ -16,6 +16,13 @@ import os
 from xlrd import open_workbook,xldate_as_tuple
 from openerp import modules
 
+class hop_dong(osv.osv):
+    _inherit = "hop.dong"
+     
+    _columns = {
+        'thanh_toan_ncc_line': fields.one2many('account.voucher', 'hop_dong_id', 'Thanh toan NCC', states={'moi_tao': [('readonly', False)]}),
+    }
+hop_dong()
 class account_voucher(osv.osv):
     _inherit = "account.voucher"
     
@@ -25,7 +32,7 @@ class account_voucher(osv.osv):
         'dot_thanhtoan_ids':fields.many2many('account.voucher', 'cac_dot_thanh_toan_ref', 'parent_id', 'voucher_id','Các đợt thanh toán',readonly=True),
         'shop_id': fields.many2one('sale.shop', 'Shop', required=True, readonly=True, states={'draft':[('readonly',False)]}),
         'date_document': fields.date('Document Date', readonly=True, states={'draft':[('readonly',False)]},),
-'account_id':fields.many2one('account.account', 'Account', readonly=True, states={'draft':[('readonly',False)]}),
+        'account_id':fields.many2one('account.account', 'Account', readonly=True, states={'draft':[('readonly',False)]}),
         'reference_number': fields.char('Number', size=32, readonly=True, states={'draft':[('readonly',False)]}),
         'batch_id': fields.many2one('account.voucher.batch', 'Related Batch', ondelete='cascade'),
         'partner_bank_id':fields.many2one('res.partner.bank', 'Partner Bank', required=False, readonly=True, states={'draft':[('readonly',False)]}),

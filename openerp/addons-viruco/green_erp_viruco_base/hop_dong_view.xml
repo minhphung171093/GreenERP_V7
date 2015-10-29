@@ -446,6 +446,7 @@
 							<page string="Phương thức thanh toán">
 								<field name="phuongthuc_thanhtoan" nolabel='1'/>
 							</page>
+							
 						</notebook>
 		         	</sheet>
 		         </form>
