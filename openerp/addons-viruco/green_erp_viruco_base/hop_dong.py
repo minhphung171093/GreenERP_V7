@@ -38,8 +38,9 @@ class hop_dong(osv.osv):
     
     def _amount_line_tax_hh(self, cr, uid, line, context=None):
         val = 0.0
-        for c in self.pool.get('account.tax').compute_all(cr, uid, line.tax_id, line.price_unit, line.product_qty, line.product_id, line.hopdong_hh_id.partner_id)['taxes']:
-            val += c.get('amount', 0.0)
+        val += line.product_qty*line.price_unit*line.tax_hh/100
+#         for c in self.pool.get('account.tax').compute_all(cr, uid, line.tax_id, line.price_unit, line.product_qty, line.product_id, line.hopdong_dh_id.partner_id)['taxes']:
+#             val += c.get('amount', 0.0)
         return val
     
     def _amount_all(self, cr, uid, ids, field_name, arg, context=None):
@@ -58,7 +59,7 @@ class hop_dong(osv.osv):
                 val += self._amount_line_tax(cr, uid, line, context=context)
             res[order.id]['amount_tax'] = cur_obj.round(cr, uid, cur, val)
             res[order.id]['amount_untaxed'] = cur_obj.round(cr, uid, cur, val1)
-            res[order.id]['amount_total'] = res[order.id]['amount_untaxed'] - res[order.id]['amount_tax']
+            res[order.id]['amount_total'] = res[order.id]['amount_untaxed'] + res[order.id]['amount_tax']
         return res
     
     def _amount_all_hh(self, cr, uid, ids, field_name, arg, context=None):
@@ -363,7 +364,8 @@ class hop_dong(osv.osv):
                     'product_uom': hh_line.product_uom and hh_line.product_uom.id or False,
                     'product_qty': hh_line.product_qty,
                     'price_unit': hh_line.price_unit,
-                    'tax_id': [(6,0,[t.id for t in hh_line.tax_id])],
+#                     'tax_id': [(6,0,[t.id for t in hh_line.tax_id])],
+                    'tax_hh': hh_line.tax_hh,
                 }
                 hd_hoahong_line.append((0,0,hd_hh_value))
             vals = {
@@ -425,6 +427,7 @@ class hopdong_hoahong_line(osv.osv):
         'product_qty': fields.float('Số lượng', digits_compute= dp.get_precision('Product UoS')),
         'price_unit': fields.float('Đơn giá', digits_compute= dp.get_precision('Product Price')),
         'tax_id': fields.many2many('account.tax', 'hopdong_hh_order_tax', 'hopdong_hh_id', 'tax_id', 'Taxes'),
+        'tax_hh': fields.float('Thuế hoa hồng (%)'),
         'price_subtotal': fields.function(_amount_line, string='Subtotal', digits_compute= dp.get_precision('Account')),
     }
     
@@ -491,8 +494,9 @@ class don_ban_hang(osv.osv):
     
     def _amount_line_tax_hh(self, cr, uid, line, context=None):
         val = 0.0
-        for c in self.pool.get('account.tax').compute_all(cr, uid, line.tax_id, line.price_unit, line.product_qty, line.product_id, line.hopdong_dh_id.partner_id)['taxes']:
-            val += c.get('amount', 0.0)
+        val += line.product_qty*line.price_unit*line.tax_hh/100
+#         for c in self.pool.get('account.tax').compute_all(cr, uid, line.tax_id, line.price_unit, line.product_qty, line.product_id, line.hopdong_dh_id.partner_id)['taxes']:
+#             val += c.get('amount', 0.0)
         return val
     
     def _amount_all(self, cr, uid, ids, field_name, arg, context=None):
@@ -530,7 +534,7 @@ class don_ban_hang(osv.osv):
                 val += self._amount_line_tax_hh(cr, uid, line, context=context)
             res[order.id]['amount_tax_hh'] = cur_obj.round(cr, uid, cur, val)
             res[order.id]['amount_untaxed_hh'] = cur_obj.round(cr, uid, cur, val1)
-            res[order.id]['amount_total_hh'] = res[order.id]['amount_untaxed_hh'] + res[order.id]['amount_tax_hh']
+            res[order.id]['amount_total_hh'] = res[order.id]['amount_untaxed_hh'] - res[order.id]['amount_tax_hh']
         return res
     
     def _get_order(self, cr, uid, ids, context=None):
@@ -641,15 +645,40 @@ class don_ban_hang(osv.osv):
         }
         return {'warning': warning, 'value': value}
     
+#     def onchange_don_ban_hang_line(self, cr, uid, ids, don_ban_hang_line,donhang_hoahong_line, context=None):
+#         context = context or {}
+#         value = {}
+#         for dhl in don_ban_hang_line:
+#             if dhl[0]==0:
+#                 hhl = dhl[2]
+#                 hhl['price_unit'] = False
+#                 hhl['tax_id'] = False
+#                 donhang_hoahong_line.append((0,0,hhl))
+#         value={'donhang_hoahong_line': donhang_hoahong_line}
+#         return {'value': value}
     def onchange_don_ban_hang_line(self, cr, uid, ids, don_ban_hang_line,donhang_hoahong_line, context=None):
         context = context or {}
         value = {}
         for dhl in don_ban_hang_line:
             if dhl[0]==0:
+                donhang_hoahong_line = []
                 hhl = dhl[2]
                 hhl['price_unit'] = False
+                hhl['tax_id'] = False
                 donhang_hoahong_line.append((0,0,hhl))
-        value={'donhang_hoahong_line': donhang_hoahong_line}
+                value={'donhang_hoahong_line': donhang_hoahong_line}
+            else:
+                if dhl[2] and dhl[2]['product_qty']:
+                    line = self.pool.get('don.ban.hang.line').browse(cr,uid,dhl[1])
+                    sql = '''
+                        select id from hopdong_hoahong_line where product_id = %s and hopdong_dh_id = %s
+                    '''%(line.product_id.id, line.donbanhang_id.id)
+                    cr.execute(sql)
+                    hoahong_id = cr.fetchone()[0]
+                    sql = '''
+                        update hopdong_hoahong_line set product_qty = %s where id = %s
+                    '''%(dhl[2]['product_qty'], hoahong_id)
+                    cr.execute(sql)
         return {'value': value}
     
     def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):

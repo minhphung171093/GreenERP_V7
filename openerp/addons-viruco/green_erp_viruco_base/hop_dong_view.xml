@@ -135,7 +135,8 @@
 	                                    <field name="product_uom"/>
 	                                    <field name="product_qty"/>
 	                                    <field name="price_unit"/>
-	                                    <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]" string="Thuế hoa hồng"/>
+	                                    <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]" string="Thuế hoa hồng" invisible = '1'/>  
+	                                    <field name="tax_hh"/>
 	                                    <field name="price_subtotal" string="Thành tiền"/>
 									</tree>
 								</field>
@@ -662,8 +663,8 @@
 							<page string="Thông tin mặt hàng" >
 								<field name="don_ban_hang_line" on_change="onchange_don_ban_hang_line(don_ban_hang_line,donhang_hoahong_line)">
 									<tree editable='top'>
-	                                    <field name="product_id" on_change="onchange_product_id(product_qty,parent.ngay,parent.partner_id,parent.pricelist_id,product_id, context)"/>
-	                                    <field name="name"/>
+	                                    <field name="product_id" string = "Sản phẩm" on_change="onchange_product_id(product_qty,parent.ngay,parent.partner_id,parent.pricelist_id,product_id, context)"/>
+	                                    <field name="name" string = "Tên"/>
 	                                    <field name="chatluong_id"/>
 	                                    <field name="quycach_donggoi_id"/>
 	                                    <field name="product_uom"/>
@@ -688,12 +689,13 @@
 							<page string="Hoa Hồng" >
 								<field name="donhang_hoahong_line">
 									<tree editable='top'>
-	                                    <field name="product_id" on_change="onchange_product_id(product_id, context)"/>
+	                                    <field name="product_id" on_change="onchange_product_id(product_id, context)" string = "Sản phẩm"/>
 	                                    <field name="product_uom"/>
 	                                    <field name="product_qty"/>
 	                                    <field name="price_unit"/>
-	                                    <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]"/>
-	                                    <field name="price_subtotal"/>
+	                                    <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]" invisible = '1'/> 
+	                                    <field name="tax_hh"/>
+	                                    <field name="price_subtotal" string = "Thành tiền"/>
 									</tree>
 								</field>
 								<group class="oe_subtotal_footer oe_right" colspan="2" name="hopdong_total_hh">

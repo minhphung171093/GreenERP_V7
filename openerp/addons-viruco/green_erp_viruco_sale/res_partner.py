@@ -62,7 +62,7 @@ class res_partner(osv.osv):
     def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
         if args is None:
             args = []
-        args+=['|',('vat','ilike',name),('ma_kh','ilike',name)]
+        args+=['|',('name','ilike',name),('ma_kh','ilike',name)]
         ids = self.search(cr, user, args, context=context, limit=limit)
         return self.name_get(cr, user, ids, context=context)
     
