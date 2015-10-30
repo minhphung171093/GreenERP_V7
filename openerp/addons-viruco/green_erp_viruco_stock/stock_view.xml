@@ -325,6 +325,8 @@
 	                    <button name="button_cancel" states="assigned,confirmed,draft" string="Cancel Transfer" groups="base.group_user"/>
 	                    <button name="action_revert_done" states="cancel,done" string="Chỉnh sửa lại" type="object"/>
 	                    <field name="state" nolabel="1" readonly="1" widget="statusbar" statusbar_visible="draft,confirmed,assigned,done" statusbar_colors='{"auto":"blue", "confirmed":"blue"}'/>
+	                	<button name="print_denghi_xuatkho" string="In Đề nghị xuất kho" type="object" class="oe_highlight"/>
+	                	<button name="print_denghi_xuathang" string="In Đề nghị xuất hàng" type="object" class="oe_highlight"/>
 	                </header>
 	                <sheet>
 	                    <h1>
@@ -397,6 +399,7 @@
                     <button name="%(stock.act_stock_return_picking)d" string="Return Products" states="done" type="action"/>
                     <button name="button_cancel" states="assigned,confirmed,draft" string="Cancel Transfer" groups="base.group_user"/>
                     <button name="action_revert_done" states="cancel,done" string="Chỉnh sửa lại" type="object"/>
+                    <button name="print_denghi_nhapkho" string="In Đề nghị nhập kho" type="object" class="oe_highlight"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,assigned,done" statusbar_colors='{"shipping_except":"red","invoice_except":"red","waiting_date":"blue"}'/>
                 </header>
                 <sheet>

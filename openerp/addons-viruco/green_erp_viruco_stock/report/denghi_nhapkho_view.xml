@@ -19,7 +19,7 @@
     	   
     	<report 
 			auto="False" 
-			menu="True"
+			menu="False"
 			id="denghi_nhapkho_report" 
 			model="stock.picking.in" 
 			name="denghi_nhapkho_report"
