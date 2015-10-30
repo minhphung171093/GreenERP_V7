@@ -275,15 +275,15 @@
 							<page string="Product line" >
 								<field name="hopdong_line">
 									<tree editable='top'>
-	                                    <field name="product_id" on_change="onchange_product_id(product_id, context)"/>
-	                                    <field name="name"/>
+	                                    <field name="product_id" string="Product" on_change="onchange_product_id(product_id, context)"/>
+	                                    <field name="name" string="Name" />
 	                                    <field name="chatluong_id" string="Quanlity"/>
 	                                    <field name="quycach_donggoi_id" string="Packing"/>
 	                                    <field name="product_uom" string="UOM"/>
 	                                    <field name="product_qty" string="Quatity"/>
 	                                    <field name="price_unit" string="Price"/>
-	                                    <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]"/>
-	                                    <field name="price_subtotal"/>
+	                                    <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]" string="Taxes" />
+	                                    <field name="price_subtotal" string="Subtotal"/>
 									</tree>
 								</field>
 								<group class="oe_subtotal_footer oe_right" colspan="2" name="hopdong_total">
