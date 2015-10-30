@@ -675,10 +675,9 @@ class don_ban_hang(osv.osv):
                     '''%(line.product_id.id, line.donbanhang_id.id)
                     cr.execute(sql)
                     hoahong_id = cr.fetchone()[0]
-                    sql = '''
-                        update hopdong_hoahong_line set product_qty = %s where id = %s
-                    '''%(dhl[2]['product_qty'], hoahong_id)
-                    cr.execute(sql)
+                    self.pool.get('hopdong.hoahong.line').write(cr,uid,[hoahong_id],{
+                                                                                     'product_qty': dhl[2]['product_qty']
+                                                                                     })
         return {'value': value}
     
     def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
