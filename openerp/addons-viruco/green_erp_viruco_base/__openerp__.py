@@ -34,6 +34,7 @@
             'report/don_ban_hang_view.xml',
             'report/don_mua_hang_view.xml',
             'report/draft_bl_report_view.xml',
+            'report/theo_doi_hop_dong_view.xml',
             'config_view.xml',
             'hop_dong_view.xml',
             'draft_bl_view.xml',

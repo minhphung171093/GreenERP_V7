@@ -1,7 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
+<!--  ========================= Theo dõi hợp đồng ================= -->     
+         <record id="theo_doi_hop_dong_form" model="ir.ui.view">
+            <field name="name">theo.doi.hop.dong.form</field>
+            <field name="model">theodoi.hopdong</field>
+            <field name="arch" type="xml">
+                <form string="Theo dõi hợp đồng" version="7.0">
+                	<group col="4" colspan="2">
+                		<field name="date_from"/>
+                		<field name="date_to"/>
+                    </group>
+	                <footer>
+                        <button string="Print" type="object" name="print_report" icon='gtk-execute'/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
         
+        <record id="action_theo_doi_hop_dong_form" model="ir.actions.act_window">
+            <field name="name">Theo dõi hợp đồng</field>
+            <field name="res_model">theodoi.hopdong</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="theo_doi_hop_dong_form"/>
+        </record>
 	     
    </data>
 </openerp>

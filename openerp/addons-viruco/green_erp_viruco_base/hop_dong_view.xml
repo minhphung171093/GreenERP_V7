@@ -313,7 +313,8 @@
 	                                    <field name="product_uom" string="UOM"/>
 	                                    <field name="product_qty" string="Quatity"/>
 	                                    <field name="price_unit" string="Commission" />
-	                                    <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]"/>
+	                                    <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]" invisible = '1'/>
+	                                    <field name="tax_hh" string = 'Taxes'/>
 	                                    <field name="price_subtotal"/>
 									</tree>
 								</field>
@@ -808,7 +809,7 @@
 									<tree editable='top'>
 	                                    <field name="product_id" string="Product" on_change="onchange_product_id(product_qty,parent.ngay,parent.partner_id,parent.pricelist_id,product_id, context)"/>
 	                                    <field name="name" string="Name"/>
-	                                    <field name="chatluong_id" string="Quatity"/>
+	                                    <field name="chatluong_id" string="Quanlity"/>
 	                                    <field name="quycach_donggoi_id" string="Packing"/>
 	                                    <field name="product_uom" string="Unit"/>
 	                                    <field name="product_qty" string="Quantity"/>
@@ -836,7 +837,8 @@
 	                                    <field name="product_uom" string="Unit"/>
 	                                    <field name="product_qty" string="Quantity"/>
 	                                    <field name="price_unit" string="Price"/>
-	                                    <field name="tax_id" widget="many2many_tags" string="Taxes" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]"/>
+	                                    <field name="tax_id" widget="many2many_tags" string="Taxes" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]" invisible = '1'/>
+	                                    <field name="tax_hh" string = 'Taxes'/>
 	                                    <field name="price_subtotal" string="SubTotal"/>
 									</tree>
 								</field>

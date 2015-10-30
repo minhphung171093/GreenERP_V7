@@ -668,7 +668,7 @@ class don_ban_hang(osv.osv):
                 donhang_hoahong_line.append((0,0,hhl))
                 value={'donhang_hoahong_line': donhang_hoahong_line}
             else:
-                if dhl[2] and dhl[2]['product_qty']:
+                if dhl[2] and 'product_qty' in dhl[2]:
                     line = self.pool.get('don.ban.hang.line').browse(cr,uid,dhl[1])
                     sql = '''
                         select id from hopdong_hoahong_line where product_id = %s and hopdong_dh_id = %s
