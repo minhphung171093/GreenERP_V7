@@ -70,6 +70,7 @@ class draft_bl(osv.osv):
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'draft.bl', context=c),
     }
     
+    
 draft_bl()
 
 
