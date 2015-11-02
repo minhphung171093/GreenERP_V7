@@ -49,7 +49,7 @@ class Parser(report_sxw.rml_parse):
     def get_dia_chi(self, partner_id):
         dia_chi = ''
         partner = self.pool.get('res.partner').browse(self.cr,self.uid,partner_id)
-        dia_chi = (partner.street or '') + ', ' + (partner.street2 or '') + ', ' + (partner.city or '') + ', ' + (partner.state_id and partner.state_id.name or '') + ', ' + (partner.country_id and partner.country_id.name) 
+        dia_chi = (partner.street or '') + ', ' + (partner.street2 or '') + ', ' + (partner.state_id and partner.state_id.name or '') + ', ' + (partner.country_id and partner.country_id.name) 
         return dia_chi
     
     def get_sum(self, line_id):
