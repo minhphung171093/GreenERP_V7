@@ -65,10 +65,10 @@ class Parser(report_sxw.rml_parse):
         tu_ngay = wizard_data['tu_ngay']
         den_ngay = wizard_data['den_ngay']
         sql ='''
-            select sp.ngay_gui, rp.name as ten_kh, rpu.name as tdv, rr.name as employee,
+            select sp.ngay_gui, rp.name as ten_kh, rpu.name as tdv, rr.name as employee, nghrr.name as nguoigiaohang,
                 sum(spp.sl_nhietke_conlai) as sl_nhietke_conlai,
                 sum(spp.sl_nhietke) as sl_giao,
-                sum(spp.sl_nhietke_conlai)+sum(spp.sl_nhietke) as sl_da_nhan,
+                sum(spp.sl_nhietke)-sum(spp.sl_nhietke_conlai) as sl_da_nhan,
                 lt.name as loai_thung,
                 sum(spp.sl_da) as sl_da,
                 sum(spp.sl_thung) as sl_thung,
@@ -86,6 +86,8 @@ class Parser(report_sxw.rml_parse):
             left join res_partner rpu ON ru.partner_id = rpu.id
             left join loai_thung lt ON spp.loai_thung_id = lt.id
             left join hr_employee hre ON spp.employee_id = hre.id
+            left join hr_employee ngh ON sp.nguoi_giao_hang = ngh.id
+            left join resource_resource nghrr ON ngh.resource_id = nghrr.id
             left join resource_resource rr ON hre.resource_id = rr.id
             where sp.ngay_gui >= '%s' and (sp.ngay_nhan is null or sp.ngay_nhan <= '%s')
         ''' %(tu_ngay, den_ngay)
@@ -95,7 +97,7 @@ class Parser(report_sxw.rml_parse):
             '''%(partner_id[0])
         sql+='''
              group by sp.ngay_gui, rp.name, rpu.name, lt.name, case when sp.ngay_nhan is not null then 'danhan' else 'chuanhan' end,
-             rr.name
+             rr.name, nghrr.name
             order by sp.ngay_gui
             '''
         self.cr.execute(sql)
@@ -117,6 +119,7 @@ class Parser(report_sxw.rml_parse):
                         'chiphi_vanchuyen': line['chiphi_vanchuyen'],
                         'thanh_tien': line['thanh_tien'],
                         'nguoi_gui':line['employee'],
+                        'nguoi_giao_hang':line['nguoigiaohang'],
                     })
         return res
     
