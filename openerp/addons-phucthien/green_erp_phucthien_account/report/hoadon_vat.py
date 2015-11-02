@@ -55,10 +55,10 @@ class Parser(report_sxw.rml_parse):
         return songayno
     
     def get_address(self, address):
-        if address and len(address)>=30:
-            address = address[:30]
-            self.index_address = 30
-            for i in range(30,0,-1):
+        if address and len(address)>=35:
+            address = address[:35]
+            self.index_address = 35
+            for i in range(35,0,-1):
                 if address[i-1] in [' ',',']:
                     self.index_address = i
                     break
@@ -67,7 +67,7 @@ class Parser(report_sxw.rml_parse):
     
     def get_address2(self, address):
         a = ''
-        if address and len(address)>30 and self.index_address!=-1:
+        if address and len(address)>35 and self.index_address!=-1:
             return address[self.index_address:]
         return a
     
@@ -158,7 +158,7 @@ class Parser(report_sxw.rml_parse):
     def display_address(self, partner):
         address = partner.street and partner.street + ' , ' or ''
         address += partner.street2 and partner.street2 + ' , ' or ''
-        address += partner.city and partner.city.name + ' , ' or ''
+#         address += partner.city and partner.city.name + ' , ' or ''
         if address:
             address = address[:-3]
         return address
