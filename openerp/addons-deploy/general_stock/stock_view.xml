@@ -568,9 +568,9 @@
 		          </p>
 		        </field>
 		    </record>
-	        <menuitem action="stock.action_picking_tree4_picking_to_invoice"
+	        <!--<menuitem action="stock.action_picking_tree4_picking_to_invoice"
 	            id="menu_action_picking_tree4_picking_to_invoice_general_modify" name="On Incoming Shipments"
-	            parent="purchase.menu_procurement_management_invoice" sequence="91"/>
+	            parent="purchase.menu_procurement_management_invoice" sequence="91"/>-->
         	
     	<!-- Menu for Internal Move for Production -->
     		<record id="action_production_moves" model="ir.actions.act_window">
