@@ -61,10 +61,13 @@ class Parser(report_sxw.rml_parse):
     
     def get_partner_address(self, picking):
         address = ''
-        if picking.partner_id:
-            address += picking.partner_id.street or ''
-            address += picking.partner_id.state_id and ', ' + picking.partner_id.state_id.name or ''
-            address += picking.partner_id.country_id and ', ' + picking.partner_id.country_id.name or ''
+        if picking.diachi_giaohang_id:
+            address += picking.diachi_giaohang_id.name or ''
+        else:
+            if picking.partner_id:
+                address += picking.partner_id.street or ''
+                address += picking.partner_id.state_id and ', ' + picking.partner_id.state_id.name or ''
+                address += picking.partner_id.country_id and ', ' + picking.partner_id.country_id.name or ''
         return address
     
     def get_so_hd(self, picking):
