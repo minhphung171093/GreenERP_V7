@@ -12,7 +12,7 @@ import decimal_precision as dp
 from tools.translate import _
 
 
-class theodoi_hopdong(osv.osv_memory):
+class theodoi_hopdong(osv.osv):
     _name = "theodoi.hopdong"    
      
     _columns = {
