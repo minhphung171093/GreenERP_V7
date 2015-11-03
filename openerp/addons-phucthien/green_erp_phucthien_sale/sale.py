@@ -55,7 +55,9 @@ class sale_order(osv.osv):
         'chiu_trach_nhiem_id': fields.many2one('res.users', 'Người chịu trách nhiệm',readonly=True),
         'remark':fields.text('Ghi chú'),
         'sale_reason_peding_id': fields.many2one('sale.reason.pending','Lý do không đươc duyệt'),
+        'sale_reason_peding_ids': fields.many2many('sale.reason.pending','sale_order_reason_pending_ref','sale_id','reason_id','Lý do không đươc duyệt'),
         'huy_id': fields.many2one('ly.do.huy','Lý do hủy'),
+        'huy_ids': fields.many2many('ly.do.huy','sale_order_lydohuy_ref','sale_id','lydohuy_id','Lý do hủy'),
         'dia_chi_kh':fields.text('Địa chỉ Khách hàng',readonly=True),
         'product_id_rel': fields.related('order_line', 'product_id', type="many2one", relation="product.product", string="Product"),
     }
@@ -256,7 +258,8 @@ class sale_order(osv.osv):
     
     def chiu_trach_nhiem(self, cr, uid, ids, context=None):
         for sale in self.browse(cr,uid,ids):
-            if not sale.sale_reason_peding_id:
+            sale_reason_peding_ids = [s.id for s in sale.sale_reason_peding_ids]
+            if not sale_reason_peding_ids:
                 raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa chọn lý do không được duyệt !'))
         return self.write(cr, uid, ids, {'chiu_trach_nhiem_id':uid})
 

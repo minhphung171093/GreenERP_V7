@@ -202,7 +202,8 @@ class sale_order(osv.osv):
         sale_order_line_obj = self.pool.get('sale.order.line')
         proc_obj = self.pool.get('procurement.order')
         for sale in self.browse(cr, uid, ids, context=context):
-            if not sale.huy_id:
+            huy_ids = [s.id for s in sale.huy_ids]
+            if not huy_ids:
                 raise osv.except_osv(
                         _('Không thể hủy đơn bán hàng'),
                         _('Bạn chưa chọn lý do hủy đơn bán hàng'))
