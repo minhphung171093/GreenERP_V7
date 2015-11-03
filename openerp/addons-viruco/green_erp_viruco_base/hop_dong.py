@@ -221,6 +221,25 @@ class hop_dong(osv.osv):
         'currency_company_id': lambda self, cr, uid, c: self.pool.get('res.users').browse(cr, uid, uid).company_id.currency_id.id,
     }
     
+    def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
+        if context is None:
+            context = {}
+        if context.get('search_hopdong_id'):
+            sql = '''
+                select id from hop_dong
+                    where type = 'hd_ngoai' and id not in (select hopdong_id from draft_bl where hopdong_id is not null)
+            '''
+            cr.execute(sql)
+            hopdong_ids = [row[0] for row in cr.fetchall()]
+            if context.get('hopdong_id'):
+                hopdong_ids.append(context.get('hopdong_id'))
+            args += [('id','in',hopdong_ids)]
+        return super(hop_dong, self).search(cr, uid, args, offset=offset, limit=limit, order=order, context=context, count=count)
+    
+    def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
+       ids = self.search(cr, user, args, context=context, limit=limit)
+       return self.name_get(cr, user, ids, context=context)
+    
     def bt_list_phieuxuat(self, cr, uid, ids, context=None):
         for hd in self.browse(cr,uid,ids):
             sql = '''
