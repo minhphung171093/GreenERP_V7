@@ -1395,9 +1395,9 @@ class Binary(openerpweb.Controller):
                     if row and row[0]:
                         image_data = str(row[0]).decode('base64')
                     else:
-                        image_data = self.placeholder(req, 'nologo.png')
+                        image_data = self.placeholder(req, 'incomtech.png')
             except Exception:
-                image_data = self.placeholder(req, 'logo.png')
+                image_data = self.placeholder(req, 'incomtech.png')
 
         headers = [
             ('Content-Type', 'image/png'),
