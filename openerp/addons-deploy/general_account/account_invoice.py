@@ -749,28 +749,26 @@ class account_invoice_line(osv.osv):
     
     def write(self,cr,uid,ids,vals,context=None):
         renew_id =  super(account_invoice_line, self).write(cr, uid,ids, vals, context)
-        if vals.get('price_unit',False):
-            picking_id = False
-            sql ='''
-                SELECT picking_id 
-                    FROM stock_invoice_rel 
-                    WHERE invoice_id = (
-                         SELECT invoice_id FROM account_invoice_line WHERE id = %s)
-            '''%(ids[0])
-            cr.execute(sql)
-            for i in cr.dictfetchall():
-                picking_id = i['picking_id']
+        for invoiceline in self.browse(cr, uid, ids):
+            if vals.get('price_unit',False):
+#                 picking_id = False
+#                 sql ='''
+#                     SELECT picking_id 
+#                         FROM stock_move 
+#                         WHERE invoice_id = (
+#                              SELECT invoice_id FROM account_invoice_line WHERE id = %s)
+#                 '''%(id)
+#                 cr.execute(sql)
+#                 for i in cr.dictfetchall():
+#                     picking_id = i['picking_id']
                 sql='''
                     UPDATE stock_move sm SET price_unit = 
                         (SELECT price_unit FROM account_invoice_line ail 
-                            INNER JOIN stock_invoice_rel sir on ail.invoice_id = sir.invoice_id
-                            WHERE ail.product_id = sm.product_id
-                                and ail.uos_id = sm.product_uom
-                                and sir.picking_id = sm.picking_id
+                            
+                            WHERE ail.id=%s
                              ) 
-                     WHERE sm.sale_line_id is not null
-                         and sm.picking_id = %s
-                '''%(picking_id)
+                     WHERE sm.id = %s
+                '''%(invoiceline.id,invoiceline.source_id)
                 cr.execute(sql)
         return renew_id
     
