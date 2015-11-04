@@ -49,11 +49,11 @@ class purchase_order(osv.osv):
         journal_ids = self.pool.get('stock.journal').search(cr,uid,[('source_type','=','in')])
         if not journal_ids:
             raise osv.except_osv(_('Warning!'), _('Please define Stock Journal for Incomming Order.'))
-        
+        time_now = time.strftime('%H:%M:%S')
         return {
             'name': '/',#self.pool.get('ir.sequence').get(cr, uid, 'stock.picking.in'),
             'origin': order.name + ((order.origin and (':' + order.origin)) or ''),
-            'date': self.date_to_datetime(cr, uid, order.date_order, context),
+            'date': order.date_order+' '+time_now,#self.date_to_datetime(cr, uid, order.date_order, context),
             'partner_id': order.partner_id.id,
             'invoice_state': '2binvoiced' if order.invoice_method == 'picking' else 'none',
             'type': 'in',
@@ -73,6 +73,7 @@ class purchase_order(osv.osv):
     def _prepare_order_line_move(self, cr, uid, order, order_line, picking_id, context=None):
         uom_obj = self.pool.get('product.uom')
         base_price_unit = uom_obj._compute_price(cr, uid, order_line.product_uom.id, order_line.price_unit, to_uom_id=order_line.product_id.uom_id.id)
+        time_now = time.strftime('%H:%M:%S')
         return {
             'name': order_line.name or '',
             'product_id': order_line.product_id.id,
@@ -80,8 +81,8 @@ class purchase_order(osv.osv):
             'product_uos_qty': order_line.product_qty,
             'product_uom': order_line.product_uom.id,
             'product_uos': order_line.product_uom.id,
-            'date': self.date_to_datetime(cr, uid, order.date_order, context),
-            'date_expected': self.date_to_datetime(cr, uid, order_line.date_planned, context),
+            'date': order.date_order+' '+time_now,#self.date_to_datetime(cr, uid, order.date_order, context),
+            'date_expected': order.date_order+' '+time_now,#self.date_to_datetime(cr, uid, order_line.date_planned, context),
             'location_id': order.partner_id.property_stock_supplier.id,
             'location_dest_id': order.location_id.id,
             'picking_id': picking_id,
