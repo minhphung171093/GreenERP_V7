@@ -234,9 +234,9 @@ class bang_gia(osv.osv):
                     
                 product_pricelist_version_obj.create(cr, uid, {
                     'pricelist_id':product_pricelist_id,
-                    'name': 'Bảng giá ngày '+bg.name[8:10]+'/'+bg.name[5:7]+'/'+bg.name[:4],
-                    'date_start': bg.name,
-                    'date_end': bg.name,
+                    'name': 'Bảng giá từ ngày '+bg.date_start[8:10]+'/'+bg.date_start[5:7]+'/'+bg.date_start[:4]+' đến ngày '+bg.date_end[8:10]+'/'+bg.date_end[5:7]+'/'+bg.date_end[:4],
+                    'date_start': bg.date_start,
+                    'date_end': bg.date_end,
                     'items_id': items,
                 })
             if bg.type=='mua':
@@ -259,9 +259,9 @@ class bang_gia(osv.osv):
                     
                 product_pricelist_version_obj.create(cr, uid, {
                     'pricelist_id':product_pricelist_id,
-                    'name': 'Bảng giá ngày '+bg.name[8:10]+'/'+bg.name[5:7]+'/'+bg.name[:4],
-                    'date_start': bg.name,
-                    'date_end': bg.name,
+                    'name': 'Bảng giá từ ngày '+bg.date_start[8:10]+'/'+bg.date_start[5:7]+'/'+bg.date_start[:4]+' đến ngày '+bg.date_end[8:10]+'/'+bg.date_end[5:7]+'/'+bg.date_end[:4],
+                    'date_start': bg.date_start,
+                    'date_end': bg.date_end,
                     'items_id': items,
                 })
             
