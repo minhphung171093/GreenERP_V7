@@ -21,5 +21,7 @@
     		name="Đơn mua hàng nhập khẩu"
     		parent="purchase.menu_procurement_management"
 			sequence="0"/>
+			
+		
     </data>
 </openerp>
