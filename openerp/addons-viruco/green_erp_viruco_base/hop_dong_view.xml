@@ -185,7 +185,7 @@
 			<field name="name">hop.dong.ngoai.tree</field>
 			<field name="model">hop.dong</field>
 			<field name="arch" type="xml">
-				<tree string="Hợp đồng ngoại" colors="gray:state== 'huy_bo';red:ngay_canhbao &lt; current_date and den_ngay &gt; current_date or date_payment_canhbao &lt; current_date and date_payment &gt; current_date">
+				<tree string="Hợp đồng ngoại" colors="gray:state== 'huy_bo';red:(ngay_canhbao and (ngay_canhbao &lt; current_date and den_ngay &gt; current_date)) or (date_payment_canhbao and (date_payment_canhbao &lt; current_date and date_payment &gt; current_date))">
 					<field name="name"/>
 					<field name="company_id" string="Company"/>
 					<field name="partner_id" string="Partner"/>

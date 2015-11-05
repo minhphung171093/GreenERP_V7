@@ -115,6 +115,8 @@ class hop_dong(osv.osv):
             if line.date_payment:
                 date_payment_canhbao = datetime.strptime(line.date_payment,'%Y-%m-%d') + timedelta(days=-canh_bao)
                 res[line.id]=date_payment_canhbao.strftime('%Y-%m-%d')
+            else:
+                res[line.id]=False
         return res    
     def _get_ngay_canhbao(self, cr, uid, ids, fields, arg, context=None):
         res = {}
@@ -123,6 +125,8 @@ class hop_dong(osv.osv):
             if line.den_ngay:
                 ngay_canhbao = datetime.strptime(line.den_ngay,'%Y-%m-%d') + timedelta(days=-canh_bao)
                 res[line.id]=ngay_canhbao.strftime('%Y-%m-%d')
+            else:
+                res[line.id]=False
         return res    
     _columns = {
         'name':fields.char('Số', size = 1024,required = True),
