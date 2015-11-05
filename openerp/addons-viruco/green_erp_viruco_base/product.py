@@ -22,6 +22,7 @@ class product_product(osv.osv):
     _columns = {
         'shop_ids': fields.many2many('sale.shop', 'product_shop_rel', 'product_id', 'shop_id', 'Product Shop'),
         'account_deducted_id': fields.many2one('account.account', 'Deducted Account'),
+        'tax_hd_ngoai': fields.many2one('account.tax', 'Tax HĐ Ngoại'),
     }
     
 product_product()

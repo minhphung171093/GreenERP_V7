@@ -48,11 +48,11 @@ class draft_bl(osv.osv):
         'notify_party_id': fields.many2one('res.partner','Notify Party',required=True),
         'consignee_id': fields.many2one('res.partner','Consignee'),
         'consignee_text':fields.char('Other Consignee'),
-        'ocean_vessel':fields.char('Ocean Vessel/Vov No',required=True),
-        'port_of_loading':fields.char('Port of loading'),
-        'port_of_charge':fields.char('Port of charge'),
-        'place_of_delivery':fields.char('Place of delivery'),
-        'container_no_seal':fields.char('Container No/Seal No',required=True),
+        
+        'diadiem_nhanhang':fields.many2one('place.of.delivery', 'Địa điểm nhận hàng'),
+        'port_of_loading':fields.many2one('port.of.loading', 'Port of loading'),
+        'port_of_charge':fields.many2one('port.of.discharge', 'Port of discharge'),
+        
         'quantity_kind_of_packages': fields.char('Quantity and Kind of Packages'),
         'note':fields.text('Note'),
         'meansurement':fields.char('Meansurement'),  
@@ -73,26 +73,36 @@ class draft_bl(osv.osv):
     
 draft_bl()
 
-
 class draft_bl_line(osv.osv):
     _name = 'draft.bl.line'
     
     _columns = {
-        'draft_bl_id': fields.many2one('draft.bl', 'Draft bl', required=True, ondelete='cascade', select=True),
-        'product_id': fields.many2one('product.product', 'Product'),
-        'product_uom': fields.many2one('product.uom', 'Unit'),
-        'hopdong_line_id': fields.many2one('hopdong.line', 'Hop Dong Line'),
-        'product_qty': fields.float('Quantity'),
+        'draft_bl_id': fields.many2one('draft.bl', 'Draft bl', ondelete='cascade', select=True),
+        'ocean_vessel':fields.char('Ocean Vessel/Vov No',required=True),
+        'ngay_nhanhang':fields.char('ETD', size=1024),
+        'eta':fields.char('ETA', size=1024),
+        'cuoc_tau': fields.float('Cước tàu'),
+        'description_line': fields.one2many('description.line','draft_bl_line_id','Line'),
+    }
+    
+draft_bl_line()
+
+
+class description_line(osv.osv):
+    _name = 'description.line'
+    
+    _columns = {
+        'draft_bl_line_id': fields.many2one('draft.bl.line', 'Draft bl line', ondelete='cascade', select=True),
+        'container_no_seal':fields.char('Container No/Seal No',required=True),
         'packages_qty': fields.float('Packages Qty'),
         'packages_id':fields.many2one('quycach.donggoi','Packages'),
         'packages_weight':fields.selection([('33.33', '33.33 Kgs/Bale'),('35', '35 Kgs/Bale'),
                                             ('1.20', '1.20 Mts/Pallet'),('1.26', '1.26 Mts/Pallet')], 'Packages Weight'),
         'net_weight':fields.float('Net Weight'),
         'gross_weight':fields.float('Gross Weight'),
-        'hs_code':fields.selection([('4001.2200', '4001.2200'),('4001.2100', '4001.2100'),('4001.1000', '4001.1000')], 'Hs Code'),
     }
     
-draft_bl_line()
+description_line()
 
 
 

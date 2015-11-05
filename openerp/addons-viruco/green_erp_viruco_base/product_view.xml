@@ -31,6 +31,9 @@
             	<xpath expr="//field[@name='description_purchase']" position="attributes">
           			<attribute name="invisible">1</attribute>
             	</xpath>
+            	<xpath expr="//field[@name='list_price']" position="after">
+          			<field name="tax_hd_ngoai" domain="[('type_tax_use','=','sale')]"/>
+            	</xpath>
             </field>
         </record>
         

@@ -12,9 +12,10 @@
 					<field name="hopdong_id"/>
 					<field name="date"/>
 					<field name="notify_party_id"/>
-					<field name="ocean_vessel"/>
-					<field name="container_no_seal"/>
 					<field name="bl_no"/>
+					<field name="port_of_loading"/>
+					<field name="port_of_charge"/>
+	                <field name="diadiem_nhanhang" string = "Place of delivery"/>
 				</tree>
 			</field>
 		</record>
@@ -27,7 +28,6 @@
                     <field name="name"/>
                     <field name="hopdong_id"/>
                     <field name="notify_party_id"/>
-                    <field name="container_no_seal"/>
                     <field name="bl_no"/>
                     <group expand="0" string="Group By...">
                         <filter string="Contract" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'hopdong_id'}"/>
@@ -54,43 +54,59 @@
 	                    		<field name="hopdong_id" context="{'search_hopdong_id':1,'hopdong_id':hopdong_id}" on_change="onchange_hopdong_id(hopdong_id)"/>
 	                    		<field name="company_id"/>
 	                    		<field name="consignee_id"/>
-	                    		<field name="ocean_vessel" />
-	                    		<field name="container_no_seal"/>
 	                    		<field name="freight"/>
-	                    		<field name="port_of_charge"/>
+	                    		<field name="port_of_loading"/>
+	                    		<field name="diadiem_nhanhang" string = "Place of delivery"/>
 	                    		<field name="country_id"/>
+	                    		<field name="shipping_line_id" />
+	                    		<field name="forwarder_line_id" />
 	                    	</group>
 	                    	<group>
 	                    		<field name="date"/>
 	                    		<field name="notify_party_id" domain="[('customer','=',True)]"/>
 	                    		<field name="consignee_text"/>
 	                    		<field name="bl_no"/>
+	                    		<field name="port_of_charge"/>
 	                    		<field name="quantity_kind_of_packages"/>
-	                    		<field name="port_of_loading"/>
-	                    		<field name="place_of_delivery" />
 	                    		<field name="meansurement" />
 	                    		<field name="customs_declaration" />
-	                    		<field name="shipping_line_id" />
-	                    		<field name="forwarder_line_id" />
+	                    		
 	                    	</group>
 	                    </group>
 	                    <group>
 	                    	<field name="note"/>
 						</group>
 						<notebook>
-							<page string="Description Of Goods" >
+							<page string="Draft BL Line" >
 								<field name="draft_bl_line">
-									<tree editable='top'>
-	                                    <field name="product_id" />
-	                                    <field name="product_qty"/>
-	                                    <field name="product_uom"/>
-	                                    <field name="packages_qty"/>
-	                                    <field name="packages_id" />
-	                                    <field name="packages_weight"/>
-	                                    <field name="net_weight"/>
-	                                    <field name="gross_weight"/>
-	                                    <field name="hs_code"/>
+									<tree>
+	                                    <field name="ocean_vessel" />
+	                                    <field name="ngay_nhanhang"/>
+	                                    <field name="eta"/>
+	                                    <field name="cuoc_tau"/>
 									</tree>
+									<form version = "7.0">
+										<group col='4' colspan='2'>
+					                    	<field name="ocean_vessel" />
+		                                    <field name="ngay_nhanhang"/>
+		                                    <field name="eta"/>
+		                                    <field name="cuoc_tau"/>
+					                    </group>
+					                    <notebook>
+											<page string="Description of Goods" >
+												<field name="description_line">
+													<tree editable = 'bottom'>
+					                                    <field name="container_no_seal" />
+					                                    <field name="packages_qty"/>
+					                                    <field name="packages_id"/>
+					                                    <field name="packages_weight"/>
+					                                    <field name="net_weight"/>
+					                                    <field name="gross_weight"/>
+													</tree>
+												</field>
+											</page>
+										</notebook>
+									</form>
 								</field>
 							</page>
 						</notebook>

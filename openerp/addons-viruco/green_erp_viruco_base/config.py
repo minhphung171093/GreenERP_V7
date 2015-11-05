@@ -303,4 +303,36 @@ class bang_tam_init(osv.osv):
         'da_chay': fields.boolean('Đã chạy'),
     }
 bang_tam_init()
+
+class port_of_loading(osv.osv):
+    _name = 'port.of.loading'
+    _columns = {
+        'name':fields.char('Name',size=1024,required=True),
+        'descrip': fields.text('Description'),
+    }
+port_of_loading()
+
+class port_of_discharge(osv.osv):
+    _name = 'port.of.discharge'
+    _columns = {
+        'name':fields.char('Name',size=1024,required=True),
+        'descrip': fields.text('Description'),
+    }
+port_of_discharge()
+
+class place_of_delivery(osv.osv):
+    _name = 'place.of.delivery'
+    _columns = {
+        'name':fields.char('Name',size=1024,required=True),
+        'descrip': fields.text('Description'),
+    }
+place_of_delivery()
+
+class destination_port(osv.osv):
+    _name = 'destination.port'
+    _columns = {
+        'name':fields.char('Name',size=1024,required=True),
+        'descrip': fields.text('Description'),
+    }
+destination_port()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -15,7 +15,7 @@ import codecs
 
 class hop_dong(osv.osv):
     _name = "hop.dong"
-    
+    _order = "tu_ngay"
     def default_get(self, cr, uid, fields, context=None):
         if context is None:
             context = {}
@@ -129,32 +129,34 @@ class hop_dong(osv.osv):
                 res[line.id]=False
         return res    
     _columns = {
-        'name':fields.char('Số', size = 1024,required = True),
-        'type':fields.selection([('hd_noi','Hợp đồng nội'),('hd_ngoai','Hợp đồng ngoại'),('hd_mua_trongnuoc','Hợp đồng mua trong nước'),('hd_mua_nhapkhau','Hợp đồng mua nhập khẩu')],'Loại hợp đồng' ,required=True,readonly=True, states={'moi_tao': [('readonly', False)]}),
-        'tu_ngay':fields.date('Từ ngày',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
-        'den_ngay':fields.date('Đến ngày'),
-        'ngay_nhanhang':fields.char('Ngày nhận hàng', size=1024),
-        'diadiem_nhanhang':fields.char('Địa điểm nhận hàng'),
-        'port_of_loading':fields.char('Port of loading'),
-        'port_of_charge':fields.char('Port of charge'),
-        'partial_shipment':fields.boolean('Partial shipment'),
-        'transshipment':fields.char('Transshipment'),
-        'thongbao_nhanhang':fields.char('Thông báo nhận hàng'),
-        'chat_luong':fields.char('Chất lượng'),
-        'destinaltion':fields.many2one('res.country','Country'),
-        'arbitration_id': fields.many2one('sale.arbitration','Arbitration',readonly=True, states={'moi_tao': [('readonly', False)]}),
+        'name':fields.char('Số', size = 1024,required = True,readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'user_id':fields.many2one('res.users','Người đề nghị',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'type':fields.selection([('hd_noi','Hợp đồng nội'),('hd_ngoai','Hợp đồng ngoại'),('hd_mua_trongnuoc','Hợp đồng mua trong nước'),('hd_mua_nhapkhau','Hợp đồng mua nhập khẩu')],'Loại hợp đồng' ,required=True,readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'tu_ngay':fields.date('Từ ngày',required = True,readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'den_ngay':fields.date('Đến ngày',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'ngay_nhanhang':fields.char('Ngày nhận hàng', size=1024,readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'diadiem_nhanhang':fields.many2one('place.of.delivery', 'Địa điểm nhận hàng',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'port_of_loading':fields.many2one('port.of.loading', 'Port of loading',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'port_of_charge':fields.many2one('port.of.discharge', 'Port of discharge',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'destination_port':fields.many2one('destination.port','Destination port',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'partial_shipment':fields.boolean('Partial shipment',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'transshipment':fields.char('Transshipment',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'thongbao_nhanhang':fields.char('Thông báo nhận hàng',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'chat_luong':fields.char('Chất lượng',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'destinaltion':fields.many2one('res.country','Country',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'arbitration_id': fields.many2one('sale.arbitration','Arbitration',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
 #         'phucluc_hd':fields.text('Phụ lục Hợp đồng'),
-        'phuongthuc_thanhtoan':fields.text('Phương thức thanh toán'),
-        'quycachdonggoi_chatluong': fields.text('Quy cách đóng gói và chất lượng sản phẩm'),
-        'company_id': fields.many2one('res.company','Công ty',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
-        'currency_company_id': fields.many2one('res.currency', 'Currency'),
-        'partner_id': fields.many2one('res.partner','Khách hàng',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
-        'hopdong_line': fields.one2many('hopdong.line','hopdong_id','Line',readonly=True, states={'moi_tao': [('readonly', False)]}),
-        'hopdong_hoahong_line': fields.one2many('hopdong.hoahong.line','hopdong_hh_id','Line',readonly=True, states={'moi_tao': [('readonly', False)]}),
-        'pricelist_id': fields.many2one('product.pricelist', 'Bảng giá', required=True, readonly=True, states={'moi_tao': [('readonly', False)]}, help="Pricelist for current sales order."),
+        'phuongthuc_thanhtoan':fields.text('Phương thức thanh toán',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'quycachdonggoi_chatluong': fields.text('Quy cách đóng gói và chất lượng sản phẩm',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'company_id': fields.many2one('res.company','Công ty',required = True,readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'currency_company_id': fields.many2one('res.currency', 'Currency',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'partner_id': fields.many2one('res.partner','Khách hàng',required = True,readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'hopdong_line': fields.one2many('hopdong.line','hopdong_id','Line',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'hopdong_hoahong_line': fields.one2many('hopdong.hoahong.line','hopdong_hh_id','Line',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'pricelist_id': fields.many2one('product.pricelist', 'Bảng giá', required=True,readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'currency_id': fields.related('pricelist_id', 'currency_id', type="many2one", relation="res.currency", string="Tiền tệ", readonly=True, required=True),
-        'donbanhang_id': fields.many2one('don.ban.hang', 'Đơn bán hàng'),
-        'donmuahang_id': fields.many2one('don.mua.hang', 'Đơn mua hàng'),
+        'donbanhang_id': fields.many2one('don.ban.hang', 'Đơn bán hàng',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'donmuahang_id': fields.many2one('don.mua.hang', 'Đơn mua hàng',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'thanhtoan':fields.boolean('Thanh toán'),
         'ngay_thanhtoan':fields.date('Ngày thanh toán'),
         'dagui_nganhang':fields.boolean('Đã gửi ngân hàng'),
@@ -165,8 +167,8 @@ class hop_dong(osv.osv):
         'ngaygui_hoadon':fields.date('Ngày gửi hóa đơn'),
         'dagui_chungtugoc':fields.boolean('Đã gửi chứng từ gốc'),
         'ngaygui_chungtugoc':fields.date('Ngày gửi chứng từ gốc'),
-        'dk_giaohang_id': fields.many2one('dieukien.giaohang', 'Điều kiện giao hàng'),
-        'dk_thanhtoan_id': fields.many2one('dk.thanhtoan', 'Điều kiện thanh toán'),
+        'dk_giaohang_id': fields.many2one('dieukien.giaohang', 'Điều kiện giao hàng',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'dk_thanhtoan_id': fields.many2one('dk.thanhtoan', 'Điều kiện thanh toán',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'amount_untaxed': fields.function(_amount_all, digits_compute=dp.get_precision('Account'), string='Cộng',
             store={
                 'hop.dong': (lambda self, cr, uid, ids, c={}: ids, ['hopdong_line'], 10),
@@ -207,13 +209,18 @@ class hop_dong(osv.osv):
         'state': fields.selection([
             ('moi_tao', 'Mới tạo'),
             ('da_duyet', 'Đã duyệt'),
-            ('thuc_hien', 'Thực hiện'),
-            ('het_han', 'Hết hạn'),
+            ('da_ky', 'Đã ký hợp đồng'),
+            ('het_han', 'Hết hiệu lực'),
+            ('thuc_hien', 'Đang chờ giao hàng'),
+            ('giaohang_chochungtu', 'Đã giao hàng(chờ chứng từ)'),
+            ('giaohang_xongchungtu', 'Đã giao hàng(xong chứng từ)'),
+            ('thanh_toan', 'Đã thanh toán'),
             ('huy_bo', 'Hủy bỏ'),
             ], 'Trạng thái',readonly=True, states={'moi_tao': [('readonly', False)]}),
         'ngay_canhbao': fields.function(_get_ngay_canhbao, type='date', string='Ngày cảnh báo'),
-        'date_payment':fields.date('Ngày thanh toán'),
+        'date_payment':fields.date('Ngày thanh toán',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'date_payment_canhbao': fields.function(_get_date_payment_canhbao, type='date', string='Ngày cảnh báo'),
+        'theodoi_hopdong_line': fields.one2many('theodoi.hopdong.line','hopdong_id','Line',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
 #         'thanh_toan_ncc_line': fields.one2many('account.voucher', 'hop_dong_id', 'Line', states={'moi_tao': [('readonly', False)]}),
     }
     
@@ -223,6 +230,7 @@ class hop_dong(osv.osv):
         'state': 'moi_tao',
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'hop.dong', context=c),
         'currency_company_id': lambda self, cr, uid, c: self.pool.get('res.users').browse(cr, uid, uid).company_id.currency_id.id,
+        'user_id': lambda self, cr, uid, context=None: uid,
     }
     
     def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
@@ -392,8 +400,19 @@ class hop_dong(osv.osv):
                 }
                 hd_hoahong_line.append((0,0,hd_hh_value))
             vals = {
-                'partner_id': dbh.partner_id.id,
-                'pricelist_id': dbh.pricelist_id.id,
+                'partner_id': dbh.partner_id and dbh.partner_id.id or False,
+                'pricelist_id': dbh.pricelist_id and dbh.pricelist_id.id or False,
+                'port_of_loading': dbh.port_of_loading and dbh.port_of_loading.id or False,
+                'port_of_charge': dbh.port_of_charge and dbh.port_of_charge.id or False,
+                'diadiem_nhanhang': dbh.diadiem_nhanhang and dbh.diadiem_nhanhang.id or False,
+                'ngay_nhanhang': dbh.ngay_nhanhang,
+                'destinaltion': dbh.destinaltion and dbh.destinaltion.id or False,
+                'destination_port': dbh.destination_port and dbh.destination_port.id or False,
+                'partial_shipment': dbh.partial_shipment,
+                'transshipment': dbh.transshipment,
+                'arbitration_id': dbh.arbitration_id and dbh.arbitration_id.id or False,
+                'dk_giaohang_id': dbh.dieukien_giaohang_id and dbh.dieukien_giaohang_id.id or False,
+                'dk_thanhtoan_id': dbh.dk_thanhtoan_id and dbh.dk_thanhtoan_id.id or False,
                 'hopdong_line': order_line,
                 'hopdong_hoahong_line': hd_hoahong_line,
             }
@@ -465,6 +484,23 @@ class hopdong_hoahong_line(osv.osv):
         return {'value': vals}
 hopdong_hoahong_line()
 
+class theodoi_hopdong_line(osv.osv):
+    _name = 'theodoi.hopdong.line'
+    
+    _columns = {
+        'hopdong_id': fields.many2one('hop.dong', 'Hợp đồng', ondelete='cascade', select=True),
+        'name': fields.char('Source',size=1024),
+        'freight':fields.selection([('prepaid', 'Prepaid'),('collect', 'Collect')], 'Freight'),
+        'shipping_line_id': fields.many2one('shipping.line','Shipping line'),
+        'forwarder_line_id': fields.many2one('forwarder.line','Forwarder line'),
+        'log_in_charge': fields.char('LOGS IN CHARGE',size=1024),
+        'doc_in_charge': fields.char('DOCS IN CHARGE',size=1024),
+        'seal_no': fields.char('CONT/SEAL NO',size=1024),
+        'bl_no': fields.char('BL No',size=1024),
+        'dhl_no': fields.char('DHL No',size=1024),
+    }
+theodoi_hopdong_line()
+
 class hopdong_line(osv.osv):
     _name = 'hopdong.line'
     def _amount_line(self, cr, uid, ids, field_name, arg, context=None):
@@ -477,7 +513,7 @@ class hopdong_line(osv.osv):
             price = line.price_unit
             taxes = tax_obj.compute_all(cr, uid, line.tax_id, price, line.product_qty, line.product_id, line.hopdong_id.partner_id)
             cur = line.hopdong_id.company_id.currency_id
-            res[line.id] = cur_obj.round(cr, uid, cur, taxes['total'])
+            res[line.id] = cur_obj.round(cr, uid, cur, taxes['total']) - line.sotien_giam
         return res
     _columns = {
         'hopdong_id': fields.many2one('hop.dong', 'Hợp đồng', required=True, ondelete='cascade', select=True),
@@ -490,6 +526,8 @@ class hopdong_line(osv.osv):
         'price_subtotal': fields.function(_amount_line, string='Subtotal', digits_compute= dp.get_precision('Account')),
         'chatluong_id':fields.many2one('chatluong.sanpham','Chất lượng'),
         'quycach_donggoi_id':fields.many2one('quycach.donggoi','Quy cách đóng gói'),
+        'sotien_giam': fields.float('Số tiền giảm'),
+        'hopdong_giam_id': fields.many2one('hop.dong', 'Hợp đồng'),
     }
     
     def onchange_product_id(self, cr, uid, ids,product_id=False, context=None):
@@ -577,15 +615,22 @@ class don_ban_hang(osv.osv):
         'type':fields.selection([('dbh_noi','Đơn bán hàng nội'),('dbh_ngoai','Đơn bán hàng ngoại')],'Loại đơn bán hàng'),
         'ngay':fields.date('Ngày',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
         'company_id': fields.many2one('res.company','Công ty',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
+        'diadiem_nhanhang':fields.many2one('place.of.delivery', 'Địa điểm nhận hàng', states={'moi_tao': [('readonly', False)]}),
+        'port_of_loading':fields.many2one('port.of.loading', 'Port of loading', states={'moi_tao': [('readonly', False)]}),
+        'port_of_charge':fields.many2one('port.of.discharge', 'Port of discharge', states={'moi_tao': [('readonly', False)]}),
+        'destinaltion':fields.many2one('res.country','Country', states={'moi_tao': [('readonly', False)]}),
+        'partial_shipment':fields.boolean('Partial shipment', states={'moi_tao': [('readonly', False)]}),
+        'transshipment':fields.char('Transshipment', states={'moi_tao': [('readonly', False)]}),
+        'arbitration_id': fields.many2one('sale.arbitration','Arbitration',readonly=True, states={'moi_tao': [('readonly', False)]}),
         'partner_id': fields.many2one('res.partner','Khách hàng',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
         'don_ban_hang_line': fields.one2many('don.ban.hang.line','donbanhang_id','Line',readonly=True, states={'moi_tao': [('readonly', False)]}),
         'pricelist_id': fields.many2one('product.pricelist', 'Bảng giá', required=True, readonly=True, states={'moi_tao': [('readonly', False)]}, help="Pricelist for current sales order."),
         'currency_id': fields.related('pricelist_id', 'currency_id', type="many2one", relation="res.currency", string="Đơn vị tiền tệ", readonly=True, required=True),
         'currency_company_id': fields.many2one('res.currency', 'Currency'),
         'user_id':fields.many2one('res.users','Người đề nghị',readonly=True,states={'moi_tao': [('readonly', False)]}),
-        'thoigian_giaohang':fields.char('Thời gian giao hàng',size=1024),
+        'ngay_nhanhang':fields.char('Thời gian giao hàng',size=1024),
         'nguoi_gioithieu_id':fields.many2one('res.partner','Người giới thiệu',readonly=True,states={'moi_tao': [('readonly', False)]}),
-        'noi_giaohang_id':fields.many2one('noi.giaohang','Nơi giao giao hàng'),
+        'noi_giaohang_id':fields.many2one('noi.giaohang','Nơi giao hàng'),
         'payment_term': fields.many2one('account.payment.term', 'Payment Term'),
         'donhang_hoahong_line': fields.one2many('hopdong.hoahong.line','hopdong_dh_id','Line',readonly=True, states={'moi_tao': [('readonly', False)]}),
         'amount_untaxed': fields.function(_amount_all, digits_compute=dp.get_precision('Account'), string='Cộng',
@@ -635,9 +680,10 @@ class don_ban_hang(osv.osv):
         'thoigian_giaohang':fields.char('Thời gian giao hàng', size=1024),
         'nguoi_gioithieu_id':fields.many2one('res.partner','Người giới thiệu',readonly=True,states={'draft': [('readonly', False)], 'sent': [('readonly', False)]}),
         'dieukien_giaohang_id':fields.many2one('dieukien.giaohang','Điều kiện giao hàng'),
+        'dk_thanhtoan_id': fields.many2one('dk.thanhtoan', 'Điều kiện thanh toán'),
         'hinhthuc_giaohang_id':fields.many2one('hinhthuc.giaohang','Hình thức giao hàng'),
         'so_chuyenphatnhanh':fields.char('Số chuyển phát nhanh',size=1024),
-        'destination_port':fields.char('Destination port',size=1024),
+        'destination_port':fields.many2one('destination.port','Destination port'),
         'hinh_thuc_tt':fields.selection([('chuyenkhoan','Chuyển khoản'),('tienmat','Tiền mặt')],'Hình thức thanh toán'),
 
     }
@@ -777,7 +823,7 @@ class don_ban_hang_line(osv.osv):
         'quycach_donggoi_id':fields.many2one('quycach.donggoi','Quy cách đóng gói'),
     }
     
-    def onchange_product_id(self, cr, uid, ids,qty=0,ngay=False,partner_id=False,pricelist_id=False,product_id=False, context=None):
+    def onchange_product_id(self, cr, uid, ids,qty=0,ngay=False,partner_id=False,pricelist_id=False,product_id=False,type=False,context=None):
         vals = {}
         if not ngay:
             ngay = time.strftime('%Y-%m-%d')
@@ -791,7 +837,10 @@ class don_ban_hang_line(osv.osv):
                     'chatluong_id':product.chatluong_id and product.chatluong_id.id or False,
                     'quycach_donggoi_id':product.quycach_donggoi_id and product.quycach_donggoi_id.id or False,
                     }
-            vals['tax_id'] = self.pool.get('account.fiscal.position').map_tax(cr, uid, False, product.taxes_id)
+            if type == 'dbh_ngoai':
+                vals.update({'tax_id': [(6,0,[product.tax_hd_ngoai and product.tax_hd_ngoai.id])]})
+            else:
+                vals['tax_id'] = self.pool.get('account.fiscal.position').map_tax(cr, uid, False, product.taxes_id)
             if pricelist_id:
                 price = self.pool.get('product.pricelist').price_get(cr, uid, [pricelist_id],
                         product_id, qty or 1.0, partner_id, {
@@ -984,5 +1033,6 @@ class don_mua_hang_line(osv.osv):
                 vals.update({'price_unit': price})
         return {'value': vals}
 don_mua_hang_line()
+
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
