@@ -234,6 +234,8 @@ openerp.green_erp_web_google_map = function(instance) {
             return {
                 'lat': getFixedValue(this.widget_lat.get_value()),
                 'lng': getFixedValue(this.widget_lng.get_value()),
+                'radius': getFixedValue(this.widget_radius.get_value()),
+                'points': this.widget_points.get_value(),
             };
         },
 
@@ -247,6 +249,12 @@ openerp.green_erp_web_google_map = function(instance) {
             this.widget_lng.$el.find('input').val(record.lng);
             // will set value from dom AND set the form dirty
             this.widget_lng.store_dom_value();
+            this.widget_radius.$el.find('input').val(record.radius);
+            // will set value from dom AND set the form dirty
+            this.widget_radius.store_dom_value();
+            this.widget_points.$el.find('input').val(record.points);
+            // will set value from dom AND set the form dirty
+            this.widget_points.store_dom_value();
         },
 
         /**
@@ -278,6 +286,8 @@ openerp.green_erp_web_google_map = function(instance) {
 
             this.widget_lat = this.view.fields.lat;
             this.widget_lng = this.view.fields.lng;
+            this.widget_radius = this.view.fields.radius;
+            this.widget_points = this.view.fields.points;
 
 
             // In forms, we could be hidden in a notebook. Thus we couldn't
@@ -355,7 +365,7 @@ openerp.green_erp_web_google_map = function(instance) {
                         self.$canvas.hide();
                         return;
                     }
-
+					
                     var point = new google.maps.LatLng(location.lat, location.lng);
                     self.$msg_empty.hide();
                     self.$canvas.show(500, function() {
@@ -370,7 +380,42 @@ openerp.green_erp_web_google_map = function(instance) {
                                 var location = _position_to_location(marker.getPosition());
                                 self.set_location(location);
                             });
+                        
+                        var contentString = 'TAM';
+                        var infowindow = new google.maps.InfoWindow({
+						    content: contentString
+					    });
+					    marker.addListener('click', function() {
+						    infowindow.open(map, marker);
+					    });
+					    
                         map.setCenter(point);
+                        
+                        var circle = new google.maps.Circle({  //PHUNG ve duong tron
+						map: map,
+						radius: location.radius,    // 10 miles in metres
+						fillColor: '#AA0000'
+						});
+						circle.bindTo('center', marker, 'position');
+						
+						if (location.points!==false){
+							var points = location.points.split(';');
+							points.forEach(function(entry) {
+								p = entry.split(',');
+								var new_point = new google.maps.LatLng(p[0], p[1]);
+							    var new_marker = new google.maps.Marker({
+		                            'map': map,
+		                            'position': new_point,
+		                            'draggable': self.edit_mode
+		                        });
+		                        var infowindow = new google.maps.InfoWindow({
+								    content: p[2]
+							    });
+							    new_marker.addListener('click', function() {
+								    infowindow.open(map, new_marker);
+							    });
+							});				
+						}
                     });
                 } catch (e) {
                     console.log(e);
@@ -495,8 +540,9 @@ openerp.green_erp_web_google_map = function(instance) {
             });
 
         },
-
+        
         draw_map: function () {
+        
             if (this.$gmap[0].offsetWidth === 0) { // visible
                 console.log("prevented drawing map on non-sized div");
                 return;
@@ -505,9 +551,9 @@ openerp.green_erp_web_google_map = function(instance) {
             this.gmap = this.$gmap.gmap(
                 this.get_google_map_options());
             this.set_markers();
+            
         },
-
-
+		
         clear_map: function() {
             this.$gmap.gmap('clear', 'bounds');
             this.$gmap.gmap('set', 'bounds', new google.maps.LatLngBounds());
@@ -529,7 +575,7 @@ openerp.green_erp_web_google_map = function(instance) {
                 (new instance.web.Model(this.view.fields_view.fields[this.name].relation))
                 .call('read', [this.get_value(), false],
                       {context: this.view.dataset.context});
-
+			
             $.when(datarecords).then(function(records) {
                 if (records && records.length) {
                     self.$msg_empty.hide();

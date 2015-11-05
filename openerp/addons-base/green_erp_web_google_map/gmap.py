@@ -31,7 +31,9 @@ class res_partner(osv.osv):
     _columns = {
         'lat': fields.float(u'Latitude', digits=(9, 6)),
         'lng': fields.float(u'Longitude', digits=(9, 6)),
+        'radius': fields.integer(u'Radius'),
         'map': fields.dummy(),
+        'points': fields.text('Points'),
     }
 
 res_partner()

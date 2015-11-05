@@ -13,8 +13,11 @@
                         <separator string="Map" colspan="4" />
                         <field name="lat" colspan="1" />
                         <field name="lng" colspan="1" />
+                        <field name="radius" colspan="1" />
                         <field name="map" nolabel="1"
                                widget="gmap" colspan="4" />
+                               
+                        <field name="points" colspan="4" />
                     </group>
                   </page>
                 </xpath>
