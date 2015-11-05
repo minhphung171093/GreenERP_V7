@@ -285,13 +285,61 @@ class Parser(report_sxw.rml_parse):
         '''%(location_ids,location_ids,self.product_id,self.prod_lot_id,self.date_start,self.date_end)
         self.cr.execute(sql)
         res =[]
+        invoice_obj = self.pool.get('account.invoice')
         for i in self.cr.dictfetchall():
+            ton = self.qty_fist
             self.qty_fist = self.qty_fist + (i['nhap_qty'] or 0 ) - (i['xuat_qty'] or 0 )
             self.sum_nhap_qty = self.sum_nhap_qty + i['nhap_qty']
             self.sum_xuat_qty = self.sum_xuat_qty + i['xuat_qty']
-            res.append(
+            
+            invoice_ids = invoice_obj.search(self.cr,self.uid,[('name','=',i['picking_name'])])
+            if invoice_ids:
+                tongnhap=0
+                tongxuat=0
+                for invoice in invoice_obj.browse(self.cr, self.uid, invoice_ids):
+                    sql = '''
+                        select case when sum(primary_qty)!=0 then sum(primary_qty) else 0 end qty
+                            from account_invoice_line where product_id=%s and prodlot_id=%s and invoice_id=%s
+                    '''%(self.product_id,self.prod_lot_id,invoice.id)
+                    self.cr.execute(sql)
+                    qty = self.cr.fetchone()[0]
+                    nhap=0
+                    xuat=0
+                    if invoice.type=='in_invoice':
+                        nhap=qty
+                        tongnhap+=qty
+                    else:
+                        xuat=qty
+                        tongxuat+=qty
+                    ton = ton+nhap-xuat
+                    res.append(
+                       {'date':self.get_vietname_date(i['date']),
+                       'des':invoice.number or i['picking_name'],
+                       'ngay_hd':self.get_vietname_date(invoice.date_invoice),
+                       'name':i['name'],
+                       'journal_name':i['journal_name'],
+                       'nhap_qty':nhap,
+                       'xuat_qty':xuat,
+                       'ton_qty':ton,
+                       'note':i['note']
+                       })
+                if ton!=self.qty_fist:
+                    res.append(
+                       {'date':self.get_vietname_date(i['date']),
+                       'des':i['picking_name'],
+                       'ngay_hd': '',
+                       'name':i['name'],
+                       'journal_name':i['journal_name'],
+                       'nhap_qty':i['nhap_qty']-tongnhap or 0.0,
+                       'xuat_qty':i['xuat_qty']-tongxuat or 0.0,
+                       'ton_qty':self.qty_fist or 0.0,
+                       'note':i['note']
+                       })
+            else:
+                res.append(
                    {'date':self.get_vietname_date(i['date']),
                    'des':i['picking_name'],
+                   'ngay_hd': '',
                    'name':i['name'],
                    'journal_name':i['journal_name'],
                    'nhap_qty':i['nhap_qty'] or 0.0,

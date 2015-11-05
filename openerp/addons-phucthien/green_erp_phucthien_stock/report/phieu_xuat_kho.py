@@ -37,10 +37,13 @@ class Parser(report_sxw.rml_parse):
     def get_date(self, date=False):
         res={}
         if not date:
-            date = time.strftime('%Y-%m-%d')
-        day = date[8:10],
-        month = date[5:7],
-        year = date[:4],
+            date = time.strftime(DATETIME_FORMAT)
+        date = datetime.strptime(date, DATETIME_FORMAT) + timedelta(hours=7)
+        date.strftime(DATETIME_FORMAT)
+        date=str(date)
+        day = date[8:10]
+        month = date[5:7]
+        year = date[:4]
         res={
             'day' : day,
             'month' : month,

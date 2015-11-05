@@ -11,7 +11,7 @@ import pooler
 from osv import osv
 from tools.translate import _
 import random
-from datetime import datetime
+from datetime import datetime,timedelta
 DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 DATE_FORMAT = "%Y-%m-%d"
 
@@ -26,6 +26,7 @@ class Parser(report_sxw.rml_parse):
             'get_date_hd': self.get_date_hd,
             'get_dieuchuyen_thanhpham_lanh': self.get_dieuchuyen_thanhpham_lanh,
             'get_dieuchuyen_thanhpham': self.get_dieuchuyen_thanhpham,
+            'convert_date': self.convert_date,
         })
         
     def get_dieuchuyen_thanhpham_lanh(self):
@@ -41,4 +42,13 @@ class Parser(report_sxw.rml_parse):
             return date.strftime('%m/%Y')
         else:
             return ''
+        
+    def convert_date(self, date=False):
+        res={}
+        if not date:
+            date = time.strftime(DATETIME_FORMAT)
+        date = datetime.strptime(date, DATETIME_FORMAT) + timedelta(hours=7)
+        date.strftime(DATETIME_FORMAT)
+        date=str(date)
+        return date
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
