@@ -519,7 +519,7 @@ class hopdong_line(osv.osv):
             res[line.id] = cur_obj.round(cr, uid, cur, taxes['total']) - line.sotien_giam
         return res
     _columns = {
-        'hopdong_id': fields.many2one('hop.dong', 'Hợp đồng', required=True, ondelete='cascade', select=True),
+        'hopdong_id': fields.many2one('hop.dong', 'Hợp đồng', ondelete='cascade', select=True),
         'product_id': fields.many2one('product.product', 'Product', domain=[('sale_ok', '=', True)], change_default=True,),
         'name':fields.char('Name',size=1024,required=True),
         'product_uom': fields.many2one('product.uom', 'Đơn vị tính'),
