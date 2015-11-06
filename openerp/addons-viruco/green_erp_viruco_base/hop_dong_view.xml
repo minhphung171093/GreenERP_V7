@@ -748,7 +748,7 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="don_ban_hang_noi_tree_view"/>
             <field name="domain">[('type','=','dbh_noi')]</field>
-            <field name="context">{'default_type':'dbh_noi'}</field>
+            <field name="context">{'default_type':'dbh_noi','readonly_by_pass': True}</field>
         </record>
         <record model="ir.actions.act_window.view" id="action_don_ban_hang_noi1">
             <field name="sequence" eval="1"/>
@@ -898,7 +898,7 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="don_ban_hang_ngoai_tree_view"/>
             <field name="domain">[('type','=','dbh_ngoai')]</field>
-            <field name="context">{'default_type':'dbh_ngoai'}</field>
+            <field name="context">{'default_type':'dbh_ngoai','readonly_by_pass': True}</field>
         </record>
         <record model="ir.actions.act_window.view" id="action_don_ban_hang_ngoai1">
             <field name="sequence" eval="1"/>
