@@ -256,11 +256,17 @@ openerp.mail = function (session) {
         },
 
         /* Convert date, timerelative and avatar in displayable data. */
+        
         format_data: function () {
             //formating and add some fields for render
             this.date = this.date ? session.web.str_to_datetime(this.date) : false;
             if (this.date && new Date().getTime()-this.date.getTime() < 7*24*60*60*1000) {
-                this.timerelative = $.timeago(this.date);
+            	var hours = this.date.getHours();
+			  	var minutes = this.date.getMinutes();
+			  	var strTime = hours + ':' + minutes;
+			  	e = this.date.getDate() + "/" + (this.date.getMonth()+1) + "/" + this.date.getFullYear() + "  " + strTime;
+				this.timerelative = e;
+                //this.timerelative = $.timeago(this.date);
             } 
             if (this.type == 'email' && (!this.author_id || !this.author_id[0])) {
                 this.avatar = ('/mail/static/src/img/email_icon.png');
