@@ -349,6 +349,9 @@ class hop_dong(osv.osv):
     def duyet(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids, {'state': 'da_duyet'})
     
+    def ky_hd(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {'state': 'da_ky'})
+    
     def huy_bo(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids, {'state': 'huy_bo'})
     
@@ -516,7 +519,7 @@ class hopdong_line(osv.osv):
             res[line.id] = cur_obj.round(cr, uid, cur, taxes['total']) - line.sotien_giam
         return res
     _columns = {
-        'hopdong_id': fields.many2one('hop.dong', 'Hợp đồng', required=True, ondelete='cascade', select=True),
+        'hopdong_id': fields.many2one('hop.dong', 'Hợp đồng', ondelete='cascade', select=True),
         'product_id': fields.many2one('product.product', 'Product', domain=[('sale_ok', '=', True)], change_default=True,),
         'name':fields.char('Name',size=1024,required=True),
         'product_uom': fields.many2one('product.uom', 'Đơn vị tính'),
@@ -838,7 +841,8 @@ class don_ban_hang_line(osv.osv):
                     'quycach_donggoi_id':product.quycach_donggoi_id and product.quycach_donggoi_id.id or False,
                     }
             if type == 'dbh_ngoai':
-                vals.update({'tax_id': [(6,0,[product.tax_hd_ngoai and product.tax_hd_ngoai.id])]})
+                if product.tax_hd_ngoai:
+                    vals.update({'tax_id': [(6,0,[product.tax_hd_ngoai.id])]})
             else:
                 vals['tax_id'] = self.pool.get('account.fiscal.position').map_tax(cr, uid, False, product.taxes_id)
             if pricelist_id:
