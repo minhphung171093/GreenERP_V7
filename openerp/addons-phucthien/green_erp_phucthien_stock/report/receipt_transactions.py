@@ -101,7 +101,7 @@ class Parser(report_sxw.rml_parse):
         for o in self.get_picking():
             for line in o.move_lines:
                 if line.purchase_line_id:
-                    tong += line.purchase_line_id.price_unit * line.product_qty + self.get_tax_amount(line.purchase_line_id or 0)
+                    tong += line.purchase_line_id.price_unit * line.product_qty + self.get_tax_amount(line or 0)
         return tong
     def get_stt(self,seq_1,seq):
         stt = 1
@@ -163,11 +163,23 @@ class Parser(report_sxw.rml_parse):
         else:
             return ''
     
-    def get_tax_amount(self,po_line=False):
+    def get_tax_amount(self,move=False):
         amount_tax = 0
-        if po_line:
-            for t in po_line.taxes_id:
-                amount_tax+= t.amount*po_line.price_subtotal
+        if move:
+            sql = '''
+                select invoice_id from account_invoice_line where source_id=%s and product_id=%s 
+            '''%(move.id,move.product_id.id)
+            if move.prodlot_id:
+                sql+='''  and prodlot_id=%s '''%(move.prodlot_id.id)
+            sql+=''' group by invoice_id '''
+            self.cr.execute(sql)
+            invoice_ids = [r[0] for r in self.cr.fetchall()]
+            if invoice_ids:
+                invoice = self.pool.get('account.invoice').browse(self.cr, self.uid, invoice_ids[0])
+                amount_tax = invoice.amount_tax/invoice.amount_total*(move.primary_qty*move.price_unit)
+        if not amount_tax and move.purchase_line_id:
+            for t in move.purchase_line_id.taxes_id:
+                amount_tax+= t.amount*move.purchase_line_id.price_subtotal
         return amount_tax
     
     def get_chungtu(self,o):
