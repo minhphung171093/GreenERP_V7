@@ -200,6 +200,7 @@
 					<field name="date_payment_canhbao" invisible="1"/>
 					<field name="type" invisible="1"/>
 					<field name="date_payment" />
+					<field name="user_id" string="User"/>
 					<field name="state"/>
 				</tree>
 			</field>
