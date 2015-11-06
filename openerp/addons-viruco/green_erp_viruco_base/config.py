@@ -51,6 +51,7 @@ class chatluong_sanpham(osv.osv):
     _name = 'chatluong.sanpham'
     _columns = {
         'name':fields.char('Tên',size=1024,required=True),
+        'name_eng':fields.char('Tên tiếng Anh',size=1024,required=True),
         'description': fields.text('Ghi chú'),
     }
     
@@ -59,6 +60,7 @@ class quycach_donggoi(osv.osv):
     _name = 'quycach.donggoi'
     _columns = {
         'name':fields.char('Tên',size=1024,required=True),
+        'name_eng':fields.char('Tên tiếng Anh',size=1024,required=True),
         'description': fields.text('Ghi chú'),
     }
     
@@ -67,6 +69,7 @@ class quycach_baobi(osv.osv):
     _name = 'quycach.baobi'
     _columns = {
         'name':fields.char('Tên',size=1024,required=True),
+        'name_eng':fields.char('Tên tiếng Anh',size=1024,required=True),
         'description': fields.text('Ghi chú'),
     }
     
