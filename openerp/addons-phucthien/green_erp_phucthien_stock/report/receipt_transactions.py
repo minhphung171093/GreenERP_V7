@@ -150,8 +150,7 @@ class Parser(report_sxw.rml_parse):
     
     def get_date_hd(self,date):
         if date:
-            date = date[:10]
-            date = datetime.datetime.strptime(date, DATE_FORMAT)
+            date = datetime.datetime.strptime(date, DATETIME_FORMAT) + timedelta(hours=7)
             return date.strftime('%m/%Y')
         else:
             return ''
