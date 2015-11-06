@@ -37,6 +37,7 @@
             'wizard/theodoi_hethan_view.xml',
             'wizard/xuly_hangtra_cuakhachhang_view.xml',
             'wizard/dulieu_donghang_kho_report_view.xml',
+            'wizard/stock_inventory_line_split_view.xml',
             'report/phieu_xuat_kho.xml',
             'report/bien_ban_giao_nhan.xml',
             'report/dulieu_donghang_report_view.xml',

@@ -38,3 +38,16 @@ class stock_partial_picking(osv.osv_memory):
         return res
     
 stock_partial_picking()
+
+
+class split_in_production_lot(osv.osv_memory):
+    _inherit = "stock.move.split"
+    
+    _defaults = {
+        'use_exist': True,
+    }
+    
+split_in_production_lot()
+
+
+

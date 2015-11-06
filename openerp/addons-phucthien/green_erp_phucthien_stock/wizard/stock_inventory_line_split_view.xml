@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+    	<record id="view_split_in_lots_inherit_inherit" model="ir.ui.view">
+            <field name="name">stock.inventory.line.split.form.inherit</field>
+            <field name="model">stock.inventory.line.split</field>
+            <field name="inherit_id" ref="stock.view_split_in_lots_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='use_exist']" position="attributes">
+                	<attribute name="string">Sử dụng lô đã có</attribute>
+                </xpath>
+            </field>
+        </record>
+    	
+    	<record id="stock.track_line" model="ir.actions.act_window">
+            <field name="name">Split in Serial Numbers</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.move.split</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{'default_use_exist':True,'form_view_ref': False}</field>
+        </record>
+    	
+    </data>
+</openerp>
