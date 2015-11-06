@@ -53,6 +53,23 @@ class account_voucher(osv.osv):
         'unshow_financial_report':False
     }
     
+#     def write(self, cr, uid, ids, vals, context=None):
+#         for line in self.browse(cr,uid,ids):
+#             if line.type == 'receipt':
+#                 if 'state' in vals and vals['state']:
+#                     if vals['state'] == 'posted':
+#                         sql = '''
+#                             select case when sum(amount)!=0 then sum(amount) else 0 end amount from account_voucher
+#                             where state = 'posted' and hop_dong_id = %s
+#                         '''%(line.hop_dong_id.id)
+#                         cr.execute(sql)
+#                         amount = cr.dictfetchone()['amount']
+#                         hop_dong = self.pool.get('hop.dong').browse(cr,uid,line.hop_dong_id.id)
+#                         if amount >= hop_dong.amount_total:
+#                             self.pool.get('hop.dong').write(cr,uid,[line.hop_dong_id.id],{'state':'thanh_toan'})
+#                     
+#         return super(account_voucher, self).write(cr, uid,ids, vals, context)
+    
     def onchange_hopdong_id(self, cr, uid, ids, hop_dong_id, context=None):
         if context is None:
             context = {}

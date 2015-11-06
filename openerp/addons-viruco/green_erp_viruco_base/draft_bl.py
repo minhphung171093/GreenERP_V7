@@ -32,10 +32,10 @@ class draft_bl(osv.osv):
                 }   
                 draft_bl_line.append((0,0,val_line))
             vals = {
-                'port_of_loading': hd.port_of_loading,
-                'port_of_charge': hd.port_of_charge,
-                'place_of_delivery': hd.diadiem_nhanhang,
-                'notify_party_id':hd.partner_id.id,
+                'port_of_loading': hd.port_of_loading and hd.port_of_loading.id or False,
+                'port_of_charge': hd.port_of_charge and hd.port_of_charge.id or False,
+                'diadiem_nhanhang': hd.diadiem_nhanhang and hd.diadiem_nhanhang or False,
+                'notify_party_id':hd.partner_id and hd.partner_id.id or False,
                 'draft_bl_line': draft_bl_line,
             }
         return {'value': vals}
@@ -70,6 +70,20 @@ class draft_bl(osv.osv):
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'draft.bl', context=c),
     }
     
+    def create(self, cr, uid, vals, context=None):
+#         new_id = super(draft_bl, self).create(cr, uid, vals, context)
+        hopdong_obj = self.pool.get('hop.dong')
+        if 'hopdong_id' in vals:
+            hop_dong = hopdong_obj.browse(cr,uid,vals['hopdong_id'])
+            if hop_dong.state == 'thuc_hien':
+                hopdong_obj.write(cr,uid,[vals['hopdong_id']],{
+                                                               'state': 'thuc_hien_xongchungtu',
+                                                               })
+            if hop_dong.state == 'giaohang_chochungtu':
+                hopdong_obj.write(cr,uid,[vals['hopdong_id']],{
+                                                               'state': 'giaohang_xongchungtu',
+                                                               })
+        return super(draft_bl, self).create(cr, uid, vals, context)    
     
 draft_bl()
 

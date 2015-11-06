@@ -50,6 +50,20 @@ class stock_picking(osv.osv):
                     self.pool.get('stock.move').write(cr,uid,stock_move_id.id,{'location_dest_id':picking_location_dest_id})
         return True
     
+    def write(self, cr, uid, ids, vals, context=None):
+        for line in self.browse(cr,uid,ids):
+            if line.type == 'out':
+                if 'state' in vals and vals['state']:
+                    if vals['state'] == 'done':
+                        for move in line.move_lines:
+                            hopdong_ban = self.pool.get('hop.dong').browse(cr,uid,move.hop_dong_ban_id.id)
+                            if hopdong_ban.state == 'thuc_hien':
+                                self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'giaohang_chochungtu'})
+                            if hopdong_ban.state == 'thuc_hien_xongchungtu':
+                                self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'giaohang_xongchungtu'})
+                    
+        return super(stock_picking, self).write(cr, uid,ids, vals, context)
+    
     def do_partial(self, cr, uid, ids, partial_datas, context=None):
         """ Makes partial picking and moves done.
         @param partial_datas : Dictionary containing details of partial picking

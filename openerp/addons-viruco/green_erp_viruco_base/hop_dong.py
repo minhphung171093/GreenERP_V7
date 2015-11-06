@@ -211,7 +211,8 @@ class hop_dong(osv.osv):
             ('da_duyet', 'Đã duyệt'),
             ('da_ky', 'Đã ký hợp đồng'),
             ('het_han', 'Hết hiệu lực'),
-            ('thuc_hien', 'Đang chờ giao hàng'),
+            ('thuc_hien', 'Đang chờ giao hàng(chờ chứng từ)'),
+            ('thuc_hien_xongchungtu', 'Đang chờ giao hàng(xong chứng từ)'),
             ('giaohang_chochungtu', 'Đã giao hàng(chờ chứng từ)'),
             ('giaohang_xongchungtu', 'Đã giao hàng(xong chứng từ)'),
             ('thanh_toan', 'Đã thanh toán'),
@@ -239,7 +240,7 @@ class hop_dong(osv.osv):
         if context.get('search_hopdong_id'):
             sql = '''
                 select id from hop_dong
-                    where type = 'hd_ngoai' and id not in (select hopdong_id from draft_bl where hopdong_id is not null)
+                    where type = 'hd_ngoai' and state not in ('moi_tao','da_duyet','da_ky','het_han') and id not in (select hopdong_id from draft_bl where hopdong_id is not null)
             '''
             cr.execute(sql)
             hopdong_ids = [row[0] for row in cr.fetchall()]
@@ -717,17 +718,15 @@ class don_ban_hang(osv.osv):
         }
         return {'warning': warning, 'value': value}
     
-#     def onchange_don_ban_hang_line(self, cr, uid, ids, don_ban_hang_line,donhang_hoahong_line, context=None):
-#         context = context or {}
-#         value = {}
-#         for dhl in don_ban_hang_line:
-#             if dhl[0]==0:
-#                 hhl = dhl[2]
-#                 hhl['price_unit'] = False
-#                 hhl['tax_id'] = False
-#                 donhang_hoahong_line.append((0,0,hhl))
-#         value={'donhang_hoahong_line': donhang_hoahong_line}
-#         return {'value': value}
+    def onchange_partner_id(self, cr, uid, ids, partner_id=False, context=None):
+        context = context or {}
+        if partner_id:
+            partner = self.pool.get('res.partner').browse(cr,uid,partner_id)
+            value = {
+                'nguoi_gioithieu_id': partner.nha_moigioi_id and partner.nha_moigioi_id.id or False
+            }
+        return {'value': value}
+    
     def onchange_don_ban_hang_line(self, cr, uid, ids, don_ban_hang_line,donhang_hoahong_line, context=None):
         context = context or {}
         value = {}
