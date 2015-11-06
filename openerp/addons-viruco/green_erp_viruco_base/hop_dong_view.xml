@@ -242,8 +242,8 @@
 						<notebook>
 							<page string="Information">
 								<group col='4' colspan='2'>
-									<field name="tu_ngay" />
-									<field name="den_ngay" />
+									<field name="tu_ngay" string = "Date From"/>
+									<field name="den_ngay" string = "Date To"/>
 									<field name="port_of_loading" />
 									<field name="port_of_charge" />
 									<field name="diadiem_nhanhang" string="Place of delivery"/>
@@ -307,9 +307,9 @@
 							</page>
 							<page string="Payment terms">
 							<group>
-								<field name="dk_giaohang_id"/>
-								<field name="dk_thanhtoan_id" />
-								<field name="date_payment" />
+								<field name="dk_giaohang_id" string = "Delivery Term"/>
+								<field name="dk_thanhtoan_id" string = "Payment Term"/>
+								<field name="date_payment" string = "Payment Date"/>
 							</group>
 								<field name="phuongthuc_thanhtoan" nolabel='1'/>
 							</page>
