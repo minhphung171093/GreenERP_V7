@@ -111,10 +111,12 @@ class hop_dong(osv.osv):
     def _get_date_payment_canhbao(self, cr, uid, ids, fields, arg, context=None):
         res = {}
         for line in self.browse(cr, uid, ids):
-            canh_bao = 7
+            canh_bao = 1
             if line.date_payment:
-                date_payment_canhbao = datetime.strptime(line.date_payment,'%Y-%m-%d') + timedelta(days=-canh_bao)
+                date_payment_canhbao = datetime.strptime(line.date_payment,'%Y-%m-%d') + timedelta(days=canh_bao)
                 res[line.id]=date_payment_canhbao.strftime('%Y-%m-%d')
+                if line.state in ('moi_tao','da_duyet','da_ky'):
+                    self.write(cr,uid,[line.id],{'state':'het_han'})
             else:
                 res[line.id]=False
         return res    

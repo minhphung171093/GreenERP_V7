@@ -198,6 +198,7 @@
 			<field name="arch" type="xml">
 				<tree string="Chất lượng sản phẩm">
 					<field name="name"/>
+					<field name="name_eng"/>
 					<field name="description"/>
 				</tree>
 			</field>
@@ -209,6 +210,7 @@
             <field name="arch" type="xml">
                 <search string="Tìm kiếm Chất lượng sản phẩm">
                     <field name="name"/>
+                    <field name="name_eng"/>
                </search>
             </field>
         </record>
@@ -221,6 +223,7 @@
 	            	<sheet>
 	            		<group>
 		                	<field name="name"/>
+		                	<field name="name_eng"/>
 							<field name="description"/>
 						</group>
 		         	</sheet>
@@ -245,6 +248,7 @@
 			<field name="arch" type="xml">
 				<tree string="Quy cách đóng gói">
 					<field name="name"/>
+					<field name="name_eng"/>
 					<field name="description"/>
 				</tree>
 			</field>
@@ -256,6 +260,7 @@
             <field name="arch" type="xml">
                 <search string="Tìm kiếm Quy cách đóng gói">
                     <field name="name"/>
+                    <field name="name_eng"/>
                </search>
             </field>
         </record>
@@ -268,6 +273,7 @@
 	            	<sheet>
 	            		<group>
 		                	<field name="name"/>
+		                	<field name="name_eng"/>
 							<field name="description"/>
 						</group>
 		         	</sheet>
@@ -292,6 +298,7 @@
 			<field name="arch" type="xml">
 				<tree string="Quy cách bao bì">
 					<field name="name"/>
+					<field name="name_eng"/>
 					<field name="description"/>
 				</tree>
 			</field>
@@ -303,6 +310,7 @@
             <field name="arch" type="xml">
                 <search string="Tìm kiếm quy cách bao bì">
                     <field name="name"/>
+                    <field name="name_eng"/>
                </search>
             </field>
         </record>
@@ -315,6 +323,7 @@
 	            	<sheet>
 	            		<group>
 		                	<field name="name"/>
+		                	<field name="name_eng"/>
 							<field name="description"/>
 						</group>
 		         	</sheet>
