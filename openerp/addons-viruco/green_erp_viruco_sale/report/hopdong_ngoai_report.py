@@ -34,7 +34,16 @@ class Parser(report_sxw.rml_parse):
             'convert_f_amount':self.convert_f_amount,
             'convert_date': self.convert_date,
             'get_tong': self.get_tong,
+            'get_transhipment': self.get_transhipment,
         })
+        
+    def get_transhipment(self, transhipment):
+        tam = ''
+        if transhipment == 'allowed':
+            tam = 'Allowed'
+        if transhipment == 'not_allowed':
+            tam = 'Not Allowed'
+        return tam
         
     def convert_date(self, date):
         if not date:
