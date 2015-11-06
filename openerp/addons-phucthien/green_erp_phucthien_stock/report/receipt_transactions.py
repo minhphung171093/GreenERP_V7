@@ -176,7 +176,7 @@ class Parser(report_sxw.rml_parse):
             invoice_ids = [r[0] for r in self.cr.fetchall()]
             if invoice_ids:
                 invoice = self.pool.get('account.invoice').browse(self.cr, self.uid, invoice_ids[0])
-                amount_tax = invoice.amount_tax/invoice.amount_total*(move.primary_qty*move.price_unit)
+                amount_tax = invoice.amount_tax/invoice.amount_untaxed*(move.primary_qty*move.price_unit)
         if not amount_tax and move.purchase_line_id:
             for t in move.purchase_line_id.taxes_id:
                 amount_tax+= t.amount*move.purchase_line_id.price_subtotal
