@@ -34,6 +34,9 @@
             	<xpath expr="//field[@name='list_price']" position="after">
           			<field name="tax_hd_ngoai" domain="[('type_tax_use','=','sale')]"/>
             	</xpath>
+            	<xpath expr="//field[@name='default_code']" position="after">
+          			<field name="eng_name"/>
+            	</xpath>
             </field>
         </record>
         
