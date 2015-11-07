@@ -105,8 +105,9 @@
 									<tree editable='top'>
 	                                    <field name="product_id" on_change="onchange_product_id(product_id, context)" string="Sản phẩm" />
 	                                    <field name="name" string="Tên"/>
-	                                    <field name="chatluong_id"/>
+	                                    <field name="chatluong_id" />
 	                                    <field name="quycach_donggoi_id"/>
+	                                    <field name="quycach_baobi_id"/>
 	                                    <field name="product_uom"/>
 	                                    <field name="product_qty"/>
 	                                    <field name="price_unit"/>
@@ -281,8 +282,9 @@
 									<tree editable='top'>
 	                                    <field name="product_id" string="Product" on_change="onchange_product_id(product_id, context)"/>
 	                                    <field name="name" string="Name" />
-	                                    <field name="chatluong_id" string="Quanlity"/>
+	                                    <field name="chatluong_id" string="Quanlity" />
 	                                    <field name="quycach_donggoi_id" string="Packing"/>
+	                                    <field name="quycach_baobi_id" string="Packaging Spec" />
 	                                    <field name="product_uom" string="UOM"/>
 	                                    <field name="product_qty" string="Quatity"/>
 	                                    <field name="price_unit" string="Price"/>
@@ -368,7 +370,7 @@
             <field name="view_id" ref="hop_dong_ngoai_tree_view"/>
             <field name="domain">[('type','=','hd_ngoai')]</field>
             <field name="search_view_id" ref="view_hop_dong_filter"/>
-            <field name="context">{'default_type':'hd_ngoai'}</field>
+            <field name="context">{'default_type':'hd_ngoai','ten_ngoai':1}</field>
         </record>
         <record model="ir.actions.act_window.view" id="action_hop_dong_ngoai1">
             <field name="sequence" eval="3"/>
@@ -691,6 +693,7 @@
 	                                    <field name="name" string = "Tên"/>
 	                                    <field name="chatluong_id"/>
 	                                    <field name="quycach_donggoi_id"/>
+	                                    <field name="quycach_baobi_id"/>
 	                                    <field name="product_uom"/>
 	                                    <field name="product_qty"/>
 	                                    <field name="price_unit"/>
@@ -841,6 +844,7 @@
 	                                    <field name="name" string="Name"/>
 	                                    <field name="chatluong_id" string="Quality"/>
 	                                    <field name="quycach_donggoi_id" string="Packing"/>
+	                                    <field name="quycach_baobi_id" string="Packaging Spec" />
 	                                    <field name="product_uom" string="Unit"/>
 	                                    <field name="product_qty" string="Quantity"/>
 	                                    <field name="price_unit" string="Price"/>

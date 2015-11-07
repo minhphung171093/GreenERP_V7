@@ -53,6 +53,8 @@ class phuluc_hop_dong(osv.osv):
             'type':fields.selection([('hd_noi','Hợp đồng nội'),('hd_ngoai','Hợp đồng ngoại'),('hd_mua_trongnuoc','Hợp đồng mua trong nước'),('hd_mua_nhapkhau','Hợp đồng mua nhập khẩu')],'Loại hợp đồng' ,required=True,readonly=True, states={'moi_tao': [('readonly', False)]}),
             'tu_ngay':fields.date('Từ ngày',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
             'den_ngay':fields.date('Đến ngày'),
+            'ngay_nhanhang':fields.char('Thời gian giao hàng', size=1024,readonly=True,states={'moi_tao': [('readonly', False)]}),
+            'dk_thanhtoan_id': fields.many2one('dk.thanhtoan', 'Điều kiện thanh toán',readonly=True,states={'moi_tao': [('readonly', False)]}),
             'phuluc_hopdong_line': fields.one2many('phuluc.hopdong.line','phuluc_hopdong_id','Line',readonly=True, states={'moi_tao': [('readonly', False)]}),
             'amount_untaxed': fields.function(_amount_all, digits_compute=dp.get_precision('Account'), string='Cộng',
                 store={

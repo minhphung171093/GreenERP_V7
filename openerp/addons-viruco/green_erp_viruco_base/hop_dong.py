@@ -391,6 +391,7 @@ class hop_dong(osv.osv):
                     'price_unit': dbh_line.price_unit,
                     'chatluong_id': dbh_line.chatluong_id and dbh_line.chatluong_id.id or False,
                     'quycach_donggoi_id': dbh_line.quycach_donggoi_id and dbh_line.quycach_donggoi_id.id or False,
+                    'quycach_baobi_id': dbh_line.quycach_baobi_id and dbh_line.quycach_baobi_id.id or False,
                     'tax_id': [(6,0,[t.id for t in dbh_line.tax_id])],
                 }
                 order_line.append((0,0,val_line))
@@ -531,6 +532,7 @@ class hopdong_line(osv.osv):
         'price_subtotal': fields.function(_amount_line, string='Subtotal', digits_compute= dp.get_precision('Account')),
         'chatluong_id':fields.many2one('chatluong.sanpham','Chất lượng'),
         'quycach_donggoi_id':fields.many2one('quycach.donggoi','Quy cách đóng gói'),
+        'quycach_baobi_id':fields.many2one('quycach.baobi','Quy cách bao bì'),        
         'sotien_giam': fields.float('Số tiền giảm'),
         'hopdong_giam_id': fields.many2one('hop.dong', 'Hợp đồng'),
     }
@@ -826,6 +828,7 @@ class don_ban_hang_line(osv.osv):
         'price_subtotal': fields.function(_amount_line, string='Thành tiền', digits_compute= dp.get_precision('Account')),
         'chatluong_id':fields.many2one('chatluong.sanpham','Chất lượng'),
         'quycach_donggoi_id':fields.many2one('quycach.donggoi','Quy cách đóng gói'),
+        'quycach_baobi_id':fields.many2one('quycach.baobi','Quy cách bao bì'),
     }
     
     def onchange_product_id(self, cr, uid, ids,qty=0,ngay=False,partner_id=False,pricelist_id=False,product_id=False,type=False,context=None):

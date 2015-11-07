@@ -54,7 +54,15 @@ class chatluong_sanpham(osv.osv):
         'name_eng':fields.char('Tên tiếng Anh',size=1024,required=True),
         'description': fields.text('Ghi chú'),
     }
-    
+#     def name_get(self, cr, uid, ids, context=None):
+#         res = []
+#         if not ids:
+#             return res
+#         for line in self.browse(cr,uid,ids):
+#             if context.get('ten_ngoai',False):
+#                 cate_name = line.name_eng
+#                 res.append((line.id,cate_name))
+#         return res        
 chatluong_sanpham()
 class quycach_donggoi(osv.osv):
     _name = 'quycach.donggoi'
@@ -157,7 +165,14 @@ class dk_thanhtoan(osv.osv):
     
 dk_thanhtoan()
 
-
+class hd_incoterm(osv.osv):
+    _name = 'hd.incoterm'
+    _columns = {
+        'name':fields.char('Name',size=1024,required=True),
+        'description': fields.text('Description'),
+    }
+    
+dk_thanhtoan()
 class bang_gia(osv.osv):
     _name = 'bang.gia'
     _columns = {
