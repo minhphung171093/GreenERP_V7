@@ -215,11 +215,11 @@
 					<header>
 						<button name="print_hopdong" string="In Hợp đồng" type="object" class="oe_highlight"/>
 						<button name="duyet" string="Duyệt" states="moi_tao" type="object" class="oe_highlight"/>
-						<button name="thuchien_hd_ngoai" string="Thực hiện" states="da_ky, het_han" type="object" class="oe_highlight"/>
+						<button name="thuchien_hd_ngoai" string="Thực hiện" states="da_ky,het_han" type="object" class="oe_highlight"/>
 						<button name="ky_hd" string="Ký hợp đồng" states="da_duyet" type="object" class="oe_highlight"/>
 						<button name="huy_hd_ngoai" string="Hủy bỏ" type="object" states="moi_tao,da_duyet,het_han,thuc_hien" class="oe_highlight"/>
 						<button name="set_to_draft" string="Quay về mới tạo" states="huy_bo" type="object" class="oe_highlight"/>
-						<field name="state" widget="statusbar" statusbar_visible="moi_tao,da_duyet,da_ky,het_han,thuc_hien,huy_bo"/>
+						<field name="state" widget="statusbar" statusbar_visible="moi_tao,da_duyet,da_ky,het_han,huy_bo"/>
 					</header>
 	            	<sheet>
 	                    <h1>
@@ -670,7 +670,7 @@
 	                    	<field name="currency_company_id" invisible='1'/>
 	                    </group>
 	                    <group col='4' colspan='2'>
-	                    	<field name="partner_id"  context="{'show_address': 1}" domain="[('customer','=',True)]"/>
+	                    	<field name="partner_id" on_change="onchange_partner_id(partner_id)" context="{'show_address': 1}" domain="[('customer','=',True)]"/>
 	                    	<field name="ngay"/>
 	                    	<field name="pricelist_id" domain="[('currency_id','=',currency_company_id),('type','=','sale')]" on_change="onchange_pricelist_id(pricelist_id,don_ban_hang_line)"/>
 	                    	<field name="currency_id"/>
@@ -751,7 +751,7 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="don_ban_hang_noi_tree_view"/>
             <field name="domain">[('type','=','dbh_noi')]</field>
-            <field name="context">{'default_type':'dbh_noi'}</field>
+            <field name="context">{'default_type':'dbh_noi','readonly_by_pass': True}</field>
         </record>
         <record model="ir.actions.act_window.view" id="action_don_ban_hang_noi1">
             <field name="sequence" eval="1"/>
@@ -816,7 +816,7 @@
 	                    	<field name="currency_company_id" invisible='1'/>
 	                    </group>
 	                    <group col='4' colspan='2'>
-	                    	<field name="partner_id" string="Partner" context="{'show_address': 1}" domain="[('customer','=',True)]"/>
+	                    	<field name="partner_id" on_change="onchange_partner_id(partner_id)" string="Partner" context="{'show_address': 1}" domain="[('customer','=',True)]"/>
 	                    	<field name="ngay" string="Date"/>
 	                    	<field name="pricelist_id" string="Price List" domain="[('currency_id','!=',currency_company_id),('type','=','sale')]" on_change="onchange_pricelist_id(pricelist_id,don_ban_hang_line)"/>
 	                    	<field name="currency_id" string="Currency"/>
@@ -902,7 +902,7 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="don_ban_hang_ngoai_tree_view"/>
             <field name="domain">[('type','=','dbh_ngoai')]</field>
-            <field name="context">{'default_type':'dbh_ngoai'}</field>
+            <field name="context">{'default_type':'dbh_ngoai','readonly_by_pass': True}</field>
         </record>
         <record model="ir.actions.act_window.view" id="action_don_ban_hang_ngoai1">
             <field name="sequence" eval="1"/>

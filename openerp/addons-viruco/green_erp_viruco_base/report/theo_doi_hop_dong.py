@@ -81,7 +81,7 @@ class Parser(report_sxw.rml_parse):
                     left join account_payment_term apt on dbh.payment_term=apt.id
                     left join stock_move sm on sm.hop_dong_ban_id=hd.id
                     left join hop_dong hdm on sm.hop_dong_mua_id=hdm.id
-                where hd.tu_ngay between '%s' and '%s' and hd.type in ('hd_noi', 'hd_ngoai') and hd.state = 'thuc_hien'
+                where hd.tu_ngay between '%s' and '%s' and hd.type in ('hd_ngoai') and hd.state = 'thuc_hien'
                 order by hd.tu_ngay
         '''%(date_from,date_to)
         self.cr.execute(sql)

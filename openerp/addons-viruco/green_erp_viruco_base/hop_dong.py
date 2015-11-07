@@ -130,13 +130,26 @@ class hop_dong(osv.osv):
             else:
                 res[line.id]=False
         return res    
+    
+    def _get_create_theodoi_hopdong(self, cr, uid, ids, fields, arg, context=None):
+        res = {}
+#         for line in self.browse(cr, uid, ids):
+#             sql = '''
+#                 select id from 
+#             '''
+#             if line.den_ngay:
+#                 ngay_canhbao = datetime.strptime(line.den_ngay,'%Y-%m-%d') + timedelta(days=-canh_bao)
+#                 res[line.id]=ngay_canhbao.strftime('%Y-%m-%d')
+#             else:
+#                 res[line.id]=False
+        return res    
     _columns = {
         'name':fields.char('Số', size = 1024,required = True,readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'user_id':fields.many2one('res.users','Người đề nghị',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'type':fields.selection([('hd_noi','Hợp đồng nội'),('hd_ngoai','Hợp đồng ngoại'),('hd_mua_trongnuoc','Hợp đồng mua trong nước'),('hd_mua_nhapkhau','Hợp đồng mua nhập khẩu')],'Loại hợp đồng' ,required=True,readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'tu_ngay':fields.date('Từ ngày',required = True,readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'den_ngay':fields.date('Đến ngày',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
-        'ngay_nhanhang':fields.char('Ngày nhận hàng', size=1024,readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'ngay_nhanhang':fields.char('Ngày nhận hàng', size=1024),
         'diadiem_nhanhang':fields.many2one('place.of.delivery', 'Địa điểm nhận hàng',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'port_of_loading':fields.many2one('port.of.loading', 'Port of loading',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'port_of_charge':fields.many2one('port.of.discharge', 'Port of discharge',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
@@ -213,7 +226,8 @@ class hop_dong(osv.osv):
             ('da_duyet', 'Đã duyệt'),
             ('da_ky', 'Đã ký hợp đồng'),
             ('het_han', 'Hết hiệu lực'),
-            ('thuc_hien', 'Đang chờ giao hàng'),
+            ('thuc_hien', 'Đang chờ giao hàng(chờ chứng từ)'),
+            ('thuc_hien_xongchungtu', 'Đang chờ giao hàng(xong chứng từ)'),
             ('giaohang_chochungtu', 'Đã giao hàng(chờ chứng từ)'),
             ('giaohang_xongchungtu', 'Đã giao hàng(xong chứng từ)'),
             ('thanh_toan', 'Đã thanh toán'),
@@ -223,7 +237,7 @@ class hop_dong(osv.osv):
         'date_payment':fields.date('Ngày thanh toán',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'date_payment_canhbao': fields.function(_get_date_payment_canhbao, type='date', string='Ngày cảnh báo'),
         'theodoi_hopdong_line': fields.one2many('theodoi.hopdong.line','hopdong_id','Line',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
-#         'thanh_toan_ncc_line': fields.one2many('account.voucher', 'hop_dong_id', 'Line', states={'moi_tao': [('readonly', False)]}),
+        'create_theodoi_hopdong': fields.function(_get_create_theodoi_hopdong, type='char', string='create_theodoi_hopdong'),
     }
     
     _defaults = {
@@ -241,7 +255,7 @@ class hop_dong(osv.osv):
         if context.get('search_hopdong_id'):
             sql = '''
                 select id from hop_dong
-                    where type = 'hd_ngoai' and id not in (select hopdong_id from draft_bl where hopdong_id is not null)
+                    where type = 'hd_ngoai' and state not in ('moi_tao','da_duyet','da_ky','het_han') and id not in (select hopdong_id from draft_bl where hopdong_id is not null)
             '''
             cr.execute(sql)
             hopdong_ids = [row[0] for row in cr.fetchall()]
@@ -721,17 +735,15 @@ class don_ban_hang(osv.osv):
         }
         return {'warning': warning, 'value': value}
     
-#     def onchange_don_ban_hang_line(self, cr, uid, ids, don_ban_hang_line,donhang_hoahong_line, context=None):
-#         context = context or {}
-#         value = {}
-#         for dhl in don_ban_hang_line:
-#             if dhl[0]==0:
-#                 hhl = dhl[2]
-#                 hhl['price_unit'] = False
-#                 hhl['tax_id'] = False
-#                 donhang_hoahong_line.append((0,0,hhl))
-#         value={'donhang_hoahong_line': donhang_hoahong_line}
-#         return {'value': value}
+    def onchange_partner_id(self, cr, uid, ids, partner_id=False, context=None):
+        context = context or {}
+        if partner_id:
+            partner = self.pool.get('res.partner').browse(cr,uid,partner_id)
+            value = {
+                'nguoi_gioithieu_id': partner.nha_moigioi_id and partner.nha_moigioi_id.id or False
+            }
+        return {'value': value}
+    
     def onchange_don_ban_hang_line(self, cr, uid, ids, don_ban_hang_line,donhang_hoahong_line, context=None):
         context = context or {}
         value = {}
