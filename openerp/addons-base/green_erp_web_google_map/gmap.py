@@ -31,9 +31,27 @@ class res_partner(osv.osv):
     _columns = {
         'lat': fields.float(u'Latitude', digits=(9, 6)),
         'lng': fields.float(u'Longitude', digits=(9, 6)),
-        'radius': fields.integer(u'Radius'),
+        'radius': fields.float(u'Radius', digits=(9, 16)),
         'map': fields.dummy(),
         'points': fields.text('Points'),
     }
-
+    
+    def write_radius(self, cr, uid, id,active_model, vals, context=None):
+        if vals.get('radius',False):
+            vals.update({'points':'10.793740,106.658763,Diem 1;10.795204,106.659119,Diem 2;10.794135,106.658044,Diem 3'})#10.793740,106.658763,Diem 1;10.795204,106.659119,Diem 2;10.794135,106.658044,Diem 3
+        self.pool.get(active_model).write(cr, uid, [int(id)], vals, context)
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+        
+    def write_center(self, cr, uid, id,active_model, vals, context=None):
+        if vals.get('center',False):
+            vals.update({'lat':vals['center']['G'],'lng':vals['center']['K']})#10.793740,106.658763,Diem 1;10.795204,106.659119,Diem 2;10.794135,106.658044,Diem 3
+        self.pool.get(active_model).write(cr, uid, [int(id)], vals, context)
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'reload',
+        }
+    
 res_partner()

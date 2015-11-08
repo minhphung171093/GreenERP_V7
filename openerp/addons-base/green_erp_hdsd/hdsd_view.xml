@@ -31,6 +31,7 @@
                 		<group>
         					<field name="datas" filename="datas_fname" string="File mềm"/>
                             <field name="datas_fname" invisible="1" class="oe_inline oe_right"/>
+                            <field name="test_editor"  widget="ckeditor"/>
                 		</group>
                 		<notebook>
 		                    <page string="Các bước thực hiện">

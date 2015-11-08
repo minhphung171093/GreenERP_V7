@@ -347,7 +347,7 @@ openerp.green_erp_web_google_map = function(instance) {
                 other_params: "sensor=false",
                 async: 'true'});
         },
-
+		
         draw_map: function () {
             var self = this;
             this.google_ensure_map_loaded().then(function() {
@@ -392,12 +392,48 @@ openerp.green_erp_web_google_map = function(instance) {
                         map.setCenter(point);
                         
                         var circle = new google.maps.Circle({  //PHUNG ve duong tron
-						map: map,
-						radius: location.radius,    // 10 miles in metres
-						fillColor: '#AA0000'
+							map: map,
+							radius: location.radius,    // 10 miles in metres
+							
+							strokeColor: "#FF0000",
+						    strokeOpacity: 0.8,
+						    strokeWeight: 2,
+						    fillOpacity: 0.35,
+
+							clickable: true,
+        					editable: true,
+
+							fillColor: '#AA0000'
 						});
 						circle.bindTo('center', marker, 'position');
-						
+					  	google.maps.event.addListener(circle, 'radius_changed', function() {
+						    var radius = circle.getRadius();
+						    
+						    var model = new instance.web.Model("res.partner");
+						    var id = $.bbq.getState().id;
+						    var active_model = $.bbq.getState().model;
+						    model.call('write_radius', [id,active_model,{'radius':radius}]).done(function(r) {
+						    	self.getParent().reload().done(function(c){
+						    		self.draw_map();
+						    	});
+							    //process the value returned from 'button_function' as per your requirement.
+							});
+						});
+						google.maps.event.addListener(circle, 'center_changed', function() {
+						    var center = circle.getCenter();
+						    
+						    var model = new instance.web.Model("res.partner");
+						    var id = $.bbq.getState().id;
+						    var active_model = $.bbq.getState().model;
+						    model.call('write_center', [id,active_model,{'center':center}]).done(function(r) {
+						    	self.getParent().reload().done(function(c){
+						    		self.draw_map();
+						    	});
+						    	
+							    //process the value returned from 'button_function' as per your requirement.
+							});
+						});
+						//https://developers.google.com/maps/documentation/javascript/reference
 						if (location.points!==false){
 							var points = location.points.split(';');
 							points.forEach(function(entry) {
