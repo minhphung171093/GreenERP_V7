@@ -435,9 +435,9 @@ openerp.green_erp_web_google_map = function(instance) {
 						});
 						//https://developers.google.com/maps/documentation/javascript/reference
 						if (location.points!==false){
-							var points = location.points.split(';');
+							var points = location.points.split('phung_cat_diem');
 							points.forEach(function(entry) {
-								p = entry.split(',');
+								p = entry.split('phung_cat_giatri');
 								var new_point = new google.maps.LatLng(p[0], p[1]);
 							    var new_marker = new google.maps.Marker({
 		                            'map': map,
