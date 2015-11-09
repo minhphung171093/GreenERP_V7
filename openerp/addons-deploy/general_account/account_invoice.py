@@ -741,6 +741,7 @@ class account_invoice_line(osv.osv):
         #Hung them so lo trên line
         'prodlot_id': fields.many2one('stock.production.lot', 'Số lô', ondelete='restrict'),
         'adjust_price':fields.float('Adjust Price'),
+        'price_unit': fields.float('Unit Price', required=True, digits=(16,3)),
     }
     
     _defaults = {
