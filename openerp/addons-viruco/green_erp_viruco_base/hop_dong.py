@@ -241,6 +241,7 @@ class hop_dong(osv.osv):
     }
     
     _defaults = {
+#         'name':'/',
         'type': 'hd_noi',
         'tu_ngay': time.strftime('%Y-%m-%d'),
         'state': 'moi_tao',
@@ -460,7 +461,26 @@ class hop_dong(osv.osv):
                 'hopdong_line': order_line,
             }
         return {'value': vals}
-    
+
+    def create(self, cr, uid, vals, context=None):
+        user = self.pool.get('res.users').browse(cr,uid,uid)
+        if 'type' in vals:
+            if (vals['type']=='hd_ngoai'):
+                curent_date = time.strftime('%Y-%m-%d')
+#                 if vals.get('name','/')=='/':
+                sequence = self.pool.get('ir.sequence').get(cr, uid, 'hopdong.ngoai')
+                vals['name'] =  'VS'+curent_date[2:4]+' - '+sequence
+        new_id = super(hop_dong, self).create(cr, uid, vals, context=context)    
+        return new_id
+
+    def write(self, cr, uid, ids, vals, context=None):
+        if 'type' in vals:
+            if (vals['type']=='hd_ngoai'):
+                curent_date = time.strftime('%Y-%m-%d')
+                sequence = self.pool.get('ir.sequence').get(cr, uid, 'hopdong.ngoai')
+                vals['name'] =  'VS'+curent_date[2:4]+' - '+sequence
+        new_write = super(hop_dong, self).write(cr, uid, ids, vals, context=context)    
+        return new_write    
 hop_dong()
 
 class hopdong_hoahong_line(osv.osv):

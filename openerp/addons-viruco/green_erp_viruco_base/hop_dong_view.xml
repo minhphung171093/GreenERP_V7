@@ -224,7 +224,7 @@
 	            	<sheet>
 	                    <h1>
 	                    	<label string="No."/>
-	                        <field name="name" class="oe_inline" nolabel="1" />
+	                        <field name="name" class="oe_inline" nolabel="1" required="0" readonly="1"/>
 	                        <button name="bt_list_phieuxuat" string="Danh Sách Phiếu Xuất" type="object" class="oe_highlight, oe_inline, oe_right"/>
 	                    </h1>
 	                    <group col='4' colspan='2'>
@@ -289,8 +289,8 @@
 	                                    <field name="product_qty" string="Quatity"/>
 	                                    <field name="price_unit" string="Price"/>
 	                                    <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]" string="Taxes" />
-	                                    <field name="sotien_giam"/>
-	                                    <field name="hopdong_giam_id" domain="[('type','=','hd_ngoai'),('id','!=',hopdong_id)]"/>
+	                                    <field name="sotien_giam" string="Deduction"/>
+	                                    <field name="hopdong_giam_id" string="Contract" domain="[('type','=','hd_ngoai'),('id','!=',hopdong_id)]"/>
 	                                    <field name="price_subtotal" string="Subtotal"/>
 	                                    <field name="hopdong_id" invisible = '1'/>
 									</tree>

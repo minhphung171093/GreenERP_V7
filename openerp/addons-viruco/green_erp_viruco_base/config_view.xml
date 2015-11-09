@@ -622,7 +622,59 @@
             <field name="view_id" ref="dk_thanhtoan_tree_view"/>
             <field name="domain">[]</field>
         </record>
-        
+
+    	<record id="so_hopdong_tree_view" model="ir.ui.view">
+			<field name="name">so.hopdong.tree</field>
+			<field name="model">so.hopdong</field>
+			<field name="arch" type="xml">
+				<tree string="Khởi tạo Số hợp đồng">
+					<field name="name"/>
+					<field name="nam"/>
+					<field name="state"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="so_hopdong_filter_view" model="ir.ui.view">
+			<field name="name">so.hopdong.filter</field>
+			<field name="model">so.hopdong</field>
+            <field name="arch" type="xml">
+                <search string="Tìm số hợp đồng">
+                    <field name="name"/>
+               </search>
+            </field>
+        </record>
+		
+		<record id="so_hopdong_form_view" model="ir.ui.view">
+			<field name="name">so.hopdong.form</field>
+			<field name="model">so.hopdong</field>
+            <field name="arch" type="xml">
+	            <form string="Khởi tạo Số hợp đồng" version="7.0">
+					<header>
+						<button name="duyet" string="Duyệt" states="moi_tao" type="object" class="oe_highlight"/>
+						<field name="state" widget="statusbar" statusbar_visible="moi_tao,da_duyet"/>
+					</header>
+	            	<sheet>
+	            		<group>
+		                	<field name="name"/>
+							<field name="nam"/>
+						</group>
+		         	</sheet>
+		         </form>
+			</field>
+		</record>
+          
+		<record id="action_so_hopdong" model="ir.actions.act_window">
+            <field name="name">Khởi tạo Số hợp đồng</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">so.hopdong</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="so_hopdong_tree_view"/>
+            <field name="domain">[]</field>
+        </record>
+
+
         <record id="bang_gia_mua_tree_view" model="ir.ui.view">
 			<field name="name">bang.gia.mua.tree</field>
 			<field name="model">bang.gia</field>
