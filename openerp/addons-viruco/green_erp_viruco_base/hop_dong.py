@@ -701,7 +701,7 @@ class don_ban_hang(osv.osv):
         return result.keys()
 
     _columns = {
-        'name':fields.char('Số', size = 1024,required = True),
+        'name':fields.char('Số', size = 1024,required = True,readonly=True,states={'moi_tao': [('readonly', False)]}),
         'type':fields.selection([('dbh_noi','Đơn bán hàng nội'),('dbh_ngoai','Đơn bán hàng ngoại')],'Loại đơn bán hàng'),
         'ngay':fields.date('Ngày',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
         'company_id': fields.many2one('res.company','Công ty',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
@@ -921,14 +921,20 @@ class don_ban_hang_line(osv.osv):
             product = self.pool.get('product.product').browse(cr, uid, product_id)
             vals = {
                     'product_uom':product.uom_id.id or False,
-                    'name':product.name,
+#                     'name':product.name,
                     'chatluong_id':product.chatluong_id and product.chatluong_id.id or False,
                     'quycach_donggoi_id':product.quycach_donggoi_id and product.quycach_donggoi_id.id or False,
                     }
             if type == 'dbh_ngoai':
+                if product.eng_name:
+                    vals.update({'name': product.eng_name})
+                else:
+                    vals.update({'name': product.name})
+#                     raise osv.except_osv(_('Cảnh báo!'), _('Sản phẩm này chưa có tên tiếng Anh, vui lòng cấu hình tại danh mục Hàng Bán !'))
                 if product.tax_hd_ngoai:
                     vals.update({'tax_id': [(6,0,[product.tax_hd_ngoai.id])]})
             else:
+                vals.update({'name': product.name})
                 vals['tax_id'] = self.pool.get('account.fiscal.position').map_tax(cr, uid, False, product.taxes_id)
             if pricelist_id:
                 price = self.pool.get('product.pricelist').price_get(cr, uid, [pricelist_id],
