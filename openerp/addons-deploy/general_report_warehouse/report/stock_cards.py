@@ -215,9 +215,10 @@ class Parser(report_sxw.rml_parse):
                     WHERE stm.state= 'done'
                     and stm.product_id = %s
                     and date(timezone('UTC',stm.date)) < '%s'
+                    and stm.prodlot_id = %s
                 ) foo
                 GROUP BY foo.product_id
-        '''%(location_ids ,location_ids,self.product_id,self.date_start)
+        '''%(location_ids ,location_ids,self.product_id,self.date_start,self.prod_lot_id)
         self.cr.execute(sql)
         previous = self.cr.fetchone()
         self.qty_fist = previous and previous[0] or 0.0

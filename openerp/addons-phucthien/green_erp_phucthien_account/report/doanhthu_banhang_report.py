@@ -53,6 +53,7 @@ class Parser(report_sxw.rml_parse):
             'get_tong_soluong': self.get_tong_soluong,
             'get_tong_thue': self.get_tong_thue,
             'get_tong_giavon': self.get_tong_giavon,
+            'convert_date_yyyymmdd': self.convert_date_yyyymmdd,
         })
     def convert_date(self, date):
         if date:
@@ -63,6 +64,11 @@ class Parser(report_sxw.rml_parse):
         if date:
             date = datetime.strptime(date, DATE_FORMAT)
             return date.strftime('%m/%d/%Y')
+        
+    def convert_date_yyyymmdd(self, date):
+        if date:
+            date = datetime.strptime(date, DATE_FORMAT)
+            return date.strftime('%Y%m%d')
         
     def get_date_from(self):
         wizard_data = self.localcontext['data']['form']
