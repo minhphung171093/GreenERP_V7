@@ -239,6 +239,7 @@
 							<field name="pricelist_id" domain="[('currency_id','!=',currency_company_id),('type','=','sale')]" string="Pricelist" on_change="onchange_pricelist_id(pricelist_id,hopdong_line)"/>
 	                    	<field name="currency_id" string="Currency"/>
 	                    	<field name="user_id" string="User"/>
+	                    	<field name="create_theodoi_hopdong" invisible = '1'/>
 						</group>
 						<notebook>
 							<page string="Information">
@@ -250,7 +251,6 @@
 									<field name="diadiem_nhanhang" string="Place of delivery"/>
 									<field name="ngay_nhanhang" string="Shipment Time"/>
 									<field name="destinaltion" />
-									<field name="destination_port"/>
 									<field name="partial_shipment" />
 									<field name="transshipment" />
 									<field name="arbitration_id" />
@@ -282,11 +282,11 @@
 									<tree editable='top'>
 	                                    <field name="product_id" string="Product" on_change="onchange_product_id(product_id, context)"/>
 	                                    <field name="name" string="Name" />
-	                                    <field name="chatluong_id" string="Quanlity" />
+	                                    <field name="chatluong_id" string="Quality"/>
 	                                    <field name="quycach_donggoi_id" string="Packing"/>
 	                                    <field name="quycach_baobi_id" string="Packaging Spec" />
 	                                    <field name="product_uom" string="UOM"/>
-	                                    <field name="product_qty" string="Quatity"/>
+	                                    <field name="product_qty" string="Quantity"/>
 	                                    <field name="price_unit" string="Price"/>
 	                                    <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]" string="Taxes" />
 	                                    <field name="sotien_giam" string="Deduction"/>
@@ -830,7 +830,6 @@
 	                    	<field name="port_of_loading"/>
 	                    	<field name="port_of_charge"/>
 	                    	<field name="diadiem_nhanhang" string="Place of delivery"/>
-	                    	<field name="destination_port"/>
 	                    	<field name="partial_shipment"/>
 	                    	<field name="transshipment"/>
 	           <!--         	<field name="arbitration_id"/>   -->
