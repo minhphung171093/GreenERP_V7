@@ -26,10 +26,11 @@
     'sequence': 14,
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',
-    'depends': ['report_aeroo','report_aeroo_ooo','web_m2x_options','web_widget_radio','green_erp_hdsd'],
+    'depends': ['report_aeroo','report_aeroo_ooo','web_m2x_options','web_widget_radio','green_erp_hdsd','green_erp_web_google_map'],
     'data': [
             'security/base_security.xml', 
-            'security/ir.model.access.csv', 
+            'security/ir.model.access.csv',
+            'baocao_cscn_map_data.xml', 
             'danhmuc_view.xml',
             'menu.xml',
             'danhmuc_loaivat_data.xml',

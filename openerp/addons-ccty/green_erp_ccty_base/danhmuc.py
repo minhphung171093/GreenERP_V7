@@ -461,4 +461,21 @@ class cty_gia_cong(osv.osv):
         'name': fields.char('Tên Công Ty',size = 50, required = True),
                 }
 cty_gia_cong()
+
+class baocao_coso_channuoi_map(osv.osv):
+    _name = "baocao.coso.channuoi.map"
+    _columns = {
+        'lat': fields.float(u'Tọa độ X', digits=(9, 6)),
+        'lng': fields.float(u'Tọa độ Y', digits=(9, 6)),
+        'radius': fields.float(u'Bán kính', digits=(9, 16)),
+        'map': fields.dummy(),
+        'points': fields.text('Points'),
+        'user_id': fields.many2one('res.users','Người tạo'),
+    }
+    
+    _defaults = {
+        'user_id': lambda self, cr, uid, context: uid,
+    }
+    
+baocao_coso_channuoi_map()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

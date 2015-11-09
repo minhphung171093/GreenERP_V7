@@ -701,7 +701,47 @@
             <field name="res_model">cty.gia.cong</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-        </record> 
+        </record>
+        
+        <record model="ir.ui.view" id="baocao_coso_channuoi_map_tree">
+            <field name="name">baocao.coso.channuoi.map.tree</field>
+            <field name="model">baocao.coso.channuoi.map</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Báo cáo cơ sở chăn nuôi">
+                    <field name="lat" />
+                    <field name="lng" />
+                    <field name="radius" />
+                    <field name="user_id" />
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="baocao_coso_channuoi_map_form">
+            <field name="name">baocao.coso.channuoi.map.form</field>
+            <field name="model">baocao.coso.channuoi.map</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Báo cáo cơ sở chăn nuôi" version='7.0'>
+                	<sheet>
+	                	<group colspan="4" col="4">
+		                    <field name="lat" colspan="1" />
+	                        <field name="lng" colspan="1" />
+	                        <field name="radius" colspan="1" />
+	                        <field name="user_id" colspan="1" />
+	                        <field name="map" nolabel="1" widget="gmap" colspan="4" />
+	                        <field name="points" colspan="4" />
+	                    </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_baocao_coso_channuoi_map">
+            <field name="name">Báo cáo cơ sở chăn nuôi</field>
+            <field name="res_model">baocao.coso.channuoi.map</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="baocao_coso_channuoi_map_tree"/>
+        </record>
         
     </data>
 </openerp>
