@@ -25,7 +25,6 @@ from osv import fields
 
 class res_partner(osv.osv):
 
-    _name = 'res.partner'
     _inherit = 'res.partner'
 
     _columns = {
@@ -39,7 +38,7 @@ class res_partner(osv.osv):
     def write_radius(self, cr, uid, id,active_model, vals, context=None):
         if vals.get('radius',False):
             vals.update({'points':'10.793740,106.658763,Diem 1;10.795204,106.659119,Diem 2;10.794135,106.658044,Diem 3'})#10.793740,106.658763,Diem 1;10.795204,106.659119,Diem 2;10.794135,106.658044,Diem 3
-        self.pool.get(active_model).write(cr, uid, [int(id)], vals, context)
+#         self.pool.get(active_model).write(cr, uid, [int(id)], vals, context)
         return {
             'type': 'ir.actions.client',
             'tag': 'reload',
@@ -48,7 +47,7 @@ class res_partner(osv.osv):
     def write_center(self, cr, uid, id,active_model, vals, context=None):
         if vals.get('center',False):
             vals.update({'lat':vals['center']['G'],'lng':vals['center']['K']})#10.793740,106.658763,Diem 1;10.795204,106.659119,Diem 2;10.794135,106.658044,Diem 3
-        self.pool.get(active_model).write(cr, uid, [int(id)], vals, context)
+#         self.pool.get(active_model).write(cr, uid, [int(id)], vals, context)
         return {
             'type': 'ir.actions.client',
             'tag': 'reload',
