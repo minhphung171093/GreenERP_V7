@@ -55,6 +55,9 @@
                 	<field name="nhietdo_di" attrs="{'invisible':[('type','!=','out')]}"/>
                 	<field name="nhietdo_den" attrs="{'invisible':[('type','!=','out')]}"/>
                 </xpath>
+                <xpath expr="//button[@name='force_assign']" position="attributes">
+                	<attribute name="groups">general_stock.group_stock_chophepduhang</attribute>
+                </xpath>
                 <xpath expr="///sheet" position="after">
                 	<div class="oe_chatter">
 	                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>

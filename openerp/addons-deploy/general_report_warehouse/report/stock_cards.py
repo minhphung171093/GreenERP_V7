@@ -263,6 +263,7 @@ class Parser(report_sxw.rml_parse):
                 then stm.primary_qty 
                 else 
                 0.0 end xuat_qty
+                
             FROM stock_move stm 
             left join stock_location loc1 on stm.location_id=loc1.id
             left join stock_location loc2 on stm.location_dest_id=loc2.id 
@@ -281,7 +282,7 @@ class Parser(report_sxw.rml_parse):
                   and stm.product_id = %s
                   and stm.prodlot_id = %s
                   and date(timezone('UTC',stm.date)) between '%s' and '%s'
-            order by date(timezone('UTC',stm.date))) x
+            order by date(timezone('UTC',stm.date)),xuat_qty  ) x
             where (nhap_qty !=0 or xuat_qty!= 0)
         '''%(location_ids,location_ids,self.product_id,self.prod_lot_id,self.date_start,self.date_end)
         self.cr.execute(sql)
@@ -322,7 +323,8 @@ class Parser(report_sxw.rml_parse):
                        'nhap_qty':nhap,
                        'xuat_qty':xuat,
                        'ton_qty':ton,
-                       'note':i['note']
+                       'note':i['note'],
+                       'ngaysapxep': invoice.date_invoice,
                        })
                 if ton!=self.qty_fist:
                     res.append(
@@ -334,7 +336,8 @@ class Parser(report_sxw.rml_parse):
                        'nhap_qty':i['nhap_qty']-tongnhap or 0.0,
                        'xuat_qty':i['xuat_qty']-tongxuat or 0.0,
                        'ton_qty':self.qty_fist or 0.0,
-                       'note':i['note']
+                       'note':i['note'],
+                       'ngaysapxep': i['date'],
                        })
             else:
                 res.append(
@@ -346,8 +349,11 @@ class Parser(report_sxw.rml_parse):
                    'nhap_qty':i['nhap_qty'] or 0.0,
                    'xuat_qty':i['xuat_qty'] or 0.0,
                    'ton_qty':self.qty_fist or 0.0,
-                   'note':i['note']
+                   'note':i['note'],
+                   'ngaysapxep': i['date'],
                    })
+        if res:
+            sorted(res, key=lambda s: s['ngaysapxep'])
         return res
     
     def get_note_chuyen_kho_noi_bo(self,chuyen_kho_name):
