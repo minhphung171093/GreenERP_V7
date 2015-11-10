@@ -548,6 +548,7 @@ class hop_dong(osv.osv):
             if thanhtoan.loai == 'dp':
                 vals = {
                     'flag': False,
+                    'date_payment': '',
                 }
         return {'value': vals}
 
@@ -559,10 +560,6 @@ class hop_dong(osv.osv):
 #                 if vals.get('name','/')=='/':
                 sequence = self.pool.get('ir.sequence').get(cr, uid, 'hopdong.ngoai')
                 vals['name'] =  'VS'+curent_date[2:4]+' - '+sequence
-#                 if 'dk_thanhtoan_id' in vals:
-#                     thanhtoan = self.pool.get('dk.thanhtoan').browse(cr,uid,vals['dk_thanhtoan_id'])
-#                     if thanhtoan.loai == 'lc':
-#                         vals['flag'] = True
                     
                     
         new_id = super(hop_dong, self).create(cr, uid, vals, context=context)    
@@ -571,11 +568,6 @@ class hop_dong(osv.osv):
     def write(self, cr, uid, ids, vals, context=None):
         for line in self.browse(cr,uid,ids):
             if line.type == 'hd_ngoai':
-#                 if line.dk_thanhtoan_id and line.dk_thanhtoan_id.loai =='lc':
-#                     sql = '''
-#                         update hop_dong set flag= %s where type = 'hd_ngoai' and id = %s
-#                     '''%(True,line.id)
-#                     cr.execute(sql)
                 if line.state == 'da_duyet':
                     if vals:
                         if 'state' not in vals:
