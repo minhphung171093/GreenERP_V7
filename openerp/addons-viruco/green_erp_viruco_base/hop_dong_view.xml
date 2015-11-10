@@ -254,6 +254,7 @@
 									<field name="partial_shipment" />
 									<field name="transshipment" />
 									<field name="arbitration_id" />
+									<field name="incoterm_id"/>
 								</group>
 								<group col='4' colspan='2'>
 									<field name="thanhtoan" />
@@ -832,6 +833,7 @@
 	                    	<field name="diadiem_nhanhang" string="Place of delivery"/>
 	                    	<field name="partial_shipment"/>
 	                    	<field name="transshipment"/>
+	                    	<field name="incoterm_id"/>
 	           <!--         	<field name="arbitration_id"/>   -->
 	                    	<field name="note" string="Description"/>
 						</group>

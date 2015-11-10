@@ -244,6 +244,7 @@ class hop_dong(osv.osv):
         'donbanhang_id': fields.many2one('don.ban.hang', 'Đơn bán hàng',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'donmuahang_id': fields.many2one('don.mua.hang', 'Đơn mua hàng',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'thanhtoan':fields.boolean('Thanh toán'),
+        'incoterm_id': fields.many2one('hd.incoterm', 'Incoterm'),
         'ngay_thanhtoan':fields.date('Ngày thanh toán'),
         'dagui_nganhang':fields.boolean('Đã gửi ngân hàng'),
         'ngaygui_nganhang':fields.date('Ngày gửi ngân hàng'),
@@ -507,6 +508,7 @@ class hop_dong(osv.osv):
                 'dk_thanhtoan_id': dbh.dk_thanhtoan_id and dbh.dk_thanhtoan_id.id or False,
                 'hopdong_line': order_line,
                 'hopdong_hoahong_line': hd_hoahong_line,
+                'incoterm_id':dbh.incoterm_id and dbh.incoterm_id.id or False,
             }
         return {'value': vals}
     
@@ -545,11 +547,36 @@ class hop_dong(osv.osv):
         return new_id
 
     def write(self, cr, uid, ids, vals, context=None):
-        if 'type' in vals:
-            if (vals['type']=='hd_ngoai'):
-                curent_date = time.strftime('%Y-%m-%d')
-                sequence = self.pool.get('ir.sequence').get(cr, uid, 'hopdong.ngoai')
-                vals['name'] =  'VS'+curent_date[2:4]+' - '+sequence
+        for line in self.browse(cr,uid,ids):
+            if line.type == 'hd_ngoai':
+                if line.state == 'da_duyet':
+                    if vals:
+                        if 'state' not in vals:
+                            name = line.name + ' RE'
+                            sql = '''
+                                update hop_dong set name= '%s' where type = 'hd_ngoai' and id = %s
+                            '''%(name,line.id)
+                            cr.execute(sql)
+                if line.state == 'da_ky':
+                    if vals:
+                        if 'state' not in vals:
+                            tam = line.name[-2:]
+                            if tam !='RE':
+                                name = line.name + ' RE'
+                                sql = '''
+                                    update hop_dong set name= '%s' where type = 'hd_ngoai' and id = %s
+                                '''%(name,line.id)
+                                cr.execute(sql)
+                if line.state == 'het_han':
+                    if vals:
+                        if 'state' not in vals:
+                            tam = line.name[-2:]
+                            if tam !='RE':                        
+                                name = line.name + ' RE'
+                                sql = '''
+                                    update hop_dong set name= '%s' where type = 'hd_ngoai' and id = %s
+                                '''%(name,line.id)
+                                cr.execute(sql)
         new_write = super(hop_dong, self).write(cr, uid, ids, vals, context=context)    
         return new_write    
 hop_dong()
@@ -744,6 +771,7 @@ class don_ban_hang(osv.osv):
         'nguoi_gioithieu_id':fields.many2one('res.partner','Người giới thiệu',readonly=True,states={'moi_tao': [('readonly', False)]}),
         'noi_giaohang_id':fields.many2one('noi.giaohang','Nơi giao hàng'),
         'payment_term': fields.many2one('account.payment.term', 'Payment Term'),
+        'incoterm_id': fields.many2one('hd.incoterm', 'Incoterm'),
         'donhang_hoahong_line': fields.one2many('hopdong.hoahong.line','hopdong_dh_id','Line',readonly=True, states={'moi_tao': [('readonly', False)]}),
         'amount_untaxed': fields.function(_amount_all, digits_compute=dp.get_precision('Account'), string='Cộng',
             store={
