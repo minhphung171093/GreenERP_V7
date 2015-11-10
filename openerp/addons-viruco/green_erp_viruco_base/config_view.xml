@@ -583,6 +583,7 @@
 			<field name="arch" type="xml">
 				<tree string="Điều kiện thanh toán">
 					<field name="name"/>
+					<field name="loai"/>
 					<field name="description"/>
 				</tree>
 			</field>
@@ -606,6 +607,7 @@
 	            	<sheet>
 	            		<group>
 		                	<field name="name"/>
+		                	<field name="loai"/>
 							<field name="description"/>
 						</group>
 		         	</sheet>

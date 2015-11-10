@@ -310,10 +310,11 @@ class hop_dong(osv.osv):
         'date_payment_canhbao': fields.function(_get_date_payment_canhbao, type='date', string='Ngày cảnh báo'),
         'theodoi_hopdong_line': fields.one2many('theodoi.hopdong.line','hopdong_id','Line',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'create_theodoi_hopdong': fields.function(_get_create_theodoi_hopdong, type='char', string='create_theodoi_hopdong'),
+        'flag':fields.boolean('C/O'),
     }
     
     _defaults = {
-#         'name':'/',
+        'flag':False,
         'type': 'hd_noi',
         'tu_ngay': time.strftime('%Y-%m-%d'),
         'state': 'moi_tao',
@@ -535,6 +536,21 @@ class hop_dong(osv.osv):
             }
         return {'value': vals}
 
+    def onchange_payment_term_id(self, cr, uid, ids, dk_thanhtoan_id=False, context=None):
+        vals = {}
+        if dk_thanhtoan_id:
+            thanhtoan_obj = self.pool.get('dk.thanhtoan')
+            thanhtoan = thanhtoan_obj.browse(cr, uid, dk_thanhtoan_id)
+            if thanhtoan.loai == 'lc':
+                vals = {
+                    'flag': True,
+                }
+            if thanhtoan.loai == 'dp':
+                vals = {
+                    'flag': False,
+                }
+        return {'value': vals}
+
     def create(self, cr, uid, vals, context=None):
         user = self.pool.get('res.users').browse(cr,uid,uid)
         if 'type' in vals:
@@ -543,12 +559,23 @@ class hop_dong(osv.osv):
 #                 if vals.get('name','/')=='/':
                 sequence = self.pool.get('ir.sequence').get(cr, uid, 'hopdong.ngoai')
                 vals['name'] =  'VS'+curent_date[2:4]+' - '+sequence
+#                 if 'dk_thanhtoan_id' in vals:
+#                     thanhtoan = self.pool.get('dk.thanhtoan').browse(cr,uid,vals['dk_thanhtoan_id'])
+#                     if thanhtoan.loai == 'lc':
+#                         vals['flag'] = True
+                    
+                    
         new_id = super(hop_dong, self).create(cr, uid, vals, context=context)    
         return new_id
 
     def write(self, cr, uid, ids, vals, context=None):
         for line in self.browse(cr,uid,ids):
             if line.type == 'hd_ngoai':
+#                 if line.dk_thanhtoan_id and line.dk_thanhtoan_id.loai =='lc':
+#                     sql = '''
+#                         update hop_dong set flag= %s where type = 'hd_ngoai' and id = %s
+#                     '''%(True,line.id)
+#                     cr.execute(sql)
                 if line.state == 'da_duyet':
                     if vals:
                         if 'state' not in vals:

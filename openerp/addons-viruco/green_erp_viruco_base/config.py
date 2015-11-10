@@ -192,6 +192,10 @@ class dk_thanhtoan(osv.osv):
     _columns = {
         'name':fields.char('Name',size=1024,required=True),
         'description': fields.text('Description'),
+        'loai': fields.selection([
+            ('lc', 'LC'),
+            ('dp', 'DP'),
+            ], 'Loại',required=True),
     }
     
 dk_thanhtoan()
