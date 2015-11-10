@@ -93,8 +93,8 @@ class draft_bl_line(osv.osv):
     _columns = {
         'draft_bl_id': fields.many2one('draft.bl', 'Draft bl', ondelete='cascade', select=True),
         'ocean_vessel':fields.char('Ocean Vessel/Vov No',required=True),
-        'ngay_nhanhang':fields.char('ETD', size=1024),
-        'eta':fields.char('ETA', size=1024),
+        'etd_date':fields.date('ETD'),
+        'eta_date':fields.date('ETA'),
         'cuoc_tau': fields.float('Cước tàu'),
         'description_line': fields.one2many('description.line','draft_bl_line_id','Line'),
     }

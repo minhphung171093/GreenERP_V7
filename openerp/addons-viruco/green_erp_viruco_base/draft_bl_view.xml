@@ -81,15 +81,15 @@
 								<field name="draft_bl_line">
 									<tree>
 	                                    <field name="ocean_vessel" />
-	                                    <field name="ngay_nhanhang"/>
-	                                    <field name="eta"/>
+	                                    <field name="etd_date"/>
+	                                    <field name="eta_date"/>
 	                                    <field name="cuoc_tau"/>
 									</tree>
 									<form version = "7.0">
 										<group col='4' colspan='2'>
 					                    	<field name="ocean_vessel" />
-		                                    <field name="ngay_nhanhang"/>
-		                                    <field name="eta"/>
+		                                    <field name="etd_date"/>
+		                                    <field name="eta_date"/>
 		                                    <field name="cuoc_tau"/>
 					                    </group>
 					                    <notebook>

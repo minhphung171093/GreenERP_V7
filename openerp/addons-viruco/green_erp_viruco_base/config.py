@@ -54,6 +54,7 @@ class chatluong_sanpham(osv.osv):
         'name_eng':fields.char('Tên tiếng Anh',size=1024,required=True),
         'description': fields.text('Ghi chú'),
     }
+    
 #     def name_get(self, cr, uid, ids, context=None):
 #         res = []
 #         if not ids:
@@ -62,7 +63,9 @@ class chatluong_sanpham(osv.osv):
 #             if context.get('ten_ngoai',False):
 #                 cate_name = line.name_eng
 #                 res.append((line.id,cate_name))
-#         return res        
+#         return res 
+
+           
 chatluong_sanpham()
 class quycach_donggoi(osv.osv):
     _name = 'quycach.donggoi'

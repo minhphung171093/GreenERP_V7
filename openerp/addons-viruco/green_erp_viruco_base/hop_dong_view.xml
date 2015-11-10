@@ -103,7 +103,7 @@
 							<page string="Thông tin mặt hàng" >
 								<field name="hopdong_line">
 									<tree editable='top'>
-	                                    <field name="product_id" on_change="onchange_product_id(product_id, context)" string="Sản phẩm" />
+	                                    <field name="product_id" on_change="onchange_product_id(product_id, parent.type, context)" string="Sản phẩm" />
 	                                    <field name="name" string="Tên"/>
 	                                    <field name="chatluong_id" />
 	                                    <field name="quycach_donggoi_id"/>
@@ -133,7 +133,7 @@
 							<page string="Hoa Hồng" >
 								<field name="hopdong_hoahong_line">
 									<tree editable='top'>
-	                                    <field name="product_id" on_change="onchange_product_id(product_id, context)" string="Sản phẩm"/>
+	                                    <field name="product_id" on_change="onchange_product_id(product_id, parent.type, context)" string="Sản phẩm"/>
 	                                    <field name="product_uom"/>
 	                                    <field name="product_qty"/>
 	                                    <field name="price_unit"/>
@@ -213,7 +213,8 @@
             <field name="arch" type="xml">
 	            <form string="Sale contract" version="7.0">
 					<header>
-						<button name="print_hopdong" string="In Hợp đồng" type="object" class="oe_highlight"/>
+						<button name="print_hopdong" string="In Hợp Đồng" type="object" class="oe_highlight"/>
+						<button name="print_theodoi_hopdong" string="In Phiếu Theo Dõi Hợp Đồng" type="object" class="oe_highlight"/>
 						<button name="duyet" string="Duyệt" states="moi_tao" type="object" class="oe_highlight"/>
 						<button name="thuchien_hd_ngoai" string="Thực hiện" states="da_ky,het_han" type="object" class="oe_highlight"/>
 						<button name="ky_hd" string="Ký hợp đồng" states="da_duyet" type="object" class="oe_highlight"/>
@@ -280,7 +281,7 @@
 							<page string="Product line" >
 								<field name="hopdong_line">
 									<tree editable='top'>
-	                                    <field name="product_id" string="Product" on_change="onchange_product_id(product_id, context)"/>
+	                                    <field name="product_id" string="Product" on_change="onchange_product_id(product_id, parent.type, context)"/>
 	                                    <field name="name" string="Name" />
 	                                    <field name="chatluong_id" string="Quality"/>
 	                                    <field name="quycach_donggoi_id" string="Packing"/>
@@ -370,7 +371,7 @@
             <field name="view_id" ref="hop_dong_ngoai_tree_view"/>
             <field name="domain">[('type','=','hd_ngoai')]</field>
             <field name="search_view_id" ref="view_hop_dong_filter"/>
-            <field name="context">{'default_type':'hd_ngoai','ten_ngoai':1}</field>
+            <field name="context">{'default_type':'hd_ngoai'}</field>
         </record>
         <record model="ir.actions.act_window.view" id="action_hop_dong_ngoai1">
             <field name="sequence" eval="3"/>
@@ -449,7 +450,7 @@
 							<page string="Thông tin mặt hàng" >
 								<field name="hopdong_line">
 									<tree editable='top'>
-	                                    <field name="product_id" on_change="onchange_product_id(product_id, context)"/>
+	                                    <field name="product_id" on_change="onchange_product_id(product_id, parent.type, context)"/>
 	                                    <field name="name"/>
 	                                    <field name="product_uom"/>
 	                                    <field name="product_qty"/>
@@ -567,7 +568,7 @@
 							<page string="Thông tin mặt hàng" >
 								<field name="hopdong_line">
 									<tree editable='top'>
-	                                    <field name="product_id" on_change="onchange_product_id(product_id, context)"/>
+	                                    <field name="product_id" on_change="onchange_product_id(product_id, parent.type, context)"/>
 	                                    <field name="name"/>
 	                                    <field name="product_uom"/>
 	                                    <field name="product_qty"/>
@@ -841,7 +842,7 @@
 									<tree editable='top'>
 	                                    <field name="product_id" string="Product" on_change="onchange_product_id(product_qty,parent.ngay,parent.partner_id,parent.pricelist_id,product_id,parent.type, context)"/>
 	                                    <field name="name" string="Name"/>
-	                                    <field name="chatluong_id" string="Quality"/>
+	                                    <field name="chatluong_id" string="Quality" context = "{'ten_ngoai':1}"/>
 	                                    <field name="quycach_donggoi_id" string="Packing"/>
 	                                    <field name="quycach_baobi_id" string="Packaging Spec" />
 	                                    <field name="product_uom" string="Unit"/>

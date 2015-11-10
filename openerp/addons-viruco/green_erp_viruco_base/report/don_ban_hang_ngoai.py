@@ -29,8 +29,15 @@ class Parser(report_sxw.rml_parse):
             'get_tong':self.get_tong,
             'convert':self.convert,
             'convert_f_amount':self.convert_f_amount,
+            'get_soluong':self.get_soluong,
+            'convert_date': self.convert_date,
         })
     
+    def convert_date(self, date):
+        if date:
+            date = datetime.strptime(date, DATE_FORMAT)
+            return date.strftime('%d/%m/%Y')
+        
     def convert_f_amount(self, amount):
         a = format(amount,',')
         b = a.split('.')
@@ -57,6 +64,17 @@ class Parser(report_sxw.rml_parse):
         cur = order.pricelist_id.currency_id
         val = self._amount_line_tax(self.cr, self.uid, line)
         return cur_obj.round(self.cr, self.uid, cur, val)
+    
+    def get_soluong(self,order):
+        cur_obj = self.pool.get('res.currency')
+        cur = order.pricelist_id.currency_id
+        val = 0
+        for line in order.don_ban_hang_line:
+            val += line.product_qty
+        product_qty = cur_obj.round(self.cr, self.uid, cur, val)
+        return {
+                'product_qty': product_qty,
+                }
     
     def get_tong(self,order):
         cur_obj = self.pool.get('res.currency')

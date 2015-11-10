@@ -430,6 +430,12 @@ class hop_dong(osv.osv):
 #                 'datas': datas,
 #                 'nodestroy' : True
             }
+            
+    def print_theodoi_hopdong(self, cr, uid, ids, context=None):
+        return {
+            'type': 'ir.actions.report.xml',
+            'report_name': 'theodoi_hopdong_ngoai_report',
+        }
     
     def het_han(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids, {'state': 'het_han'})
@@ -642,7 +648,7 @@ class hopdong_line(osv.osv):
         'hopdong_giam_id': fields.many2one('hop.dong', 'Hợp đồng'),
     }
     
-    def onchange_product_id(self, cr, uid, ids,product_id=False, context=None):
+    def onchange_product_id(self, cr, uid, ids,product_id=False,type = False, context=None):
         vals = {}
         if product_id:
             product = self.pool.get('product.product').browse(cr, uid, product_id)
@@ -650,6 +656,11 @@ class hopdong_line(osv.osv):
                     'product_uom':product.uom_id.id or False,
                     'name':product.name,
                     }
+            if type == 'hd_ngoai':
+                if product.eng_name:
+                    vals.update({'name': product.eng_name})
+                else:
+                    vals.update({'name': product.name})
         return {'value': vals}
 hopdong_line()
 
