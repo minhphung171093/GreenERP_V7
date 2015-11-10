@@ -53,6 +53,7 @@
 		    	<menuitem id="menu_action_dk_thanhtoan" action="action_dk_thanhtoan" name="Điều kiện thanh toán" parent="menu_cac_danh_muc" sequence="102"/>
 		    	<menuitem id="menu_action_hinhthuc_giaohang" action="action_hinhthuc_giaohang" name="Hình thức giao hàng" parent="menu_cac_danh_muc" sequence="110"/>
 				<menuitem id="menu_action_so_hopdong" action="action_so_hopdong" name="Khởi tạo số hợp đồng" parent="menu_cac_danh_muc" sequence="111"/>
+				<menuitem id="menu_action_hd_incoterm" action="action_hd_incoterm" name="Incoterm" parent="menu_cac_danh_muc" sequence="112"/>
 				<menuitem id="menu_cauhinh_dieukhoan"
 		    		action="properties.action_model_admin_properties"
 		    		name="Cấu hình điều khoản"

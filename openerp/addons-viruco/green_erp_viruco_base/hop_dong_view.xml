@@ -255,6 +255,7 @@
 									<field name="partial_shipment" />
 									<field name="transshipment" />
 									<field name="arbitration_id" />
+									<field name="incoterm_id"/>
 								</group>
 								<group col='4' colspan='2'>
 									<field name="thanhtoan" />
@@ -311,8 +312,9 @@
 							<page string="Payment terms">
 							<group>
 								<field name="dk_giaohang_id" string = "Delivery Term"/>
-								<field name="dk_thanhtoan_id" string = "Payment Term"/>
-								<field name="date_payment" string = "Payment Date"/>
+								<field name="dk_thanhtoan_id" string = "Payment Term" on_change="onchange_payment_term_id(dk_thanhtoan_id)" />
+								<field name="date_payment" string = "Payment Date" attrs="{'invisible': [('flag', '=',False)]}" />
+								<field name="flag" invisible='1'/>
 							</group>
 								<field name="phuongthuc_thanhtoan" nolabel='1'/>
 							</page>
@@ -833,6 +835,7 @@
 	                    	<field name="diadiem_nhanhang" string="Place of delivery"/>
 	                    	<field name="partial_shipment"/>
 	                    	<field name="transshipment"/>
+	                    	<field name="incoterm_id"/>
 	           <!--         	<field name="arbitration_id"/>   -->
 	                    	<field name="note" string="Description"/>
 						</group>

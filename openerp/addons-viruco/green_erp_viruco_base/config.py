@@ -182,7 +182,10 @@ class so_hopdong(osv.osv):
         hopdong_model, hd_ngoai_id = self.pool.get('ir.model.data').get_object_reference(cr,uid, 'green_erp_viruco_base', 'sequence_hopdong_ngoai_1_item')
         self.pool.get('ir.sequence').check_access_rule(cr,uid, [hd_ngoai_id], 'read', context = context)
         for line in self.browse(cr,uid,ids):
-            nam = self.pool.get('ir.sequence').write(cr,uid,[hd_ngoai_id],{'number_next_actual':line.name})
+            curent_date = time.strftime('%Y-%m-%d')
+            nam = curent_date[:4]
+            if nam == line.nam:
+                self.pool.get('ir.sequence').write(cr,uid,[hd_ngoai_id],{'number_next_actual':line.name})
         return self.write(cr, uid, ids, {'state': 'da_duyet'})
     
 so_hopdong()
@@ -192,6 +195,10 @@ class dk_thanhtoan(osv.osv):
     _columns = {
         'name':fields.char('Name',size=1024,required=True),
         'description': fields.text('Description'),
+        'loai': fields.selection([
+            ('lc', 'LC'),
+            ('dp', 'DP'),
+            ], 'Loại',required=True),
     }
     
 dk_thanhtoan()
@@ -203,7 +210,7 @@ class hd_incoterm(osv.osv):
         'description': fields.text('Description'),
     }
     
-dk_thanhtoan()
+hd_incoterm()
 class bang_gia(osv.osv):
     _name = 'bang.gia'
     _columns = {
