@@ -37,8 +37,26 @@ class Parser(report_sxw.rml_parse):
             'get_so_phuluc': self.get_so_phuluc,
             'get_price_hh': self.get_price_hh,
             'get_tax_hh': self.get_tax_hh,
+            'get_ngaynhan_lc': self.get_ngaynhan_lc,
         })
         
+    def get_ngaynhan_lc(self, hopdong_id):
+        hop_dong = self.pool.get('hop.dong').browse(self.cr,self.uid,hopdong_id)
+        if hop_dong.dk_thanhtoan_id.loai == 'lc':
+            sql = '''
+                select id from account_voucher where type = 'receipt' and hop_dong_id = %s and state = 'posted'
+                order by id
+            '''%(hopdong_id)
+            self.cr.execute(sql)
+            account_voucher_ids = [r[0] for r in self.cr.fetchall()]
+            if account_voucher_ids:
+                account = self.pool.get('account.voucher').browse(self.cr,self.uid,account_voucher_ids[0])
+                return account.date
+            else:
+                return ''
+        else:
+            return ''
+             
     def get_so_phuluc(self, hop_dong_id):
         so_phuluc = ''
         tu_ngay = ''
