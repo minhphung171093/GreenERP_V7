@@ -65,7 +65,8 @@
 	                    	<newline/>
 	                    	<field name="company_id" context="{'show_address': 1}"/>
 	                    	<field name="partner_id"  context="{'show_address': 1}" domain="[('customer','=',True)]"/>
-	                    	<field name="pricelist_id" domain="[('currency_id','=',currency_company_id),('type','=','sale')]" on_change="onchange_pricelist_id(pricelist_id,hopdong_line)"/>
+	                    <!--	<field name="pricelist_id" domain="[('currency_id','=',currency_company_id),('type','=','sale')]" on_change="onchange_pricelist_id(pricelist_id,hopdong_line)"/> -->
+	                    	<field name="banggia_id" domain="[('currency_id','=',currency_company_id),('type','=','ban')]" />
 	                    	<field name="currency_id"/>
 						</group>
 						<notebook>
@@ -236,7 +237,8 @@
 	                    	<newline/>
 	                    	<field name="company_id" string="Company" context="{'show_address': 1}"/>
 	                    	<field name="partner_id" string="Partner"  context="{'show_address': 1}" domain="[('customer','=',True)]"/>
-							<field name="pricelist_id" domain="[('currency_id','!=',currency_company_id),('type','=','sale')]" string="Pricelist" on_change="onchange_pricelist_id(pricelist_id,hopdong_line)"/>
+							<field name="banggia_id" domain="[('currency_id','!=',currency_company_id),('type','=','ban')]" />
+						<!--	<field name="pricelist_id" domain="[('currency_id','!=',currency_company_id),('type','=','sale')]" string="Pricelist" on_change="onchange_pricelist_id(pricelist_id,hopdong_line)"/> -->
 	                    	<field name="currency_id" string="Currency"/>
 	                    	<field name="user_id" string="User"/>
 	                    	<field name="create_theodoi_hopdong" invisible = '1'/>
@@ -434,7 +436,8 @@
 	                    	<newline/>
 	                    	<field name="company_id" context="{'show_address': 1}"/>
 	                    	<field name="partner_id"  context="{'show_address': 1,'default_supplier':1,'default_customer':0}" string='Nhà cung cấp' domain="[('supplier','=',True)]"/>
-	                    	<field name="pricelist_id" domain="[('currency_id','=',currency_company_id),('type','=','purchase')]" on_change="onchange_pricelist_id(pricelist_id,hopdong_line)"/>
+	                    	<field name="banggia_id" domain="[('currency_id','=',currency_company_id),('type','=','mua')]" />
+	                   <!-- 	<field name="pricelist_id" domain="[('currency_id','=',currency_company_id),('type','=','purchase')]" on_change="onchange_pricelist_id(pricelist_id,hopdong_line)"/> -->
 	                    	<field name="currency_id"/>
 						</group>
 						<notebook>
@@ -552,7 +555,8 @@
 	                    	<newline/>
 	                    	<field name="company_id" context="{'show_address': 1}"/>
 	                    	<field name="partner_id"  context="{'show_address': 1,'default_supplier':1,'default_customer':0}" string='Nhà cung cấp' domain="[('supplier','=',True)]"/>
-	                    	<field name="pricelist_id" domain="[('currency_id','=',currency_company_id),('type','=','purchase')]" on_change="onchange_pricelist_id(pricelist_id,hopdong_line)"/>
+	                    	<field name="banggia_id" domain="[('currency_id','=',currency_company_id),('type','=','mua')]" />
+	                <!--    	<field name="pricelist_id" domain="[('currency_id','=',currency_company_id),('type','=','purchase')]" on_change="onchange_pricelist_id(pricelist_id,hopdong_line)"/> -->
 	                    	<field name="currency_id"/>
 						</group>
 						<notebook>
@@ -674,7 +678,8 @@
 	                    <group col='4' colspan='2'>
 	                    	<field name="partner_id" on_change="onchange_partner_id(partner_id)" context="{'show_address': 1}" domain="[('customer','=',True)]"/>
 	                    	<field name="ngay"/>
-	                    	<field name="pricelist_id" domain="[('currency_id','=',currency_company_id),('type','=','sale')]" on_change="onchange_pricelist_id(pricelist_id,don_ban_hang_line)"/>
+	                    	<field name="banggia_id" domain="[('currency_id','=',currency_company_id),('type','=','ban')]" />
+	                 <!--   	<field name="pricelist_id" domain="[('currency_id','=',currency_company_id),('type','=','sale')]" on_change="onchange_pricelist_id(pricelist_id,don_ban_hang_line)"/> -->
 	                    	<field name="currency_id"/>
 	                    	<field name="nguoi_gioithieu_id" domain="[('nha_moigioi','=',True)]"/>
 	                    	<field name="dieukien_giaohang_id"/>
@@ -691,10 +696,10 @@
 							<page string="Thông tin mặt hàng" >
 								<field name="don_ban_hang_line" on_change="onchange_don_ban_hang_line(don_ban_hang_line,donhang_hoahong_line)">
 									<tree editable='top'>
-	                                    <field name="product_id" string = "Sản phẩm" on_change="onchange_product_id(product_qty,parent.ngay,parent.partner_id,parent.pricelist_id,product_id,parent.type,context)"/>
+	                                    <field name="product_id" string = "Sản phẩm" on_change="onchange_product_id(product_qty,parent.ngay,parent.partner_id,parent.banggia_id,product_id,parent.type,chatluong_id,quycach_donggoi_id, context)"/>
 	                                    <field name="name" string = "Tên"/>
-	                                    <field name="chatluong_id"/>
-	                                    <field name="quycach_donggoi_id"/>
+	                                    <field name="chatluong_id" on_change="onchange_product_id(product_qty,parent.ngay,parent.partner_id,parent.banggia_id,product_id,parent.type,chatluong_id,quycach_donggoi_id, context)" />
+	                                    <field name="quycach_donggoi_id" on_change="onchange_product_id(product_qty,parent.ngay,parent.partner_id,parent.banggia_id,product_id,parent.type,chatluong_id,quycach_donggoi_id, context)" />
 	                                    <field name="quycach_baobi_id"/>
 	                                    <field name="product_uom"/>
 	                                    <field name="product_qty"/>
@@ -820,7 +825,8 @@
 	                    <group col='4' colspan='2'>
 	                    	<field name="partner_id" on_change="onchange_partner_id(partner_id)" string="Partner" context="{'show_address': 1}" domain="[('customer','=',True)]"/>
 	                    	<field name="ngay" string="Date"/>
-	                    	<field name="pricelist_id" string="Price List" domain="[('currency_id','!=',currency_company_id),('type','=','sale')]" on_change="onchange_pricelist_id(pricelist_id,don_ban_hang_line)"/>
+	                    	<field name="banggia_id" domain="[('currency_id','!=',currency_company_id),('type','=','ban'),('state','=','da_duyet')]" />
+	                 <!--   	<field name="pricelist_id" string="Price List" domain="[('currency_id','!=',currency_company_id),('type','=','sale')]" on_change="onchange_pricelist_id(pricelist_id,don_ban_hang_line)"/> -->
 	                    	<field name="currency_id" string="Currency"/>
 	                    	<field name="user_id" string="User"/>
 	                    	<field name="ngay_nhanhang" string="Shipment Time"/>
@@ -842,10 +848,10 @@
 							<page string="Product Line" >
 								<field name="don_ban_hang_line" on_change="onchange_don_ban_hang_line(don_ban_hang_line,donhang_hoahong_line)">
 									<tree editable='top'>
-	                                    <field name="product_id" string="Product" on_change="onchange_product_id(product_qty,parent.ngay,parent.partner_id,parent.pricelist_id,product_id,parent.type, context)"/>
+	                                    <field name="product_id" string="Product" on_change="onchange_product_id(product_qty,parent.ngay,parent.partner_id,parent.banggia_id,product_id,parent.type,chatluong_id,quycach_donggoi_id, context)"/>
 	                                    <field name="name" string="Name"/>
-	                                    <field name="chatluong_id" string="Quality"/>
-	                                    <field name="quycach_donggoi_id" string="Packing"/>
+	                                    <field name="chatluong_id" string="Quality" on_change="onchange_product_id(product_qty,parent.ngay,parent.partner_id,parent.banggia_id,product_id,parent.type,chatluong_id,quycach_donggoi_id, context)" />
+	                                    <field name="quycach_donggoi_id" string="Packing" on_change="onchange_product_id(product_qty,parent.ngay,parent.partner_id,parent.banggia_id,product_id,parent.type,chatluong_id,quycach_donggoi_id, context)" />
 	                                    <field name="quycach_baobi_id" string="Packaging Spec" />
 	                                    <field name="product_uom" string="Unit"/>
 	                                    <field name="product_qty" string="Quantity"/>
@@ -973,7 +979,8 @@
 	                    <group col='4' colspan='2'>
 	                    	<field name="partner_id" context="{'show_address': 1}" domain="[('customer','=',True)]"/>
 	                    	<field name="ngay"/>
-	                    	<field name="pricelist_id" domain="[('type','=','purchase')]" on_change="onchange_pricelist_id(pricelist_id,don_mua_hang_line)"/>
+	                    	<field name="banggia_id" domain="[('currency_id','=',currency_company_id),('type','=','mua'),('state','=','da_duyet')]" />
+	               <!--     	<field name="pricelist_id" domain="[('type','=','purchase')]" on_change="onchange_pricelist_id(pricelist_id,don_mua_hang_line)"/> -->
 	                    	<field name="currency_id"/>
 	                    	<field name="user_id"/>
 						</group>
@@ -981,8 +988,11 @@
 							<page string="Thông tin mặt hàng" >
 								<field name="don_mua_hang_line">
 									<tree editable='top'>
-	                                    <field name="product_id" on_change="onchange_product_id(product_qty,parent.ngay,parent.partner_id,parent.pricelist_id,product_id, context)"/>
+	                                    <field name="product_id" on_change="onchange_product_id(parent.ngay,parent.partner_id,parent.banggia_id,product_id,chatluong_id,quycach_donggoi_id, context)"/>
 	                                    <field name="name"/>
+	                                    <field name="chatluong_id" on_change="onchange_product_id(parent.ngay,parent.partner_id,parent.banggia_id,product_id,chatluong_id,quycach_donggoi_id, context)" />
+	                                    <field name="quycach_donggoi_id" on_change="onchange_product_id(parent.ngay,parent.partner_id,parent.banggia_id,product_id,chatluong_id,quycach_donggoi_id, context)" />
+	                                    <field name="quycach_baobi_id"  />
 	                                    <field name="product_uom"/>
 	                                    <field name="product_qty"/>
 	                                    <field name="price_unit"/>
@@ -1072,7 +1082,8 @@
 	                    <group col='4' colspan='2'>
 	                    	<field name="partner_id" context="{'show_address': 1}" domain="[('customer','=',True)]"/>
 	                    	<field name="ngay"/>
-	                    	<field name="pricelist_id" domain="[('type','=','purchase')]" on_change="onchange_pricelist_id(pricelist_id,don_mua_hang_line)"/>
+	                    	<field name="banggia_id" domain="[('type','=','mua'),('state','=','da_duyet')]" />
+	              <!--      	<field name="pricelist_id" domain="[('type','=','purchase')]" on_change="onchange_pricelist_id(pricelist_id,don_mua_hang_line)"/> -->
 	                    	<field name="currency_id"/>
 	                    	<field name="user_id"/>
 						</group>
@@ -1080,8 +1091,11 @@
 							<page string="Thông tin mặt hàng" >
 								<field name="don_mua_hang_line">
 									<tree editable='top'>
-	                                    <field name="product_id" on_change="onchange_product_id(product_qty,parent.ngay,parent.partner_id,parent.pricelist_id,product_id, context)"/>
+	                                    <field name="product_id" on_change="onchange_product_id(parent.ngay,parent.partner_id,parent.banggia_id,product_id,chatluong_id,quycach_donggoi_id, context)"/>
 	                                    <field name="name"/>
+	                                    <field name="chatluong_id" string="Quality" on_change="onchange_product_id(parent.ngay,parent.partner_id,parent.banggia_id,product_id,chatluong_id,quycach_donggoi_id, context)" />
+	                                    <field name="quycach_donggoi_id" string="Packing" on_change="onchange_product_id(parent.ngay,parent.partner_id,parent.banggia_id,product_id,chatluong_id,quycach_donggoi_id, context)" />
+	                                    <field name="quycach_baobi_id" string="Packaging Spec" />
 	                                    <field name="product_uom"/>
 	                                    <field name="product_qty"/>
 	                                    <field name="price_unit"/>
