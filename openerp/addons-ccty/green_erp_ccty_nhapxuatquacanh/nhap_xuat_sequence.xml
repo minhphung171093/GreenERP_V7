@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate='1'>
+<!-- Nhap So Luong Ho Dau Tien -->
+        <record id="sequence_ton_dong_vat" model="ir.sequence.type">
+            <field name="name">Ton Dong Vat</field>
+            <field name="code">ton.dong.vat</field>
+        </record>
+        
+        <record id="sequence_ton_dong_vat_item" model="ir.sequence">
+            <field name="name">Ton Dong Vat</field>
+            <field name="code">ton.dong.vat</field>
+            <field name="prefix">TonDV</field>
+            <field name="padding">6</field>
+            <field name="number_next_actual">000001</field>
+            <field name="implementation">no_gap</field>
+        </record>
+
+              
+	</data>
+</openerp>

@@ -38,6 +38,7 @@
             'report/tinhhinh_xuat_giasuc_report_view.xml',
             'report/theodoi_tinhhinh_nhap_giasuc_report_view.xml',
             'report/theodoi_tinhhinh_xuat_giasuc_report_view.xml',
+            'nhap_xuat_sequence.xml',
             'nhap_xuat_view.xml',
             'menu.xml',
     ],

@@ -222,15 +222,15 @@ class chi_tiet_loai_line(osv.osv):
             sql = '''
                 select case when sum(so_luong)!=0 then sum(so_luong) else 0 end tong_sl from chi_tiet_loai_line
                 where co_cau_id in (select id from co_cau where chon_loai = %s and ten_ho_id = %s and tang_giam = 'a' and trang_thai_id in (select id from trang_thai where stt = 3))
-                and name = '%s'
-            '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name)
+                and ct_loai_id = %s
+            '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.ct_loai_id.id)
             cr.execute(sql)
             tong_sl = cr.dictfetchone()['tong_sl']
             sql = '''
                 select case when sum(so_luong)!=0 then sum(so_luong) else 0 end tong_sl_giam from chi_tiet_loai_line
                 where co_cau_id in (select id from co_cau where chon_loai = %s and ten_ho_id = %s and tang_giam = 'b' and trang_thai_id in (select id from trang_thai where stt = 3))
-                and name = '%s'
-            '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.name)
+                and ct_loai_id = %s
+            '''%(line.co_cau_id.chon_loai.id, line.co_cau_id.ten_ho_id.id, line.ct_loai_id.id)
             cr.execute(sql)
             tong_sl_giam = cr.dictfetchone()['tong_sl_giam']
             res[line.id] = tong_sl - tong_sl_giam

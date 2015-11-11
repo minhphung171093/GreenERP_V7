@@ -186,8 +186,9 @@
 							<page string = "Thông tin chi tiết Nhập động vật">
 								<field name="chitiet_loai_nx" nolabel='1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}">
 									<tree editable='bottom' create = 'false' delete = 'false'>
-										<field name="name"/>
-										<field name="tiem_phong" invisible="1"/>
+										<field name="name" invisible="1"/>
+										<field name="ct_loai_id" options="{'create': false, 'create_edit': false}"/>
+										<field name="tiem_phong"/>
 										<field name="so_luong" string = 'Số lượng nhập'  sum = 'Total'/>
 									</tree>
 								</field>
@@ -213,7 +214,7 @@
             <field name="res_model">nhap.xuat.canh.giasuc</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
-            <field name="domain">[('loai', '=', 'nhap')]</field>
+            <field name="domain">[('loai', '=', 'nhap'),('chan_nuoi_id', '=', False)]</field>
             <field name="context">{'default_loai':'nhap'}</field>
             <field eval="False" name="view_id" ref="nhap_canh_giasuc_tree"/>
         </record>
@@ -352,6 +353,66 @@
             <field name="view_id" ref="xuat_canh_giasuc_form"/>
             <field name="act_window_id" ref="action_xuat_canh_giasuc"/>
         </record>
+        
+        <record id="chan_nuoi_inherit_form" model="ir.ui.view">
+            <field name="name">chan.nuoi.inherit.form</field>
+            <field name="model">chan.nuoi</field>
+            <field name="inherit_id" ref="green_erp_ccty_base.chan_nuoi_form"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//page[@string='Thông tin khác']" position="after">
+					<page string = "Nhập động vật(hiện có)">
+						<field name="nhap_dongvat_line" context="{'default_ngay_cap':ngay_cap, 'default_ngay_kiem_tra':ngay_cap, 'default_quan_huyen_id':quan_huyen_id, 'default_phuong_xa_id':phuong_xa_id, 'default_khu_pho_id':khu_pho_id, 'default_loai':'nhap'}">
+							<tree>
+								<field name="loai_id"/>
+								<field name="name" invisible = '1' required = '0'/>
+								<field name="ngay_cap" invisible = '1' required = '0'/>
+								<field name="ngay_kiem_tra" invisible = '1' required = '0'/>
+								<field name="quan_huyen_id" invisible = '1' required = '0'/>
+								<field name="phuong_xa_id" invisible = '1' required = '0'/>
+								<field name="khu_pho_id" invisible = '1' required = '0'/>
+								<field name="loai" invisible = '1' required = '0'/>
+							</tree>
+							<form string="Nhập động vật" version="7.0">
+				                <sheet>
+			                		<group col='4' colspan='2'>
+					                	<field name="loai_id" options="{'create': false, 'create_edit': false}"/>
+					                	<field name="name" invisible = '1' required = '0'/>
+										<field name="ngay_cap" invisible = '1' required = '0'/>
+										<field name="ngay_kiem_tra" invisible = '1' required = '0'/>
+										<field name="quan_huyen_id" invisible = '1' required = '0'/>
+										<field name="phuong_xa_id" invisible = '1' required = '0'/>
+										<field name="khu_pho_id" invisible = '1' required = '0'/>
+										<field name="loai" invisible = '1' required = '0'/>
+			                		</group>
+			                		<notebook>
+										<page string = "Thông tin chi tiết Nhập động vật">
+											<field name="chitiet_loai_nx" nolabel='1'>
+												<tree editable='bottom'>
+													<field name="name" invisible = '1'/>
+													<field name="ct_loai_id" domain="[('loai_id','=',parent.loai_id)]" options="{'create': false, 'create_edit': false}" on_change = "onchange_ct_loai_id(ct_loai_id)"/>
+													<field name="tiem_phong"/>
+													<field name="so_luong" string = 'Số lượng nhập'  sum = 'Total'/>
+												</tree>
+											</field>
+										</page>
+										<page string = "Đã tiêm phòng">
+											<field name="chitiet_da_tiem_phong" nolabel='1'>
+												<tree editable='bottom'>
+													<field name="ct_loai_id" domain="[('loai_id','=',parent.loai_id)]" options="{'create': false, 'create_edit': false}"/>
+													<field name="vacxin_id" context="{'search_vacxin_id':True, 'loai_id': parent.loai_id}" options="{'create': false, 'create_edit': false}"/>
+													<field name="ngay_tiem" />
+													<field name="so_luong" string = 'Số lượng' sum = 'Total'/>
+												</tree>
+											</field>
+										</page>
+									</notebook>
+				                </sheet>
+			                </form>
+						</field>
+					</page>
+				</xpath>
+			</field>
+		</record>
         			
     </data>
 </openerp>

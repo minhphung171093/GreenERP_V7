@@ -58,10 +58,10 @@ class Parser(report_sxw.rml_parse):
         return ten.name
     
     def get_noicap(self, nguon_tinh_thanh_id, nguon_phuong_xa_id, nguon_khu_pho_id, nguon_quan_huyen_id):
-        tinh = self.pool.get('tinh.tp').browse(self.cr,self.uid,nguon_tinh_thanh_id).name
-        quan = self.pool.get('quan.huyen').browse(self.cr,self.uid,nguon_quan_huyen_id).name
-        phuong = self.pool.get('phuong.xa').browse(self.cr,self.uid,nguon_phuong_xa_id).name
-        khu_pho = self.pool.get('khu.pho').browse(self.cr,self.uid,nguon_khu_pho_id).name
+        tinh = self.pool.get('tinh.tp').browse(self.cr,self.uid,nguon_tinh_thanh_id).name or ''
+        quan = self.pool.get('quan.huyen').browse(self.cr,self.uid,nguon_quan_huyen_id).name or ''
+        phuong = self.pool.get('phuong.xa').browse(self.cr,self.uid,nguon_phuong_xa_id).name or ''
+        khu_pho = self.pool.get('khu.pho').browse(self.cr,self.uid,nguon_khu_pho_id).name or ''
         return tinh + ' - ' + quan + ' - ' + phuong + ' - ' + khu_pho
 
     def get_loaivat(self):
@@ -92,28 +92,28 @@ class Parser(report_sxw.rml_parse):
             sql='''
                 select * from nhap_xuat_canh_giasuc 
                 where ten_ho_id = %s and ngay_kiem_tra >= '%s' and ngay_kiem_tra is not null and loai = 'nhap'
-                and trang_thai_id in (select id from trang_thai where stt = 3)
+                and trang_thai_id in (select id from trang_thai where stt = 3) and chan_nuoi_id is null
             '''%(ten_ho_id[0], tu_ngay)
             self.cr.execute(sql)
         elif den_ngay and not tu_ngay:
             sql='''
                 select * from nhap_xuat_canh_giasuc 
                 where ten_ho_id = %s and ngay_kiem_tra <= '%s' and ngay_kiem_tra is not null and loai = 'nhap'
-                and trang_thai_id in (select id from trang_thai where stt = 3)
+                and trang_thai_id in (select id from trang_thai where stt = 3) and chan_nuoi_id is null
             '''%(ten_ho_id[0], den_ngay)
             self.cr.execute(sql)
         elif den_ngay and tu_ngay:
             sql='''
                 select * from nhap_xuat_canh_giasuc 
                 where ten_ho_id = %s and ngay_kiem_tra between '%s' and '%s' and ngay_kiem_tra is not null and loai = 'nhap'
-                and trang_thai_id in (select id from trang_thai where stt = 3)
+                and trang_thai_id in (select id from trang_thai where stt = 3) and chan_nuoi_id is null
             '''%(ten_ho_id[0], tu_ngay, den_ngay)
             self.cr.execute(sql)
         else:
             sql='''
                 select * from nhap_xuat_canh_giasuc 
                 where ten_ho_id = %s and ngay_kiem_tra is not null and loai = 'nhap'
-                and trang_thai_id in (select id from trang_thai where stt = 3)
+                and trang_thai_id in (select id from trang_thai where stt = 3) and chan_nuoi_id is null
             '''%(ten_ho_id[0])
             self.cr.execute(sql)
         tt_ho = self.cr.dictfetchall()
@@ -162,7 +162,8 @@ class Parser(report_sxw.rml_parse):
                 sql = '''
                     select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong from chi_tiet_loai_nhap_xuat 
                     where ct_loai_id = %s and nhap_xuat_loai_id in (select id from nhap_xuat_canh_giasuc 
-                    where ten_ho_id = %s and ngay_kiem_tra = '%s' and id = %s and loai_id = %s and trang_thai_id in (select id from trang_thai where stt = 3))
+                    where ten_ho_id = %s and ngay_kiem_tra = '%s' and id = %s and loai_id = %s and trang_thai_id in (select id from trang_thai where stt = 3)
+                    and chan_nuoi_id is null)
                 '''%(col, ten_ho_id[0], row, nhap_id, loai_id)
                 self.cr.execute(sql)
                 sl = self.cr.dictfetchone()
@@ -188,7 +189,8 @@ class Parser(report_sxw.rml_parse):
                     sql = '''
                         select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl from chi_tiet_loai_nhap_xuat 
                         where nhap_xuat_loai_id in (select id from nhap_xuat_canh_giasuc 
-                        where ten_ho_id = %s and ngay_kiem_tra = '%s' and id = %s and trang_thai_id in (select id from trang_thai where stt = 3))
+                        where ten_ho_id = %s and ngay_kiem_tra = '%s' and id = %s and trang_thai_id in (select id from trang_thai where stt = 3)
+                        and chan_nuoi_id is null)
                     '''%(ten_ho_id[0], row, nhap_id)
                     self.cr.execute(sql)
                     soluong = self.cr.dictfetchone()['sl']

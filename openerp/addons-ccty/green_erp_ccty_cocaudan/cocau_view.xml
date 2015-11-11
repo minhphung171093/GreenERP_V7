@@ -100,7 +100,8 @@
 							<page string = "Thông tin chi tiết loài vật">
 								<field name="chitiet_loai" nolabel='1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}">
 									<tree editable='bottom' create = 'false' delete = 'false'>
-										<field name="name"/>
+										<field name="name" invisible = '1'/>
+										<field name="ct_loai_id" options="{'create': false, 'create_edit': false}"/>
 										<field name="tiem_phong"/>
 										<field name="tong_sl" sum = 'Total'/>
 										<field name="so_luong" sum = 'Total'/>
@@ -304,7 +305,8 @@
 							<page string = "Thông tin chi tiết loài vật">
 								<field name="chitiet_loai" nolabel='1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}">
 									<tree create = 'false' delete = 'false' edit = 'false' >
-										<field name="name"/>
+										<field name="name" invisible = '1'/>
+										<field name="ct_loai_id" options="{'create': false, 'create_edit': false}"/>
 										<field name="tiem_phong"/>
 										<field name="tong_sl" sum = 'Total'/>
 										<field name="so_luong" sum = 'Total'/>
@@ -312,9 +314,10 @@
 									<form>
 									<group >
 										<group col="4" colspan="2">
-										<field name="name"/>
-										<field name="tiem_phong"/>
-										<field name="tong_sl"/>
+											<field name="ct_loai_id" options="{'create': false, 'create_edit': false}"/>
+											<field name="tiem_phong"/>
+											<field name="tong_sl"/>
+											<field name="name" invisible = '1'/>
 										</group>
 										<newline/>
 										<notebook>

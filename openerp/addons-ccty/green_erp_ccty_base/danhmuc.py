@@ -319,6 +319,8 @@ class chan_nuoi(osv.osv):
                 self.write(cr,uid,ids,{
                                        'trang_thai_id': cr.dictfetchone()['id'] or False
                                        })
+                for nhap in line.nhap_dongvat_line:
+                    self.pool.get('nhap.xuat.canh.giasuc').bt_duyet(cr,uid,[nhap.id])
             elif line.trang_thai_id.stt == 1 and user.company_id.cap == 'chi_cuc':
                 sql = '''
                     select id from trang_thai where stt = 3
@@ -327,7 +329,8 @@ class chan_nuoi(osv.osv):
                 self.write(cr,uid,ids,{
                                        'trang_thai_id': cr.dictfetchone()['id'] or False
                                        })
-                
+                for nhap in line.nhap_dongvat_line:
+                    self.pool.get('nhap.xuat.canh.giasuc').bt_duyet(cr,uid,[nhap.id])
             elif line.trang_thai_id.stt == 2 and user.company_id.cap == 'chi_cuc':
                 sql = '''
                     select id from trang_thai where stt = 3
@@ -336,8 +339,11 @@ class chan_nuoi(osv.osv):
                 self.write(cr,uid,ids,{
                                        'trang_thai_id': cr.dictfetchone()['id'] or False
                                        })
+                for nhap in line.nhap_dongvat_line:
+                    self.pool.get('nhap.xuat.canh.giasuc').bt_duyet(cr,uid,[nhap.id])
         return True
 chan_nuoi()
+
 class phuong_xa(osv.osv):
     _name = "phuong.xa"
     _columns = {
