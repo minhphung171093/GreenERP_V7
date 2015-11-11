@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+<!--Doanh nghiệp-->   
+	    <record id="doanh_nghiep_search" model="ir.ui.view">
+            <field name="name">doanh.nghiep.search</field>
+            <field name="model">doanh.nghiep</field>
+            <field name="arch" type="xml">
+                <search string="Doanh nghiệp">
+                	<field name="name" />
+                	<field name="ma_coso" />
+                	<field name="nguoilienhe" />
+                	<field name="dienthoai" />
+                	<field name="email" />
+                	<field name="tieuchi_id" />
+                	<field name="phuong_xa_id" />
+                	<field name="quan_huyen_id" />
+                	<field name="tinh_thanhpho_id" />
+                	<field name="fax" />
+                	<field name="phan_loai_id" />
+                	<field name="hethong_dambao_attp_id" />
+                    <group expand="0" string="Group By...">
+                    	<filter string="Tỉnh/Thành phố" domain="[]" context="{'group_by':'tinh_thanhpho_id'}"/>
+                        <filter string="Phường/Xã" domain="[]"  context="{'group_by':'phuong_xa_id'}"/>
+                        <filter string="Quận/Huyện" domain="[]" context="{'group_by':'quan_huyen_id'}"/>
+                        <filter string="Tiêu chí" domain="[]"  context="{'group_by':'tieuchi_id'}"/>
+                        <filter string="Phân loại" domain="[]" context="{'group_by':'phan_loai_id'}"/>
+                        <filter string="Hệ thống đảm bảo ATTP" domain="[]"  context="{'group_by':'hethong_dambao_attp_id'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>
+    
+        <record model="ir.ui.view" id="doanh_nghiep_tree">
+            <field name="name">doanh.nghiep.tree</field>
+            <field name="model">doanh.nghiep</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Hộ chăn nuôi">
+                	<field name="image_small" widget="image" string="Ảnh đại diện"/>
+                    <field name="name"/>
+                    <field name="ma_coso" />
+                	<field name="diachi" />
+                	<field name="phuong_xa_id" />
+                	<field name="quan_huyen_id" />
+                	<field name="tinh_thanhpho_id" />
+                	<field name="dienthoai" />
+                	<field name="email" />
+                	<field name="tieuchi_id" invisible='1'/>
+                	<field name="phan_loai_id" invisible='1'/>
+                	<field name="hethong_dambao_attp_id" invisible='1'/>
+                </tree>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="doanh_nghiep_form">
+            <field name="name">doanh.nghiep.form</field>
+            <field name="model">doanh.nghiep</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Doanh nghiệp" version="7.0">
+                	<header>
+	            	</header> 
+	                <sheet>
+	                	<field name="image" widget='image' class="oe_avatar oe_left" options='{"preview_image": "image_medium"}'/>
+	                    <div class="oe_title">
+	                        <div class="oe_edit_only">
+	                            <label for="name"/>
+	                        </div>
+	                        <h1>
+	                            <field name="name" default_focus="1" placeholder="Tên cơ sở"/>
+	                        </h1>
+                         </div>
+                		<group col="4">
+                			<field name="ma_coso"/>
+                			<newline/>
+							<field name="diachi" colspan='4'/>
+							<field name="tinh_thanhpho_id" options="{'create': false, 'create_edit': false}"/>
+							<field name="quan_huyen_id" domain="[('tinh_thanh_id','=',tinh_thanhpho_id)]" options="{'create': false, 'create_edit': false}"/>
+							<field name="phuong_xa_id" domain="[('quan_huyen_id','=',quan_huyen_id)]" options="{'create': false, 'create_edit': false}"/>
+							<field name="nguoilienhe"/>
+							<field name="dienthoai"/>
+							<field name="email"/>
+							<field name="fax"/>
+							<field name="tieuchi_id" options="{'create': false, 'create_edit': false}"/>
+							<field name="phan_loai_id" options="{'create': false, 'create_edit': false}"/>
+							<field name="hethong_dambao_attp_id" options="{'create': false, 'create_edit': false}"/>
+							<newline/>
+							<field name="lat"/>
+							<field name="lng"/>
+							<field name="soluoc_congty" colspan='4'/>
+                		</group>
+                		<group col="4" string="Mô tả">
+							<field name="mo_ta" widget="ckeditor" nolabel='1'/>                    
+                		</group>
+	                </sheet>
+                </form>
+            </field>
+        </record>
+       
+        <record model="ir.actions.act_window" id="action_doanh_nghiep">
+            <field name="name">Doanh nghiệp</field>
+            <field name="res_model">doanh.nghiep</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field eval="False" name="view_id" ref="doanh_nghiep_tree"/>
+            <field name="search_view_id" ref="doanh_nghiep_search"/>
+        </record>
+
+<!-- Hiển thị trên bản đồ -->
+        <record model="ir.ui.view" id="baocao_doanhnghiep_map_tree">
+            <field name="name">baocao.doanhnghiep.map.tree</field>
+            <field name="model">baocao.doanhnghiep.map</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Hiển thị trên bản đồ">
+                    <field name="lat" />
+                    <field name="lng" />
+                    <field name="radius" />
+                    <field name="user_id" />
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="baocao_doanhnghiep_map_form">
+            <field name="name">baocao.doanhnghiep.map.form</field>
+            <field name="model">baocao.doanhnghiep.map</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Hiển thị trên bản đồ" version='7.0'>
+                	<sheet>
+	                	<group colspan="4" col="4">
+		                    <field name="lat" colspan="1" on_change="onchange_toado_bankinh(lat,lng,radius)"/>
+	                        <field name="lng" colspan="1" on_change="onchange_toado_bankinh(lat,lng,radius)"/>
+	                        <field name="radius" colspan="1" on_change="onchange_toado_bankinh(lat,lng,radius)"/>
+	                        <field name="user_id" colspan="1" />
+	                        <field name="points" colspan="4" invisible='1'/>
+	                    </group>
+	                    <group colspan="4" col="4" string="Danh sách doanh nghiệp">
+	                    	<field name="doanhnghiep_ids" nolabel='1' readonly='1'/>
+	                    </group>
+	                    <group colspan="4" col="4" string="Bản đồ">
+	                        <field name="map" nolabel="1" widget="gmap" colspan="4" />
+	                    </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_baocao_doanhnghiep_map">
+            <field name="name">Hiển thị trên bản đồ</field>
+            <field name="res_model">baocao.doanhnghiep.map</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="baocao_doanhnghiep_map_tree"/>
+            <field name="context">{'readonly_by_pass': ['doanhnghiep_ids']}</field>
+        </record>
+        
+    </data>
+</openerp>

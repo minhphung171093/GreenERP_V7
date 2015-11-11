@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+<!--tỉnh-->
+        <record model="ir.ui.view" id="tinh_tp_tree">
+            <field name="name">tinh.tp.tree</field>
+            <field name="model">tinh.tp</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Tỉnh/Thành phố" editable='top'>
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>  
+        <record model="ir.actions.act_window" id="action_tinh_tp">
+            <field name="name">Tỉnh/Thành phố</field>
+            <field name="res_model">tinh.tp</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>  
+
+<!--quận-->   
+        <record model="ir.ui.view" id="quan_huyen_tree">
+            <field name="name">quan.huyen.tree</field>
+            <field name="model">quan.huyen</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Quận/Huyện" editable='top'>
+                    <field name="name" />
+                    <field name="tinh_thanh_id" />
+                </tree>
+            </field>
+        </record>  
+        <record model="ir.actions.act_window" id="action_quan_huyen">
+            <field name="name">Quận/Huyện</field>
+            <field name="res_model">quan.huyen</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>  
+        
+<!--Phường xã-->   
+        <record model="ir.ui.view" id="phuong_xa_tree">
+            <field name="name">phuong.xa.tree</field>
+            <field name="model">phuong.xa</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Phường/Xã" editable='top'>
+                    <field name="name" />
+                    <field name="quan_huyen_id" options="{'create': false, 'create_edit': false}"/>
+                </tree>
+            </field>
+        </record>  
+        <record model="ir.actions.act_window" id="action_phuong_xa">
+            <field name="name">Phường/Xã</field>
+            <field name="res_model">phuong.xa</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>  
+        
+<!--Tiêu chí-->   
+        <record model="ir.ui.view" id="tieu_chi_tree">
+            <field name="name">tieu.chi.tree</field>
+            <field name="model">tieu.chi</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Tiêu chí" editable='top'>
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>  
+        <record model="ir.actions.act_window" id="action_tieu_chi">
+            <field name="name">Tiêu chí</field>
+            <field name="res_model">tieu.chi</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>  
+    
+<!--Cơ quan quản lý-->   
+        <record model="ir.ui.view" id="coquan_quanly_tree">
+            <field name="name">coquan.quanly.tree</field>
+            <field name="model">coquan.quanly</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Cơ quan quản lý" editable='top'>
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>  
+        <record model="ir.actions.act_window" id="action_coquan_quanly">
+            <field name="name">Cơ quan quản lý</field>
+            <field name="res_model">coquan.quanly</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record> 
+        
+<!--Phân loại-->   
+        <record model="ir.ui.view" id="phan_loai_tree">
+            <field name="name">phan.loai.tree</field>
+            <field name="model">phan.loai</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Phân loại" editable='top'>
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>  
+        <record model="ir.actions.act_window" id="action_phan_loai">
+            <field name="name">Phân loại</field>
+            <field name="res_model">phan.loai</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record> 
+        
+<!--Hệ thống đảm bảo ATTP-->   
+        <record model="ir.ui.view" id="hethong_dambao_attp_tree">
+            <field name="name">hethong.dambao.attp.tree</field>
+            <field name="model">hethong.dambao.attp</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Hệ thống đảm bảo ATTP" editable='top'>
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>  
+        <record model="ir.actions.act_window" id="action_hethong_dambao_attp">
+            <field name="name">Hệ thống đảm bảo ATTP</field>
+            <field name="res_model">hethong.dambao.attp</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record> 
+    
+    </data>
+</openerp>

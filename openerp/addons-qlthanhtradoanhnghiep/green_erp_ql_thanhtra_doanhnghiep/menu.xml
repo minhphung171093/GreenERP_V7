@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		<menuitem id="quanly_doanhnghiep_root"
+			name="Quản lý doanh nghiệp" sequence="10"/>
+			
+			<menuitem id="menu_quanly_doanhnghiep"
+				name="Quản lý doanh nghiệp"
+				parent='quanly_doanhnghiep_root' sequence="10"/>
+				
+				<menuitem id="menu_action_doanh_nghiep"
+					action="action_doanh_nghiep"
+					name="Danh sách doanh nghiệp"
+					parent='menu_quanly_doanhnghiep' sequence="10"/>
+		
+    	<menuitem id="hienthi_trenbando_root"
+    		name="Hiển thị trên bản đồ" sequence="20"/>
+    		
+    		<menuitem id="menu_hienthi_trenbando"
+    			name="Hiển thị trên bản đồ"
+    			parent='hienthi_trenbando_root' sequence="10"/>
+				
+				<menuitem id="menu_action_baocao_doanhnghiep_map"
+					action="action_baocao_doanhnghiep_map"
+					name="Hiển thị trên bản đồ"
+					parent='menu_hienthi_trenbando' sequence="10"/>
+    </data>
+</openerp>

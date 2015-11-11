@@ -1,2 +1,0 @@
-import hr_wizard
-

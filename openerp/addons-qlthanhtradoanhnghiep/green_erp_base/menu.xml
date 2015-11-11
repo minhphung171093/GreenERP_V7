@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		<menuitem id="cauhinh_root"
+			name="Cấu hình" sequence="175"/>
+			
+			<menuitem id="menu_danh_muc"
+				name="Danh mục"
+				parent="cauhinh_root" sequence="10"/>
+				
+				<menuitem id="menu_action_tinh_tp"
+					action="action_tinh_tp"
+					name="Danh mục"
+					parent="menu_danh_muc" sequence="10"/>
+					
+				<menuitem id="menu_action_quan_huyen"
+					action="action_quan_huyen"
+					name="Danh mục"
+					parent="menu_danh_muc" sequence="15"/>
+					
+				<menuitem id="menu_action_phuong_xa"
+					action="action_phuong_xa"
+					name="Phường/Xã"
+					parent="menu_danh_muc" sequence="20"/>
+					
+				<menuitem id="menu_action_tieu_chi"
+					action="action_tieu_chi"
+					name="Tiêu chí"
+					parent="menu_danh_muc" sequence="25"/>
+					
+				<menuitem id="menu_action_coquan_quanly"
+					action="action_coquan_quanly"
+					name="Cơ quan quản lý"
+					parent="menu_danh_muc" sequence="30"/>
+					
+				<menuitem id="menu_action_phan_loai"
+					action="action_phan_loai"
+					name="Phân loại"
+					parent="menu_danh_muc" sequence="35"/>
+					
+				<menuitem id="menu_action_hethong_dambao_attp"
+					action="action_hethong_dambao_attp"
+					name="Hệ thống đảm bảo ATTP"
+					parent="menu_danh_muc" sequence="40"/>
+					
+    </data>	
+</openerp>
