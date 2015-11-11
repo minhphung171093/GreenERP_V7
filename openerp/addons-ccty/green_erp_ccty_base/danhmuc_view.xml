@@ -270,7 +270,7 @@
             <field name="arch" type="xml">
                 <form string="Hộ chăn nuôi" version="7.0">
                 	<header>
-	            		<button name="bt_duyet" groups = "green_erp_ccty_base.group_base_admin_ccty" attrs="{'invisible': [('hien_an', '!=', True)]}" string="Duyệt" type="object" class="oe_highlight" />
+	            		<button name="bt_duyet" attrs="{'invisible': [('hien_an', '!=', True)]}" string="Duyệt" type="object" class="oe_highlight" />
 	            		
 	                    <field name="trang_thai_id" widget="statusbar"/>
 	            	</header> 
