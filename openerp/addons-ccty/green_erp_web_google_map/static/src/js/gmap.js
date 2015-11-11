@@ -353,7 +353,7 @@ openerp.green_erp_web_google_map = function(instance) {
             this.google_ensure_map_loaded().then(function() {
 
                 var OPTIONS = {
-                    zoom: 16,
+                    zoom: 14,
                     mapTypeId: google.maps.MapTypeId.ROADMAP
                 };
 
