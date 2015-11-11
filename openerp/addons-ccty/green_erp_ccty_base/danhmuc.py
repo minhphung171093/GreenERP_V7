@@ -222,6 +222,7 @@ class chan_nuoi(osv.osv):
         'an_toan_dich':fields.boolean('Cơ sở An toàn dịch'),
         'tieu_chuan_khac':fields.boolean('Tiêu chuẩn khác'),
         'dien_tich_chuong':fields.char('Diện tích chuồng trại'),
+        'mo_ta':fields.text('Mô tả'),
                 }
 
     _defaults = {
@@ -461,4 +462,60 @@ class cty_gia_cong(osv.osv):
         'name': fields.char('Tên Công Ty',size = 50, required = True),
                 }
 cty_gia_cong()
+
+class baocao_coso_channuoi_map(osv.osv):
+    _name = "baocao.coso.channuoi.map"
+    _columns = {
+        'lat': fields.float(u'Tọa độ X', digits=(9, 6)),
+        'lng': fields.float(u'Tọa độ Y', digits=(9, 6)),
+        'radius': fields.float(u'Bán kính', digits=(9, 6)),
+        'map': fields.dummy(),
+        'points': fields.text('Points'),
+        'user_id': fields.many2one('res.users','Người tạo'),
+    }
+    
+    _defaults = {
+        'user_id': lambda self, cr, uid, context: uid,
+    }
+    
+    def onchange_toado_bankinh(self, cr, uid, ids, lat=False, lng=False, radius=False, context=None):
+        vals = {}
+        if lat and lng and radius:
+            sql = '''
+                select lat,lng,mo_ta from chan_nuoi where lat is not null and lat!=0 and lng is not null and lng!=0 and ((lat-%s)^2+(lng-%s)^2<=%s)
+            '''%(lat,lng,radius**2/1000000)
+            cr.execute(sql)
+            points = ''
+            for channuoi in cr.dictfetchall():
+                points+=str(channuoi['lat'])+'phung_cat_giatri'+str(channuoi['lng'])+'phung_cat_giatri'+(channuoi['mo_ta'] or '')+'phung_cat_diem'
+            if points:
+                points=points[:-14]
+            vals = {'points':points}
+        return {'value': vals}
+    
+baocao_coso_channuoi_map()
+
+class res_partner(osv.osv):
+    _inherit = 'res.partner'
+
+    def write_radius(self, cr, uid, id,active_model, vals, context=None):
+        res = super(res_partner, self).write_radius(cr, uid, id,active_model, vals, context)
+        if vals.get('radius',False) and active_model=='baocao.coso.channuoi.map':
+            channuoi_map_obj = self.pool.get('baocao.coso.channuoi.map')
+            line = channuoi_map_obj.browse(cr, uid, int(id))
+            vals.update(channuoi_map_obj.onchange_toado_bankinh( cr, uid, [], line.lat, line.lng, vals['radius'],context)['value'])
+            channuoi_map_obj.write(cr, uid, [int(id)], vals, context)
+        return res
+    
+    def write_center(self, cr, uid, id,active_model, vals, context=None):
+        res = super(res_partner, self).write_center(cr, uid, id,active_model, vals, context)
+        if vals.get('center',False) and active_model=='baocao.coso.channuoi.map':
+            channuoi_map_obj = self.pool.get('baocao.coso.channuoi.map')
+            line = channuoi_map_obj.browse(cr, uid, int(id))
+            vals.update(channuoi_map_obj.onchange_toado_bankinh( cr, uid, [], vals['center']['G'], vals['center']['K'], line.radius,context)['value'])
+            vals.update({'lat':vals['center']['G'],'lng':vals['center']['K']})
+            channuoi_map_obj.write(cr, uid, [int(id)], vals, context)
+        return res
+    
+res_partner()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

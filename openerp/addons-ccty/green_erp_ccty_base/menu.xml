@@ -21,6 +21,14 @@
     	<menuitem id="menu_cty_gia_cong" parent="menu_danh_muc" name="Công ty được gia công" action="action_cty_gia_cong" groups = "green_erp_ccty_base.group_base_admin_ccty"/>
     	<menuitem id="menu_trang_thai" parent="menu_danh_muc" name="Trạng thái" action="action_trang_thai" sequence = '50' groups = "green_erp_ccty_base.group_base_admin_ccty"/>
     	
+    	<menuitem id="baocao_root" name="Báo Cáo" sequence="15"/>
+    		<menuitem id="menu_baocao" parent="baocao_root" name="Báo cáo" sequence="10"/>
+    			<menuitem id="menu_action_baocao_coso_channuoi_map"
+    				name="Danh sách cơ sở chăn nuôi"
+    				action="action_baocao_coso_channuoi_map"
+    				parent="menu_baocao" sequence="10"/>
+    	
+    	
     	<record model="ir.ui.menu" id="base.menu_administration">
 	    	<field name="groups_id" eval="[(6,0, [ref('base.group_system')])]"/>
 		</record>
