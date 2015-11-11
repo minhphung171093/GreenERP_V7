@@ -33,6 +33,7 @@
              'report/hopdong_noi_report_view.xml',
              'report/hopdong_mua_report_view.xml',
              'report/hopdong_ngoai_report_view.xml',
+             'report/theodoi_hopdong_ngoai_report_view.xml',
              'product_product_view.xml',
              'res_partner_view.xml',
              'sale_view.xml',
