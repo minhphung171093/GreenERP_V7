@@ -438,8 +438,9 @@
 	                    	<field name="company_id" context="{'show_address': 1}"/>
 	                    	<field name="partner_id"  context="{'show_address': 1,'default_supplier':1,'default_customer':0}" string='Nhà cung cấp' domain="[('supplier','=',True)]"/>
 	                    	<field name="banggia_id" domain="[('currency_id','=',currency_company_id),('type','=','mua')]" />
-	                    	<field name="pricelist_id" invisible = '1'/> 
+	                    	<field name="user_id"/>
 	                    	<field name="currency_id"/>
+	                    	<field name="pricelist_id" invisible = '1'/> 
 						</group>
 						<notebook>
 							<page string="Thông tin chung">
@@ -557,8 +558,9 @@
 	                    	<field name="company_id" context="{'show_address': 1}"/>
 	                    	<field name="partner_id"  context="{'show_address': 1,'default_supplier':1,'default_customer':0}" string='Nhà cung cấp' domain="[('supplier','=',True)]"/>
 	                    	<field name="banggia_id" domain="[('currency_id','=',currency_company_id),('type','=','mua')]" />
-	                    	<field name="pricelist_id" invisible = '1'/>
+	                    	<field name="user_id"/>
 	                    	<field name="currency_id"/>
+	                    	<field name="pricelist_id" invisible = '1'/>
 						</group>
 						<notebook>
 							<page string="Thông tin chung">
@@ -973,17 +975,17 @@
 	                        <field name="name" class="oe_inline" nolabel="1" />
 	                    </h1>
 	                    <group>
-	                    	<field name="company_id" context="{'show_address': 1}" invisible='1'/>
 	                    	<field name="type" invisible='1'/>
 	                    	<field name="currency_company_id" invisible='1'/>
 	                    </group>
 	                    <group col='4' colspan='2'>
+	                    	<field name="company_id" context="{'show_address': 1}"/>
 	                    	<field name="partner_id" context="{'show_address': 1}" domain="[('customer','=',True)]"/>
 	                    	<field name="ngay"/>
 	                    	<field name="banggia_id" domain="[('currency_id','=',currency_company_id),('type','=','mua'),('state','=','da_duyet')]" />
-	                    	<field name="pricelist_id" invisible = '1'/>
 	                    	<field name="currency_id"/>
 	                    	<field name="user_id"/>
+	                    	<field name="pricelist_id" invisible = '1'/>
 						</group>
 						<notebook>
 							<page string="Thông tin mặt hàng" >
@@ -1076,17 +1078,17 @@
 	                        <field name="name" class="oe_inline" nolabel="1" />
 	                    </h1>
 	                    <group>
-	                    	<field name="company_id" context="{'show_address': 1}" invisible='1'/>
 	                    	<field name="type" invisible='1'/>
 	                    	<field name="currency_company_id" invisible='1'/>
 	                    </group>
 	                    <group col='4' colspan='2'>
+	                    	<field name="company_id" context="{'show_address': 1}"/>
 	                    	<field name="partner_id" context="{'show_address': 1}" domain="[('customer','=',True)]"/>
 	                    	<field name="ngay"/>
 	                    	<field name="banggia_id" domain="[('type','=','mua'),('state','=','da_duyet')]" />
-	                    	<field name="pricelist_id" invisible = '1'/>
 	                    	<field name="currency_id"/>
 	                    	<field name="user_id"/>
+	                    	<field name="pricelist_id" invisible = '1'/>
 						</group>
 						<notebook>
 							<page string="Thông tin mặt hàng" >
