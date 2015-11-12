@@ -351,17 +351,17 @@ class bang_gia(osv.osv):
         return self.write(cr, uid, ids, {'state': 'da_duyet'})
     
     def huy_bo(self, cr, uid, ids, context=None):
-        product_pricelist_version_obj = self.pool.get('product.pricelist.version')
-        product_pricelist_obj = self.pool.get('product.pricelist')
-        for bg in self.browse(cr, uid, ids):
-            if bg.type=='ban':
-                product_pricelist_ids = product_pricelist_obj.search(cr, uid, [('currency_id','=',bg.currency_id.id),('type','=','sale')])
-                product_pricelist_version_ids = product_pricelist_version_obj.search(cr, uid, [('pricelist_id','in', product_pricelist_ids),('date_start','=', bg.name),('date_end','=', bg.name)])
-                product_pricelist_version_obj.unlink(cr, uid, product_pricelist_version_ids)
-            if bg.type=='mua':
-                product_pricelist_ids = product_pricelist_obj.search(cr, uid, [('currency_id','=',bg.currency_id.id),('type','=','purchase')])
-                product_pricelist_version_ids = product_pricelist_version_obj.search(cr, uid, [('pricelist_id','in', product_pricelist_ids),('date_start','=', bg.name),('date_end','=', bg.name)])
-                product_pricelist_version_obj.unlink(cr, uid, product_pricelist_version_ids)
+#         product_pricelist_version_obj = self.pool.get('product.pricelist.version')
+#         product_pricelist_obj = self.pool.get('product.pricelist')
+#         for bg in self.browse(cr, uid, ids):
+#             if bg.type=='ban':
+#                 product_pricelist_ids = product_pricelist_obj.search(cr, uid, [('currency_id','=',bg.currency_id.id),('type','=','sale')])
+#                 product_pricelist_version_ids = product_pricelist_version_obj.search(cr, uid, [('pricelist_id','in', product_pricelist_ids),('date_start','=', bg.name),('date_end','=', bg.name)])
+#                 product_pricelist_version_obj.unlink(cr, uid, product_pricelist_version_ids)
+#             if bg.type=='mua':
+#                 product_pricelist_ids = product_pricelist_obj.search(cr, uid, [('currency_id','=',bg.currency_id.id),('type','=','purchase')])
+#                 product_pricelist_version_ids = product_pricelist_version_obj.search(cr, uid, [('pricelist_id','in', product_pricelist_ids),('date_start','=', bg.name),('date_end','=', bg.name)])
+#                 product_pricelist_version_obj.unlink(cr, uid, product_pricelist_version_ids)
         return self.write(cr, uid, ids, {'state': 'huy_bo'})
     
     def chinh_sua_lai(self, cr, uid, ids, context=None):

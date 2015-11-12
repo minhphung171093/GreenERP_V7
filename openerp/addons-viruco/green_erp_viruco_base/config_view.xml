@@ -773,7 +773,7 @@
 	            		<group col='4' colspan='2'>
 	            			<field name="date_start" on_change="onchange_name(date_start,date_end,currency_id)"/>
 							<field name="date_end" on_change="onchange_name(date_start,date_end,currency_id)"/>
-							<field name="currency_id" on_change="onchange_name(date_start,date_end,currency_id)"/>
+							<field name="currency_id" domain="[('name','in',('USD','VND'))]" on_change="onchange_name(date_start,date_end,currency_id)"/>
 						</group>
 						<notebook>
 							<page string="Chi tiết bảng giá">
@@ -850,7 +850,7 @@
 	            		<group col='4' colspan='2'>
 		                	<field name="date_start" on_change="onchange_name(date_start,date_end,currency_id)"/>
 							<field name="date_end" on_change="onchange_name(date_start,date_end,currency_id)"/>
-							<field name="currency_id" on_change="onchange_name(date_start,date_end,currency_id)"/>
+							<field name="currency_id" domain="[('name','in',('USD','VND'))]" on_change="onchange_name(date_start,date_end,currency_id)"/>
 						</group>
 						<notebook>
 							<page string="Chi tiết bảng giá">
