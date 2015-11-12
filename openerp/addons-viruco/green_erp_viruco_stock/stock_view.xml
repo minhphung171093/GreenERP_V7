@@ -363,6 +363,7 @@
 	                                    <field name="move_type"/>
 	                                    <field name="type" invisible="1"/>
 	                                    <field name="auto_picking" groups="base.group_user"/>
+	                                    <field name="pt_giaohang"/>
 	                                </group>
 	                                <group>
 	                                    <field name="company_id" groups="base.group_multi_company" widget="selection"/>

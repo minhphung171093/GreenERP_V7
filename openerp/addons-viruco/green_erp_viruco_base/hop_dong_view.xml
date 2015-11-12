@@ -65,7 +65,7 @@
 	                    	<newline/>
 	                    	<field name="company_id" context="{'show_address': 1}"/>
 	                    	<field name="partner_id"  context="{'show_address': 1}" domain="[('customer','=',True)]"/>
-	                    <!--	<field name="pricelist_id" domain="[('currency_id','=',currency_company_id),('type','=','sale')]" on_change="onchange_pricelist_id(pricelist_id,hopdong_line)"/> -->
+	                    	<field name="pricelist_id" invisible = '1'/> 
 	                    	<field name="banggia_id" domain="[('currency_id','=',currency_company_id),('type','=','ban')]" />
 	                    	<field name="currency_id"/>
 						</group>
@@ -239,7 +239,7 @@
 	                    	<field name="company_id" string="Company" context="{'show_address': 1}"/>
 	                    	<field name="partner_id" string="Partner"  context="{'show_address': 1}" domain="[('customer','=',True)]"/>
 							<field name="banggia_id" domain="[('currency_id','!=',currency_company_id),('type','=','ban')]" />
-						<!--	<field name="pricelist_id" domain="[('currency_id','!=',currency_company_id),('type','=','sale')]" string="Pricelist" on_change="onchange_pricelist_id(pricelist_id,hopdong_line)"/> -->
+							<field name="pricelist_id" invisible = '1'/>
 	                    	<field name="currency_id" string="Currency"/>
 	                    	<field name="user_id" string="User"/>
 	                    	<field name="create_theodoi_hopdong" invisible = '1'/>
@@ -438,7 +438,7 @@
 	                    	<field name="company_id" context="{'show_address': 1}"/>
 	                    	<field name="partner_id"  context="{'show_address': 1,'default_supplier':1,'default_customer':0}" string='Nhà cung cấp' domain="[('supplier','=',True)]"/>
 	                    	<field name="banggia_id" domain="[('currency_id','=',currency_company_id),('type','=','mua')]" />
-	                   <!-- 	<field name="pricelist_id" domain="[('currency_id','=',currency_company_id),('type','=','purchase')]" on_change="onchange_pricelist_id(pricelist_id,hopdong_line)"/> -->
+	                    	<field name="pricelist_id" invisible = '1'/> 
 	                    	<field name="currency_id"/>
 						</group>
 						<notebook>
@@ -557,7 +557,7 @@
 	                    	<field name="company_id" context="{'show_address': 1}"/>
 	                    	<field name="partner_id"  context="{'show_address': 1,'default_supplier':1,'default_customer':0}" string='Nhà cung cấp' domain="[('supplier','=',True)]"/>
 	                    	<field name="banggia_id" domain="[('currency_id','=',currency_company_id),('type','=','mua')]" />
-	                <!--    	<field name="pricelist_id" domain="[('currency_id','=',currency_company_id),('type','=','purchase')]" on_change="onchange_pricelist_id(pricelist_id,hopdong_line)"/> -->
+	                    	<field name="pricelist_id" invisible = '1'/>
 	                    	<field name="currency_id"/>
 						</group>
 						<notebook>
@@ -680,7 +680,7 @@
 	                    	<field name="partner_id" on_change="onchange_partner_id(partner_id)" context="{'show_address': 1}" domain="[('customer','=',True)]"/>
 	                    	<field name="ngay"/>
 	                    	<field name="banggia_id" domain="[('currency_id','=',currency_company_id),('type','=','ban')]" />
-	                 <!--   	<field name="pricelist_id" domain="[('currency_id','=',currency_company_id),('type','=','sale')]" on_change="onchange_pricelist_id(pricelist_id,don_ban_hang_line)"/> -->
+	                    	<field name="pricelist_id" invisible = '1'/>
 	                    	<field name="currency_id"/>
 	                    	<field name="nguoi_gioithieu_id" domain="[('nha_moigioi','=',True)]"/>
 	                    	<field name="dieukien_giaohang_id"/>
@@ -827,7 +827,7 @@
 	                    	<field name="partner_id" on_change="onchange_partner_id(partner_id)" string="Partner" context="{'show_address': 1}" domain="[('customer','=',True)]"/>
 	                    	<field name="ngay" string="Date"/>
 	                    	<field name="banggia_id" domain="[('currency_id','!=',currency_company_id),('type','=','ban'),('state','=','da_duyet')]" />
-	                 <!--   	<field name="pricelist_id" string="Price List" domain="[('currency_id','!=',currency_company_id),('type','=','sale')]" on_change="onchange_pricelist_id(pricelist_id,don_ban_hang_line)"/> -->
+	                    	<field name="pricelist_id" invisible = '1'/> 
 	                    	<field name="currency_id" string="Currency"/>
 	                    	<field name="user_id" string="User"/>
 	                    	<field name="ngay_nhanhang" string="Shipment Time"/>
@@ -981,7 +981,7 @@
 	                    	<field name="partner_id" context="{'show_address': 1}" domain="[('customer','=',True)]"/>
 	                    	<field name="ngay"/>
 	                    	<field name="banggia_id" domain="[('currency_id','=',currency_company_id),('type','=','mua'),('state','=','da_duyet')]" />
-	               <!--     	<field name="pricelist_id" domain="[('type','=','purchase')]" on_change="onchange_pricelist_id(pricelist_id,don_mua_hang_line)"/> -->
+	                    	<field name="pricelist_id" invisible = '1'/>
 	                    	<field name="currency_id"/>
 	                    	<field name="user_id"/>
 						</group>
@@ -1084,7 +1084,7 @@
 	                    	<field name="partner_id" context="{'show_address': 1}" domain="[('customer','=',True)]"/>
 	                    	<field name="ngay"/>
 	                    	<field name="banggia_id" domain="[('type','=','mua'),('state','=','da_duyet')]" />
-	              <!--      	<field name="pricelist_id" domain="[('type','=','purchase')]" on_change="onchange_pricelist_id(pricelist_id,don_mua_hang_line)"/> -->
+	                    	<field name="pricelist_id" invisible = '1'/>
 	                    	<field name="currency_id"/>
 	                    	<field name="user_id"/>
 						</group>

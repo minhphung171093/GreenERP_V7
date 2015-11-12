@@ -40,8 +40,44 @@ class Parser(report_sxw.rml_parse):
             'get_ngaynhan_lc': self.get_ngaynhan_lc,
             'get_thanhtoan': self.get_thanhtoan,
             'get_journal': self.get_journal,
-            
+            'get_giaohang': self.get_giaohang,
+            'get_delivery_order': self.get_delivery_order,
+            'get_cang_den': self.get_cang_den,
         })
+    
+    def get_delivery_order(self, picking_id):
+        if picking_id:
+            nguon_hang = ''
+            picking = self.pool.get('stock.picking').browse(self.cr,self.uid,picking_id)
+            for line in picking.move_lines:
+                if len(picking.move_lines) == 1:
+                    nguon_hang = line.hop_dong_mua_id.name
+                else:
+                    nguon_hang = line.hop_dong_mua_id.name + ' - '
+            return {
+                    'pt_giaohang': picking.pt_giaohang,
+                    'ngay_xuat_kho': picking.date_done,
+                    'nguon_hang': nguon_hang,
+                    }
+        else:
+            return {
+                    'pt_giaohang': '',
+                    'ngay_xuat_kho': '',
+                    'nguon_hang': '',
+                    }
+            
+    def get_cang_den(self,bl_id):
+        bl = self.pool.get('draft.bl').browse(self.cr,self.uid,bl_id)
+        return bl.port_of_charge.name or ''
+        
+    def get_giaohang(self, hopdong_id):
+        bl_ids = []
+        sql = '''
+            select draft_bl_id, picking_id, etd_date, eta_date, cuoc_tau from draft_bl_line where draft_bl_id in (select id from draft_bl where hopdong_id = %s)
+        '''%(hopdong_id)
+        self.cr.execute(sql)
+        bl_ids = self.cr.dictfetchall()
+        return bl_ids
         
     def get_thanhtoan(self, hopdong_id):
         account_voucher_ids = []
@@ -60,7 +96,6 @@ class Parser(report_sxw.rml_parse):
         else:
             return ''
             
-        
         
     def get_ngaynhan_lc(self, hopdong_id):
         hop_dong = self.pool.get('hop.dong').browse(self.cr,self.uid,hopdong_id)
@@ -113,7 +148,7 @@ class Parser(report_sxw.rml_parse):
     def convert_date(self, date):
         if not date:
             date = time.strftime(DATE_FORMAT)
-        date = datetime.strptime(date, DATE_FORMAT)
+        date = datetime.strptime(date[0:10], DATE_FORMAT)
         return date.strftime('%d-%m-%Y')
         
     def convert_f_amount(self, amount):

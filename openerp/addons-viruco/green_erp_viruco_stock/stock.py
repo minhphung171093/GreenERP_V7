@@ -254,6 +254,7 @@ class stock_picking(osv.osv):
                 
         'stock_journal_id': fields.many2one('stock.journal','Stock Journal', required=True, select=True, states={'done':[('readonly', True)], 'cancel':[('readonly',True)]}, track_visibility='onchange'),
          'return': fields.selection([('none', 'Normal'), ('customer', 'Return from Customer'),('internal','Return Internal'), ('supplier', 'Return to Supplier')], 'Type', required=True, select=True, help="Type specifies whether the Picking has been returned or not."),
+         'pt_giaohang': fields.char('Phụ trách giao hàng', size = 1024),
     }
     
     def _get_journal(self, cr, uid, context=None):
@@ -674,6 +675,26 @@ class stock_picking(osv.osv):
             'type': 'ir.actions.report.xml',
             'report_name': 'denghi_xuathang_report',
             }
+        
+    def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
+        if context is None:
+            context = {}
+        if context.get('search_picking_out'):
+            if context.get('hopdong_id'):
+                sql = '''
+                    select id from stock_picking where type = 'out' and state = 'done' and id in (select picking_id from stock_move 
+                    where hop_dong_ban_id = %s and hop_dong_mua_id is not null and state = 'done')
+                '''%(context.get('hopdong_id'))
+                cr.execute(sql)
+                picking_ids = [row[0] for row in cr.fetchall()]
+                args += [('id','in',picking_ids)]
+        return super(stock_picking, self).search(cr, uid, args, offset=offset, limit=limit, order=order, context=context, count=count)
+    
+    def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
+        if context is None:
+            context = {}
+        ids = self.search(cr, user, args, context=context, limit=limit)
+        return self.name_get(cr, user, ids, context=context)
     
 stock_picking()
 

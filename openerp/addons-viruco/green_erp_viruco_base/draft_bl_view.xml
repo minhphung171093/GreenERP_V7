@@ -81,6 +81,7 @@
 								<field name="draft_bl_line">
 									<tree>
 	                                    <field name="ocean_vessel" />
+	                                    <field name="picking_id"/>
 	                                    <field name="etd_date"/>
 	                                    <field name="eta_date"/>
 	                                    <field name="cuoc_tau"/>
@@ -88,6 +89,7 @@
 									<form version = "7.0">
 										<group col='4' colspan='2'>
 					                    	<field name="ocean_vessel" />
+					                    	<field name="picking_id" context="{'search_picking_out':1, 'hopdong_id':parent.hopdong_id}"/>
 		                                    <field name="etd_date"/>
 		                                    <field name="eta_date"/>
 		                                    <field name="cuoc_tau"/>
