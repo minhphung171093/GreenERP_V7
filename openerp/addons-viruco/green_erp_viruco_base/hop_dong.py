@@ -241,7 +241,7 @@ class hop_dong(osv.osv):
         'hopdong_hoahong_line': fields.one2many('hopdong.hoahong.line','hopdong_hh_id','Line',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'banggia_id': fields.many2one('bang.gia', 'Bảng giá', required=True, readonly=True, states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
 #         'pricelist_id': fields.many2one('product.pricelist', 'Bảng giá', required=True,readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
-        'currency_id': fields.related('pricelist_id', 'currency_id', type="many2one", relation="res.currency", string="Tiền tệ", readonly=True, required=True),
+        'currency_id': fields.related('banggia_id', 'currency_id', type="many2one", relation="res.currency", string="Tiền tệ", readonly=True),
         'donbanhang_id': fields.many2one('don.ban.hang', 'Đơn bán hàng',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'donmuahang_id': fields.many2one('don.mua.hang', 'Đơn mua hàng',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'thanhtoan':fields.boolean('Thanh toán'),
@@ -998,6 +998,7 @@ class don_ban_hang_line(osv.osv):
     
     def onchange_product_id(self, cr, uid, ids,qty=0,ngay=False,partner_id=False,banggia_id=False,product_id=False,nha_sanxuat_id=False,chatluong_id=False,quycach_donggoi_id=False,type=False,context=None):
         vals = {}
+        warning = {}
         if not ngay:
             ngay = time.strftime('%Y-%m-%d')
         if not partner_id:
@@ -1032,8 +1033,16 @@ class don_ban_hang_line(osv.osv):
                     gia_ids = cr.dictfetchall()
                     if gia_ids:
                         price = gia_ids[0]['gia']
-                    vals.update({'price_unit': price})
-        return {'value': vals}
+                        vals.update({'price_unit': price})
+                    else:
+                        vals.update({'price_unit': 0.0})
+                        warning = {
+                            'title': _('Cảnh báo!'),
+                            'message' : _('Chưa có giá cụ thể cho hạng mục vừa chọn!')
+                        }
+#                         raise osv.except_osv(_('Cảnh báo!'),_('Chưa có giá cụ thể cho hạng mục này!'))
+                        
+        return {'warning': warning,'value': vals}
 don_ban_hang_line()
 
 class don_mua_hang(osv.osv):
@@ -1082,7 +1091,7 @@ class don_mua_hang(osv.osv):
         'don_mua_hang_line': fields.one2many('don.mua.hang.line','donmuahang_id','Line',readonly=True, states={'moi_tao': [('readonly', False)]}),
         'banggia_id': fields.many2one('bang.gia', 'Bảng giá', required=True, readonly=True, states={'moi_tao': [('readonly', False)]}),        
 #         'pricelist_id': fields.many2one('product.pricelist', 'Bảng giá', required=True, readonly=True, states={'moi_tao': [('readonly', False)]}, help="Pricelist for current sales order."),
-        'currency_id': fields.related('pricelist_id', 'currency_id', type="many2one", relation="res.currency", string="Đơn vị tiền tệ", readonly=True, required=True),
+        'currency_id': fields.related('banggia_id', 'currency_id', type="many2one", relation="res.currency", string="Đơn vị tiền tệ", readonly=True),
         'currency_company_id': fields.many2one('res.currency', 'Currency'),
         'user_id':fields.many2one('res.users','Người đề nghị',readonly=True,states={'moi_tao': [('readonly', False)]}),
         'thoigian_giaohang':fields.datetime('Thời gian giao hàng'),
@@ -1200,7 +1209,7 @@ class don_mua_hang_line(osv.osv):
         'quycach_baobi_id':fields.many2one('quycach.baobi','Quy cách bao bì'),
     }
     
-    def onchange_product_id(self, cr, uid, ids,qty=0,ngay=False,partner_id=False,banggia_id=False,product_id=False,chatluong_id=False,quycach_donggoi_id=False, context=None):
+    def onchange_product_id(self, cr, uid, ids,ngay=False,partner_id=False,banggia_id=False,product_id=False,chatluong_id=False,quycach_donggoi_id=False, context=None):
         vals = {}
         if not ngay:
             ngay = time.strftime('%Y-%m-%d')
@@ -1209,7 +1218,7 @@ class don_mua_hang_line(osv.osv):
         if product_id:
             product = self.pool.get('product.product').browse(cr, uid, product_id)
             vals = {
-                    'product_uom':product.uom_id.id or False,
+                    'product_uom':product.uom_id and product.uom_id.id or False,
                     'name':product.name,
                     }
             vals['tax_id'] = self.pool.get('account.fiscal.position').map_tax(cr, uid, False, product.supplier_taxes_id)
