@@ -93,9 +93,10 @@ class draft_bl_line(osv.osv):
     _columns = {
         'draft_bl_id': fields.many2one('draft.bl', 'Draft bl', ondelete='cascade', select=True),
         'ocean_vessel':fields.char('Ocean Vessel/Vov No',required=True),
+        'picking_id': fields.many2one('stock.picking', 'Delivery Order'),
         'etd_date':fields.date('ETD'),
         'eta_date':fields.date('ETA'),
-        'cuoc_tau': fields.float('Cước tàu'),
+        'cuoc_tau': fields.float('Freight Cost'),
         'description_line': fields.one2many('description.line','draft_bl_line_id','Line'),
         'product_id': fields.many2one('product.product', 'Product', domain=[('sale_ok', '=', True)], change_default=True,),
     }
