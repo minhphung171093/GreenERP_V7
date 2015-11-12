@@ -72,6 +72,9 @@ class huongdan_sudung(osv.osv):
         'db_datas': fields.binary('Database Data'),
         'file_size': fields.integer('File Size'),
         'test_editor': fields.text("TEST"),
+        'test_percent': fields.float("TEST FLOAT"),
+        
+        'test_serialized': fields.serialized("TEST serialized"),
     }
     
 huongdan_sudung()
