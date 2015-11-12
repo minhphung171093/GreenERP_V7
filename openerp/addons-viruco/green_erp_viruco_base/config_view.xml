@@ -767,6 +767,9 @@
 						<field name="type" invisible='1'/>
 	            	</header>
 	            	<sheet>
+	            		<h1>
+	                        <field name="name" class="oe_inline" nolabel="1" required="0" readonly="1"/>
+	                    </h1>
 	            		<group col='4' colspan='2'>
 	            			<field name="date_start" on_change="onchange_name(date_start,date_end,currency_id)"/>
 							<field name="date_end" on_change="onchange_name(date_start,date_end,currency_id)"/>
@@ -777,6 +780,9 @@
 								<field name="banggia_line" nolabel='1'>
 									<tree editable='bottom'>
 										<field name="product_id"/>
+										<field name="nha_sanxuat_id"/>
+										<field name="chatluong_id"/>
+										<field name="quycach_donggoi_id"/>
 										<field name="gia"/>
 									</tree>
 								</field>
@@ -836,7 +842,11 @@
 						<field name="state" widget="statusbar" statusbar_visible="moi_tao,da_duyet,huy_bo"/>
 						<field name="type" invisible='1'/>
 	            	</header>
+	            	
 	            	<sheet>
+	            		<h1>
+	                        <field name="name" class="oe_inline" nolabel="1" required="0" readonly="1"/>
+	                    </h1>
 	            		<group col='4' colspan='2'>
 		                	<field name="date_start" on_change="onchange_name(date_start,date_end,currency_id)"/>
 							<field name="date_end" on_change="onchange_name(date_start,date_end,currency_id)"/>
@@ -847,10 +857,17 @@
 								<field name="banggia_line" nolabel='1'>
 									<tree editable='bottom'>
 										<field name="product_id"/>
+										<field name="nha_sanxuat_id"/>
+										<field name="chatluong_id"/>
+										<field name="quycach_donggoi_id"/>
 										<field name="gia"/>
 									</tree>
 								</field>
+								<group col='4' colspan='2'>
+									<field name="ghi_chu" placeholder="Ghi chú ..." nolabel='1' />
+								</group>
 							</page>
+
 						</notebook>
 		         	</sheet>
 		         </form>
