@@ -38,7 +38,29 @@ class Parser(report_sxw.rml_parse):
             'get_price_hh': self.get_price_hh,
             'get_tax_hh': self.get_tax_hh,
             'get_ngaynhan_lc': self.get_ngaynhan_lc,
+            'get_thanhtoan': self.get_thanhtoan,
+            'get_journal': self.get_journal,
+            
         })
+        
+    def get_thanhtoan(self, hopdong_id):
+        account_voucher_ids = []
+        sql = '''
+            select amount, date, journal_id from account_voucher where type = 'receipt' and hop_dong_id = %s and state = 'posted'
+            order by id
+        '''%(hopdong_id)
+        self.cr.execute(sql)
+        account_voucher_ids = self.cr.dictfetchall()
+        return account_voucher_ids
+    
+    def get_journal(self, journal_id):
+        if journal_id:
+            journal = self.pool.get('account.journal').browse(self.cr,self.uid,journal_id)
+            return journal.name
+        else:
+            return ''
+            
+        
         
     def get_ngaynhan_lc(self, hopdong_id):
         hop_dong = self.pool.get('hop.dong').browse(self.cr,self.uid,hopdong_id)
@@ -92,7 +114,7 @@ class Parser(report_sxw.rml_parse):
         if not date:
             date = time.strftime(DATE_FORMAT)
         date = datetime.strptime(date, DATE_FORMAT)
-        return date.strftime('%d-%m-%y')
+        return date.strftime('%d-%m-%Y')
         
     def convert_f_amount(self, amount):
         a = format(amount,',')
