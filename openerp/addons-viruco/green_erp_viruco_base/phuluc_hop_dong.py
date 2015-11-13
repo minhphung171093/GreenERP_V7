@@ -90,6 +90,21 @@ class phuluc_hop_dong(osv.osv):
     def set_to_draft(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids, {'state': 'moi_tao'})
     
+    def onchange_hop_dong_id(self, cr, uid, ids, hop_dong_id=False, context=None):
+        vals = {}
+        order_line = []
+        hd_hoahong_line = []
+        if hop_dong_id:
+            hd_obj = self.pool.get('hop.dong')
+            hop_dong = hd_obj.browse(cr, uid, hop_dong_id)
+            vals = {
+                'tu_ngay': hop_dong.tu_ngay,
+                'den_ngay': hop_dong.den_ngay,
+                'ngay_nhanhang': hop_dong.ngay_nhanhang,
+                'dk_thanhtoan_id': hop_dong.dk_thanhtoan_id and hop_dong.dk_thanhtoan_id.id or False,
+            }
+        return {'value': vals}
+    
     def print_phuluc_hopdong(self, cr, uid, ids, context=None):
         phuluc_hopdong = self.browse(cr, uid, ids[0])
         datas = {
@@ -98,16 +113,19 @@ class phuluc_hop_dong(osv.osv):
              'form': self.read(cr, uid, ids[0], context=context)
         }
         if phuluc_hopdong.type == 'hd_noi':
+            raise osv.except_osv(_('Cảnh báo!'), _('Chua co bieu mau')) 
             return {
                 'type': 'ir.actions.report.xml',
                 'report_name': 'hopdong_noi_report',
                 }
         elif phuluc_hopdong.type=='hd_mua_trongnuoc':
+            raise osv.except_osv(_('Cảnh báo!'), _('Chua co bieu mau')) 
             return {
                 'type': 'ir.actions.report.xml',
                 'report_name': 'hopdong_mua_report',
             }
         elif phuluc_hopdong.type=='hd_mua_nhapkhau':
+            raise osv.except_osv(_('Cảnh báo!'), _('Chua co bieu mau')) 
             return {
                 'type': 'ir.actions.report.xml',
                 'report_name': 'hopdong_mua_report',
@@ -115,7 +133,7 @@ class phuluc_hop_dong(osv.osv):
         else:
             return {
                 'type': 'ir.actions.report.xml',
-                'report_name': 'hopdong_ngoai_report',
+                'report_name': 'phu_luc_hd_xuat_khau_report',
             }
     _defaults = {
         'type': 'hd_noi',
