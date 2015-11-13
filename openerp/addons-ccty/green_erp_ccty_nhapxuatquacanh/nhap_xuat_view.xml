@@ -199,7 +199,7 @@
 										<field name="ct_loai_id" options="{'create': false, 'create_edit': false}"/>
 										<field name="vacxin_id" options="{'create': false, 'create_edit': false}"/>
 										<field name="ngay_tiem" />
-										<field name="so_luong" string = 'Số lượng' sum = 'Total'/>
+										<field name="so_luong" string = 'Số lượng'/>
 									</tree>
 								</field>
 							</page>
@@ -321,7 +321,7 @@
 										<field name="vacxin_id" readonly="1" options="{'create': false, 'create_edit': false}"/>
 										<field name="ct_loai_id" readonly="1" options="{'create': false, 'create_edit': false}"/>
 										<field name="sl_tiem" readonly="1"/>
-										<field name="so_luong" string = "Số lượng xuất" sum = 'Total'/>
+										<field name="so_luong" string = "Số lượng"/>
 									</tree>
 								</field>
 							</page>
