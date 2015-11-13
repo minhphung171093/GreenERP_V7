@@ -10,6 +10,7 @@
                 <search string="Doanh nghiệp">
                 	<field name="name" />
                 	<field name="ma_coso" />
+                	<field name="coquan_quanly_id" />
                 	<field name="nguoilienhe" />
                 	<field name="dienthoai" />
                 	<field name="email" />
@@ -21,6 +22,7 @@
                 	<field name="phan_loai_id" />
                 	<field name="hethong_dambao_attp_id" />
                     <group expand="0" string="Group By...">
+                    	<filter string="Cơ quan quản lý" domain="[]" context="{'group_by':'coquan_quanly_id'}"/>
                     	<filter string="Tỉnh/Thành phố" domain="[]" context="{'group_by':'tinh_thanhpho_id'}"/>
                         <filter string="Phường/Xã" domain="[]"  context="{'group_by':'phuong_xa_id'}"/>
                         <filter string="Quận/Huyện" domain="[]" context="{'group_by':'quan_huyen_id'}"/>
@@ -41,6 +43,7 @@
                 	<field name="image_small" widget="image" string="Ảnh đại diện"/>
                     <field name="name"/>
                     <field name="ma_coso" />
+                    <field name="coquan_quanly_id" />
                 	<field name="diachi" />
                 	<field name="phuong_xa_id" />
                 	<field name="quan_huyen_id" />
@@ -74,7 +77,7 @@
                          </div>
                 		<group col="4">
                 			<field name="ma_coso"/>
-                			<newline/>
+                			<field name="coquan_quanly_id" />
 							<field name="diachi" colspan='4'/>
 							<field name="tinh_thanhpho_id" options="{'create': false, 'create_edit': false}"/>
 							<field name="quan_huyen_id" domain="[('tinh_thanh_id','=',tinh_thanhpho_id)]" options="{'create': false, 'create_edit': false}"/>
@@ -137,6 +140,7 @@
 	                        <field name="points" colspan="4" invisible='1'/>
 	                    </group>
 	                    <group colspan="4" col="4" string="Danh sách doanh nghiệp">
+	                    	<button name="%(danhsach_doanhnghiep_report)d" string="In danh sách doanh nghiệp" type='action' class="oe_right" colspan="4"/>
 	                    	<field name="doanhnghiep_ids" nolabel='1' readonly='1'/>
 	                    </group>
 	                    <group colspan="4" col="4" string="Bản đồ">

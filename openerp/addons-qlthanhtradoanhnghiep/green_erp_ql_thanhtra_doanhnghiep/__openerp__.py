@@ -26,10 +26,11 @@
     'sequence': 1,
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',
-    'depends': ['green_erp_base'],
+    'depends': ['green_erp_base','report_aeroo','report_aeroo_ooo'],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
+        'report/danhsach_doanhnghiep_view.xml',
         'doanhnghiep_view.xml',
         'menu.xml',
     ],

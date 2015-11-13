@@ -51,6 +51,7 @@ class doanh_nghiep(osv.osv):
         'soluoc_congty': fields.text('Sơ lược về công ty'),
         'fax': fields.char('Fax',size = 2048),
         'phan_loai_id': fields.many2one('phan.loai', 'Phân loại'),
+        'coquan_quanly_id': fields.many2one('coquan.quanly', 'Cơ quan quản lý'),
         'hethong_dambao_attp_id': fields.many2one('hethong.dambao.attp', 'Hệ thống đảm bảo ATTP'),
         
         'image': fields.binary("Image"),
