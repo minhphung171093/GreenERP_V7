@@ -10,12 +10,12 @@
 				
 				<menuitem id="menu_action_tinh_tp"
 					action="action_tinh_tp"
-					name="Danh mục"
+					name="Tỉnh/Thành phố"
 					parent="menu_danh_muc" sequence="10"/>
 					
 				<menuitem id="menu_action_quan_huyen"
 					action="action_quan_huyen"
-					name="Danh mục"
+					name="Quận/Huyện"
 					parent="menu_danh_muc" sequence="15"/>
 					
 				<menuitem id="menu_action_phuong_xa"
