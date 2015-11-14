@@ -9,11 +9,14 @@ import time
 from datetime import date
 from datetime import timedelta
 from datetime import datetime
+import datetime
 import calendar
 import amount_to_text_vn
 import openerp.addons.decimal_precision as dp
 import codecs
 from openerp import netsvc
+DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
+DATE_FORMAT = "%Y-%m-%d"
 
 class sale_order_rule(osv.osv):
     _name = "sale.order.rule"
@@ -618,12 +621,27 @@ class remind_work(osv.osv):
         'lydo_huy':fields.char('Lý do hủy',readonly=True, states={'draft': [('readonly', False)]}),
         'user_ids': fields.many2many('res.users','remind_work_users_ref','remind_work_id','user_id', 'Gán cho',required=True,readonly=True, states={'draft': [('readonly', False)]}),
         'gan_cho': fields.function(_get_gancho,type='char', string='Gán cho'),
+        'thoigian_dukien': fields.integer('Số ngày cảnh báo'),
+        'email_start_date': fields.date('Ngay bat dau canh bao'),
+        'email_end_date': fields.date('Ngay ket thuc canh bao'),
     }
     _defaults = {
         'date_start': fields.datetime.now,
         'state':  'draft',
         'user_ids': lambda self,cr,uid,ctx: [(6,0,[uid])],
     }
+    
+    def onchange_ngay_canh_bao(self, cr, uid, ids, date_start=False, thoigian_dukien=False):
+        vals = {}
+        if date_start and thoigian_dukien:
+            start_date_vn = datetime.datetime.strptime(date_start, DATETIME_FORMAT) + timedelta(hours=7)
+            email_start_date = start_date_vn + timedelta(days=-thoigian_dukien)
+            start_date_vn = start_date_vn.strftime(DATE_FORMAT)
+            email_start_date = email_start_date.strftime(DATE_FORMAT)
+            vals = {'email_start_date':email_start_date,
+                    'email_end_date':start_date_vn,
+                }
+        return {'value': vals}   
     
     def case_open(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids, {'state': 'open'})
@@ -634,6 +652,69 @@ class remind_work(osv.osv):
             if not line.lydo_huy:
                 raise osv.except_osv(_('Cảnh báo!'),_('Vui lòng nhập lý do hủy!'))
         return self.write(cr, uid, ids, {'state': 'cancel'})
+    
+    def send_mail(self, cr, uid, lead_email, msg_id,context=None):
+        mail_message_pool = self.pool.get('mail.message')
+        mail_mail = self.pool.get('mail.mail')
+        msg = mail_message_pool.browse(cr, SUPERUSER_ID, msg_id, context=context)
+        body_html = msg.body
+        # email_from: partner-user alias or partner email or mail.message email_from
+        if msg.author_id and msg.author_id.user_ids and msg.author_id.user_ids[0].alias_domain and msg.author_id.user_ids[0].alias_name:
+            email_from = '%s <%s@%s>' % (msg.author_id.name, msg.author_id.user_ids[0].alias_name, msg.author_id.user_ids[0].alias_domain)
+        elif msg.author_id:
+            email_from = '%s <%s>' % (msg.author_id.name, msg.author_id.email)
+        else:
+            email_from = msg.email_from
+
+        references = False
+        if msg.parent_id:
+            references = msg.parent_id.message_id
+
+        mail_values = {
+            'mail_message_id': msg.id,
+            'auto_delete': True,
+            'body_html': body_html,
+            'email_from': email_from,
+            'email_to' : lead_email,
+            'references': references,
+        }
+        email_notif_id = mail_mail.create(cr, uid, mail_values, context=context)
+        try:
+             mail_mail.send(cr, uid, [email_notif_id], context=context)
+        except Exception:
+            a = 1
+        return True
+    
+    def send_mail_for_remind_work(self, cr, uid, context=None):
+        sql = '''
+            select id from remind_work where state != 'done' and '%s' between email_start_date and email_end_date
+        '''%(time.strftime("%Y-%m-%d"))
+        cr.execute(sql)
+        remind_ids = [r[0] for r in cr.fetchall()]
+        if remind_ids:
+            for remind_id in remind_ids:
+                remind = self.browse(cr,uid,remind_id)
+                users = [r.id for r in remind.user_ids]
+                for user_id in users:
+                    user = self.pool.get('res.users').browse(cr, uid, user_id)
+                    partner = user.partner_id
+                    partner.signup_prepare()
+                    date_start_vn = datetime.datetime.strptime(remind.date_start, DATETIME_FORMAT) + timedelta(hours=7)
+                    date_start_vn = date_start_vn.strftime("%d-%m-%Y %H:%M:%S")
+                    date_end_vn = datetime.datetime.strptime(remind.date_end, DATETIME_FORMAT) + timedelta(hours=7)
+                    date_end_vn = date_end_vn.strftime("%d-%m-%Y %H:%M:%S")
+                    body = '''<p><b>Nội dung:<i>  %s</i></b><br/><b>Từ ngày:</b>  %s<br/><b>Đến ngày:</b>  %s<br/><b>Khách hàng:</b><i>  %s</i></p><p>Chi tiết: <br/>%s</p>
+                    '''%(remind.noidung_chinh_id.name, date_start_vn, date_end_vn, remind.partner_id.name, remind.note or '')
+                    if body:
+                        post_values = {
+                            'subject': remind.name,
+                            'body': body,
+                            'partner_ids': [],
+                            }
+                        lead_email = user.email
+                        msg_id = self.message_post(cr, uid, [remind.id], type='comment', subtype=False, context=context, **post_values)
+                        self.send_mail(cr, uid, lead_email, msg_id, context)
+        return True
     
 remind_work()
 class sanpham_canhtranh(osv.osv):

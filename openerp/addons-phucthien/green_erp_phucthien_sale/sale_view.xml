@@ -510,7 +510,7 @@
             <field name="name">remind.work.tree</field>
             <field name="model">remind.work</field>
             <field name="arch" type="xml">
-                <tree string="Nhắc nhỡ công việc">
+                <tree string="Nhắc nhở công việc">
                     <field name="name"/>
                     <field name="user_ids" widget="many2many_tags"/>
                     <field name="situation_id"/>
@@ -525,11 +525,11 @@
         </record>
         
         <record model="ir.ui.view" id="remind_work_calendar_view">
-        <field name="name">Nhắc nhỡ công việc</field>
+        <field name="name">Nhắc nhở công việc</field>
         <field name="model">remind.work</field>
         <field name="priority" eval="2"/>
         <field name="arch" type="xml">
-            <calendar string="Nhắc nhỡ công việc" date_start="date_start" date_stop="date_end" color="gan_cho">
+            <calendar string="Nhắc nhở công việc" date_start="date_start" date_stop="date_end" color="gan_cho">
                 <field name="name"/>
                 <field name="gan_cho"/>
                 <field name="state"/>
@@ -541,7 +541,7 @@
             <field name="name">remind.work.form</field>
             <field name="model">remind.work</field>
             <field name="arch" type="xml">
-                <form string="Nhắc nhỡ công việc" version="7.0">
+                <form string="Nhắc nhở công việc" version="7.0">
 	                <header>
 	                    <button name="case_open" string="Open" type="object" class="oe_highlight" states="draft"/>
 	                    <button name="case_done" string="Done" type="object" states="open"/>
@@ -555,12 +555,15 @@
 			                    <field name="user_ids" widget="many2many_tags"/>
 			                    <field name="noidung_chinh_id"/>
 			                    <field name="situation_id"/>
+			                    <field name="thoigian_dukien" on_change = "onchange_ngay_canh_bao(date_start, thoigian_dukien)"/>
 		                    </group>
 		                    <group>
-			                    <field name="date_start"/>
+			                    <field name="date_start" on_change = "onchange_ngay_canh_bao(date_start, thoigian_dukien)"/>
 			                    <field name="date_end"/>
                					<field name="partner_id"/>
                					<field name="lydo_huy"/>
+               					<field name="email_start_date"/>
+               					<field name="email_end_date"/>
 		                    </group>
                     	</group>
 	                    <group>
@@ -576,10 +579,10 @@
         </record>
         
         <record id="view_remind_work_filter" model="ir.ui.view">
-        <field name="name">Nhắc nhỡ công việc</field>
+        <field name="name">Nhắc nhở công việc</field>
         <field name="model">remind.work</field>
         <field name="arch" type="xml">
-            <search string="Nhắc nhỡ công việc">
+            <search string="Nhắc nhở công việc">
                <field name="name"/>
                <field name="date_start"/>
                <field name="date_end"/>
@@ -603,7 +606,7 @@
     </record>
       
        	<record model="ir.actions.act_window" id="action_remind_work">
-        <field name="name">Nhắc nhỡ công việc</field>
+        <field name="name">Nhắc nhở công việc</field>
         <field name="res_model">remind.work</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form,calendar</field>
@@ -611,7 +614,7 @@
         <field name="context">{"search_default_user_ids":uid}</field>
         <field name="search_view_id" ref="view_remind_work_filter"/>
     </record>
-       <menuitem name="Nhắc nhỡ công việc" action="action_remind_work" parent="base.menu_sales" id = "remind_work_menu" sequence="13"/>
+       <menuitem name="Nhắc nhở công việc" action="action_remind_work" parent="base.menu_sales" id = "remind_work_menu" sequence="13"/>
     
     <record model='ir.ui.view' id='view_sanpham_canhtranh_tree'>
             <field name="name">sanpham.canhtranh.tree</field>

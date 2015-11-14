@@ -50,6 +50,7 @@
             'hop_dong_view.xml',
             'sale_view.xml',
             'sale_sequence.xml',
+            'sale_schedule.xml',
             'menu.xml',
             'edi/sale_order_action_data.xml',
         ],
