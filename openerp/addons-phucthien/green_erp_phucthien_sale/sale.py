@@ -619,7 +619,7 @@ class remind_work(osv.osv):
         'noidung_chinh_id': fields.many2one('noi.dung.chinh', 'Nội dung chính', required=True,readonly=True, states={'draft': [('readonly', False)]}),
         'partner_id': fields.many2one('res.partner', 'Khách hàng',readonly=True, states={'draft': [('readonly', False)]}),
         'lydo_huy':fields.char('Lý do hủy',readonly=True, states={'draft': [('readonly', False)]}),
-        'user_ids': fields.many2many('res.users','remind_work_users_ref','remind_work_id','user_id', 'Gán cho',required=True,readonly=True, states={'draft': [('readonly', False)]}),
+        'user_ids': fields.many2many('res.users','remind_work_users_ref','remind_work_id','user_id', 'Gán cho',required=True,readonly=True, states={'draft': [('readonly', False)], 'open': [('readonly', False)]}),
         'gan_cho': fields.function(_get_gancho,type='char', string='Gán cho'),
         'thoigian_dukien': fields.integer('Số ngày cảnh báo'),
         'email_start_date': fields.date('Ngay bat dau canh bao'),

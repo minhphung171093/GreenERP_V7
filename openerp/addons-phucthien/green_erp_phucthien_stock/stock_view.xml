@@ -465,7 +465,7 @@
 	            	<sheet>
 	                    <group col='4' colspan='2'>
 	                    	<field name="name"/>
-	                        <field name="location_id" domain="[('name','like','dược')]"/>
+	                        <field name="location_id" domain="[('name','not like','lạnh'),('usage','=','internal')]"/>
 	                        <field name="user_id"/>
 	                        <field name="nguoi_kiemtra_id"/>
 	                    </group>

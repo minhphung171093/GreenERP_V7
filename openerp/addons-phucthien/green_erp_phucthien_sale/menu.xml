@@ -58,6 +58,11 @@
     		name="In danh sách khách hàng"
     		parent="base.menu_sales"
     		sequence="20"/>
+    		
+    		
+    	<menuitem id="menu_main_ke_hoach_cong_tac" name="Kế hoạch công tác" sequence="105"/>
+    		<menuitem id="menu_ke_hoach_cong_tac" parent="menu_main_ke_hoach_cong_tac" name="Kế hoạch công tác" sequence="0"/>
+    			<menuitem name="Kế hoạch công tác" action="green_erp_phucthien_sale.action_remind_work" parent="menu_ke_hoach_cong_tac" id = "menu_action_remind_work" sequence="0"/>
     </data>
     
 </openerp>

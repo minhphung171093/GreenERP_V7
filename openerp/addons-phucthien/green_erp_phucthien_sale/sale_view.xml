@@ -562,8 +562,8 @@
 			                    <field name="date_end"/>
                					<field name="partner_id"/>
                					<field name="lydo_huy"/>
-               					<field name="email_start_date"/>
-               					<field name="email_end_date"/>
+               					<field name="email_start_date" invisible = '1'/>
+               					<field name="email_end_date" invisible = '1'/>
 		                    </group>
                     	</group>
 	                    <group>
@@ -614,7 +614,6 @@
         <field name="context">{"search_default_user_ids":uid}</field>
         <field name="search_view_id" ref="view_remind_work_filter"/>
     </record>
-       <menuitem name="Nhắc nhở công việc" action="action_remind_work" parent="base.menu_sales" id = "remind_work_menu" sequence="13"/>
     
     <record model='ir.ui.view' id='view_sanpham_canhtranh_tree'>
             <field name="name">sanpham.canhtranh.tree</field>
