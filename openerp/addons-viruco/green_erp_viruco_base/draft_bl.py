@@ -16,29 +16,29 @@ import codecs
 class draft_bl(osv.osv):
     _name = "draft.bl"
     
-    def onchange_hopdong_id(self, cr, uid, ids, hopdong_id=False, context=None):
-        vals = {}
-        draft_bl_line = []
-        if hopdong_id:
-            hd_obj = self.pool.get('hop.dong')
-            hd = hd_obj.browse(cr, uid, hopdong_id)
-            for hd_line in hd.hopdong_line:
-                val_line={
-                    'product_id': hd_line.product_id and hd_line.product_id.id or False,
-                    'product_uom': hd_line.product_uom and hd_line.product_uom.id or False,
-                    'product_qty': hd_line.product_qty,
-                    'net_weight': hd_line.product_qty,
-                    'hopdong_line_id': hd_line.id,
-                }   
-                draft_bl_line.append((0,0,val_line))
-            vals = {
-                'port_of_loading': hd.port_of_loading and hd.port_of_loading.id or False,
-                'port_of_charge': hd.port_of_charge and hd.port_of_charge.id or False,
-                'diadiem_nhanhang': hd.diadiem_nhanhang and hd.diadiem_nhanhang or False,
-                'notify_party_id':hd.partner_id and hd.partner_id.id or False,
-                'draft_bl_line': draft_bl_line,
-            }
-        return {'value': vals}
+#     def onchange_hopdong_id(self, cr, uid, ids, hopdong_id=False, context=None):
+#         vals = {}
+#         draft_bl_line = []
+#         if hopdong_id:
+#             hd_obj = self.pool.get('hop.dong')
+#             hd = hd_obj.browse(cr, uid, hopdong_id)
+#             for hd_line in hd.hopdong_line:
+#                 val_line={
+#                     'product_id': hd_line.product_id and hd_line.product_id.id or False,
+#                     'product_uom': hd_line.product_uom and hd_line.product_uom.id or False,
+#                     'product_qty': hd_line.product_qty,
+#                     'net_weight': hd_line.product_qty,
+#                     'hopdong_line_id': hd_line.id,
+#                 }   
+#                 draft_bl_line.append((0,0,val_line))
+#             vals = {
+#                 'port_of_loading': hd.port_of_loading and hd.port_of_loading.id or False,
+#                 'port_of_charge': hd.port_of_charge and hd.port_of_charge.id or False,
+#                 'diadiem_nhanhang': hd.diadiem_nhanhang and hd.diadiem_nhanhang or False,
+#                 'notify_party_id':hd.partner_id and hd.partner_id.id or False,
+#                 'draft_bl_line': draft_bl_line,
+#             }
+#         return {'value': vals}
     
     _columns = {
         'name':fields.char('Booking No', size = 1024,required = True),
@@ -63,6 +63,7 @@ class draft_bl(osv.osv):
         'customs_declaration': fields.char('Customs Declaration', size=1024),
         'shipping_line_id': fields.many2one('shipping.line','Shipping line'),
         'forwarder_line_id': fields.many2one('forwarder.line','Forwarder line'),
+        'mean_transport': fields.char('Means of Transport', size=1024),
     }
     
     _defaults = {
@@ -85,6 +86,24 @@ class draft_bl(osv.osv):
                                                                })
         return super(draft_bl, self).create(cr, uid, vals, context)    
     
+    def bt_wizard(self, cr, uid, ids, context=None):
+        res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
+                                        'green_erp_viruco_base', 'draft_bl_print_report_form')
+        bl_id = self.browse(cr,uid,ids[0])
+        return {
+                    'name': 'In Báo Cáo',
+                    'view_type': 'form',
+                    'view_mode': 'form',
+                    'view_id': res[1],
+                    'res_model': 'draft.bl.print.report',
+                    'domain': [],
+                    'context': {
+                                'default_draft_bl_id':bl_id.id or False,
+                                },
+                    'type': 'ir.actions.act_window',
+                    'target': 'new',
+                }
+    
 draft_bl()
 
 class draft_bl_line(osv.osv):
@@ -99,7 +118,19 @@ class draft_bl_line(osv.osv):
         'cuoc_tau': fields.float('Freight Cost'),
         'description_line': fields.one2many('description.line','draft_bl_line_id','Line'),
         'product_id': fields.many2one('product.product', 'Product', domain=[('sale_ok', '=', True)], change_default=True,),
+        'hopdong_line_id': fields.many2one('hopdong.line', 'Product', ondelete='cascade', select=True),
     }
+    
+    def name_get(self, cr, uid, ids, context=None):
+        if not len(ids):
+            return []
+        reads = self.read(cr, uid, ids, ['ocean_vessel','picking_id','product_id'], context=context)
+        res = []
+        for record in reads:
+            name = (record['ocean_vessel'] and record['ocean_vessel'] +' - ' or '')+(record['picking_id'] and record['picking_id'][1] +' - ' or '') \
+                        + (record['product_id'] and record['product_id'][1] or '')
+            res.append((record['id'], name))
+        return res
     
 draft_bl_line()
 

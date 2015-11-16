@@ -35,6 +35,32 @@ class Parser(report_sxw.rml_parse):
             'get_consignee': self.get_consignee,
         })
     
+    def get_master_data(self):
+        wizard_data = self.localcontext['data']['form']
+        draft_bl_ids = wizard_data['draft_bl_id']
+        res = {'name': '',
+               'contract_no': '',
+                'buyer': '',
+                'address': '',
+                'mean_tran': '',
+                'bl_no': '',
+                'date_ship': '',
+                'from': '',
+                'to': '',}
+        if draft_bl_ids:
+            draft_bl_id = self.pool.get('draft.bl').browse(self.cr,self.uid,draft_bl_ids[0])
+            res.update({'name': draft_bl_id.name,
+                        'contract_no': draft_bl_id.hopdong_id and draft_bl_id.hopdong_id.name or '',
+                        'buyer': draft_bl_id.hopdong_id and draft_bl_id.hopdong_id.partner_id and draft_bl_id.hopdong_id.partner_id.name or '',
+                        'address': draft_bl_ido.hopdong_id and draft_bl_id.hopdong_id.partner_id and display_address(draft_bl_id.hopdong_id.partner_id) or '',
+                        'mean_tran': draft_bl_id.mean_transport or '',
+                        'bl_no': draft_bl_id.bl_no,
+                        'date_ship': convert_date(draft_bl_id.date),
+                        'from': draft_bl_id.port_of_loading and draft_bl_id.port_of_loading.name or '',
+                        'to': draft_bl_id.diadiem_nhanhang and draft_bl_id.diadiem_nhanhang.name or '',
+                        })
+        return res
+    
     def convert(self, amount):
         amount_text = amount_to_text_en.amount_to_text(amount, 'en', 'Dollars')
         if amount_text and len(amount_text)>1:
@@ -85,9 +111,12 @@ class Parser(report_sxw.rml_parse):
             consignee = 'To Order'
         return consignee
     
-    def sum_net_weight(self,o):
+    def sum_net_weight(self):
+        wizard_data = self.localcontext['data']['form']
+        draft_bl_ids = wizard_data['draft_bl_line_id']
         sum = 0
-        for line in o.draft_bl_line:
+        draft_bl_line_id = self.pool.get('draft.bl').browse(self.cr,self.uid,draft_bl_ids[0])
+        for line in draft_bl_line_id.description_line:
             sum += line.net_weight
         return sum
     
