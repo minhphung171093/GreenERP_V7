@@ -391,48 +391,72 @@ openerp.green_erp_web_google_map = function(instance) {
 					    
                         map.setCenter(point);
                         
-                        var circle = new google.maps.Circle({  //PHUNG ve duong tron
-							map: map,
-							radius: location.radius,    // 10 miles in metres
-							
-							strokeColor: "#FF0000",
+                        //PHUNG START test ve hinh
+                        var triangleCoords = [
+						    {lat: 10.995936, lng: 106.669896},
+						    {lat: 10.993303, lng: 106.671183},
+						    {lat: 10.994104, lng: 106.667900},
+						    {lat: 10.995936, lng: 106.669896}
+						];
+						var bermudaTriangle = new google.maps.Polygon({
+						    paths: triangleCoords,
+						    strokeColor: '#FF0000',
 						    strokeOpacity: 0.8,
 						    strokeWeight: 2,
+						    fillColor: '#FF0000',
 						    fillOpacity: 0.35,
-
-							clickable: true,
+						    clickable: true,
         					editable: true,
-
-							fillColor: '#AA0000'
-						});
-						circle.bindTo('center', marker, 'position');
-					  	google.maps.event.addListener(circle, 'radius_changed', function() {
-						    var radius = circle.getRadius();
-						    
-						    var model = new instance.web.Model("res.partner");
-						    var id = $.bbq.getState().id;
-						    var active_model = $.bbq.getState().model;
-						    model.call('write_radius', [id,active_model,{'radius':radius}]).done(function(r) {
-						    	self.getParent().reload().done(function(c){
-						    		self.draw_map();
-						    	});
-							    //process the value returned from 'button_function' as per your requirement.
+        					draggable: true,
+    						geodesic: true
+						  });
+						  //bermudaTriangle.setMap(map);//Hien thi len map
+                        //PHUNG STOP test ve hinh
+                        
+                        if (location.radius!==0){
+	                        var circle = new google.maps.Circle({  //PHUNG ve duong tron
+								map: map,
+								radius: location.radius,    // 10 miles in metres
+								
+								strokeColor: "#FF0000",
+							    strokeOpacity: 0.8,
+							    strokeWeight: 2,
+							    fillOpacity: 0.35,
+	
+								clickable: true,
+	        					editable: true,
+	
+								fillColor: '#AA0000'
 							});
-						});
-						google.maps.event.addListener(circle, 'center_changed', function() {
-						    var center = circle.getCenter();
-						    
-						    var model = new instance.web.Model("res.partner");
-						    var id = $.bbq.getState().id;
-						    var active_model = $.bbq.getState().model;
-						    model.call('write_center', [id,active_model,{'center':center}]).done(function(r) {
-						    	self.getParent().reload().done(function(c){
-						    		self.draw_map();
-						    	});
-						    	
-							    //process the value returned from 'button_function' as per your requirement.
+							circle.bindTo('center', marker, 'position');
+						  	google.maps.event.addListener(circle, 'radius_changed', function() {
+							    var radius = circle.getRadius();
+							    
+							    var model = new instance.web.Model("res.partner");
+							    var id = $.bbq.getState().id;
+							    var active_model = $.bbq.getState().model;
+							    model.call('write_radius', [id,active_model,{'radius':radius}]).done(function(r) {
+							    	self.getParent().reload().done(function(c){
+							    		self.draw_map();
+							    	});
+								    //process the value returned from 'button_function' as per your requirement.
+								});
 							});
-						});
+							google.maps.event.addListener(circle, 'center_changed', function() {
+							    var center = circle.getCenter();
+							    
+							    var model = new instance.web.Model("res.partner");
+							    var id = $.bbq.getState().id;
+							    var active_model = $.bbq.getState().model;
+							    model.call('write_center', [id,active_model,{'center':center}]).done(function(r) {
+							    	self.getParent().reload().done(function(c){
+							    		self.draw_map();
+							    	});
+							    	
+								    //process the value returned from 'button_function' as per your requirement.
+								});
+							});
+						}
 						//https://developers.google.com/maps/documentation/javascript/reference
 						if (location.points!==false){
 							var points = location.points.split('phung_cat_diem');

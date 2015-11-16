@@ -66,7 +66,9 @@ class doanh_nghiep(osv.osv):
                 'doanh.nghiep': (lambda self, cr, uid, ids, c={}: ids, ['image'], 10),
             },),
         'has_image': fields.function(_has_image, type="boolean"),
-        
+        'map': fields.dummy(),
+        'radius': fields.float(u'Radius', digits=(9, 16)),
+        'points': fields.text('Points'),
         }
 
     _defaults = {
