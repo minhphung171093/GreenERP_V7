@@ -294,18 +294,18 @@ class bang_gia(osv.osv):
         return {'value': vals}
 
     def duyet(self, cr, uid, ids, context=None):
-#         product_pricelist_version_obj = self.pool.get('product.pricelist.version')
-#         product_pricelist_obj = self.pool.get('product.pricelist')
-#         for bg in self.browse(cr, uid, ids):
-#             if bg.type=='ban':
-#                 product_pricelist_ids = product_pricelist_obj.search(cr, uid, [('currency_id','=',bg.currency_id.id),('type','=','sale')])
-#                 if not product_pricelist_ids:
-#                     product_pricelist_id = product_pricelist_obj.create(cr, uid, {'name': 'Public Pricelist',
-#                                                                                   'type':'sale',
-#                                                                                   'currency_id':bg.currency_id.id})
+        product_pricelist_version_obj = self.pool.get('product.pricelist.version')
+        product_pricelist_obj = self.pool.get('product.pricelist')
+        for bg in self.browse(cr, uid, ids):
+            if bg.type=='ban':
+                product_pricelist_ids = product_pricelist_obj.search(cr, uid, [('currency_id','=',bg.currency_id.id),('type','=','sale')])
+                if not product_pricelist_ids:
+                    product_pricelist_id = product_pricelist_obj.create(cr, uid, {'name': 'Public Pricelist',
+                                                                                  'type':'sale',
+                                                                                  'currency_id':bg.currency_id.id})
 #                 else:
 #                     product_pricelist_id = product_pricelist_ids[0]
-#                 
+                 
 #                 items = []
 #                 for line in bg.banggia_line:
 #                     items.append((0,0,{
@@ -314,23 +314,23 @@ class bang_gia(osv.osv):
 #                         'base': 1,
 #                         'price_surcharge': line.gia,
 #                     }))
-#                     
-#                 product_pricelist_version_obj.create(cr, uid, {
-#                     'pricelist_id':product_pricelist_id,
-#                     'name': 'Bảng giá từ ngày '+bg.date_start[8:10]+'/'+bg.date_start[5:7]+'/'+bg.date_start[:4]+' đến ngày '+bg.date_end[8:10]+'/'+bg.date_end[5:7]+'/'+bg.date_end[:4],
-#                     'date_start': bg.date_start,
-#                     'date_end': bg.date_end,
-#                     'items_id': items,
-#                 })
-#             if bg.type=='mua':
-#                 product_pricelist_ids = product_pricelist_obj.search(cr, uid, [('currency_id','=',bg.currency_id.id),('type','=','purchase')])
-#                 if not product_pricelist_ids:
-#                     product_pricelist_id = product_pricelist_obj.create(cr, uid, {'name': 'Public Pricelist',
-#                                                                                   'type':'purchase',
-#                                                                                   'currency_id':bg.currency_id.id})
+                     
+                    product_pricelist_version_obj.create(cr, uid, {
+                        'pricelist_id':product_pricelist_id,
+                        'name': 'Bảng giá bán từ ngày '+bg.date_start[8:10]+'/'+bg.date_start[5:7]+'/'+bg.date_start[:4]+' đến ngày '+bg.date_end[8:10]+'/'+bg.date_end[5:7]+'/'+bg.date_end[:4],
+    #                     'date_start': bg.date_start,
+    #                     'date_end': bg.date_end,
+    #                     'items_id': items,
+                    })
+            if bg.type=='mua':
+                product_pricelist_ids = product_pricelist_obj.search(cr, uid, [('currency_id','=',bg.currency_id.id),('type','=','purchase')])
+                if not product_pricelist_ids:
+                    product_pricelist_id = product_pricelist_obj.create(cr, uid, {'name': 'Public Pricelist',
+                                                                                  'type':'purchase',
+                                                                                  'currency_id':bg.currency_id.id})
 #                 else:
 #                     product_pricelist_id = product_pricelist_ids[0]
-#                 
+                 
 #                 items = []
 #                 for line in bg.banggia_line:
 #                     items.append((0,0,{
@@ -339,14 +339,14 @@ class bang_gia(osv.osv):
 #                         'base': 1,
 #                         'price_surcharge': line.gia,
 #                     }))
-#                     
-#                 product_pricelist_version_obj.create(cr, uid, {
-#                     'pricelist_id':product_pricelist_id,
-#                     'name': 'Bảng giá từ ngày '+bg.date_start[8:10]+'/'+bg.date_start[5:7]+'/'+bg.date_start[:4]+' đến ngày '+bg.date_end[8:10]+'/'+bg.date_end[5:7]+'/'+bg.date_end[:4],
-#                     'date_start': bg.date_start,
-#                     'date_end': bg.date_end,
-#                     'items_id': items,
-#                 })
+                     
+                    product_pricelist_version_obj.create(cr, uid, {
+                        'pricelist_id':product_pricelist_id,
+                        'name': 'Bảng giá mua từ ngày '+bg.date_start[8:10]+'/'+bg.date_start[5:7]+'/'+bg.date_start[:4]+' đến ngày '+bg.date_end[8:10]+'/'+bg.date_end[5:7]+'/'+bg.date_end[:4],
+    #                     'date_start': bg.date_start,
+    #                     'date_end': bg.date_end,
+    #                     'items_id': items,
+                    })
             
         return self.write(cr, uid, ids, {'state': 'da_duyet'})
     

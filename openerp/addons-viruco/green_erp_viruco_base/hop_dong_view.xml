@@ -65,7 +65,7 @@
 	                    	<field name="user_id"/>
 	                    	<field name="company_id" context="{'show_address': 1}"/>
 	                    	<field name="partner_id"  context="{'show_address': 1}" domain="[('customer','=',True)]"/>
-	                    	<field name="banggia_id" domain="[('currency_id','=',currency_company_id),('type','=','ban')]" />
+	                    	<field name="banggia_id" on_change="onchange_banggia_id(banggia_id,type,currency_id)" domain="[('currency_id','=',currency_company_id),('type','=','ban')]" />
 	                    	<field name="currency_id"/>
 	                    	<field name="pricelist_id" invisible = '1'/> 
 						</group>
@@ -169,7 +169,7 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="hop_dong_noi_tree_view"/>
             <field name="domain">[('type','=','hd_noi')]</field>
-            <field name="context">{'default_type':'hd_noi'}</field>
+            <field name="context">{'default_type':'hd_noi','readonly_by_pass': True}</field>
         </record>
         <record model="ir.actions.act_window.view" id="action_hop_dong_noi1">
             <field name="sequence" eval="1"/>
@@ -238,7 +238,7 @@
 	                    	<newline/>
 	                    	<field name="company_id" string="Company" context="{'show_address': 1}"/>
 	                    	<field name="partner_id" string="Partner"  context="{'show_address': 1}" domain="[('customer','=',True)]"/>
-							<field name="banggia_id" domain="[('currency_id','!=',currency_company_id),('type','=','ban')]" />
+							<field name="banggia_id" on_change="onchange_banggia_id(banggia_id,type,currency_id)" domain="[('currency_id','!=',currency_company_id),('type','=','ban')]" />
 							<field name="pricelist_id" invisible = '1'/>
 	                    	<field name="currency_id" string="Currency"/>
 	                    	<field name="user_id" string="User"/>
@@ -375,7 +375,7 @@
             <field name="view_id" ref="hop_dong_ngoai_tree_view"/>
             <field name="domain">[('type','=','hd_ngoai')]</field>
             <field name="search_view_id" ref="view_hop_dong_filter"/>
-            <field name="context">{'default_type':'hd_ngoai'}</field>
+            <field name="context">{'default_type':'hd_ngoai','readonly_by_pass': True}</field>
         </record>
         <record model="ir.actions.act_window.view" id="action_hop_dong_ngoai1">
             <field name="sequence" eval="3"/>
@@ -437,7 +437,7 @@
 	                    	<newline/>
 	                    	<field name="company_id" context="{'show_address': 1}"/>
 	                    	<field name="partner_id"  context="{'show_address': 1,'default_supplier':1,'default_customer':0}" string='Nhà cung cấp' domain="[('supplier','=',True)]"/>
-	                    	<field name="banggia_id" domain="[('currency_id','=',currency_company_id),('type','=','mua')]" />
+	                    	<field name="banggia_id" on_change="onchange_banggia_id(banggia_id,type,currency_id)" domain="[('currency_id','=',currency_company_id),('type','=','mua')]" />
 	                    	<field name="user_id"/>
 	                    	<field name="currency_id"/>
 	                    	<field name="pricelist_id" invisible = '1'/> 
@@ -495,7 +495,7 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="hop_dong_mua_trongnuoc_tree_view"/>
             <field name="domain">[('type','=','hd_mua_trongnuoc')]</field>
-            <field name="context">{'default_type':'hd_mua_trongnuoc'}</field>
+            <field name="context">{'default_type':'hd_mua_trongnuoc','readonly_by_pass': True}</field>
         </record>
         <record model="ir.actions.act_window.view" id="action_hop_dong_mua_trongnuoc1">
             <field name="sequence" eval="1"/>
@@ -557,7 +557,7 @@
 	                    	<newline/>
 	                    	<field name="company_id" context="{'show_address': 1}"/>
 	                    	<field name="partner_id"  context="{'show_address': 1,'default_supplier':1,'default_customer':0}" string='Nhà cung cấp' domain="[('supplier','=',True)]"/>
-	                    	<field name="banggia_id" domain="[('currency_id','=',currency_company_id),('type','=','mua')]" />
+	                    	<field name="banggia_id" on_change="onchange_banggia_id(banggia_id,type,currency_id)" domain="[('currency_id','=',currency_company_id),('type','=','mua')]" />
 	                    	<field name="user_id"/>
 	                    	<field name="currency_id"/>
 	                    	<field name="pricelist_id" invisible = '1'/>
@@ -614,7 +614,7 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="hop_dong_mua_nhapkhau_tree_view"/>
             <field name="domain">[('type','=','hd_mua_nhapkhau')]</field>
-            <field name="context">{'default_type':'hd_mua_nhapkhau'}</field>
+            <field name="context">{'default_type':'hd_mua_nhapkhau','readonly_by_pass': True}</field>
         </record>
         <record model="ir.actions.act_window.view" id="action_hop_dong_mua_nhapkhau1">
             <field name="sequence" eval="1"/>
