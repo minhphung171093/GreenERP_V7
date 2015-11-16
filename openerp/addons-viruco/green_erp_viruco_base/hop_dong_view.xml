@@ -62,12 +62,12 @@
 	                    </group>
 	                    <group col='4' colspan='2'>
 	                    	<field name="donbanhang_id" on_change="onchange_donbanhang_id(donbanhang_id)" required='1' domain="[('type','=','dbh_noi'),('state','=','da_duyet')]"/>
-	                    	<newline/>
+	                    	<field name="user_id"/>
 	                    	<field name="company_id" context="{'show_address': 1}"/>
 	                    	<field name="partner_id"  context="{'show_address': 1}" domain="[('customer','=',True)]"/>
-	                    	<field name="pricelist_id" invisible = '1'/> 
 	                    	<field name="banggia_id" domain="[('currency_id','=',currency_company_id),('type','=','ban')]" />
 	                    	<field name="currency_id"/>
+	                    	<field name="pricelist_id" invisible = '1'/> 
 						</group>
 						<notebook>
 							<page string="Thông tin chung">
