@@ -403,14 +403,14 @@ openerp.green_erp_web_google_map = function(instance) {
 						    strokeColor: '#FF0000',
 						    strokeOpacity: 0.8,
 						    strokeWeight: 2,
-						    fillColor: '#FF0000',
+						    fillColor: '#00FF00',
 						    fillOpacity: 0.35,
 						    clickable: true,
         					editable: true,
         					draggable: true,
     						geodesic: true
 						  });
-						  //bermudaTriangle.setMap(map);//Hien thi len map
+						  bermudaTriangle.setMap(map);//Hien thi len map
                         //PHUNG STOP test ve hinh
                         
                         if (location.radius!==0){
