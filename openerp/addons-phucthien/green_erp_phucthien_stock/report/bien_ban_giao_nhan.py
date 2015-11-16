@@ -22,6 +22,7 @@ class Parser(report_sxw.rml_parse):
         
     def __init__(self, cr, uid, name, context):
         super(Parser, self).__init__(cr, uid, name, context=context)
+        self.context = context
         pool = pooler.get_pool(self.cr.dbname)
         self.localcontext.update({
             'get_partner_address':self.get_partner_address,
@@ -33,14 +34,46 @@ class Parser(report_sxw.rml_parse):
             'get_nhanvien_donggoi': self.get_nhanvien_donggoi,
             'get_so_thung': self.get_so_thung,
             'get_line':self.get_line,
-            
+            'get_picking': self.get_picking,
+            'get_stt': self.get_stt,
         })
-       
-    def get_nhanvien_donggoi(self, picking):
-        return picking.picking_packaging_line and picking.picking_packaging_line[0].employee_id.name or ''
     
-    def get_so_thung(self, picking):
-        return picking.picking_packaging_line and picking.picking_packaging_line[0].loai_thung_id.name or ''
+    def get_stt(self,seq_1,seq):
+        stt = 1
+        for s,picking in enumerate(self.get_picking()):
+            if s<seq_1:
+                stt += len(picking.move_lines)
+            if s==seq_1:
+                for s2,line in enumerate(picking.move_lines):
+                    if s2<seq:
+                        stt += 1
+        return stt
+       
+    def get_nhanvien_donggoi(self):
+        nhanvien = ''
+        picking_out_obj = self.pool.get('stock.picking.out')
+        picking_out_ids = self.context.get('active_ids',[])
+        for seq,picking in enumerate(picking_out_obj.browse(self.cr, self.uid, picking_out_ids)):
+            if picking.picking_packaging_line:
+                for seq_2,line in enumerate(picking.picking_packaging_line):
+                    if seq_2 == 0:
+                        nhanvien += line.employee_id and line.employee_id.name or ''
+                    else:
+                        nhanvien += line.employee_id and ', ' + line.employee_id.name or ''
+        return nhanvien
+    
+    def get_so_thung(self):
+        loai_thung = ''
+        picking_out_obj = self.pool.get('stock.picking.out')
+        picking_out_ids = self.context.get('active_ids',[])
+        for seq,picking in enumerate(picking_out_obj.browse(self.cr, self.uid, picking_out_ids)):
+            if picking.picking_packaging_line:
+                for seq_2,line in enumerate(picking.picking_packaging_line):
+                    if seq_2 == 0:
+                        loai_thung += line.loai_thung_id and line.loai_thung_id.name or ''
+                    else:
+                        loai_thung += line.loai_thung_id and ', ' + line.loai_thung_id.name or ''
+        return loai_thung
     
     def get_bienban_giaonhan(self):
         return self.pool.get('ir.sequence').get(self.cr, self.uid, 'bienban.giaonhan') 
@@ -78,6 +111,11 @@ class Parser(report_sxw.rml_parse):
         else:
             so_hd = ''
         return so_hd
+    
+    def get_picking(self):
+        picking_out_obj = self.pool.get('stock.picking.out')
+        picking_out_ids = self.context.get('active_ids',[])
+        return picking_out_obj.browse(self.cr, self.uid, picking_out_ids)
     
     def get_line(self,picking):
         res = []
