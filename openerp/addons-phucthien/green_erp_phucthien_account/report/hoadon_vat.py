@@ -10,6 +10,10 @@ from openerp import pooler
 from openerp.osv import osv
 from openerp.tools.translate import _
 import random
+from datetime import date
+from datetime import timedelta
+from datetime import datetime
+import datetime
 DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 DATE_FORMAT = "%Y-%m-%d"
 
@@ -116,8 +120,8 @@ class Parser(report_sxw.rml_parse):
         if not date:
             date = time.strftime('%Y-%m-%d')
         else:
-            date = date[:10]
-        date = datetime.strptime(date, DATE_FORMAT)
+            date = datetime.strptime(date, DATETIME_FORMAT) + timedelta(hours=7)
+#         date = date.strtime(date, DATE_FORMAT)
         return date.strftime('%m/%Y') 
     
     def get_line(self,line,o):
