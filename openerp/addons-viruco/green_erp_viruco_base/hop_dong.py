@@ -491,6 +491,7 @@ class hop_dong(osv.osv):
         vals = {}
         order_line = []
         hd_hoahong_line = []
+        property = self.pool.get('admin.property')._get_project_property_by_name(cr, uid, 'properties_payment_terms')
         if donbanhang_id:
             dbh_obj = self.pool.get('don.ban.hang')
             dbh = dbh_obj.browse(cr, uid, donbanhang_id)
@@ -536,6 +537,7 @@ class hop_dong(osv.osv):
                 'hopdong_hoahong_line': hd_hoahong_line,
                 'incoterm_id':dbh.incoterm_id and dbh.incoterm_id.id or False,
                 'currency_id':dbh.banggia_id and dbh.banggia_id.currency_id.id or False,
+                'phuongthuc_thanhtoan':(dbh.note or '')+'\n'+ (property and property.value or ''),
             }
         return {'value': vals}
     
