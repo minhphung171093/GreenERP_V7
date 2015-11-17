@@ -830,6 +830,7 @@ class don_ban_hang(osv.osv):
         'currency_id': fields.related('banggia_id', 'currency_id', type="many2one", relation="res.currency", string="Đơn vị tiền tệ", readonly=True),
         'currency_company_id': fields.many2one('res.currency', 'Currency'),
         'user_id':fields.many2one('res.users','Người đề nghị',readonly=True,states={'moi_tao': [('readonly', False)]}),
+        'sale_person_id':fields.many2one('res.users','Sale Person',states={'moi_tao': [('readonly', False)]}),
         'ngay_nhanhang':fields.char('Thời gian giao hàng',size=1024),
         'nguoi_gioithieu_id':fields.many2one('res.partner','Người giới thiệu',readonly=True,states={'moi_tao': [('readonly', False)]}),
         'noi_giaohang_id':fields.many2one('noi.giaohang','Nơi giao hàng'),

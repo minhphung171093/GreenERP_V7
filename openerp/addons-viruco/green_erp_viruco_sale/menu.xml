@@ -18,7 +18,7 @@
     	
     	<menuitem id="menu_action_don_ban_hang_ngoai"
     		action="green_erp_viruco_base.action_don_ban_hang_ngoai"
-    		name="Sales CONFIRMATION"
+    		name="Proforma Invoice"
     		parent="base.menu_sales"
 			sequence="0"/>
 			

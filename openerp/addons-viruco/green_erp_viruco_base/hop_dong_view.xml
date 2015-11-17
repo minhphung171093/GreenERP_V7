@@ -808,7 +808,7 @@
             <field name="name">don_ban_hang.ngoai.form</field>
             <field name="model">don.ban.hang</field>
             <field name="arch" type="xml">
-	            <form string="Sales CONFIRMATION" version="7.0">
+	            <form string="Proforma Invoice" version="7.0">
 					<header>
 						<button name="print_donbanhang" string="In Proforma Invoice" type="object" class="oe_highlight"/>
 						<button name="duyet" string="Duyệt" states="moi_tao" type="object" class="oe_highlight"/>
@@ -829,23 +829,27 @@
 	                    	<field name="partner_id" on_change="onchange_partner_id(partner_id)" string="Partner" context="{'show_address': 1}" domain="[('customer','=',True)]"/>
 	                    	<field name="ngay" string="Date"/>
 	                    	<field name="banggia_id" context="{'search_banggia_ban_ngoai_id': 1,'ngay':ngay,'currency_company_id':currency_company_id}" />
-	                    	<field name="pricelist_id" invisible = '1'/> 
+	                    	<field name="sale_person_id" /> 
 	                    	<field name="currency_id" string="Currency"/>
 	                    	<field name="user_id" string="User"/>
 	                    	<field name="ngay_nhanhang" string="Shipment Time"/>
 	                    	<field name="nguoi_gioithieu_id" string="Broker/Agent"/>
 	                    	<field name="dieukien_giaohang_id" string="Delivery Term"/>
+	                    	<field name="incoterm_id"/>
 	            <!--        	<field name="payment_term" widget="selection" string="Payment Term"/>   -->
 	                    	<field name="dk_thanhtoan_id" string="Payment Term"/>
-	                    	<field name="destinaltion"/>
+	                    	<field name="note" string="Description"/>
+	                    	
 	                    	<field name="port_of_loading"/>
 	                    	<field name="port_of_charge"/>
 	                    	<field name="diadiem_nhanhang" string="Place of delivery"/>
-	                    	<field name="partial_shipment"/>
+	                    	<field name="destinaltion"/>
+	                    	
 	                    	<field name="transshipment"/>
-	                    	<field name="incoterm_id"/>
+	                    	
 	           <!--         	<field name="arbitration_id"/>   -->
-	                    	<field name="note" string="Description"/>
+	                    	<field name="partial_shipment"/>
+	                    	<field name="pricelist_id" invisible = '1'/> 
 						</group>
 						<notebook>
 							<page string="Product Line" >
@@ -906,7 +910,7 @@
 		</record>
           
 		<record id="action_don_ban_hang_ngoai" model="ir.actions.act_window">
-            <field name="name">Sales CONFIRMATION</field>
+            <field name="name">Proforma Invoice</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">don.ban.hang</field>
             <field name="view_type">form</field>
