@@ -34,7 +34,7 @@
             <field name="name">draft.bl.print.report.form</field>
             <field name="model">draft.bl.print.report</field>
             <field name="arch" type="xml">
-                <form string="Theo dõi hợp đồng" version="7.0">
+                <form string="In Báo Cáo" version="7.0">
                 	<group col="4" colspan="2">
                 		<field name="draft_bl_id" invisible="1"/>
                 		<field name="draft_bl_line_id" domain="[('draft_bl_id','=',draft_bl_id)]" required="1"/>

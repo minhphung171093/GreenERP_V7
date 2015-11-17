@@ -52,7 +52,7 @@
 	                    </h1>
 	                    <group>
 	                    	<group>
-	                    		<field name="hopdong_id" domain="[('type','=','hd_ngoai'),('state','not in',('moi_tao','da_duyet','da_ky','het_han'))]" on_change="onchange_hopdong_id(hopdong_id)"/>
+	                    		<field name="hopdong_id" domain="[('type','=','hd_ngoai'),('state','not in',('moi_tao','da_duyet','da_ky','het_han'))]" on_change = "onchange_hopdong_id(hopdong_id)"/>
 	                    		<field name="company_id"/>
 	                    		<field name="consignee_id"/>
 	                    		<field name="freight"/>

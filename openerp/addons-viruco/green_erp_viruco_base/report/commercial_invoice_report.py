@@ -33,6 +33,11 @@ class Parser(report_sxw.rml_parse):
             'convert': self.convert,
             'get_packages_packing_list': self.get_packages_packing_list,
             'get_consignee': self.get_consignee,
+            'get_product': self.get_product,
+            'get_master_data': self.get_master_data,
+            'get_ocean': self.get_ocean,
+            'get_packages_weight': self.get_packages_weight, 
+            'get_bl_line': self.get_bl_line,
         })
     
     def get_master_data(self):
@@ -46,18 +51,32 @@ class Parser(report_sxw.rml_parse):
                 'bl_no': '',
                 'date_ship': '',
                 'from': '',
-                'to': '',}
+                'to': '',
+                'discharge': '',
+                'consignee': '',
+#                 'consignee_add': '',
+                'notify_party': '',
+                'notify_party_add': '',
+                'date_eng': '',
+                }
         if draft_bl_ids:
             draft_bl_id = self.pool.get('draft.bl').browse(self.cr,self.uid,draft_bl_ids[0])
             res.update({'name': draft_bl_id.name,
                         'contract_no': draft_bl_id.hopdong_id and draft_bl_id.hopdong_id.name or '',
                         'buyer': draft_bl_id.hopdong_id and draft_bl_id.hopdong_id.partner_id and draft_bl_id.hopdong_id.partner_id.name or '',
-                        'address': draft_bl_ido.hopdong_id and draft_bl_id.hopdong_id.partner_id and display_address(draft_bl_id.hopdong_id.partner_id) or '',
+                        'address': draft_bl_id.hopdong_id and draft_bl_id.hopdong_id.partner_id and self.display_address(draft_bl_id.hopdong_id.partner_id) or '',
                         'mean_tran': draft_bl_id.mean_transport or '',
                         'bl_no': draft_bl_id.bl_no,
-                        'date_ship': convert_date(draft_bl_id.date),
+                        'date_ship': self.convert_date(draft_bl_id.date),
                         'from': draft_bl_id.port_of_loading and draft_bl_id.port_of_loading.name or '',
                         'to': draft_bl_id.diadiem_nhanhang and draft_bl_id.diadiem_nhanhang.name or '',
+                        'discharge': draft_bl_id.port_of_charge and draft_bl_id.port_of_charge.name or '',
+                        'consignee': self.get_consignee(draft_bl_id),
+#                         'consignee': draft_bl_id.consignee_id and draft_bl_id.consignee_id.name or '',
+#                         'consignee_add': draft_bl_id.consignee_id and self.display_address(draft_bl_id.consignee_id) or '' ,
+                        'notify_party': draft_bl_id.notify_party_id and draft_bl_id.notify_party_id.name or '',
+                        'notify_party_add': draft_bl_id.notify_party_id and self.display_address(draft_bl_id.notify_party_id) or '' ,
+                        'date_eng': draft_bl_id.date[8:10] + ' ' + self.get_month_name(int(draft_bl_id.date[5:7])) +'. '+ draft_bl_id.date[:4],
                         })
         return res
     
@@ -115,27 +134,86 @@ class Parser(report_sxw.rml_parse):
         wizard_data = self.localcontext['data']['form']
         draft_bl_ids = wizard_data['draft_bl_line_id']
         sum = 0
-        draft_bl_line_id = self.pool.get('draft.bl').browse(self.cr,self.uid,draft_bl_ids[0])
+        draft_bl_line_id = self.pool.get('draft.bl.line').browse(self.cr,self.uid,draft_bl_ids[0])
         for line in draft_bl_line_id.description_line:
             sum += line.net_weight
         return sum
     
-    def sum_gross_weight(self,o):
+    def sum_gross_weight(self): 
+        wizard_data = self.localcontext['data']['form']
+        draft_bl_ids = wizard_data['draft_bl_line_id']
         sum = 0
-        for line in o.draft_bl_line:
+        draft_bl_line_id = self.pool.get('draft.bl.line').browse(self.cr,self.uid,draft_bl_ids[0])
+        for line in draft_bl_line_id.description_line:
             sum += line.gross_weight
         return sum
     
-    def sum_price_subtotal(self,o):
-        sum = 0
-        for line in o.draft_bl_line:
-            sum += line.hopdong_line_id.price_subtotal and line.hopdong_line_id.price_subtotal or 0.0 
-        return sum
+    def sum_price_subtotal(self):
+        wizard_data = self.localcontext['data']['form']
+        draft_bl_ids = wizard_data['draft_bl_line_id']
+        res = {'total': 0,
+               'unit':0,}
+        draft_bl_line_id = self.pool.get('draft.bl.line').browse(self.cr,self.uid,draft_bl_ids[0])
+        total = draft_bl_line_id.hopdong_line_id and draft_bl_line_id.hopdong_line_id.price_subtotal or 0.0 
+        unit = draft_bl_line_id.hopdong_line_id and draft_bl_line_id.hopdong_line_id.price_unit or 0.0 
+        res.update({'total': total,
+                    'unit':unit,
+                    })
+        return res
     
-    def sum_packages(self,o):
+    def sum_packages(self): 
+        wizard_data = self.localcontext['data']['form']
+        draft_bl_ids = wizard_data['draft_bl_line_id']
         sum = 0
-        for line in o.draft_bl_line:
+        line1 = ''
+        draft_bl_line_id = self.pool.get('draft.bl.line').browse(self.cr,self.uid,draft_bl_ids[0])
+        for line in draft_bl_line_id.description_line:
             sum += line.packages_qty
-        return sum
+            line1 = str(sum) + ' '+ (line.packages_id and line.packages_id.name or '')
+        return line1
+    
+    def get_product(self): 
+        wizard_data = self.localcontext['data']['form']
+        draft_bl_ids = wizard_data['draft_bl_line_id']
+        draft_bl_line_id = self.pool.get('draft.bl.line').browse(self.cr,self.uid,draft_bl_ids[0])
+        product = draft_bl_line_id.hopdong_line_id and draft_bl_line_id.hopdong_line_id.product_id and draft_bl_line_id.hopdong_line_id.product_id.eng_name or ''
+        return product
+    
+    def get_ocean(self): 
+        wizard_data = self.localcontext['data']['form']
+        draft_bl_ids = wizard_data['draft_bl_line_id']
+        draft_bl_line_id = self.pool.get('draft.bl.line').browse(self.cr,self.uid,draft_bl_ids[0])
+        product = draft_bl_line_id.ocean_vessel or ''
+        return product
+    
+    def get_packages_weight(self): 
+        wizard_data = self.localcontext['data']['form']
+        draft_bl_ids = wizard_data['draft_bl_line_id']
+        sum = 0
+        line1 = ''
+        line2 = ''
+        res = {'sum': 0,
+                'weight': '',}
+        draft_bl_line_id = self.pool.get('draft.bl.line').browse(self.cr,self.uid,draft_bl_ids[0])
+        for line in draft_bl_line_id.description_line:
+            sum += line.packages_qty
+            line1 = line.packages_weight
+        if line1 == '33.33':
+            line2 = '33.33 Kgs/Bale'
+        elif line1 == '35':
+            line2 = '35 Kgs/Bale'
+        elif line1 == '1.20':
+            line2 = '1.20 Mts/Pallet'
+        elif line1 == '1.26':
+            line2 = '1.26 Mts/Pallet'
+        res.update({ 'sum': sum,
+                    'weight': line2,})
+        return res
+    
+    def get_bl_line(self): 
+        wizard_data = self.localcontext['data']['form']
+        draft_bl_ids = wizard_data['draft_bl_line_id']
+        draft_bl_line_id = self.pool.get('draft.bl.line').browse(self.cr,self.uid,draft_bl_ids[0])
+        return draft_bl_line_id
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

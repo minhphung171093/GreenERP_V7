@@ -43,9 +43,16 @@ class draft_bl_print_report(osv.osv_memory):
                 }
     
     def print_report(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        datas = {'ids': context.get('active_ids', [])}
+        datas['model'] = 'draft.bl.print.report'
+        datas['form'] = self.read(cr, uid, ids)[0]
+        datas['form'].update({'active_id':context.get('active_ids',False)})
         return {
             'type': 'ir.actions.report.xml',
-            'report_name': 'other_report',
+            'report_name': 'commercial_invoice_report',
+            'datas': datas,
         }
 draft_bl_print_report()
 

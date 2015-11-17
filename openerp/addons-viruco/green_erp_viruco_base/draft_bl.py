@@ -16,12 +16,12 @@ import codecs
 class draft_bl(osv.osv):
     _name = "draft.bl"
     
-#     def onchange_hopdong_id(self, cr, uid, ids, hopdong_id=False, context=None):
-#         vals = {}
-#         draft_bl_line = []
-#         if hopdong_id:
-#             hd_obj = self.pool.get('hop.dong')
-#             hd = hd_obj.browse(cr, uid, hopdong_id)
+    def onchange_hopdong_id(self, cr, uid, ids, hopdong_id=False, context=None):
+        vals = {}
+        draft_bl_line = []
+        if hopdong_id:
+            hd_obj = self.pool.get('hop.dong')
+            hd = hd_obj.browse(cr, uid, hopdong_id)
 #             for hd_line in hd.hopdong_line:
 #                 val_line={
 #                     'product_id': hd_line.product_id and hd_line.product_id.id or False,
@@ -31,14 +31,14 @@ class draft_bl(osv.osv):
 #                     'hopdong_line_id': hd_line.id,
 #                 }   
 #                 draft_bl_line.append((0,0,val_line))
-#             vals = {
-#                 'port_of_loading': hd.port_of_loading and hd.port_of_loading.id or False,
-#                 'port_of_charge': hd.port_of_charge and hd.port_of_charge.id or False,
-#                 'diadiem_nhanhang': hd.diadiem_nhanhang and hd.diadiem_nhanhang or False,
-#                 'notify_party_id':hd.partner_id and hd.partner_id.id or False,
+            vals = {
+                'port_of_loading': hd.port_of_loading and hd.port_of_loading.id or False,
+                'port_of_charge': hd.port_of_charge and hd.port_of_charge.id or False,
+                'diadiem_nhanhang': hd.diadiem_nhanhang and hd.diadiem_nhanhang.id or False,
+                'notify_party_id':hd.partner_id and hd.partner_id.id or False,
 #                 'draft_bl_line': draft_bl_line,
-#             }
-#         return {'value': vals}
+            }
+        return {'value': vals}
     
     _columns = {
         'name':fields.char('Booking No', size = 1024,required = True),

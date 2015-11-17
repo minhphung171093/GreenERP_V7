@@ -50,7 +50,7 @@
 	        rml="green_erp_viruco_base/report/fumi_report.odt"/>   
 	        
 	    <record id="commercial_invoice_report" model="ir.actions.report.xml">
-	        <field name="name">draft_bl_report</field>
+	        <field name="name">commercial_invoice_report</field>
 	        <field name="type">ir.actions.report.xml</field>
 	        <field name="model">draft.bl</field>
 	        <field name="report_name">Commercial Invoice</field>
