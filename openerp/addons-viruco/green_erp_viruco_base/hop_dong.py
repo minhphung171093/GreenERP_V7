@@ -470,6 +470,23 @@ class hop_dong(osv.osv):
         }
         return {'warning': warning, 'value': value}
     
+    def onchange_banggia_id(self, cr, uid, ids, banggia_id=False,type=False,currency_id=False, context=None):
+        context = context or {}
+        value = {}
+        product_pricelist_obj = self.pool.get('product.pricelist')
+        if banggia_id:
+            if type in ['hd_noi','hd_ngoai']:
+                 product_pricelist_ids = product_pricelist_obj.search(cr, uid, [('currency_id','=',currency_id),('type','=','sale')])
+                 value = {
+                    'pricelist_id': product_pricelist_ids[0]
+                    }
+            if type in ['hd_mua_trongnuoc','hd_mua_nhapkhau']:
+                 product_pricelist_ids = product_pricelist_obj.search(cr, uid, [('currency_id','=',currency_id),('type','=','purchase')])
+                 value = {
+                    'pricelist_id': product_pricelist_ids[0]
+                    }
+        return {'value': value}    
+    
     def onchange_donbanhang_id(self, cr, uid, ids, donbanhang_id=False, context=None):
         vals = {}
         order_line = []
@@ -518,6 +535,7 @@ class hop_dong(osv.osv):
                 'hopdong_line': order_line,
                 'hopdong_hoahong_line': hd_hoahong_line,
                 'incoterm_id':dbh.incoterm_id and dbh.incoterm_id.id or False,
+                'currency_id':dbh.banggia_id and dbh.banggia_id.currency_id.id or False,
             }
         return {'value': vals}
     
@@ -543,6 +561,7 @@ class hop_dong(osv.osv):
                 'banggia_id': dmh.banggia_id.id,
                 'tu_ngay': dmh.ngay,
                 'hopdong_line': order_line,
+                'currency_id':dmh.banggia_id and dmh.banggia_id.currency_id.id or False,
             }
         return {'value': vals}
 
