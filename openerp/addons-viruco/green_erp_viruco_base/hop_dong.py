@@ -1033,7 +1033,7 @@ class don_ban_hang_line(osv.osv):
         'origin': fields.char('Origin', size = 1024),
     }
     
-    def onchange_product_id(self, cr, uid, ids,qty=0,ngay=False,partner_id=False,banggia_id=False,product_id=False,nha_sanxuat_id=False,chatluong_id=False,quycach_donggoi_id=False,type=False,context=None):
+    def onchange_product_id(self, cr, uid, ids,qty=0,ngay=False,partner_id=False,banggia_id=False,product_id=False,chatluong_id=False,quycach_donggoi_id=False,type=False,context=None):
         vals = {}
         warning = {}
         if not ngay:
