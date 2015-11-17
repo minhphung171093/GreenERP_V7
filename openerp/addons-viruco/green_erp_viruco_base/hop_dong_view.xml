@@ -852,6 +852,7 @@
 	                    	
 	           <!--         	<field name="arbitration_id"/>   -->
 	                    	<field name="partial_shipment"/>
+	                    	<field name="remark"/>
 	                    	<field name="pricelist_id" invisible = '1'/> 
 						</group>
 						<notebook>
