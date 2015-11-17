@@ -256,20 +256,20 @@ class bang_gia(osv.osv):
             if (vals['type']=='ban'):
                 currency_obj = self.pool.get('res.currency')
                 currency = currency_obj.browse(cr, uid, vals['currency_id'])
-                vals['name'] =  'Bảng giá bán công bố'+' ('+currency.name+')'
+                vals['name'] =  u'Bảng giá bán công bố'+u' ('+currency.name+u')'
             if (vals['type']=='mua'):
                 currency_obj = self.pool.get('res.currency')
                 currency = currency_obj.browse(cr, uid, vals['currency_id'])
-                vals['name'] =  'Bảng giá mua công bố'+' ('+currency.name+')'
+                vals['name'] =  u'Bảng giá mua công bố'+u' ('+currency.name+u')'
         new_id = super(bang_gia, self).create(cr, uid, vals, context=context)    
         return new_id
 
     def write(self, cr, uid, ids, vals, context=None):
         for line in self.browse(cr,uid,ids):
             if line.type=='ban':
-                line.name =  'Bảng giá bán công bố'+' ('+line.currency_id.name+')'
+                line.name =  u'Bảng giá bán công bố'+u' ('+line.currency_id.name+u')'
             if line.type=='mua':
-                line.name =  'Bảng giá mua công bố'+' ('+line.currency_id.name+')'
+                line.name =  u'Bảng giá mua công bố'+u' ('+line.currency_id.name+u')'
         new_write = super(bang_gia, self).write(cr, uid, ids, vals, context=context)    
         return new_write  
     
