@@ -33,6 +33,28 @@ class theodoi_hopdong(osv.osv):
         datas['form'] = self.read(cr, uid, ids)[0]
         datas['form'].update({'active_id':context.get('active_ids',False)})
         return {'type': 'ir.actions.report.xml', 'report_name': 'theo_doi_hop_dong_report', 'datas': datas}
+    
+class draft_bl_print_report(osv.osv_memory):
+    _name = "draft.bl.print.report"
+    
+    _columns = {    
+                'draft_bl_id': fields.many2one('draft.bl', 'Draft bl'),
+                'draft_bl_line_id': fields.many2one('draft.bl.line', 'Draft BL line'),
+                }
+    
+    def print_report(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        datas = {'ids': context.get('active_ids', [])}
+        datas['model'] = 'draft.bl.print.report'
+        datas['form'] = self.read(cr, uid, ids)[0]
+        datas['form'].update({'active_id':context.get('active_ids',False)})
+        return {
+            'type': 'ir.actions.report.xml',
+            'report_name': 'commercial_invoice_report',
+            'datas': datas,
+        }
+draft_bl_print_report()
 
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

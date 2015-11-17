@@ -50,7 +50,7 @@
 	        rml="green_erp_viruco_base/report/fumi_report.odt"/>   
 	        
 	    <record id="commercial_invoice_report" model="ir.actions.report.xml">
-	        <field name="name">draft_bl_report</field>
+	        <field name="name">commercial_invoice_report</field>
 	        <field name="type">ir.actions.report.xml</field>
 	        <field name="model">draft.bl</field>
 	        <field name="report_name">Commercial Invoice</field>
@@ -125,7 +125,7 @@
         <record id="other_report" model="ir.actions.report.xml">
 	        <field name="name">other_report</field>
 	        <field name="type">ir.actions.report.xml</field>
-	        <field name="model">draft.bl</field>
+	        <field name="model">draft.bl.print.report</field>
 	        <field name="report_name">Other</field>
 	        <field name="report_type">aeroo</field>
 	        <field name="in_format">oo-ods</field>
@@ -139,9 +139,9 @@
     	   
     	<report 
 			auto="False" 
-			menu="True"
+			menu="False"
 			id="other_report" 
-			model="draft.bl" 
+			model="draft.bl.print.report" 
 			name="other_report"
 	        string="Other"
 	        rml="green_erp_viruco_base/report/certificate.ods"/>

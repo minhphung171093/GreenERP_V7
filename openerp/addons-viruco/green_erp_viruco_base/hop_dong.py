@@ -731,6 +731,15 @@ class hopdong_line(osv.osv):
                 else:
                     vals.update({'name': product.name})
         return {'value': vals}
+    
+    def name_get(self, cr, uid, ids, context=None):
+        res = []
+        if not ids:
+            return res
+        for line in self.browse(cr,uid,ids):
+            line_name = (line.product_id and line.product_id.default_code and '[' + line.product_id.default_code + '] ' or '') + (line.product_id and line.product_id.name or '')
+            res.append((line.id,line_name))
+        return res  
 hopdong_line()
 
 class don_ban_hang(osv.osv):
