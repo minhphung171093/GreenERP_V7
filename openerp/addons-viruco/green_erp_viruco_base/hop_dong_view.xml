@@ -65,9 +65,10 @@
 	                    	<field name="user_id"/>
 	                    	<field name="company_id" context="{'show_address': 1}"/>
 	                    	<field name="partner_id"  context="{'show_address': 1}" domain="[('customer','=',True)]"/>
-	                    	<field name="banggia_id" on_change="onchange_banggia_id(banggia_id,type,currency_id)" domain="[('currency_id','=',currency_company_id),('type','=','ban')]" />
+	                    	<field name="banggia_id" on_change="onchange_banggia_id(banggia_id,type,currency_id)" context="{'search_banggia_ban_id': 1,'ngay':date_dbh,'currency_company_id':currency_company_id}" />
 	                    	<field name="currency_id"/>
 	                    	<field name="pricelist_id" invisible = '1'/> 
+	                    	<field name="date_dbh" invisible = '1'/> 
 						</group>
 						<notebook>
 							<page string="Thông tin chung">
@@ -226,7 +227,7 @@
 	            	<sheet>
 	                    <h1>
 	                    	<label string="No."/>
-	                        <field name="name" class="oe_inline" nolabel="1" required="0" readonly="1"/>
+	                        <field name="name" class="oe_inline" nolabel="1" required="0" />
 	                        <button name="bt_list_phieuxuat" string="Danh Sách Phiếu Xuất" type="object" class="oe_highlight, oe_inline, oe_right"/>
 	                    </h1>
 	                    <group col='4' colspan='2'>
@@ -238,12 +239,13 @@
 	                    	<newline/>
 	                    	<field name="company_id" string="Company" context="{'show_address': 1}"/>
 	                    	<field name="partner_id" string="Partner"  context="{'show_address': 1}" domain="[('customer','=',True)]"/>
-							<field name="banggia_id" on_change="onchange_banggia_id(banggia_id,type,currency_id)" domain="[('currency_id','!=',currency_company_id),('type','=','ban')]" />
+							<field name="banggia_id" on_change="onchange_banggia_id(banggia_id,type,currency_id)" context="{'search_banggia_ban_ngoai_id': 1,'ngay':date_dbh,'currency_company_id':currency_company_id}" />
 							<field name="sale_person_id" />
 	                    	<field name="currency_id" string="Currency"/>
 	                    	<field name="user_id" string="User"/>
 	                    	<field name="create_theodoi_hopdong" invisible = '1'/>
 	                    	<field name="pricelist_id" invisible = '1'/>
+	                    	<field name="date_dbh" invisible = '1' />
 						</group>
 						<notebook>
 							<page string="Information">
@@ -440,10 +442,11 @@
 	                    	<newline/>
 	                    	<field name="company_id" context="{'show_address': 1}"/>
 	                    	<field name="partner_id"  context="{'show_address': 1,'default_supplier':1,'default_customer':0}" string='Nhà cung cấp' domain="[('supplier','=',True)]"/>
-	                    	<field name="banggia_id" on_change="onchange_banggia_id(banggia_id,type,currency_id)" domain="[('currency_id','=',currency_company_id),('type','=','mua')]" />
+	                    	<field name="banggia_id" on_change="onchange_banggia_id(banggia_id,type,currency_id)" context="{'search_banggia_mua_id': 1,'ngay':date_dbh,'currency_company_id':currency_company_id}" />
 	                    	<field name="user_id"/>
 	                    	<field name="currency_id"/>
 	                    	<field name="pricelist_id" invisible = '1'/> 
+	                    	<field name="date_dbh" invisible = '1'/> 
 						</group>
 						<notebook>
 							<page string="Thông tin chung">
@@ -560,10 +563,11 @@
 	                    	<newline/>
 	                    	<field name="company_id" context="{'show_address': 1}"/>
 	                    	<field name="partner_id"  context="{'show_address': 1,'default_supplier':1,'default_customer':0}" string='Nhà cung cấp' domain="[('supplier','=',True)]"/>
-	                    	<field name="banggia_id" on_change="onchange_banggia_id(banggia_id,type,currency_id)" domain="[('currency_id','=',currency_company_id),('type','=','mua')]" />
+	                    	<field name="banggia_id" on_change="onchange_banggia_id(banggia_id,type,currency_id)" context="{'search_banggia_mua_ngoai_id': 1,'ngay':date_dbh,'currency_company_id':currency_company_id}" />
 	                    	<field name="user_id"/>
 	                    	<field name="currency_id"/>
 	                    	<field name="pricelist_id" invisible = '1'/>
+	                    	<field name="date_dbh" invisible = '1'/>
 						</group>
 						<notebook>
 							<page string="Thông tin chung">

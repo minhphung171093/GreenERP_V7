@@ -313,6 +313,7 @@ class hop_dong(osv.osv):
         'theodoi_hopdong_line': fields.one2many('theodoi.hopdong.line','hopdong_id','Line',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'create_theodoi_hopdong': fields.function(_get_create_theodoi_hopdong, type='char', string='create_theodoi_hopdong'),
         'flag':fields.boolean('C/O'),
+        'date_dbh':fields.date('Ngày ban hang',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
     }
     
     _defaults = {
@@ -520,6 +521,7 @@ class hop_dong(osv.osv):
                 }
                 hd_hoahong_line.append((0,0,hd_hh_value))
             vals = {
+                'name':dbh.name,
                 'partner_id': dbh.partner_id and dbh.partner_id.id or False,
 #                 'pricelist_id': dbh.pricelist_id and dbh.pricelist_id.id or False,
                 'banggia_id': dbh.banggia_id and dbh.banggia_id.id or False,
@@ -540,6 +542,7 @@ class hop_dong(osv.osv):
                 'currency_id':dbh.banggia_id and dbh.banggia_id.currency_id.id or False,
                 'phuongthuc_thanhtoan':(dbh.note or '')+'\n'+ (property and property.value or ''),
                 'sale_person_id': dbh.sale_person_id and dbh.sale_person_id.id or False,
+                'date_dbh':dbh.ngay,
             }
         return {'value': vals}
     
@@ -585,18 +588,18 @@ class hop_dong(osv.osv):
                 }
         return {'value': vals}
 
-    def create(self, cr, uid, vals, context=None):
-        user = self.pool.get('res.users').browse(cr,uid,uid)
-        if 'type' in vals:
-            if (vals['type']=='hd_ngoai'):
-                curent_date = time.strftime('%Y-%m-%d')
-#                 if vals.get('name','/')=='/':
-                sequence = self.pool.get('ir.sequence').get(cr, uid, 'hopdong.ngoai')
-                vals['name'] =  'VS'+curent_date[2:4]+' - '+sequence
-                    
-                    
-        new_id = super(hop_dong, self).create(cr, uid, vals, context=context)    
-        return new_id
+#     def create(self, cr, uid, vals, context=None):
+#         user = self.pool.get('res.users').browse(cr,uid,uid)
+#         if 'type' in vals:
+#             if (vals['type']=='hd_ngoai'):
+#                 curent_date = time.strftime('%Y-%m-%d')
+# #                 if vals.get('name','/')=='/':
+#                 sequence = self.pool.get('ir.sequence').get(cr, uid, 'hopdong.ngoai')
+#                 vals['name'] =  'VS'+curent_date[2:4]+' - '+sequence
+#                     
+#                     
+#         new_id = super(hop_dong, self).create(cr, uid, vals, context=context)    
+#         return new_id
 
     def write(self, cr, uid, ids, vals, context=None):
         for line in self.browse(cr,uid,ids):
@@ -899,6 +902,7 @@ class don_ban_hang(osv.osv):
     }
     
     _defaults = {
+        'name':'/',
         'ngay': time.strftime('%Y-%m-%d'),
         'state': 'moi_tao',
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'hop.dong', context=c),
@@ -1001,6 +1005,19 @@ class don_ban_hang(osv.osv):
     
     def huy_bo(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids, {'state':'huy_bo'})
+
+    def create(self, cr, uid, vals, context=None):
+        user = self.pool.get('res.users').browse(cr,uid,uid)
+        if 'type' in vals:
+            if (vals['type']=='dbh_ngoai'):
+                curent_date = time.strftime('%Y-%m-%d')
+                if vals.get('name','/')=='/':
+                    sequence = self.pool.get('ir.sequence').get(cr, uid, 'hopdong.ngoai')
+                    vals['name'] =  'VS'+curent_date[2:4]+'-'+sequence
+                    
+                    
+        new_id = super(don_ban_hang, self).create(cr, uid, vals, context=context)    
+        return new_id
     
 don_ban_hang()
 
