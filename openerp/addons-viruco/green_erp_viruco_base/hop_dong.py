@@ -719,6 +719,7 @@ class hopdong_line(osv.osv):
         'quycach_baobi_id':fields.many2one('quycach.baobi','Quy cách bao bì'),        
         'sotien_giam': fields.float('Số tiền giảm'),
         'hopdong_giam_id': fields.many2one('hop.dong', 'Hợp đồng'),
+        'origin': fields.char('Origin', size = 1024),
     }
     
     def onchange_product_id(self, cr, uid, ids,product_id=False,type = False, context=None):
@@ -1028,6 +1029,7 @@ class don_ban_hang_line(osv.osv):
         'chatluong_id':fields.many2one('chatluong.sanpham','Chất lượng'),
         'quycach_donggoi_id':fields.many2one('quycach.donggoi','Quy cách đóng gói'),
         'quycach_baobi_id':fields.many2one('quycach.baobi','Quy cách bao bì'),
+        'origin': fields.char('Origin', size = 1024),
     }
     
     def onchange_product_id(self, cr, uid, ids,qty=0,ngay=False,partner_id=False,banggia_id=False,product_id=False,nha_sanxuat_id=False,chatluong_id=False,quycach_donggoi_id=False,type=False,context=None):
