@@ -63,7 +63,7 @@ class Parser(report_sxw.rml_parse):
         cur_obj = self.pool.get('res.currency')
         cur = order.pricelist_id.currency_id
         val = self._amount_line_tax(self.cr, self.uid, line)
-        return cur_obj.round(self.cr, self.uid, cur, val)
+        return val
     
     def get_soluong(self,order):
         cur_obj = self.pool.get('res.currency')
@@ -71,9 +71,9 @@ class Parser(report_sxw.rml_parse):
         val = 0
         for line in order.don_ban_hang_line:
             val += line.product_qty
-        product_qty = cur_obj.round(self.cr, self.uid, cur, val)
+#         product_qty = cur_obj.round(self.cr, self.uid, cur, val)
         return {
-                'product_qty': product_qty,
+                'product_qty': val,
                 }
     
     def get_tong(self,order):
@@ -84,10 +84,10 @@ class Parser(report_sxw.rml_parse):
         for line in order.don_ban_hang_line:
             val += self._amount_line_tax(self.cr, self.uid, line)
             val1 += line.price_subtotal
-        tax = cur_obj.round(self.cr, self.uid, cur, val)
-        total = cur_obj.round(self.cr, self.uid, cur, val1)
+#         tax = cur_obj.round(self.cr, self.uid, cur, val)
+#         total = cur_obj.round(self.cr, self.uid, cur, val1)
         return {
-                'tax': tax,
-                'total': tax+total,
+                'tax': val,
+                'total': val+val1,
                 }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
