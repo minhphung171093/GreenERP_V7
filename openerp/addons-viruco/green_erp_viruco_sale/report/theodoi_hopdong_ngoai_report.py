@@ -147,7 +147,7 @@ class Parser(report_sxw.rml_parse):
         
     def convert_date(self, date):
         if not date:
-            date = time.strftime(DATE_FORMAT)
+            return ''
         date = datetime.strptime(date[0:10], DATE_FORMAT)
         return date.strftime('%d-%m-%Y')
         
