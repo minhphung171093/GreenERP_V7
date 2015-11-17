@@ -239,10 +239,11 @@
 	                    	<field name="company_id" string="Company" context="{'show_address': 1}"/>
 	                    	<field name="partner_id" string="Partner"  context="{'show_address': 1}" domain="[('customer','=',True)]"/>
 							<field name="banggia_id" on_change="onchange_banggia_id(banggia_id,type,currency_id)" domain="[('currency_id','!=',currency_company_id),('type','=','ban')]" />
-							<field name="pricelist_id" invisible = '1'/>
+							<field name="sale_person_id" />
 	                    	<field name="currency_id" string="Currency"/>
 	                    	<field name="user_id" string="User"/>
 	                    	<field name="create_theodoi_hopdong" invisible = '1'/>
+	                    	<field name="pricelist_id" invisible = '1'/>
 						</group>
 						<notebook>
 							<page string="Information">
@@ -257,7 +258,7 @@
 									<field name="partial_shipment" />
 									<field name="transshipment" />
 									<field name="arbitration_id" />
-									<field name="incoterm_id"/>
+									
 								</group>
 								<group col='4' colspan='2'>
 									<field name="thanhtoan" />
@@ -315,6 +316,7 @@
 							<page string="Payment terms">
 							<group>
 								<field name="dk_giaohang_id" string = "Delivery Term"/>
+								<field name="incoterm_id"/>
 								<field name="dk_thanhtoan_id" string = "Payment Term" on_change="onchange_payment_term_id(dk_thanhtoan_id)" />
 								<field name="date_payment" string = "Payment Date" attrs="{'invisible': [('flag', '=',False)]}" />
 								<field name="flag" invisible='1'/>
