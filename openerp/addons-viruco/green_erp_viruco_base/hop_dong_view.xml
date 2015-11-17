@@ -681,7 +681,7 @@
 	                    <group col='4' colspan='2'>
 	                    	<field name="partner_id" on_change="onchange_partner_id(partner_id)" context="{'show_address': 1}" domain="[('customer','=',True)]"/>
 	                    	<field name="ngay"/>
-	                    	<field name="banggia_id" domain="[('currency_id','=',currency_company_id),('type','=','ban')]" />
+	                    	<field name="banggia_id" context="{'search_banggia_ban_id': 1,'ngay':ngay,'currency_company_id':currency_company_id}" />
 	                    	<field name="pricelist_id" invisible = '1'/>
 	                    	<field name="currency_id"/>
 	                    	<field name="nguoi_gioithieu_id" domain="[('nha_moigioi','=',True)]"/>
@@ -828,7 +828,7 @@
 	                    <group col='4' colspan='2'>
 	                    	<field name="partner_id" on_change="onchange_partner_id(partner_id)" string="Partner" context="{'show_address': 1}" domain="[('customer','=',True)]"/>
 	                    	<field name="ngay" string="Date"/>
-	                    	<field name="banggia_id" domain="[('currency_id','!=',currency_company_id),('type','=','ban'),('state','=','da_duyet')]" />
+	                    	<field name="banggia_id" context="{'search_banggia_ban_ngoai_id': 1,'ngay':ngay,'currency_company_id':currency_company_id}" />
 	                    	<field name="pricelist_id" invisible = '1'/> 
 	                    	<field name="currency_id" string="Currency"/>
 	                    	<field name="user_id" string="User"/>
@@ -982,7 +982,7 @@
 	                    	<field name="company_id" context="{'show_address': 1}"/>
 	                    	<field name="partner_id" context="{'show_address': 1}" domain="[('customer','=',True)]"/>
 	                    	<field name="ngay"/>
-	                    	<field name="banggia_id" domain="[('currency_id','=',currency_company_id),('type','=','mua'),('state','=','da_duyet')]" />
+	                    	<field name="banggia_id" on_change="onchange_banggia_mua_id(banggia_id,ngay)" context="{'search_banggia_mua_id': 1,'ngay':ngay,'currency_company_id':currency_company_id}" />
 	                    	<field name="currency_id"/>
 	                    	<field name="user_id"/>
 	                    	<field name="pricelist_id" invisible = '1'/>
@@ -991,10 +991,10 @@
 							<page string="Thông tin mặt hàng" >
 								<field name="don_mua_hang_line">
 									<tree editable='top'>
-	                                    <field name="product_id" on_change="onchange_product_id(parent.ngay,parent.partner_id,parent.banggia_id,product_id,chatluong_id,quycach_donggoi_id, context)"/>
+	                                    <field name="product_id" on_change="onchange_product_id(parent.ngay,parent.partner_id,parent.banggia_id,product_id,chatluong_id,quycach_donggoi_id,parent.type, context)"/>
 	                                    <field name="name"/>
-	                                    <field name="chatluong_id" on_change="onchange_product_id(parent.ngay,parent.partner_id,parent.banggia_id,product_id,chatluong_id,quycach_donggoi_id, context)" />
-	                                    <field name="quycach_donggoi_id" on_change="onchange_product_id(parent.ngay,parent.partner_id,parent.banggia_id,product_id,chatluong_id,quycach_donggoi_id, context)" />
+	                                    <field name="chatluong_id" on_change="onchange_product_id(parent.ngay,parent.partner_id,parent.banggia_id,product_id,chatluong_id,quycach_donggoi_id,parent.type, context)" />
+	                                    <field name="quycach_donggoi_id" on_change="onchange_product_id(parent.ngay,parent.partner_id,parent.banggia_id,product_id,chatluong_id,quycach_donggoi_id,parent.type, context)" />
 	                                    <field name="quycach_baobi_id"  />
 	                                    <field name="product_uom"/>
 	                                    <field name="product_qty"/>
@@ -1085,7 +1085,7 @@
 	                    	<field name="company_id" context="{'show_address': 1}"/>
 	                    	<field name="partner_id" context="{'show_address': 1}" domain="[('customer','=',True)]"/>
 	                    	<field name="ngay"/>
-	                    	<field name="banggia_id" domain="[('type','=','mua'),('state','=','da_duyet')]" />
+	                    	<field name="banggia_id" on_change="onchange_banggia_mua_id(banggia_id,ngay)" context="{'search_banggia_mua_ngoai_id': 1,'ngay':ngay,'currency_company_id':currency_company_id}" />
 	                    	<field name="currency_id"/>
 	                    	<field name="user_id"/>
 	                    	<field name="pricelist_id" invisible = '1'/>
@@ -1094,10 +1094,10 @@
 							<page string="Thông tin mặt hàng" >
 								<field name="don_mua_hang_line">
 									<tree editable='top'>
-	                                    <field name="product_id" on_change="onchange_product_id(parent.ngay,parent.partner_id,parent.banggia_id,product_id,chatluong_id,quycach_donggoi_id, context)"/>
+	                                    <field name="product_id" on_change="onchange_product_id(parent.ngay,parent.partner_id,parent.banggia_id,product_id,chatluong_id,quycach_donggoi_id,parent.type, context)"/>
 	                                    <field name="name"/>
-	                                    <field name="chatluong_id" string="Quality" on_change="onchange_product_id(parent.ngay,parent.partner_id,parent.banggia_id,product_id,chatluong_id,quycach_donggoi_id, context)" />
-	                                    <field name="quycach_donggoi_id" string="Packing" on_change="onchange_product_id(parent.ngay,parent.partner_id,parent.banggia_id,product_id,chatluong_id,quycach_donggoi_id, context)" />
+	                                    <field name="chatluong_id" string="Quality" on_change="onchange_product_id(parent.ngay,parent.partner_id,parent.banggia_id,product_id,chatluong_id,quycach_donggoi_id,parent.type, context)" />
+	                                    <field name="quycach_donggoi_id" string="Packing" on_change="onchange_product_id(parent.ngay,parent.partner_id,parent.banggia_id,product_id,chatluong_id,quycach_donggoi_id,parent.type, context)" />
 	                                    <field name="quycach_baobi_id" string="Packaging Spec" />
 	                                    <field name="product_uom"/>
 	                                    <field name="product_qty"/>

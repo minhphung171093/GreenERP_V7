@@ -795,7 +795,7 @@ class phuluc_hop_dong(osv.osv):
                                     cr.execute(''' delete from stock_move where id = %s ''',(stock_move.id,))
                                 # sua lai so luong cua stock move -> xong
                                 else:
-                                    product_obj.write(cr, uid, [move.product_id.id], {'standard_price':stock_move.purchase_line_id.price_unit})
+                                    product_obj.write(cr, uid, [stock_move.product_id.id], {'standard_price':stock_move.purchase_line_id.price_unit})
                                     stock_move_obj.write(cr, uid, [stock_move.id], {'product_qty': stock_move.product_qty-qty})
                                     cr.execute(''' delete from account_move where stock_move_id = %s ''',(stock_move.id,))
                                     stock_move_obj._create_product_valuation_moves(cr, uid, stock_move)

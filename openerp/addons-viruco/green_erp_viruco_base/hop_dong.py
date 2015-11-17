@@ -1047,8 +1047,8 @@ class don_ban_hang_line(osv.osv):
             if banggia_id:
                 if chatluong_id and quycach_donggoi_id:
                     sql = '''
-                        select gia from bang_gia_line where product_id = %s and chatluong_id =%s and quycach_donggoi_id = %s and banggia_id in ( select id from bang_gia where state ='da_duyet'  and ('%s' between date_start and date_end))
-                    '''%(product_id,chatluong_id,quycach_donggoi_id,ngay)
+                        select gia from bang_gia_line where product_id = %s and chatluong_id =%s and quycach_donggoi_id = %s and banggia_id = %s
+                    '''%(product_id,chatluong_id,quycach_donggoi_id,banggia_id)
                     cr.execute(sql)
                     gia_ids = cr.dictfetchall()
                     if gia_ids:
@@ -1198,7 +1198,26 @@ class don_mua_hang(osv.osv):
     
     def huy_bo(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids, {'state':'huy_bo'})
-    
+
+    def onchange_banggia_mua_id(self, cr, uid, ids, banggia_id=False,ngay=False, context=None):
+        context = context or {}
+        warning = {}
+        vals = {}
+        if banggia_id:
+            bang_gia = self.pool.get('bang.gia').browse(cr,uid,banggia_id)
+            sql = '''
+                select id from bang_gia where type = 'mua' and ('%s' between date_start and date_end) and id = %s
+            '''%(ngay,banggia_id)
+            cr.execute(sql)
+            date_ids = cr.fetchall()
+            if not date_ids:
+                ngay = datetime.strptime(ngay, "%Y-%m-%d")
+                vals.update({'banggia_id': False})
+                warning = {
+                            'title': _('Cảnh báo!'),
+                            'message' : _('Chưa có bảng giá mua cho ngày %s!')%(ngay.strftime('%d/%m/%Y'))
+                        }
+        return {'warning': warning,'value':vals}    
 don_mua_hang()
 
 class don_mua_hang_line(osv.osv):
@@ -1228,9 +1247,12 @@ class don_mua_hang_line(osv.osv):
         'quycach_donggoi_id':fields.many2one('quycach.donggoi','Quy cách đóng gói'),
         'quycach_baobi_id':fields.many2one('quycach.baobi','Quy cách bao bì'),
     }
+
+
     
-    def onchange_product_id(self, cr, uid, ids,ngay=False,partner_id=False,banggia_id=False,product_id=False,chatluong_id=False,quycach_donggoi_id=False, context=None):
+    def onchange_product_id(self, cr, uid, ids,ngay=False,partner_id=False,banggia_id=False,product_id=False,chatluong_id=False,quycach_donggoi_id=False,type=False, context=None):
         vals = {}
+        warning = {}
         if not ngay:
             ngay = time.strftime('%Y-%m-%d')
         if not partner_id:
@@ -1243,16 +1265,27 @@ class don_mua_hang_line(osv.osv):
                     }
             vals['tax_id'] = self.pool.get('account.fiscal.position').map_tax(cr, uid, False, product.supplier_taxes_id)
             if banggia_id:
+                bang_gia = self.pool.get('bang.gia').browse(cr,uid,banggia_id)
                 if chatluong_id and quycach_donggoi_id:
-                    sql = '''
-                        select gia from bang_gia_line where product_id = %s and chatluong_id =%s and quycach_donggoi_id = %s and banggia_id in ( select id from bang_gia where state ='da_duyet'  and ('%s' between date_start and date_end))
-                    '''%(product_id,chatluong_id,quycach_donggoi_id,ngay)
-                    cr.execute(sql)
-                    gia_ids = cr.dictfetchall()
-                    if gia_ids:
-                        price = gia_ids[0]['gia']
-                    vals.update({'price_unit': price})
-        return {'value': vals}
+                    if type in ['dmh_trongnuoc','dmh_nhapkhau']:
+                        sql = '''
+                            select gia from bang_gia_line where product_id = %s and chatluong_id =%s and quycach_donggoi_id = %s and banggia_id = %s
+                        '''%(product_id,chatluong_id,quycach_donggoi_id,banggia_id)
+                        cr.execute(sql)
+                        gia_ids = cr.dictfetchall()
+                        if gia_ids:
+                            price = gia_ids[0]['gia']
+                            vals.update({'price_unit': price})
+                        else:
+                            vals.update({'price_unit': 0.0})
+                            warning = {
+                                'title': _('Cảnh báo!'),
+                                'message' : _('Chưa có giá cụ thể cho hạng mục vừa chọn!')
+                            }
+#                         raise osv.except_osv(_('Cảnh báo!'),_('Chưa có giá cụ thể cho hạng mục này!'))
+                        
+        return {'warning': warning,'value': vals}
+#         return {'value': vals}
 don_mua_hang_line()
 
 

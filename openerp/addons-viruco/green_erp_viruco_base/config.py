@@ -366,6 +366,56 @@ class bang_gia(osv.osv):
     
     def chinh_sua_lai(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids, {'state': 'moi_tao'})
+
+    def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
+        if context is None:
+            context = {}
+        
+        if context.get('search_banggia_mua_id'):
+            banggia_ids = []
+            if context.get('ngay') and context.get('currency_company_id'):
+                sql = '''
+                    select id from bang_gia
+                        where type = 'mua' and currency_id = %s and state in ('da_duyet') and ('%s' between date_start and date_end)
+                '''%(context.get('currency_company_id'),context.get('ngay'))
+                cr.execute(sql)
+                banggia_ids = [row[0] for row in cr.fetchall()]
+            args += [('id','in',banggia_ids)]
+        if context.get('search_banggia_mua_ngoai_id'):
+            banggia_ids = []
+            if context.get('ngay') and context.get('currency_company_id'):
+                sql = '''
+                    select id from bang_gia
+                        where type = 'mua' and currency_id != %s and state in ('da_duyet') and ('%s' between date_start and date_end)
+                '''%(context.get('currency_company_id'),context.get('ngay'))
+                cr.execute(sql)
+                banggia_ids = [row[0] for row in cr.fetchall()]
+            args += [('id','in',banggia_ids)]
+        if context.get('search_banggia_ban_id'):
+            banggia_ids = []
+            if context.get('ngay') and context.get('currency_company_id'):
+                sql = '''
+                    select id from bang_gia
+                        where type = 'ban' and currency_id = %s and state in ('da_duyet') and ('%s' between date_start and date_end)
+                '''%(context.get('currency_company_id'),context.get('ngay'))
+                cr.execute(sql)
+                banggia_ids = [row[0] for row in cr.fetchall()]
+            args += [('id','in',banggia_ids)]
+        if context.get('search_banggia_ban_ngoai_id'):
+            banggia_ids = []
+            if context.get('ngay') and context.get('currency_company_id'):
+                sql = '''
+                    select id from bang_gia
+                        where type = 'ban' and currency_id != %s and state in ('da_duyet') and ('%s' between date_start and date_end)
+                '''%(context.get('currency_company_id'),context.get('ngay'))
+                cr.execute(sql)
+                banggia_ids = [row[0] for row in cr.fetchall()]
+            args += [('id','in',banggia_ids)]
+        return super(bang_gia, self).search(cr, uid, args, offset=offset, limit=limit, order=order, context=context, count=count)
+    
+    def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
+       ids = self.search(cr, user, args, context=context, limit=limit)
+       return self.name_get(cr, user, ids, context=context)
     
 bang_gia()
 
