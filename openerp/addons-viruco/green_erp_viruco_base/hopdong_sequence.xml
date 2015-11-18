@@ -15,5 +15,24 @@
             <field name="implementation">no_gap</field>
         </record>
         
+<!-- Mua Hang noi -->
+        <record id="sequence_don_mua_hang_noi" model="ir.sequence.type">
+            <field name="name">Don Mua Hang Noi</field>
+            <field name="code">don.mua.hang.noi</field>
+        </record>
+        
+        <record id="sequence_don_mua_hang_noi_item" model="ir.sequence">
+            <field name="name">Don Mua Hang Noi</field>
+            <field name="code">don.mua.hang.noi</field>
+            <field name="prefix">M</field>
+            <field name="suffix">-%(month)s.%(year)s/VRC-</field>
+            <field name="padding">2</field>
+            <field name="number_next_actual">01</field>
+            <field name="implementation">standard</field>
+            <field name="auto_reset">True</field>
+            <field name="reset_period">month</field>
+            <field name="reset_init_number">1</field>	
+        </record>
+        
 	</data>
 </openerp>
