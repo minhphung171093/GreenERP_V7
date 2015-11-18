@@ -155,6 +155,16 @@ class stock_picking_out(osv.osv):
                     }
         return True
     
+    def write(self, cr, uid, ids, vals, context=None):
+        if 'date' in vals:
+            for line in self.browse(cr,uid,ids):
+                sql = '''
+                    update stock_move set date = '%s' where picking_id = %s
+                '''%(vals['date'], line.id)
+                cr.execute(sql)
+        new_write = super(stock_picking_out, self).write(cr, uid,ids, vals, context)
+        return new_write
+    
 stock_picking_out()
 
 class stock_picking_in(osv.osv):
@@ -263,6 +273,16 @@ class stock_picking_in(osv.osv):
                         'target': 'current',
                     }
         return True
+    
+    def write(self, cr, uid, ids, vals, context=None):
+        if 'date' in vals:
+            for line in self.browse(cr,uid,ids):
+                sql = '''
+                    update stock_move set date = '%s' where picking_id = %s
+                '''%(vals['date'], line.id)
+                cr.execute(sql)
+        new_write = super(stock_picking_in, self).write(cr, uid,ids, vals, context)
+        return new_write
 stock_picking_in()
 
 

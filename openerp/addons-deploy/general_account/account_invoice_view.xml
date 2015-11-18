@@ -156,7 +156,7 @@
 	        	</xpath>
 		        	
 	            <xpath expr="//tree[@string='Invoice lines']" position="attributes">
-	            	<attribute name="editable"></attribute>
+	            	<attribute name="editable">bottom</attribute>
 	            </xpath>
 	            
 	            <xpath expr="//field[@name='invoice_line']" position="before">
@@ -184,6 +184,14 @@
                             <field name="reconciliation_move_ids">
                     		</field>
                     </page>
+                </xpath>
+                
+                <xpath expr="//page[@string='Invoice']/field/tree/field[@name='price_subtotal']" position="before">
+	        		<field name="gia_tri" on_change = "onchange_gia_tri(gia_tri, quantity)"/>
+                </xpath>
+                
+                <xpath expr="//page[@string='Invoice']/field/tree/field[@name='price_subtotal']" position="attributes">
+	        		<attribute name="invisible">1</attribute>
                 </xpath>
                 
 	        </field>

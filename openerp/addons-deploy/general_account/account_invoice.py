@@ -699,6 +699,10 @@ class account_invoice_line(osv.osv):
                 cur = line.invoice_id.currency_id
                 res[line.id]['price_subtotal'] = cur_obj.round(cr, uid, cur, res[line.id]['price_subtotal']) + line.adjust_price
                 res[line.id]['amount_tax'] = cur_obj.round(cr, uid, cur, res[line.id]['amount_tax'])
+                sql = '''
+                    update account_invoice_line set gia_tri = %s where id = %s
+                '''%(res[line.id]['price_subtotal'], line.id)
+                cr.execute(sql)
         return res
     
     
@@ -742,11 +746,20 @@ class account_invoice_line(osv.osv):
         'prodlot_id': fields.many2one('stock.production.lot', 'Số lô', ondelete='restrict'),
         'adjust_price':fields.float('Adjust Price'),
         'price_unit': fields.float('Unit Price', required=True, digits=(16,3)),
+        'gia_tri': fields.float('Giá trị', digits=(16,0)),
     }
     
     _defaults = {
         'discount_type': '1',
     }
+    
+    def onchange_gia_tri(self, cr, uid, ids, gia_tri=False, quantity = False, context=None):
+        vals = {}
+        if gia_tri :
+            vals = {
+                    'price_unit':gia_tri/quantity,
+                    }
+        return {'value': vals}
     
     def write(self,cr,uid,ids,vals,context=None):
         renew_id =  super(account_invoice_line, self).write(cr, uid,ids, vals, context)
@@ -762,15 +775,24 @@ class account_invoice_line(osv.osv):
 #                 cr.execute(sql)
 #                 for i in cr.dictfetchall():
 #                     picking_id = i['picking_id']
-                sql='''
-                    UPDATE stock_move sm SET price_unit = 
-                        (SELECT price_unit FROM account_invoice_line ail 
-                            
-                            WHERE ail.id=%s
-                             ) 
-                     WHERE sm.id = %s
-                '''%(invoiceline.id,invoiceline.source_id)
-                cr.execute(sql)
+
+# PHUOC (cau sql la co san, moi sua lai thanh ham write de write lai price_unit trong stock move)
+#                 sql='''
+#                     UPDATE stock_move sm SET price_unit = 
+#                         (SELECT price_unit FROM account_invoice_line ail 
+#                             
+#                             WHERE ail.id=%s
+#                              ) 
+#                      WHERE sm.id = %s
+#                 '''%(invoiceline.id,invoiceline.source_id)
+#                 cr.execute(sql)
+                move = self.pool.get('stock.move').browse(cr,uid,invoiceline.source_id)
+                self.pool.get('stock.move').write(cr,uid,[move.id],{
+                                                                    'price_unit': vals['price_unit']
+                                                                    })
+                self.pool.get('purchase.order.line').write(cr,uid,[move.purchase_line_id.id],{
+                                                                                           'price_unit': vals['price_unit']
+                                                                                           })
         return renew_id
     
     #Thanh: Set Account is Null --> User should choose other account
