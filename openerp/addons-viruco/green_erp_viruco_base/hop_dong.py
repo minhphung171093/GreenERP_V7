@@ -482,12 +482,24 @@ class hop_dong(osv.osv):
                  value = {
                     'pricelist_id': product_pricelist_ids[0]
                     }
-            if type in ['hd_mua_trongnuoc','hd_mua_nhapkhau']:
-                 product_pricelist_ids = product_pricelist_obj.search(cr, uid, [('currency_id','=',currency_id),('type','=','purchase')])
-                 value = {
-                    'pricelist_id': product_pricelist_ids[0]
-                    }
+#             if type in ['hd_mua_trongnuoc','hd_mua_nhapkhau']:
+#                  product_pricelist_ids = product_pricelist_obj.search(cr, uid, [('currency_id','=',currency_id),('type','=','purchase')])
+#                  value = {
+#                     'pricelist_id': product_pricelist_ids[0]
+#                     }
         return {'value': value}    
+    
+    def onchange_currency_id(self, cr, uid, ids,type=False,currency_id=False, context=None):
+        context = context or {}
+        value = {}
+#         product_pricelist_obj = self.pool.get('product.pricelist')
+#         if currency_id:
+#             if type in ['hd_mua_trongnuoc','hd_mua_nhapkhau']:
+#                  product_pricelist_ids = product_pricelist_obj.search(cr, uid, [('currency_id','=',currency_id),('type','=','purchase')])
+#                  value = {
+#                     'pricelist_id': product_pricelist_ids[0]
+#                     }
+        return {'value': value}   
     
     def onchange_donbanhang_id(self, cr, uid, ids, donbanhang_id=False, context=None):
         vals = {}
