@@ -126,11 +126,11 @@ class Parser(report_sxw.rml_parse):
                 sql ='''
                  select id from account_invoice where id in (select distinct invoice_id from account_invoice_line where product_id in (select product_product.id
                                 from product_product,product_template 
-                                where product_template.categ_id in (select id from product_category where code ='MP') 
+                                where product_template.categ_id in %s 
                                 and product_product.product_tmpl_id = product_template.id) and invoice_id in 
                                     (select id from account_invoice where date_invoice between '%s' and '%s'  and type ='out_invoice' and state in ('open','paid')))
                                 and partner_id in %s
-                '''%(date_from,date_to,cus_ids)
+                '''%(my_pham_ids,date_from,date_to,cus_ids)
                 self.cr.execute(sql)   
                 inv_ids = [r[0] for r in self.cr.fetchall()] 
         if inv_ids:
@@ -222,14 +222,18 @@ class Parser(report_sxw.rml_parse):
         res = {}
         inv_ids = []
         customer_ids = []
+        my_pham_id = self.pool.get('product.category').search(self.cr,self.uid,[('code','=','MP')])
+        my_pham_ids = self.pool.get('product.category').search(self.cr,self.uid,[('parent_id','child_of',my_pham_id)])
+        my_pham_ids = str(my_pham_ids).replace('[', '(')
+        my_pham_ids = str(my_pham_ids).replace(']', ')')
         if not user_ids:
             sql ='''
              select id from account_invoice where id in (select distinct invoice_id from account_invoice_line where product_id in (select product_product.id
                             from product_product,product_template 
-                            where product_template.categ_id in (select id from product_category where code ='MP') 
+                            where product_template.categ_id in %s
                             and product_product.product_tmpl_id = product_template.id) and invoice_id in 
                                 (select id from account_invoice where date_invoice between '%s' and '%s'  and type ='out_invoice' and state in ('open','paid')))
-            '''%(date_from,date_to)
+            '''%(my_pham_ids,date_from,date_to)
             self.cr.execute(sql)   
             inv_ids = [r[0] for r in self.cr.fetchall()]
             if inv_ids:
@@ -254,11 +258,11 @@ class Parser(report_sxw.rml_parse):
                 sql ='''
                  select id from account_invoice where id in (select distinct invoice_id from account_invoice_line where product_id in (select product_product.id
                                 from product_product,product_template 
-                                where product_template.categ_id in (select id from product_category where code ='MP') 
+                                where product_template.categ_id in %s 
                                 and product_product.product_tmpl_id = product_template.id) and invoice_id in 
                                     (select id from account_invoice where date_invoice between '%s' and '%s'  and type ='out_invoice' and state in ('open','paid')))
                                 and partner_id in %s
-                '''%(date_from,date_to,cus_ids)
+                '''%(my_pham_ids,date_from,date_to,cus_ids)
                 self.cr.execute(sql)   
                 inv_ids = [r[0] for r in self.cr.fetchall()] 
                 if inv_ids:
