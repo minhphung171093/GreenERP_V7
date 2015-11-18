@@ -20,13 +20,15 @@
       		<menuitem 
 		      		id="menu_action_general_report_partner_ledger" 
 		      		action="action_general_report_partner_ledger" 
-		      		icon="terp-graph"  
+		      		icon="terp-graph" 
+		      		name = "Sổ chi tiết công nợ" 
 		      		parent="menu_partner_reports" sequence="10"/>
 		      		
       		<menuitem 
 		      		id="menu_action_view_general_report_partner_ledger_detail" 
 		      		action="action_view_general_report_partner_ledger_detail" 
 		      		icon="terp-graph"  
+		      		name = "Sổ tổng hợp công nợ"
 		      		parent="menu_partner_reports" sequence="20"/>
 			  
     </data>

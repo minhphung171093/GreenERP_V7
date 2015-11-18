@@ -36,7 +36,7 @@ msgstr "general.aged_.partner.blance"
 #: model:ir.actions.report.xml,name:general_report_partner.general_report_partner_ledger_detail
 #: model:ir.ui.menu,name:general_report_partner.menu_action_view_general_report_partner_ledger_detail
 msgid "Partner Ledger Detail"
-msgstr "Sổ công nợ phát sinh"
+msgstr "Sổ tổng hợp công nợ"
 
 #. module: general_report_partner
 #: field:general.aged.partner.balance,times:0
@@ -170,7 +170,7 @@ msgstr "Năm kết thúc"
 #: model:ir.actions.report.xml,name:general_report_partner.general_report_partner_ledger
 #: model:ir.ui.menu,name:general_report_partner.menu_action_general_report_partner_ledger
 msgid "Partner Ledger"
-msgstr "Sổ cái công nợ"
+msgstr "Sổ chi tiết công nợ"
 
 #. module: general_report_partner
 #: field:general.aged.partner.balance,partner_id:0
