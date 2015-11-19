@@ -56,10 +56,10 @@ class Parser(report_sxw.rml_parse):
         for seq,picking in enumerate(picking_out_obj.browse(self.cr, self.uid, picking_out_ids)):
             if picking.picking_packaging_line:
                 for seq_2,line in enumerate(picking.picking_packaging_line):
-                    if seq_2 == 0:
-                        nhanvien += line.employee_id and line.employee_id.name or ''
-                    else:
-                        nhanvien += line.employee_id and ', ' + line.employee_id.name or ''
+                    if line.employee_id:
+                        nhanvien = line.employee_id and line.employee_id.name or ''
+#                     else:
+#                         nhanvien += line.employee_id and ', ' + line.employee_id.name or ''
         return nhanvien
     
     def get_so_thung(self):
