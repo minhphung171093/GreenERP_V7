@@ -1287,7 +1287,7 @@
         <record id="view_picking_trungchuyen_form" model="ir.ui.view">
             <field name="name">stock.picking.trungchuyen.form</field>
             <field name="model">stock.picking</field>
-            <field eval="12" name="priority"/>
+            <field eval="13" name="priority"/>
             <field name="arch" type="xml">
                 <form string="Internal Picking List" version="7.0">
                 <header>

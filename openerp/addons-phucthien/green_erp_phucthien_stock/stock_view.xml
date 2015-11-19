@@ -250,16 +250,16 @@
 			</field>
 		</record>
 		
-		<record id="phucthien_view_move_form" model="ir.ui.view">
+		<!--<record id="phucthien_view_move_form" model="ir.ui.view">
 			<field name="name">phucthien.view.move.form</field>
 			<field name="model">stock.move</field>
 			<field name="inherit_id" ref="stock.view_move_form"/>
 			<field name="arch" type="xml">
 				<xpath expr="//field[@name='picking_id']" position="attributes">
-				 	<attribute name="context">{'form_view_ref':'stock.view_picking_form'}</attribute>
+				 	<attribute name="context">{'form_view_ref':'stock.view_picking_form', 'tree_view_ref':'stock.view_picking_in_tree'}</attribute>
 				</xpath>
 			</field>
-		</record>
+		</record>-->
 		
     <record model='ir.ui.view' id='view_ly_do_xuat_tree'>
             <field name="name">ly.do.xuat.tree</field>
