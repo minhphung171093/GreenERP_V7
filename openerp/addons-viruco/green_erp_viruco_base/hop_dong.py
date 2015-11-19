@@ -489,17 +489,17 @@ class hop_dong(osv.osv):
 #                     }
         return {'value': value}    
     
-    def onchange_currency_id(self, cr, uid, ids,type=False,currency_id=False, context=None):
-        context = context or {}
-        value = {}
-#         product_pricelist_obj = self.pool.get('product.pricelist')
-#         if currency_id:
-#             if type in ['hd_mua_trongnuoc','hd_mua_nhapkhau']:
-#                  product_pricelist_ids = product_pricelist_obj.search(cr, uid, [('currency_id','=',currency_id),('type','=','purchase')])
-#                  value = {
-#                     'pricelist_id': product_pricelist_ids[0]
-#                     }
-        return {'value': value}   
+#     def onchange_currency_id(self, cr, uid, ids,type=False,currency_id=False, context=None):
+#         context = context or {}
+#         value = {}
+# #         product_pricelist_obj = self.pool.get('product.pricelist')
+# #         if currency_id:
+# #             if type in ['hd_mua_trongnuoc','hd_mua_nhapkhau']:
+# #                  product_pricelist_ids = product_pricelist_obj.search(cr, uid, [('currency_id','=',currency_id),('type','=','purchase')])
+# #                  value = {
+# #                     'pricelist_id': product_pricelist_ids[0]
+# #                     }
+#         return {'value': value}   
     
     def onchange_donbanhang_id(self, cr, uid, ids, donbanhang_id=False, context=None):
         vals = {}
@@ -1116,22 +1116,35 @@ class don_mua_hang(osv.osv):
     
     def button_dummy(self, cr, uid, ids, context=None):
         return True
-    def _get_banggia(self, cr, uid, ids, context=None):
+    def _get_banggia(self, cr, uid, ids, name, arg, context=None):
         product_pricelist_version_obj = self.pool.get('product.pricelist.version')
         product_pricelist_obj = self.pool.get('product.pricelist')    
         currency_obj = self.pool.get('res.currency')
-        
-        currency_ids = currency_obj.search(cr,uid,[('name','=','VND')])   
-        currency = currency_obj.browse(cr,uid,currency_ids[0])   
-        product_pricelist_ids = product_pricelist_obj.search(cr, uid, [('currency_id','=',currency.id),('type','=','purchase')])
-        if not product_pricelist_ids:
-            product_pricelist_id = product_pricelist_obj.create(cr, uid, {'name': 'Public Pricelist',
-                                                                          'type':'purchase',
-                                                                          'currency_id':currency.id})     
-        pricelist_id = product_pricelist_version_obj.create(cr, uid, {
-                        'pricelist_id':product_pricelist_id,
-                        'name': 'Bảng giá mua' 
-                        })  
+        currency_ids = []
+        product_pricelist_ids = []
+        pricelist_id = False
+        for line in self.browse(cr, uid, ids, context=context):
+            if line.type == 'dmh_trongnuoc':
+                currency_ids = currency_obj.search(cr,uid,[('name','=','VND')])
+            if line.type == 'dmh_nhapkhau':
+                currency_ids = currency_obj.search(cr,uid,[('name','=','USD')])
+#         if context is None:
+#             context = {}
+#         if context.get('default_type')=='dmh_trongnuoc':
+#             currency_ids = currency_obj.search(cr,uid,[('name','=','VND')])   
+#         if context.get('default_type')=='dmh_nhapkhau':
+#             currency_ids = currency_obj.search(cr,uid,[('name','=','USD')])   
+        if currency_ids:
+            currency = currency_obj.browse(cr,uid,currency_ids[0])   
+            product_pricelist_ids = product_pricelist_obj.search(cr, uid, [('currency_id','=',currency.id),('type','=','purchase')])
+            if not product_pricelist_ids:
+                product_pricelist_id = product_pricelist_obj.create(cr, uid, {'name': 'Public Pricelist',
+                                                                              'type':'purchase',
+                                                                              'currency_id':currency.id})     
+            pricelist_id = product_pricelist_version_obj.create(cr, uid, {
+                            'pricelist_id':product_pricelist_id,
+                            'name': 'Bảng giá mua' 
+                            })  
         return pricelist_id    
     def _amount_line_tax(self, cr, uid, line, context=None):
         val = 0.0
@@ -1173,7 +1186,7 @@ class don_mua_hang(osv.osv):
         'don_mua_hang_line': fields.one2many('don.mua.hang.line','donmuahang_id','Line',readonly=True, states={'moi_tao': [('readonly', False)]}),
         'banggia_id': fields.many2one('bang.gia', 'Bảng giá', required=True, readonly=True, states={'moi_tao': [('readonly', False)]}),        
         'pricelist_id': fields.many2one('product.pricelist', 'Bảng giá', readonly=True, states={'moi_tao': [('readonly', False)]}, help="Pricelist for current sales order."),
-        'currency_id': fields.related('banggia_id', 'currency_id', type="many2one", relation="res.currency", string="Đơn vị tiền tệ", readonly=True),
+        'currency_id': fields.related('pricelist_id', 'currency_id', type="many2one", relation="res.currency", string="Đơn vị tiền tệ", readonly=True),
         'currency_company_id': fields.many2one('res.currency', 'Currency'),
         'user_id':fields.many2one('res.users','Người đề nghị',readonly=True,states={'moi_tao': [('readonly', False)]}),
         'thoigian_giaohang':fields.datetime('Thời gian giao hàng'),
@@ -1213,7 +1226,7 @@ class don_mua_hang(osv.osv):
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'hop.dong', context=c),
         'currency_company_id': lambda self, cr, uid, c: self.pool.get('res.users').browse(cr, uid, uid).company_id.currency_id.id,
         'user_id': lambda self, cr, uid, context=None: uid,
-        'banggia_id':_get_banggia,
+#         'pricelist_id':_get_banggia,
     }
     
     def duyet(self, cr, uid, ids, context=None):
