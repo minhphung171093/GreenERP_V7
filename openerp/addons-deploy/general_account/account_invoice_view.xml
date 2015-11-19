@@ -30,9 +30,6 @@
 	        		<button name="%(action_receivable_payable_reconciliation)d" string="Cấn trừ công nợ" type="action" states="proforma,proforma2,open"/> 
 	        	</xpath> 
 	        	
-	        	<xpath expr="//field[@name='date_invoice']" position="before">
-	        		<field name="shop_id" required="1"/>
-	        	</xpath>
 	        	<xpath expr="//field[@name='payment_term']" position="after">
                 	<field name="payment_mode_id" class="oe_inline" widget="selection"/>
                 </xpath>
@@ -40,11 +37,25 @@
 	        		<field name="rel_invoice_id" invisible="context.get('type') and context['type'] in ['out_invoice'] or False"
 	        			domain="[('type','=','out_invoice')]"
 	        			string="Original invoice"/>
-	        		<field name="invoice_book_id" require="1" domain="[('company_id', '=', company_id)]"/>
 	        		<field name="reference" readonly="0"/>
 	        		<field name="reference_number" readonly="0"/>
 	        		
 	        	</xpath>
+	        	<xpath expr="//page[@string='Other Info']/group/group/field[@name='date_due']" position="after">
+                	<field name="invoice_book_id" require="1" domain="[('company_id', '=', company_id)]"/>
+                	<field name="shop_id" required="1"/>
+                </xpath>
+                
+                <xpath expr="//label[@for='currency_id']" position="replace">
+                </xpath>
+                
+                <xpath expr="//field[@name='currency_id']" position="replace">
+                </xpath>
+                
+                <xpath expr="//page[@string='Other Info']/group/group/field[@name='move_id']" position="after">
+                	<field name="currency_id" required = '1'/>
+                </xpath>
+                
 	        	<xpath expr="//field[@name='account_id']" position="after">
                 	<field name="address"/>
                 	<field name="buyer"/>
@@ -262,7 +273,6 @@
                                 domain="[('customer', '=', True)]"/>
                             <field name="rel_invoice_id"/>
                             <field name="fiscal_position" widget="selection" invisible="1"/>
-                            <field name="invoice_book_id"/>
                             <field name="reference"/>
                             <field name="reference_number"/>
                             <field name="address"/>	
@@ -362,6 +372,7 @@
                                        string="Accounting Period"
                                        placeholder="force period"/>
                                    <field name="date_due"/>
+                                   <field name="invoice_book_id"/>
                                </group>
                                <group>
                                    <field name="origin" groups="base.group_user"/>

@@ -6,7 +6,7 @@
             <field name="model">account.invoice</field>
             <field name="inherit_id" ref="account.invoice_form"/>
             <field name="arch" type="xml">
-          		<xpath expr="//field[@name='partner_id']" position="after">
+            	<xpath expr="//page[@string='Other Info']/group/group/field[@name='origin']" position="after">
           			<field name='hop_dong_nt_id' domain="[('type','=','nguyen_tac')]"/>
           			<field name='hop_dong_t_id' domain="[('type','=','thau')]"/>
           			<field name='hoadon_huy_id' domain="[('partner_id','=',partner_id)]" context="{'search_hoadon_huy':1,'search_hoadon_huy_partner':partner_id}"/>
