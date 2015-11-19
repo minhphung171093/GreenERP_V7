@@ -1116,7 +1116,23 @@ class don_mua_hang(osv.osv):
     
     def button_dummy(self, cr, uid, ids, context=None):
         return True
-    
+    def _get_banggia(self, cr, uid, ids, context=None):
+        product_pricelist_version_obj = self.pool.get('product.pricelist.version')
+        product_pricelist_obj = self.pool.get('product.pricelist')    
+        currency_obj = self.pool.get('res.currency')
+        
+        currency_ids = currency_obj.search(cr,uid,[('name','=','VND')])   
+        currency = currency_obj.browse(cr,uid,currency_ids[0])   
+        product_pricelist_ids = product_pricelist_obj.search(cr, uid, [('currency_id','=',currency.id),('type','=','purchase')])
+        if not product_pricelist_ids:
+            product_pricelist_id = product_pricelist_obj.create(cr, uid, {'name': 'Public Pricelist',
+                                                                          'type':'purchase',
+                                                                          'currency_id':currency.id})     
+        pricelist_id = product_pricelist_version_obj.create(cr, uid, {
+                        'pricelist_id':product_pricelist_id,
+                        'name': 'Bảng giá mua' 
+                        })  
+        return pricelist_id    
     def _amount_line_tax(self, cr, uid, line, context=None):
         val = 0.0
         for c in self.pool.get('account.tax').compute_all(cr, uid, line.tax_id, line.price_unit, line.product_qty, line.product_id, line.donmuahang_id.partner_id)['taxes']:
@@ -1197,6 +1213,7 @@ class don_mua_hang(osv.osv):
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'hop.dong', context=c),
         'currency_company_id': lambda self, cr, uid, c: self.pool.get('res.users').browse(cr, uid, uid).company_id.currency_id.id,
         'user_id': lambda self, cr, uid, context=None: uid,
+        'banggia_id':_get_banggia,
     }
     
     def duyet(self, cr, uid, ids, context=None):
