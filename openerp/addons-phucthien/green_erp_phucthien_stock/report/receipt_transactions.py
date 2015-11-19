@@ -176,11 +176,11 @@ class Parser(report_sxw.rml_parse):
             invoice_ids = [r[0] for r in self.cr.fetchall()]
             if invoice_ids:
                 invoice = self.pool.get('account.invoice').browse(self.cr, self.uid, invoice_ids[0])
-                amount_tax = int(invoice.amount_tax/invoice.amount_untaxed*(move.primary_qty*move.price_unit))
+                amount_tax = round(float(round(invoice.amount_tax))/float(invoice.amount_untaxed*round(move.primary_qty*move.price_unit)))
         if not amount_tax and move.purchase_line_id:
             for t in move.purchase_line_id.taxes_id:
                 amount_tax+= t.amount*move.purchase_line_id.price_subtotal
-        return amount_tax
+        return round(amount_tax)
     
     def get_chungtu(self,o):
         invoice_obj = self.pool.get('account.invoice')

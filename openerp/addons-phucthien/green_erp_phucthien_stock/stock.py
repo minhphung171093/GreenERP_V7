@@ -98,6 +98,15 @@ class stock_picking_out(osv.osv):
                  'state_receive':'draft',
                  }
     
+    def tao_hoa_don(self, cr, uid,ids, context=None):
+        picking = self.browse(cr, uid, ids[0])
+        if context is None:
+            context={}
+        context.update({'active_id':ids[0],'active_ids':ids,'active_model':'stock.picking'})
+        onshipping_obj = self.pool.get('stock.invoice.onshipping')
+        onshipping_id = onshipping_obj.create(cr, uid, {},context)
+        return onshipping_obj.open_invoice(cr, uid, [onshipping_id],context)
+    
     def on_change_nguoivanchuyen(self, cr, uid, ids, nguoi_van_chuyen):
         value ={}
         if not nguoi_van_chuyen:
@@ -239,7 +248,17 @@ class stock_picking_in(osv.osv):
         'xuly_huyhang_id': fields.many2one('stock.picking', 'Hủy hàng'),
         'loai_xuly':fields.selection([('trahang_ncc','Trả hàng cho nhà cung cấp'),('huy_hang','Hủy hàng')],'Loại xử lý'),
         'tinhtrang_chatluong': fields.char('Tình trạng chất lượng', size=1024),
+        'so_hd': fields.char('Số hóa đơn', size=1024),
     }
+    
+    def tao_hoa_don(self, cr, uid,ids, context=None):
+        picking = self.browse(cr, uid, ids[0])
+        if context is None:
+            context={}
+        context.update({'active_id':ids[0],'active_ids':ids,'active_model':'stock.picking'})
+        onshipping_obj = self.pool.get('stock.invoice.onshipping')
+        onshipping_id = onshipping_obj.create(cr, uid, {},context)
+        return onshipping_obj.open_invoice(cr, uid, [onshipping_id],context)
     
     def xem_phieu_xu_ly(self, cr, uid, ids, context=None):
         line = self.browse(cr, uid, ids[0])
@@ -367,6 +386,7 @@ class stock_picking(osv.osv):
         'xuly_huyhang_id': fields.many2one('stock.picking', 'Hủy hàng'),
         'loai_xuly':fields.selection([('trahang_ncc','Trả hàng cho nhà cung cấp'),('huy_hang','Hủy hàng')],'Loại xử lý'),
         'tinhtrang_chatluong': fields.char('Tình trạng chất lượng', size=1024),
+        'so_hd': fields.char('Số hóa đơn', size=1024),
     }
     _defaults = {
                  'state_receive':'draft',
@@ -477,12 +497,13 @@ class stock_picking(osv.osv):
             'date_invoice': context.get('date_inv', False),
             'company_id': picking.company_id.id,
             'user_id': uid,
-            'user_id': uid,
+#             'user_id': uid,
             'hop_dong_nt_id': picking.sale_id and picking.sale_id.hop_dong_nt_id and picking.sale_id.hop_dong_nt_id.id or False,
             'hop_dong_t_id': picking.sale_id and picking.sale_id.hop_dong_t_id and picking.sale_id.hop_dong_t_id.id or False,
             'payment_mode_id':payment_mode_id,
             'shop_id': shop_ids and shop_ids[0] or False,
             'address': picking.diachi_giaohang_id and picking.diachi_giaohang_id.name or False,
+            'supplier_invoice_number': picking.so_hd or '',
         }
         cur_id = self.get_currency_id(cr, uid, picking)
         if cur_id:
@@ -491,6 +512,14 @@ class stock_picking(osv.osv):
             invoice_vals['journal_id'] = journal_id
         return invoice_vals
     
+    def tao_hoa_don(self, cr, uid,ids, context=None):
+        picking = self.browse(cr, uid, ids[0])
+        if context is None:
+            context={}
+        context.update({'active_id':ids[0],'active_ids':ids,'active_model':'stock.picking'})
+        onshipping_obj = self.pool.get('stock.invoice.onshipping')
+        onshipping_id = onshipping_obj.create(cr, uid, {},context)
+        return onshipping_obj.open_invoice(cr, uid, [onshipping_id],context)
         
 stock_picking()
 

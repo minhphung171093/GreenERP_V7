@@ -29,6 +29,7 @@ class stock_invoice_onshipping(osv.osv_memory):
         'invoiced':fields.boolean('Choose All' ),
         'multi_invoice': fields.boolean('Multi Invoice'),
         'move_ids' : fields.one2many('stock.invoice.line.onshipping', 'wizard_id','Product Moves'),
+        'so_hd': fields.char('Số hóa đơn', size=1024),
     }
 
     _defaults = {
@@ -111,6 +112,9 @@ class stock_invoice_onshipping(osv.osv_memory):
                 if invoicing_line:
                     moves.append(invoicing_line)
             res.update(move_ids=moves)
+        if context.get('active_id',False):
+            picking = self.pool.get('stock.picking').browse(cr, uid, context['active_id'])
+            res.update({'so_hd': picking.so_hd})
         return res
     
     def create_invoice(self, cr, uid, ids, context=None):
