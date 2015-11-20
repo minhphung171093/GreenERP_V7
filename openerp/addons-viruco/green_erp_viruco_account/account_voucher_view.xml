@@ -45,6 +45,9 @@
             <field name="model">account.voucher</field>
             <field name="inherit_id" ref="account_voucher.view_vendor_receipt_form"/>
             <field name="arch" type="xml">
+                <xpath expr="//button[@name='cancel_voucher']" position="after">
+	        		<button name="print_yc_thanhtoan" string="In Y/C thanh toán" type="object" class="oe_highlight"/>
+	        	</xpath>
             	<xpath expr="//field[@name='date']" position="before">
 	        		<field name="shop_id"/>
 	        	</xpath>
@@ -93,6 +96,12 @@
             	</xpath>
             	<field name="company_id" position="after">
             		<field name="nguoi_de_nghi_id"/>
+            	</field>
+            	<field name="nguoi_de_nghi_id" position="after">
+            		<field name="ly_do"/>
+            	</field>
+                <field name="hop_dong_id" position="before">
+            		<field name="so_thanhtoan"/>
             	</field>
             </field>
         </record>

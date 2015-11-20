@@ -38,6 +38,8 @@ class account_voucher(osv.osv):
         'partner_bank_id':fields.many2one('res.partner.bank', 'Partner Bank', required=False, readonly=True, states={'draft':[('readonly',False)]}),
         'company_bank_id':fields.many2one('res.partner.bank', 'Company Bank', required=False, readonly=True, states={'draft':[('readonly',False)]}),
         'unshow_financial_report':fields.boolean('Không khai báo thuế'),
+        'ly_do':fields.text('Lý do', states={'draft':[('readonly',False)]}),
+        'so_thanhtoan': fields.char('Số', size=32, states={'draft':[('readonly',False)]}),
     }
 
     def _get_shop_id(self, cr, uid, context=None):
@@ -49,7 +51,7 @@ class account_voucher(osv.osv):
     _defaults = {
         'nguoi_de_nghi_id': lambda self, cr, uid, context=None: uid,
         'shop_id': _get_shop_id,
-
+        'so_thanhtoan':'/',
         'unshow_financial_report':False
     }
     
@@ -68,6 +70,14 @@ class account_voucher(osv.osv):
             vals['dot_thanhtoan_ids']=[(6,0,voucher_ids)]
             vals['partner_id']=hop_dong.partner_id.id
         return {'value':vals}
+
+    def create(self, cr, uid, vals, context=None):
+        user = self.pool.get('res.users').browse(cr,uid,uid)
+
+                    
+                    
+        new_id = super(don_ban_hang, self).create(cr, uid, vals, context=context)    
+        return new_id
     
     def create(self, cr, uid, vals, context=None):
         if context is None:
@@ -77,6 +87,12 @@ class account_voucher(osv.osv):
         if vals.get('hop_dong_id',False):
             voucher_ids = self.search(cr, uid, [('hop_dong_id','=',vals['hop_dong_id']),('state','=','posted')])
             vals['dot_thanhtoan_ids']=[(6,0,voucher_ids)]
+        if 'type' in vals:
+            if (vals['type']=='payment'):
+                curent_date = time.strftime('%Y-%m-%d')
+                if vals.get('so_thanhtoan','/')=='/':
+                    sequence = self.pool.get('ir.sequence').get(cr, uid, 'thanh.toan.ncc')
+                    vals['so_thanhtoan'] =  sequence +'-'+ curent_date[:4]
         new_id = super(account_voucher, self).create(cr, uid, vals, context) 
         if context.get('phieuthu_chi',False):
             self.compute_tax(cr, uid, [new_id], context)
@@ -442,6 +458,12 @@ class account_voucher(osv.osv):
             if line.move_line_id.id:
                 rec_lst_ids.append(rec_ids)
         return (tot_line, rec_lst_ids)
+    def print_yc_thanhtoan(self, cr, uid, ids, context=None):
+        tt = self.browse(cr, uid, ids[0])
+        return {
+            'type': 'ir.actions.report.xml',
+            'report_name': 'yeu_cau_thanh_toan_report',
+            }
 
 account_voucher()
 

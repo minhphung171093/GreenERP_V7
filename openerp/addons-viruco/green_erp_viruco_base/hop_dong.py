@@ -242,7 +242,7 @@ class hop_dong(osv.osv):
         'hopdong_hoahong_line': fields.one2many('hopdong.hoahong.line','hopdong_hh_id','Line',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'banggia_id': fields.many2one('bang.gia', 'Bảng giá', required=True, readonly=True, states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'pricelist_id': fields.many2one('product.pricelist', 'Bảng giá',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
-        'currency_id': fields.related('banggia_id', 'currency_id', type="many2one", relation="res.currency", string="Đơn vị tiền tệ", readonly=True),
+        'currency_id': fields.related('pricelist_id', 'currency_id', type="many2one", relation="res.currency", string="Đơn vị tiền tệ", readonly=True),
         'donbanhang_id': fields.many2one('don.ban.hang', 'Đơn bán hàng',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'donmuahang_id': fields.many2one('don.mua.hang', 'Đơn mua hàng',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'thanhtoan':fields.boolean('Thanh toán'),
@@ -575,8 +575,9 @@ class hop_dong(osv.osv):
                 }
                 order_line.append((0,0,val_line))
             vals = {
+                'name':dmh.name,
                 'partner_id': dmh.partner_id.id,
-#                 'pricelist_id': dmh.pricelist_id.id,
+                'pricelist_id': dmh.pricelist_id.id,
                 'banggia_id': dmh.banggia_id.id,
                 'tu_ngay': dmh.ngay,
                 'hopdong_line': order_line,
@@ -1116,23 +1117,24 @@ class don_mua_hang(osv.osv):
     
     def button_dummy(self, cr, uid, ids, context=None):
         return True
-    def _get_banggia(self, cr, uid, ids, name, arg, context=None):
+    def _get_pricelist(self, cr, uid, ids,context=None):
         product_pricelist_version_obj = self.pool.get('product.pricelist.version')
         product_pricelist_obj = self.pool.get('product.pricelist')    
         currency_obj = self.pool.get('res.currency')
         currency_ids = []
         product_pricelist_ids = []
         pricelist_id = False
-        for line in self.browse(cr, uid, ids, context=context):
-            if line.type == 'dmh_trongnuoc':
-                currency_ids = currency_obj.search(cr,uid,[('name','=','VND')])
-            if line.type == 'dmh_nhapkhau':
-                currency_ids = currency_obj.search(cr,uid,[('name','=','USD')])
+        product_pricelist_id = False
+#         for line in self.browse(cr, uid, ids, context=context):
+#             if line.type == 'dmh_trongnuoc':
+#                 currency_ids = currency_obj.search(cr,uid,[('name','=','VND')])
+#             if line.type == 'dmh_nhapkhau':
+#                 currency_ids = currency_obj.search(cr,uid,[('name','=','USD')])
 #         if context is None:
 #             context = {}
-#         if context.get('default_type')=='dmh_trongnuoc':
-#             currency_ids = currency_obj.search(cr,uid,[('name','=','VND')])   
-#         if context.get('default_type')=='dmh_nhapkhau':
+#         if context.get('default_type',False)=='dmh_trongnuoc':
+        currency_ids = currency_obj.search(cr,uid,[('name','=','VND')])   
+#         if context.get('default_type',False)=='dmh_nhapkhau':
 #             currency_ids = currency_obj.search(cr,uid,[('name','=','USD')])   
         if currency_ids:
             currency = currency_obj.browse(cr,uid,currency_ids[0])   
@@ -1141,11 +1143,11 @@ class don_mua_hang(osv.osv):
                 product_pricelist_id = product_pricelist_obj.create(cr, uid, {'name': 'Public Pricelist',
                                                                               'type':'purchase',
                                                                               'currency_id':currency.id})     
-            pricelist_id = product_pricelist_version_obj.create(cr, uid, {
-                            'pricelist_id':product_pricelist_id,
-                            'name': 'Bảng giá mua' 
-                            })  
-        return pricelist_id    
+                pricelist_id = product_pricelist_version_obj.create(cr, uid, {
+                                'pricelist_id':product_pricelist_ids[0],
+                                'name': 'Bảng giá mua' 
+                                })  
+        return product_pricelist_ids    
     def _amount_line_tax(self, cr, uid, line, context=None):
         val = 0.0
         for c in self.pool.get('account.tax').compute_all(cr, uid, line.tax_id, line.price_unit, line.product_qty, line.product_id, line.donmuahang_id.partner_id)['taxes']:
@@ -1193,19 +1195,19 @@ class don_mua_hang(osv.osv):
         'nguoi_gioithieu_id':fields.many2one('res.partner','Người giới thiệu',readonly=True,states={'moi_tao': [('readonly', False)]}),
         'dieukien_giaohang_id':fields.many2one('dieukien.giaohang','Điều kiện giao hàng'),
         'payment_term': fields.many2one('account.payment.term', 'Payment Term'),
-        'amount_untaxed': fields.function(_amount_all, digits_compute=dp.get_precision('Account'), string='Cộng',
+        'amount_untaxed': fields.function(_amount_all, digits=(16,0), string='Cộng',
             store={
                 'don.mua.hang': (lambda self, cr, uid, ids, c={}: ids, ['don_mua_hang_line'], 10),
                 'don.mua.hang.line': (_get_order, ['price_unit', 'tax_id', 'product_qty'], 10),
             },
             multi='sums', help="The amount without tax.", track_visibility='always'),
-        'amount_tax': fields.function(_amount_all, digits_compute=dp.get_precision('Account'), string='Thuế GTGT',
+        'amount_tax': fields.function(_amount_all, digits=(16,0), string='Thuế GTGT',
             store={
                 'don.mua.hang': (lambda self, cr, uid, ids, c={}: ids, ['don_mua_hang_line'], 10),
                 'don.mua.hang.line': (_get_order, ['price_unit', 'tax_id', 'product_qty'], 10),
             },
             multi='sums', help="The tax amount."),
-        'amount_total': fields.function(_amount_all, digits_compute=dp.get_precision('Account'), string='Tổng cộng',
+        'amount_total': fields.function(_amount_all, digits=(16,0), string='Tổng cộng',
             store={
                 'don.mua.hang': (lambda self, cr, uid, ids, c={}: ids, ['don_mua_hang_line'], 10),
                 'don.mua.hang.line': (_get_order, ['price_unit', 'tax_id', 'product_qty'], 10),
@@ -1226,7 +1228,7 @@ class don_mua_hang(osv.osv):
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'hop.dong', context=c),
         'currency_company_id': lambda self, cr, uid, c: self.pool.get('res.users').browse(cr, uid, uid).company_id.currency_id.id,
         'user_id': lambda self, cr, uid, context=None: uid,
-#         'pricelist_id':_get_banggia,
+#         'pricelist_id':_get_pricelist,
     }
     
     def duyet(self, cr, uid, ids, context=None):
@@ -1298,9 +1300,46 @@ class don_mua_hang(osv.osv):
     
     def create(self, cr, uid, vals, context=None):
         user = self.pool.get('res.users').browse(cr,uid,uid)
+        product_pricelist_version_obj = self.pool.get('product.pricelist.version')
+        product_pricelist_obj = self.pool.get('product.pricelist')    
+        currency_obj = self.pool.get('res.currency')
+        currency_ids = []
+        product_pricelist_ids = []
+        pricelist_id = False
+
         if 'type' in vals:
             if (vals['type']=='dmh_trongnuoc') and vals.get('name','/')=='/':
                 vals['name'] = self.pool.get('ir.sequence').get(cr, uid, 'don.mua.hang.noi') or '/'
+            if (vals['type']=='dmh_trongnuoc'):
+                currency_ids = currency_obj.search(cr,uid,[('name','=','VND')])
+                if currency_ids:
+                    currency = currency_obj.browse(cr,uid,currency_ids[0])   
+                    product_pricelist_ids = product_pricelist_obj.search(cr, uid, [('currency_id','=',currency.id),('type','=','purchase')])
+                    if not product_pricelist_ids:
+                        product_pricelist_id = product_pricelist_obj.create(cr, uid, {'name': 'Public Pricelist',
+                                                                                      'type':'purchase',
+                                                                                      'currency_id':currency.id})     
+                        pricelist_id = product_pricelist_version_obj.create(cr, uid, {
+                                        'pricelist_id':product_pricelist_id,
+                                        'name': 'Bảng giá mua' 
+                                        })
+                        vals['pricelist_id']=pricelist_id
+                    vals['pricelist_id']=product_pricelist_ids[0]
+            if (vals['type']=='dmh_nhapkhau'):
+                currency_ids = currency_obj.search(cr,uid,[('name','=','USD')])
+                if currency_ids:
+                    currency = currency_obj.browse(cr,uid,currency_ids[0])   
+                    product_pricelist_ids = product_pricelist_obj.search(cr, uid, [('currency_id','=',currency.id),('type','=','purchase')])
+                    if not product_pricelist_ids:
+                        product_pricelist_id = product_pricelist_obj.create(cr, uid, {'name': 'Public Pricelist',
+                                                                                      'type':'purchase',
+                                                                                      'currency_id':currency.id})     
+                        pricelist_id = product_pricelist_version_obj.create(cr, uid, {
+                                        'pricelist_id':product_pricelist_id,
+                                        'name': 'Bảng giá mua' 
+                                        })
+                        vals['pricelist_id']=pricelist_id
+                    vals['pricelist_id']=product_pricelist_ids[0]
         new_id = super(don_mua_hang, self).create(cr, uid, vals, context=context)    
         return new_id
 don_mua_hang()
@@ -1324,10 +1363,10 @@ class don_mua_hang_line(osv.osv):
         'product_id': fields.many2one('product.product', 'Product', domain=[('sale_ok', '=', True)], change_default=True,),
         'name':fields.char('Name',size=1024,required=True),
         'product_uom': fields.many2one('product.uom', 'Đơn vị tính'),
-        'product_qty': fields.float('Số lượng', digits_compute= dp.get_precision('Product UoS')),
-        'price_unit': fields.float('Đơn giá', digits_compute= dp.get_precision('Product Price')),
+        'product_qty': fields.float('Số lượng', digits=(16,0)),
+        'price_unit': fields.float('Đơn giá', digits=(16,0)),
         'tax_id': fields.many2many('account.tax', 'don_mua_hang_line_tax_ref', 'don_mua_hang_line_id', 'tax_id', 'Thuế'),
-        'price_subtotal': fields.function(_amount_line, string='Thành tiền', digits_compute= dp.get_precision('Account')),
+        'price_subtotal': fields.function(_amount_line, string='Thành tiền', digits=(16,0)),
         'chatluong_id':fields.many2one('chatluong.sanpham','Chất lượng'),
         'quycach_donggoi_id':fields.many2one('quycach.donggoi','Quy cách đóng gói'),
         'quycach_baobi_id':fields.many2one('quycach.baobi','Quy cách bao bì'),
