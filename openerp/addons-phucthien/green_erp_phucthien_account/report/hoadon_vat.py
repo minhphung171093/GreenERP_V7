@@ -128,7 +128,7 @@ class Parser(report_sxw.rml_parse):
         count = 0
         subtotal =0
         res =[]
-        line_limit = 10
+        line_limit = 9
         for data in line:
             count += 1
             res.append({
