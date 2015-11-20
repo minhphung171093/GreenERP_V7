@@ -255,6 +255,7 @@ class stock_picking(osv.osv):
         'stock_journal_id': fields.many2one('stock.journal','Stock Journal', required=True, select=True, states={'done':[('readonly', True)], 'cancel':[('readonly',True)]}, track_visibility='onchange'),
          'return': fields.selection([('none', 'Normal'), ('customer', 'Return from Customer'),('internal','Return Internal'), ('supplier', 'Return to Supplier')], 'Type', required=True, select=True, help="Type specifies whether the Picking has been returned or not."),
          'pt_giaohang': fields.char('Phụ trách giao hàng', size = 1024),
+         'ngay_nhap':fields.date('Ngày Nhập'),
     }
     
     def _get_journal(self, cr, uid, context=None):
@@ -321,11 +322,17 @@ class stock_picking(osv.osv):
         context = context or {}
         context.update({'sequence_obj_ids':[]})
         if ('name' not in vals) or (vals.get('name')=='/'):
-            if vals.get('stock_journal_id',False):
+            if vals.get('stock_journal_id',False) and vals.get('type',False) not in ['in','out']:
                 journal = self.pool.get('stock.journal').browse(cr, user, vals['stock_journal_id'])
                 if not journal.sequence_id:
                     raise osv.except_osv(_('Warning!'), _('Please define Sequence for Stock Journal.'))
                 vals['name'] = self.pool.get('ir.sequence').get_id(cr, user, journal.sequence_id.id, code_or_id='id', context=context)
+            if vals.get('type',False) == 'in':
+                vals['name'] = self.pool.get('ir.sequence').get(cr, uid, 'stock.picking.in') + \
+                 (vals['location_dest_id'] and self.pool.get('stock.location').browse(cr, user, vals['location_dest_id']).name or '') \
+                or '/'
+            if vals.get('type',False) == 'out':
+                vals['name'] = self.pool.get('ir.sequence').get(cr, uid, 'stock.picking.out') or '/'
                 
         new_id = super(osv.osv, self).create(cr, user, vals, context)
         return new_id
@@ -754,6 +761,7 @@ class stock_picking_in(osv.osv):
             }, readonly=True, multi='pro_info'),
         'stock_journal_id': fields.many2one('stock.journal','Stock Journal', required=True, select=True, states={'done':[('readonly', True)], 'cancel':[('readonly',True)]}, track_visibility='onchange'),
         'return': fields.selection([('none', 'Normal'), ('customer', 'Return from Customer'),('internal','Return Internal'), ('supplier', 'Return to Supplier')], 'Type', required=True, select=True, help="Type specifies whether the Picking has been returned or not."),
+        'ngay_nhap':fields.date('Ngày Nhập'),
     }
     
     _defaults = {  
@@ -868,15 +876,20 @@ class stock_picking_in(osv.osv):
         context = context or {}
         context.update({'sequence_obj_ids':[]})
         if ('name' not in vals) or (vals.get('name')=='/'):
-            if vals.get('stock_journal_id',False):
+            if vals.get('stock_journal_id',False) and vals.get('type',False) not in ['in','out']:
                 journal = self.pool.get('stock.journal').browse(cr, user, vals['stock_journal_id'])
                 if not journal.sequence_id:
                     raise osv.except_osv(_('Warning!'), _('Please define Sequence for Stock Journal.'))
                 vals['name'] = self.pool.get('ir.sequence').get_id(cr, user, journal.sequence_id.id, code_or_id='id', context=context)
+            if vals.get('type',False) == 'in':
+                vals['name'] = self.pool.get('ir.sequence').get(cr, user, 'stock.picking.in') + \
+                 (vals['location_dest_id'] and self.pool.get('stock.location').browse(cr, user, vals['location_dest_id']).name or '') \
+                or '/'
+            if vals.get('type',False) == 'out':
+                vals['name'] = self.pool.get('ir.sequence').get(cr, user, 'stock.picking.out') or '/'
                 
         new_id = super(osv.osv, self).create(cr, user, vals, context)
         return new_id
-    
     
 stock_picking_in()
 class stock_picking_out(osv.osv):
@@ -935,6 +948,7 @@ class stock_picking_out(osv.osv):
             }, readonly=True, multi='pro_info'),
         'stock_journal_id': fields.many2one('stock.journal','Stock Journal', required=True, select=True, states={'done':[('readonly', True)], 'cancel':[('readonly',True)]}, track_visibility='onchange'),
         'return': fields.selection([('none', 'Normal'), ('customer', 'Return from Customer'),('internal','Return Internal'), ('supplier', 'Return to Supplier')], 'Type', required=True, select=True, help="Type specifies whether the Picking has been returned or not."),
+        'ngay_nhap':fields.date('Ngày Nhập'),
     }
     
     _defaults = {    
@@ -1035,12 +1049,17 @@ class stock_picking_out(osv.osv):
         context = context or {}
         context.update({'sequence_obj_ids':[]})
         if ('name' not in vals) or (vals.get('name')=='/'):
-            if vals.get('stock_journal_id',False):
+            if vals.get('stock_journal_id',False) and vals.get('type',False) not in ['in','out']:
                 journal = self.pool.get('stock.journal').browse(cr, user, vals['stock_journal_id'])
                 if not journal.sequence_id:
                     raise osv.except_osv(_('Warning!'), _('Please define Sequence for Stock Journal.'))
                 vals['name'] = self.pool.get('ir.sequence').get_id(cr, user, journal.sequence_id.id, code_or_id='id', context=context)
-                
+            if vals.get('type',False) == 'in':
+                vals['name'] = self.pool.get('ir.sequence').get(cr, uid, 'stock.picking.in') + \
+                 (vals['location_dest_id'] and self.pool.get('stock.location').browse(cr, user, vals['location_dest_id']).name or '') \
+                or '/'
+            if vals.get('type',False) == 'out':
+                vals['name'] = self.pool.get('ir.sequence').get(cr, uid, 'stock.picking.out') or '/'
         new_id = super(osv.osv, self).create(cr, user, vals, context)
         return new_id
     

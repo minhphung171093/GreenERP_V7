@@ -422,6 +422,7 @@
                             <field name="min_date" readonly="1" attrs="{'invisible': [('min_date','=',False)]}"/>
                             <field name="origin" placeholder="e.g. PO0032" class="oe_inline"/>
                             <field name="nguoi_denghi_id" />
+                            <field name="ngay_nhap" />
                         </group>
                     </group>
                     <notebook>

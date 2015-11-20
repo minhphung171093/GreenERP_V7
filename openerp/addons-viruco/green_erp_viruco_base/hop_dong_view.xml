@@ -454,7 +454,7 @@
 									<field name="tu_ngay" />
 									<field name="den_ngay" />
 									<field name="ngay_nhanhang" />
-									<field name="diadiem_nhanhang" />
+									<field name="diadiem_nhanhang" required='1'/>
 									<field name="thongbao_nhanhang" />
 									<field name="chat_luong" />
 								</group>
