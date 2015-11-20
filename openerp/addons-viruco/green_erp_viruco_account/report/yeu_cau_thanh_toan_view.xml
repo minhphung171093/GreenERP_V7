@@ -17,10 +17,10 @@
     	</record> 
     	   
     	<report 
-			auto="True" 
+			auto="False" 
 			menu="True"
 			id="yeu_cau_thanh_toan_report" 
-			model="yeu.cau.thanh.toan.report" 
+			model="account.voucher" 
 			name="yeu_cau_thanh_toan_report"
 	        string="Yêu cầu thanh toán"
 	        rml="green_erp_viruco_account/report/yeu_cau_thanh_toan.odt"/> 
