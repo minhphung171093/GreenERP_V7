@@ -282,7 +282,8 @@ class account_voucher(osv.osv):
             'batch_id': fields.many2one('account.voucher.batch', 'Related Batch', ondelete='cascade'),
             'partner_bank_id':fields.many2one('res.partner.bank', 'Partner Bank', required=False, readonly=True, states={'draft':[('readonly',False)]}),
             'company_bank_id':fields.many2one('res.partner.bank', 'Company Bank', required=False, readonly=True, states={'draft':[('readonly',False)]}),
-            'unshow_financial_report':fields.boolean('Không khai báo thuế')
+            'unshow_financial_report':fields.boolean('Không khai báo thuế'),
+            'dien_giai': fields.char('Diễn giải', sie=1024),
         }
     
     def _get_assign_user(self, cr, uid, context=None):

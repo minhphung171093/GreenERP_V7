@@ -947,7 +947,7 @@ class account_ledger_report(osv.osv_memory):
                     if line['sum_cr'] == i['sum_dr']:    
                         sql='''
                         SELECT  am.date gl_date, coalesce(am.date_document,am.date) doc_date, am.name doc_no, 
-                                coalesce(aih.comment, coalesce(avh.narration,
+                                coalesce(aih.product_showin_report, coalesce(avh.dien_giai,
                                     coalesce(am.narration, am.ref))) description,acc.code acc_code,                    
                         aml.debit,aml.credit
                         FROM account_move_line aml 
@@ -986,7 +986,7 @@ class account_ledger_report(osv.osv_memory):
                         sql='''
                             select row_number() over(order by am.date, am.date_document, am.name)::int seq, 
                                 am.date gl_date, coalesce(am.date_document,am.date) doc_date, am.name doc_no, 
-                                coalesce(aih.comment, coalesce(avh.narration,
+                                coalesce(aih.product_showin_report, coalesce(avh.dien_giai,
                                     coalesce(am.narration, am.ref))) description,
                                 case when aml.debit != 0
                                     then
