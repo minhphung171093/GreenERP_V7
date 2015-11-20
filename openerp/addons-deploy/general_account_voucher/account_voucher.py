@@ -805,6 +805,7 @@ class account_voucher(osv.osv):
                 'number': name,
             })
             
+            
             #Thanh: Auto update Narration when confirm a Voucher
             cr.execute('''
                 UPDATE account_voucher
@@ -820,7 +821,7 @@ class account_voucher(osv.osv):
             for rec_ids in rec_list_ids:
                 if len(rec_ids) >= 2:
                     reconcile = move_line_pool.reconcile_partial(cr, uid, rec_ids, writeoff_acc_id=voucher.writeoff_acc_id.id, writeoff_period_id=voucher.period_id.id, writeoff_journal_id=voucher.journal_id.id)
-            
+            move_pool.button_validate(cr, uid, [move_id], context={})
             #Thanh: Remove unpaid voucher line
             cr.execute("DELETE FROM account_voucher_line WHERE voucher_id=%s AND reconcile=False AND amount=0.0"%(voucher.id))
         return True
