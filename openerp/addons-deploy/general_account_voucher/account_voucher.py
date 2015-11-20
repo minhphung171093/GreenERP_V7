@@ -266,11 +266,6 @@ class account_voucher(osv.osv):
         if journal_id:
             journal_data = self.pool.get('account.journal').browse(cr, uid,journal_id)
             res['value']['account_id'] = journal_data.default_debit_account_id.id or journal_data.default_credit_account_id.id or False
-#         if amount:
-#             amount = str(amount)
-#             amount = amount.replace('.','')
-#             amount = float(amount)
-#             res['value'].update({'amount': amount})
         return res
     
     _columns = {
@@ -289,6 +284,8 @@ class account_voucher(osv.osv):
             'company_bank_id':fields.many2one('res.partner.bank', 'Company Bank', required=False, readonly=True, states={'draft':[('readonly',False)]}),
             'unshow_financial_report':fields.boolean('Không khai báo thuế'),
             'dien_giai': fields.char('Diễn giải', sie=1024),
+            
+            'amount': fields.integer('Total', required=True, readonly=True, states={'draft':[('readonly',False)]}),
         }
     
     def _get_assign_user(self, cr, uid, context=None):
@@ -411,6 +408,11 @@ class account_voucher(osv.osv):
             context = {}
         if vals.get('date',False) and not vals.get('date_document',False):
             vals.update({'date_document': vals['date']})
+        if vals.get('amount'):
+            amount = str(vals['amount'])
+            amount = amount.replace('.', '')
+#             amount = amount.replace(',', '.')
+            vals.update({'amount':int(amount)})
         new_id = super(account_voucher, self).create(cr, uid, vals, context) 
         if context.get('phieuthu_chi',False):
             self.compute_tax(cr, uid, [new_id], context)

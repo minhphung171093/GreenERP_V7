@@ -56,6 +56,10 @@
                 	<field name="currency_id" required = '1'/>
                 </xpath>
                 
+                <xpath expr="//page[@string='Invoice Lines']/group/field[@name='payment_term']" position="attributes">
+                	<attribute name="invisible">True</attribute>
+                </xpath>
+                
 	        	<xpath expr="//field[@name='account_id']" position="after">
                 	<field name="address"/>
                 	<field name="buyer"/>
