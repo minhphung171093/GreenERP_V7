@@ -82,7 +82,7 @@
             	<xpath expr="//field[@name='invoice_line']" position="before">
 	            	<group name="invoice_commission">
                     	<group>
-                    		<field name="commission_type"/>
+                    		<field name="commission_type" invisible = '1'/>
 	                    	<field name="commission_account_id" attrs="{'invisible':[('commission_type', 'in', [False])],
             															'required':[('commission_type', 'not in', [False])]}"/>
 	                    	<field name="commission_account_analytic_id" attrs="{'invisible':[('commission_type', 'in', [False])]}"/>
@@ -109,6 +109,9 @@
 	            	<field name="account_analytic_id" invisible="1"/>
 	            </xpath>
 	            
+	            <xpath expr="//field[@name='invoice_line']/tree[@string='Invoice Lines']/field[@name='discount']" position="attributes">
+	            	<attribute name="invisible">1</attribute>
+	            </xpath>
 	            
 	            <xpath expr="//field[@name='payment_ids']/tree/field[@name='debit']" position="replace">
                 	<field name="debit" sum="Debit"/>

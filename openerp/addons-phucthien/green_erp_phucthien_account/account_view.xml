@@ -46,7 +46,7 @@
             <field name="arch" type="xml">
             	<tree colors="blue:state == 'draft';black:state in ('proforma','proforma2','open');gray:state == 'cancel'" string="Invoice" position="replace">
             		<tree colors="blue:state == 'draft';gray:state in ('cancel','paid');red:payment_state== False" string="Invoice">
-	                    <field name="shop_id"/>
+	                    <field name="shop_id" invisible = '1'/>
 	                    <field name="partner_code" groups="base.group_user"/>
 	                    <field name="partner_id" groups="base.group_user"/>
 	                    <field name="date_invoice"/>
@@ -56,13 +56,14 @@
 	                    <field name="name" invisible="1"/>
 	                    <field name="journal_id" invisible="1"/>
 	                    <field name="period_id" invisible="1" groups="account.group_account_user"/>
-	                    <field name="company_id" groups="base.group_multi_company" widget="selection"/>
+	                    <field name="company_id" groups="base.group_multi_company" widget="selection" invisible = '1'/>
 	                    <field name="user_id"/>
-	                    <field name="date_due"/>
+	                    <field name="date_due" invisible = '1'/>
 	                    <field name="origin"/>
 	                    <field name="currency_id" groups="base.group_multi_currency" invisible = '1'/>
-	                    <field name="residual" sum="Residual Amount"/>
+	                    <field name="residual" sum="Residual Amount" invisible = '1'/>
 	                    <field name="amount_untaxed" sum="Untaxed Amount"/>
+	                    <field name="amount_tax" sum="Tax Amount"/>
 	                    <field name="amount_total" sum="Total Amount"/>
 	                    <field name="payment_state" invisible="1"/>
 	                    <field name="state"/>
