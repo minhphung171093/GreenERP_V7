@@ -408,11 +408,6 @@ class account_voucher(osv.osv):
             context = {}
         if vals.get('date',False) and not vals.get('date_document',False):
             vals.update({'date_document': vals['date']})
-        if vals.get('amount'):
-            amount = str(vals['amount'])
-            amount = amount.replace('.', '')
-#             amount = amount.replace(',', '.')
-            vals.update({'amount':int(amount)})
         new_id = super(account_voucher, self).create(cr, uid, vals, context) 
         if context.get('phieuthu_chi',False):
             self.compute_tax(cr, uid, [new_id], context)
