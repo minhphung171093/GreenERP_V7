@@ -102,5 +102,17 @@
             <field name="company_id" eval="False"/>
         </record>
         
+        <record id="stock.seq_picking_out" model="ir.sequence">
+            <field name="name">Picking OUT</field>
+            <field name="code">stock.picking.out</field>
+            <field name="prefix">X/%(month)s -</field>
+            <field name="padding">2</field>
+            <field name="company_id" eval="False"/>
+            <field name="implementation">standard</field>
+            <field name="auto_reset">True</field>
+            <field name="reset_period">month</field>
+            <field name="reset_init_number">1</field>	
+        </record>
+        
     </data>
 </openerp>
