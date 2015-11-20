@@ -460,6 +460,11 @@ class account_voucher(osv.osv):
         return (tot_line, rec_lst_ids)
     def print_yc_thanhtoan(self, cr, uid, ids, context=None):
         tt = self.browse(cr, uid, ids[0])
+        datas = {
+             'ids': ids,
+             'model': 'account.voucher',
+             'form': self.read(cr, uid, ids[0], context=context)
+        }
         return {
             'type': 'ir.actions.report.xml',
             'report_name': 'yeu_cau_thanh_toan_report',

@@ -258,38 +258,38 @@ class hop_dong(osv.osv):
         'ngaygui_chungtugoc':fields.date('Ngày gửi chứng từ gốc'),
         'dk_giaohang_id': fields.many2one('dieukien.giaohang', 'Điều kiện giao hàng',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'dk_thanhtoan_id': fields.many2one('dk.thanhtoan', 'Điều kiện thanh toán',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
-        'amount_untaxed': fields.function(_amount_all, digits_compute=dp.get_precision('Account'), string='Cộng',
+        'amount_untaxed': fields.function(_amount_all, digits=(16,0), string='Cộng',
             store={
                 'hop.dong': (lambda self, cr, uid, ids, c={}: ids, ['hopdong_line'], 10),
                 'hopdong.line': (_get_order, ['price_unit', 'tax_id', 'product_qty'], 10),
             },
             multi='sums', help="The amount without tax.", track_visibility='always'),
-        'amount_tax': fields.function(_amount_all, digits_compute=dp.get_precision('Account'), string='Thuế GTGT',
+        'amount_tax': fields.function(_amount_all, digits=(16,0), string='Thuế GTGT',
             store={
                 'hop.dong': (lambda self, cr, uid, ids, c={}: ids, ['hopdong_line'], 10),
                 'hopdong.line': (_get_order, ['price_unit', 'tax_id', 'product_qty'], 10),
             },
             multi='sums', help="The tax amount."),
-        'amount_total': fields.function(_amount_all, digits_compute=dp.get_precision('Account'), string='Tổng cộng',
+        'amount_total': fields.function(_amount_all, digits=(16,0), string='Tổng cộng',
             store={
                 'hop.dong': (lambda self, cr, uid, ids, c={}: ids, ['hopdong_line'], 10),
                 'hopdong.line': (_get_order, ['price_unit', 'tax_id', 'product_qty'], 10),
             },
             multi='sums', help="The total amount."),
                 
-        'amount_untaxed_hh': fields.function(_amount_all_hh, digits_compute=dp.get_precision('Account'), string='Cộng',
+        'amount_untaxed_hh': fields.function(_amount_all_hh, digits=(16,0), string='Cộng',
             store={
                 'hop.dong': (lambda self, cr, uid, ids, c={}: ids, ['hopdong_hoahong_line'], 10),
                 'hopdong.hoahong.line': (_get_order_hh, ['price_unit', 'tax_id', 'product_qty'], 10),
             },
             multi='sums', help="The amount without tax.", track_visibility='always'),
-        'amount_tax_hh': fields.function(_amount_all_hh, digits_compute=dp.get_precision('Account'), string='Thuế GTGT',
+        'amount_tax_hh': fields.function(_amount_all_hh,digits=(16,0), string='Thuế GTGT',
             store={
                 'hop.dong': (lambda self, cr, uid, ids, c={}: ids, ['hopdong_hoahong_line'], 10),
                 'hopdong.hoahong.line': (_get_order_hh, ['price_unit', 'tax_id', 'product_qty'], 10),
             },
             multi='sums', help="The tax amount."),
-        'amount_total_hh': fields.function(_amount_all_hh, digits_compute=dp.get_precision('Account'), string='Tổng cộng',
+        'amount_total_hh': fields.function(_amount_all_hh,digits=(16,0), string='Tổng cộng',
             store={
                 'hop.dong': (lambda self, cr, uid, ids, c={}: ids, ['hopdong_hoahong_line'], 10),
                 'hopdong.hoahong.line': (_get_order_hh, ['price_unit', 'tax_id', 'product_qty'], 10),
@@ -324,6 +324,7 @@ class hop_dong(osv.osv):
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'hop.dong', context=c),
         'currency_company_id': lambda self, cr, uid, c: self.pool.get('res.users').browse(cr, uid, uid).company_id.currency_id.id,
         'user_id': lambda self, cr, uid, context=None: uid,
+        'thongbao_nhanhang':'Bên B thông báo cho bên A trước  ngày',
     }
     
     def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
@@ -726,14 +727,14 @@ class hopdong_line(osv.osv):
         'product_id': fields.many2one('product.product', 'Product', domain=[('sale_ok', '=', True)], change_default=True,),
         'name':fields.char('Name',size=1024,required=True),
         'product_uom': fields.many2one('product.uom', 'Đơn vị tính'),
-        'product_qty': fields.float('Số lượng', digits_compute= dp.get_precision('Product UoS')),
-        'price_unit': fields.float('Đơn giá', digits_compute= dp.get_precision('Product Price')),
+        'product_qty': fields.float('Số lượng', digits=(16,0)),
+        'price_unit': fields.float('Đơn giá', digits=(16,0)),
         'tax_id': fields.many2many('account.tax', 'hopdong_order_tax', 'hopdong_id', 'tax_id', 'Taxes'),
-        'price_subtotal': fields.function(_amount_line, string='Subtotal', digits_compute= dp.get_precision('Account')),
+        'price_subtotal': fields.function(_amount_line, string='Subtotal', digits=(16,0)),
         'chatluong_id':fields.many2one('chatluong.sanpham','Chất lượng'),
         'quycach_donggoi_id':fields.many2one('quycach.donggoi','Quy cách đóng gói'),
         'quycach_baobi_id':fields.many2one('quycach.baobi','Quy cách bao bì'),        
-        'sotien_giam': fields.float('Số tiền giảm'),
+        'sotien_giam': fields.float('Số tiền giảm',digits=(16,0)),
         'hopdong_giam_id': fields.many2one('hop.dong', 'Hợp đồng'),
         'origin': fields.char('Origin', size = 1024),
     }
