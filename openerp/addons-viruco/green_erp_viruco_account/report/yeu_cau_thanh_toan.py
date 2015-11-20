@@ -27,6 +27,9 @@ class Parser(report_sxw.rml_parse):
             'get_tong':self.get_tong,
             'convert':self.convert,
             'convert_f_amount':self.convert_f_amount,
+            'convert_tt':self.convert_tt,
+            'get_vietname_date':self.get_vietname_date,
+            'get_thanhtoan':self.get_thanhtoan,
         })
     
     def convert_f_amount(self, amount):
@@ -43,7 +46,31 @@ class Parser(report_sxw.rml_parse):
             head = amount_text[:1]
             amount_text = head.upper()+amount
         return amount_text
+
+    def get_vietname_date(self, date):
+        if not date:
+            date = time.strftime(DATE_FORMAT)
+        date = datetime.strptime(date, DATE_FORMAT)
+        return date.strftime('%d/%m/%Y')
     
+    def convert_tt(self, amount):
+        tt=False
+        if amount and amount.type=='bank':
+            tt='Chuyển khoản'
+        else:
+            tt='Tiền mặt'
+        return tt
+    def get_thanhtoan(self,hopdong):
+        res=[]
+        if hopdong:
+            sql = '''
+                select amount from account_voucher where type='payment' and hop_dong_id=%s and state='posted'
+            '''%(hopdong)
+            self.cr.execute(sql)
+            thanhtoan = self.cr.fetchall()
+            for line in thanhtoan:
+                res.append(str(line[0])[:-2])
+            return res
     def _amount_line_tax(self, cr, uid, line, context=None):
         val = 0.0
         for c in self.pool.get('account.tax').compute_all(cr, uid, line.tax_id, line.price_unit, line.product_qty, line.product_id, line.donmuahang_id.partner_id)['taxes']:

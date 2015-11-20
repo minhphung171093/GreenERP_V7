@@ -569,6 +569,8 @@ class hop_dong(osv.osv):
                 val_line={
                     'product_id': dmh_line.product_id and dmh_line.product_id.id or False,
                     'name':dmh_line.name,
+                    'quycach_donggoi_id':dmh_line.quycach_donggoi_id and dmh_line.quycach_donggoi_id.id or False,
+                    'quycach_baobi_id':dmh_line.quycach_baobi_id and dmh_line.quycach_baobi_id.id or False,
                     'product_uom': dmh_line.product_uom and dmh_line.product_uom.id or False,
                     'product_qty': dmh_line.product_qty,
                     'price_unit': dmh_line.price_unit,
@@ -1126,11 +1128,6 @@ class don_mua_hang(osv.osv):
         product_pricelist_ids = []
         pricelist_id = False
         product_pricelist_id = False
-#         for line in self.browse(cr, uid, ids, context=context):
-#             if line.type == 'dmh_trongnuoc':
-#                 currency_ids = currency_obj.search(cr,uid,[('name','=','VND')])
-#             if line.type == 'dmh_nhapkhau':
-#                 currency_ids = currency_obj.search(cr,uid,[('name','=','USD')])
 #         if context is None:
 #             context = {}
 #         if context.get('default_type',False)=='dmh_trongnuoc':
