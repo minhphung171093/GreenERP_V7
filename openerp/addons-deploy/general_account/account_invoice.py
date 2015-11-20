@@ -766,9 +766,9 @@ class account_invoice_line(osv.osv):
     
     def onchange_gia_tri(self, cr, uid, ids, gia_tri=False, quantity = False, context=None):
         vals = {}
-        if gia_tri :
+        if gia_tri and quantity:
             vals = {
-                    'price_unit':gia_tri/quantity,
+                    'price_unit':float(gia_tri)/float(quantity),
                     }
         return {'value': vals}
     

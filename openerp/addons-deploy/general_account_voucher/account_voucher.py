@@ -266,6 +266,11 @@ class account_voucher(osv.osv):
         if journal_id:
             journal_data = self.pool.get('account.journal').browse(cr, uid,journal_id)
             res['value']['account_id'] = journal_data.default_debit_account_id.id or journal_data.default_credit_account_id.id or False
+#         if amount:
+#             amount = str(amount)
+#             amount = amount.replace('.','')
+#             amount = float(amount)
+#             res['value'].update({'amount': amount})
         return res
     
     _columns = {
@@ -1002,7 +1007,7 @@ class account_voucher(osv.osv):
                 'type': 'ir.actions.report.xml',
                 'report_name': 'general_phieu_thu',
             }
-    
+        
 account_voucher()
 
 class account_voucher_line(osv.osv):
