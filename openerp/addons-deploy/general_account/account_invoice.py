@@ -155,6 +155,16 @@ class account_invoice(osv.osv):
                         res[invoice.id]['amount_total'] = res[invoice.id]['amount_total'] + invoice.commission_fix_amount
         return res
     
+    def _get_product_showin_report(self, cr, uid, ids, name, args, context=None):
+        res = {}
+        for invoice in self.browse(cr, uid, ids, context=context):
+            product = ''
+            for line in invoice.invoice_line:
+                product = line.name
+                break
+            res[invoice.id] = product
+        return res
+    
     def get_vietname_date(self, date):
         if not date:
             date = time.strftime(DATE_FORMAT)
@@ -232,6 +242,7 @@ class account_invoice(osv.osv):
         'address':fields.char('Địa chỉ giao hàng',size=300),
         #Hung them nguoi mua hang
         'buyer':fields.char('Người mua hàng'),
+        'product_showin_report': fields.function(_get_product_showin_report, type='char', store=True),
     }
     
     # kiet Add sinh so number
