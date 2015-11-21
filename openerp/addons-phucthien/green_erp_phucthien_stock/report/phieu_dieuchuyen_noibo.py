@@ -11,7 +11,8 @@ import pooler
 from osv import osv
 from tools.translate import _
 import random
-from datetime import datetime,timedelta
+from datetime import datetime, timedelta
+import datetime
 DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 DATE_FORMAT = "%Y-%m-%d"
 
@@ -37,8 +38,7 @@ class Parser(report_sxw.rml_parse):
     
     def get_date_hd(self,date):
         if date:
-            date = date[:10]
-            date = datetime.strptime(date, DATE_FORMAT)
+            date = datetime.datetime.strptime(date, DATETIME_FORMAT) + timedelta(hours=7)
             return date.strftime('%m/%Y')
         else:
             return ''
@@ -47,7 +47,7 @@ class Parser(report_sxw.rml_parse):
         res={}
         if not date:
             date = time.strftime(DATETIME_FORMAT)
-        date = datetime.strptime(date, DATETIME_FORMAT) + timedelta(hours=7)
+        date = datetime.datetime.strptime(date, DATETIME_FORMAT) + timedelta(hours=7)
         date.strftime(DATETIME_FORMAT)
         date=str(date)
         return date
