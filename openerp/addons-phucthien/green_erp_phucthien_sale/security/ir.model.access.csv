@@ -10,3 +10,4 @@ access_phucthien_sale_8,ly.do.huy,model_ly_do_huy,base.group_user,True,True,True
 access_phucthien_sale_9,noi.dung.chinh,model_noi_dung_chinh,base.group_user,True,True,True,True
 access_phucthien_sale_10,remind.work.situation,model_remind_work_situation,base.group_user,True,True,True,True
 access_phucthien_sale_11,doanhthu.banhang.review,model_doanhthu_banhang_review,base.group_user,True,True,True,True
+access_phucthien_sale_12,doanhthu.banhang.review.line,model_doanhthu_banhang_review_line,base.group_user,True,True,True,True
