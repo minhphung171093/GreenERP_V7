@@ -876,9 +876,13 @@ class stock_move(osv.osv):
 #             if move.type == 'in' or (move.type=='out' and move.picking_return == 'supplier'):
             if context.get('prodlot_flag'):
                 if move.prodlot_id.id:
-                    self.write(cr, uid, [move.id],{'state': 'done', 'date':move.picking_id.date or time.strftime(DEFAULT_SERVER_DATETIME_FORMAT)}, context=context)
+#                     self.write(cr, uid, [move.id],{'state': 'done', 'date':move.picking_id.date or time.strftime(DEFAULT_SERVER_DATETIME_FORMAT)}, context=context)
+                    #PHUNG Chinh ngay cua stock move theo ngay tao
+                    self.write(cr, uid, [move.id],{'state': 'done'}, context=context)
             else:
-                self.write(cr, uid, [move.id],{'state': 'done', 'date':move.picking_id.date or time.strftime(DEFAULT_SERVER_DATETIME_FORMAT)}, context=context)
+                #PHUNG Chinh ngay cua stock move theo ngay tao
+#                 self.write(cr, uid, [move.id],{'state': 'done', 'date':move.picking_id.date or time.strftime(DEFAULT_SERVER_DATETIME_FORMAT)}, context=context)
+                self.write(cr, uid, [move.id],{'state': 'done'}, context=context)
             #Thanh" Update date done for move from Picking
                 
         if todo:
