@@ -27,6 +27,7 @@ class Parser(report_sxw.rml_parse):
             'get_tong':self.get_tong,
             'convert':self.convert,
             'convert_f_amount':self.convert_f_amount,
+            'convert_amount':self.convert_amount,
         })
     
     def convert_f_amount(self, amount):
@@ -35,6 +36,10 @@ class Parser(report_sxw.rml_parse):
         if len(b)==2 and len(b[1])==1:
             a+='0'
         return a.replace(',',' ')
+
+    def convert_amount(self, amount):
+        a = format(int(amount),',')
+        return a
     
     def convert(self, amount):
         amount_text = amount_to_text_vn.amount_to_text(amount, 'vn')

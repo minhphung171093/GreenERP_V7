@@ -36,7 +36,16 @@ class Parser(report_sxw.rml_parse):
             'get_dieukhoanchung': self.get_dieukhoanchung,
             'get_tax': self.get_tax,
             'get_nganhang': self.get_nganhang,
+            'convert_amount':self.convert_amount,
+            'convert_mst':self.convert_mst,
+        
         })
+ 
+    def convert_mst(self, mst):
+        a = ''
+        for line in mst:
+            a+=line+' '
+        return a
         
     def convert_date(self, date):
         if not date:
@@ -50,6 +59,10 @@ class Parser(report_sxw.rml_parse):
         if len(b)==2 and len(b[1])==1:
             a+='0'
         return a.replace(',',' ')
+
+    def convert_amount(self, amount):
+        a = format(int(amount),',')
+        return a
     
     def convert(self, amount):
         amount_text = amount_to_text_vn.amount_to_text(amount, 'vn')

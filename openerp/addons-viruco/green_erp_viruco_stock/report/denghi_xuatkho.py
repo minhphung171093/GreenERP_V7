@@ -25,6 +25,8 @@ class Parser(report_sxw.rml_parse):
         self.localcontext.update({
             'convert_f_amount':self.convert_f_amount,
             'get_phieunhapkho': self.get_phieunhapkho,
+            'convert_amount':self.convert_amount,
+            'get_total':self.get_total,
         })
         
     def convert_f_amount(self, amount):
@@ -33,6 +35,16 @@ class Parser(report_sxw.rml_parse):
         if len(b)==2 and len(b[1])==1:
             a+='0'
         return a.replace(',',' ')
+
+    def convert_amount(self, amount):
+        a = format(int(amount),',')
+        return a
+    
+    def get_total(self, obj):
+        qty = 0
+        for line in obj:
+            qty += line.product_qty
+        return qty   
     
     def get_phieunhapkho(self, line):
 #         pnk = ''
@@ -40,6 +52,6 @@ class Parser(report_sxw.rml_parse):
 #             pnk += l.name+', '
 #         if pnk and len(pnk)>3:
 #             pnk = pnk[:-2]
-        return line.picking_id and line.picking_id.name or ''
+        return line.picking_in_id and line.picking_in_id.name or ''
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

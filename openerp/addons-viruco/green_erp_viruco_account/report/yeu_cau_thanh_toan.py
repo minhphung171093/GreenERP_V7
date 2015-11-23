@@ -30,6 +30,8 @@ class Parser(report_sxw.rml_parse):
             'convert_tt':self.convert_tt,
             'get_vietname_date':self.get_vietname_date,
             'get_thanhtoan':self.get_thanhtoan,
+            'get_trangthai':self.get_trangthai,
+            'convert_amount':self.convert_amount,
         })
     
     def convert_f_amount(self, amount):
@@ -38,6 +40,10 @@ class Parser(report_sxw.rml_parse):
         if len(b)==2 and len(b[1])==1:
             a+='0'
         return a.replace(',',' ')
+    
+    def convert_amount(self, amount):
+        a = format(int(amount),',')
+        return a    
     
     def convert(self, amount):
         amount_text = amount_to_text_vn.amount_to_text(amount, 'vn')
@@ -64,13 +70,17 @@ class Parser(report_sxw.rml_parse):
         res=[]
         if hopdong:
             sql = '''
-                select amount from account_voucher where type='payment' and hop_dong_id=%s and state='posted'
+                select amount,state from account_voucher where type='payment' and hop_dong_id=%s 
             '''%(hopdong)
             self.cr.execute(sql)
-            thanhtoan = self.cr.fetchall()
-            for line in thanhtoan:
-                res.append(str(line[0])[:-2])
-            return res
+            thanhtoan = self.cr.dictfetchall()
+            return thanhtoan
+    def get_trangthai(self,state):
+        a=""
+        if state=='posted':
+            a= " - Đã thanh toán"
+        
+        return a
     def _amount_line_tax(self, cr, uid, line, context=None):
         val = 0.0
         for c in self.pool.get('account.tax').compute_all(cr, uid, line.tax_id, line.price_unit, line.product_qty, line.product_id, line.donmuahang_id.partner_id)['taxes']:

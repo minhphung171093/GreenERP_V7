@@ -24,6 +24,8 @@ class Parser(report_sxw.rml_parse):
         pool = pooler.get_pool(self.cr.dbname)
         self.localcontext.update({
             'convert_f_amount':self.convert_f_amount,
+            'convert_amount':self.convert_amount,
+            'get_total':self.get_total,
         })
         
     def convert_f_amount(self, amount):
@@ -32,5 +34,13 @@ class Parser(report_sxw.rml_parse):
         if len(b)==2 and len(b[1])==1:
             a+='0'
         return a.replace(',',' ')
-    
+    def convert_amount(self, amount):
+        a = format(int(amount),',')
+        return a
+    def get_total(self,obj):
+        product_qty=0
+        for line in obj:
+            if line.product_qty:
+                product_qty += int(line.product_qty)
+        return product_qty    
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -240,7 +240,7 @@ class stock_picking(osv.osv):
         'nguoi_denghi_id':fields.many2one('res.users','Người đề nghị'),
         'donvi_vanchuyen':fields.many2one('res.partner','Đơn vị vận chuyển'),
         'lotrinh_id':fields.many2one('lo.trinh','Lộ trình'),
-        'dongia_vanchuyen':fields.float('Đơn giá vận chuyển'),
+        'dongia_vanchuyen':fields.float('Đơn giá vận chuyển',digits=(16,0)),
         'picking_location_dest_id': fields.many2one('stock.location', 'Destination Location',states={'done': [('readonly', True)]}, select=True,),
         'cang_donghang_id': fields.many2one('cang.donghang', 'Cảng đóng hàng',states={'done': [('readonly', True)]}, select=True,),
         'shop_id': fields.function(_get_location_info, type='many2one', relation='sale.shop', string='Shop',
@@ -749,7 +749,7 @@ class stock_picking_in(osv.osv):
         'nguoi_denghi_id':fields.many2one('res.users','Người đề nghị'),
         'donvi_vanchuyen':fields.many2one('res.partner','Đơn vị vận chuyển'),
         'lotrinh_id':fields.many2one('lo.trinh','Lộ trình'),
-        'dongia_vanchuyen':fields.float('Đơn giá vận chuyển'),
+        'dongia_vanchuyen':fields.float('Đơn giá vận chuyển',digits=(16,0)),
         'picking_location_dest_id': fields.many2one('stock.location', 'Destination Location',states={'done': [('readonly', True)]}, select=True,),
         'shop_id': fields.function(_get_location_info, type='many2one', relation='sale.shop', string='Shop',
             store={
@@ -935,7 +935,7 @@ class stock_picking_out(osv.osv):
         'nguoi_denghi_id':fields.many2one('res.users','Người đề nghị'),
         'donvi_vanchuyen':fields.many2one('res.partner','Đơn vị vận chuyển'),
         'lotrinh_id':fields.many2one('lo.trinh','Lộ trình'),
-        'dongia_vanchuyen':fields.float('Đơn giá vận chuyển'),
+        'dongia_vanchuyen':fields.float('Đơn giá vận chuyển',digits=(16,0)),
         'picking_location_dest_id': fields.many2one('stock.location', 'Destination Location',states={'done': [('readonly', True)]}, select=True,),
         'cang_donghang_id': fields.many2one('cang.donghang', 'Cảng đóng hàng',states={'done': [('readonly', True)]}, select=True,),
         'shop_id': fields.function(_get_location_info, type='many2one', relation='sale.shop', string='Shop',
@@ -1136,6 +1136,17 @@ class stock_move(osv.osv):
             store={
                 'stock.move': (lambda self, cr, uid, ids, c={}: ids, ['product_id','product_uom','product_qty'], 10),
             }, readonly=True, multi='pro_info'),
+        'product_qty': fields.float('Quantity', digits=(16,0),
+            required=True,states={'done': [('readonly', True)]},
+            help="This is the quantity of products from an inventory "
+                "point of view. For moves in the state 'done', this is the "
+                "quantity of products that were actually moved. For other "
+                "moves, this is the quantity of product that is planned to "
+                "be moved. Lowering this quantity does not generate a "
+                "backorder. Changing this quantity on assigned moves affects "
+                "the product reservation, and should be done with care."
+        ),
+        'product_uos_qty': fields.float('Quantity (UOS)', digits=(16,0), states={'done': [('readonly', True)]}),
     }
     
     def action_done(self, cr, uid, ids, context=None):
