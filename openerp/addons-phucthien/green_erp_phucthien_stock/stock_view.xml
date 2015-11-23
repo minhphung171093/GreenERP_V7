@@ -922,6 +922,62 @@
             <field name="view_id" ref="dm_thietbi_tree_view"/>
         </record>
         
+        <record id="dutru_hanghoa_tree_view" model="ir.ui.view">
+			<field name="name">dutru.hanghoa.tree</field>
+			<field name="model">dutru.hanghoa</field>
+			<field name="arch" type="xml">
+				<tree string="Dự trù hàng hóa">
+					<field name="name"/>
+                    <field name="state"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="dutru_hanghoa_form_view" model="ir.ui.view">
+            <field name="name">dutru.hanghoa.form</field>
+            <field name="model">dutru.hanghoa</field>
+            <field name="arch" type="xml">
+	            <form string="Dự trù hàng hóa" version="7.0"> 
+	            	<header>
+	                    <button name="bt_duyet" states='moi_tao' string="Duyệt" type="object" class="oe_highlight" />
+	                    <field name="state" widget="statusbar" statusbar_visible="moi_tao,duyet"/>
+		            </header>    
+	            	<sheet>
+	                    <group col='4' colspan='2'>
+	                    	<field name="name" on_change = "onchange_name(name, tile_dutru)"/>
+	                    	<field name="tile_dutru" on_change = "onchange_name(name, tile_dutru)"/>
+	                    </group>
+	                    <notebook>
+							<page string = "Chi tiết dự trù hàng hóa">
+								<field name="dutru_hanghoa_line" nolabel='1'>
+									<tree editable='bottom'>
+										<field name="stt"/>
+										<field name="product_id" />
+										<field name="uom_id" />
+										<field name="sl_trungbinh" /> 
+										<field name="sl_tonkho" /> 
+										<field name="sl_dutru" /> 
+										<field name="ngay_dexuat" /> 
+										<field name="ghi_chu" /> 
+									</tree>
+								</field>
+							</page>
+						</notebook>
+		         	</sheet>
+		         </form>
+			</field>
+		</record>
+		
+		<record id="action_dutru_hanghoa" model="ir.actions.act_window">
+            <field name="name">Dự trù hàng hóa</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dutru.hanghoa</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="dutru_hanghoa_tree_view"/>
+        </record>
+        <menuitem id="menu_action_dutru_hanghoa" action="action_dutru_hanghoa" parent="general_stock.menu_report_control" sequence="305"/>
+        
         <menuitem id="menu_root_ky_thuat" name="Kỹ thuật" sequence="71"/>
         <menuitem id="menu_thiet_bi" name="Thiết bị" parent="menu_root_ky_thuat" sequence="10"/>
 		<menuitem id="menu_action_dm_thietbi" action="action_dm_thietbi" parent="menu_thiet_bi" sequence="11"/>

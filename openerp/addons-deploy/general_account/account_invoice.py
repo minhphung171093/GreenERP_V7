@@ -616,6 +616,16 @@ class account_invoice(osv.osv):
                 move_line_pool.reconcile_partial(cr, uid, rec_ids)
                 
             new_move_name = move_obj.browse(cr, uid, move_id, context=ctx).name
+            if inv.type == 'in_invoice':
+                name_ids = self.search(cr,uid,[('id', '!=',inv.id),('move_name','=',new_move_name),('type','=','in_invoice')])
+                if name_ids:
+                    raise osv.except_osv(_('Cảnh báo!'),
+                                                  _('Số hóa đơn không được trùng nhau.'))
+            if inv.type == 'out_invoice':
+                name_ids = self.search(cr,uid,[('id', '!=',inv.id),('move_name','=',new_move_name),('type','=','out_invoice')])
+                if name_ids:
+                    raise osv.except_osv(_('Cảnh báo!'),
+                                                  _('Số hóa đơn không được trùng nhau.'))
             # make the invoice point to that move
             self.write(cr, uid, [inv.id], {'move_id': move_id,'period_id':period_id, 'move_name':new_move_name}, context=ctx)
             # Pass invoice in context in method post: used if you want to get the same
