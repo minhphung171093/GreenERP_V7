@@ -948,7 +948,7 @@ class account_ledger_report(osv.osv_memory):
                         sql='''
                         SELECT  am.date gl_date, coalesce(am.date_document,am.date) doc_date, am.name doc_no, 
                                 coalesce(aih.product_showin_report, coalesce(avh.dien_giai,
-                                    coalesce(am.narration, am.ref))) description,acc.code acc_code,                    
+                                    concat(am.ref, am.ref_number))) description,acc.code acc_code,                    
                         aml.debit,aml.credit
                         FROM account_move_line aml 
                             JOIN account_move am on am.id = aml.move_id
@@ -987,7 +987,7 @@ class account_ledger_report(osv.osv_memory):
                             select row_number() over(order by am.date, am.date_document, am.name)::int seq, 
                                 am.date gl_date, coalesce(am.date_document,am.date) doc_date, am.name doc_no, 
                                 coalesce(aih.product_showin_report, coalesce(avh.dien_giai,
-                                    coalesce(am.narration, am.ref))) description,
+                                    concat(am.ref, am.ref_number))) description,
                                 case when aml.debit != 0
                                     then
                                         array_to_string(ARRAY(SELECT DISTINCT a.code
@@ -3460,5 +3460,41 @@ class so_quy(osv.osv_memory):
                     }
             
 so_quy()
+
+class so_nhatky_chung(osv.osv_memory):
+    _name = "so.nhatky.chung"    
+    
+    def _get_fiscalyear(self, cr, uid, context=None):
+        now = time.strftime('%Y-%m-%d')
+        fiscalyears = self.pool.get('account.fiscalyear').search(cr, uid, [('date_start', '<', now), ('date_stop', '>', now)], limit=1 )
+        return fiscalyears and fiscalyears[0] or False
+            
+    _columns = {
+        'fiscalyear': fields.many2one('account.fiscalyear', 'Năm', domain=[('state','=','draft')],),
+        'company_id': fields.many2one('res.company', 'Company', required=True),
+     }
+    
+    def _get_company(self, cr, uid, context=None):
+        user = self.pool.get('res.users').browse(cr, uid, uid, context=context)
+        return user.company_id and user.company_id.id or False
+    
+    def _get_shop_ids(self, cr, uid, context=None):
+        if context is None:
+            context = {}
+        user = self.pool.get('res.users').browse(cr, uid, uid)
+        return [x.id for x in user.shop_ids]
+    
+    _defaults = {
+        'fiscalyear': _get_fiscalyear,
+        'company_id': _get_company,
+        }
+    
+    def finance_report(self, cr, uid, ids, context=None): 
+        datas = {'ids': context.get('active_ids', [])}
+        datas['model'] = 'so.nhatky.chung'
+        datas['form'] = self.read(cr, uid, ids)[0]    
+        return {'type': 'ir.actions.report.xml', 'report_name': 'so_nhatky_chung_report' , 'datas': datas}
+so_nhatky_chung()
+
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

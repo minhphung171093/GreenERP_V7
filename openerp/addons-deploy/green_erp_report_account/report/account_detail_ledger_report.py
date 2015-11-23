@@ -229,7 +229,7 @@ class Parser(report_sxw.rml_parse):
                     sql='''
                     SELECT  am.date gl_date, coalesce(am.date_document,am.date) doc_date, am.name doc_no, 
                             coalesce(aih.product_showin_report, coalesce(avh.dien_giai,
-                                coalesce(am.narration, am.ref))) description,acc.code acc_code,                    
+                                concat(am.ref, am.ref_number))) description,acc.code acc_code,                    
                     aml.debit,aml.credit
                     FROM account_move_line aml 
                         JOIN account_move am on am.id = aml.move_id
@@ -268,7 +268,7 @@ class Parser(report_sxw.rml_parse):
                         select row_number() over(order by am.date, am.date_document, am.name)::int seq, 
                             am.date gl_date, coalesce(am.date_document,am.date) doc_date, am.name doc_no, 
                             coalesce(aih.product_showin_report, coalesce(avh.dien_giai,
-                                coalesce(am.narration, am.ref))) description,
+                                concat(am.ref, am.ref_number))) description,
                             case when aml.debit != 0
                                 then
                                     array_to_string(ARRAY(SELECT DISTINCT a.code

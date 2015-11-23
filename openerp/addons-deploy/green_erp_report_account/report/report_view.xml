@@ -574,5 +574,31 @@
 	        string="Sổ tiền gửi ngân hàng"
 	        rml="green_erp_report_account/report/review_so_tiengui_nganhang_report.ods"/>
 	        
+<!--  ========================= Sổ nhật ký chung ================= -->
+		<record id="so_nhatky_chung_report" model="ir.actions.report.xml">
+	        <field name="name">so_nhatky_chung_report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">so.nhatky.chung</field>
+	        <field name="report_name">so_nhatky_chung_report</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">green_erp_report_account/report/so_nhatky_chung_report.py</field>
+	        <field name="report_rml">green_erp_report_account/report/so_nhatky_chung_report.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record>		    
+		
+		<report 
+			auto="False" 
+			menu="False"
+			id="so_nhatky_chung_report" 
+			model="so.nhatky.chung" 
+			name="so_nhatky_chung_report"
+	        string="Sổ nhật ký chung"
+	        rml="green_erp_report_account/report/so_nhatky_chung_report.ods"/>
+	        
+	        
 	</data>
 </openerp>
