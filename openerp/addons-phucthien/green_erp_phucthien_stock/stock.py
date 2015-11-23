@@ -749,8 +749,8 @@ class chuyenkho_noibo(osv.osv):
                             'location_dest_id': line.product_id.property_stock_inventory.id or False,
                             'prodlot_id': line.prodlot_id and line.prodlot_id.id or False,
                             'tracking_id': line.source_tracking_id and line.source_tracking_id.id or False,
-                            'date': line.date_expected,
-                            'date_expected': line.date_expected,
+                            'date': line.date,
+                            'date_expected': line.date,
                             'company_id':pick.company_id and pick.company_id.id or False,
                             'state': 'done',
                     }
@@ -764,8 +764,8 @@ class chuyenkho_noibo(osv.osv):
                             'location_dest_id': line.location_dest_id and line.location_dest_id.id or False,
                             'prodlot_id': line.prodlot_id and line.prodlot_id.id or False,
                             'tracking_id': line.dest_tracking_id and line.dest_tracking_id.id or False,
-                            'date': line.date_expected,
-                            'date_expected': line.date_expected,
+                            'date': line.date,
+                            'date_expected': line.date,
                             'company_id':pick.company_id and pick.company_id.id or False,
                             'state': 'done',
                     }
