@@ -692,7 +692,24 @@ class chuyenkho_noibo(osv.osv):
             seq_obj_name =  self._name
             vals['name'] = self.pool.get('ir.sequence').get(cr, user, seq_obj_name)
         new_id = super(chuyenkho_noibo, self).create(cr, user, vals, context)
+        if 'date' in vals:
+            sql = '''
+                update chuyenkho_noibo_line set date = '%s' where chuyenkho_noibo_id = %s
+            '''%(vals['date'], new_id)
+            cr.execute(sql)
         return new_id
+    
+    def write(self, cr, uid, ids, vals, context=None):
+        if 'date' in vals:
+            for line in self.browse(cr,uid,ids):
+                sql = '''
+                    update chuyenkho_noibo_line set date = '%s' where chuyenkho_noibo_id = %s
+                '''%(vals['date'], line.id)
+                cr.execute(sql)
+        new_write = super(chuyenkho_noibo, self).write(cr, uid,ids, vals, context)
+        return new_write
+    
+    
     
     def unlink(self, cr, uid, ids, context=None):
         move_obj = self.pool.get('stock.move')
