@@ -371,7 +371,7 @@ class account_invoice(osv.osv):
                 raise osv.except_osv(_('No Invoice Lines!'), _('Please create some invoice lines.'))
             if inv.move_id:
                 continue
-
+            name = ''
             ctx = context.copy()
             ctx.update({'lang': inv.partner_id.lang})
             if not inv.date_invoice:
@@ -426,7 +426,8 @@ class account_invoice(osv.osv):
             
             #Thanh: Set name of partner entry to the Invoice number
             if not inv.reference:
-                raise osv.except_osv(_('Lỗi nhập liệu!'), _("Vui lòng nhập Ký hiệu hóa đơn!"))
+                if inv.type not in ('out_refund'):
+                    raise osv.except_osv(_('Lỗi nhập liệu!'), _("Vui lòng nhập Ký hiệu hóa đơn!"))
                 
             if inv.reference:
                 if inv.type in ('in_invoice', 'in_refund'):
@@ -435,10 +436,11 @@ class account_invoice(osv.osv):
                     else:
                         name = inv.reference  + '/' + inv['supplier_invoice_number'] or '/'
                 else:
-                    if not inv.reference_number:
-                        raise osv.except_osv(_('Lỗi nhập liệu!'), _("Vui lòng nhập Số hóa đơn!"))
-                    else:
-                        name = inv.reference  + '/' + inv.reference_number or '/'
+                    if inv.type not in ('out_refund'):
+                        if not inv.reference_number:
+                            raise osv.except_osv(_('Lỗi nhập liệu!'), _("Vui lòng nhập Số hóa đơn!"))
+                        else:
+                            name = inv.reference  + '/' + inv.reference_number or '/'
 #                 name = inv['name'] or inv['supplier_invoice_number'] or '/'
             #Thanh: Set name of partner entry to the Invoice number
             
@@ -477,7 +479,8 @@ class account_invoice(osv.osv):
             else:
                 iml.append({
                     'type': 'dest',
-                    'name': name,
+#                     'name': name,
+                    'name': inv.rel_invoice_id.name,
                     'price': total,
                     'account_id': acc_id,
                     'date_maturity': inv.date_due or False,
