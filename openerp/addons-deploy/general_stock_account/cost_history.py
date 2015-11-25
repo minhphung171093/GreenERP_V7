@@ -104,6 +104,8 @@ class average_cost_detail_history(osv.osv):
             avera_qty = 0
             qty_previous = 0.0
             previous_value = 0.0
+            nhap_qty = 0.0
+            nhap_value = 0.0
             if history.product_id:
                 #Tinh Previous Cost => Lay ky truoc, ko co thi lay standard price
                 previous_cost = history.previous_cost or history.product_id.standard_price
@@ -236,6 +238,20 @@ class average_cost_detail_history(osv.osv):
                     nhap_res = cr.fetchone()
                     nhap_qty = nhap_res and nhap_res[0] or 0
                     nhap_value = nhap_res and nhap_res[1] or 0
+                    sql ='''
+                        SELECT sum(quantity) qty_hoantien, sum(price_unit * quantity) total_hoantien
+                            FROM
+                                account_invoice_line  
+                            WHERE 
+                                product_id = %s and invoice_id in (select id from account_invoice where type = 'out_refund'
+                                and date(timezone('UTC',date_invoice)) between '%s' and '%s'
+                                and state not in ('draft','cancel'))
+                    '''%(history.product_id.id , start_date ,end_date)
+                    cr.execute(sql)
+                    nhap_ht_res = cr.fetchone()
+                    nhap_qty += nhap_ht_res and nhap_ht_res[0] or 0
+                    nhap_value += nhap_ht_res and nhap_ht_res[1] or 0
+                    
                     peridical_cost = (nhap_qty + qty_previous) and (nhap_value + previous_value)/(nhap_qty + qty_previous) or 0.0
                     
                     if not peridical_cost:

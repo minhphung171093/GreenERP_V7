@@ -85,31 +85,6 @@ class account_invoice(osv.osv):
             res.append((record['id'], name))
         return res
     
-    def _refund_cleanup_lines(self, cr, uid, lines, context=None):
-        """Convert records to dict of values suitable for one2many line creation
-
-            :param list(browse_record) lines: records to convert
-            :return: list of command tuple for one2many line creation [(0, 0, dict of valueis), ...]
-        """
-        clean_lines = []
-        for line in lines:
-            clean_line = {}
-            for field in line._all_columns.keys():
-                if line._all_columns[field].column._type == 'many2one':
-                    if field == 'account_id':
-                        account_ids = self.pool.get('account.account').search(cr,uid,[('code', '=', '5212')])
-                        clean_line[field] = account_ids[0]
-                    else:
-                        clean_line[field] = line[field].id
-                elif line._all_columns[field].column._type not in ['many2many','one2many']:
-                    clean_line[field] = line[field]
-                elif field == 'invoice_line_tax_id':
-                    tax_list = []
-                    for tax in line[field]:
-                        tax_list.append(tax.id)
-                    clean_line[field] = [(6,0, tax_list)]
-            clean_lines.append(clean_line)
-        return map(lambda x: (0,0,x), clean_lines)
 #         types = {
 #                 'out_invoice': _('Invoice'),
 #                 'in_invoice': _('Supplier Invoice'),

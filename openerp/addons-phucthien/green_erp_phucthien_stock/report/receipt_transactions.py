@@ -101,7 +101,7 @@ class Parser(report_sxw.rml_parse):
         for o in self.get_picking():
             for line in o.move_lines:
                 if line.purchase_line_id:
-                    tong += line.purchase_line_id.price_unit * line.product_qty + self.get_tax_amount(line or 0)
+                    tong += line.price_subtotal + self.get_tax_amount(line or 0)
         return tong
     def get_stt(self,seq_1,seq):
         stt = 1
@@ -177,10 +177,10 @@ class Parser(report_sxw.rml_parse):
             if invoice_ids:
                 invoice = self.pool.get('account.invoice').browse(self.cr, self.uid, invoice_ids[0])
                 amount_tax = round(float(round(invoice.amount_tax))/float(invoice.amount_untaxed*round(move.primary_qty*move.price_unit)))
-        if not amount_tax and move.purchase_line_id:
-            for t in move.purchase_line_id.taxes_id:
-                amount_tax+= t.amount*move.purchase_line_id.price_subtotal
-        return round(amount_tax)
+            if not amount_tax and move.purchase_line_id:
+                for t in move.purchase_line_id.taxes_id:
+                    amount_tax+= t.amount*move.price_subtotal
+        return amount_tax
     
     def get_chungtu(self,o):
         invoice_obj = self.pool.get('account.invoice')

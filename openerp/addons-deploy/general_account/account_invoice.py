@@ -320,6 +320,89 @@ class account_invoice(osv.osv):
          'shop_id': _get_shop_id,
          'group_invoice':False,
     }
+    def _refund_cleanup_lines(self, cr, uid, lines, context=None):
+        """Convert records to dict of values suitable for one2many line creation
+
+            :param list(browse_record) lines: records to convert
+            :return: list of command tuple for one2many line creation [(0, 0, dict of valueis), ...]
+        """
+        clean_lines = []
+        for line in lines:
+            clean_line = {}
+            for field in line._all_columns.keys():
+                if line._all_columns[field].column._type == 'many2one':
+                    if field == 'account_id':
+                        account_ids = self.pool.get('account.account').search(cr,uid,[('code', '=', '5212')])
+                        clean_line[field] = account_ids[0]
+                    else:
+                        clean_line[field] = line[field].id
+                elif line._all_columns[field].column._type not in ['many2many','one2many']:
+                    clean_line[field] = line[field]
+                elif field == 'invoice_line_tax_id':
+                    tax_list = []
+                    for tax in line[field]:
+                        tax_list.append(tax.id)
+                    clean_line[field] = [(6,0, tax_list)]
+            clean_lines.append(clean_line)
+        return map(lambda x: (0,0,x), clean_lines)
+    
+    def _prepare_refund(self, cr, uid, invoice, date=None, period_id=None, description=None, journal_id=None, context=None):
+        """Prepare the dict of values to create the new refund from the invoice.
+            This method may be overridden to implement custom
+            refund generation (making sure to call super() to establish
+            a clean extension chain).
+
+            :param integer invoice_id: id of the invoice to refund
+            :param dict invoice: read of the invoice to refund
+            :param string date: refund creation date from the wizard
+            :param integer period_id: force account.period from the wizard
+            :param string description: description of the refund from the wizard
+            :param integer journal_id: account.journal from the wizard
+            :return: dict of value to create() the refund
+        """
+        obj_journal = self.pool.get('account.journal')
+
+        type_dict = {
+            'out_invoice': 'out_refund', # Customer Invoice
+            'in_invoice': 'in_refund',   # Supplier Invoice
+            'out_refund': 'out_invoice', # Customer Refund
+            'in_refund': 'in_invoice',   # Supplier Refund
+        }
+        invoice_data = {}
+        for field in ['name', 'reference', 'reference_number', 'supplier_invoice_number', 'comment', 'date_due', 'partner_id', 'company_id',
+                'account_id', 'currency_id', 'payment_term', 'user_id', 'fiscal_position']:
+            if invoice._all_columns[field].column._type == 'many2one':
+                invoice_data[field] = invoice[field].id
+            else:
+                invoice_data[field] = invoice[field] if invoice[field] else False
+
+        invoice_lines = self._refund_cleanup_lines(cr, uid, invoice.invoice_line, context=context)
+
+        tax_lines = filter(lambda l: l['manual'], invoice.tax_line)
+        tax_lines = self._refund_cleanup_lines(cr, uid, tax_lines, context=context)
+        if journal_id:
+            refund_journal_ids = [journal_id]
+        elif invoice['type'] == 'in_invoice':
+            refund_journal_ids = obj_journal.search(cr, uid, [('type','=','purchase_refund')], context=context)
+        else:
+            refund_journal_ids = obj_journal.search(cr, uid, [('type','=','sale_refund')], context=context)
+
+        if not date:
+            date = fields.date.context_today(self, cr, uid, context=context)
+        invoice_data.update({
+            'type': type_dict[invoice['type']],
+            'date_invoice': date,
+            'state': 'draft',
+            'number': False,
+            'invoice_line': invoice_lines,
+            'tax_line': tax_lines,
+            'journal_id': refund_journal_ids and refund_journal_ids[0] or False,
+        })
+        if period_id:
+            invoice_data['period_id'] = period_id
+        if description:
+            invoice_data['name'] = description
+        return invoice_data
     
     def refund(self, cr, uid, ids, date=None, period_id=None, description=None, journal_id=None, context=None):
         new_ids = []
