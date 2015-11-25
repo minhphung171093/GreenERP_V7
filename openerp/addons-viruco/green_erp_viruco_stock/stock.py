@@ -702,7 +702,33 @@ class stock_picking(osv.osv):
             context = {}
         ids = self.search(cr, user, args, context=context, limit=limit)
         return self.name_get(cr, user, ids, context=context)
-    
+
+    def bt_reset(self, cr, uid, ids, context=None):
+        hopdong = self.browse(cr, uid, ids[0])
+        sql='''
+            select id from sale_order_line where order_id in (select sale_id from stock_picking where id = %s)
+        '''%(hopdong.id)
+        cr.execute(sql)
+        phanbo_ids = cr.dictfetchall()
+        if phanbo_ids:
+            for line in phanbo_ids:
+                move_ids = self.pool.get('stock.move').search(cr,uid,[('sale_line_id','=',line['id'])])
+                sql = '''
+                    select sum(product_qty) as qty_von from stock_move where sale_line_id = %s and sale_line_id is not null
+                '''%(line['id'])
+                cr.execute(sql)
+                qty_von = cr.dictfetchone()['qty_von']
+                self.pool.get('stock.move').write(cr,uid,[move_ids[0]],{
+                                                                        'product_qty': qty_von,
+                                                                        'hop_dong_mua_id': False,
+                                                                        'picking_in_id': False,
+                                                                        'state':'confirmed',
+                                                                        })
+                sql = '''
+                    delete from stock_move where sale_line_id = %s and sale_line_id is not null and id != %s
+                '''%(line['id'], move_ids[0])
+                cr.execute(sql)
+        return True    
 stock_picking()
 
 class stock_picking_in(osv.osv):
@@ -1086,6 +1112,32 @@ class stock_picking_out(osv.osv):
             'type': 'ir.actions.report.xml',
             'report_name': 'denghi_xuathang_report',
             }
+        
+    def bt_reset(self, cr, uid, ids, context=None):
+        hopdong = self.browse(cr, uid, ids[0])
+        sql='''
+            select id from sale_order_line where order_id in (select sale_id from stock_picking where id = %s)
+        '''%(hopdong.id)
+        cr.execute(sql)
+        phanbo_ids = cr.dictfetchall()
+        if phanbo_ids:
+            for line in phanbo_ids:
+                move_ids = self.pool.get('stock.move').search(cr,uid,[('sale_line_id','=',line['id'])])
+                sql = '''
+                    select sum(product_qty) as qty_von from stock_move where sale_line_id = %s and sale_line_id is not null
+                '''%(line['id'])
+                cr.execute(sql)
+                qty_von = cr.dictfetchone()['qty_von']
+                self.pool.get('stock.move').write(cr,uid,[move_ids[0]],{
+                                                                        'product_qty': qty_von,
+                                                                        'hop_dong_mua_id': False,
+                                                                        'picking_in_id': False,
+                                                                        })
+                sql = '''
+                    delete from stock_move where sale_line_id = %s and sale_line_id is not null and id != %s
+                '''%(line['id'], move_ids[0])
+                cr.execute(sql)
+        return True
     
 stock_picking_out()
 

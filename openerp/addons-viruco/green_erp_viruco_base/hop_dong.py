@@ -341,11 +341,17 @@ class hop_dong(osv.osv):
             if context.get('hopdong_id'):
                 hopdong_ids.append(context.get('hopdong_id'))
             args += [('id','in',hopdong_ids)]
+        if context.get('search_hd', False):
+            name = context.get('name')
+            hd_ids = self.search(cr, uid, [('name','like',name)])
+            args += [('id','in',hd_ids)]
         return super(hop_dong, self).search(cr, uid, args, offset=offset, limit=limit, order=order, context=context, count=count)
     
     def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
-       ids = self.search(cr, user, args, context=context, limit=limit)
-       return self.name_get(cr, user, ids, context=context)
+        if name:
+            context.update({'search_hd':1,'name':name})
+        ids = self.search(cr, user, args, context=context, limit=limit)
+        return self.name_get(cr, user, ids, context=context)
     
     def bt_list_phieuxuat(self, cr, uid, ids, context=None):
         for hd in self.browse(cr,uid,ids):
@@ -1001,11 +1007,17 @@ class don_ban_hang(osv.osv):
             if context.get('donbanhang_id'):
                 dbh_ids.append(context.get('donbanhang_id'))
             args += [('id','in',dbh_ids)]
+        if context.get('search_dbh', False):
+            name = context.get('name')
+            dbh_ids = self.search(cr, uid, [('name','like',name)])
+            args += [('id','in',dbh_ids)]
         return super(don_ban_hang, self).search(cr, uid, args, offset=offset, limit=limit, order=order, context=context, count=count)
     
     def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
-       ids = self.search(cr, user, args, context=context, limit=limit)
-       return self.name_get(cr, user, ids, context=context)
+        if name:
+            context.update({'search_dbh':1,'name':name})
+        ids = self.search(cr, user, args, context=context, limit=limit)
+        return self.name_get(cr, user, ids, context=context)
     
     def print_donbanhang(self, cr, uid, ids, context=None):
         dbh = self.browse(cr, uid, ids[0])
@@ -1261,11 +1273,17 @@ class don_mua_hang(osv.osv):
             if context.get('donmuahang_id'):
                 dbh_ids.append(context.get('donmuahang_id'))
             args += [('id','in',dbh_ids)]
+        if context.get('search_dmh', False):
+            name = context.get('name')
+            dmh_ids = self.search(cr, uid, [('name','like',name)])
+            args += [('id','in',dmh_ids)]
         return super(don_mua_hang, self).search(cr, uid, args, offset=offset, limit=limit, order=order, context=context, count=count)
     
     def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
-       ids = self.search(cr, user, args, context=context, limit=limit)
-       return self.name_get(cr, user, ids, context=context)
+        if name:
+            context.update({'search_dmh':1,'name':name})
+        ids = self.search(cr, user, args, context=context, limit=limit)
+        return self.name_get(cr, user, ids, context=context)
     
     def print_donmuahang(self, cr, uid, ids, context=None):
         dbh = self.browse(cr, uid, ids[0])

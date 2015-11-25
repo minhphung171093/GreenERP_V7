@@ -327,6 +327,7 @@
 	                    <field name="state" nolabel="1" readonly="1" widget="statusbar" statusbar_visible="draft,confirmed,assigned,done" statusbar_colors='{"auto":"blue", "confirmed":"blue"}'/>
 	                	<button name="print_denghi_xuatkho" string="In Đề nghị xuất kho" type="object" class="oe_highlight"/>
 	                	<button name="print_denghi_xuathang" string="In Đề nghị xuất hàng" type="object" class="oe_highlight"/>
+	                	<button name="bt_reset" string="Phân bổ lại" state="assigned,confirmed,draft" type="object" class="oe_highlight"/>
 	                </header>
 	                <sheet>
 	                    <h1>

@@ -82,7 +82,7 @@
 	        		<field name="shop_id"/>
 	        	</xpath>
             	<field name="partner_id" position="before">
-            		<field name="hop_dong_id" on_change="onchange_hopdong_id(hop_dong_id)" domain="[('type','in',['hd_mua_trongnuoc','hd_mua_nhapkhau']),('state','in',['da_duyet','thuc_hien'])]"/>
+            		<field name="hop_dong_id" context="{'form_view_ref': 'green_erp_viruco_base.hop_dong_mua_trongnuoc_form_view'}" on_change="onchange_hopdong_id(hop_dong_id)" domain="[('type','in',['hd_mua_trongnuoc','hd_mua_nhapkhau']),('state','in',['da_duyet','thuc_hien'])]"/>
             	</field>
             	<xpath expr="//page[@string='Payment Information']" position="before">
           			<page string='Các đợt thanh toán'>
