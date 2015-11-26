@@ -325,17 +325,36 @@ class Parser(report_sxw.rml_parse):
             self.total_end_val = self.total_end_val +(i['end_val'] or 0.0)
             
             sql ='''
-                SELECT sum(quantity) qty_hoantien, sum(price_unit * quantity) total_hoantien
+                SELECT sum(ail.quantity) as qty_hoantien, sum(ail.quantity*sm.price_unit) as total_hoantien
                     FROM
-                        account_invoice_line  
+                        account_invoice_line ail left join account_invoice ai on ail.invoice_id = ai.id
+                        left join stock_move sm on ail.source_id = sm.id
                     WHERE 
-                        product_id = %s and invoice_id in (select id from account_invoice where type = 'out_refund'
-                        and date(timezone('UTC',date_invoice)) between '%s' and '%s'
-                        and state not in ('draft','cancel'))
+                        ail.product_id = %s and ai.type = 'out_refund'
+                        and date(timezone('UTC',ai.date_invoice)) between '%s' and '%s'
+                        and ai.state not in ('draft','cancel')
             '''%(i['id'],self.start_date,self.date_end)
             self.cr.execute(sql)
             nhap_ht_res = self.cr.fetchone()
-            self.total_nhap_val += nhap_ht_res and nhap_ht_res[0] or 0
+            i['nhaptk_qty'] += nhap_ht_res and nhap_ht_res[0] or 0
+            i['nhaptk_val'] += nhap_ht_res and nhap_ht_res[1] or 0
+            
+            sql ='''
+                SELECT sum(ail.quantity) qty_dieuchinh, sum(ail.quantity*sm.price_unit) as total_dieuchinh
+                    FROM
+                        account_invoice_line ail left join account_invoice ai on ail.invoice_id = ai.id
+                        left join stock_move sm on ail.source_id = sm.id 
+                    WHERE 
+                        ail.product_id = %s and ai.type = 'out_invoice'
+                        and ai.rel_invoice_id is not null
+                        and date(timezone('UTC',ai.date_invoice)) between '%s' and '%s'
+                        and ai.state not in ('draft','cancel')
+            '''%(i['id'],self.start_date,self.date_end)
+            self.cr.execute(sql)
+            xuat_dc_res = self.cr.fetchone()
+            i['xuattk_qty'] += xuat_dc_res and xuat_dc_res[0] or 0
+            i['xuattk_val'] += xuat_dc_res and xuat_dc_res[1] or 0
+            
             res.append(
                    {
                    'default_code':i['default_code'],
@@ -355,7 +374,7 @@ class Parser(report_sxw.rml_parse):
         if not self.category_ids:
             if not self.location_id:
                 sql ='''  
-                SELECT pp.default_code,pp.name_template,sum(start_onhand_qty) start_onhand_qty, sum(start_val) start_val, 
+                SELECT pp.id,pp.default_code,pp.name_template,sum(start_onhand_qty) start_onhand_qty, sum(start_val) start_val, 
                     sum(nhaptk_qty) nhaptk_qty, sum(nhaptk_val) nhaptk_val,
                     sum(xuattk_qty) xuattk_qty, sum(xuattk_val) xuattk_val,    
                     sum(end_onhand_qty) end_onhand_qty,
@@ -420,8 +439,8 @@ class Parser(report_sxw.rml_parse):
                     inner join product_uom pu on foo.product_uom = pu.id
                     WHERE (pp.id in (select product_id  from product_shop_rel where shop_id in('%(shop_ids)s'))
                            or pp.id not in (select product_id  from product_shop_rel))
-                    group by pp.default_code,pp.name_template
-                    order by pp.default_code,pp.name_template
+                    group by pp.default_code,pp.name_template,pp.id
+                    order by pp.default_code,pp.name_template,pp.id
                 
                 '''%({
                   'start_date': self.start_date,
@@ -431,7 +450,7 @@ class Parser(report_sxw.rml_parse):
                
             else:
                 sql ='''  
-                SELECT pp.default_code,pp.name_template,sum(start_onhand_qty) start_onhand_qty, sum(start_val) start_val, 
+                SELECT pp.id,pp.default_code,pp.name_template,sum(start_onhand_qty) start_onhand_qty, sum(start_val) start_val, 
                     sum(nhaptk_qty) nhaptk_qty, sum(nhaptk_val) nhaptk_val,
                     sum(xuattk_qty) xuattk_qty, sum(xuattk_val) xuattk_val,    
                     sum(end_onhand_qty) end_onhand_qty,
@@ -496,8 +515,8 @@ class Parser(report_sxw.rml_parse):
                     inner join product_uom pu on foo.product_uom = pu.id
                     WHERE (pp.id in (select product_id  from product_shop_rel where shop_id in('%(shop_ids)s'))
                            or pp.id not in (select product_id  from product_shop_rel))
-                    group by pp.default_code,pp.name_template
-                    order by pp.default_code,pp.name_template
+                    group by pp.default_code,pp.name_template,pp.id
+                    order by pp.default_code,pp.name_template,pp.id
                 '''%({
                   'start_date': self.start_date,
                   'end_date': self.date_end,
@@ -507,7 +526,7 @@ class Parser(report_sxw.rml_parse):
         else:
             if not self.location_id:
                 sql ='''  
-                SELECT pp.default_code,pp.name_template,sum(start_onhand_qty) start_onhand_qty, sum(start_val) start_val, 
+                SELECT pp.id,pp.default_code,pp.name_template,sum(start_onhand_qty) start_onhand_qty, sum(start_val) start_val, 
                     sum(nhaptk_qty) nhaptk_qty, sum(nhaptk_val) nhaptk_val,
                     sum(xuattk_qty) xuattk_qty, sum(xuattk_val) xuattk_val,    
                     sum(end_onhand_qty) end_onhand_qty,
@@ -572,8 +591,8 @@ class Parser(report_sxw.rml_parse):
                     inner join product_uom pu on foo.product_uom = pu.id
                     WHERE (pp.id in (select product_id  from product_shop_rel where shop_id in('%(shop_ids)s'))
                            or pp.id not in (select product_id  from product_shop_rel))
-                    group by pp.default_code,pp.name_template
-                    order by pp.default_code,pp.name_template
+                    group by pp.default_code,pp.name_template,pp.id
+                    order by pp.default_code,pp.name_template,pp.id
                 
                 '''%({
                   'start_date': self.start_date,
@@ -582,7 +601,7 @@ class Parser(report_sxw.rml_parse):
                   })
             else:
                 sql ='''  
-                SELECT pp.default_code,pp.name_template,sum(start_onhand_qty) start_onhand_qty, sum(start_val) start_val, 
+                SELECT pp.id,pp.default_code,pp.name_template,sum(start_onhand_qty) start_onhand_qty, sum(start_val) start_val, 
                     sum(nhaptk_qty) nhaptk_qty, sum(nhaptk_val) nhaptk_val,
                     sum(xuattk_qty) xuattk_qty, sum(xuattk_val) xuattk_val,    
                     sum(end_onhand_qty) end_onhand_qty,
@@ -652,8 +671,8 @@ class Parser(report_sxw.rml_parse):
                     )categ on pp.product_tmpl_id = categ.id
                     WHERE (pp.id in (select product_id  from product_shop_rel where shop_id in(%s))
                            or pp.id not in (select product_id  from product_shop_rel))
-                    group by pp.default_code,pp.name_template
-                    order by pp.default_code,pp.name_template
+                    group by pp.default_code,pp.name_template,pp.id
+                    order by pp.default_code,pp.name_template,pp.id
                 
                  '''%({
                       'start_date': self.start_date,
@@ -670,6 +689,38 @@ class Parser(report_sxw.rml_parse):
             self.total_nhap_val = self.total_nhap_val +(i['nhaptk_val'] or 0.0)
             self.total_xuat_val = self.total_xuat_val +(i['xuattk_val'] or 0.0)
             self.total_end_val = self.total_end_val +(i['end_val'] or 0.0)
+            
+            sql ='''
+                SELECT sum(ail.quantity) as qty_hoantien, sum(ail.quantity*sm.price_unit) as total_hoantien
+                    FROM
+                        account_invoice_line ail left join account_invoice ai on ail.invoice_id = ai.id
+                        left join stock_move sm on ail.source_id = sm.id
+                    WHERE 
+                        ail.product_id = %s and ai.type = 'out_refund'
+                        and date(timezone('UTC',ai.date_invoice)) between '%s' and '%s'
+                        and ai.state not in ('draft','cancel')
+            '''%(i['id'],self.start_date,self.date_end)
+            self.cr.execute(sql)
+            nhap_ht_res = self.cr.fetchone()
+            i['nhaptk_qty'] += nhap_ht_res and nhap_ht_res[0] or 0
+            i['nhaptk_val'] += nhap_ht_res and nhap_ht_res[1] or 0
+            
+            sql ='''
+                SELECT sum(ail.quantity) qty_dieuchinh, sum(ail.quantity*sm.price_unit) as total_dieuchinh
+                    FROM
+                        account_invoice_line ail left join account_invoice ai on ail.invoice_id = ai.id
+                        left join stock_move sm on ail.source_id = sm.id 
+                    WHERE 
+                        ail.product_id = %s and ai.type = 'out_invoice'
+                        and ai.rel_invoice_id is not null
+                        and date(timezone('UTC',ai.date_invoice)) between '%s' and '%s'
+                        and ai.state not in ('draft','cancel')
+            '''%(i['id'],self.start_date,self.date_end)
+            self.cr.execute(sql)
+            xuat_dc_res = self.cr.fetchone()
+            i['xuattk_qty'] += xuat_dc_res and xuat_dc_res[0] or 0
+            i['xuattk_val'] += xuat_dc_res and xuat_dc_res[1] or 0
+            
             res.append(
                    {
                    'default_code':i['default_code'], 
