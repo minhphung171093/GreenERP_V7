@@ -249,7 +249,7 @@ class stock_location(osv.osv):
                                             OR
                                             (location_id=%s AND
                                              location_dest_id<>%s AND
-                                             state in ('done', 'assigned'))
+                                             state in ('done'))
                                           )
                                   FOR UPDATE of stock_move NOWAIT""", (product_id,prodlot_id,tracking_id, id, id, id, id), log_exceptions=False)
                 except Exception:
@@ -277,7 +277,7 @@ class stock_location(osv.osv):
                           WHERE location_id=%s AND
                                 location_dest_id<>%s AND
                                 product_id=%s AND prodlot_id = %s AND tracking_id = %s AND
-                                state in ('done', 'assigned')
+                                state in ('done')
                           GROUP BY product_uom
                        """,
                        (id, id, product_id,prodlot_id,tracking_id))

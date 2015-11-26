@@ -127,6 +127,48 @@
             <field name="view_id" ref="stock_balancesheet_report"/>
         </record>
         
+        <!--  General NHAP XUAT TON KE TOAN -->
+       <record id="stock_balancesheet_account_report" model="ir.ui.view">
+            <field name="name">stock.balancesheet.account.report.form</field>
+            <field name="model">stock.balancesheet.account.report</field>
+            <field name="arch" type="xml">
+                <form string="Stock Balancesheet Report" version="7.0">
+                	<group col="6">
+                		<group col="4">
+                			<group col="4">
+                				<field name="shop_ids" widget="many2many_tags"/>
+                				<field name="location_id"
+	                            context="{'location_id':'location'}"/>
+                			</group>
+                			<newline/>
+                			<group col="4">
+	                			<field name="date_start"/>
+			                	<field name="date_end"/>
+		                	</group>
+	            		</group>
+	                </group>
+	                <group>
+	                	<field name="short_by"/>
+	                	<field name="categ_ids" widget="many2many_tags"/>
+	                </group>
+	                <footer>
+                        <button string="Print" type="object" name="stock_report" context="{'type_report':'stock_balancesheet_product_report'}" icon='gtk-execute'/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_stock_balancesheet_account_report" model="ir.actions.act_window">
+            <field name="name">Xuất nhập tồn</field>
+            <field name="res_model">stock.balancesheet.account.report</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="stock_balancesheet_account_report"/>
+        </record>
+        
    </data>
 </openerp>
         

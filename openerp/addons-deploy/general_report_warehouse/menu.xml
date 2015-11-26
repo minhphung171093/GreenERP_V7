@@ -23,6 +23,14 @@
             sequence="200"/>
             
             
+            
+        <menuitem
+            action="action_stock_balancesheet_account_report"
+            id="menu_action_stock_balancesheet_account_report"
+            parent="general_stock_account.menu_stock_account"
+            sequence="5"/>
+            
+            
 	    		 
     </data>
 </openerp>

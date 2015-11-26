@@ -26,13 +26,15 @@
 	            parent="menu_stock_account"
 	            groups="account.group_account_user"
 	            sequence="2"/>
-        -->
+        
 	       
 	      <menuitem
 	            action="general_report_warehouse.action_stock_balancesheet_report"
 	            id="menu_action_stock_balancesheet_report"
 	            parent="menu_stock_account"
 	            sequence="3"/>
+	            
+	      -->
 	     
 	            
     </data>

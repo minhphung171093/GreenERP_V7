@@ -105,5 +105,57 @@
 	        string="stock_balancesheet_categ_report"
 	        rml="general_report_warehouse/report/balancesheet_by_categ.ods"/>
 	        
+	        
+	    <!--  General NXT PRODUCT (ACCOUNT) -->
+	    <record id="stock_balancesheet_product_account_report" model="ir.actions.report.xml">
+	        <field name="name">stock_balancesheet_product_account_report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">stock.balancesheet.account.report</field>
+	        <field name="report_name">stock_balancesheet_product_account_report</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">general_report_warehouse/report/balancesheet_account_report.py</field>
+	        <field name="report_rml">general_report_warehouse/report/balancesheet_account_by_product.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record>		    
+    	
+		<report 
+			auto="False" 
+			menu="False"
+			id="stock_balancesheet_product_account_report"
+			model="stock.balancesheet.account.report"
+			name="stock_balancesheet_product_account_report"
+	        string="stock_balancesheet_product_account_report"
+	        rml="general_report_warehouse/report/balancesheet_account_by_product.ods"/>
+	     
+	     
+	     <!--  General NXT CATEGORY (ACCOUNT)-->
+	    <record id="stock_balancesheet_categ_account_report" model="ir.actions.report.xml">
+	        <field name="name">stock_balancesheet_categ_account_report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">stock.balancesheet.account.report</field>
+	        <field name="report_name">stock_balancesheet_categ_account_report</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">general_report_warehouse/report/balancesheet_account_report.py</field>
+	        <field name="report_rml">general_report_warehouse/report/balancesheet_account_by_categ.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record>		    
+    	
+		<report 
+			auto="False" 
+			menu="False"
+			id="stock_balancesheet_categ_account_report"
+			model="stock.balancesheet.account.report"
+			name="stock_balancesheet_categ_account_report"
+	        string="stock_balancesheet_categ_account_report"
+	        rml="general_report_warehouse/report/balancesheet_account_by_categ.ods"/>
+	        
 	</data>
 </openerp>
