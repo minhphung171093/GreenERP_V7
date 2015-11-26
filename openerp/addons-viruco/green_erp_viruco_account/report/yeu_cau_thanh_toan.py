@@ -62,9 +62,9 @@ class Parser(report_sxw.rml_parse):
     def convert_tt(self, amount):
         tt=False
         if amount and amount.type=='bank':
-            tt='Chuyển khoản'
+            tt= u'Chuyển khoản'
         else:
-            tt='Tiền mặt'
+            tt= u'Tiền mặt'
         return tt
     def get_thanhtoan(self,hopdong):
         res=[]
