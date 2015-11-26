@@ -31,11 +31,17 @@
 	      		icon="terp-graph"  
 	      		parent="menu_report_general_account" sequence="6"/>
 	      		
+      		<menuitem id="menu_action_sochitiet_taikhoan"
+  				name="Sổ chi tiết tài khoản"
+	      		action="action_sochitiet_taikhoan" 
+	      		icon="terp-graph"  
+	      		parent="menu_report_general_account" sequence="7"/>
+	      		
       		<menuitem id="menu_action_so_nhatky_chung"
   				name="Sổ nhật ký chung"
 	      		action="action_so_nhatky_chung" 
 	      		icon="terp-graph"  
-	      		parent="menu_report_general_account" sequence="7"/>
+	      		parent="menu_report_general_account" sequence="9"/>
 	      		
       		<!-- <menuitem id="menu_action_general_ledger_report"
       			name="Bảng cân đối số phát sinh"

@@ -599,6 +599,30 @@
 	        string="Sổ nhật ký chung"
 	        rml="green_erp_report_account/report/so_nhatky_chung_report.ods"/>
 	        
+<!--  ========================= Sổ chi tiết tài khoản ================= -->
+		<record id="sochitiet_taikhoan_report" model="ir.actions.report.xml">
+	        <field name="name">sochitiet_taikhoan_report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">sochitiet.taikhoan</field>
+	        <field name="report_name">sochitiet_taikhoan_report</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">green_erp_report_account/report/sochitiet_taikhoan_report.py</field>
+	        <field name="report_rml">green_erp_report_account/report/sochitiet_taikhoan_report.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record>		    
+		
+		<report 
+			auto="False" 
+			menu="False"
+			id="sochitiet_taikhoan_report" 
+			model="sochitiet.taikhoan" 
+			name="sochitiet_taikhoan_report"
+	        string="Sổ chi tiết tài khoản"
+	        rml="green_erp_report_account/report/sochitiet_taikhoan_report.ods"/>
 	        
 	</data>
 </openerp>
