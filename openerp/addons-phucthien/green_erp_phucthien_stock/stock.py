@@ -170,13 +170,12 @@ class stock_picking_out(osv.osv):
         return True
     
     def write(self, cr, uid, ids, vals, context=None):
-        if 'date' in vals:
-            for line in self.browse(cr,uid,ids):
-                sql = '''
-                    update stock_move set date = '%s' where picking_id = %s
-                '''%(vals['date'], line.id)
-                cr.execute(sql)
         new_write = super(stock_picking_out, self).write(cr, uid,ids, vals, context)
+        for line in self.browse(cr,uid,ids):
+            sql = '''
+                update stock_move set date = '%s' where picking_id = %s
+            '''%(line.date, line.id)
+            cr.execute(sql)
         return new_write
     
 stock_picking_out()
@@ -299,13 +298,12 @@ class stock_picking_in(osv.osv):
         return True
     
     def write(self, cr, uid, ids, vals, context=None):
-        if 'date' in vals:
-            for line in self.browse(cr,uid,ids):
-                sql = '''
-                    update stock_move set date = '%s' where picking_id = %s
-                '''%(vals['date'], line.id)
-                cr.execute(sql)
         new_write = super(stock_picking_in, self).write(cr, uid,ids, vals, context)
+        for line in self.browse(cr,uid,ids):
+            sql = '''
+                update stock_move set date = '%s' where picking_id = %s
+            '''%(line.date, line.id)
+            cr.execute(sql)
         return new_write
 stock_picking_in()
 
@@ -525,6 +523,15 @@ class stock_picking(osv.osv):
         onshipping_obj = self.pool.get('stock.invoice.onshipping')
         onshipping_id = onshipping_obj.create(cr, uid, {},context)
         return onshipping_obj.open_invoice(cr, uid, [onshipping_id],context)
+    
+    def write(self, cr, uid, ids, vals, context=None):
+        new_write = super(stock_picking, self).write(cr, uid,ids, vals, context)
+        for line in self.browse(cr,uid,ids):
+            sql = '''
+                update stock_move set date = '%s' where picking_id = %s
+            '''%(line.date, line.id)
+            cr.execute(sql)
+        return new_write
         
 stock_picking()
 
@@ -700,15 +707,13 @@ class chuyenkho_noibo(osv.osv):
         return new_id
     
     def write(self, cr, uid, ids, vals, context=None):
-        if 'date' in vals:
-            for line in self.browse(cr,uid,ids):
-                sql = '''
-                    update chuyenkho_noibo_line set date = '%s' where chuyenkho_noibo_id = %s
-                '''%(vals['date'], line.id)
-                cr.execute(sql)
         new_write = super(chuyenkho_noibo, self).write(cr, uid,ids, vals, context)
+        for line in self.browse(cr,uid,ids):
+            sql = '''
+                update chuyenkho_noibo_line set date = '%s' where chuyenkho_noibo_id = %s
+            '''%(line.date, line.id)
+            cr.execute(sql)
         return new_write
-    
     
     
     def unlink(self, cr, uid, ids, context=None):
