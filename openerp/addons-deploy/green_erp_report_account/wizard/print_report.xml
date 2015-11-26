@@ -427,6 +427,47 @@
 		    <field name="view_id" ref="view_so_nhatky_chung_form"/>
 		</record>
 		
+<!--  ========================= Sổ chi tiết tài khoản ================= -->
+		<record id="view_sochitiet_taikhoan_report_form" model="ir.ui.view">
+		    <field name="name">sochitiet.taikhoan.report.form</field>
+		    <field name="model">sochitiet.taikhoan</field>
+		    <field name="arch" type="xml">
+		         <form string="Sổ chi tiết tài khoản" version="7.0">
+		        	<group>
+		        		<group>
+		        			<field name="shop_ids" widget="many2many_tags"/>
+			        		<field name="times"/>
+			        		<field name="company_id" groups="base.group_multi_company"/>
+		        		</group>
+		        		<group>
+			        		<field name="quarter" attrs="{'invisible':[('times', 'in', ['dates','years','periods'])],'required':[('times', 'not in', ['dates','years','periods'])]}"/>
+			        		<field name="period_id_start" context="{'report_type':'1'}" attrs="{'invisible':[('times', 'in', ['dates','years','quarter'])],'required':[('times', 'not in', ['dates','years','quarter'])]}"/>
+			        		<field name="fiscalyear_start"  attrs="{'invisible':[('times', 'in', ['dates','periods','quarter'])],'required':[('times','not in', ['dates','periods'])]}"/>
+			        		<field name="date_start"  attrs="{'invisible':[('times', 'in', ['years','periods','quarter'])],'required':[('times','not in', ['years','periods'])]}"/>
+			        		<field name="date_end"  attrs="{'invisible':[('times', 'in', ['years','periods','quarter'])],'required':[('times','not in', ['years','periods'])]}"/>
+		           		</group>
+		           		<group>
+		           			<field name="account_id"/>
+		           		</group>
+		            </group>
+		            <footer>
+                        <button string="Print" type="object" name="finance_report" icon='gtk-execute'/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+		        </form>
+		    </field>
+		</record>
+		
+		<record id="action_sochitiet_taikhoan" model="ir.actions.act_window">
+		    <field name="name">Sổ chi tiết tài khoản</field>
+		    <field name="res_model">sochitiet.taikhoan</field>
+		    <field name="view_type">form</field>
+		    <field name="view_mode">form</field>
+		    <field name="target">new</field>
+		    <field name="view_id" ref="view_sochitiet_taikhoan_report_form"/>
+		</record>
+		
    </data>
 </openerp>
         
