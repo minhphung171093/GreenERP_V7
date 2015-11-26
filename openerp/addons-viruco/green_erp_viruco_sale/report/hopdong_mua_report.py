@@ -62,7 +62,8 @@ class Parser(report_sxw.rml_parse):
 
     def convert_amount(self, amount):
         a = format(int(amount),',')
-        return a
+        a = a.replace(',','.')
+        return a   
     
     def convert(self, amount):
         amount_text = amount_to_text_vn.amount_to_text(amount, 'vn')

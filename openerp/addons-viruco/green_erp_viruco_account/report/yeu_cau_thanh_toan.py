@@ -43,6 +43,7 @@ class Parser(report_sxw.rml_parse):
     
     def convert_amount(self, amount):
         a = format(int(amount),',')
+        a = a.replace(',','.')
         return a    
     
     def convert(self, amount):
