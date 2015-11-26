@@ -16,6 +16,11 @@ import openerp.addons.decimal_precision as dp
 from openerp import netsvc
 import httplib
 from openerp import SUPERUSER_ID
+from datetime import datetime, timedelta
+from datetime import date
+DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
+DATE_FORMAT = "%Y-%m-%d"
+
 
 class stock_picking_out(osv.osv):
     _inherit = 'stock.picking.out'
@@ -687,7 +692,24 @@ class chuyenkho_noibo(osv.osv):
             seq_obj_name =  self._name
             vals['name'] = self.pool.get('ir.sequence').get(cr, user, seq_obj_name)
         new_id = super(chuyenkho_noibo, self).create(cr, user, vals, context)
+        if 'date' in vals:
+            sql = '''
+                update chuyenkho_noibo_line set date = '%s' where chuyenkho_noibo_id = %s
+            '''%(vals['date'], new_id)
+            cr.execute(sql)
         return new_id
+    
+    def write(self, cr, uid, ids, vals, context=None):
+        if 'date' in vals:
+            for line in self.browse(cr,uid,ids):
+                sql = '''
+                    update chuyenkho_noibo_line set date = '%s' where chuyenkho_noibo_id = %s
+                '''%(vals['date'], line.id)
+                cr.execute(sql)
+        new_write = super(chuyenkho_noibo, self).write(cr, uid,ids, vals, context)
+        return new_write
+    
+    
     
     def unlink(self, cr, uid, ids, context=None):
         move_obj = self.pool.get('stock.move')
@@ -1444,5 +1466,99 @@ class dm_thietbi(osv.osv):
     }
     
 dm_thietbi()
+
+class dutru_hanghoa(osv.osv):
+    _name = "dutru.hanghoa"
+    
+    _columns = {
+        'name': fields.date('Ngày', required = True, states={ 'duyet':[('readonly', True)]}),
+        'tile_dutru': fields.float('Tỉ lệ (%)', required = True, states={ 'duyet':[('readonly', True)]}),
+        'state':fields.selection([('moi_tao', 'Mới tạo'),('duyet', 'Đã duyệt')],'Trạng thái', readonly=True),
+        'dutru_hanghoa_line': fields.one2many('dutru.hanghoa.line','dutru_id','Line',states={ 'duyet':[('readonly', True)]}),
+    }
+    
+    _defaults = {
+        'state': 'moi_tao',
+                 }
+    
+    def onchange_name(self, cr, uid, ids,name = False, tile_dutru = 0):
+        vals = {}
+        dutru_hanghoa_line = []
+        stt = 0
+        if name:
+            for dutru in self.browse(cr, uid, ids):
+                sql = '''
+                    delete from dutru_hanghoa_line where dutru_id = %s
+                '''%(dutru.id)
+                cr.execute(sql)
+            dt = datetime.strptime(name, DATE_FORMAT)
+            start = dt - timedelta(days=dt.weekday())
+            sql = '''
+                select product_id, sum(product_qty) as sl_ban_trongtuan from stock_move where picking_id in (select id from stock_picking where type = 'out' and state = 'done'
+                and date between '%s' and '%s') and picking_id is not null
+                group by product_id
+            '''%(start,dt)
+            cr.execute(sql)
+            for move in cr.dictfetchall():
+                sql = '''
+                    select case when sum(foo.product_qty)>0 then sum(foo.product_qty) else 0 end ton_sl from 
+                                (select st.product_qty
+                                    from stock_move st 
+                                    where st.state='done' and st.product_id=%s and st.location_dest_id in (select id from stock_location
+                                                                                            where usage = 'internal')
+                                union all
+                                select st.product_qty*-1
+                                    from stock_move st 
+                                    where st.state='done' and st.product_id=%s and st.location_id in (select id from stock_location
+                                                                                            where usage = 'internal')
+                                )foo
+                '''%(move['product_id'], move['product_id'])
+                cr.execute(sql)
+                ton_sl = cr.dictfetchone()['ton_sl']
+                if ton_sl<move['sl_ban_trongtuan']:
+                    stt += 1
+                    product = self.pool.get('product.product').browse(cr,uid,move['product_id'])
+                    rs = {
+                            'stt': stt,
+                            'product_id':product.id,
+                            'uom_id':product.uom_id and product.uom_id.id or False,
+                            'sl_trungbinh':move['sl_ban_trongtuan'],
+                            'sl_tonkho':ton_sl,
+                            'sl_dutru': (move['sl_ban_trongtuan']-ton_sl) + ((move['sl_ban_trongtuan']-ton_sl)*(tile_dutru or 0)/100)
+                            }
+                    dutru_hanghoa_line.append((0,0,rs))
+        return {'value': {'dutru_hanghoa_line':dutru_hanghoa_line}   }
+    
+    def bt_duyet(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids,{'state':'duyet'})
+dutru_hanghoa()
+
+class dutru_hanghoa_line(osv.osv):
+    _name = "dutru.hanghoa.line"
+    
+    _columns = {
+        'dutru_id': fields.many2one('dutru.hanghoa', 'Du Tru Hang Hoa', ondelete = 'cascade'),
+        'stt': fields.integer('STT'),
+        'product_id': fields.many2one('product.product', 'TÊN SẢN PHẨM'),
+        'uom_id': fields.many2one('product.uom', 'ĐƠN VỊ TÍNH'),
+        'sl_trungbinh': fields.float('SỐ LƯỢNG TRUNG BÌNH BÁN RA/TUẦN'),
+        'sl_tonkho': fields.float('SỐ LƯỢNG TỒN KHO'),
+        'sl_dutru': fields.float('SỐ LƯỢNG DỰ TRÙ'),
+        'ngay_dexuat': fields.date('ĐỀ XUẤT NGÀY NHẬP HÀNG'),
+        'ghi_chu': fields.char('GHI CHÚ'),
+    }
+    
+#     def unlink(self, cr, uid, ids, context=None):
+#         for line in self.browse(cr, uid, ids):
+#             update_ids = self.search(cr, uid,[('dutru_id','=',line.dutru_id.id),('stt','>',line.stt)])
+#             if update_ids:
+#                 cr.execute("UPDATE dutru_hanghoa_line SET stt=stt-1 WHERE id in %s",(tuple(update_ids),))
+#         return super(dutru_hanghoa_line, self).unlink(cr, uid, ids, context)  
+#     
+#     def create(self, cr, uid, vals, context=None):
+#         if vals.get('dutru_id',False):
+#             vals['stt'] = len(self.search(cr, uid,[('dutru_id', '=', vals['dutru_id'])])) + 1
+#         return super(dutru_hanghoa_line, self).create(cr, uid, vals, context)
+dutru_hanghoa_line()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

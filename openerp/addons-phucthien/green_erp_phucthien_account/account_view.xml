@@ -52,7 +52,7 @@
 	                    <field name="date_invoice"/>
 	                    <field name="number" invisible="1"/>
 	                    <field name="reference"/>
-	                    <field name="reference_number"/>
+	                    <field name="supplier_invoice_number"/>
 	                    <field name="name" invisible="1"/>
 	                    <field name="journal_id" invisible="1"/>
 	                    <field name="period_id" invisible="1" groups="account.group_account_user"/>
@@ -67,10 +67,51 @@
 	                    <field name="amount_total" sum="Total Amount"/>
 	                    <field name="payment_state" invisible="1"/>
 	                    <field name="state"/>
+	                    <field name="type" invisible = '1'/>
                 	</tree>
             	</tree>
             </field>
         </record>
+        
+        <record id="invoice_out_tree" model="ir.ui.view">
+            <field name="name">account.invoice.out.tree</field>
+            <field name="model">account.invoice</field>
+            <field name="arch" type="xml">
+            	<tree colors="blue:state == 'draft';gray:state in ('cancel','paid');red:payment_state== False" string="Invoice">
+                    <field name="shop_id" invisible = '1'/>
+                    <field name="partner_code" groups="base.group_user"/>
+                    <field name="partner_id" groups="base.group_user"/>
+                    <field name="date_invoice"/>
+                    <field name="number" invisible="1"/>
+                    <field name="reference"/>
+                    <field name="reference_number"/>
+                    <field name="name" invisible="1"/>
+                    <field name="journal_id" invisible="1"/>
+                    <field name="period_id" invisible="1" groups="account.group_account_user"/>
+                    <field name="company_id" groups="base.group_multi_company" widget="selection" invisible = '1'/>
+                    <field name="user_id"/>
+                    <field name="date_due" invisible = '1'/>
+                    <field name="origin"/>
+                    <field name="currency_id" groups="base.group_multi_currency" invisible = '1'/>
+                    <field name="residual" sum="Residual Amount" invisible = '1'/>
+                    <field name="amount_untaxed" sum="Untaxed Amount"/>
+                    <field name="amount_tax" sum="Tax Amount"/>
+                    <field name="amount_total" sum="Total Amount"/>
+                    <field name="payment_state" invisible="1"/>
+                    <field name="state"/>
+                    <field name="type" invisible = '1'/>
+            	</tree>
+            </field>
+        </record>
+        
+        <record id="account.action_invoice_tree1_view1" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="green_erp_phucthien_account.invoice_out_tree"/>
+            <field name="act_window_id" ref="account.action_invoice_tree1"/>
+        </record>
+        
+        
         
     </data>
 </openerp>
