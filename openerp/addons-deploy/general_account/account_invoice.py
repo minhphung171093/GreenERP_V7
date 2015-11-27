@@ -562,8 +562,8 @@ class account_invoice(osv.osv):
             else:
                 iml.append({
                     'type': 'dest',
-#                     'name': name,
-                    'name': inv.rel_invoice_id.name,
+                    'name': name,
+#                     'name': inv.rel_invoice_id.name,
                     'price': total,
                     'account_id': acc_id,
                     'date_maturity': inv.date_due or False,
