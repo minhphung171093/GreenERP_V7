@@ -94,6 +94,7 @@
 	        			string="Original invoice"/>
 	        		<field name="reference" readonly="0"/>
 	        		<field name="reference_number" readonly="0"/>
+	        		<field name="invoice_refund" invisible="1"/>
 	        	</xpath>
 	        	
 	        	<xpath expr="//field[@name='account_id']" position="after">
@@ -335,6 +336,7 @@
                             <field name="reference"/>
                             <field name="reference_number"/>
                             <field name="address"/>	
+                            <field name="invoice_dieuchinh" invisible="1"/>	
                         </group>
                         <group>
                         	<field name="shop_id"/>

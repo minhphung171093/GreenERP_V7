@@ -1560,10 +1560,19 @@ class stock_picking(osv.osv):
             origin += ':' + move_line.picking_id.origin
 
         if invoice_vals['type'] in ('out_invoice', 'out_refund'):
-            account_id = move_line.product_id.property_account_income.id
-            if not account_id:
-                account_id = move_line.product_id.categ_id.\
-                        property_account_income_categ.id
+            sql = '''
+                select id from stock_picking where id = %s and return = 'customer'
+            '''%(picking.id)
+            cr.execute(sql)
+            picking_ids = cr.fetchall()
+            if picking_ids:
+                account_ids = self.pool.get('account.account').search(cr,uid,[('code', '=', '5212')])
+                account_id = account_ids[0]
+            else:
+                account_id = move_line.product_id.property_account_income.id
+                if not account_id:
+                    account_id = move_line.product_id.categ_id.\
+                            property_account_income_categ.id
         else:
             account_id = move_line.product_id.property_account_expense.id
             if not account_id:
@@ -2718,6 +2727,18 @@ class account_invoice(osv.osv):
                                                 where invoice_id in (%s)))
                                 '''%(price_unit,line[1])
                                 cr.execute(sql)
+            if vals.get('state',False):
+                if vals['state'] == 'open':
+                    if invoice_obj.invoice_refund == True and invoice_obj.type == 'out_refund':
+                        sql = '''
+                            update account_invoice set state = 'paid' where id = %s
+                        '''%(invoice_obj.id)
+                        cr.execute(sql)
+                    if invoice_obj.invoice_dieuchinh == True and invoice_obj.type == 'out_invoice' and invoice_obj.rel_invoice_id:
+                        sql = '''
+                            update account_invoice set state = 'paid' where id = %s
+                        '''%(invoice_obj.id)
+                        cr.execute(sql)
         return True
     
 account_invoice()

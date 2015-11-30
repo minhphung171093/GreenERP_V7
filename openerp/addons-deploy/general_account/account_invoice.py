@@ -35,34 +35,39 @@ class account_invoice(osv.osv):
     
     def copy_invoice(self,cr,uid,ids,context=None):
         default = {}
-        default.update({
-            'rel_invoice_id':ids[0],
-        })
-        invoice_id = self.copy(cr, uid, ids[0],default,context=context)
-        header = u"HĐ Điều chỉnh"
-        data_pool = self.pool.get('ir.model.data')
-        #action_model,action_id = data_pool.get_object_reference(cr, uid, 'account', "action_invoice_tree")
-        form_id = data_pool.get_object_reference(cr, uid, 'general_account', 'invoice_dieuchinh_form')
-        form_res = form_id and form_id[1] or False
-        tree_id = data_pool.get_object_reference(cr, uid, 'account', 'invoice_tree')
-        tree_res = tree_id and tree_id[1] or False
-        
-        if tree_res and form_res:
-            return {
-                'name':_(header),
-                'view_mode': 'tree, form',
-                'view_id': False,
-                'view_type': 'form',
-                'res_model': 'account.invoice',
-                'type': 'ir.actions.act_window',
-                'nodestroy': True,
-                'target': 'current',
-                'domain': "[('id', 'in', %s)]" % [invoice_id],
-                'views': [(tree_res, 'tree'), (form_res, 'form')],
-                'context': {}
-            }
+        for inv in self.browse(cr,uid,ids):
+            default.update({
+                'rel_invoice_id':ids[0],
+            })
+            if inv.type == 'out_invoice':
+                default.update({
+                    'invoice_dieuchinh':True,
+                })
+            invoice_id = self.copy(cr, uid, ids[0],default,context=context)
+            header = u"HĐ Điều chỉnh"
+            data_pool = self.pool.get('ir.model.data')
+            #action_model,action_id = data_pool.get_object_reference(cr, uid, 'account', "action_invoice_tree")
+            form_id = data_pool.get_object_reference(cr, uid, 'general_account', 'invoice_dieuchinh_form')
+            form_res = form_id and form_id[1] or False
+            tree_id = data_pool.get_object_reference(cr, uid, 'account', 'invoice_tree')
+            tree_res = tree_id and tree_id[1] or False
             
-        return invoice_id
+            if tree_res and form_res:
+                return {
+                    'name':_(header),
+                    'view_mode': 'tree, form',
+                    'view_id': False,
+                    'view_type': 'form',
+                    'res_model': 'account.invoice',
+                    'type': 'ir.actions.act_window',
+                    'nodestroy': True,
+                    'target': 'current',
+                    'domain': "[('id', 'in', %s)]" % [invoice_id],
+                    'views': [(tree_res, 'tree'), (form_res, 'form')],
+                    'context': {}
+                }
+            
+            return invoice_id
     
     #Thanh: Just get the Number for Linking many2one
     def name_get(self, cr, uid, ids, context=None):
@@ -243,7 +248,13 @@ class account_invoice(osv.osv):
         #Hung them nguoi mua hang
         'buyer':fields.char('Người mua hàng'),
         'product_showin_report': fields.function(_get_product_showin_report, type='char', store=True),
+        'invoice_refund': fields.boolean('Invoice Refund'),
+        'invoice_dieuchinh': fields.boolean('Invoice Refund'),
     }
+    _defaults = {
+        'invoice_refund': False,
+        'invoice_dieuchinh': False,
+                 }
     
     # kiet Add sinh so number
     def create(self, cr,uid,vals,context=None):
@@ -260,6 +271,14 @@ class account_invoice(osv.osv):
             book_obj = book.browse(cr,uid,vals['invoice_book_id'])
             number = book.create_sohoadonketiep(cr,uid,vals['invoice_book_id'],context)
             vals.update({'reference_number':number,'reference':book_obj.kyhieuhoadon})
+#         if vals.get('state',False):
+#             if vals['state'] == 'open':
+#                 for acc_inv in self.browse(cr,uid,ids):
+#                     if acc_inv.rel_invoice_id and acc_inv.type == 'out_refund':
+#                         sql = '''
+#                             update account_invoice set state = 'paid' where id = %s
+#                         '''%(acc_inv.id)
+#                         cr.execute(sql)
         return super(account_invoice, self).write(cr, uid,ids, vals, context)
         
     def onchange_partner_id(self, cr, uid, ids, type, partner_id,\
@@ -423,6 +442,8 @@ class account_invoice(osv.osv):
             cr.execute('UPDATE account_invoice SET rel_invoice_id=%s WHERE id=%s'%(invoice_id, new_id))
             #Thanh: Link customer invoice into refund invoice
             
+            cr.execute('UPDATE account_invoice SET invoice_refund = True WHERE id=%s'%(new_id))
+            
         return new_ids
     
     def action_date_assign(self, cr, uid, ids, *args):
@@ -509,8 +530,8 @@ class account_invoice(osv.osv):
             
             #Thanh: Set name of partner entry to the Invoice number
             if not inv.reference:
-                if inv.type not in ('out_refund'):
-                    raise osv.except_osv(_('Lỗi nhập liệu!'), _("Vui lòng nhập Ký hiệu hóa đơn!"))
+#                 if inv.type not in ('out_refund'):
+                raise osv.except_osv(_('Lỗi nhập liệu!'), _("Vui lòng nhập Ký hiệu hóa đơn!"))
                 
             if inv.reference:
                 if inv.type in ('in_invoice', 'in_refund'):
@@ -519,11 +540,11 @@ class account_invoice(osv.osv):
                     else:
                         name = inv.reference  + '/' + inv['supplier_invoice_number'] or '/'
                 else:
-                    if inv.type not in ('out_refund'):
-                        if not inv.reference_number:
-                            raise osv.except_osv(_('Lỗi nhập liệu!'), _("Vui lòng nhập Số hóa đơn!"))
-                        else:
-                            name = inv.reference  + '/' + inv.reference_number or '/'
+#                     if inv.type not in ('out_refund'):
+                    if not inv.reference_number:
+                        raise osv.except_osv(_('Lỗi nhập liệu!'), _("Vui lòng nhập Số hóa đơn!"))
+                    else:
+                        name = inv.reference  + '/' + inv.reference_number or '/'
 #                 name = inv['name'] or inv['supplier_invoice_number'] or '/'
             #Thanh: Set name of partner entry to the Invoice number
             
