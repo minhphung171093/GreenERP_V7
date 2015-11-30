@@ -22,6 +22,10 @@ class Parser(report_sxw.rml_parse):
     def __init__(self, cr, uid, name, context):
         super(Parser, self).__init__(cr, uid, name, context=context)
         pool = pooler.get_pool(self.cr.dbname)
+        self.gross_weight = 0
+        self.net_weight = 0
+        self.package = 0
+        self.amount = 0
         self.localcontext.update({
             'convert_date':self.convert_date,
             'display_address':self.display_address,
@@ -38,6 +42,8 @@ class Parser(report_sxw.rml_parse):
             'get_ocean': self.get_ocean,
             'get_packages_weight': self.get_packages_weight, 
             'get_bl_line': self.get_bl_line,
+            'get_sum_all': self.get_sum_all,
+            'get_product_line': self.get_product_line,
         })
     
     def get_master_data(self):
@@ -130,22 +136,16 @@ class Parser(report_sxw.rml_parse):
             consignee = 'To Order'
         return consignee
     
-    def sum_net_weight(self):
-        wizard_data = self.localcontext['data']['form']
-        draft_bl_ids = wizard_data['draft_bl_line_id']
+    def sum_net_weight(self,line):
         sum = 0
-        draft_bl_line_id = self.pool.get('draft.bl.line').browse(self.cr,self.uid,draft_bl_ids[0])
-        for line in draft_bl_line_id.description_line:
-            sum += line.net_weight
+        for product in line.description_line:
+            sum += product.net_weight
         return sum
     
-    def sum_gross_weight(self): 
-        wizard_data = self.localcontext['data']['form']
-        draft_bl_ids = wizard_data['draft_bl_line_id']
+    def sum_gross_weight(self,line): 
         sum = 0
-        draft_bl_line_id = self.pool.get('draft.bl.line').browse(self.cr,self.uid,draft_bl_ids[0])
-        for line in draft_bl_line_id.description_line:
-            sum += line.gross_weight
+        for product in line.description_line:
+            sum += product.gross_weight
         return sum
     
     def sum_price_subtotal(self):
@@ -161,16 +161,17 @@ class Parser(report_sxw.rml_parse):
                     })
         return res
     
-    def sum_packages(self): 
-        wizard_data = self.localcontext['data']['form']
-        draft_bl_ids = wizard_data['draft_bl_line_id']
+    def sum_packages(self,line): 
         sum = 0
         line1 = ''
-        draft_bl_line_id = self.pool.get('draft.bl.line').browse(self.cr,self.uid,draft_bl_ids[0])
-        for line in draft_bl_line_id.description_line:
-            sum += line.packages_qty
-            line1 = str(sum) + ' '+ (line.packages_id and line.packages_id.name or '')
-        return line1
+        res = {'sum': 0,
+               'strline': '',}
+        for product in line.description_line:
+            sum += product.packages_qty
+            line1 = str(sum) + ' '+ (product.packages_id and product.packages_id.name or '')
+            res.update({'sum' : sum,
+                       'strline': line1,})
+        return res
     
     def get_product(self): 
         wizard_data = self.localcontext['data']['form']
@@ -216,4 +217,52 @@ class Parser(report_sxw.rml_parse):
         draft_bl_line_id = self.pool.get('draft.bl.line').browse(self.cr,self.uid,draft_bl_ids[0])
         return draft_bl_line_id
     
+    def get_product_line(self,o):
+        re = []
+        self.gross_weight = 0
+        self.net_weight = 0
+        self.package = 0
+        self.amount = 0
+        for line in o.draft_bl_line:
+            if line.option and line.option == 'product':
+                net_weight = self.sum_net_weight(line)
+                gross_weight = self.sum_gross_weight(line)
+                package = self.sum_packages(line)
+                self.gross_weight += gross_weight
+                self.net_weight += net_weight
+                self.package += package['sum']
+                self.amount += line.hopdong_line_id and line.hopdong_line_id.price_subtotal or 0
+                res.append({ 'product': line.hopdong_line_id and line.hopdong_line_id.eng_name or '',
+                            'package': package['sum'],
+                            'net_weight': net_weight,
+                            'gross_weight': gross_weight,
+                            'price': line.hopdong_line_id and line.hopdong_line_id.price_unit or 0,
+                            'amount': line.hopdong_line_id and line.hopdong_line_id.price_subtotal or 0,
+                            })
+            elif line.option and line.option == 'seal_no':
+                for seal in line.seal_descript_line:
+                    self.gross_weight += seal.gross_weight or 0
+                    self.net_weight += seal.net_weight or 0
+                    self.package += seal.packages_qty or 0
+                    self.amount += seal.hopdong_line_id and seal.hopdong_line_id.price_subtotal or 0
+                    res.append({ 'product': seal.hopdong_line_id and seal.hopdong_line_id.eng_name or '',
+                                'package': str(seal.packages_qty or 0) +' '+ (seal.packages_id and seal.packages_id.name or ''),
+                                'net_weight': seal.net_weight or 0,
+                                'gross_weight': seal.gross_weight or 0,
+                                'price': seal.hopdong_line_id and seal.hopdong_line_id.price_unit or 0,
+                                'amount': seal.hopdong_line_id and seal.hopdong_line_id.price_subtotal or 0,
+                                })
+        return True
+    
+    def get_sum_all(self):
+        return {'package': self.package, 
+                'net_weight': self.net_weight,
+                'gross_weight': self.gross_weight,
+                'amount': self.amount,
+                }
+        
+    def get_date_name(self,date):
+        date_name = date and (date[8:10] + ' ' + self.get_month_name(int(date[5:7])) +'. '+ date[:4]) or ''
+        return date_name
+        
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
