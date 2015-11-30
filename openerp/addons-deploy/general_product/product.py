@@ -271,6 +271,10 @@ class product_product(osv.osv):
         'shop_ids': fields.many2many('sale.shop', 'product_shop_rel', 'product_id', 'shop_id', 'Product Shop'),
     }
     
+    _defaults = {
+        'valuation': 'real_time',
+    }
+    
     def copy(self, cr, uid, id, default=None, context=None, done_list=None, local=False):
         default = {} if default is None else default.copy()
         default.update({'default_code': '/'})
