@@ -35,6 +35,7 @@ class Parser(report_sxw.rml_parse):
             'convert_date': self.convert_date,
             'get_tong': self.get_tong,
             'get_transhipment': self.get_transhipment,
+#             'convert_amount':self.convert_amount,
         })
         
     def get_transhipment(self, transhipment):
@@ -57,6 +58,11 @@ class Parser(report_sxw.rml_parse):
         if len(b)==2 and len(b[1])==1:
             a+='0'
         return a.replace(',',' ')
+ 
+#     def convert_amount(self, amount):
+#         a = format(int(amount),',')
+#         a = a.replace(',','.')
+#         return a    
     
     def convert(self, amount):
         amount_text = amount_to_text_en.amount_to_text(amount, 'en', 'Dollars')
