@@ -30,7 +30,7 @@
             <field name="domain">[('type','=','out')]</field>
             <field name="domain">[
 		        '|',
-		        '&amp;','&amp;',('type','=','out'),('return','=','none'),('ghi_chu_xhd','=',False),
+		        '&amp;','&amp;',('type','=','out'),('return','=','none'),('ghi_chu_xhd','=',''),
 		        '&amp;',('type','=','in'),('return','=','customer')
 		        ]
 	        </field>

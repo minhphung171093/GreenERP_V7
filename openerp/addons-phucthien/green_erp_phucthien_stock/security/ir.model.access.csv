@@ -13,3 +13,5 @@ access_phucthien_stock_13,nhap_dulieu_donghang,model_nhap_dulieu_donghang,base.g
 access_phucthien_stock_14,ve_sinh_thangmay,model_ve_sinh_thangmay,base.group_user,True,True,True,False
 access_phucthien_stock_15,dutru_hanghoa,model_dutru_hanghoa,stock.group_stock_user,True,True,True,True
 access_phucthien_stock_16,dutru_hanghoa_line,model_dutru_hanghoa_line,stock.group_stock_user,True,True,True,True
+access_phucthien_stock_17,trahang_chokho,model_trahang_chokho,stock.group_stock_user,True,True,True,True
+access_phucthien_stock_18,trahang_chokho_line,model_trahang_chokho_line,stock.group_stock_user,True,True,True,True

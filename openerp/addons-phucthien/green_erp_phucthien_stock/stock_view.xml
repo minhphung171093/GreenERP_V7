@@ -73,6 +73,9 @@
                 <xpath expr="//button[@name='force_assign']" position="attributes">
                 	<attribute name="groups">general_stock.group_stock_chophepduhang</attribute>
                 </xpath>
+                <xpath expr="//button[@name='%(stock.act_stock_return_picking)d']" position="after">
+                	<button name="bt_hanggui_kh" string="Hàng gửi KH" states="done" type="object" groups="base.group_user"/>
+                </xpath>
                 <xpath expr="///sheet" position="after">
                 	<div class="oe_chatter">
 	                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
@@ -978,8 +981,74 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="dutru_hanghoa_tree_view"/>
         </record>
-        <menuitem id="menu_action_dutru_hanghoa" action="action_dutru_hanghoa" parent="general_stock.menu_report_control" sequence="305"/>
         
+        <record id="trahang_chokho_tree_view" model="ir.ui.view">
+			<field name="name">trahang.chokho.tree</field>
+			<field name="model">trahang.chokho</field>
+			<field name="arch" type="xml">
+				<tree string="Trả hàng cho kho">
+					<field name="invoice_id"/>
+                    <field name="partner_id"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="trahang_chokho_form_view" model="ir.ui.view">
+            <field name="name">trahang.chokho.form</field>
+            <field name="model">trahang.chokho</field>
+            <field name="arch" type="xml">
+	            <form string="Trả hàng cho kho" version="7.0"> 
+	            	<sheet>
+	                    <group col='4' colspan='2'>
+                    		<field name="partner_id"/>
+                    		<field name="invoice_id"/>
+                    		<field name="picking_id" invisible = '1'/>
+	                    </group>
+	                    <notebook>
+							<page string = "Chi tiết trả hàng">
+								<field name="trahang_chokho_line" nolabel='1'>
+									<tree editable='bottom'>
+										<field name="product_code"/>
+										<field name="product_id" />
+										<field name="product_qty" />
+										<field name="product_uom" /> 
+										<field name="prodlot_id" /> 
+										<field name="tracking_id" /> 
+									</tree>
+								</field>
+							</page>
+						</notebook>
+		         	</sheet>
+		         </form>
+			</field>
+		</record>
+		
+		<record id="action_trahang_chokho" model="ir.actions.act_window">
+            <field name="name">Trả hàng cho kho</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">trahang.chokho</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="trahang_chokho_tree_view"/>
+        </record>
+        
+        <record id="action_trahang_chokho1" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="trahang_chokho_tree_view"/>
+            <field name="act_window_id" ref="action_trahang_chokho"/>
+        </record>
+        <record id="action_trahang_chokho2" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="trahang_chokho_form_view"/>
+            <field name="act_window_id" ref="action_trahang_chokho"/>
+        </record>
+        
+        <menuitem id="menu_action_trahang_chokho" name="Khách hàng gửi hàng" action="action_trahang_chokho" parent="stock.menu_stock_warehouse_mgmt" sequence="605"/>
+        
+        <menuitem id="menu_action_dutru_hanghoa" action="action_dutru_hanghoa" parent="general_stock.menu_report_control" sequence="305"/>
+       
         <menuitem id="menu_root_ky_thuat" name="Kỹ thuật" sequence="71"/>
         <menuitem id="menu_thiet_bi" name="Thiết bị" parent="menu_root_ky_thuat" sequence="10"/>
 		<menuitem id="menu_action_dm_thietbi" action="action_dm_thietbi" parent="menu_thiet_bi" sequence="11"/>
@@ -1027,7 +1096,7 @@
             <field name="domain">[('type','=','out')]</field>
             <field name="domain">[
 		        '|',
-		        '&amp;','&amp;',('type','=','out'),('return','=','none'),('ghi_chu_xhd','!=',False),
+		        '&amp;','&amp;',('type','=','out'),('return','=','none'),('ghi_chu_xhd','!=',''),
 		        '&amp;',('type','=','in'),('return','=','customer')
 		        ]
 	        </field>
@@ -1049,7 +1118,7 @@
         
         <menuitem action="deliveries_picking_to_invoice_ghi_chu_xhd"
 		        	id="menu_deliveries_picking_to_invoice_ghi_chu_xhd"
-		        	name="Phiếu xuất kho chưa lập hóa đơn"
+		        	name="Phiếu xuất tạm"
 		        	parent="account.menu_finance_payables"
 		        	sequence="95"/>
     </data>

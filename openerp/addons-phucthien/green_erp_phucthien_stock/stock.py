@@ -67,6 +67,17 @@ class stock_picking_out(osv.osv):
             res[pick]['min_date'] = dt1
             res[pick]['max_date'] = dt2
         return res
+    
+    def _kiemtra_trahang(self, cr, uid, ids, name, args, context=None):
+        res = {}
+#         if context is None:
+#             context = {}
+#         for voucher in self.browse(cr, uid, ids, context=context):
+#             amount = 0
+#             if voucher.tpt_currency_id and voucher.tpt_currency_amount and voucher.tpt_exchange_rate:       
+#                 amount = voucher.tpt_currency_amount/voucher.tpt_exchange_rate
+#             res[voucher.id] = amount
+        return res
     _columns = {
         'description': fields.text('Description', track_visibility='onchange'),
         'ngay_gui':fields.date('Ngày gửi'),
@@ -100,6 +111,8 @@ class stock_picking_out(osv.osv):
         'tinhtrang_chatluong': fields.char('Tình trạng chất lượng', size=1024),
         'yeu_cau': fields.char('Yêu cầu', size = 1024),
         'ghi_chu_xhd': fields.char('Ghi chú xuất hóa đơn', size = 1024),
+        'exist': fields.function(_kiemtra_trahang, string='Đã tồn tại trong trahang.chokho',
+            type='boolean'),
     }
     _defaults = {
                  'state_receive':'draft',
@@ -179,6 +192,42 @@ class stock_picking_out(osv.osv):
             '''%(line.date, line.id)
             cr.execute(sql)
         return new_write
+    
+    def bt_hanggui_kh(self, cr, uid, ids, context=None):
+        res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
+                                        'green_erp_phucthien_stock', 'trahang_chokho_form_view')
+        move_line = []
+        invoice_id = False
+        picking = self.browse(cr, uid, ids[0], context=context)
+        for line in picking.move_lines:
+            move_line.append((0,0,{
+                                   'product_code': line.product_code,
+                                   'product_id': line.product_id.id,
+                                   'product_qty': line.product_qty,
+                                   'product_uom': line.product_uom and line.product_uom.id or False,
+                                   'prodlot_id': line.prodlot_id and line.prodlot_id.id or False,
+                                   'tracking_id': line.tracking_id and line.tracking_id.id or False,
+                                   }))
+            sql = '''
+                select id from account_invoice where id in (select invoice_id from account_invoice_line where source_id = %s)
+            '''%(line.id)
+            cr.execute(sql)
+            invoice_id = cr.fetchone()
+        return {
+                    'name': 'Norm',
+                    'view_type': 'form',
+                    'view_mode': 'form',
+                    'view_id': res[1],
+                    'res_model': 'trahang.chokho',
+                    'domain': [],
+                    'context': {
+                        'default_partner_id': picking.partner_id.id,
+                        'default_invoice_id': invoice_id and invoice_id[0] or False,
+                        'default_trahang_chokho_line': move_line,
+                            },
+                    'type': 'ir.actions.act_window',
+                    'target': 'new',
+                }
     
 stock_picking_out()
 
@@ -1557,17 +1606,42 @@ class dutru_hanghoa_line(osv.osv):
         'ghi_chu': fields.char('GHI CHÚ'),
     }
     
-#     def unlink(self, cr, uid, ids, context=None):
-#         for line in self.browse(cr, uid, ids):
-#             update_ids = self.search(cr, uid,[('dutru_id','=',line.dutru_id.id),('stt','>',line.stt)])
-#             if update_ids:
-#                 cr.execute("UPDATE dutru_hanghoa_line SET stt=stt-1 WHERE id in %s",(tuple(update_ids),))
-#         return super(dutru_hanghoa_line, self).unlink(cr, uid, ids, context)  
-#     
-#     def create(self, cr, uid, vals, context=None):
-#         if vals.get('dutru_id',False):
-#             vals['stt'] = len(self.search(cr, uid,[('dutru_id', '=', vals['dutru_id'])])) + 1
-#         return super(dutru_hanghoa_line, self).create(cr, uid, vals, context)
 dutru_hanghoa_line()
+
+class trahang_chokho(osv.osv):
+    _name = "trahang.chokho"
+    def _invoice(self, cr, uid, ids, name, args, context=None):
+        res = {}
+#         if context is None:
+#             context = {}
+#         for voucher in self.browse(cr, uid, ids, context=context):
+#             amount = 0
+#             if voucher.tpt_currency_id and voucher.tpt_currency_amount and voucher.tpt_exchange_rate:       
+#                 amount = voucher.tpt_currency_amount/voucher.tpt_exchange_rate
+#             res[voucher.id] = amount
+        return res
+    _columns = {
+        'invoice_id': fields.many2one('account.invoice', 'Hóa đơn', readonly = True),
+        'partner_id': fields.many2one('res.partner', 'Khách hàng', required = True),
+        'picking_id': fields.many2one('stock.picking', 'Phiếu xuất kho'),
+        'trahang_chokho_line': fields.one2many('trahang.chokho.line','trahang_id','Tra Hang'),
+    }
+    
+trahang_chokho()
+
+class trahang_chokho_line(osv.osv):
+    _name = "trahang.chokho.line"
+    
+    _columns = {
+        'trahang_id': fields.many2one('trahang.chokho', 'Tra Hang Hoa', ondelete = 'cascade'),
+        'product_id': fields.many2one('product.product', 'Sản phẩm'),
+        'product_code': fields.char('Mã sản phẩm', size = 1024),
+        'product_qty': fields.float('Số lượng'),
+        'product_uom': fields.many2one('product.uom', 'Đơn vị quy đổi'),
+        'prodlot_id': fields.many2one('stock.production.lot', 'Lô hàng'),
+        'tracking_id': fields.many2one('stock.tracking', 'Kệ'),
+    }
+    
+trahang_chokho_line()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -24,6 +24,7 @@ class Parser(report_sxw.rml_parse):
         pool = pooler.get_pool(self.cr.dbname)
         self.localcontext.update({
             'get_partner_address':self.get_partner_address,
+            'convert_f_amount': self.convert_f_amount,
         })
         
     
@@ -34,5 +35,12 @@ class Parser(report_sxw.rml_parse):
             address += order.partner_id.state_id and ', ' + order.partner_id.state_id.name or ''
             address += order.partner_id.country_id and ', ' + order.partner_id.country_id.name or ''
         return address
+    
+    def convert_f_amount(self, amount):
+        a = format(amount,',')
+        b = a.split('.')
+        if len(b)==2 and len(b[1])==1:
+            a+='0'
+        return a.replace(',',' ')
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
