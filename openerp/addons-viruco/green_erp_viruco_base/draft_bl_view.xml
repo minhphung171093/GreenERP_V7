@@ -42,8 +42,8 @@
             <field name="arch" type="xml">
 	            <form string="Draft BL" version="7.0">
 					<header>
-						<!--<button name="print_draft_bl" string="Print Draft BL" type="object" class="oe_highlight"/>-->
-						<button name="bt_wizard" string="In" type="object" class="oe_highlight"/>
+						<!--<button name="print_draft_bl" string="Print Draft BL" type="object" class="oe_highlight"/>
+						<button name="bt_wizard" string="In" type="object" class="oe_highlight"/>-->
 					</header>
 	            	<sheet>
 	                    <h1>
@@ -52,7 +52,7 @@
 	                    </h1>
 	                    <group>
 	                    	<group>
-	                    		<field name="hopdong_id" domain="[('type','=','hd_ngoai'),('state','not in',('moi_tao','da_duyet','da_ky','het_han'))]" on_change = "onchange_hopdong_id(hopdong_id)"/>
+	                    		<field name="hopdong_id" domain="[('type','=','hd_ngoai'),('state','not in',('moi_tao','da_duyet','da_ky','het_han'))]" on_change = "onchange_hopdong_id(hopdong_id)" context="{'form_view_ref':'green_erp_viruco_base.hop_dong_ngoai_form_view'}"/>
 	                    		<field name="company_id"/>
 	                    		<field name="consignee_id"/>
 	                    		<field name="freight"/>

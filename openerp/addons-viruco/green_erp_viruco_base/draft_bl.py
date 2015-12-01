@@ -22,7 +22,8 @@ class draft_bl(osv.osv):
         if hopdong_id:
             hd_obj = self.pool.get('hop.dong')
             hd = hd_obj.browse(cr, uid, hopdong_id)
-            cr.execute('''update draft_bl_line set hopdong_id=%s where draft_bl_id=%s; commit; ''',(hopdong_id,ids[0],))
+            if ids:
+                cr.execute('''update draft_bl_line set hopdong_id=%s where draft_bl_id=%s; commit; ''',(hopdong_id,ids[0],))
 #             val_line={
 #                 'hopdong_id': hopdong_id,
 #             }   

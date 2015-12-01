@@ -18,7 +18,7 @@
     	   
     	<report 
 			auto="False" 
-			menu="True"
+			menu="False"
 			id="draft_bl_report" 
 			model="draft.bl" 
 			name="draft_bl_report"
@@ -42,7 +42,7 @@
     	   
     	<report 
 			auto="False" 
-			menu="True"
+			menu="False"
 			id="fumi_report" 
 			model="draft.bl" 
 			name="fumi_report"
@@ -53,7 +53,7 @@
 	        <field name="name">commercial_invoice_report</field>
 	        <field name="type">ir.actions.report.xml</field>
 	        <field name="model">draft.bl</field>
-	        <field name="report_name">Commercial Invoice</field>
+	        <field name="report_name">VS15-648 ISO</field>
 	        <field name="report_type">aeroo</field>
 	        <field name="in_format">oo-ods</field>
 	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
@@ -70,7 +70,7 @@
 			id="commercial_invoice_report" 
 			model="draft.bl" 
 			name="commercial_invoice_report"
-	        string="Commercial Invoice"
+	        string="VS15-648 ISO"
 	        rml="green_erp_viruco_base/report/commercial_invoice.ods"/> 
 	        
     	
@@ -91,7 +91,7 @@
     	
     	<report 
 			auto="False" 
-			menu="True"
+			menu="False"
     		id="phyto_report" 
 			model="draft.bl" 
 			name="phyto_report"
@@ -115,7 +115,7 @@
     	   
     	<report 
 			auto="False" 
-			menu="True"
+			menu="False"
 			id="packing_list_report" 
 			model="draft.bl" 
 			name="packing_list_report"
@@ -163,7 +163,7 @@
     	   
     	<report 
 			auto="False" 
-			menu="True"
+			menu="False"
 			id="certificate_of_origin_report" 
 			model="draft.bl" 
 			name="certificate_of_origin_report"
