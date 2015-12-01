@@ -1112,6 +1112,22 @@
                 </xpath>
             </field>
         </record>
+        
+        <record id="view_production_lot_tree_inherit" model="ir.ui.view">
+            <field name="name">stock.production.lot.tree.inherit</field>
+            <field name="model">stock.production.lot</field>
+            <field name="priority" eval="6"/>
+            <field name="inherit_id" ref="stock.view_production_lot_tree" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='date']" position="after">
+                	<field name="alert_date" invisible = '1'/>
+                	<field name="life_date" invisible = '1'/>
+                </xpath>
+                <xpath expr="//tree" position="attributes">
+                	<attribute name="colors">red:(alert_date and alert_date&lt;=current_date);grey:life_date&lt;=current_date</attribute>
+                </xpath>
+            </field>
+        </record>
     
         <record id="view_move_tree_reception_picking_general_modify" model="ir.ui.view">
             <field name="name">stock.move.tree2_general_modify</field>
