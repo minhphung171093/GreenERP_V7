@@ -98,6 +98,8 @@ class stock_picking_out(osv.osv):
         'xuly_huyhang_id': fields.many2one('stock.picking', 'Hủy hàng'),
         'loai_xuly':fields.selection([('trahang_ncc','Trả hàng cho nhà cung cấp'),('huy_hang','Hủy hàng')],'Loại xử lý'),
         'tinhtrang_chatluong': fields.char('Tình trạng chất lượng', size=1024),
+        'yeu_cau': fields.char('Yêu cầu', size = 1024),
+        'ghi_chu_xhd': fields.char('Ghi chú xuất hóa đơn', size = 1024),
     }
     _defaults = {
                  'state_receive':'draft',
@@ -390,6 +392,8 @@ class stock_picking(osv.osv):
         'loai_xuly':fields.selection([('trahang_ncc','Trả hàng cho nhà cung cấp'),('huy_hang','Hủy hàng')],'Loại xử lý'),
         'tinhtrang_chatluong': fields.char('Tình trạng chất lượng', size=1024),
         'so_hd': fields.char('Số hóa đơn', size=1024),
+        'yeu_cau': fields.char('Yêu cầu', size = 1024),
+        'ghi_chu_xhd': fields.char('Ghi chú xuất hóa đơn', size = 1024),
     }
     _defaults = {
                  'state_receive':'draft',

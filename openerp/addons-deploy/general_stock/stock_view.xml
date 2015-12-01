@@ -422,7 +422,7 @@
 	                </tree>
 	            </field>
 	        </record>
-        
+	        
 			<record id="view_stock_picking_add_amounttotal" model="ir.ui.view">
 	            <field name="name">view.stock.picking.add.amounttotal</field>
 	            <field name="model">stock.picking</field>

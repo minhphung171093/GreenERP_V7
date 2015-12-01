@@ -60,6 +60,8 @@ class sale_order(osv.osv):
                 'sale.order': (lambda self, cr, uid, ids, c={}: ids, ['date_order'], 10),
             }, multi='tz'),
           'diachi_giaohang_id': fields.many2one('diachi.giaohang','Địa chỉ giao hàng'),
+          'yeu_cau': fields.char('Yêu cầu', size = 1024),
+          'ghi_chu_xhd': fields.char('Ghi chú xuất hóa đơn', size = 1024),
     }
     
     def _create_pickings_and_procurements(self, cr, uid, order, order_lines, picking_id=False, context=None):
@@ -155,6 +157,8 @@ class sale_order(osv.osv):
             'shop_id':order.shop_id and order.shop_id.id or False,
             'diachi_giaohang_id': order.diachi_giaohang_id and order.diachi_giaohang_id.id or False,
             'daidien_khachhang': order.client_order_ref,
+            'yeu_cau': order.yeu_cau and order.yeu_cau or '',
+            'ghi_chu_xhd': order.ghi_chu_xhd and order.ghi_chu_xhd or '',
         }
     
     #Thanh: Get Location From Order Line

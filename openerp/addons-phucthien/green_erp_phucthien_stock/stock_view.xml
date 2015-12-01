@@ -56,6 +56,8 @@
                 	<field name="nguoi_van_chuyen" attrs="{'invisible':[('type','!=','out')]}" on_change="on_change_nguoivanchuyen(nguoi_van_chuyen)"/>
                 	<field name="phuongtien_giaohang" attrs="{'invisible':[('type','!=','out')]}"/>
                 	<field name="ly_do_xuat_id" attrs="{'invisible':[('type','!=','out')]}"/>
+                	<field name="yeu_cau" attrs="{'invisible':[('type','!=','out')]}"/>
+                	<field name="ghi_chu_xhd" attrs="{'invisible':[('type','!=','out')]}"/>
                 	<field name="nhiet_do" attrs="{'invisible':[('type','!=','in')]}"/>
                 	<field name="so_luong_thung" attrs="{'invisible':[('type','!=','in')]}"/>
                 	<field name="time_nhan" attrs="{'invisible':[('type','!=','in')]}"/>
@@ -97,7 +99,7 @@
                 </xpath>
             </field>
         </record>
-		
+        
 		<record id="view_picking_in_search_inherit" model="ir.ui.view">
 	            <field name="name">stock.picking.in.search.inherit</field>
 	            <field name="model">stock.picking</field>
@@ -983,5 +985,72 @@
 		<menuitem id="menu_action_dm_thietbi" action="action_dm_thietbi" parent="menu_thiet_bi" sequence="11"/>
 		<menuitem id="menu_action_danhmuc_thietbi_report" action="action_danhmuc_thietbi_report" parent="menu_thiet_bi" sequence="12"/>
 		
+		
+		<!-- Phuoc: Tao them 1 menu tree co field "Ghi Chu Xuat Hoa Don" -->   
+     	
+     	<record id="view_picking_out_ghi_chu_xhd_tree" model="ir.ui.view">
+	            <field name="name">stock.picking.out.ghi.chu.xhd.tree</field>
+	            <field name="model">stock.picking.out</field>
+	            <field name="arch" type="xml">
+	                <tree colors="blue:state == 'draft';grey:state == 'cancel';red:state not in ('cancel', 'done') and min_date &lt; current_date" string="Delivery Orders">
+	                    <field name="name"/>
+	                    <field name="partner_id" string="Customer"/>
+	                    <field name="origin"/>
+	                    <field name="date"/>
+	                    <field name="min_date" invisible='1'/>
+	                    <field name="date_done"/>
+	                    <field name="date_done_user_tz" invisible='1'/>
+	                    <field name="day_done_user_tz" invisible='1'/>
+	                    <field name="backorder_id" invisible="1"/>
+	                    <field name="stock_journal_id"/>
+	                    <field name="invoice_state"/>
+	                    <field name="state"/>
+	                    <field name="sampham_lanh" invisible="1"/>
+	                	<field name="ngay_gui"/>
+	                	<field name="ngay_nhan"/>
+	                	<field name="ghi_chu_xhd"/>
+	                	<field name="state_receive" invisible="1"/>
+						<button name="status_send" attrs="{'invisible':[('state_receive','!=','draft')]}" string="Send" icon="gtk-go-up" type="object" class="oe_highlight"/>
+						<button name="status_receive" attrs="{'invisible':[('state_receive','!=','da_gui')]}" string="Receive" icon="gtk-goto-bottom" type="object" class="oe_highlight"/>
+						<button name="status_refresh" attrs="{'invisible':[('state_receive','=','draft')]}" string="Refresh" icon="gtk-refresh" type="object" class="oe_highlight"/>
+	                </tree>
+	            </field>
+	        </record>
+
+    
+    	<record id="deliveries_picking_to_invoice_ghi_chu_xhd" model="ir.actions.act_window">
+            <field name="name">Deliveries to Invoice</field>
+            <field name="res_model">stock.picking.out</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar</field>
+            <field name="domain">[('type','=','out')]</field>
+            <field name="domain">[
+		        '|',
+		        '&amp;','&amp;',('type','=','out'),('return','=','none'),('ghi_chu_xhd','!=',False),
+		        '&amp;',('type','=','in'),('return','=','customer')
+		        ]
+	        </field>
+            <field name="context">{'default_type': 'out', 'contact_display': 'partner_address', 'search_default_to_invoice': 1, 'search_default_done': 1, 'default_invoice_state': '2binvoiced', 'no_create':True}</field>
+            <field name="search_view_id" ref="stock.view_picking_out_search"/>
+        </record>
+        <record id="deliveries_picking_to_invoice_ghi_chu_xhd1" model="ir.actions.act_window.view">
+            <field eval="3" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="green_erp_phucthien_stock.view_picking_out_ghi_chu_xhd_tree"/>
+            <field name="act_window_id" ref="deliveries_picking_to_invoice_ghi_chu_xhd"/>
+        </record>
+        <record id="deliveries_picking_to_invoice_ghi_chu_xhd2" model="ir.actions.act_window.view">
+            <field eval="4" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="stock.view_picking_form"/>
+            <field name="act_window_id" ref="deliveries_picking_to_invoice_ghi_chu_xhd"/>
+        </record>
+        
+        <menuitem action="deliveries_picking_to_invoice_ghi_chu_xhd"
+		        	id="menu_deliveries_picking_to_invoice_ghi_chu_xhd"
+		        	name="Phiếu xuất kho chưa lập hóa đơn"
+		        	parent="account.menu_finance_payables"
+		        	sequence="95"/>
     </data>
 </openerp>
