@@ -42,8 +42,8 @@
             <field name="arch" type="xml">
 	            <form string="Draft BL" version="7.0">
 					<header>
-						<!--<button name="print_draft_bl" string="Print Draft BL" type="object" class="oe_highlight"/>-->
-						<button name="bt_wizard" string="In" type="object" class="oe_highlight"/>
+						<!--<button name="print_draft_bl" string="Print Draft BL" type="object" class="oe_highlight"/>
+						<button name="bt_wizard" string="In" type="object" class="oe_highlight"/>-->
 					</header>
 	            	<sheet>
 	                    <h1>
@@ -52,7 +52,7 @@
 	                    </h1>
 	                    <group>
 	                    	<group>
-	                    		<field name="hopdong_id" domain="[('type','=','hd_ngoai'),('state','not in',('moi_tao','da_duyet','da_ky','het_han'))]" on_change = "onchange_hopdong_id(hopdong_id)"/>
+	                    		<field name="hopdong_id" domain="[('type','=','hd_ngoai'),('state','not in',('moi_tao','da_duyet','da_ky','het_han'))]" on_change = "onchange_hopdong_id(hopdong_id)" context="{'form_view_ref':'green_erp_viruco_base.hop_dong_ngoai_form_view'}"/>
 	                    		<field name="company_id"/>
 	                    		<field name="consignee_id"/>
 	                    		<field name="freight"/>
@@ -80,29 +80,43 @@
 						</group>
 						<notebook>
 							<page string="Draft BL Line" >
-								<field name="draft_bl_line">
+								<field name="draft_bl_line" context="{'default_hopdong_id':hopdong_id}">
 									<tree>
 	                                    <field name="ocean_vessel" />
-	                                    <field name="hopdong_line_id"/>
-	                                    <field name="picking_id"/>
 	                                    <field name="etd_date"/>
 	                                    <field name="eta_date"/>
 	                                    <field name="cuoc_tau"/>
+	                                   	<field name="hopdong_id" invisible="1"/>
 									</tree>
 									<form version = "7.0">
 										<group col='4' colspan='2'>
 					                    	<field name="ocean_vessel" />
-					                    	<field name="hopdong_line_id" domain="[('hopdong_id','=',parent.hopdong_id)]"/>
-					                    	<field name="picking_id" context="{'search_picking_out':1, 'hopdong_id':parent.hopdong_id}"/>
+					                    	<field name="hopdong_line_id" domain="[('hopdong_id','=',parent.hopdong_id)]" attrs="{'invisible':[('option','in',['seal_no',False])]}"/>
+					                    	<field name="container_no_seal" attrs="{'invisible':[('option','in',['product',False])]}"/>
+					                    	<!--<field name="picking_id" context="{'search_picking_out':1, 'hopdong_id':parent.hopdong_id}"/>-->
 		                                    <field name="etd_date"/>
 		                                    <field name="eta_date"/>
 		                                    <field name="cuoc_tau"/>
+		                                    <field name="option"/>
+		                                    <field name="hopdong_id" invisible="0"/>
 					                    </group>
 					                    <notebook>
-											<page string="Description of Goods" >
-												<field name="description_line">
+											<page string="Description of Goods" attrs="{'invisible':[('option','in',['seal_no',False])]}">
+												<field name="seal_descript_line">
 													<tree editable = 'bottom'>
 					                                    <field name="container_no_seal" />
+					                                    <field name="packages_qty"/>
+					                                    <field name="packages_id"/>
+					                                    <field name="packages_weight"/>
+					                                    <field name="net_weight"/>
+					                                    <field name="gross_weight"/>
+													</tree>
+												</field>
+											</page>
+											<page string="Description of Seal" attrs="{'invisible':[('option','in',['product',False])]}">
+												<field name="description_line">
+													<tree editable = 'bottom'>
+					                                    <field name="hopdong_line_id" domain="[('hopdong_id','=',parent.hopdong_id)]"/>
 					                                    <field name="packages_qty"/>
 					                                    <field name="packages_id"/>
 					                                    <field name="packages_weight"/>
