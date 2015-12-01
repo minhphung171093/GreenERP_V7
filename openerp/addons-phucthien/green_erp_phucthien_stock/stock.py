@@ -70,13 +70,19 @@ class stock_picking_out(osv.osv):
     
     def _kiemtra_trahang(self, cr, uid, ids, name, args, context=None):
         res = {}
-#         if context is None:
-#             context = {}
-#         for voucher in self.browse(cr, uid, ids, context=context):
-#             amount = 0
-#             if voucher.tpt_currency_id and voucher.tpt_currency_amount and voucher.tpt_exchange_rate:       
-#                 amount = voucher.tpt_currency_amount/voucher.tpt_exchange_rate
-#             res[voucher.id] = amount
+        picking_ids =[]
+        if context is None:
+            context = {}
+        for picking in self.browse(cr, uid, ids, context=context):
+            sql = '''
+                select id from trahang_chokho where picking_id = %s
+            '''%(picking.id)
+            cr.execute(sql)
+            picking_ids = cr.fetchone()
+            if picking_ids:
+                res[picking.id] = True
+            else:
+                res[picking.id] = False
         return res
     _columns = {
         'description': fields.text('Description', track_visibility='onchange'),
@@ -195,7 +201,7 @@ class stock_picking_out(osv.osv):
     
     def bt_hanggui_kh(self, cr, uid, ids, context=None):
         res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
-                                        'green_erp_phucthien_stock', 'trahang_chokho_form_view')
+                                        'green_erp_phucthien_stock', 'trahang_chokho_popup_form_view')
         move_line = []
         invoice_id = False
         picking = self.browse(cr, uid, ids[0], context=context)
@@ -223,11 +229,13 @@ class stock_picking_out(osv.osv):
                     'context': {
                         'default_partner_id': picking.partner_id.id,
                         'default_invoice_id': invoice_id and invoice_id[0] or False,
+                        'default_picking_id': ids[0],
                         'default_trahang_chokho_line': move_line,
                             },
                     'type': 'ir.actions.act_window',
                     'target': 'new',
                 }
+        
     
 stock_picking_out()
 
@@ -276,6 +284,24 @@ class stock_picking_in(osv.osv):
             res[pick]['min_date'] = dt1
             res[pick]['max_date'] = dt2
         return res
+    
+    def _kiemtra_trahang(self, cr, uid, ids, name, args, context=None):
+        res = {}
+        picking_ids =[]
+        if context is None:
+            context = {}
+        for picking in self.browse(cr, uid, ids, context=context):
+            sql = '''
+                select id from trahang_chokho where picking_id = %s
+            '''%(picking.id)
+            cr.execute(sql)
+            picking_ids = cr.fetchone()
+            if picking_ids:
+                res[picking.id] = True
+            else:
+                res[picking.id] = False
+        return res
+    
     _columns = {
         'description': fields.text('Description', track_visibility='onchange'),
         'nhiet_do':fields.char('Nhiệt độ'),
@@ -304,6 +330,10 @@ class stock_picking_in(osv.osv):
         'loai_xuly':fields.selection([('trahang_ncc','Trả hàng cho nhà cung cấp'),('huy_hang','Hủy hàng')],'Loại xử lý'),
         'tinhtrang_chatluong': fields.char('Tình trạng chất lượng', size=1024),
         'so_hd': fields.char('Số hóa đơn', size=1024),
+        'yeu_cau': fields.char('Yêu cầu', size = 1024),
+        'ghi_chu_xhd': fields.char('Ghi chú xuất hóa đơn', size = 1024),
+        'exist': fields.function(_kiemtra_trahang, string='Đã tồn tại trong trahang.chokho',
+            type='boolean'),
     }
     
     def tao_hoa_don(self, cr, uid,ids, context=None):
@@ -404,6 +434,22 @@ class stock_picking(osv.osv):
             res[pick]['min_date'] = dt1
             res[pick]['max_date'] = dt2
         return res
+    def _kiemtra_trahang(self, cr, uid, ids, name, args, context=None):
+        res = {}
+        picking_ids =[]
+        if context is None:
+            context = {}
+        for picking in self.browse(cr, uid, ids, context=context):
+            sql = '''
+                select id from trahang_chokho where picking_id = %s
+            '''%(picking.id)
+            cr.execute(sql)
+            picking_ids = cr.fetchone()
+            if picking_ids:
+                res[picking.id] = True
+            else:
+                res[picking.id] = False
+        return res
     _columns = {
         'picking_packaging_line': fields.one2many('stock.picking.packaging','picking_id','Đóng gói'),
         'description': fields.text('Description', track_visibility='onchange'),
@@ -443,6 +489,8 @@ class stock_picking(osv.osv):
         'so_hd': fields.char('Số hóa đơn', size=1024),
         'yeu_cau': fields.char('Yêu cầu', size = 1024),
         'ghi_chu_xhd': fields.char('Ghi chú xuất hóa đơn', size = 1024),
+        'exist': fields.function(_kiemtra_trahang, string='Đã tồn tại trong trahang.chokho',
+            type='boolean'),
     }
     _defaults = {
                  'state_receive':'draft',
@@ -1610,22 +1658,29 @@ dutru_hanghoa_line()
 
 class trahang_chokho(osv.osv):
     _name = "trahang.chokho"
-    def _invoice(self, cr, uid, ids, name, args, context=None):
+    
+    def _invoice(self, cr, uid, ids, name, arg, context=None):
         res = {}
-#         if context is None:
-#             context = {}
-#         for voucher in self.browse(cr, uid, ids, context=context):
-#             amount = 0
-#             if voucher.tpt_currency_id and voucher.tpt_currency_amount and voucher.tpt_exchange_rate:       
-#                 amount = voucher.tpt_currency_amount/voucher.tpt_exchange_rate
-#             res[voucher.id] = amount
+        for trahang in self.browse(cr,uid,ids):
+            picking = self.pool.get('stock.picking').browse(cr,uid,trahang.picking_id.id)
+            for line in picking.move_lines:
+                sql = '''
+                    select invoice_id from account_invoice_line where source_id = %s
+                '''%(line.id)
+                cr.execute(sql)
+                invoice_id = cr.fetchone()
+            res[trahang.id] = invoice_id and invoice_id[0] or False
         return res
+    
     _columns = {
-        'invoice_id': fields.many2one('account.invoice', 'Hóa đơn', readonly = True),
+        'invoice_id': fields.function(_invoice, string='Hóa đơn',
+            type='many2one', relation='account.invoice'),
         'partner_id': fields.many2one('res.partner', 'Khách hàng', required = True),
         'picking_id': fields.many2one('stock.picking', 'Phiếu xuất kho'),
         'trahang_chokho_line': fields.one2many('trahang.chokho.line','trahang_id','Tra Hang'),
     }
+    def bt_save(self, cr, uid, ids, context=None):
+        return {'type': 'ir.actions.act_window_close'}
     
 trahang_chokho()
 

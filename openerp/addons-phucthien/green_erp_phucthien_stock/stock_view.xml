@@ -69,12 +69,13 @@
                 	<field name="diachi_giaohang_id" domain="[('partner_id','=',partner_id)]" attrs="{'invisible':[('type','!=','out')]}"/>
                 	<field name="nhietdo_di" attrs="{'invisible':[('type','!=','out')]}"/>
                 	<field name="nhietdo_den" attrs="{'invisible':[('type','!=','out')]}"/>
+                	<field name="exist" invisible = '1'/>
                 </xpath>
                 <xpath expr="//button[@name='force_assign']" position="attributes">
                 	<attribute name="groups">general_stock.group_stock_chophepduhang</attribute>
                 </xpath>
                 <xpath expr="//button[@name='%(stock.act_stock_return_picking)d']" position="after">
-                	<button name="bt_hanggui_kh" string="Hàng gửi KH" states="done" type="object" groups="base.group_user"/>
+                	<button name="bt_hanggui_kh" string="Hàng gửi KH" attrs="{'invisible':['|',('state','!=','done'),('exist','=',True)]}" type="object" groups="base.group_user"/>
                 </xpath>
                 <xpath expr="///sheet" position="after">
                 	<div class="oe_chatter">
@@ -986,9 +987,10 @@
 			<field name="name">trahang.chokho.tree</field>
 			<field name="model">trahang.chokho</field>
 			<field name="arch" type="xml">
-				<tree string="Trả hàng cho kho">
+				<tree string="Khách hàng gửi hàng">
+					<field name="partner_id"/>
 					<field name="invoice_id"/>
-                    <field name="partner_id"/>
+                    <field name="picking_id"/>
 				</tree>
 			</field>
 		</record>
@@ -997,12 +999,12 @@
             <field name="name">trahang.chokho.form</field>
             <field name="model">trahang.chokho</field>
             <field name="arch" type="xml">
-	            <form string="Trả hàng cho kho" version="7.0"> 
+	            <form string="Khách hàng gửi hàng" version="7.0"> 
 	            	<sheet>
 	                    <group col='4' colspan='2'>
                     		<field name="partner_id"/>
                     		<field name="invoice_id"/>
-                    		<field name="picking_id" invisible = '1'/>
+                    		<field name="picking_id"/>
 	                    </group>
 	                    <notebook>
 							<page string = "Chi tiết trả hàng">
@@ -1023,8 +1025,43 @@
 			</field>
 		</record>
 		
+		<record id="trahang_chokho_popup_form_view" model="ir.ui.view">
+            <field name="name">trahang.chokho.popup.form</field>
+            <field name="model">trahang.chokho</field>
+            <field name="arch" type="xml">
+	            <form string="Khách hàng gửi hàng" version="7.0"> 
+	            	<sheet>
+	                    <group col='4' colspan='2'>
+                    		<field name="partner_id"/>
+                    		<field name="invoice_id"/>
+                    		<field name="picking_id"/>
+	                    </group>
+	                    <notebook>
+							<page string = "Chi tiết trả hàng">
+								<field name="trahang_chokho_line" nolabel='1'>
+									<tree editable='bottom'>
+										<field name="product_code"/>
+										<field name="product_id" />
+										<field name="product_qty" />
+										<field name="product_uom" /> 
+										<field name="prodlot_id" /> 
+										<field name="tracking_id" /> 
+									</tree>
+								</field>
+							</page>
+						</notebook>
+						<footer>
+	                        <button string="Save" type="object" name="bt_save"/>
+	                        or
+	                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    	</footer>
+		         	</sheet>
+		         </form>
+			</field>
+		</record>
+		
 		<record id="action_trahang_chokho" model="ir.actions.act_window">
-            <field name="name">Trả hàng cho kho</field>
+            <field name="name">Khách hàng gửi hàng</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">trahang.chokho</field>
             <field name="view_type">form</field>
