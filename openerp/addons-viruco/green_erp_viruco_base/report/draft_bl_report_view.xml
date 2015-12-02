@@ -53,7 +53,7 @@
 	        <field name="name">commercial_invoice_report</field>
 	        <field name="type">ir.actions.report.xml</field>
 	        <field name="model">draft.bl</field>
-	        <field name="report_name">VS15-648 ISO</field>
+	        <field name="report_name">Chứng từ xuất khẩu</field>
 	        <field name="report_type">aeroo</field>
 	        <field name="in_format">oo-ods</field>
 	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
@@ -70,7 +70,7 @@
 			id="commercial_invoice_report" 
 			model="draft.bl" 
 			name="commercial_invoice_report"
-	        string="VS15-648 ISO"
+	        string="Chứng từ xuất khẩu"
 	        rml="green_erp_viruco_base/report/commercial_invoice.ods"/> 
 	        
     	
