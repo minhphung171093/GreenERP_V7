@@ -228,13 +228,14 @@ class Parser(report_sxw.rml_parse):
                     sql='''
                     SELECT  am.date gl_date, coalesce(am.date_document,am.date) doc_date, am.name doc_no, 
                             coalesce(aih.comment, coalesce(avh.narration,
-                                coalesce(am.narration, am.ref))) description,acc.code acc_code,                    
+                                coalesce(am.narration, am.ref))) description,acc.code acc_code,rp.name as tenkh,rp.internal_code as makh,                  
                     aml.debit,aml.credit
                     FROM account_move_line aml 
                         JOIN account_move am on am.id = aml.move_id
                         LEFT JOIN account_invoice aih on aml.move_id = aih.move_id -- lien ket voi invoice
                         LEFT JOIN account_voucher avh on aml.move_id = avh.move_id -- lien ket thu/chi
                         LEFT JOIN account_account acc on acc.id = aml.account_id
+                        left join res_partner rp on aml.partner_id = rp.id
                     WHERE aml.account_id not in (SELECT id from fn_get_account_child_id('%(account_id)s'))
                     and aml.shop_id = ('%(shop_ids)s')
                     and aml.company_id= '%(company_id)s'
@@ -269,6 +270,8 @@ class Parser(report_sxw.rml_parse):
                                      'debit':j['credit'] or 0.0,
                                      'credit':j['debit'] or 0.0,
                                      'ton': self.ton,
+                                     'makh':j['makh'],
+                                     'tenkh':j['tenkh'],
                                  })
                 else:
                     # truong hop lien ket nhiều nhiều
@@ -276,7 +279,7 @@ class Parser(report_sxw.rml_parse):
                         select row_number() over(order by am.date, am.date_document, am.name)::int seq, 
                             am.date gl_date, coalesce(am.date_document,am.date) doc_date, am.name doc_no, 
                             coalesce(aih.comment, coalesce(avh.narration,
-                                coalesce(am.narration, am.ref))) description,
+                                coalesce(am.narration, am.ref))) description,rp.name as tenkh,rp.internal_code as makh,
                             case when aml.debit != 0
                                 then
                                     array_to_string(ARRAY(SELECT DISTINCT a.code
@@ -300,6 +303,7 @@ class Parser(report_sxw.rml_parse):
                             and aml.account_id in (SELECT id from fn_get_account_child_id('%(account_id)s'))
                         left join account_invoice aih on aml.move_id = aih.move_id -- lien ket voi invoice
                         left join account_voucher avh on aml.move_id = avh.move_id -- lien ket thu/chi
+                        left join res_partner rp on aml.partner_id = rp.id
                         order by am.date, am.date_document, am.name, acc_code
                      '''%({
                           'move_id':line['move_id'],
@@ -324,6 +328,8 @@ class Parser(report_sxw.rml_parse):
                                      'debit':j['debit'] or 0.0,
                                      'credit':j['credit'] or 0.0,
                                      'ton': self.ton,
+                                     'makh':j['makh'],
+                                     'tenkh':j['tenkh'],
                                  })
             
         return res
