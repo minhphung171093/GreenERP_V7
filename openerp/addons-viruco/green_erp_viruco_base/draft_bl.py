@@ -125,10 +125,10 @@ class draft_bl_line(osv.osv):
     def name_get(self, cr, uid, ids, context=None):
         if not len(ids):
             return []
-        reads = self.read(cr, uid, ids, ['ocean_vessel','picking_id','product_id'], context=context)
+        reads = self.read(cr, uid, ids, ['ocean_vessel','product_id'], context=context)
         res = []
         for record in reads:
-            name = (record['ocean_vessel'] and record['ocean_vessel'] +' - ' or '')+(record['picking_id'] and record['picking_id'][1] +' - ' or '') \
+            name = (record['ocean_vessel'] and record['ocean_vessel'] +' - ' or '')\
                         + (record['product_id'] and record['product_id'][1] or '')
             res.append((record['id'], name))
         return res
