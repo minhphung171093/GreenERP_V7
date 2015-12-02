@@ -491,6 +491,7 @@ class stock_picking(osv.osv):
         'ghi_chu_xhd': fields.char('Ghi chú xuất hóa đơn', size = 1024),
         'exist': fields.function(_kiemtra_trahang, string='Đã tồn tại trong trahang.chokho',
             type='boolean'),
+        
     }
     _defaults = {
                  'state_receive':'draft',

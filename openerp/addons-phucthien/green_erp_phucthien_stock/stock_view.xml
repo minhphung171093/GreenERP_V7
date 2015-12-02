@@ -111,6 +111,7 @@
 	            <field name="arch" type="xml">
 	                <xpath expr="/search/group/filter[@string='Return Reason']" position="after">
 	                    <filter string="Sản phẩm lạnh" icon="terp-go-partner" domain="[]" context="{'group_by':'sampham_lanh'}"/>
+	                    <field name="so_hd"/>
 	                </xpath>
 	            </field>
 	    </record>
