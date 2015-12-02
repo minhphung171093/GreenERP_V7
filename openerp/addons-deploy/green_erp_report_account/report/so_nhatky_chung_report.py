@@ -87,12 +87,14 @@ class Parser(report_sxw.rml_parse):
     def get_line(self):
         sql = '''
             select am.name as so,am.date as ngay,aa.code as tkdu,aml.debit as debit,aml.credit as credit,
-                coalesce(aih.product_showin_report, coalesce(avh.dien_giai,concat(am.ref, am.ref_number))) description
+                coalesce(aih.product_showin_report, coalesce(avh.dien_giai,concat(am.ref, am.ref_number))) description,
+                    rp.name as tenkh,rp.internal_code as makh
                 from account_move_line aml
                 left join account_account aa on aa.id=aml.account_id
                 left join account_move am on am.id=aml.move_id
                 left join account_invoice aih on aml.move_id = aih.move_id -- lien ket voi invoice
                 left join account_voucher avh on aml.move_id = avh.move_id -- lien ket thu/chi
+                left join res_partner rp on aml.partner_id = rp.id
                         
                 where am.state='posted' and am.date between '%s' and '%s' and am.company_id=%s
             order by aml.date,aml.move_id,aml.debit desc
