@@ -1000,6 +1000,10 @@
             <field name="model">trahang.chokho</field>
             <field name="arch" type="xml">
 	            <form string="Khách hàng gửi hàng" version="7.0"> 
+	            	<header>
+	                    <button name="bt_giaohang" states = 'cho_gh' string="Giao Hàng" type="object" class="oe_highlight" />
+	                    <field name="state" widget="statusbar" statusbar_visible="cho_gh,done"/>
+		            </header>
 	            	<sheet>
 	                    <group col='4' colspan='2'>
                     		<field name="partner_id"/>
@@ -1007,16 +1011,51 @@
                     		<field name="picking_id"/>
 	                    </group>
 	                    <notebook>
-							<page string = "Chi tiết trả hàng">
-								<field name="trahang_chokho_line" nolabel='1'>
+							<page string = "Thông tin gửi hàng">
+								<field name="trahang_chokho_line" nolabel='1' readonly = '1'>
 									<tree editable='bottom'>
 										<field name="product_code"/>
 										<field name="product_id" />
 										<field name="product_qty" />
+										<field name="qty_conlai" />
 										<field name="product_uom" /> 
 										<field name="prodlot_id" /> 
 										<field name="tracking_id" /> 
 									</tree>
+								</field>
+							</page>
+							<page string = "Thông tin giao hàng">
+								<field name="giaohang_line" nolabel='1' readonly = '1'>
+									<tree>
+										<field name="date"/>
+										<button name="bt_print_bbgn" string="In biên bản giao nhận" type="object" class="oe_highlight" icon="gtk-print"/>
+									</tree>
+									<form version="7.0">
+										<header>
+						                    <button name="bt_print_bbgn" string="In biên bản giao nhận" type="object" class="oe_highlight"/>
+							            </header>
+										<group>
+											<field name="date"/>
+										</group>
+										<group>
+											<notebook>
+												<page string = "Chi tiết giao hàng">
+													<field name="ct_giaohang_line" nolabel='1'>
+														<tree editable='bottom'>
+															<field name="product_code"/>
+															<field name="product_id" />
+															<field name="product_qty" />
+															<field name="product_uom" /> 
+															<field name="prodlot_id" /> 
+															<field name="tracking_id" /> 
+															<field name="guihang_id" invisible = '1'/> 
+															<field name="qty_conlai" invisible = '1'/> 
+														</tree>
+													</field>
+												</page>
+											</notebook>
+										</group>
+									</form>
 								</field>
 							</page>
 						</notebook>
@@ -1037,7 +1076,7 @@
                     		<field name="picking_id"/>
 	                    </group>
 	                    <notebook>
-							<page string = "Chi tiết trả hàng">
+							<page string = "Chi tiết gửi hàng">
 								<field name="trahang_chokho_line" nolabel='1'>
 									<tree editable='bottom'>
 										<field name="product_code"/>
@@ -1051,9 +1090,44 @@
 							</page>
 						</notebook>
 						<footer>
-	                        <button string="Save" type="object" name="bt_save"/>
+	                        <button string="Lưu" type="object" name="bt_save"/>
 	                        or
-	                        <button string="Cancel" class="oe_link" special="cancel"/>
+	                        <button string="Hủy bỏ" class="oe_link" special="cancel"/>
+                    	</footer>
+		         	</sheet>
+		         </form>
+			</field>
+		</record>
+		
+		<record id="giaohang_popup_form_view" model="ir.ui.view">
+            <field name="name">giaohang.popup.form</field>
+            <field name="model">giaohang.line</field>
+            <field name="arch" type="xml">
+	            <form string="Giao hàng" version="7.0"> 
+	            	<sheet>
+	                    <group col='4' colspan='2'>
+                    		<field name="date"/>
+	                    </group>
+	                    <notebook>
+							<page string = "Chi tiết giao hàng">
+								<field name="ct_giaohang_line" nolabel='1'>
+									<tree editable='bottom'>
+										<field name="product_code"/>
+										<field name="product_id" />
+										<field name="product_qty" />
+										<field name="product_uom" /> 
+										<field name="prodlot_id" /> 
+										<field name="tracking_id" /> 
+										<field name="guihang_id" invisible = '1'/> 
+										<field name="qty_conlai" invisible = '1'/> 
+									</tree>
+								</field>
+							</page>
+						</notebook>
+						<footer>
+	                        <button string="Lưu" type="object" name="bt_save"/>
+	                        or
+	                        <button string="Hủy bỏ" class="oe_link" special="cancel"/>
                     	</footer>
 		         	</sheet>
 		         </form>

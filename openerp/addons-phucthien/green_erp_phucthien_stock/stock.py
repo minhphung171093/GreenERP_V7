@@ -1672,20 +1672,78 @@ class trahang_chokho(osv.osv):
             res[trahang.id] = invoice_id and invoice_id[0] or False
         return res
     
+    def _trangthai(self, cr, uid, ids, name, arg, context=None):
+        res = {}
+        qty = 0
+        for guihang in self.browse(cr,uid,ids):
+            for line in guihang.trahang_chokho_line:
+                qty += line.qty_conlai
+            if qty == 0:
+                res[guihang.id] = 'done'
+            else:
+                res[guihang.id] = 'cho_gh'
+        return res
+    
     _columns = {
         'invoice_id': fields.function(_invoice, string='Hóa đơn',
             type='many2one', relation='account.invoice'),
         'partner_id': fields.many2one('res.partner', 'Khách hàng', required = True),
         'picking_id': fields.many2one('stock.picking', 'Phiếu xuất kho'),
         'trahang_chokho_line': fields.one2many('trahang.chokho.line','trahang_id','Tra Hang'),
+        'giaohang_line': fields.one2many('giaohang.line','trahang_id','Giao Hang'),
+        'state': fields.function(_trangthai, string='Trạng thái', type='selection', selection=[('cho_gh','Chờ giao hàng'),('done','Đã giao hàng')]),
     }
+    
     def bt_save(self, cr, uid, ids, context=None):
         return {'type': 'ir.actions.act_window_close'}
+    
+    def bt_giaohang(self, cr, uid, ids, context=None):
+        res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
+                                        'green_erp_phucthien_stock', 'giaohang_popup_form_view')
+        ct_giaohang_line = []
+        for guihang in self.browse(cr,uid,ids):
+            for gh_line in guihang.trahang_chokho_line:
+                ct_giaohang_line.append((0,0,{
+                                       'product_code': gh_line.product_code,
+                                       'product_id': gh_line.product_id.id,
+                                       'product_qty': gh_line.qty_conlai,
+                                       'qty_conlai': gh_line.qty_conlai,
+                                       'product_uom': gh_line.product_uom and gh_line.product_uom.id or False,
+                                       'prodlot_id': gh_line.prodlot_id and gh_line.prodlot_id.id or False,
+                                       'tracking_id': gh_line.tracking_id and gh_line.tracking_id.id or False,
+                                       'guihang_id': gh_line.id and gh_line.id or False,
+                                       }))
+            return {
+                    'name': 'Giao Hàng',
+                    'view_type': 'form',
+                    'view_mode': 'form',
+                    'view_id': res[1],
+                    'res_model': 'giaohang.line',
+                    'domain': [],
+                    'context': {
+                        'default_trahang_id': guihang.id,
+                        'default_ct_giaohang_line': ct_giaohang_line,
+                            },
+                    'type': 'ir.actions.act_window',
+                    'target': 'new',
+                    }
     
 trahang_chokho()
 
 class trahang_chokho_line(osv.osv):
     _name = "trahang.chokho.line"
+    
+    def _qty_conlai(self, cr, uid, ids, name, arg, context=None):
+        res = {}
+        for guihang_line in self.browse(cr,uid,ids):
+            sql = '''
+                select case when sum(product_qty)!=0 then sum(product_qty) else 0 end qty_giaohang from ct_giaohang_line 
+                where guihang_id = %s
+            '''%(guihang_line.id)
+            cr.execute(sql)
+            qty_giaohang = cr.dictfetchone()['qty_giaohang']
+            res[guihang_line.id] = guihang_line.product_qty-qty_giaohang
+        return res
     
     _columns = {
         'trahang_id': fields.many2one('trahang.chokho', 'Tra Hang Hoa', ondelete = 'cascade'),
@@ -1695,8 +1753,61 @@ class trahang_chokho_line(osv.osv):
         'product_uom': fields.many2one('product.uom', 'Đơn vị quy đổi'),
         'prodlot_id': fields.many2one('stock.production.lot', 'Lô hàng'),
         'tracking_id': fields.many2one('stock.tracking', 'Kệ'),
+        'qty_conlai': fields.function(_qty_conlai, string='Số lượng còn lại', type='float'),
     }
     
 trahang_chokho_line()
+
+class giaohang_line(osv.osv):
+    _name = "giaohang.line"
+    
+    _columns = {
+        'trahang_id': fields.many2one('trahang.chokho', 'Tra Hang Hoa', ondelete = 'cascade'),
+        'date': fields.date('Ngày giao hàng', required = True),
+        'ct_giaohang_line': fields.one2many('ct.giaohang.line','giaohang_id','Giao Hang'),
+    }
+    _defaults = {
+        'date': time.strftime('%Y-%m-%d'),
+                 }
+    
+    def bt_save(self, cr, uid, ids, context=None):
+        return {'type': 'ir.actions.act_window_close'}
+    
+    def bt_print_bbgn(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        datas = {'ids': ids}
+        datas['model'] = 'giaohang.line'
+        datas['form'] = self.read(cr, uid, ids)[0]
+        datas['form'].update({'active_id':context.get('active_ids',False)})
+        return {'type': 'ir.actions.report.xml', 'report_name': 'bien_ban_giao_nhan_kh_gui_hang_report', 'datas': datas}
+    
+giaohang_line()
+
+class ct_giaohang_line(osv.osv):
+    _name = "ct.giaohang.line"
+    
+    _columns = {
+        'giaohang_id': fields.many2one('giaohang.line', 'Giao Hàng', ondelete = 'cascade'),
+        'product_id': fields.many2one('product.product', 'Sản phẩm'),
+        'product_code': fields.char('Mã sản phẩm', size = 1024),
+        'product_qty': fields.float('Số lượng'),
+        'product_uom': fields.many2one('product.uom', 'Đơn vị quy đổi'),
+        'prodlot_id': fields.many2one('stock.production.lot', 'Lô hàng'),
+        'tracking_id': fields.many2one('stock.tracking', 'Kệ'),
+        'guihang_id': fields.many2one('trahang.chokho.line', 'GuiHang_id'),
+        'qty_conlai': fields.float('Số lượng còn lại'),
+    }
+    
+    def _check_qty_conlai(self, cr, uid, ids, context=None):
+        for line in self.browse(cr, uid, ids, context=context):
+            if line.product_qty > line.qty_conlai:
+                raise osv.except_osv(_('Cảnh báo!'),_('Số lượng giao không được nhiều hơn số lượng còn lại'))
+        return True
+    _constraints = [
+        (_check_qty_conlai, 'Identical Data', []),
+    ]
+    
+ct_giaohang_line()
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
