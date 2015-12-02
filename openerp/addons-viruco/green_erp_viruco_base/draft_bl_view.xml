@@ -46,34 +46,33 @@
 						<button name="bt_wizard" string="In" type="object" class="oe_highlight"/>-->
 					</header>
 	            	<sheet>
-	                    <h1>
-	                    	<label string="Booking No."/>
-	                        <field name="name" class="oe_inline" nolabel="1" />
-	                    </h1>
+	            	<group >
 	                    <group>
-	                    	<group>
-	                    		<field name="hopdong_id" domain="[('type','=','hd_ngoai'),('state','not in',('moi_tao','da_duyet','da_ky','het_han'))]" on_change = "onchange_hopdong_id(hopdong_id)" context="{'form_view_ref':'green_erp_viruco_base.hop_dong_ngoai_form_view'}"/>
-	                    		<field name="company_id"/>
-	                    		<field name="consignee_id"/>
-	                    		<field name="freight"/>
-	                    		<field name="port_of_loading"/>
-	                    		<field name="diadiem_nhanhang" string = "Place of delivery"/>
-	                    		<field name="country_id"/>
-	                    		<field name="shipping_line_id" />
-	                    		<field name="forwarder_line_id" />
-	                    	</group>
-	                    	<group>
-	                    		<field name="date"/>
-	                    		<field name="notify_party_id" domain="[('customer','=',True)]"/>
-	                    		<field name="consignee_text"/>
-	                    		<field name="mean_transport"/>
-	                    		<field name="bl_no"/>
-	                    		<field name="port_of_charge"/>
-	                    		<field name="quantity_kind_of_packages"/>
-	                    		<field name="meansurement" />
-	                    		<field name="customs_declaration" />
-	                    		
-	                    	</group>
+	                    	<field name="hopdong_id" domain="[('type','=','hd_ngoai'),('state','not in',('moi_tao','da_duyet','da_ky','het_han'))]" on_change = "onchange_hopdong_id(hopdong_id)" context="{'form_view_ref':'green_erp_viruco_base.hop_dong_ngoai_form_view'}"/>
+	                        <field name="date"/>
+	                        <field name="bl_no" required = '0'/>
+	                    </group>
+	                    <group>
+	                    	<field name="name" string="Booking No."/>
+                    		<field name="shipping_line_id" />
+                    		<field name="forwarder_line_id" />	      
+                    	</group>              	
+	                    <group>
+                    		<field name="company_id" string = "Shipper"/>
+                    		<field name="consignee_id" string = "1st Consignee" />
+                    		<field name="consignee_text" string = "2nd Consignee" />
+                    		<field name="notify_party_id" domain="[('customer','=',True)]" string = "1st Notify Party" />
+                    		<field name="consignee_text" string = "2nd Notify Party" />
+	                    </group>
+	                    <group>
+                    		<field name="mean_transport"/>
+                    		<field name="port_of_loading"/>
+                    		<field name="port_of_charge"/>
+                    		<field name="diadiem_nhanhang" string = "Place of delivery"/>
+                    		<field name="country_id"/>
+                    		<field name="freight"/>
+                    		<field name="customs_declaration" string = "Customs Declaration Number" />
+	                    </group>
 	                    </group>
 	                    <group>
 	                    	<field name="note"/>
@@ -105,10 +104,11 @@
 												<field name="seal_descript_line">
 													<tree editable = 'bottom'>
 					                                    <field name="container_no_seal" />
-					                                    <field name="packages_qty"/>
-					                                    <field name="packages_id"/>
-					                                    <field name="packages_weight"/>
+					                                    <field name="packages_qty" string = 'Number of Packages'/>
+					                                    <field name="packages_id" string = 'Kind of Packages' />
+					                                    <field name="packages_weight" string = 'Package Weight (Kgs)' />
 					                                    <field name="net_weight"/>
+					                                    <field name="product_uom"/>
 					                                    <field name="gross_weight"/>
 													</tree>
 												</field>

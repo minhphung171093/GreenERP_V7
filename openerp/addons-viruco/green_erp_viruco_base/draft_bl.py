@@ -43,6 +43,7 @@ class draft_bl(osv.osv):
         'date':fields.date('Date',required=True),
         'company_id': fields.many2one('res.company','Company',required = True),
         'notify_party_id': fields.many2one('res.partner','Notify Party',required=True),
+        'notify_party_text':fields.char('2nd Notify Party'),
         'consignee_id': fields.many2one('res.partner','Consignee'),
         'consignee_text':fields.char('Other Consignee'),
         
@@ -145,6 +146,7 @@ class description_line(osv.osv):
         'container_no_seal':fields.char('Container No/Seal No'),
         'packages_qty': fields.float('Packages Qty'),
         'packages_id':fields.many2one('quycach.donggoi','Packages'),
+        'product_uom': fields.many2one('product.uom', ''),
         'packages_weight':fields.selection([('33.33', '33.33 Kgs/Bale'),('35', '35 Kgs/Bale'),
                                             ('1.20', '1.20 Mts/Pallet'),('1.26', '1.26 Mts/Pallet')], 'Packages Weight'),
         'net_weight':fields.float('Net Weight'),
