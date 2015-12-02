@@ -134,7 +134,7 @@ class Parser(report_sxw.rml_parse):
     def get_consignee(self,draft_bl):
         consignee = ''
         if draft_bl.consignee_id:
-            consignee = draft_bl.consignee_id.name +'\n'+ self.display_address(draft_bl.consignee_id) +'\n' + (draft_bl.consignee_id.phone and 'TEL: ' + draft_bl.consignee_id.phone or '') or ''
+            consignee = draft_bl.consignee_id.name +'\n'+ self.display_address(draft_bl.consignee_id) +'\n' + (draft_bl.consignee_id.phone and ('TEL: ' + draft_bl.consignee_id.phone) or '') or ''
         elif draft_bl.consignee_text:
             consignee =  draft_bl.consignee_text or ''
         else:
@@ -174,8 +174,8 @@ class Parser(report_sxw.rml_parse):
                'name': ''}
         for product in line.seal_descript_line:
             sum += product.packages_qty
-            line1 = str(round(sum)) + ' '+ (product.packages_id and product.packages_id.name or '')
-            res.update({'sum' : round(sum),
+            line1 = str(round(sum,0)) + ' '+ (product.packages_id and product.packages_id.name or '')
+            res.update({'sum' : round(sum,0),
                        'strline': line1,
                        'name': product.packages_id.name,})
         return res

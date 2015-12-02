@@ -98,7 +98,7 @@
 		                                    <field name="eta_date"/>
 		                                    <field name="cuoc_tau"/>
 		                                    <field name="option"/>
-		                                    <field name="hopdong_id" invisible="0"/>
+		                                    <field name="hopdong_id" invisible="1"/>
 					                    </group>
 					                    <notebook>
 											<page string="Description of Goods" attrs="{'invisible':[('option','in',['seal_no',False])]}">
