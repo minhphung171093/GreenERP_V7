@@ -773,8 +773,8 @@ class target_sale(osv.osv):
     _columns = {
                 'tu_ngay': fields.date('Từ ngày', required = True),
                 'den_ngay': fields.date('Đến ngày', required = True),
-                'name':fields.selection([('tdv','Trình duyệt viên'),('kh','Khách hàng')],'Trình duyệt viên/Khách hàng',required=True),
-                'user_id': fields.many2one('res.users', 'Trình duyệt viên'),
+                'name':fields.selection([('tdv','Trình dược viên'),('kh','Khách hàng')],'Trình dược viên/Khách hàng',required=True),
+                'user_id': fields.many2one('res.users', 'Trình dược viên'),
                 'partner_id': fields.many2one('res.partner', 'Khách hàng'),
                 'target_sale_line': fields.one2many('target.sale.line','target_id','Line'),
                 }
