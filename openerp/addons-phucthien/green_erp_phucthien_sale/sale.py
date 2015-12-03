@@ -745,4 +745,89 @@ class danhsach_canhtranh(osv.osv):
                 }
     
 danhsach_canhtranh()
+
+class cau_hinh_target(osv.osv):
+    _name = "cau.hinh.target"
+    _columns = {
+                'product_id': fields.many2one('product.product', 'Sản phẩm', required = True),
+                'cau_hinh_target_line': fields.one2many('cau.hinh.target.line','cau_hinh_id','Line'),
+                }
+    
+cau_hinh_target()
+
+class cau_hinh_target_line(osv.osv):
+    _name = "cau.hinh.target.line"
+    _order = "stt"
+    _columns = {
+                'cau_hinh_id': fields.many2one('cau.hinh.target', 'Cau Hinh Target', ondelete = 'cascade'),
+                'stt': fields.integer('STT', required = True),
+                'name': fields.char('Tên', size = 1024, required = True),
+                'dinh_muc_amount': fields.float('Số tiền định mức', required = True),
+                'thuong_amount': fields.float('Số tiền thưởng', required = True),
+                }
+    
+cau_hinh_target_line()
+
+class target_sale(osv.osv):
+    _name = "target.sale"
+    _columns = {
+                'tu_ngay': fields.date('Từ ngày', required = True),
+                'den_ngay': fields.date('Đến ngày', required = True),
+                'name':fields.selection([('tdv','Trình duyệt viên'),('kh','Khách hàng')],'Trình duyệt viên/Khách hàng',required=True),
+                'user_id': fields.many2one('res.users', 'Trình duyệt viên'),
+                'partner_id': fields.many2one('res.partner', 'Khách hàng'),
+                'target_sale_line': fields.one2many('target.sale.line','target_id','Line'),
+                }
+    
+target_sale()
+
+class target_sale_line(osv.osv):
+    _name = "target.sale.line"
+    
+    def _so_tien_untax(self, cr, uid, ids, name, arg, context=None):
+        res = {}
+        for target_line in self.browse(cr,uid,ids):
+            res[target_line.id]={
+                                 'so_tien_untax': 0.0,
+                                 'so_tien_thuong': 0.0,
+                                 }
+            if target_line.target_id.name == 'tdv':
+                sql = '''
+                    select case when sum(quantity*price_unit)!=0 then sum(quantity*price_unit) else 0 end amount_untax 
+                    from account_invoice_line
+                    where product_id = %s and invoice_id in (select id from account_invoice
+                    where state in ('open','paid') and date_invoice between '%s' and '%s' and type = 'out_invoice') 
+                    and source_id in (select id from stock_move where picking_id in (select id from stock_picking
+                    where sale_id in (select id from sale_order where user_id = %s)))
+                '''%(target_line.product_id.id, target_line.target_id.tu_ngay, target_line.target_id.den_ngay, target_line.target_id.user_id.id)
+                cr.execute(sql)
+                amount = cr.dictfetchone()['amount_untax']
+            if target_line.target_id.name == 'kh':
+                sql = '''
+                    select case when sum(quantity*price_unit)!=0 then sum(quantity*price_unit) else 0 end amount_untax 
+                    from account_invoice_line
+                    where product_id = %s and invoice_id in (select id from account_invoice
+                    where state in ('open','paid') and date_invoice between '%s' and '%s' and type = 'out_invoice' and partner_id = %s) 
+                '''%(target_line.product_id.id, target_line.target_id.tu_ngay, target_line.target_id.den_ngay, target_line.target_id.partner_id.id)
+                cr.execute(sql)
+                amount = cr.dictfetchone()['amount_untax']
+            res[target_line.id]['so_tien_untax'] = amount
+            sql = '''
+                select thuong_amount from cau_hinh_target_line where cau_hinh_id in (select id from cau_hinh_target where product_id = %s) 
+                and dinh_muc_amount <= %s 
+                order by dinh_muc_amount desc limit 1
+            '''%(target_line.product_id.id,amount)
+            cr.execute(sql)
+            thuong = cr.fetchone()
+            res[target_line.id]['so_tien_thuong'] = thuong and thuong[0] or 0
+        return res
+    
+    _columns = {
+                'target_id': fields.many2one('target.sale', 'Target ban hang', ondelete = 'cascade'),
+                'product_id': fields.many2one('product.product', 'Sản phẩm', required = True),
+                'so_tien_untax': fields.function(_so_tien_untax, string='Số tiền(trước thuế)', type='float', multi = 'sums'),
+                'so_tien_thuong':fields.function(_so_tien_untax, string='Số tiền thưởng', type='float', multi = 'sums'),
+                }
+    
+target_sale_line()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

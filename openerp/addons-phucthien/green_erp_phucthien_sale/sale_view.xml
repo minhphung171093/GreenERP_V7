@@ -651,6 +651,109 @@
             </field>
         </record>
        <menuitem name="Sản phẩm cạnh tranh" action="action_sanpham_canhtranh" parent="base.menu_base_config" id = "sanpham_canhtranh_menu" sequence="23"/>
+       
+       <record model='ir.ui.view' id='cau_hinh_target_tree'>
+            <field name="name">cau.hinh.target.tree</field>
+            <field name="model">cau.hinh.target</field>
+            <field name="arch" type="xml">
+                <tree string="Cấu hình target">
+                    <field name="product_id"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record model='ir.ui.view' id='cau_hinh_target_form'>
+            <field name="name">cau.hinh.target.form</field>
+            <field name="model">cau.hinh.target</field>
+            <field name="arch" type="xml">
+                <form string="Cấu hình target" version="7.0">
+                	<group col='4' colspan='2'>
+	                    <field name="product_id"/>
+                   </group>
+                   <notebook>
+						<page string = "Chi tiết cấu hình">
+							<field name="cau_hinh_target_line" nolabel='1'>
+								<tree editable='bottom'>
+									<field name="stt"/>
+									<field name="name" />
+									<field name="dinh_muc_amount" />
+									<field name="thuong_amount" /> 
+								</tree>
+							</field>
+						</page>
+					</notebook>
+                </form>
+            </field>
+        </record>
+      
+       	<record id="action_cau_hinh_target" model="ir.actions.act_window">
+            <field name="name">Cấu hình target</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">cau.hinh.target</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="cau_hinh_target_tree"/>
+        </record>
+        <menuitem id="menu_action_cau_hinh_target"
+    		action="action_cau_hinh_target"
+    		name="Cấu hình target"
+    		parent="base.menu_base_config"
+    		sequence="15"
+    		groups="base.group_sale_manager"/>
+    		
+    	<record model='ir.ui.view' id='target_sale_tree'>
+            <field name="name">target.sale.tree</field>
+            <field name="model">target.sale</field>
+            <field name="arch" type="xml">
+                <tree string="Target bán hàng">
+                    <field name="tu_ngay"/>
+                    <field name="den_ngay"/>
+                    <field name="name"/>
+                    <field name="user_id"/>
+                    <field name="partner_id"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record model='ir.ui.view' id='target_sale_form'>
+            <field name="name">target.sale.form</field>
+            <field name="model">target.sale</field>
+            <field name="arch" type="xml">
+                <form string="Target bán hàng" version="7.0">
+                	<group>
+                		<group>
+		                    <field name="tu_ngay"/>
+		                    <field name="name"/>
+                   		</group>
+                   		<group>
+		                    <field name="den_ngay"/>
+		                    <field name="user_id" attrs="{'invisible':[('name','!=','tdv')],'required':[('name','!=','kh')]}"/>
+		                    <field name="partner_id" domain="[('customer','=',True)]" attrs="{'invisible':[('name','!=','kh')],'required':[('name','!=','tdv')]}"/>
+                   		</group>
+                   </group>
+                   <notebook>
+						<page string = "Chi tiết target">
+							<field name="target_sale_line" nolabel='1'>
+								<tree editable='bottom'>
+									<field name="product_id"/>
+									<field name="so_tien_untax" />
+									<field name="so_tien_thuong" />
+								</tree>
+							</field>
+						</page>
+					</notebook>
+                </form>
+            </field>
+        </record>
+      
+       	<record id="action_target_sale" model="ir.actions.act_window">
+            <field name="name">Target bán hàng</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">target.sale</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="target_sale_tree"/>
+        </record>
           
     </data>
 </openerp>

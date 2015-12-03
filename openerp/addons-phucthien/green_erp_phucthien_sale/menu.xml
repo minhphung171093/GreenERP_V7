@@ -53,6 +53,12 @@
     		parent="phucthien_sale_report"
     		sequence="6"/>
     		
+    	<menuitem id="menu_action_target_sale"
+    		action="action_target_sale"
+    		name="Target bán hàng"
+    		parent="phucthien_sale_report"
+    		sequence="7"/>
+    		
 		<menuitem id="menu_action_danhsach_khachhang"
     		action="action_danhsach_khachhang"
     		name="In danh sách khách hàng"
