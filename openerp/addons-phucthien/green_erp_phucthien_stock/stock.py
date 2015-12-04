@@ -84,6 +84,7 @@ class stock_picking_out(osv.osv):
             else:
                 res[picking.id] = False
         return res
+    
     _columns = {
         'description': fields.text('Description', track_visibility='onchange'),
         'ngay_gui':fields.date('Ngày gửi'),
@@ -220,7 +221,7 @@ class stock_picking_out(osv.osv):
             cr.execute(sql)
             invoice_id = cr.fetchone()
         return {
-                    'name': 'Norm',
+                    'name': 'Khách hàng gửi kho',
                     'view_type': 'form',
                     'view_mode': 'form',
                     'view_id': res[1],
@@ -450,6 +451,7 @@ class stock_picking(osv.osv):
             else:
                 res[picking.id] = False
         return res
+    
     _columns = {
         'picking_packaging_line': fields.one2many('stock.picking.packaging','picking_id','Đóng gói'),
         'description': fields.text('Description', track_visibility='onchange'),
@@ -1764,7 +1766,7 @@ class giaohang_line(osv.osv):
     
     _columns = {
         'trahang_id': fields.many2one('trahang.chokho', 'Tra Hang Hoa', ondelete = 'cascade'),
-        'date': fields.date('Ngày giao hàng', required = True),
+        'date': fields.date('Ngày lấy hàng', required = True),
         'ct_giaohang_line': fields.one2many('ct.giaohang.line','giaohang_id','Giao Hang'),
     }
     _defaults = {

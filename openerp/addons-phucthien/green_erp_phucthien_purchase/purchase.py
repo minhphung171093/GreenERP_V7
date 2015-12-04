@@ -175,6 +175,7 @@ class product_product(osv.osv):
         'manufacturer_product_id': fields.many2one('manufacturer.product','Hãng sản xuất'),
         'product_country_id': fields.many2one('res.country', 'Nước sản xuất'),
         'quy_cach': fields.text('Quy cách'),
+        'the_tich': fields.float('Thể tích'),
     }
     
     def create(self, cr, uid, vals, context=None):

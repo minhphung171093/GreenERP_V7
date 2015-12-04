@@ -9,7 +9,7 @@
         <field name="inherit_id" ref="stock.view_picking_out_form"/>
         <field name="arch" type="xml">
             <button name="%(stock.act_stock_return_picking)d" position="after">
-                <button name="action_revert_done" string="Reopen" states="done,cancel" type="object" icon="gtk-cancel" 
+                <button name="action_revert_done" string="Quay lại" states="done,cancel" type="object" icon="gtk-cancel" 
                 confirm="Are you sure you want to reopen this stock picking?"
                 groups="general_stock.group_stock_reopen_picking"/>
             </button>
@@ -27,7 +27,7 @@
         <field name="inherit_id" ref="stock.view_picking_in_form"/>
         <field name="arch" type="xml">
             <button name="%(stock.act_stock_return_picking)d" position="after">
-                <button name="action_revert_done" string="Reopen" states="done,cancel" type="object" icon="gtk-cancel" 
+                <button name="action_revert_done" string="Quay lại" states="done,cancel" type="object" icon="gtk-cancel" 
                 confirm="Are you sure you want to reopen this stock picking?"
                 groups="general_stock.group_stock_reopen_picking"/>
             </button>
@@ -46,7 +46,7 @@
 		<field name="arch" type="xml">
 			<button name="%(stock.action_stock_invoice_onshipping)d" position="after">
 				<button name="tao_hoa_don" type='object' attrs="{'invisible': ['|','|',('state','&lt;&gt;','done'),('invoice_state','=','invoiced'),('invoice_state','=','none')]}" string="Tạo hóa đơn/Hoàn trả" class="oe_highlight" groups="base.group_user" invisible = '1'/>
-				<button name="action_revert_done" string="Reopen" states="done,cancel" type="object" icon="gtk-cancel" 
+				<button name="action_revert_done" string="Quay lại" states="done,cancel" type="object" icon="gtk-cancel" 
 				confirm="Are you sure you want to reopen this stock picking?"
 				groups="general_stock.group_stock_reopen_picking"/>
 			</button>
@@ -1219,13 +1219,13 @@
 	        </field>
 	    </record>
 	    
-	    <menuitem
+<!--	    <menuitem
 	        id="menu_return_reason_config"
 	        name="Return Reason"
 	        sequence="55"
 	        action="action_stock_return_reason" 
 	        parent="stock.menu_stock_configuration"
-	        groups="stock.group_stock_manager,account.group_account_invoice"/>
+	        groups="stock.group_stock_manager,account.group_account_invoice"/>   -->
 	  
 	  <!-- Kiệt update lại fields -->
 	  <record id="stock.view_move_picking_tree" model="ir.ui.view">
@@ -1397,7 +1397,7 @@
             <field name="act_window_id" ref="action_picking_trungchuyen"/>
         </record>
         
-        <menuitem action="action_picking_trungchuyen" id="menu_action_picking_trungchuyen" parent="stock.menu_stock_warehouse_mgmt" sequence="600"/>
+<!--        <menuitem action="action_picking_trungchuyen" id="menu_action_picking_trungchuyen" parent="stock.menu_stock_warehouse_mgmt" sequence="600"/>  -->
         
     </data>
 </openerp>

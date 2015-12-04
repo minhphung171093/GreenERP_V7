@@ -8,11 +8,11 @@
             sequence="100"/>
             
         
-        <menuitem
+<!--        <menuitem
             action="action_stock_cards_many_report"
             id="menu_action_stock_cards_many_report"
             parent="general_stock.menu_report_control"
-            sequence="150"/>
+            sequence="150"/>    -->
 
 		
         

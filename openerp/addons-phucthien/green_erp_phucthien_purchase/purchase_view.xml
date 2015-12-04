@@ -123,6 +123,9 @@
 	            <xpath expr="//field[@name='list_price']" position="after">
 	    			<field name="quy_cach" />
 	            </xpath>
+	            <xpath expr="//field[@name='product_country_id']" position="after">
+	    			<field name="the_tich" />
+	            </xpath>
             </field>
         </record>
         

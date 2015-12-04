@@ -125,7 +125,92 @@ class sale_order(osv.osv):
                     if (not line.invoiced) and (line.state not in ('cancel', 'draft')):
                         val['state'] = 'manual'
                         break
+        #Phuoc: tinh toan the tich cac san pham trong picking line de dua vao loai thung cho phu hop
+        self._prepare_dong_goi(cr, uid, picking_id, picking_obj, context=context)
+        
         order.write(val)
+        return True
+    
+    def _prepare_dong_goi(self, cr, uid, picking_id, picking_obj, context=None):
+        line = picking_obj.browse(cr,uid,picking_id)
+        total_the_tich = 0.0
+        tam = 0.0
+        if line.type == 'out':
+            for move in line.move_lines:
+                total_the_tich += move.product_qty*move.product_id.the_tich
+            tam = total_the_tich - tam
+            while tam > 0:
+                sql = '''
+                    select id, the_tich
+                    from loai_thung where the_tich <= %s 
+                    order by the_tich desc limit 1
+                '''%(tam)
+                cr.execute(sql)
+                the_tich = cr.fetchone()
+                if the_tich:
+                    tt_thung = the_tich and the_tich[1] or 0
+                    loai_thung_ids = self.pool.get('stock.picking.packaging').search(cr,uid,[('picking_id', '=', picking_id), ('loai_thung_id', '=', the_tich[0])])
+                    if loai_thung_ids:
+                        sl += 1
+                        oc_loaithung = self.pool.get('stock.picking.packaging').onchange_loai_thung_id(cr,uid,[],the_tich[0],sl,context)
+                        self.pool.get('stock.picking.packaging').write(cr,uid,[dong_goi_id],{
+                                                                                'picking_id': picking_id,
+                                                                                'loai_thung_id': the_tich[0],
+                                                                                'sl_thung': sl,
+                                                                                'chi_phi_thung': oc_loaithung['value']['chi_phi_thung'],
+                                                                                'sl_da': oc_loaithung['value']['sl_da'],
+                                                                                'chi_phi_da': oc_loaithung['value']['chi_phi_da'],
+                                                                                'chi_phi_nhiet_ke': oc_loaithung['value']['chi_phi_nhiet_ke'],
+                                                                                })
+                    else:
+                        sl = 1
+                        oc_loaithung = self.pool.get('stock.picking.packaging').onchange_loai_thung_id(cr,uid,[],the_tich[0],sl,context)
+                        dong_goi_id = self.pool.get('stock.picking.packaging').create(cr,uid,{
+                                                                                'picking_id': picking_id,
+                                                                                'loai_thung_id': the_tich[0],
+                                                                                'sl_thung': sl,
+                                                                                'chi_phi_thung': oc_loaithung['value']['chi_phi_thung'],
+                                                                                'sl_da': oc_loaithung['value']['sl_da'],
+                                                                                'chi_phi_da': oc_loaithung['value']['chi_phi_da'],
+                                                                                'chi_phi_nhiet_ke': oc_loaithung['value']['chi_phi_nhiet_ke'],
+                                                                                })
+                        
+                    
+                else:
+                    sql = '''
+                        select id, the_tich
+                        from loai_thung
+                        order by the_tich limit 1
+                    '''
+                    cr.execute(sql)
+                    the_tich = cr.fetchone()
+                    tt_thung = the_tich and the_tich[1] or 0
+                    loai_thung_ids = self.pool.get('stock.picking.packaging').search(cr,uid,[('picking_id', '=', picking_id), ('loai_thung_id', '=', the_tich[0])])
+                    if loai_thung_ids:
+                        sl += 1
+                        oc_loaithung = self.pool.get('stock.picking.packaging').onchange_loai_thung_id(cr,uid,[],the_tich[0],sl,context)
+                        self.pool.get('stock.picking.packaging').write(cr,uid,[dong_goi_id],{
+                                                                                'picking_id': picking_id,
+                                                                                'loai_thung_id': the_tich[0],
+                                                                                'sl_thung': sl,
+                                                                                'chi_phi_thung': oc_loaithung['value']['chi_phi_thung'],
+                                                                                'sl_da': oc_loaithung['value']['sl_da'],
+                                                                                'chi_phi_da': oc_loaithung['value']['chi_phi_da'],
+                                                                                'chi_phi_nhiet_ke': oc_loaithung['value']['chi_phi_nhiet_ke'],
+                                                                                })
+                    else:
+                        sl = 1
+                        oc_loaithung = self.pool.get('stock.picking.packaging').onchange_loai_thung_id(cr,uid,[],the_tich[0],sl,context)
+                        dong_goi_id = self.pool.get('stock.picking.packaging').create(cr,uid,{
+                                                                                'picking_id': picking_id,
+                                                                                'loai_thung_id': the_tich[0],
+                                                                                'sl_thung': sl,
+                                                                                'chi_phi_thung': oc_loaithung['value']['chi_phi_thung'],
+                                                                                'sl_da': oc_loaithung['value']['sl_da'],
+                                                                                'chi_phi_da': oc_loaithung['value']['chi_phi_da'],
+                                                                                'chi_phi_nhiet_ke': oc_loaithung['value']['chi_phi_nhiet_ke'],
+                                                                                })
+                tam = tam - tt_thung
         return True
     
     def _prepare_order_picking(self, cr, uid, order, context=None):

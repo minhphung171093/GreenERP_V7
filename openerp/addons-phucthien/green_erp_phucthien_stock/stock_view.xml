@@ -2,6 +2,20 @@
 <openerp>
     <data>
     
+    	<record id="view_production_lot_form_inherit" model="ir.ui.view">
+            <field name="name">view.production.lot.form.inherit</field>
+            <field name="model">stock.production.lot</field>
+            <field name="inherit_id" ref="stock.view_production_lot_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@string='Upstream Traceability']" position="attributes">
+					<attribute name="invisible">1</attribute>
+				</xpath>
+				<xpath expr="//button[@string='Downstream Traceability']" position="attributes">
+					<attribute name="invisible">1</attribute>
+				</xpath>
+			</field>
+		</record>
+    
     	<record id="view_picking_tree_inherit" model="ir.ui.view">
             <field name="name">stock.picking.in.tree</field>
             <field name="model">stock.picking</field>
@@ -75,7 +89,7 @@
                 	<attribute name="groups">general_stock.group_stock_chophepduhang</attribute>
                 </xpath>
                 <xpath expr="//button[@name='%(stock.act_stock_return_picking)d']" position="after">
-                	<button name="bt_hanggui_kh" string="Hàng gửi KH" attrs="{'invisible':['|',('state','!=','done'),('exist','=',True)]}" type="object" groups="base.group_user"/>
+                	<button name="bt_hanggui_kh" string="Khách hàng gửi kho" attrs="{'invisible':['|',('state','!=','done'),('exist','=',True)]}" type="object" groups="base.group_user"/>
                 </xpath>
                 <xpath expr="///sheet" position="after">
                 	<div class="oe_chatter">
@@ -988,7 +1002,7 @@
 			<field name="name">trahang.chokho.tree</field>
 			<field name="model">trahang.chokho</field>
 			<field name="arch" type="xml">
-				<tree string="Khách hàng gửi hàng">
+				<tree string="Khách hàng gửi kho">
 					<field name="partner_id"/>
 					<field name="invoice_id"/>
                     <field name="picking_id"/>
@@ -1000,7 +1014,7 @@
             <field name="name">trahang.chokho.form</field>
             <field name="model">trahang.chokho</field>
             <field name="arch" type="xml">
-	            <form string="Khách hàng gửi hàng" version="7.0"> 
+	            <form string="Khách hàng gửi kho" version="7.0"> 
 	            	<header>
 	                    <button name="bt_giaohang" states = 'cho_gh' string="Giao Hàng" type="object" class="oe_highlight" />
 	                    <field name="state" widget="statusbar" statusbar_visible="cho_gh,done"/>
@@ -1012,7 +1026,7 @@
                     		<field name="picking_id"/>
 	                    </group>
 	                    <notebook>
-							<page string = "Thông tin gửi hàng">
+							<page string = "Thông tin gửi kho">
 								<field name="trahang_chokho_line" nolabel='1' readonly = '1'>
 									<tree editable='bottom'>
 										<field name="product_code"/>
@@ -1025,7 +1039,7 @@
 									</tree>
 								</field>
 							</page>
-							<page string = "Thông tin giao hàng">
+							<page string = "Thông tin lấy hàng">
 								<field name="giaohang_line" nolabel='1' readonly = '1'>
 									<tree>
 										<field name="date"/>
@@ -1040,7 +1054,7 @@
 										</group>
 										<group>
 											<notebook>
-												<page string = "Chi tiết giao hàng">
+												<page string = "Chi tiết lấy hàng">
 													<field name="ct_giaohang_line" nolabel='1'>
 														<tree editable='bottom'>
 															<field name="product_code"/>
@@ -1069,7 +1083,7 @@
             <field name="name">trahang.chokho.popup.form</field>
             <field name="model">trahang.chokho</field>
             <field name="arch" type="xml">
-	            <form string="Khách hàng gửi hàng" version="7.0"> 
+	            <form string="Khách hàng gửi kho" version="7.0"> 
 	            	<sheet>
 	                    <group col='4' colspan='2'>
                     		<field name="partner_id"/>
@@ -1104,13 +1118,13 @@
             <field name="name">giaohang.popup.form</field>
             <field name="model">giaohang.line</field>
             <field name="arch" type="xml">
-	            <form string="Giao hàng" version="7.0"> 
+	            <form string="Lấy hàng" version="7.0"> 
 	            	<sheet>
 	                    <group col='4' colspan='2'>
                     		<field name="date"/>
 	                    </group>
 	                    <notebook>
-							<page string = "Chi tiết giao hàng">
+							<page string = "Chi tiết lấy hàng">
 								<field name="ct_giaohang_line" nolabel='1'>
 									<tree editable='bottom'>
 										<field name="product_code"/>
@@ -1136,7 +1150,7 @@
 		</record>
 		
 		<record id="action_trahang_chokho" model="ir.actions.act_window">
-            <field name="name">Khách hàng gửi hàng</field>
+            <field name="name">Khách hàng gửi kho</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">trahang.chokho</field>
             <field name="view_type">form</field>
@@ -1157,7 +1171,7 @@
             <field name="act_window_id" ref="action_trahang_chokho"/>
         </record>
         
-        <menuitem id="menu_action_trahang_chokho" name="Khách hàng gửi hàng" action="action_trahang_chokho" parent="stock.menu_stock_warehouse_mgmt" sequence="605"/>
+        <menuitem id="menu_action_trahang_chokho" name="Khách hàng gửi kho" action="action_trahang_chokho" parent="stock.menu_stock_warehouse_mgmt" sequence="605"/>
         
         <menuitem id="menu_action_dutru_hanghoa" action="action_dutru_hanghoa" parent="general_stock.menu_report_control" sequence="305"/>
        
