@@ -1179,6 +1179,7 @@ class don_mua_hang(osv.osv):
     }
     
     _defaults = {
+        'name':'/',
         'ngay': time.strftime('%Y-%m-%d'),
         'state': 'moi_tao',
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'hop.dong', context=c),
@@ -1252,6 +1253,14 @@ class don_mua_hang(osv.osv):
                             'message' : _('Chưa có bảng giá mua cho ngày %s!')%(ngay.strftime('%d/%m/%Y'))
                         }
         return {'warning': warning,'value':vals}    
+    
+    def create(self, cr, uid, vals, context=None):
+        user = self.pool.get('res.users').browse(cr,uid,uid)
+        if 'type' in vals:
+            if (vals['type']=='dmh_trongnuoc') and vals.get('name','/')=='/':
+                vals['name'] = self.pool.get('ir.sequence').get(cr, uid, 'don.mua.hang.noi') or '/'
+        new_id = super(don_mua_hang, self).create(cr, uid, vals, context=context)    
+        return new_id
 don_mua_hang()
 
 class don_mua_hang_line(osv.osv):
