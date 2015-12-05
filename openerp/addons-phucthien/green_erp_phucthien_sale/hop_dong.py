@@ -107,6 +107,7 @@ class hop_dong(osv.osv):
         'nguoi_nhan':fields.char('Người nhận', size = 1024,),
         'thanh_ly_hd':fields.boolean('Thanh lý hợp đồng'),
         'hd_gan_hh': fields.function(_get_hd_gan_hh,type='boolean', string='Hợp đồng gần hết hạn'),
+        'lydo_huy':fields.char('Lý do hủy', size = 1024), 
     }
     
     _defaults = {
@@ -155,6 +156,9 @@ class hop_dong(osv.osv):
         return self.write(cr, uid, ids, {'state': 'het_han'})
     
     def huy_bo(self, cr, uid, ids, context=None):
+        for hd in self.browse(cr,uid,ids):
+            if not hd.lydo_huy:
+                raise osv.except_osv(_('Cảnh báo!'), _('Bạn chưa nhập lý do hủy.'))
         return self.write(cr, uid, ids, {'state': 'huy_bo'})
     
     def set_to_draft(self, cr, uid, ids, context=None):

@@ -69,6 +69,7 @@
 									<field name="ngay_nhan"/>
 									<field name="nguoi_nhan"/>
 									<field name="thanh_ly_hd" attrs="{'invisible':[('type','not in',('thau','kinh_te','nguyen_tac','ky_gui'))]}"/>
+									<field name="lydo_huy"/>
 								</group>
 							</page>
 							<page string="Thông tin mặt hàng" >
@@ -187,6 +188,17 @@
             <field name="view_id" ref="hop_dong_tree_view"/>
             <field name="domain">[('type','=','khac')]</field>
             <field name="context">{'default_type':'khac'}</field>
+        </record>
+        
+        <record id="action_hop_dong_huybo" model="ir.actions.act_window">
+            <field name="name">Hợp đồng hủy bỏ</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hop.dong</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="hop_dong_tree_view"/>
+            <field name="domain">[('state','=','huy_bo')]</field>
+            <field name="context">{}</field>
         </record>
     </data>
     

@@ -118,15 +118,85 @@ class sale_order(osv.osv):
         product_uom_obj = self.pool.get('product.uom')
         sale_line_obj = self.pool.get('sale.order.line')
         product_obj = self.pool.get('product.product')
+        canh_bao_obj = self.pool.get('sale.canh.bao')
         for sale in self.browse(cr, uid, ids):
             #Kiem tra co hop dong hay khong va ngay het han hop dong
             if not sale.hop_dong_nt_id and not sale.hop_dong_t_id and sale.partner_id.is_hop_dong:
+                canh_bao_ids = canh_bao_obj.search(cr,uid,[('partner_id','=',sale.partner_id.id)])
+                name = 'Vui lòng chọn hợp đồng nguyên tắc hoặc hợp đồng thầu trước khi xác nhận bán hàng!'
+                if canh_bao_ids:
+                    sql = '''
+                        insert into sale_canh_bao_line (id,create_uid,create_date,write_uid,write_date,sale_id,canh_bao,canh_bao_id,ngay) \
+                        values (nextval('sale_canh_bao_line_id_seq'),%s,'%s',%s,'%s',%s,'%s',%s,'%s');
+                        commit;
+                    '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.id,name,canh_bao_ids[0],datetime.datetime.now())
+                    cr.execute(sql)
+                else:
+                    sql = '''
+                        insert into sale_canh_bao (id,create_uid,create_date,write_uid,write_date,partner_id) \
+                        values (nextval('sale_canh_bao_id_seq'),%s,'%s',%s,'%s',%s);
+                        commit;
+                    '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.partner_id.id)
+                    cr.execute(sql)
+                    canh_bao_new_ids = canh_bao_obj.search(cr,uid,[('partner_id','=',sale.partner_id.id)])
+                    sql = '''
+                        insert into sale_canh_bao_line (id,create_uid,create_date,write_uid,write_date,sale_id,canh_bao,canh_bao_id,ngay) \
+                        values (nextval('sale_canh_bao_line_id_seq'),%s,'%s',%s,'%s',%s,'%s',%s,'%s');
+                        commit;
+                    '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.id,name,canh_bao_new_ids[0],datetime.datetime.now())
+                    cr.execute(sql)
                 raise osv.except_osv(_('Cảnh báo!'),_('Vui lòng chọn hợp đồng nguyên tắc hoặc hợp đồng thầu trước khi xác nhận bán hàng!'))
             if sale.hop_dong_nt_id and sale.partner_id.is_hop_dong:
                 if sale.date_order < sale.hop_dong_nt_id.tu_ngay or (sale.hop_dong_nt_id.den_ngay and sale.date_order > sale.hop_dong_nt_id.den_ngay or False):
+                    canh_bao_ids = canh_bao_obj.search(cr,uid,[('partner_id','=',sale.partner_id.id)])
+                    name = 'Ngày bán hàng không nằm trong thời hạn của hợp đồng nguyên tắc!'
+                    if canh_bao_ids:
+                        sql = '''
+                            insert into sale_canh_bao_line (id,create_uid,create_date,write_uid,write_date,sale_id,canh_bao,canh_bao_id,ngay) \
+                            values (nextval('sale_canh_bao_line_id_seq'),%s,'%s',%s,'%s',%s,'%s',%s,'%s');
+                            commit;
+                        '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.id,name,canh_bao_ids[0],datetime.datetime.now())
+                        cr.execute(sql)
+                    else:
+                        sql = '''
+                            insert into sale_canh_bao (id,create_uid,create_date,write_uid,write_date,partner_id) \
+                            values (nextval('sale_canh_bao_id_seq'),%s,'%s',%s,'%s',%s);
+                            commit;
+                        '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.partner_id.id)
+                        cr.execute(sql)
+                        canh_bao_new_ids = canh_bao_obj.search(cr,uid,[('partner_id','=',sale.partner_id.id)])
+                        sql = '''
+                            insert into sale_canh_bao_line (id,create_uid,create_date,write_uid,write_date,sale_id,canh_bao,canh_bao_id,ngay) \
+                            values (nextval('sale_canh_bao_line_id_seq'),%s,'%s',%s,'%s',%s,'%s',%s,'%s');
+                            commit;
+                        '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.id,name,canh_bao_new_ids[0],datetime.datetime.now())
+                        cr.execute(sql)
                     raise osv.except_osv(_('Cảnh báo!'),_('Ngày bán hàng không nằm trong thời hạn của hợp đồng nguyên tắc!'))
             if sale.hop_dong_t_id and sale.partner_id.is_hop_dong:
                 if sale.date_order < sale.hop_dong_t_id.tu_ngay or (sale.hop_dong_t_id.den_ngay and sale.date_order > sale.hop_dong_t_id.den_ngay or False):
+                    canh_bao_ids = canh_bao_obj.search(cr,uid,[('partner_id','=',sale.partner_id.id)])
+                    name = 'Ngày bán hàng không nằm trong thời hạn của hợp đồng thầu!'
+                    if canh_bao_ids:
+                        sql = '''
+                            insert into sale_canh_bao_line (id,create_uid,create_date,write_uid,write_date,sale_id,canh_bao,canh_bao_id,ngay) \
+                            values (nextval('sale_canh_bao_line_id_seq'),%s,'%s',%s,'%s',%s,'%s',%s,'%s');
+                            commit;
+                        '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.id,name,canh_bao_ids[0],datetime.datetime.now())
+                        cr.execute(sql)
+                    else:
+                        sql = '''
+                            insert into sale_canh_bao (id,create_uid,create_date,write_uid,write_date,partner_id) \
+                            values (nextval('sale_canh_bao_id_seq'),%s,'%s',%s,'%s',%s);
+                            commit;
+                        '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.partner_id.id)
+                        cr.execute(sql)
+                        canh_bao_new_ids = canh_bao_obj.search(cr,uid,[('partner_id','=',sale.partner_id.id)])
+                        sql = '''
+                            insert into sale_canh_bao_line (id,create_uid,create_date,write_uid,write_date,sale_id,canh_bao,canh_bao_id,ngay) \
+                            values (nextval('sale_canh_bao_line_id_seq'),%s,'%s',%s,'%s',%s,'%s',%s,'%s');
+                            commit;
+                        '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.id,name,canh_bao_new_ids[0],datetime.datetime.now())
+                        cr.execute(sql)
                     raise osv.except_osv(_('Cảnh báo!'),_('Ngày bán hàng không nằm trong thời hạn của hợp đồng thầu!'))
             #Kiem tra ngay het han cac giay phep
             kiemtra_ngayhethan = True
@@ -144,6 +214,29 @@ class sale_order(osv.osv):
                 kiemtra_ngayhethan = False        
                 
             if not kiemtra_ngayhethan:
+                canh_bao_ids = canh_bao_obj.search(cr,uid,[('partner_id','=',sale.partner_id.id)])
+                name = 'Kiểm tra lại ngày hết hạn của giấy phép!'
+                if canh_bao_ids:
+                    sql = '''
+                        insert into sale_canh_bao_line (id,create_uid,create_date,write_uid,write_date,sale_id,canh_bao,canh_bao_id,ngay) \
+                        values (nextval('sale_canh_bao_line_id_seq'),%s,'%s',%s,'%s',%s,'%s',%s,'%s');
+                        commit;
+                    '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.id,name,canh_bao_ids[0],datetime.datetime.now())
+                    cr.execute(sql)
+                else:
+                    sql = '''
+                        insert into sale_canh_bao (id,create_uid,create_date,write_uid,write_date,partner_id) \
+                        values (nextval('sale_canh_bao_id_seq'),%s,'%s',%s,'%s',%s);
+                        commit;
+                    '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.partner_id.id)
+                    cr.execute(sql)
+                    canh_bao_new_ids = canh_bao_obj.search(cr,uid,[('partner_id','=',sale.partner_id.id)])
+                    sql = '''
+                        insert into sale_canh_bao_line (id,create_uid,create_date,write_uid,write_date,sale_id,canh_bao,canh_bao_id,ngay) \
+                        values (nextval('sale_canh_bao_line_id_seq'),%s,'%s',%s,'%s',%s,'%s',%s,'%s');
+                        commit;
+                    '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.id,name,canh_bao_new_ids[0],datetime.datetime.now())
+                    cr.execute(sql)
                 raise osv.except_osv(_('Cảnh báo!'),_('Kiểm tra lại ngày hết hạn của giấy phép!'))
             
                     
@@ -171,6 +264,29 @@ class sale_order(osv.osv):
                             invoice_ids = [row[0] for row in cr.fetchall()]
                             if invoice_ids:
                                 if sale.partner_id.credit > sale.partner_id.credit_limit:
+                                    canh_bao_ids = canh_bao_obj.search(cr,uid,[('partner_id','=',sale.partner_id.id)])
+                                    name = 'Khách hàng %s vượt quá hạn mức tín dụng đối với sản phẩm %s %s ngày qui định!'%(sale.partner_id.name,product_obj.browse(cr,uid,sale_line['product_id']).name,list_ngay_no.so_ngay)
+                                    if canh_bao_ids:
+                                        sql = '''
+                                            insert into sale_canh_bao_line (id,create_uid,create_date,write_uid,write_date,sale_id,canh_bao,canh_bao_id,ngay) \
+                                            values (nextval('sale_canh_bao_line_id_seq'),%s,'%s',%s,'%s',%s,'%s',%s,'%s');
+                                            commit;
+                                        '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.id,name,canh_bao_ids[0],datetime.datetime.now())
+                                        cr.execute(sql)
+                                    else:
+                                        sql = '''
+                                            insert into sale_canh_bao (id,create_uid,create_date,write_uid,write_date,partner_id) \
+                                            values (nextval('sale_canh_bao_id_seq'),%s,'%s',%s,'%s',%s);
+                                            commit;
+                                        '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.partner_id.id)
+                                        cr.execute(sql)
+                                        canh_bao_new_ids = canh_bao_obj.search(cr,uid,[('partner_id','=',sale.partner_id.id)])
+                                        sql = '''
+                                            insert into sale_canh_bao_line (id,create_uid,create_date,write_uid,write_date,sale_id,canh_bao,canh_bao_id,ngay) \
+                                            values (nextval('sale_canh_bao_line_id_seq'),%s,'%s',%s,'%s',%s,'%s',%s,'%s');
+                                            commit;
+                                        '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.id,name,canh_bao_new_ids[0],datetime.datetime.now())
+                                        cr.execute(sql)
                                     raise osv.except_osv(_('Cảnh báo!'),_('Khách hàng %s vượt quá hạn mức tín dụng đối với sản phẩm %s %s ngày qui định!')%(sale.partner_id.name,product_obj.browse(cr,uid,sale_line['product_id']).name,list_ngay_no.so_ngay))
                 sql = '''
                     select product_uom, sum(product_uom_qty) as product_uom_qty from sale_order_line where product_id = %s and order_id=%s group by product_uom 
@@ -194,14 +310,106 @@ class sale_order(osv.osv):
                         if sale_rule.operator=='>=':
                             if uom_qty < sale_rule.value:
                                 if sale_rule.message:
+                                    canh_bao_ids = canh_bao_obj.search(cr,uid,[('partner_id','=',sale.partner_id.id)])
+                                    name = sale_rule.message
+                                    if canh_bao_ids:
+                                        sql = '''
+                                            insert into sale_canh_bao_line (id,create_uid,create_date,write_uid,write_date,sale_id,canh_bao,canh_bao_id,ngay) \
+                                            values (nextval('sale_canh_bao_line_id_seq'),%s,'%s',%s,'%s',%s,'%s',%s,'%s');
+                                            commit;
+                                        '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.id,name,canh_bao_ids[0],datetime.datetime.now())
+                                        cr.execute(sql)
+                                    else:
+                                        sql = '''
+                                            insert into sale_canh_bao (id,create_uid,create_date,write_uid,write_date,partner_id) \
+                                            values (nextval('sale_canh_bao_id_seq'),%s,'%s',%s,'%s',%s);
+                                            commit;
+                                        '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.partner_id.id)
+                                        cr.execute(sql)
+                                        canh_bao_new_ids = canh_bao_obj.search(cr,uid,[('partner_id','=',sale.partner_id.id)])
+                                        sql = '''
+                                            insert into sale_canh_bao_line (id,create_uid,create_date,write_uid,write_date,sale_id,canh_bao,canh_bao_id,ngay) \
+                                            values (nextval('sale_canh_bao_line_id_seq'),%s,'%s',%s,'%s',%s,'%s',%s,'%s');
+                                            commit;
+                                        '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.id,name,canh_bao_new_ids[0],datetime.datetime.now())
+                                        cr.execute(sql)
                                     raise osv.except_osv(_('Warning!'),_(sale_rule.message))
                                 else:
+                                    canh_bao_ids = canh_bao_obj.search(cr,uid,[('partner_id','=',sale.partner_id.id)])
+                                    name = 'Không thể duyệt sản phẩm với số lượng bé hơn số lượng tối thiểu: %s!'%(sale_rule.value)
+                                    if canh_bao_ids:
+                                        sql = '''
+                                            insert into sale_canh_bao_line (id,create_uid,create_date,write_uid,write_date,sale_id,canh_bao,canh_bao_id,ngay) \
+                                            values (nextval('sale_canh_bao_line_id_seq'),%s,'%s',%s,'%s',%s,'%s',%s,'%s');
+                                            commit;
+                                        '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.id,name,canh_bao_ids[0],datetime.datetime.now())
+                                        cr.execute(sql)
+                                    else:
+                                        sql = '''
+                                            insert into sale_canh_bao (id,create_uid,create_date,write_uid,write_date,partner_id) \
+                                            values (nextval('sale_canh_bao_id_seq'),%s,'%s',%s,'%s',%s);
+                                            commit;
+                                        '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.partner_id.id)
+                                        cr.execute(sql)
+                                        canh_bao_new_ids = canh_bao_obj.search(cr,uid,[('partner_id','=',sale.partner_id.id)])
+                                        sql = '''
+                                            insert into sale_canh_bao_line (id,create_uid,create_date,write_uid,write_date,sale_id,canh_bao,canh_bao_id,ngay) \
+                                            values (nextval('sale_canh_bao_line_id_seq'),%s,'%s',%s,'%s',%s,'%s',%s,'%s');
+                                            commit;
+                                        '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.id,name,canh_bao_new_ids[0],datetime.datetime.now())
+                                        cr.execute(sql)
                                     raise osv.except_osv(_('Warning!'),_('Không thể duyệt sản phẩm với số lượng bé hơn số lượng tối thiểu: %s!')%(sale_rule.value))
                         if sale_rule.operator=='<=':
                             if uom_qty > sale_rule.value:
                                 if sale_rule.message:
+                                    canh_bao_ids = canh_bao_obj.search(cr,uid,[('partner_id','=',sale.partner_id.id)])
+                                    name = sale_rule.message
+                                    if canh_bao_ids:
+                                        sql = '''
+                                            insert into sale_canh_bao_line (id,create_uid,create_date,write_uid,write_date,sale_id,canh_bao,canh_bao_id,ngay) \
+                                            values (nextval('sale_canh_bao_line_id_seq'),%s,'%s',%s,'%s',%s,'%s',%s,'%s');
+                                            commit;
+                                        '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.id,name,canh_bao_ids[0],datetime.datetime.now())
+                                        cr.execute(sql)
+                                    else:
+                                        sql = '''
+                                            insert into sale_canh_bao (id,create_uid,create_date,write_uid,write_date,partner_id) \
+                                            values (nextval('sale_canh_bao_id_seq'),%s,'%s',%s,'%s',%s);
+                                            commit;
+                                        '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.partner_id.id)
+                                        cr.execute(sql)
+                                        canh_bao_new_ids = canh_bao_obj.search(cr,uid,[('partner_id','=',sale.partner_id.id)])
+                                        sql = '''
+                                            insert into sale_canh_bao_line (id,create_uid,create_date,write_uid,write_date,sale_id,canh_bao,canh_bao_id,ngay) \
+                                            values (nextval('sale_canh_bao_line_id_seq'),%s,'%s',%s,'%s',%s,'%s',%s,'%s');
+                                            commit;
+                                        '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.id,name,canh_bao_new_ids[0],datetime.datetime.now())
+                                        cr.execute(sql)
                                     raise osv.except_osv(_('Warning!'),_(sale_rule.message))
                                 else:
+                                    canh_bao_ids = canh_bao_obj.search(cr,uid,[('partner_id','=',sale.partner_id.id)])
+                                    name = 'Không thể duyệt sản phẩm với số lượng lớn hơn số lượng tối đa: %s!'%(sale_rule.value)
+                                    if canh_bao_ids:
+                                        sql = '''
+                                            insert into sale_canh_bao_line (id,create_uid,create_date,write_uid,write_date,sale_id,canh_bao,canh_bao_id,ngay) \
+                                            values (nextval('sale_canh_bao_line_id_seq'),%s,'%s',%s,'%s',%s,'%s',%s,'%s');
+                                            commit;
+                                        '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.id,name,canh_bao_ids[0],datetime.datetime.now())
+                                        cr.execute(sql)
+                                    else:
+                                        sql = '''
+                                            insert into sale_canh_bao (id,create_uid,create_date,write_uid,write_date,partner_id) \
+                                            values (nextval('sale_canh_bao_id_seq'),%s,'%s',%s,'%s',%s);
+                                            commit;
+                                        '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.partner_id.id)
+                                        cr.execute(sql)
+                                        canh_bao_new_ids = canh_bao_obj.search(cr,uid,[('partner_id','=',sale.partner_id.id)])
+                                        sql = '''
+                                            insert into sale_canh_bao_line (id,create_uid,create_date,write_uid,write_date,sale_id,canh_bao,canh_bao_id,ngay) \
+                                            values (nextval('sale_canh_bao_line_id_seq'),%s,'%s',%s,'%s',%s,'%s',%s,'%s');
+                                            commit;
+                                        '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.id,name,canh_bao_new_ids[0],datetime.datetime.now())
+                                        cr.execute(sql)
                                     raise osv.except_osv(_('Warning!'),_('Không thể duyệt sản phẩm với số lượng lớn hơn số lượng tối đa: %s!')%(sale_rule.value))
                     if sale_rule.condition=='value':
                         sale_line_ids = sale_line_obj.search(cr, uid, [('order_id','=',sale.id),('product_id','=',sale_line['product_id'])])
@@ -209,14 +417,106 @@ class sale_order(osv.osv):
                         if sale_rule.operator=='>=':
                             if price < sale_rule.value:
                                 if sale_rule.message:
+                                    canh_bao_ids = canh_bao_obj.search(cr,uid,[('partner_id','=',sale.partner_id.id)])
+                                    name = sale_rule.message
+                                    if canh_bao_ids:
+                                        sql = '''
+                                            insert into sale_canh_bao_line (id,create_uid,create_date,write_uid,write_date,sale_id,canh_bao,canh_bao_id,ngay) \
+                                            values (nextval('sale_canh_bao_line_id_seq'),%s,'%s',%s,'%s',%s,'%s',%s,'%s');
+                                            commit;
+                                        '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.id,name,canh_bao_ids[0],datetime.datetime.now())
+                                        cr.execute(sql)
+                                    else:
+                                        sql = '''
+                                            insert into sale_canh_bao (id,create_uid,create_date,write_uid,write_date,partner_id) \
+                                            values (nextval('sale_canh_bao_id_seq'),%s,'%s',%s,'%s',%s);
+                                            commit;
+                                        '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.partner_id.id)
+                                        cr.execute(sql)
+                                        canh_bao_new_ids = canh_bao_obj.search(cr,uid,[('partner_id','=',sale.partner_id.id)])
+                                        sql = '''
+                                            insert into sale_canh_bao_line (id,create_uid,create_date,write_uid,write_date,sale_id,canh_bao,canh_bao_id,ngay) \
+                                            values (nextval('sale_canh_bao_line_id_seq'),%s,'%s',%s,'%s',%s,'%s',%s,'%s');
+                                            commit;
+                                        '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.id,name,canh_bao_new_ids[0],datetime.datetime.now())
+                                        cr.execute(sql)
                                     raise osv.except_osv(_('Warning!'),_(sale_rule.message))
                                 else:
+                                    canh_bao_ids = canh_bao_obj.search(cr,uid,[('partner_id','=',sale.partner_id.id)])
+                                    name = 'Không thể duyệt sản phẩm với số lượng bé hơn giá trị tối thiểu: %s!'%(sale_rule.value)
+                                    if canh_bao_ids:
+                                        sql = '''
+                                            insert into sale_canh_bao_line (id,create_uid,create_date,write_uid,write_date,sale_id,canh_bao,canh_bao_id,ngay) \
+                                            values (nextval('sale_canh_bao_line_id_seq'),%s,'%s',%s,'%s',%s,'%s',%s,'%s');
+                                            commit;
+                                        '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.id,name,canh_bao_ids[0],datetime.datetime.now())
+                                        cr.execute(sql)
+                                    else:
+                                        sql = '''
+                                            insert into sale_canh_bao (id,create_uid,create_date,write_uid,write_date,partner_id) \
+                                            values (nextval('sale_canh_bao_id_seq'),%s,'%s',%s,'%s',%s);
+                                            commit;
+                                        '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.partner_id.id)
+                                        cr.execute(sql)
+                                        canh_bao_new_ids = canh_bao_obj.search(cr,uid,[('partner_id','=',sale.partner_id.id)])
+                                        sql = '''
+                                            insert into sale_canh_bao_line (id,create_uid,create_date,write_uid,write_date,sale_id,canh_bao,canh_bao_id,ngay) \
+                                            values (nextval('sale_canh_bao_line_id_seq'),%s,'%s',%s,'%s',%s,'%s',%s,'%s');
+                                            commit;
+                                        '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.id,name,canh_bao_new_ids[0],datetime.datetime.now())
+                                        cr.execute(sql)
                                     raise osv.except_osv(_('Warning!'),_('Không thể duyệt sản phẩm với số lượng bé hơn giá trị tối thiểu: %s!')%(sale_rule.value))
                         if sale_rule.operator=='<=':
                             if price > sale_rule.value:
                                 if sale_rule.message:
+                                    canh_bao_ids = canh_bao_obj.search(cr,uid,[('partner_id','=',sale.partner_id.id)])
+                                    name = sale_rule.message
+                                    if canh_bao_ids:
+                                        sql = '''
+                                            insert into sale_canh_bao_line (id,create_uid,create_date,write_uid,write_date,sale_id,canh_bao,canh_bao_id,ngay) \
+                                            values (nextval('sale_canh_bao_line_id_seq'),%s,'%s',%s,'%s',%s,'%s',%s,'%s');
+                                            commit;
+                                        '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.id,name,canh_bao_ids[0],datetime.datetime.now())
+                                        cr.execute(sql)
+                                    else:
+                                        sql = '''
+                                            insert into sale_canh_bao (id,create_uid,create_date,write_uid,write_date,partner_id) \
+                                            values (nextval('sale_canh_bao_id_seq'),%s,'%s',%s,'%s',%s);
+                                            commit;
+                                        '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.partner_id.id)
+                                        cr.execute(sql)
+                                        canh_bao_new_ids = canh_bao_obj.search(cr,uid,[('partner_id','=',sale.partner_id.id)])
+                                        sql = '''
+                                            insert into sale_canh_bao_line (id,create_uid,create_date,write_uid,write_date,sale_id,canh_bao,canh_bao_id,ngay) \
+                                            values (nextval('sale_canh_bao_line_id_seq'),%s,'%s',%s,'%s',%s,'%s',%s,'%s');
+                                            commit;
+                                        '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.id,name,canh_bao_new_ids[0],datetime.datetime.now())
+                                        cr.execute(sql)
                                     raise osv.except_osv(_('Warning!'),_(sale_rule.message))
                                 else:
+                                    canh_bao_ids = canh_bao_obj.search(cr,uid,[('partner_id','=',sale.partner_id.id)])
+                                    name = 'Không thể duyệt sản phẩm với số lượng lớn hơn giá trị tối đa: %s!'%(sale_rule.value)
+                                    if canh_bao_ids:
+                                        sql = '''
+                                            insert into sale_canh_bao_line (id,create_uid,create_date,write_uid,write_date,sale_id,canh_bao,canh_bao_id,ngay) \
+                                            values (nextval('sale_canh_bao_line_id_seq'),%s,'%s',%s,'%s',%s,'%s',%s,'%s');
+                                            commit;
+                                        '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.id,name,canh_bao_ids[0],datetime.datetime.now())
+                                        cr.execute(sql)
+                                    else:
+                                        sql = '''
+                                            insert into sale_canh_bao (id,create_uid,create_date,write_uid,write_date,partner_id) \
+                                            values (nextval('sale_canh_bao_id_seq'),%s,'%s',%s,'%s',%s);
+                                            commit;
+                                        '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.partner_id.id)
+                                        cr.execute(sql)
+                                        canh_bao_new_ids = canh_bao_obj.search(cr,uid,[('partner_id','=',sale.partner_id.id)])
+                                        sql = '''
+                                            insert into sale_canh_bao_line (id,create_uid,create_date,write_uid,write_date,sale_id,canh_bao,canh_bao_id,ngay) \
+                                            values (nextval('sale_canh_bao_line_id_seq'),%s,'%s',%s,'%s',%s,'%s',%s,'%s');
+                                            commit;
+                                        '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.id,name,canh_bao_new_ids[0],datetime.datetime.now())
+                                        cr.execute(sql)
                                     raise osv.except_osv(_('Warning!'),_('Không thể duyệt sản phẩm với số lượng lớn hơn giá trị tối đa: %s!')%(sale_rule.value))
             #Kiem tra so luong, don gia so voi hop dong thau
             if sale.hop_dong_t_id:
@@ -244,9 +544,55 @@ class sale_order(osv.osv):
                             price_unit = price_unit*(1+tax_amount)
                         value_price = hd_line.price_unit - price_unit
                         if abs(value_price) > 10:
+                            canh_bao_ids = canh_bao_obj.search(cr,uid,[('partner_id','=',sale.partner_id.id)])
+                            name = 'Không thể duyệt sản phẩm với đơn giá khác đơn giá trong hợp đồng thầu: %s!'%(hd_line.price_unit)
+                            if canh_bao_ids:
+                                sql = '''
+                                    insert into sale_canh_bao_line (id,create_uid,create_date,write_uid,write_date,sale_id,canh_bao,canh_bao_id,ngay) \
+                                    values (nextval('sale_canh_bao_line_id_seq'),%s,'%s',%s,'%s',%s,'%s',%s,'%s');
+                                    commit;
+                                '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.id,name,canh_bao_ids[0],datetime.datetime.now())
+                                cr.execute(sql)
+                            else:
+                                sql = '''
+                                    insert into sale_canh_bao (id,create_uid,create_date,write_uid,write_date,partner_id) \
+                                    values (nextval('sale_canh_bao_id_seq'),%s,'%s',%s,'%s',%s);
+                                    commit;
+                                '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.partner_id.id)
+                                cr.execute(sql)
+                                canh_bao_new_ids = canh_bao_obj.search(cr,uid,[('partner_id','=',sale.partner_id.id)])
+                                sql = '''
+                                    insert into sale_canh_bao_line (id,create_uid,create_date,write_uid,write_date,sale_id,canh_bao,canh_bao_id,ngay) \
+                                    values (nextval('sale_canh_bao_line_id_seq'),%s,'%s',%s,'%s',%s,'%s',%s,'%s');
+                                    commit;
+                                '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.id,name,canh_bao_new_ids[0],datetime.datetime.now())
+                                cr.execute(sql)
                             raise osv.except_osv(_('Warning!'),_('Không thể duyệt sản phẩm với đơn giá khác đơn giá trong hợp đồng thầu: %s!')%(hd_line.price_unit))
                         for line_qty in lines_qty:
                             if line_qty['total_qty'] + product_uom_qty > hd_line.product_qty:
+                                canh_bao_ids = canh_bao_obj.search(cr,uid,[('partner_id','=',sale.partner_id.id)])
+                                name = 'Không thể duyệt sản phẩm với số lượng lớn hơn số lượng trong hợp đồng thầu: %s!'%(hd_line.product_qty)
+                                if canh_bao_ids:
+                                    sql = '''
+                                        insert into sale_canh_bao_line (id,create_uid,create_date,write_uid,write_date,sale_id,canh_bao,canh_bao_id,ngay) \
+                                        values (nextval('sale_canh_bao_line_id_seq'),%s,'%s',%s,'%s',%s,'%s',%s,'%s');
+                                        commit;
+                                    '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.id,name,canh_bao_ids[0],datetime.datetime.now())
+                                    cr.execute(sql)
+                                else:
+                                    sql = '''
+                                        insert into sale_canh_bao (id,create_uid,create_date,write_uid,write_date,partner_id) \
+                                        values (nextval('sale_canh_bao_id_seq'),%s,'%s',%s,'%s',%s);
+                                        commit;
+                                    '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.partner_id.id)
+                                    cr.execute(sql)
+                                    canh_bao_new_ids = canh_bao_obj.search(cr,uid,[('partner_id','=',sale.partner_id.id)])
+                                    sql = '''
+                                        insert into sale_canh_bao_line (id,create_uid,create_date,write_uid,write_date,sale_id,canh_bao,canh_bao_id,ngay) \
+                                        values (nextval('sale_canh_bao_line_id_seq'),%s,'%s',%s,'%s',%s,'%s',%s,'%s');
+                                        commit;
+                                    '''%(1,datetime.datetime.now(),1,datetime.datetime.now(),sale.id,name,canh_bao_new_ids[0],datetime.datetime.now())
+                                    cr.execute(sql)
                                 raise osv.except_osv(_('Warning!'),_('Không thể duyệt sản phẩm với số lượng lớn hơn số lượng trong hợp đồng thầu: %s!')%(hd_line.product_qty))
                     
         wf_service = netsvc.LocalService('workflow')
@@ -830,4 +1176,22 @@ class target_sale_line(osv.osv):
                 }
     
 target_sale_line()
+
+class sale_canh_bao(osv.osv):
+    _name = "sale.canh.bao"
+    _columns = {
+                'partner_id': fields.many2one('res.partner', 'Khách hàng'),
+                'sale_canh_bao_line': fields.one2many('sale.canh.bao.line','canh_bao_id','Line'),
+                }
+sale_canh_bao()
+
+class sale_canh_bao_line(osv.osv):
+    _name = "sale.canh.bao.line"
+    _columns = {
+                'canh_bao_id': fields.many2one('sale.canh.bao', 'Cảnh báo bán hàng', ondelete='cascade'),
+                'sale_id': fields.many2one('sale.order', 'Đơn bán hàng'),
+                'canh_bao': fields.char('Cảnh báo',size = 1024),
+                'ngay': fields.datetime('Thời gian'),
+                }
+sale_canh_bao_line()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

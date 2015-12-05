@@ -72,6 +72,7 @@
                 	<field name="ly_do_xuat_id" attrs="{'invisible':[('type','!=','out')]}"/>
                 	<field name="yeu_cau" attrs="{'invisible':[('type','!=','out')]}"/>
                 	<field name="ghi_chu_xhd" attrs="{'invisible':[('type','!=','out')]}"/>
+                	<field name="trang_thai_hd" attrs="{'invisible':[('type','!=','out')]}" groups="stock.group_stock_manager"/>
                 	<field name="nhiet_do" attrs="{'invisible':[('type','!=','in')]}"/>
                 	<field name="so_luong_thung" attrs="{'invisible':[('type','!=','in')]}"/>
                 	<field name="time_nhan" attrs="{'invisible':[('type','!=','in')]}"/>

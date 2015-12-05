@@ -754,6 +754,56 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="target_sale_tree"/>
         </record>
+        
+        <record model='ir.ui.view' id='sale_canh_bao_tree'>
+            <field name="name">sale.canh.bao.tree</field>
+            <field name="model">sale.canh.bao</field>
+            <field name="arch" type="xml">
+                <tree string="Đơn hàng có cảnh báo" create = 'false' edit = 'false' delete = 'false'>
+                    <field name="partner_id"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record model='ir.ui.view' id='sale_canh_bao_form'>
+            <field name="name">sale.canh.bao.form</field>
+            <field name="model">sale.canh.bao</field>
+            <field name="arch" type="xml">
+                <form string="Đơn hàng có cảnh báo" version="7.0" create = 'false' edit = 'false' delete = 'false'>
+                	<group>
+                		<group>
+		                    <field name="partner_id" domain="[('customer','=',True)]"/>
+                   		</group>
+                   </group>
+                   <notebook>
+						<page string = "Chi tiết các đơn hàng">
+							<field name="sale_canh_bao_line" nolabel='1'>
+								<tree editable='bottom'>
+									<field name="sale_id"/>
+									<field name="ngay" />
+									<field name="canh_bao" />
+								</tree>
+							</field>
+						</page>
+					</notebook>
+                </form>
+            </field>
+        </record>
+      
+       	<record id="action_sale_canh_bao" model="ir.actions.act_window">
+            <field name="name">Đơn hàng có cảnh báo</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.canh.bao</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="sale_canh_bao_tree"/>
+        </record>
           
+        <menuitem id="menu_action_sale_canh_bao"
+    		action="action_sale_canh_bao"
+    		name="Cảnh báo của các đơn hàng"
+    		parent="base.menu_base_config"
+    		sequence="16"
+    		groups="base.group_sale_manager"/>  
     </data>
 </openerp>
