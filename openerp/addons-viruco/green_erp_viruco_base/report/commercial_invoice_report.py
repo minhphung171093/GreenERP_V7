@@ -28,6 +28,7 @@ class Parser(report_sxw.rml_parse):
         self.amount = 0
         self.pack = ''
         self.pack_weight = ''
+        self.context = context
         self.localcontext.update({
             'convert_date':self.convert_date,
             'display_address':self.display_address,
@@ -49,6 +50,7 @@ class Parser(report_sxw.rml_parse):
             'get_date_name': self.get_date_name,
             'get_prepaid': self.get_prepaid,
             'get_packing_list': self.get_packing_list,
+            'get_master_data': self.get_master_data,
         })
     
 #     def get_master_data(self):
@@ -212,53 +214,56 @@ class Parser(report_sxw.rml_parse):
 #         draft_bl_line_id = self.pool.get('draft.bl.line').browse(self.cr,self.uid,draft_bl_ids[0])
 #         return draft_bl_line_id
     
-    def get_product_line(self,o):
+    def get_product_line(self):
         res = []
-        for line in o.draft_bl_line:
-            if line.option and line.option == 'product':
-                net_weight = self.sum_net_weight(line)
-                gross_weight = self.sum_gross_weight(line)
-                package = self.sum_packages(line)
-                total = net_weight * (line.hopdong_line_id and line.hopdong_line_id.price_unit or 0)
-                self.gross_weight += gross_weight
-                self.net_weight += net_weight
-                self.package += package['sum']
-                self.amount += total
-                seal_no = ''
-                pack_weight = ''
-                for seal in line.seal_descript_line:
-                    seal_no = seal.container_no_seal and (seal.container_no_seal + '\n') or ''
-                    pack_weight = seal.packages_weight or ''
-                res.append({ 'product': line.hopdong_line_id and line.hopdong_line_id.product_id and line.hopdong_line_id.product_id.eng_name or '',
-                            'package': package['sum'],
-                            'net_weight': round(net_weight,2),
-                            'gross_weight': round(gross_weight,2),
-                            'price': line.hopdong_line_id and line.hopdong_line_id.price_unit or 0,
-                            'amount': total,
-                            'strpack': package['strline'],
-                            'seal_no': seal_no,
-                            'packages_name': package['name'],
-                            'pack_weight': self.get_packages_weight(pack_weight),
-                            })
-            elif line.option and line.option == 'seal_no':
-                for seal in line.description_line:
-                    total = (seal.net_weight or 0) * (seal.hopdong_line_id and seal.hopdong_line_id.price_unit or 0)
-                    self.gross_weight += seal.gross_weight or 0
-                    self.net_weight += seal.net_weight or 0
-                    self.package += seal.packages_qty or 0
+        draft_ids = self.context.get('active_ids')
+        for draft_id in draft_ids:
+            o = self.pool.get('draft.bl').browse(self.cr, self.uid, draft_id)
+            for line in o.draft_bl_line:
+                if line.option and line.option == 'product':
+                    net_weight = self.sum_net_weight(line)
+                    gross_weight = self.sum_gross_weight(line)
+                    package = self.sum_packages(line)
+                    total = net_weight * (line.hopdong_line_id and line.hopdong_line_id.price_unit or 0)
+                    self.gross_weight += gross_weight
+                    self.net_weight += net_weight
+                    self.package += package['sum']
                     self.amount += total
-                    
-                    res.append({ 'product': seal.hopdong_line_id and seal.hopdong_line_id.product_id and seal.hopdong_line_id.product_id.eng_name or '',
-                                'package': seal.packages_qty or 0,
-                                'strpack': str(seal.packages_qty and round(seal.packages_qty) or 0) +' '+ (seal.packages_id and seal.packages_id.name or ''),
-                                'net_weight': seal.net_weight and round(seal.net_weight,2) or 0,
-                                'gross_weight': seal.gross_weight and round(seal.gross_weight,2) or 0,
-                                'price': seal.hopdong_line_id and seal.hopdong_line_id.price_unit or 0,
+                    seal_no = ''
+                    pack_weight = ''
+                    for seal in line.seal_descript_line:
+                        seal_no = seal.container_no_seal and (seal.container_no_seal + '\n') or ''
+                        pack_weight = seal.packages_weight or ''
+                    res.append({ 'product': line.hopdong_line_id and line.hopdong_line_id.product_id and line.hopdong_line_id.product_id.eng_name or '',
+                                'package': package['sum'],
+                                'net_weight': round(net_weight,2),
+                                'gross_weight': round(gross_weight,2),
+                                'price': line.hopdong_line_id and line.hopdong_line_id.price_unit or 0,
                                 'amount': total,
-                                'seal_no': line.container_no_seal or '',
-                                'packages_name': seal.packages_id.name or '',
-                                'pack_weight': self.get_packages_weight(seal.packages_weight),
+                                'strpack': package['strline'],
+                                'seal_no': seal_no,
+                                'packages_name': package['name'],
+                                'pack_weight': self.get_packages_weight(pack_weight),
                                 })
+                elif line.option and line.option == 'seal_no':
+                    for seal in line.description_line:
+                        total = (seal.net_weight or 0) * (seal.hopdong_line_id and seal.hopdong_line_id.price_unit or 0)
+                        self.gross_weight += seal.gross_weight or 0
+                        self.net_weight += seal.net_weight or 0
+                        self.package += seal.packages_qty or 0
+                        self.amount += total
+                        
+                        res.append({ 'product': seal.hopdong_line_id and seal.hopdong_line_id.product_id and seal.hopdong_line_id.product_id.eng_name or '',
+                                    'package': seal.packages_qty or 0,
+                                    'strpack': str(seal.packages_qty and round(seal.packages_qty) or 0) +' '+ (seal.packages_id and seal.packages_id.name or ''),
+                                    'net_weight': seal.net_weight and round(seal.net_weight,2) or 0,
+                                    'gross_weight': seal.gross_weight and round(seal.gross_weight,2) or 0,
+                                    'price': seal.hopdong_line_id and seal.hopdong_line_id.price_unit or 0,
+                                    'amount': total,
+                                    'seal_no': line.container_no_seal or '',
+                                    'packages_name': seal.packages_id.name or '',
+                                    'pack_weight': self.get_packages_weight(seal.packages_weight),
+                                    })
         return res
     
     def get_sum_all(self):
@@ -285,54 +290,88 @@ class Parser(report_sxw.rml_parse):
             amount = amounts and amounts[0] or 0
         return amount
     
-    def get_packing_list(self,o):
+    def get_packing_list(self):
         res = []
-        for line in o.draft_bl_line:
-            if line.option and line.option == 'product':
-                res.append({ 'product': line.hopdong_line_id and line.hopdong_line_id.product_id and line.hopdong_line_id.product_id.eng_name or '',
-                            'package': '',
-                            'form': '',
-                            'net_weight': '',
-                            'gross_weight': '',
-                            })
-                res.append({ 'product': 'CONTAINER NO. / SEAL NO.',
-                            'package': '',
-                            'form': '',
-                            'net_weight': '',
-                            'gross_weight': '',
-                            })
-                for detail in line.seal_descript_line:
-                    res.append({ 'product': detail.container_no_seal or '',
-                            'package': detail.packages_qty and round(detail.packages_qty) or 0,
-                            'form': detail.packages_weight,
-                            'net_weight': detail.net_weight and round(detail.net_weight,2) or 0,
-                            'gross_weight': detail.gross_weight and round(detail.gross_weight,2) or 0,
-                            })
-                    self.pack = detail.packages_id.name or ''
-                    self.pack_weight = self.get_packages_weight(detail.packages_weight)
-            if line.option and line.option == 'seal_no':
-                res.append({ 'product': line.container_no_seal or '',
-                            'package': '',
-                            'form': '',
-                            'net_weight': '',
-                            'gross_weight': '',
-                            })
-                res.append({ 'product': 'Product',
-                            'package': '',
-                            'form': '',
-                            'net_weight': '',
-                            'gross_weight': '',
-                            })
-                for detail in line.description_line:
-                    res.append({ 'product': detail.hopdong_line_id and detail.hopdong_line_id.product_id and detail.hopdong_line_id.product_id.eng_name or '',
-                            'package': detail.packages_qty and round(detail.packages_qty) or 0,
-                            'form': detail.packages_weight,
-                            'net_weight': detail.net_weight and round(detail.net_weight,2) or 0,
-                            'gross_weight': detail.gross_weight and round(detail.gross_weight,2) or 0,
-                            })
-                    self.pack = detail.packages_id.name or ''
-                    self.pack_weight = self.get_packages_weight(detail.packages_weight)
+        draft_ids = self.context.get('active_ids')
+        for draft_id in draft_ids:
+            o = self.pool.get('draft.bl').browse(self.cr, self.uid, draft_id)
+            for line in o.draft_bl_line:
+                if line.option and line.option == 'product':
+                    res.append({ 'product': line.hopdong_line_id and line.hopdong_line_id.product_id and line.hopdong_line_id.product_id.eng_name or '',
+                                'package': '',
+                                'form': '',
+                                'net_weight': '',
+                                'gross_weight': '',
+                                })
+                    res.append({ 'product': 'CONTAINER NO. / SEAL NO.',
+                                'package': '',
+                                'form': '',
+                                'net_weight': '',
+                                'gross_weight': '',
+                                })
+                    for detail in line.seal_descript_line:
+                        res.append({ 'product': detail.container_no_seal or '',
+                                'package': detail.packages_qty and round(detail.packages_qty) or 0,
+                                'form': detail.packages_weight,
+                                'net_weight': detail.net_weight and round(detail.net_weight,2) or 0,
+                                'gross_weight': detail.gross_weight and round(detail.gross_weight,2) or 0,
+                                })
+                        self.pack = detail.packages_id.name or ''
+                        self.pack_weight = self.get_packages_weight(detail.packages_weight)
+                if line.option and line.option == 'seal_no':
+                    res.append({ 'product': line.container_no_seal or '',
+                                'package': '',
+                                'form': '',
+                                'net_weight': '',
+                                'gross_weight': '',
+                                })
+                    res.append({ 'product': 'Product',
+                                'package': '',
+                                'form': '',
+                                'net_weight': '',
+                                'gross_weight': '',
+                                })
+                    for detail in line.description_line:
+                        res.append({ 'product': detail.hopdong_line_id and detail.hopdong_line_id.product_id and detail.hopdong_line_id.product_id.eng_name or '',
+                                'package': detail.packages_qty and round(detail.packages_qty) or 0,
+                                'form': detail.packages_weight,
+                                'net_weight': detail.net_weight and round(detail.net_weight,2) or 0,
+                                'gross_weight': detail.gross_weight and round(detail.gross_weight,2) or 0,
+                                })
+                        self.pack = detail.packages_id.name or ''
+                        self.pack_weight = self.get_packages_weight(detail.packages_weight)
             
         return res
+    
+    def get_master_data(self):
+        ids = self.context.get('active_ids')
+        res = []
+        if ids:
+            o = self.pool.get('draft.bl').browse(self.cr, self.uid, ids[0])
+            res.append({'book': o.name or '',
+                        'contract': o.hopdong_id and o.hopdong_id.name or '',
+                        'date': self.get_date_name(o.date),
+                        'buyer':o.hopdong_id and o.hopdong_id.partner_id and o.hopdong_id.partner_id.name or '',
+                        'dc': o.hopdong_id and o.hopdong_id.partner_id and display_address(o.hopdong_id.partner_id) or '',
+                        'tel': o.hopdong_id and o.hopdong_id.partner_id and o.hopdong_id.partner_id.phone or '',
+                        'mean': o.mean_transport or '',
+                        'from':o.port_of_loading and o.port_of_loading.name or '',
+                        'to': o.diadiem_nhanhang and o.diadiem_nhanhang.name or '',
+                        'payment': o.hopdong_id and o.hopdong_id.dk_thanhtoan_id and o.hopdong_id.dk_thanhtoan_id.name or '',
+                        'bl_no': o.bl_no or '',
+                        'sum_pack':self.get_sum_all()['package'],
+                        'sum_net': self.get_sum_all()['net_weight'],
+                        'sum_gross': self.get_sum_all()['gross_weight'],
+                        'sum_amount': self.get_sum_all()['amount'],
+                        'prepaid': self.get_prepaid(o.hopdong_id.id),
+                        'consignee': self.get_consignee(o),
+                        'notify_party':o.notify_party_id and o.notify_party_id.name or '',
+                        'dc_notify': o.notify_party_id and display_address(o.notify_party_id) or '',
+                        'phone_notify': o.notify_party_id and o.notify_party_id.phone and 'TEL: ' + o.notify_party_id.phone or '',
+                        'ship_line': o.shipping_line_id and o.shipping_line_id.name or '',
+                        'ocean_vessel': self.get_ocean(o),
+                        'port_of_charge': o.port_of_charge and o.port_of_charge.name or '',
+                        })
+        return true
         
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
