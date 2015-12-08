@@ -61,6 +61,7 @@ class Parser(report_sxw.rml_parse):
         return date.strftime('%m/%Y')
     
     def get_price_unit(self, line):
+        val = 0
         if line.sale_line_id:
             val = line.sale_line_id and line.sale_line_id.price_unit or 0
         if line.purchase_line_id and line.picking_id.type == 'out':
@@ -77,7 +78,7 @@ class Parser(report_sxw.rml_parse):
     
     def convert_amount(self, amount):
         a = format(int(amount),',')
-        return a.replace(',',' ')
+        return a
     
     def get_tax(self, line):
         val = 0.0
