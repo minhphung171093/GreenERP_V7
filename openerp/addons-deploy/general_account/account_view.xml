@@ -152,6 +152,7 @@
                 </xpath>
                 <xpath expr="//field[@name='company_id']" position="after">
 	                <field name="unshow_financial_report"/>
+	                <field name="cost_history_id"/>
             	</xpath>
             
                 

@@ -36,6 +36,7 @@
                 <header>
                 	<button name="compute_cost" states="draft" string="Compute cost" type="object" groups="account.group_account_user" />
                 	<button name="post" string="Post" states="draft" type="object" groups="account.group_account_user" />
+                	<button name="bt_huy" string="Hủy" states="done" type="object" groups="account.group_account_user" />
                 	<field name="state" widget="statusbar" statusbar_visible="draft,done,cancel"/>
                 </header>
                 <sheet string="Cost History">

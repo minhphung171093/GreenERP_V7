@@ -320,7 +320,8 @@ class account_move(osv.osv):
         'account_model_id': fields.many2one('account.model', 'Model', states={'posted':[('readonly',True)]}),
         'shop_id': fields.many2one('sale.shop', 'Shop', states={'posted':[('readonly',True)]}),
         'invoice_date':fields.date('Invoice Date', states={'posted':[('readonly',True)]}),
-        'unshow_financial_report':fields.boolean('Không khai báo thuế')
+        'unshow_financial_report':fields.boolean('Không khai báo thuế'),
+        'cost_history_id':fields.many2one('average.cost.history', 'Cost History'),
     }
     
     def _get_shop_id(self, cr, uid, context=None):

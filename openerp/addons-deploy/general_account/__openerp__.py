@@ -9,7 +9,7 @@
     "version" : "6.1",
     "author" : "Le Truong Thanh <thanh.lt1689@gmail.com>",
     'category': 'General 70',
-    "depends" : ["account","purchase","general_base"],
+    "depends" : ["account","purchase","general_base","general_stock_account"],
     "init_xml" : [],
     "demo_xml" : [],
     "description": """

@@ -587,7 +587,7 @@ class stock_move(osv.osv):
         return [(0, 0, debit_line_vals), (0, 0, credit_line_vals)]
     
     
-    def _create_product_valuation_moves(self, cr, uid, move, context=None):
+    def _create_product_valuation_moves(self, cr, uid, move, cost_history_id, context=None):
         """
         Generate the appropriate accounting moves if the product being moves is subject
         to real_time valuation tracking, and the source or destination location is
@@ -625,14 +625,17 @@ class stock_move(osv.osv):
                 account_moves += [(journal_id, self._create_account_move_line(cr, uid, move, acc_src, acc_valuation, reference_amount, reference_currency_id, context))]
 
         move_obj = self.pool.get('account.move')
+        sale_shop_ids = self.pool.get('sale.shop').search(cr,uid,[('code', '=', '01')])
         for j_id, move_lines in account_moves:
             new_id = move_obj.create(cr, uid,
                     {
                      'date':move.date or False,
-                     'shop_id':move.picking_id and move.picking_id.shop_id and move.picking_id.shop_id.id or False,
+                     'shop_id':sale_shop_ids[0] or False,
                      'journal_id': j_id,
                      'line_id': move_lines,
-                     'ref': move.picking_id and move.picking_id.name}, context=context)
+                     'ref': move.picking_id and move.picking_id.name,
+                     'cost_history_id': cost_history_id,
+                     }, context=context)
             move_obj.post(cr, uid, [new_id], context)
                 
     

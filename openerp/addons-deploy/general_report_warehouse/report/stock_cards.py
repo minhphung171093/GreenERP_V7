@@ -307,7 +307,7 @@ class Parser(report_sxw.rml_parse):
                     qty = self.cr.fetchone()[0]
                     nhap=0
                     xuat=0
-                    if invoice.type=='in_invoice':
+                    if invoice.type in ('in_invoice','out_refund'):
                         nhap=qty
                         tongnhap+=qty
                     else:

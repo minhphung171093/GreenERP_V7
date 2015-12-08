@@ -32,6 +32,8 @@ class Parser(report_sxw.rml_parse):
             'get_tax': self.get_tax,
             'total_get_tax': self.total_get_tax,
             'total_get_thanhtien': self.total_get_thanhtien,
+            'get_price_unit': self.get_price_unit,
+            'get_thanh_tien': self.get_thanh_tien,
         })
 
     def get_date(self, date=False):
@@ -57,26 +59,53 @@ class Parser(report_sxw.rml_parse):
         date = datetime.strptime(date, DATETIME_FORMAT) + timedelta(hours=7)
         return date.strftime('%m/%Y')
     
+    def get_price_unit(self, line):
+        if line.sale_line_id:
+            val = line.sale_line_id and line.sale_line_id.price_unit or 0
+        if line.purchase_line_id and line.picking_id.type == 'out':
+            val = line.purchase_line_id and line.purchase_line_id.price_unit or 0
+        return val
+    
+    def get_thanh_tien(self, line):
+        val = 0.0
+        if line.sale_line_id:
+            val = line.product_qty*line.sale_line_id.price_unit
+        if line.purchase_line_id and line.picking_id.type == 'out':
+            val = line.product_qty*line.purchase_line_id.price_unit
+        return val
+    
     def get_tax(self, line):
         val = 0.0
-        for c in self.pool.get('account.tax').compute_all(self.cr, self.uid, line.sale_line_id.tax_id, line.sale_line_id.price_unit * (1-(line.sale_line_id.discount or 0.0)/100.0), line.product_qty, line.product_id.id, line.picking_id.partner_id.id)['taxes']:
-            val += c.get('amount', 0.0)
+        if line.sale_line_id:
+            for c in self.pool.get('account.tax').compute_all(self.cr, self.uid, line.sale_line_id.tax_id, line.sale_line_id.price_unit * (1-(line.sale_line_id.discount or 0.0)/100.0), line.product_qty, line.product_id.id, line.picking_id.partner_id.id)['taxes']:
+                val += c.get('amount', 0.0)
+        if line.purchase_line_id and line.picking_id.type == 'out':
+            for c in self.pool.get('account.tax').compute_all(self.cr, self.uid, line.purchase_line_id.taxes_id, line.purchase_line_id.price_unit, line.product_qty, line.purchase_line_id.product_id, line.purchase_line_id.order_id.partner_id)['taxes']:
+                val += c.get('amount', 0.0)
         return val
     
     def total_get_tax(self, move_lines):
         total = 0.0
         for line in move_lines:
             val = 0.0
-            for c in self.pool.get('account.tax').compute_all(self.cr, self.uid, line.sale_line_id.tax_id, line.sale_line_id.price_unit * (1-(line.sale_line_id.discount or 0.0)/100.0), line.product_qty, line.product_id.id, line.picking_id.partner_id.id)['taxes']:
-                val += c.get('amount', 0.0)
+            if line.sale_line_id:
+                for c in self.pool.get('account.tax').compute_all(self.cr, self.uid, line.sale_line_id.tax_id, line.sale_line_id.price_unit * (1-(line.sale_line_id.discount or 0.0)/100.0), line.product_qty, line.product_id.id, line.picking_id.partner_id.id)['taxes']:
+                    val += c.get('amount', 0.0)
+            if line.purchase_line_id and line.picking_id.type == 'out':
+                for c in self.pool.get('account.tax').compute_all(self.cr, self.uid, line.purchase_line_id.taxes_id, line.purchase_line_id.price_unit, line.product_qty, line.purchase_line_id.product_id, line.purchase_line_id.order_id.partner_id)['taxes']:
+                    val += c.get('amount', 0.0)
             total += val
         return total
     
     def total_get_thanhtien(self, move_lines):
         total = 0.0
         for line in move_lines:
-            val = line.product_qty*line.sale_price
-            total += val
+            if line.sale_line_id:
+                val = line.product_qty*line.sale_price
+                total += val
+            if line.purchase_line_id and line.picking_id.type == 'out':
+                val = line.product_qty*line.purchase_price
+                total += val
         return total
         
     def get_partner_address(self, order):

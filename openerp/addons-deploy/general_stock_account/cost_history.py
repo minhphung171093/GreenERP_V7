@@ -79,6 +79,25 @@ class average_cost_history(osv.osv):
         self.write(cr,uid,ids,{'state':'done'})
         return True
     
+    def bt_huy(self, cr, uid, ids, context=None):
+        line = self.browse(cr,uid,ids[0])
+        sql = '''
+            select id from account_move where cost_history_id = %s
+        '''%(line.id)
+        cr.execute(sql)
+        huy_ids = [r[0] for r in cr.fetchall()]
+        self.pool.get('account.move').button_cancel(cr,uid,huy_ids)
+        sql = '''
+            delete from account_move_line where move_id in (select id from account_move where cost_history_id = %s)
+        '''%(line.id)
+        cr.execute(sql)
+        
+        sql = '''
+            delete from account_move where cost_history_id = %s
+        '''%(line.id)
+        cr.execute(sql)
+        return self.write(cr,uid,ids,{'state':'cancel'})
+    
 average_cost_history()
 
 class average_cost_detail_history(osv.osv):
@@ -90,7 +109,7 @@ class average_cost_detail_history(osv.osv):
         for detail_history in self.browse(cr,uid,ids):
             for move in detail_history.move_ids:
                 if move.stock_journal_id and move.stock_journal_id and move.stock_journal_id.source_type !='in':
-                    move_obj._create_product_valuation_moves(cr, uid, move, context=context)
+                    move_obj._create_product_valuation_moves(cr, uid, move, detail_history.cost_history_id.id, context=context)
 #             if move.stock_journal_id and move.stock_journal_id and move.stock_journal_id.source_type =='phys_adj':
 #                 context.update({'internal':'internal'})
         return True
