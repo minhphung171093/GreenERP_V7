@@ -49,4 +49,32 @@ class sale_order(osv.osv):
 		'nam_order': fields.function(_get_nam,type='char', string='Năm',store=True),
     }
 sale_order()
+
+class account_report_general_ledger(osv.osv_memory):
+    _inherit = "account.report.general.ledger"
+
+    _defaults = {
+        'target_move': 'all',
+    }
+    
+account_report_general_ledger()
+
+class account_balance_report(osv.osv_memory):
+    _inherit = "account.balance.report"
+
+    _defaults = {
+        'target_move': 'all',
+    }
+    
+account_balance_report()
+
+class accounting_report(osv.osv_memory):
+    _inherit = "accounting.report"
+
+    _defaults = {
+        'target_move': 'all',
+    }
+    
+accounting_report()
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
