@@ -7,6 +7,7 @@
     		name="Tổng hợp báo cáo mua hàng"
     		parent="phucthien_purchase_report"
     		sequence="2"/>
+    		
     </data>
     
 </openerp>

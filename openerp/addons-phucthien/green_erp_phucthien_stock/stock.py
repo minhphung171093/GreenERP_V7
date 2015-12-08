@@ -1693,7 +1693,9 @@ class dutru_hanghoa(osv.osv):
                             'uom_id':product.uom_id and product.uom_id.id or False,
                             'sl_trungbinh':move['sl_ban_trongtuan'],
                             'sl_tonkho':ton_sl,
-                            'sl_dutru': (move['sl_ban_trongtuan']-ton_sl) + ((move['sl_ban_trongtuan']-ton_sl)*(tile_dutru or 0)/100)
+                            'sl_dutru':round((move['sl_ban_trongtuan']-ton_sl) + ((move['sl_ban_trongtuan']-ton_sl)*(tile_dutru or 0)/100)),
+                            'price_unit':product.standard_price,
+                            'thanh_tien':round((move['sl_ban_trongtuan']-ton_sl) + ((move['sl_ban_trongtuan']-ton_sl)*(tile_dutru or 0)/100))*product.standard_price, 
                             }
                     dutru_hanghoa_line.append((0,0,rs))
         return {'value': {'dutru_hanghoa_line':dutru_hanghoa_line}   }
@@ -1712,8 +1714,10 @@ class dutru_hanghoa_line(osv.osv):
         'uom_id': fields.many2one('product.uom', 'ĐƠN VỊ TÍNH'),
         'sl_trungbinh': fields.float('SỐ LƯỢNG TRUNG BÌNH BÁN RA/TUẦN'),
         'sl_tonkho': fields.float('SỐ LƯỢNG TỒN KHO'),
-        'sl_dutru': fields.float('SỐ LƯỢNG DỰ TRÙ'),
+        'sl_dutru': fields.float('SỐ LƯỢNG DỰ TRÙ', digits=(16,0)),
         'ngay_dexuat': fields.date('ĐỀ XUẤT NGÀY NHẬP HÀNG'),
+        'price_unit': fields.float('GIÁ'),
+        'thanh_tien': fields.float('THÀNH TIỀN'),
         'ghi_chu': fields.char('GHI CHÚ'),
     }
     

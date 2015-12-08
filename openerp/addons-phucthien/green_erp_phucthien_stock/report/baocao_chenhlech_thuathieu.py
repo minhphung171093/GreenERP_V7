@@ -54,10 +54,10 @@ class Parser(report_sxw.rml_parse):
             sl_thieu = 0
             tt_thieu = 0 
         
-        if sl_thua !=0 and sl_thieu != 0:
-            return 'khac_khong'
-        else:
+        if sl_thua == 0 and sl_thieu == 0:
             return 'bang_khong'
+        else:
+            return 'khac_khong'
         
 
     def get_thua_thieu(self,hethong,thucte,dongia):

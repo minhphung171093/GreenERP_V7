@@ -985,6 +985,8 @@
 										<field name="sl_trungbinh" /> 
 										<field name="sl_tonkho" /> 
 										<field name="sl_dutru" /> 
+										<field name="price_unit" /> 
+										<field name="thanh_tien" /> 
 										<field name="ngay_dexuat" /> 
 										<field name="ghi_chu" /> 
 									</tree>
@@ -1004,6 +1006,36 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="dutru_hanghoa_tree_view"/>
         </record>
+        
+        <record id="action_dutru_hanghoa_purchase" model="ir.actions.act_window">
+            <field name="name">Dự trù hàng hóa</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dutru.hanghoa</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('state','=','duyet')]</field>
+            <field name="view_id" ref="dutru_hanghoa_tree_view"/>
+        </record>
+        
+        <record id="action_dutru_hanghoa_purchase1" model="ir.actions.act_window.view">
+            <field eval="0" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="dutru_hanghoa_tree_view"/>
+            <field name="act_window_id" ref="action_dutru_hanghoa_purchase"/>
+        </record>
+        
+        <record id="action_dutru_hanghoa_purchase2" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="dutru_hanghoa_form_view"/>
+            <field name="act_window_id" ref="action_dutru_hanghoa_purchase"/>
+        </record>
+        
+        <menuitem id="menu_action_dutru_hanghoa_purchase"
+    		action="action_dutru_hanghoa_purchase"
+    		name="Dự trù hàng hóa"
+    		parent="purchase.menu_procurement_management_product"
+    		sequence="10"/>
         
         <record id="trahang_chokho_tree_view" model="ir.ui.view">
 			<field name="name">trahang.chokho.tree</field>

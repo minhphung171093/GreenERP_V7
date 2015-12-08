@@ -225,7 +225,8 @@ class sale_order(osv.osv):
         return {
             'name': pick_name,
             'origin': order.name,
-            'date': order.date_order+' '+time_now,#self.date_to_datetime(cr, uid, order.date_order, context),
+#             'date': order.date_order+' '+time_now,#self.date_to_datetime(cr, uid, order.date_order, context),
+            'date': datetime.now(),
             'type': 'out',
             'state': 'auto',
             'move_type': order.picking_policy,
