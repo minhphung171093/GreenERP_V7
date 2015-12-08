@@ -2201,7 +2201,9 @@ class stock_picking_out(osv.osv):
                if line.sale_line_id:
                    price = line.sale_line_id.price_unit * (1 - (line.sale_line_id.discount or 0.0) / 100.0)
                    taxes = line.sale_line_id.tax_id
-                   
+               if line.purchase_line_id and line.type == 'out':
+                   price = line.purchase_line_id.price_unit
+                   taxes = line.purchase_line_id.taxes_id
                for c in account_tax_obj.compute_all(cr, uid, taxes, price, line.product_qty, product=line.product_id, partner=line.picking_id.partner_id or False)['taxes']:
                     val += c.get('amount', 0.0)
             
