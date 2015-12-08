@@ -133,6 +133,20 @@ class draft_bl_line(osv.osv):
                         + (record['product_id'] and record['product_id'][1] or '')
             res.append((record['id'], name))
         return res
+
+    def onchange_container_no(self, cr, uid, ids,container_no_seal=False,context=None):
+        vals = {}
+        warning = {}
+        if container_no_seal:
+            a = container_no_seal.split('/')
+            if len(a)==2 and len(a[0])!=11:
+                vals.update({'container_no_seal': ''})
+                warning = {
+                    'title': _('Cảnh báo!'),
+                    'message' : _('Container No hiện đang chưa đúng (cần có đủ 7 ký tự số) !')
+                }
+                        
+        return {'warning': warning,'value':vals}
     
 draft_bl_line()
 
@@ -153,6 +167,28 @@ class description_line(osv.osv):
         'gross_weight':fields.float('Gross Weight'),
         'hopdong_line_id': fields.many2one('hopdong.line', 'Product', ondelete='cascade', select=True),
     }
+
+#     def create(self, cr, uid, vals, context=None):
+# #         new_id = super(draft_bl, self).create(cr, uid, vals, context)
+#         hopdong_obj = self.pool.get('hop.dong')
+#         if 'container_no_seal' in vals:
+#             a = vals['container_no_seal'].split('/')
+#             if len(a)==2 and len(a[0])==11:
+#                 raise osv.except_osv(_('Cảnh báo!'), _('Số Container hiện chưa đúng!'))
+#         return super(description_line, self).create(cr, uid, vals, context)    
+
+    def onchange_container(self, cr, uid, ids,container_no_seal=False,context=None):
+        vals = {}
+        warning = {}
+        if container_no_seal:
+            a = container_no_seal.split('/')
+            if len(a)==2 and len(a[0])!=11:
+                warning = {
+                    'title': _('Cảnh báo!'),
+                    'message' : _('Container No hiện đang chưa đúng (cần có đủ 7 ký tự số) !')
+                }
+                        
+        return {'warning': warning}
     
 description_line()
 

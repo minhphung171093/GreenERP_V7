@@ -91,7 +91,7 @@
 										<group col='4' colspan='2'>
 					                    	<field name="ocean_vessel" />
 					                    	<field name="hopdong_line_id" domain="[('hopdong_id','=',parent.hopdong_id)]" attrs="{'invisible':[('option','in',['seal_no',False])]}"/>
-					                    	<field name="container_no_seal" attrs="{'invisible':[('option','in',['product',False])]}"/>
+					                    	<field name="container_no_seal" on_change = "onchange_container_no(container_no_seal)"  attrs="{'invisible':[('option','in',['product',False])]}"/>
 					                    	<!--<field name="picking_id" context="{'search_picking_out':1, 'hopdong_id':parent.hopdong_id}"/>-->
 		                                    <field name="etd_date"/>
 		                                    <field name="eta_date"/>
@@ -103,7 +103,7 @@
 											<page string="Description of Goods" attrs="{'invisible':[('option','in',['seal_no',False])]}">
 												<field name="seal_descript_line">
 													<tree editable = 'bottom'>
-					                                    <field name="container_no_seal" />
+					                                    <field name="container_no_seal" on_change = "onchange_container(container_no_seal)" />
 					                                    <field name="packages_qty" string = 'Number of Packages'/>
 					                                    <field name="packages_id" string = 'Kind of Packages' />
 					                                    <field name="packages_weight" string = 'Package Weight (Kgs)' />
