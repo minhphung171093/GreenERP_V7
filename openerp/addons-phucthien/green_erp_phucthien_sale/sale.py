@@ -17,6 +17,9 @@ import codecs
 from openerp import netsvc
 DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 DATE_FORMAT = "%Y-%m-%d"
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 class sale_order_rule(osv.osv):
     _name = "sale.order.rule"
