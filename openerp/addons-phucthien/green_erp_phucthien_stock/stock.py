@@ -1371,17 +1371,17 @@ class ve_sinh_kho(osv.osv):
     _name = "ve.sinh.kho"
     
     _columns = {
-        'name': fields.date('Ngày', required=True, states={'da_kiemtra': [('readonly', True)]}),
-        'thoigian_di': fields.char('Thời gian khi di dời hàng đi', size=1024, states={'da_kiemtra': [('readonly', True)]}),
-        'thoigian_ve': fields.char('Thời gian khi di dời hàng về', size=1024, states={'da_kiemtra': [('readonly', True)]}),
-        'nhietdo_di': fields.char('Nhiệt độ', size=1024, states={'da_kiemtra': [('readonly', True)]}),
-        'nhietdo_ve': fields.char('Nhiệt độ', size=1024, states={'da_kiemtra': [('readonly', True)]}),
-        'location_id': fields.many2one('stock.location', 'Kho', required=True, states={'da_kiemtra': [('readonly', True)]}),
-        'type': fields.selection([('kho_duoc','Kho dược'),('kho_lanh','Kho lạnh')],'Loại', states={'da_kiemtra': [('readonly', True)]}),
-        'vesinhkho_line': fields.one2many('ve.sinh.kho.line', 'vesinh_kho_id', 'Nội dung', states={'da_kiemtra': [('readonly', True)]}),
-        'user_id': fields.many2one('res.users', 'Người thực hiện', states={'da_kiemtra': [('readonly', True)]}),
+        'name': fields.date('Ngày', required=True, states={'da_kiemtra': [('readonly', True)], 'huy': [('readonly', True)]}),
+        'thoigian_di': fields.char('Thời gian khi di dời hàng đi', size=1024, states={'da_kiemtra': [('readonly', True)], 'huy': [('readonly', True)]}),
+        'thoigian_ve': fields.char('Thời gian khi di dời hàng về', size=1024, states={'da_kiemtra': [('readonly', True)], 'huy': [('readonly', True)]}),
+        'nhietdo_di': fields.char('Nhiệt độ', size=1024, states={'da_kiemtra': [('readonly', True)], 'huy': [('readonly', True)]}),
+        'nhietdo_ve': fields.char('Nhiệt độ', size=1024, states={'da_kiemtra': [('readonly', True)], 'huy': [('readonly', True)]}),
+        'location_id': fields.many2one('stock.location', 'Kho', required=True, states={'da_kiemtra': [('readonly', True)], 'huy': [('readonly', True)]}),
+        'type': fields.selection([('kho_duoc','Kho dược'),('kho_lanh','Kho lạnh')],'Loại', states={'da_kiemtra': [('readonly', True)], 'huy': [('readonly', True)]}),
+        'vesinhkho_line': fields.one2many('ve.sinh.kho.line', 'vesinh_kho_id', 'Nội dung', states={'da_kiemtra': [('readonly', True)], 'huy': [('readonly', True)]}),
+        'user_id': fields.many2one('res.users', 'Người thực hiện', states={'da_kiemtra': [('readonly', True)], 'huy': [('readonly', True)]}),
         'nguoi_kiemtra_id': fields.many2one('res.users', 'Người kiểm tra', readonly=True),
-        'state': fields.selection([('draft','Mới tạo'),('da_kiemtra','Đã kiểm tra')],'Trạng thái', readonly=True),
+        'state': fields.selection([('draft','Mới tạo'),('da_kiemtra','Đã kiểm tra'),('huy','Hủy bỏ')],'Trạng thái', readonly=True),
     }
     
     def _get_vesinhkho_line(self, cr, uid, context=None):
@@ -1404,6 +1404,9 @@ class ve_sinh_kho(osv.osv):
     
     def kiem_tra(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids, {'state': 'da_kiemtra','nguoi_kiemtra_id': uid})
+    
+    def bt_huy(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {'state': 'huy'})
     
     def in_phieu(self, cr, uid, ids, context=None):
         vsk = self.browse(cr, uid, ids[0])
@@ -1435,14 +1438,14 @@ class ve_sinh_thangmay(osv.osv):
     _name = "ve.sinh.thangmay"
     
     _columns = {
-        'name': fields.date('Ngày', required=True, states={'da_kiemtra': [('readonly', True)]}),
-        'hutbui': fields.boolean('Hút bụi', states={'da_kiemtra': [('readonly', True)]}),
-        'lauxaphong': fields.boolean('Lau xà phòng', states={'da_kiemtra': [('readonly', True)]}),
-        'launuocsach': fields.boolean('Lau nước sạch', states={'da_kiemtra': [('readonly', True)]}),
-        'user_id': fields.many2one('res.users', 'Người thực hiện', states={'da_kiemtra': [('readonly', True)]}),
+        'name': fields.date('Ngày', required=True, states={'da_kiemtra': [('readonly', True)], 'huy': [('readonly', True)]}),
+        'hutbui': fields.boolean('Hút bụi', states={'da_kiemtra': [('readonly', True)], 'huy': [('readonly', True)]}),
+        'lauxaphong': fields.boolean('Lau xà phòng', states={'da_kiemtra': [('readonly', True)], 'huy': [('readonly', True)]}),
+        'launuocsach': fields.boolean('Lau nước sạch', states={'da_kiemtra': [('readonly', True)], 'huy': [('readonly', True)]}),
+        'user_id': fields.many2one('res.users', 'Người thực hiện', states={'da_kiemtra': [('readonly', True)], 'huy': [('readonly', True)]}),
         'nguoi_kiemtra_id': fields.many2one('res.users', 'Người kiểm tra', readonly=True),
-        'ghi_chu': fields.text('Ghi chú', states={'da_kiemtra': [('readonly', True)]}),
-        'state': fields.selection([('draft','Mới tạo'),('da_kiemtra','Đã kiểm tra')],'Trạng thái', readonly=True),
+        'ghi_chu': fields.text('Ghi chú', states={'da_kiemtra': [('readonly', True)], 'huy': [('readonly', True)]}),
+        'state': fields.selection([('draft','Mới tạo'),('da_kiemtra','Đã kiểm tra'),('huy','Hủy bỏ')],'Trạng thái', readonly=True),
     }
     
     _defaults = {
@@ -1453,6 +1456,9 @@ class ve_sinh_thangmay(osv.osv):
     
     def kiem_tra(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids, {'state': 'da_kiemtra','nguoi_kiemtra_id': uid})
+    
+    def bt_huy(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {'state': 'huy'})
     
 ve_sinh_thangmay()
 

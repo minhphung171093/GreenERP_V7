@@ -228,6 +228,9 @@
                                     <group>
                                         <field name="list_price"/>
                                     </group>
+                                    <group>
+                                        <field name="uom_id"/>
+                                    </group>
                             	</group>
                           	</page>
                         </notebook>
@@ -505,7 +508,8 @@
 					<header>
 						<button name="kiem_tra" states='draft' string="Đã kiểm tra" type="object" class="oe_highlight" groups="stock.group_stock_manager"/>
 						<button name="in_phieu" string="In phiếu" type="object" class="oe_highlight"/>
-						<field name="state" widget="statusbar" statusbar_visible="draft,da_kiemtra"/>
+						<button name="bt_huy" states='draft,da_kiemtra' string="Hủy bỏ" type="object" class="oe_highlight" groups="stock.group_stock_manager"/>
+						<field name="state" widget="statusbar" statusbar_visible="draft,da_kiemtra,huy"/>
 						<field name="type" invisible='1'/>
 					</header>
 	            	<sheet>
@@ -574,7 +578,8 @@
 					<header>
 						<button name="kiem_tra" states='draft' string="Đã kiểm tra" type="object" class="oe_highlight" groups="stock.group_stock_manager"/>
 						<button name="in_phieu" string="In phiếu" type="object" class="oe_highlight"/>
-						<field name="state" widget="statusbar" statusbar_visible="draft,da_kiemtra"/>
+						<button name="bt_huy" states='draft,da_kiemtra' string="Hủy bỏ" type="object" class="oe_highlight" groups="stock.group_stock_manager"/>
+						<field name="state" widget="statusbar" statusbar_visible="draft,da_kiemtra,huy"/>
 						<field name="type" invisible='1'/>
 					</header>
 	            	<sheet>
@@ -687,7 +692,8 @@
 	            <form string="Vệ sinh thang máy" version="7.0"> 
 					<header>
 						<button name="kiem_tra" states='draft' string="Đã kiểm tra" type="object" class="oe_highlight" groups="stock.group_stock_manager"/>
-						<field name="state" widget="statusbar" statusbar_visible="draft,da_kiemtra"/>
+						<button name="bt_huy" states='draft,da_kiemtra' string="Hủy bỏ" type="object" class="oe_highlight" groups="stock.group_stock_manager"/>
+						<field name="state" widget="statusbar" statusbar_visible="draft,da_kiemtra,huy"/>
 					</header>
 	            	<sheet>
 	                    <group col='4' colspan='2'>

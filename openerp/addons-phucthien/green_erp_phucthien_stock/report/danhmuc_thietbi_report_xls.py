@@ -53,7 +53,7 @@ class Parser(report_sxw.rml_parse):
         den_ngay = wizard_data['den_ngay']
         svtm_obj = self.pool.get('ve.sinh.thangmay')
         sql = '''
-            select id from ve_sinh_thangmay where name between '%s' and '%s'
+            select id from ve_sinh_thangmay where name between '%s' and '%s' and state != 'huy'
         '''%(tu_ngay,den_ngay)
         self.cr.execute(sql)
         svtm_ids = [r[0] for r in self.cr.fetchall()]

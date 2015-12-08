@@ -26,6 +26,7 @@ class Parser(report_sxw.rml_parse):
             'get_date_hd': self.get_date_hd,
             'get_thua_thieu':self.get_thua_thieu,
             'get_baocao_chenhlech': self.get_baocao_chenhlech,
+            'check_thua_thieu': self.check_thua_thieu,
         })
     
     def get_baocao_chenhlech(self):
@@ -38,6 +39,26 @@ class Parser(report_sxw.rml_parse):
             return date.strftime('%m/%Y')
         else:
             return ''
+        
+    def check_thua_thieu(self,hethong,thucte,dongia):
+        res={}
+
+        if hethong > thucte:
+            sl_thieu = hethong - thucte
+            tt_thieu = sl_thieu * dongia
+            sl_thua = 0
+            tt_thua = 0 
+        else:
+            sl_thua = thucte - hethong
+            tt_thua = sl_thua * dongia
+            sl_thieu = 0
+            tt_thieu = 0 
+        
+        if sl_thua !=0 and sl_thieu != 0:
+            return 'khac_khong'
+        else:
+            return 'bang_khong'
+        
 
     def get_thua_thieu(self,hethong,thucte,dongia):
         res={}
@@ -52,6 +73,7 @@ class Parser(report_sxw.rml_parse):
             tt_thua = sl_thua * dongia
             sl_thieu = 0
             tt_thieu = 0 
+        
         res = {
                'sl_thieu':sl_thieu,
                'tt_thieu':tt_thieu,          
