@@ -34,6 +34,7 @@ class Parser(report_sxw.rml_parse):
             'total_get_thanhtien': self.total_get_thanhtien,
             'get_price_unit': self.get_price_unit,
             'get_thanh_tien': self.get_thanh_tien,
+            'convert_amount': self.convert_amount,
         })
 
     def get_date(self, date=False):
@@ -73,6 +74,10 @@ class Parser(report_sxw.rml_parse):
         if line.purchase_line_id and line.picking_id.type == 'out':
             val = line.product_qty*line.purchase_line_id.price_unit
         return val
+    
+    def convert_amount(self, amount):
+        a = format(int(amount),',')
+        return a.replace(',',' ')
     
     def get_tax(self, line):
         val = 0.0
