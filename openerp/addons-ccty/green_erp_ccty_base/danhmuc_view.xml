@@ -12,6 +12,7 @@
             	<xpath expr="//field[@name='company_id']" position="after">
 					<field name="dien_thoai"/>
 					<field name="email"/>
+					<field name="ngon_ngu" on_change="onchange_ngon_ngu(ngon_ngu)"/>
 				</xpath>
 				<xpath expr="//field[@name='company_id']" position="attributes">
 					<attribute name='string'>Trạm</attribute>

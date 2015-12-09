@@ -146,10 +146,10 @@ class Parser(report_sxw.rml_parse):
                                     }
                             ))
             
-        res.append((0,0,{
-                             'loaivat':u'Cộng'+ loai_vat.name,'ct': '','ct_id': ''
-                            }
-                    ))
+            res.append((0,0,{
+                                 'loaivat':u'Cộng '+ loai_vat.name,'ct': '','ct_id': ''
+                                }
+                        ))
             
         return res
     
@@ -181,8 +181,13 @@ class Parser(report_sxw.rml_parse):
 #             sl = self.cr.dictfetchone()
 #             if sl['so_luong']!=0:
 #                 soluong = sl and sl['so_luong'] or False
-                
-            if tong == u'Tổng cộng':
+        sql = '''
+            select id from loai_vat
+        '''
+        self.cr.execute(sql)
+        loaivat_ids = [r[0] for r in self.cr.fetchall()]
+        for loai_vat in self.pool.get('loai.vat').browse(self.cr, self.uid, loaivat_ids):                
+            if tong == u'Cộng '+ loai_vat.name:
                 context = {}
                 sum = 0
                 wizard_data = self.localcontext['data']['form']

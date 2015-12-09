@@ -42,7 +42,21 @@ class res_users(osv.osv):
     _inherit = "res.users"
     _columns = {
         'dien_thoai': fields.char( 'Điện thoại',size = 50),
+        'ngon_ngu':fields.selection([('en_US', 'English'),('vi_VN', 'Vietnamese/Tiếng Việt')],'Ngôn ngữ')
                 }
+    _defaults={
+        'ngon_ngu':'vi_VN',
+               }
+    
+    def onchange_ngon_ngu(self, cr, uid, ids,ngon_ngu = False, context=None):
+        vals = {}
+        if ngon_ngu and ngon_ngu=='vi_VN':
+            vals = {'lang':'vi_VN'}
+        elif ngon_ngu and ngon_ngu=='en_US':
+            vals = {'lang':'en_US'}
+        else:
+            vals = {'lang':''}
+        return {'value': vals}
 res_users()
 
 class res_company(osv.osv):
