@@ -212,14 +212,14 @@ class chan_nuoi(osv.osv):
         'cty_gia_cong_ids': fields.many2many('cty.gia.cong', 'chan_nuoi_cong_ty_ref', 'chan_nuoi_id', 'cong_ty_id', 'Cty được gia công'),
 #         'cty_gia_cong_id':fields.many2one('cty.gia.cong','Cty được gia công'),
         'quy_cach': fields.selection([('ho', 'Trại hở'),('lanh', 'Trại lạnh')],'Quy cách chuồng trại'),
-        'xu_ly_moi_truong': fields.selection([('bioga', 'Biogas'),('sinh_hoc', 'Đệm lót sinh học'),
-                                              ('khac', 'Phương thức xử lý khác,...'),('khong', 'Không xử lý')],'Xử lý môi trường(chỉ chọn 1)',required=True),
+        'xu_ly_moi_truong_ids': fields.many2many('xu.ly.moi.truong','chan_nuoi_xu_ly_ref','chan_nuoi_id','xu_ly_id','Xử lý môi trường',required=True),
         'bao_ve_moi_truong':fields.selection([('co', 'Có'),('khong', 'Không')],'Cam kết bảo vệ MT'),
         'danh_gia_moi_truong':fields.selection([('co', 'Có'),('khong', 'Không')],'Đánh giá tác động MT'),
-        'san_xuat_giong':fields.selection([('thuong_pham', 'Giống thương phẩm'),('bo_me', 'Giống bố mẹ, ông bà, cụ kỵ')],'Cơ sở sản xuất giống'),
+        'san_xuat_giong_id':fields.many2one('san.xuat.giong','Cơ sở sản xuất giống'),
         'tieu_chuan_viet':fields.boolean('VietGAHP'),
         'tieu_chuan_global':fields.boolean('Tiêu chuẩn Global GAP'),
         'an_toan_dich':fields.boolean('Cơ sở An toàn dịch'),
+        'du_dk_thu_y':fields.boolean('Đủ điều kiện vệ sinh thú y'),
         'tieu_chuan_khac':fields.boolean('Tiêu chuẩn khác'),
         'dien_tich_chuong':fields.char('Diện tích chuồng trại'),
         'mo_ta':fields.text('Mô tả'),
@@ -231,6 +231,7 @@ class chan_nuoi(osv.osv):
         'tieu_chuan_viet':False,
         'tieu_chuan_global':False,
         'tieu_chuan_khac':False,
+        'du_dk_thu_y':False,
         
                  }
     
@@ -405,6 +406,22 @@ class loai_ho(osv.osv):
         'name': fields.char('Loại hộ',size = 50, required = True),
                 }
 loai_ho()
+
+class xu_ly_moi_truong(osv.osv):
+    _name = "xu.ly.moi.truong"
+    _columns = {
+        'name': fields.char('Tên loại xử lý',size = 50, required = True),
+                }
+xu_ly_moi_truong()
+
+class san_xuat_giong(osv.osv):
+    _name = "san.xuat.giong"
+    _columns = {
+        'name': fields.char('Tên hướng sản xuất',size = 50, required = True),
+                }
+san_xuat_giong()
+
+
 class loai_giay_tiem_phong(osv.osv):
     _name = "loai.giay.tiem.phong"
     _columns = {

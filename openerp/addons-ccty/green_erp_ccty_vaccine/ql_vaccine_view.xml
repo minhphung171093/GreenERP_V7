@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
+    <!-- Nhập vaccine -->
 		<record model="ir.ui.view" id="nhap_vaccine_tree">
             <field name="name">nhap.vaccine.tree</field>
             <field name="model">nhap.vaccine</field>
@@ -33,11 +34,12 @@
 	                <sheet>
                 		<group col="4"  string="Nhập Vaccine">
                 			<field name="can_bo_id" readonly = '1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+                			<field name="ngay_nhap" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
                 			<field name="name" options="{'create': false, 'create_edit': false}" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-			            	<field name="ngay_nhap" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-			        		<field name="soluong" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+                			<field name="soluong" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 			        		<field name="so_lo_id" options="{'create': false, 'create_edit': false}" domain="[('vacxin_id','=',name)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
             				<field name="han_su_dung" readonly = "1" />
+            				
             				<field name="hien_an" invisible = '1'/>
             				<field name="chinh_sua_rel" invisible = '1'/>
                 		</group>
@@ -49,6 +51,59 @@
         <record model="ir.actions.act_window" id="action_nhap_vaccine">
             <field name="name">Nhập Vaccine</field>
             <field name="res_model">nhap.vaccine</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+    <!-- Xuất vaccine -->
+		<record model="ir.ui.view" id="xuat_vaccine_tree">
+            <field name="name">xuat.vaccine.tree</field>
+            <field name="model">xuat.vaccine</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Xuất Vaccine">
+                	<field name="can_bo_id" />
+                	<field name="name" />
+                	<field name="ngay_nhap" />
+            		<field name="soluong" />
+            		<field name="so_lo_id" />
+            		<field name="han_su_dung" />
+            		<field name="trang_thai_id"/>
+            		<field name="hien_an" invisible = '1'/>
+            		<field name="chinh_sua_rel" invisible = '1'/>
+                </tree>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="xuat_vaccine_form">
+            <field name="name">xuat.vaccine.form</field>
+            <field name="model">xuat.vaccine</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Xuất vaccine" version="7.0">
+                <header>
+	            		<button name="bt_duyet" groups = "green_erp_ccty_vaccine.group_vaccine_manager" attrs="{'invisible': [('hien_an', '!=', True)]}" string="Duyệt" type="object" class="oe_highlight" />
+	                    <field name="trang_thai_id" widget="statusbar"/>
+	            	</header> 
+	                <sheet>
+                		<group col="4"  string="Xuất Vaccine">
+                			<field name="can_bo_id" readonly = '1' attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+                			<field name="ngay_nhap" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+			        		<field name="soluong" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+			        		<field name="name" options="{'create': false, 'create_edit': false}" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+			        		<field name="so_lo_id" options="{'create': false, 'create_edit': false}" domain="[('vacxin_id','=',name)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+            				<field name="han_su_dung" readonly = "1" />
+            				<field name="hien_an" invisible = '1'/>
+            				<field name="chinh_sua_rel" invisible = '1'/>
+                		</group>
+	                </sheet>
+                </form>
+            </field>
+        </record>
+       
+        <record model="ir.actions.act_window" id="action_xuat_vaccine">
+            <field name="name">Xuất Vaccine</field>
+            <field name="res_model">xuat.vaccine</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
         </record>

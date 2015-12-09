@@ -136,7 +136,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="domain">[('chinh_sua_rel', 'in', ['nhap','ch_duyet'])]</field>
-            <field name="context">{}</field>
+            <field name="context">{'readonly_by_pass':1}</field> 
             <field eval="False" name="view_id" ref="nhap_thong_tin_dan_tree"/>
         </record>
         <record id="action_nhap_thong_tin_dan1" model="ir.actions.act_window.view">
@@ -229,7 +229,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="domain">[('chinh_sua_rel', '=', 'ch_duyet')]</field>
-            <field name="context">{}</field>
+            <field name="context">{'readonly_by_pass':1}</field> 
             <field eval="False" name="view_id" ref="co_cau_dan_cho_duyet_tree"/>
         </record>
         <record id="action_co_cau_dan_cho_duyet1" model="ir.actions.act_window.view">
@@ -363,7 +363,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="domain">[('trang_thai', '=', 'new')]</field>
-            <field name="context">{}</field>
+            <field name="context">{'readonly_by_pass':1}</field> 
             <field eval="False" name="view_id" ref="co_cau_dan_hien_tai_tree"/>
         </record>
         <record id="action_co_cau_dan_hien_tai1" model="ir.actions.act_window.view">
@@ -495,7 +495,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="domain">[('chinh_sua_rel', '=', 'cc_duyet')]</field>
-            <field name="context">{}</field>
+            <field name="context">{'readonly_by_pass':1}</field> 
             <field eval="False" name="view_id" ref="ls_co_cau_dan_tree"/>
         </record>
         <record id="action_ls_co_cau_dan1" model="ir.actions.act_window.view">

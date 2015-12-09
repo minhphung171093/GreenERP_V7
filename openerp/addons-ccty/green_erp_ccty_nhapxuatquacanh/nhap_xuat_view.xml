@@ -215,7 +215,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="domain">[('loai', '=', 'nhap'),('chan_nuoi_id', '=', False)]</field>
-            <field name="context">{'default_loai':'nhap'}</field>
+            <field name="context">{'default_loai':'nhap','readonly_by_pass':1}</field>
             <field eval="False" name="view_id" ref="nhap_canh_giasuc_tree"/>
         </record>
         
@@ -337,7 +337,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="domain">[('loai', '=', 'xuat')]</field>
-            <field name="context">{'default_loai':'xuat'}</field>
+            <field name="context">{'default_loai':'xuat','readonly_by_pass':1}</field>
             <field eval="False" name="view_id" ref="xuat_canh_giasuc_tree"/>
         </record>
         

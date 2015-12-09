@@ -111,6 +111,118 @@ class nhap_vaccine(osv.osv):
     
 nhap_vaccine()
 
+class xuat_vaccine(osv.osv):
+    _name = "xuat.vaccine"
+    
+    def get_trangthai_xuat(self, cr, uid, ids, context=None):
+        sql = '''
+            select id from trang_thai where stt = 1
+        '''
+        cr.execute(sql)
+        trang = cr.dictfetchone()['id'] or False
+        return trang
+    
+    def _get_user(self, cr, uid, ids, context=None):
+        return uid
+    
+    def _get_hien_an(self, cr, uid, ids, name, arg, context=None):        
+        result = {}
+        
+        user = self.pool.get('res.users').browse(cr,uid,uid)
+        for nhap_xuat in self.browse(cr,uid,ids):
+            result[nhap_xuat.id] = False  
+            if nhap_xuat.trang_thai_id.stt == 1 and user.company_id.cap in ['huyen', 'chi_cuc']:
+                result[nhap_xuat.id] = True
+            elif nhap_xuat.trang_thai_id.stt == 2 and user.company_id.cap in ['chi_cuc']:
+                result[nhap_xuat.id] = True    
+        return result
+    
+    _columns = {
+        'name': fields.many2one('loai.vacxin','Loại vaccine', required = True),
+        'can_bo_id': fields.many2one('res.users','Cán bộ nhập máy'),
+        'ngay_nhap': fields.date('Ngày xuất'),
+        'soluong': fields.integer('Số lượng xuất'),
+        'so_lo_id':fields.many2one('so.lo','Số lô', required = True),
+        'han_su_dung':fields.related('so_lo_id','han_su_dung',type='date',string='HSD đến'),
+        'state':fields.selection([('draft', 'Nháp'),('done', 'Duyệt')],'Status', readonly=True),
+        'trang_thai_id': fields.many2one('trang.thai','Trạng thái', readonly=True),
+        'hien_an': fields.function(_get_hien_an, type='boolean', string='Hien/An'),
+        'chinh_sua_rel': fields.related('trang_thai_id', 'chinh_sua', type="selection",
+                selection=[('nhap', 'Nháp'),('in', 'Đang xử lý'), ('ch_duyet', 'Cấp Huyện Duyệt'), ('cc_duyet', 'Chi Cục Duyệt'), ('huy', 'Hủy bỏ')], 
+                string="Chinh Sua", readonly=True, select=True),
+                }
+    _defaults = {
+        'can_bo_id': _get_user,
+        'trang_thai_id': get_trangthai_xuat,
+                 }
+
+    def _check_so_luong_ton_vaccine(self, cr, uid, ids, context=None):
+        tong_sl = 0
+#         ton_vaccine_obj = self.pool.get('ton.vaccine')
+#         so_luong_ton_ids = ton_vaccine_obj.search()
+        for line in self.browse(cr, uid, ids, context=context):
+            sql = '''
+                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong from ton_vaccine
+                where vaccine_id = %s and so_lo_id = %s
+            '''%(line.name.id, line.so_lo_id.id)
+            cr.execute(sql)
+            ton_vaccine = cr.dictfetchone()['so_luong'] 
+            if line.soluong > ton_vaccine:
+                raise osv.except_osv(_('Cảnh báo!'),_('Số lượng vaccine %s hiện trong kho chỉ còn %s (đơn vị) thuộc Lô %s')%(line.name.name,ton_vaccine,line.so_lo_id.name))
+                return False
+        return True
+    _constraints = [
+        (_check_so_luong_ton_vaccine, 'Identical Data', []),
+    ]    
+    
+    def bt_duyet(self, cr, uid, ids, context=None):
+        user = self.pool.get('res.users').browse(cr,uid,uid)
+        for line in self.browse(cr, uid, ids, context=context):
+            if line.trang_thai_id.stt == 1 and user.company_id.cap == 'huyen':
+                sql = '''
+                    select id from trang_thai where stt = 2
+                '''
+                cr.execute(sql)
+                self.write(cr,uid,ids,{
+                                       'trang_thai_id': cr.dictfetchone()['id'] or False
+                                       })
+            elif line.trang_thai_id.stt == 1 and user.company_id.cap == 'chi_cuc':
+                sql = '''
+                    select id from trang_thai where stt = 3
+                '''
+                cr.execute(sql)
+                self.write(cr,uid,ids,{
+                                       'trang_thai_id': cr.dictfetchone()['id'] or False
+                                       })
+                self.pool.get('ton.vaccine').create(cr,uid, {
+                                                          'vaccine_id': line.name.id,
+                                                          'so_lo_id': line.so_lo_id.id,
+                                                          'so_luong': -(line.soluong),
+                                                          'loai': 'xuat',
+                                                          'xuat_vaccine_id': line.id,
+                                                          'ngay': line.ngay_nhap,
+                                                             })
+                
+            elif line.trang_thai_id.stt == 2 and user.company_id.cap == 'chi_cuc':
+                sql = '''
+                    select id from trang_thai where stt = 3
+                '''
+                cr.execute(sql)
+                self.write(cr,uid,ids,{
+                                       'trang_thai_id': cr.dictfetchone()['id'] or False
+                                       })
+                self.pool.get('ton.vaccine').create(cr,uid, {
+                                                          'vaccine_id': line.name.id,
+                                                          'so_lo_id': line.so_lo_id.id,
+                                                          'so_luong': -(line.soluong),
+                                                          'loai': 'xuat',
+                                                          'xuat_vaccine_id': line.id,
+                                                          'ngay': line.ngay_nhap,
+                                                             })
+        return True
+    
+xuat_vaccine()
+
 class so_lo(osv.osv):
     _name = "so.lo"
     _columns = {
@@ -141,6 +253,7 @@ class ton_vaccine(osv.osv):
         'so_luong':fields.integer('Số lượng'),
         'loai': fields.selection([('nhap', 'Nhập'),('xuat', 'Xuất')],'Loại', readonly=True),
         'nhap_vaccine_id': fields.many2one('nhap.vaccine','Nhap vaccine'),
+        'xuat_vaccine_id': fields.many2one('xuat.vaccine','Xuat vaccine'),
                 }
     def init(self, cr):
         tools.drop_view_if_exists(cr, 'ton_vaccine_view')
