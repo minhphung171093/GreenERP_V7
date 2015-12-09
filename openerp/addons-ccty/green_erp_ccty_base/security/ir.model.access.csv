@@ -17,8 +17,8 @@ access_ccty_15,loai.hoa.chat,green_erp_ccty_base.model_loai_hoa_chat,green_erp_c
 access_ccty_16,chi.tiet.loai.vacxin,green_erp_ccty_base.model_chi_tiet_loai_vacxin,green_erp_ccty_base.group_base_admin_ccty,True,True,True,True
 access_ccty_17,loai.hinh.so.huu,green_erp_ccty_base.model_loai_hinh_so_huu,green_erp_ccty_base.group_base_admin_ccty,True,True,True,True
 access_ccty_18,cty_gia_cong,green_erp_ccty_base.model_cty_gia_cong,base.group_user,True,True,True,True
-
-
+access_ccty_19,xu.ly.moi.truong,green_erp_ccty_base.model_xu_ly_moi_truong,base.group_user,True,True,True,True
+access_ccty_20,san.xuat.giong,green_erp_ccty_base.model_san_xuat_giong,base.group_user,True,True,True,True
 
 
 
