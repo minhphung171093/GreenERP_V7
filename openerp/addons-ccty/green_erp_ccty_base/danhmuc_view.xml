@@ -2,7 +2,8 @@
 <openerp>
     <data>
     
-    						 <!--cán bộ-->        
+    						 <!--cán bộ-->     
+    						 
     
         <record id="res_users_canbo_form_inherit" model="ir.ui.view">
             <field name="name">res.users.canbo.form.inherit</field>

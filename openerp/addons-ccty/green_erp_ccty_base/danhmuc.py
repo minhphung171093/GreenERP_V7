@@ -64,6 +64,9 @@ class res_company(osv.osv):
     _columns = {
         'cap': fields.selection([('xa', 'Xã'),('huyen', 'Huyện'), ('chi_cuc', 'Chi Cục')],'Cấp'),
                 }
+    
+    def init(self,cr):
+        cr.execute(''' update ir_model_data set noupdate='f' where model='ir.rule' and module='base' and name='res_company_rule' ''')
 res_company()
 
 class tram_thu_y(osv.osv):
