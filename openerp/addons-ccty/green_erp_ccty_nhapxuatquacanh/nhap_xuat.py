@@ -149,7 +149,7 @@ class nhap_xuat_canh_giasuc(osv.osv):
                 })
         if vals.get('chan_nuoi_id',False):
             vals.update({'ten_ho_id':vals['chan_nuoi_id']})
-            vals.update({'name':self.pool.get('ir.sequence').get(cr, uid,'ton.dong.vat')})
+            vals.update({'name':self.pool.get('ir.sequence').get(cr, SUPERUSER_ID,'ton.dong.vat')})
         new_id = super(nhap_xuat_canh_giasuc, self).create(cr, uid, vals, context=context)
         return new_id
     
