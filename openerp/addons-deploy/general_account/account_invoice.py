@@ -256,13 +256,6 @@ class account_invoice(osv.osv):
         'invoice_dieuchinh': False,
                  }
     
-    _sql_constraints = [
-        ('number_uniq', 'unique(number, company_id, journal_id, type, partner_id)', 'Invoice Number must be unique per Company!'),
-    ]
-    
-#     _sql_constraints = [
-#         ('number_uniq', 'unique(number, company_id, journal_id, partner_id, type)', 'Invoice Number must be unique per Company!'),
-#     ]
     
     # kiet Add sinh so number
     def create(self, cr,uid,vals,context=None):

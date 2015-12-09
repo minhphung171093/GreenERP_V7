@@ -360,7 +360,6 @@
 		         <form string="Sổ tiền gửi ngân hàng" version="7.0">
 		        	<group>
 		        		<group>
-		        			<field name="shop_ids" widget="many2many_tags"/>
 			        		<field name="times"/>
 			        		<field name="company_id" groups="base.group_multi_company"/>
 		        		</group>
@@ -403,10 +402,15 @@
 		         <form string="Sổ nhật ký chung" version="7.0">
 		        	<group>
 		        		<group>
-		        			<field name="fiscalyear" required='1'/>
+			        		<field name="times"/>
+			        		<field name="company_id" groups="base.group_multi_company"/>
 		        		</group>
 		        		<group>
-							<field name="company_id" groups="base.group_multi_company"/>	        		
+			        		<field name="quarter" attrs="{'invisible':[('times', 'in', ['dates','years','periods'])],'required':[('times', 'not in', ['dates','years','periods'])]}"/>
+			        		<field name="period_id_start" context="{'report_type':'1'}" attrs="{'invisible':[('times', 'in', ['dates','years','quarter'])],'required':[('times', 'not in', ['dates','years','quarter'])]}"/>
+			        		<field name="fiscalyear_start"  attrs="{'invisible':[('times', 'in', ['dates','periods','quarter'])],'required':[('times','not in', ['dates','periods'])]}"/>
+			        		<field name="date_start"  attrs="{'invisible':[('times', 'in', ['years','periods','quarter'])],'required':[('times','not in', ['years','periods'])]}"/>
+			        		<field name="date_end"  attrs="{'invisible':[('times', 'in', ['years','periods','quarter'])],'required':[('times','not in', ['years','periods'])]}"/>
 		           		</group>
 		            </group>
 		            <footer>

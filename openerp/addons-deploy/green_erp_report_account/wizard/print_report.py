@@ -3470,8 +3470,28 @@ class so_nhatky_chung(osv.osv_memory):
         return fiscalyears and fiscalyears[0] or False
             
     _columns = {
-        'fiscalyear': fields.many2one('account.fiscalyear', 'Năm', domain=[('state','=','draft')],),
+#         'shop_ids': fields.many2many('sale.shop', 'sochitiettaikhoan_shop_rel', 'wizard_id', 'shop_id', 'Shops', required=True),
+        
+        'times': fields.selection([
+            ('dates','Date'),
+            ('periods', 'Periods'),
+            ('quarter','Quarter'),
+            ('years','Years')], 'Periods Type', required=True ),
+        'period_id_start': fields.many2one('account.period', 'Period',  domain=[('state','=','draft')],),
+        'period_id_end': fields.many2one('account.period', 'End Period',  domain=[('state','=','draft')],),
+        'fiscalyear_start': fields.many2one('account.fiscalyear', 'From Fiscalyear', domain=[('state','=','draft')],),
+        'fiscalyear_stop': fields.many2one('account.fiscalyear', 'To Fiscalyear',  domain=[('state','=','draft')],),
+        'date_start': fields.date('Date start'),
+        'date_end':   fields.date('Date end'),
+        'quarter':fields.selection([
+            ('1', '1'),
+            ('2','2'),
+            ('3','3'),
+            ('4','4')], 'Quarter'),
+#         'account_id': fields.many2one('account.account', 'Account', required=True),
         'company_id': fields.many2one('res.company', 'Company', required=True),
+#         'fiscalyear': fields.many2one('account.fiscalyear', 'Năm', domain=[('state','=','draft')],),
+#         'company_id': fields.many2one('res.company', 'Company', required=True),
      }
     
     def _get_company(self, cr, uid, context=None):
@@ -3485,7 +3505,15 @@ class so_nhatky_chung(osv.osv_memory):
         return [x.id for x in user.shop_ids]
     
     _defaults = {
-        'fiscalyear': _get_fiscalyear,
+#         'shop_ids': _get_shop_ids,
+        'times': 'periods',
+        'date_start': time.strftime('%Y-%m-%d'),
+        'date_end': time.strftime('%Y-%m-%d'),        
+        'period_id_start': lambda self, cr, uid, c: self.pool.get('account.period').find(cr, uid, dt=time.strftime('%Y-%m-%d'))[0],
+        'period_id_end': lambda self, cr, uid, c: self.pool.get('account.period').find(cr, uid, dt=time.strftime('%Y-%m-%d'))[0],        
+        'fiscalyear_start': _get_fiscalyear,
+        'fiscalyear_stop': _get_fiscalyear,
+        'quarter': '1',
         'company_id': _get_company,
         }
     
