@@ -222,11 +222,13 @@ class sale_order(osv.osv):
 #             pick_name = self.pool.get('ir.sequence').get(cr, uid, 'stock.picking.out')
         pick_name = '/'
         time_now = time.strftime('%H:%M:%S')
+        date_now = time.strftime('%d-%m-%Y')
         return {
             'name': pick_name,
             'origin': order.name,
 #             'date': order.date_order+' '+time_now,#self.date_to_datetime(cr, uid, order.date_order, context),
-            'date': datetime.now(),
+#             'date': datetime.now(),
+            'date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
             'type': 'out',
             'state': 'auto',
             'move_type': order.picking_policy,

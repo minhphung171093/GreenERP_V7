@@ -256,6 +256,14 @@ class account_invoice(osv.osv):
         'invoice_dieuchinh': False,
                  }
     
+    _sql_constraints = [
+        ('number_uniq', 'unique(number, company_id, journal_id, type, partner_id)', 'Invoice Number must be unique per Company!'),
+    ]
+    
+#     _sql_constraints = [
+#         ('number_uniq', 'unique(number, company_id, journal_id, partner_id, type)', 'Invoice Number must be unique per Company!'),
+#     ]
+    
     # kiet Add sinh so number
     def create(self, cr,uid,vals,context=None):
         if vals.get('invoice_book_id',False):
@@ -721,10 +729,9 @@ class account_invoice(osv.osv):
             rec_ids = [x[0] for x in cr.fetchall()]
             if rec_ids:
                 move_line_pool.reconcile_partial(cr, uid, rec_ids)
-                
             new_move_name = move_obj.browse(cr, uid, move_id, context=ctx).name
             if inv.type == 'in_invoice':
-                name_ids = self.search(cr,uid,[('id', '!=',inv.id),('move_name','=',new_move_name),('type','=','in_invoice')])
+                name_ids = self.search(cr,uid,[('id', '!=',inv.id),('move_name','=',new_move_name),('partner_id','=',inv.partner_id.id),('type','=','in_invoice')])
                 if name_ids:
                     raise osv.except_osv(_('Cảnh báo!'),
                                                   _('Số hóa đơn không được trùng nhau.'))
