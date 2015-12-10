@@ -244,7 +244,7 @@ class nhap_xuat_canh_giasuc(osv.osv):
                 for loai in line.chitiet_loai_nx:
                     chi_tiet_loai.append((0,0,{
                     'ct_loai_id': loai.ct_loai_id.id,
-                    'name':loai.name,
+                    'name':loai.name and loai.name or '',
                     'so_luong':loai.so_luong,     
                     'tiem_phong':loai.tiem_phong,        
                     'ct_tiem_phong_line': ct_tiem_phong,   
@@ -354,7 +354,7 @@ class nhap_xuat_canh_giasuc(osv.osv):
                         'loai_ho_id':line.loai_ho_id and line.loai_ho_id.id or False,
                         'chitiet_loai':chi_tiet_loai,
                         'trang_thai':'new',
-                        'company_id':line.company_id.id,
+                        'company_id':line.company_id and line.company_id.id or False ,
                         'nhap_xuat_id': line.id,
                         'trang_thai_id': trang and trang['id'] or False,
                         'loai_hinh_so_huu_id':line.ten_ho_id and line.ten_ho_id.loai_hinh_so_huu_id.id or False,
