@@ -125,9 +125,9 @@ class sql_partner_ledger(osv.osv):
                                     when avh.id notnull then avh.number
                                     when amh.ref isnull then aml.name
                                     else amh.name end number,
-                                case when aih.id notnull then aih.name
-                                    when avh.id notnull then avh.name
-                                    else amh.ref end description,
+                                case when aih.id notnull and aih.state = 'paid' then concat(aih.number,' - ',to_char(aih.date_invoice,'DD/MM/YYYY')) 
+                                    else coalesce(aih.product_showin_report, coalesce(avh.dien_giai, concat(amh.ref, amh.ref_number)))
+                                    end description,
                                 aml.move_id, aml.account_id, acc.code, acc.name,
                                 sum(aml.debit) amt_dr, sum(aml.credit) amt_cr
                         from account_move_line aml join account_move amh on aml.move_id = amh.id
@@ -144,9 +144,9 @@ class sql_partner_ledger(osv.osv):
                                     when avh.id notnull then avh.number
                                     when amh.ref isnull then aml.name
                                     else amh.name end,
-                                case when aih.id notnull then aih.name
-                                    when avh.id notnull then avh.name
-                                    else amh.ref end,
+                                case when aih.id notnull and aih.state = 'paid' then concat(aih.number,' - ',to_char(aih.date_invoice,'DD/MM/YYYY'))
+                                    else coalesce(aih.product_showin_report, coalesce(avh.dien_giai, concat(amh.ref, amh.ref_number)))
+                                    end,
                                 aml.account_id, acc.code, acc.name
                         order by 1, 3
             loop

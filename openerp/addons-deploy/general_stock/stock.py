@@ -1795,7 +1795,7 @@ class stock_picking(osv.osv):
                             'prodlot_id': False,
                             'tracking_id': False,
                         })
-                self._prepare_dong_goi(cr, uid, move.picking_id.id, self, context=context)
+#                 self._prepare_dong_goi(cr, uid, move.picking_id.id, self, context=context)
  
             if new_picking:
                 move_obj.write(cr, uid, [c.id for c in complete], {'picking_id': new_picking})
@@ -1804,7 +1804,7 @@ class stock_picking(osv.osv):
                 if prodlot_ids.get(move.id):
                     defaults.update({'prodlot_id': prodlot_ids[move.id]})
                 move_obj.write(cr, uid, [move.id], defaults)
-                self._prepare_dong_goi(cr, uid, move.picking_id.id, self, context=context)
+#                 self._prepare_dong_goi(cr, uid, move.picking_id.id, self, context=context)
             for move in too_many:
                 product_qty = move_product_qty[move.id]
                 defaults = {
@@ -1819,7 +1819,7 @@ class stock_picking(osv.osv):
                 if new_picking:
                     defaults.update(picking_id=new_picking)
                 move_obj.write(cr, uid, [move.id], defaults)
-                self._prepare_dong_goi(cr, uid, move.picking_id.id, self, context=context)
+#                 self._prepare_dong_goi(cr, uid, move.picking_id.id, self, context=context)
  
             # At first we confirm the new picking (if necessary)
             if new_picking:
@@ -1834,7 +1834,7 @@ class stock_picking(osv.osv):
                 self.message_post(cr, uid, new_picking, body=_("Back order <em>%s</em> has been <b>created</b>.") % (back_order_name), context=context)
                 self.write(cr, uid, [new_picking], {'date_done':date_done})
 #                 Phuoc: tinh toan the tich cac san pham trong picking line de dua vao loai thung cho phu hop
-                self._prepare_dong_goi(cr, uid, new_picking, self, context=context)
+#                 self._prepare_dong_goi(cr, uid, new_picking, self, context=context)
             else:
                 self.action_move(cr, uid, [pick.id], context={'date_done':date_done})
                 self.write(cr, uid, [pick.id], {'date_done':date_done})
