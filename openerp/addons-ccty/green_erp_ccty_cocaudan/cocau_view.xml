@@ -113,15 +113,16 @@
 				                    <field name="loai_hinh_so_huu_id" options="{'create': false, 'create_edit': false}"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>        
 				                    <field name="cty_gia_cong_ids" widget="many2many_tags"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>            
 				                    <field name="quy_cach"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-				                    <field name="xu_ly_moi_truong"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+				                    <field name="xu_ly_moi_truong_ids" widget="many2many_tags" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 				                    <field name="bao_ve_moi_truong" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 				                    <field name="danh_gia_moi_truong"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-				                    <field name="san_xuat_giong" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+				                    <field name="san_xuat_giong_id" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
                 				</group>
                 				<group string="Các tiêu chuẩn khác">
 				                    <field name="tieu_chuan_viet" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 				                    <field name="tieu_chuan_global"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 				                    <field name="an_toan_dich" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+				                    <field name="du_dk_thu_y" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 				                    <field name="tieu_chuan_khac"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
                 				</group>
 							</page>
@@ -337,18 +338,19 @@
 							</page>
 							<page string = "Thông tin khác">
 								<group col="4">
-				                    <field name="loai_hinh_so_huu_id" options="{'create': false, 'create_edit': false}"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>         
-				                    <field name="cty_gia_cong_ids" widget="many2many_tags"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>           
+				                    <field name="loai_hinh_so_huu_id" options="{'create': false, 'create_edit': false}"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>        
+				                    <field name="cty_gia_cong_ids" widget="many2many_tags"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>            
 				                    <field name="quy_cach"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-				                    <field name="xu_ly_moi_truong"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+				                    <field name="xu_ly_moi_truong_ids" widget="many2many_tags" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 				                    <field name="bao_ve_moi_truong" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 				                    <field name="danh_gia_moi_truong"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-				                    <field name="san_xuat_giong" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+				                    <field name="san_xuat_giong_id" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
                 				</group>
                 				<group string="Các tiêu chuẩn khác">
 				                    <field name="tieu_chuan_viet" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 				                    <field name="tieu_chuan_global"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 				                    <field name="an_toan_dich" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+				                    <field name="du_dk_thu_y" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 				                    <field name="tieu_chuan_khac"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
                 				</group>
 							</page>
@@ -468,19 +470,20 @@
 								</field>
 							</page>
 							<page string = "Thông tin khác">
-								<group col="4" string="Thông tin khác">
-				                    <field name="loai_hinh_so_huu_id" options="{'create': false, 'create_edit': false}"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/> 
-				                    <field name="cty_gia_cong_ids" widget="many2many_tags"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>                   
+								<group col="4">
+				                    <field name="loai_hinh_so_huu_id" options="{'create': false, 'create_edit': false}"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>        
+				                    <field name="cty_gia_cong_ids" widget="many2many_tags"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>            
 				                    <field name="quy_cach"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-				                    <field name="xu_ly_moi_truong"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+				                    <field name="xu_ly_moi_truong_ids" widget="many2many_tags" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 				                    <field name="bao_ve_moi_truong" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 				                    <field name="danh_gia_moi_truong"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-				                    <field name="san_xuat_giong" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+				                    <field name="san_xuat_giong_id" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
                 				</group>
                 				<group string="Các tiêu chuẩn khác">
 				                    <field name="tieu_chuan_viet" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 				                    <field name="tieu_chuan_global"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 				                    <field name="an_toan_dich" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+				                    <field name="du_dk_thu_y" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 				                    <field name="tieu_chuan_khac"  attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
                 				</group>
 							</page>
