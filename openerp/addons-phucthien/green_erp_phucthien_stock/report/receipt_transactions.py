@@ -99,9 +99,9 @@ class Parser(report_sxw.rml_parse):
     def get_total(self):
         tong = 0
         for o in self.get_picking():
-            for line in o.move_lines:
+            for seq,line in enumerate(o.move_lines):
                 if line.purchase_line_id:
-                    tong += line.price_subtotal + self.get_tax_amount(line or 0)
+                    tong += line.price_subtotal + self.get_tax_amount(line or 0, seq)
         return tong
     def get_stt(self,seq_1,seq):
         stt = 1
@@ -163,7 +163,7 @@ class Parser(report_sxw.rml_parse):
         else:
             return ''
     
-    def get_tax_amount(self,move=False):
+    def get_tax_amount(self,move,seq):
         amount_tax = 0
         if move:
             sql = '''
@@ -175,8 +175,31 @@ class Parser(report_sxw.rml_parse):
             self.cr.execute(sql)
             invoice_ids = [r[0] for r in self.cr.fetchall()]
             if invoice_ids:
+                amount_tax_po = 0
                 invoice = self.pool.get('account.invoice').browse(self.cr, self.uid, invoice_ids[0])
-                amount_tax = round(float(round(invoice.amount_tax))/float(invoice.amount_untaxed*round(move.primary_qty*move.price_unit)))
+                if seq == 0:
+                    du = 0
+                    for line in invoice.invoice_line:
+                        st = self.pool.get('stock.move').browse(self.cr,self.uid,line.source_id)
+                        if st.purchase_line_id:
+                            for t in st.purchase_line_id.taxes_id:
+                                amount_tax_po+= t.amount*st.price_subtotal
+                    if amount_tax_po != invoice.amount_tax:
+                        if amount_tax_po < invoice.amount_tax:
+                            du = invoice.amount_tax - amount_tax_po
+                            for t in move.purchase_line_id.taxes_id: 
+                                amount_tax = (t.amount*move.price_subtotal) + du
+                        if amount_tax_po > invoice.amount_tax:
+                            du = amount_tax_po - invoice.amount_tax 
+                            for t in move.purchase_line_id.taxes_id: 
+                                amount_tax = (t.amount*move.price_subtotal) - du
+                    else:
+                        for t in move.purchase_line_id.taxes_id:
+                            amount_tax+= t.amount*move.price_subtotal
+                else:
+                    for t in move.purchase_line_id.taxes_id:
+                        amount_tax+= t.amount*move.price_subtotal
+#                 amount_tax = round(float(round(invoice.amount_tax))/float(invoice.amount_untaxed*round(move.primary_qty*move.price_unit)))
             if not amount_tax and move.purchase_line_id:
                 for t in move.purchase_line_id.taxes_id:
                     amount_tax+= t.amount*move.price_subtotal
