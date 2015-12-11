@@ -256,11 +256,11 @@ class Parser(report_sxw.rml_parse):
                 date(timezone('UTC',stm.date)),pp.name_template,stm.note,x.journal_name,
                 case when x.picking_name is not null then x.picking_name else y.name end as picking_name,x.name,
                 case when loc2.usage = 'internal' and loc2.id in (%s)
-                then stm.primary_qty
+                then sum(stm.primary_qty)
                 else
                 0.0 end nhap_qty,
                 case when loc1.usage = 'internal' and loc1.id in (%s)
-                then stm.primary_qty 
+                then sum(stm.primary_qty) 
                 else 
                 0.0 end xuat_qty
                 
@@ -282,6 +282,7 @@ class Parser(report_sxw.rml_parse):
                   and stm.product_id = %s
                   and stm.prodlot_id = %s
                   and date(timezone('UTC',stm.date)) between '%s' and '%s'
+            group by date(timezone('UTC',stm.date)),pp.name_template,stm.note,x.journal_name,x.picking_name,y.name,x.name,loc2.usage,loc1.usage,loc2.id,loc1.id
             order by date(timezone('UTC',stm.date)),xuat_qty  ) x
             where (nhap_qty !=0 or xuat_qty!= 0)
         '''%(location_ids,location_ids,self.product_id,self.prod_lot_id,self.date_start,self.date_end)
@@ -314,44 +315,47 @@ class Parser(report_sxw.rml_parse):
                         xuat=qty
                         tongxuat+=qty
                     ton = ton+nhap-xuat
-                    res.append(
-                       {'date':self.get_vietname_date(i['date']),
-                       'des':invoice.number or i['picking_name'],
-                       'ngay_hd':self.get_vietname_date(invoice.date_invoice),
-                       'name':i['name'],
-                       'journal_name':i['journal_name'],
-                       'nhap_qty':nhap,
-                       'xuat_qty':xuat,
-                       'ton_qty':ton,
-                       'note':i['note'],
-                       'ngaysapxep': invoice.date_invoice,
-                       })
+                    if nhap != 0 or xuat != 0:
+                        res.append(
+                           {'date':self.get_vietname_date(i['date']),
+                           'des':invoice.number or i['picking_name'],
+                           'ngay_hd':self.get_vietname_date(invoice.date_invoice),
+                           'name':i['name'],
+                           'journal_name':i['journal_name'],
+                           'nhap_qty':nhap,
+                           'xuat_qty':xuat,
+                           'ton_qty':ton,
+                           'note':i['note'],
+                           'ngaysapxep': invoice.date_invoice,
+                           })
                 if ton!=self.qty_fist:
+                    if i['nhap_qty']-tongnhap != 0 or i['xuat_qty']-tongxuat != 0:
+                        res.append(
+                           {'date':self.get_vietname_date(i['date']),
+                           'des':i['picking_name'],
+                           'ngay_hd': '',
+                           'name':i['name'],
+                           'journal_name':i['journal_name'],
+                           'nhap_qty':i['nhap_qty']-tongnhap or 0.0,
+                           'xuat_qty':i['xuat_qty']-tongxuat or 0.0,
+                           'ton_qty':self.qty_fist or 0.0,
+                           'note':i['note'],
+                           'ngaysapxep': i['date'],
+                           })
+            else:
+                if i['nhap_qty'] != 0 or i['xuat_qty'] != 0:
                     res.append(
                        {'date':self.get_vietname_date(i['date']),
                        'des':i['picking_name'],
                        'ngay_hd': '',
                        'name':i['name'],
                        'journal_name':i['journal_name'],
-                       'nhap_qty':i['nhap_qty']-tongnhap or 0.0,
-                       'xuat_qty':i['xuat_qty']-tongxuat or 0.0,
+                       'nhap_qty':i['nhap_qty'] or 0.0,
+                       'xuat_qty':i['xuat_qty'] or 0.0,
                        'ton_qty':self.qty_fist or 0.0,
                        'note':i['note'],
                        'ngaysapxep': i['date'],
                        })
-            else:
-                res.append(
-                   {'date':self.get_vietname_date(i['date']),
-                   'des':i['picking_name'],
-                   'ngay_hd': '',
-                   'name':i['name'],
-                   'journal_name':i['journal_name'],
-                   'nhap_qty':i['nhap_qty'] or 0.0,
-                   'xuat_qty':i['xuat_qty'] or 0.0,
-                   'ton_qty':self.qty_fist or 0.0,
-                   'note':i['note'],
-                   'ngaysapxep': i['date'],
-                   })
         if res:
             sorted(res, key=lambda s: s['ngaysapxep'])
         return res
