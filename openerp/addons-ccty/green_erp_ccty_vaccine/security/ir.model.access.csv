@@ -24,6 +24,7 @@ access_ccty_vaccine_20,loai.hinh.so.huu,green_erp_ccty_base.model_loai_hinh_so_h
 access_ccty_vaccine_21,so.lo,green_erp_ccty_vaccine.model_so_lo,green_erp_ccty_vaccine.group_vaccine_manager,True,True,True,True
 access_ccty_vaccine_22,nhap.vaccine,green_erp_ccty_vaccine.model_nhap_vaccine,green_erp_ccty_vaccine.group_vaccine_manager,True,True,True,True
 access_ccty_vaccine_23,ton.vaccine,green_erp_ccty_vaccine.model_ton_vaccine,green_erp_ccty_vaccine.group_vaccine_manager,True,True,True,True
+access_ccty_vaccine_24,xuat.vaccine,green_erp_ccty_vaccine.model_xuat_vaccine,green_erp_ccty_vaccine.group_vaccine_manager,True,True,True,True
 
 
 
