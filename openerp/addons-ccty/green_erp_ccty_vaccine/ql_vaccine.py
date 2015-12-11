@@ -49,7 +49,7 @@ class nhap_vaccine(osv.osv):
         'ngay_nhap': fields.date('Ngày nhập'),
         'soluong': fields.integer('Số lượng'),
         'so_lo_id':fields.many2one('so.lo','Số lô', required = True),
-        'han_su_dung':fields.related('so_lo_id','han_su_dung',type='date',string='HSD đến'),
+        'han_su_dung':fields.date('HSD đến'),
         'state':fields.selection([('draft', 'Nháp'),('done', 'Duyệt')],'Status', readonly=True),
         'trang_thai_id': fields.many2one('trang.thai','Trạng thái', readonly=True),
         'hien_an': fields.function(_get_hien_an, type='boolean', string='Hien/An'),
@@ -108,6 +108,19 @@ class nhap_vaccine(osv.osv):
                                                           'ngay': line.ngay_nhap,
                                                              })
         return True
+
+    def onchange_hsd(self, cr, uid, ids,so_lo_id=False,name=False, context=None):
+        vals = {}
+        han_su_dung=''
+        if so_lo_id:
+            sql = '''
+                select han_su_dung from so_lo where id = %s and vacxin_id = %s
+            '''%(so_lo_id,name)
+            cr.execute(sql)
+            for hsd in cr.dictfetchall():
+                han_su_dung = hsd['han_su_dung']
+        vals = {'han_su_dung':han_su_dung}
+        return {'value': vals}
     
 nhap_vaccine()
 
@@ -143,7 +156,7 @@ class xuat_vaccine(osv.osv):
         'ngay_nhap': fields.date('Ngày xuất'),
         'soluong': fields.integer('Số lượng xuất'),
         'so_lo_id':fields.many2one('so.lo','Số lô', required = True),
-        'han_su_dung':fields.related('so_lo_id','han_su_dung',type='date',string='HSD đến'),
+        'han_su_dung':fields.date('HSD đến'),
         'state':fields.selection([('draft', 'Nháp'),('done', 'Duyệt')],'Status', readonly=True),
         'trang_thai_id': fields.many2one('trang.thai','Trạng thái', readonly=True),
         'hien_an': fields.function(_get_hien_an, type='boolean', string='Hien/An'),
@@ -220,6 +233,19 @@ class xuat_vaccine(osv.osv):
                                                           'ngay': line.ngay_nhap,
                                                              })
         return True
+
+    def onchange_hsd(self, cr, uid, ids,so_lo_id=False,name=False, context=None):
+        vals = {}
+        han_su_dung=''
+        if so_lo_id:
+            sql = '''
+                select han_su_dung from so_lo where id = %s and vacxin_id = %s
+            '''%(so_lo_id,name)
+            cr.execute(sql)
+            for hsd in cr.dictfetchall():
+                han_su_dung = hsd['han_su_dung']
+        vals = {'han_su_dung':han_su_dung}
+        return {'value': vals}
     
 xuat_vaccine()
 
@@ -227,7 +253,7 @@ class so_lo(osv.osv):
     _name = "so.lo"
     _columns = {
         'name': fields.char('Số lô',size = 50),
-        'han_su_dung':fields.date('HSD đến ngày'),
+        'han_su_dung':fields.date('HSD đến ngày',required=True),
         'vacxin_id': fields.many2one('loai.vacxin','Loại vaccine', required = True),
                 }
     

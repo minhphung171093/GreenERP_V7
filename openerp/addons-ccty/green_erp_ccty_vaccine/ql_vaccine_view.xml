@@ -37,7 +37,7 @@
                 			<field name="ngay_nhap" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
                 			<field name="name" options="{'create': false, 'create_edit': false}" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
                 			<field name="soluong" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-			        		<field name="so_lo_id" options="{'create': false, 'create_edit': false}" domain="[('vacxin_id','=',name)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+			        		<field name="so_lo_id" on_change="onchange_hsd(so_lo_id,name)" options="{'create': false, 'create_edit': false}" domain="[('vacxin_id','=',name)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
             				<field name="han_su_dung" readonly = "1" />
             				
             				<field name="hien_an" invisible = '1'/>
@@ -53,6 +53,7 @@
             <field name="res_model">nhap.vaccine</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
+            <field name="context">{'readonly_by_pass':1}</field> 
         </record>
 
     <!-- Xuất vaccine -->
@@ -91,7 +92,7 @@
                 			<field name="ngay_nhap" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 			        		<field name="soluong" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
 			        		<field name="name" options="{'create': false, 'create_edit': false}" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
-			        		<field name="so_lo_id" options="{'create': false, 'create_edit': false}" domain="[('vacxin_id','=',name)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
+			        		<field name="so_lo_id" on_change="onchange_hsd(so_lo_id,name)" options="{'create': false, 'create_edit': false}" domain="[('vacxin_id','=',name)]" attrs="{'readonly': [('chinh_sua_rel', 'not in', ['nhap', False])]}"/>
             				<field name="han_su_dung" readonly = "1" />
             				<field name="hien_an" invisible = '1'/>
             				<field name="chinh_sua_rel" invisible = '1'/>
@@ -106,6 +107,7 @@
             <field name="res_model">xuat.vaccine</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
+            <field name="context">{'readonly_by_pass':1}</field> 
         </record>
         
         <record model="ir.ui.view" id="so_lo_tree">
