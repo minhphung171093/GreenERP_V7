@@ -540,7 +540,7 @@ class nhap_xuat_canh_giasuc(osv.osv):
             ho = self.pool.get('chan.nuoi').browse(cr,uid,ten_ho_id)
             loai_ho_id = ho.loai_ho_id.id
             company_id = ho.company_id.id
-        if loai_id:
+        if loai_id and ten_ho_id:
             loai = self.pool.get('loai.vat').browse(cr,uid,loai_id)    
             for line_loaivat in loai.chitiet_loaivat:
                 chi_tiet.append((0,0,{
@@ -556,41 +556,41 @@ class nhap_xuat_canh_giasuc(osv.osv):
                                                   'name': line_loaivat.name,
                                                   'ct_loai_id': line_loaivat.id,
                                                   }))
-                if loai_select == 'xuat':
-                    sql = '''
-                        select id from ct_tiem_phong_lmlm_line where tp_lmlm_id in (select id from tiem_phong_lmlm where loai_id = %s and ho_chan_nuoi_id = %s 
-                        and trang_thai_id in (select id from trang_thai where stt = 3) )
-                    '''%(loai_id, ten_ho_id)
-                    cr.execute(sql)
-                    lmlm_ids = [r[0] for r in cr.fetchall()]
-                    if lmlm_ids:
-                        for lmlm_line in self.pool.get('ct.tiem.phong.lmlm.line').browse(cr,uid,lmlm_ids):
-                            sql = '''
-                                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
-                                from chi_tiet_da_tiem_phong where nhap_xuat_tiemphong_id in (select id from nhap_xuat_canh_giasuc 
-                                where trang_thai_id in (select id from trang_thai where stt = 3) and loai = 'xuat')
-                                and tiem_phong_id = %s and ct_loai_id = %s and vacxin_id = %s
-                            '''%(lmlm_line.tp_lmlm_id.id,lmlm_line.ct_loai_id.id,lmlm_line.tp_lmlm_id.vacxin_id.id)
-                            cr.execute(sql)
-                            so_luong_xuat = cr.dictfetchone()['so_luong']
-    #                              
-                            sql = '''
-                                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
-                                from ct_xuly_giasuc_tp_line where xuly_giasuc_id in (select id from xuly_giasuc 
-                                where trang_thai_id in (select id from trang_thai where stt = 3) )
-                                and tiem_phong_id = %s and ct_loai_id = %s and vacxin_id = %s
-                            '''%(lmlm_line.tp_lmlm_id.id,lmlm_line.ct_loai_id.id,lmlm_line.tp_lmlm_id.vacxin_id.id)
-                            cr.execute(sql)
-                            so_luong_chet = cr.dictfetchone()['so_luong']
-                     
-                            if lmlm_line.sl_thuc_tiem - so_luong_xuat - so_luong_chet> 0:
-                                tiem_phong.append((0,0,{
-                                              'tiem_phong_id': lmlm_line.tp_lmlm_id.id,
-                                              'ct_loai_id': lmlm_line.ct_loai_id.id,
-                                              'name': lmlm_line.name,
-                                              'vacxin_id':lmlm_line.tp_lmlm_id.vacxin_id.id,
-                                              'sl_tiem':lmlm_line.sl_thuc_tiem - so_luong_xuat - so_luong_chet,
-                                              }))
+            if loai_select == 'xuat':
+                sql = '''
+                    select id from ct_tiem_phong_lmlm_line where tp_lmlm_id in (select id from tiem_phong_lmlm where loai_id = %s and ho_chan_nuoi_id = %s 
+                    and trang_thai_id in (select id from trang_thai where stt = 3) )
+                '''%(loai_id, ten_ho_id)
+                cr.execute(sql)
+                lmlm_ids = [r[0] for r in cr.fetchall()]
+                if lmlm_ids:
+                    for lmlm_line in self.pool.get('ct.tiem.phong.lmlm.line').browse(cr,uid,lmlm_ids):
+                        sql = '''
+                            select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
+                            from chi_tiet_da_tiem_phong where nhap_xuat_tiemphong_id in (select id from nhap_xuat_canh_giasuc 
+                            where trang_thai_id in (select id from trang_thai where stt = 3) and loai = 'xuat')
+                            and tiem_phong_id = %s and ct_loai_id = %s and vacxin_id = %s
+                        '''%(lmlm_line.tp_lmlm_id.id,lmlm_line.ct_loai_id.id,lmlm_line.tp_lmlm_id.vacxin_id.id)
+                        cr.execute(sql)
+                        so_luong_xuat = cr.dictfetchone()['so_luong']
+#                              
+                        sql = '''
+                            select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
+                            from ct_xuly_giasuc_tp_line where xuly_giasuc_id in (select id from xuly_giasuc 
+                            where trang_thai_id in (select id from trang_thai where stt = 3) )
+                            and tiem_phong_id = %s and ct_loai_id = %s and vacxin_id = %s
+                        '''%(lmlm_line.tp_lmlm_id.id,lmlm_line.ct_loai_id.id,lmlm_line.tp_lmlm_id.vacxin_id.id)
+                        cr.execute(sql)
+                        so_luong_chet = cr.dictfetchone()['so_luong']
+                 
+                        if lmlm_line.sl_thuc_tiem + lmlm_line.sl_mien_dich - so_luong_xuat - so_luong_chet> 0:
+                            tiem_phong.append((0,0,{
+                                          'tiem_phong_id': lmlm_line.tp_lmlm_id.id,
+                                          'ct_loai_id': lmlm_line.ct_loai_id.id,
+                                          'name': lmlm_line.name,
+                                          'vacxin_id':lmlm_line.tp_lmlm_id.vacxin_id.id,
+                                          'sl_tiem':lmlm_line.sl_thuc_tiem + lmlm_line.sl_mien_dich - so_luong_xuat - so_luong_chet,
+                                          }))
                 
         return {'value': {'chitiet_loai_nx': chi_tiet,
                           'chitiet_da_tiem_phong': tiem_phong,

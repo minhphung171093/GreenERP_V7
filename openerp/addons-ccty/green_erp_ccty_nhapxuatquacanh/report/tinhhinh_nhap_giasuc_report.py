@@ -64,7 +64,7 @@ class Parser(report_sxw.rml_parse):
         quan = self.pool.get('quan.huyen').browse(self.cr,self.uid,nguon_quan_huyen_id).name or ''
         phuong = self.pool.get('phuong.xa').browse(self.cr,self.uid,nguon_phuong_xa_id).name or ''
         khu_pho = self.pool.get('khu.pho').browse(self.cr,self.uid,nguon_khu_pho_id).name or ''
-        return tinh + ' - ' + quan + ' - ' + phuong + ' - ' + khu_pho
+        return (tinh or '') + ' - ' + (quan or '') + ' - ' + (phuong or '') + ' - ' + (khu_pho or '')
 
     def get_loaivat(self):
         loaivat = []

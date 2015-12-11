@@ -62,7 +62,7 @@ class Parser(report_sxw.rml_parse):
         quan = self.pool.get('quan.huyen').browse(self.cr,self.uid,nguon_quan_huyen_id).name
         phuong = self.pool.get('phuong.xa').browse(self.cr,self.uid,nguon_phuong_xa_id).name
         khu_pho = self.pool.get('khu.pho').browse(self.cr,self.uid,nguon_khu_pho_id).name
-        return tinh + ' - ' + quan + ' - ' + phuong + ' - ' + khu_pho
+        return (tinh or '') + ' - ' + (quan or '') + ' - ' + (phuong or '') + ' - ' + (khu_pho or '')
 
     def get_loaivat(self):
         loaivat = []
@@ -144,10 +144,10 @@ class Parser(report_sxw.rml_parse):
                                     }
                             ))
             
-        res.append((0,0,{
-                             'loaivat':u'Tổng cộng','ct': '','ct_id': ''
-                            }
-                    ))
+            res.append((0,0,{
+                                'loaivat':u'Cộng '+ loai_vat.name,'ct': '','ct_id': ''
+                                }
+                        ))
             
         return res
     
@@ -179,7 +179,13 @@ class Parser(report_sxw.rml_parse):
 #             if sl['so_luong']!=0:
 #                 soluong = sl and sl['so_luong'] or False
                 
-            if tong == u'Tổng cộng':
+        sql = '''
+            select id from loai_vat
+        '''
+        self.cr.execute(sql)
+        loaivat_ids = [r[0] for r in self.cr.fetchall()]
+        for loai_vat in self.pool.get('loai.vat').browse(self.cr, self.uid, loaivat_ids):                
+            if tong == u'Cộng '+ loai_vat.name:
                 context = {}
                 sum = 0
                 wizard_data = self.localcontext['data']['form']
@@ -188,8 +194,8 @@ class Parser(report_sxw.rml_parse):
                     sql = '''
                         select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl from chi_tiet_loai_nhap_xuat 
                         where nhap_xuat_loai_id in (select id from nhap_xuat_canh_giasuc 
-                        where ten_ho_id = %s and ngay_kiem_tra = '%s' and id = %s and trang_thai_id in (select id from trang_thai where stt = 3))
-                    '''%(ten_ho_id[0], row, nhap_id)
+                        where ten_ho_id = %s and ngay_kiem_tra = '%s' and id = %s and loai_id = %s and trang_thai_id in (select id from trang_thai where stt = 3))
+                    '''%(ten_ho_id[0], row, nhap_id,loai_vat.id)
                     self.cr.execute(sql)
                     soluong = self.cr.dictfetchone()['sl']
         return soluong
