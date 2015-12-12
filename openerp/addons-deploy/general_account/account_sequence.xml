@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate='1'>
+<!-- Hoa Don Dau Vao -->
+        <record id="sequence_hoadon_dauvao_1" model="ir.sequence.type">
+            <field name="name">Hoa Don Dau Vao</field>
+            <field name="code">so.hd.dau.vao.seq</field>
+        </record>
+        
+        <record id="sequence_hoadon_dauvao_1_item" model="ir.sequence">
+            <field name="name">Hoa Don Dau Vao</field>
+            <field name="code">so.hd.dau.vao.seq</field>
+            <field name="padding">1</field>
+            <field name="number_next_actual">1</field>
+            <field name="implementation">no_gap</field>
+        </record>
+
+	</data>
+</openerp>

@@ -54,6 +54,7 @@
             'report/theodoi_hethan_view.xml',
             'report/dulieu_donghang_kho_report_view.xml',
             'report/bien_ban_giao_nhan_kh_gui_hang.xml',
+            'report/bien_ban_gui_hang.xml',
             'stock_view.xml',
             'sequence.xml',
             ],

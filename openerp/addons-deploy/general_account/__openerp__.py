@@ -19,7 +19,7 @@
         "security/security.xml",
         "security/account_security.xml",
         "security/ir.model.access.csv",
-       
+        "account_sequence.xml",
         "menu.xml",
         "property_data.xml",
 #         "project/project_view.xml",
@@ -31,7 +31,6 @@
 #         "account_view.xml",
         "wizard/receivable_payable_reconciliation.xml",
         "account_invoice_view.xml",
-        
         "account_view.xml",
         "master_account_view.xml",
         

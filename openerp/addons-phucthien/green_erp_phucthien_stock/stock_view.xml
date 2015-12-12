@@ -1045,6 +1045,7 @@
 					<field name="partner_id"/>
 					<field name="invoice_id"/>
                     <field name="picking_id"/>
+                    <field name="date"/>
 				</tree>
 			</field>
 		</record>
@@ -1056,6 +1057,7 @@
 	            <form string="Khách hàng gửi kho" version="7.0"> 
 	            	<header>
 	                    <button name="bt_giaohang" states = 'cho_gh' string="Giao Hàng" type="object" class="oe_highlight" />
+	                    <button name="bt_print_bbgh" states = 'cho_gh' string="In biên bản gửi hàng" type="object" class="oe_highlight" />
 	                    <field name="state" widget="statusbar" statusbar_visible="cho_gh,done"/>
 		            </header>
 	            	<sheet>
@@ -1063,6 +1065,7 @@
                     		<field name="partner_id"/>
                     		<field name="invoice_id"/>
                     		<field name="picking_id"/>
+                    		<field name="date"/>
 	                    </group>
 	                    <notebook>
 							<page string = "Thông tin gửi kho">
@@ -1079,22 +1082,36 @@
 								</field>
 							</page>
 							<page string = "Thông tin lấy hàng">
-								<field name="giaohang_line" nolabel='1' readonly = '1'>
+								<field name="giaohang_line" nolabel='1'>
 									<tree>
 										<field name="date"/>
+										<field name="ngay_gui"/>
+										<field name="ngay_nhan"/>
+										<field name="state_receive" invisible="1"/>
+										<button name="status_send" attrs="{'invisible':[('state_receive','!=','draft')]}" string="Send" icon="gtk-go-up" type="object" class="oe_highlight"/>
+										<button name="status_receive" attrs="{'invisible':[('state_receive','!=','da_gui')]}" string="Receive" icon="gtk-goto-bottom" type="object" class="oe_highlight"/>
 										<button name="bt_print_bbgn" string="In biên bản giao nhận" type="object" class="oe_highlight" icon="gtk-print"/>
+										<button name="bt_print_bbgn_hh" string="In biên bản giao nhận hàng hóa" type="object" class="oe_highlight" icon="gtk-print"/>
 									</tree>
 									<form version="7.0">
 										<header>
 						                    <button name="bt_print_bbgn" string="In biên bản giao nhận" type="object" class="oe_highlight"/>
+						                    <button name="bt_print_bbgn_hh" string="In biên bản giao nhận hàng hóa" type="object" class="oe_highlight"/>
 							            </header>
-										<group>
-											<field name="date"/>
+							            <group>
+											<group>
+												<field name="date"/>
+												<field name="state_receive" invisible="1"/>
+											</group>
+											<group>
+												<field name="ngay_gui"/>
+												<field name="ngay_nhan"/>
+											</group>
 										</group>
 										<group>
-											<notebook>
+											<notebook >
 												<page string = "Chi tiết lấy hàng">
-													<field name="ct_giaohang_line" nolabel='1'>
+													<field name="ct_giaohang_line" nolabel='1' readonly = '1'>
 														<tree editable='bottom'>
 															<field name="product_code"/>
 															<field name="product_id" />
@@ -1128,6 +1145,7 @@
                     		<field name="partner_id"/>
                     		<field name="invoice_id"/>
                     		<field name="picking_id"/>
+                    		<field name="date"/>
 	                    </group>
 	                    <notebook>
 							<page string = "Chi tiết gửi hàng">

@@ -25,5 +25,29 @@
 	        string="Biên bản giao nhận"
 	        rml="green_erp_phucthien_stock/report/bien_ban_giao_nhan_kh_gui_hang.odt"/> 
 	        
+	   <record id="bienbangiaonhan_khguihang_hanghoa_report" model="ir.actions.report.xml">
+	        <field name="name">bienbangiaonhan.khguihang.hanghoa.report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">giaohang.line</field>
+	        <field name="report_name">Biên bản giao nhận hàng hóa</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-odt</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-doc'),('compatible_types','=','oo-odt')]"/>
+	        <field name="parser_loc">green_erp_phucthien_stock/report/bien_ban_giao_nhan_kh_gui_hang.py</field>
+	        <field name="report_rml">green_erp_phucthien_stock/report/bienbangiaonhan_khguihang_hanghoa.odt</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record> 
+    	   
+    	<report 
+			auto="False" 
+			menu="True"
+			id="bienbangiaonhan_khguihang_hanghoa_report" 
+			model="giaohang.line" 
+			name="bienbangiaonhan_khguihang_hanghoa_report"
+	        string="Biên bản giao nhận hàng hóa"
+	        rml="green_erp_phucthien_stock/report/bienbangiaonhan_khguihang_hanghoa.odt"/> 
+	        
 	</data>
 </openerp>

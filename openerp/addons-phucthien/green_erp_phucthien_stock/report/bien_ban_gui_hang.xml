@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+    	 <record id="bien_ban_gui_hang_report" model="ir.actions.report.xml">
+	        <field name="name">bien.ban.gui.hang.report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">trahang.chokho</field>
+	        <field name="report_name">Biên bản gửi hàng</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-odt</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-doc'),('compatible_types','=','oo-odt')]"/>
+	        <field name="parser_loc">green_erp_phucthien_stock/report/bien_ban_gui_hang.py</field>
+	        <field name="report_rml">green_erp_phucthien_stock/report/bien_ban_gui_hang.odt</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record> 
+    	   
+    	<report 
+			auto="False" 
+			menu="True"
+			id="bien_ban_gui_hang_report" 
+			model="trahang.chokho" 
+			name="bien_ban_gui_hang_report"
+	        string="Biên bản gửi hàng"
+	        rml="green_erp_phucthien_stock/report/bien_ban_gui_hang.odt"/> 
+	        
+	</data>
+</openerp>

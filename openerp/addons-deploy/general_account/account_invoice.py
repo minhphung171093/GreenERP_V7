@@ -250,10 +250,12 @@ class account_invoice(osv.osv):
         'product_showin_report': fields.function(_get_product_showin_report, type='char', store=True),
         'invoice_refund': fields.boolean('Invoice Refund'),
         'invoice_dieuchinh': fields.boolean('Invoice Refund'),
+#         'supplier_invoice_number': fields.char('Supplier Invoice Number', size=64, help="The reference of this invoice as provided by the supplier.", readonly=True, states={'draft':[('readonly',False)]}),
     }
     _defaults = {
         'invoice_refund': False,
         'invoice_dieuchinh': False,
+#         'supplier_invoice_number': '/',
                  }
     
     
@@ -264,6 +266,9 @@ class account_invoice(osv.osv):
             book_obj = book.browse(cr,uid,vals['invoice_book_id'])
             number = book.create_sohoadonketiep(cr,uid,vals['invoice_book_id'],context)
             vals.update({'reference_number':number,'reference':book_obj.kyhieuhoadon})
+        if vals.get('supplier_invoice_number',False):
+            if vals.get('supplier_invoice_number','/')=='/':
+                vals['supplier_invoice_number'] = self.pool.get('ir.sequence').get(cr, uid, 'so.hd.dau.vao.seq') or '/'
         return super(account_invoice, self).create(cr, uid, vals, context)
     
     def write(self,cr,uid,ids,vals,context=None):

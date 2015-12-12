@@ -665,6 +665,7 @@ class stock_picking(osv.osv):
             'shop_id': shop_ids and shop_ids[0] or False,
             'address': picking.diachi_giaohang_id and picking.diachi_giaohang_id.name or False,
             'supplier_invoice_number': picking.so_hd or '',
+#             'supplier_invoice_number': self.pool.get('ir.sequence').get(cr, uid, 'so.hd.dau.vao.seq') or '/',
         }
         cur_id = self.get_currency_id(cr, uid, picking)
         if cur_id:
@@ -1758,11 +1759,21 @@ class trahang_chokho(osv.osv):
         'picking_id': fields.many2one('stock.picking', 'Phiếu xuất kho'),
         'trahang_chokho_line': fields.one2many('trahang.chokho.line','trahang_id','Tra Hang'),
         'giaohang_line': fields.one2many('giaohang.line','trahang_id','Giao Hang'),
+        'date': fields.date('Ngày gửi hàng', required = True),
         'state': fields.function(_trangthai, string='Trạng thái', type='selection', selection=[('cho_gh','Chờ giao hàng'),('done','Đã giao hàng')]),
     }
     
     def bt_save(self, cr, uid, ids, context=None):
         return {'type': 'ir.actions.act_window_close'}
+    
+    def bt_print_bbgh(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        datas = {'ids': ids}
+        datas['model'] = 'trahang.chokho'
+        datas['form'] = self.read(cr, uid, ids)[0]
+        datas['form'].update({'active_id':context.get('active_ids',False)})
+        return {'type': 'ir.actions.report.xml', 'report_name': 'bien_ban_gui_hang_report', 'datas': datas}
     
     def bt_giaohang(self, cr, uid, ids, context=None):
         res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
@@ -1830,12 +1841,22 @@ class giaohang_line(osv.osv):
     
     _columns = {
         'trahang_id': fields.many2one('trahang.chokho', 'Tra Hang Hoa', ondelete = 'cascade'),
-        'date': fields.date('Ngày lấy hàng', required = True),
+        'date': fields.date('Ngày lấy hàng'),
+        'ngay_gui':fields.date('Ngày gửi'),
+        'ngay_nhan':fields.date('Ngày nhận lại'),
         'ct_giaohang_line': fields.one2many('ct.giaohang.line','giaohang_id','Giao Hang'),
+        'state_receive':fields.selection([('draft','Tạo mới'),('da_gui','Đã gửi'),('da_nhan','Đã nhận')],'Trạng thái',required=True),
     }
     _defaults = {
         'date': time.strftime('%Y-%m-%d'),
+        'state_receive':'draft',
                  }
+    
+    def status_send(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {'ngay_gui':datetime.now().strftime('%Y-%m-%d'),'state_receive':'da_gui'})
+    
+    def status_receive(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {'ngay_nhan':datetime.now().strftime('%Y-%m-%d'),'state_receive':'da_nhan'})
     
     def bt_save(self, cr, uid, ids, context=None):
         return {'type': 'ir.actions.act_window_close'}
@@ -1848,6 +1869,15 @@ class giaohang_line(osv.osv):
         datas['form'] = self.read(cr, uid, ids)[0]
         datas['form'].update({'active_id':context.get('active_ids',False)})
         return {'type': 'ir.actions.report.xml', 'report_name': 'bien_ban_giao_nhan_kh_gui_hang_report', 'datas': datas}
+    
+    def bt_print_bbgn_hh(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        datas = {'ids': ids}
+        datas['model'] = 'giaohang.line'
+        datas['form'] = self.read(cr, uid, ids)[0]
+        datas['form'].update({'active_id':context.get('active_ids',False)})
+        return {'type': 'ir.actions.report.xml', 'report_name': 'bienbangiaonhan_khguihang_hanghoa_report', 'datas': datas}
     
 giaohang_line()
 
