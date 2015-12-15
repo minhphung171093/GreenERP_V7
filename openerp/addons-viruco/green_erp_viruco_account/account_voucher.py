@@ -48,17 +48,46 @@ class account_voucher(osv.osv):
         user = self.pool.get('res.users').browse(cr, uid, uid)
         return user.context_shop_id.id or False
     
+    def _check_tien_thanh_toan(self, cr, uid, ids, context=None):
+        for line in self.browse(cr, uid, ids, context=context):
+            if line.type=='payment':
+                if line.hop_dong_id and line.amount:
+                    sql = '''
+                        select case when sum(amount)!=0 then sum(amount) else 0 end amount from account_voucher
+                        where state = 'posted' and hop_dong_id = %s and type='payment'
+                    '''%(line.hop_dong_id.id)
+                    cr.execute(sql)
+                    amount_sum = cr.dictfetchone()['amount']
+                    hop_dong = self.pool.get('hop.dong').browse(cr,uid,line.hop_dong_id.id)
+                    if line.amount > (hop_dong.amount_total - amount_sum):
+                        raise osv.except_osv(_('Cảnh báo!'), _('Số tiền thanh toán tối đa không được vượt quá %s !')%(hop_dong.amount_total - amount_sum))
+                        return False
+        return True
+
+    _constraints = [
+        (_check_tien_thanh_toan, 'Cảnh báo !', []),
+    ]
+
+#     def _get_hop_dong_id(self, cr, uid, context=None):
+#         if context is None:
+#             context = {}
+#         user = self.pool.get('res.users').browse(cr, uid, uid)
+#         return user.context_shop_id.id or False
+    
     _defaults = {
         'nguoi_de_nghi_id': lambda self, cr, uid, context=None: uid,
         'shop_id': _get_shop_id,
         'so_thanhtoan':'/',
-        'unshow_financial_report':False
+        'unshow_financial_report':False,
+#         'hop_dong_id':_get_hop_dong_id,
+        
     }
     
     def onchange_hopdong_id(self, cr, uid, ids, hop_dong_id, context=None):
         if context is None:
             context = {}
         vals = {}
+        warning = {}
         vals['dot_thanhtoan_ids'] = False
         if hop_dong_id:
             hop_dong = self.pool.get('hop.dong').browse(cr, uid, hop_dong_id)
@@ -69,15 +98,16 @@ class account_voucher(osv.osv):
                 voucher_ids = self.search(cr, uid, [('hop_dong_id','=',hop_dong_id),('state','=','posted')],order='id')
             vals['dot_thanhtoan_ids']=[(6,0,voucher_ids)]
             vals['partner_id']=hop_dong.partner_id.id
-        return {'value':vals}
 
-    def create(self, cr, uid, vals, context=None):
-        user = self.pool.get('res.users').browse(cr,uid,uid)
+        return {'warning': warning,'value':vals}
 
-                    
-                    
-        new_id = super(don_ban_hang, self).create(cr, uid, vals, context=context)    
-        return new_id
+#     def create(self, cr, uid, vals, context=None):
+#         user = self.pool.get('res.users').browse(cr,uid,uid)
+# 
+#                     
+#                     
+#         new_id = super(don_ban_hang, self).create(cr, uid, vals, context=context)    
+#         return new_id
     
     def create(self, cr, uid, vals, context=None):
         if context is None:

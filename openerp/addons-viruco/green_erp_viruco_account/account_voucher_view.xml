@@ -179,7 +179,7 @@
 	        <field name="arch" type="xml">
 	        	<xpath expr="//page[@string='Phương thức thanh toán']" position="after">
 	        		<page string="Thanh toán nhà cung cấp">
-						<field name="thanh_toan_ncc_line" context = "{'default_type': 'payment', 'tree_view_ref':'account_voucher.view_voucher_tree','form_view_ref':'account_voucher.view_vendor_payment_form'}"/>
+						<field name="thanh_toan_ncc_line" context = "{'default_hop_dong_id':id,'default_type': 'payment', 'tree_view_ref':'account_voucher.view_voucher_tree','form_view_ref':'account_voucher.view_vendor_payment_form'}"/>
 					</page>
 	        	</xpath>
 	        </field>

@@ -230,7 +230,7 @@ class hop_dong(osv.osv):
         'partial_shipment':fields.boolean('Partial shipment',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'transshipment':fields.selection([('allowed','Allowed'),('not_allowed','Not Allowed')],'Transshipment', states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'thongbao_nhanhang':fields.char('Thông báo nhận hàng',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
-        'chat_luong':fields.char('Chất lượng',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'chat_luong':fields.text('Chất lượng',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'destinaltion':fields.many2one('res.country','Country',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'arbitration_id': fields.many2one('sale.arbitration','Arbitration',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
 #         'phucluc_hd':fields.text('Phụ lục Hợp đồng'),
@@ -326,6 +326,7 @@ class hop_dong(osv.osv):
         'currency_company_id': lambda self, cr, uid, c: self.pool.get('res.users').browse(cr, uid, uid).company_id.currency_id.id,
         'user_id': lambda self, cr, uid, context=None: uid,
         'thongbao_nhanhang':'Bên B thông báo cho bên A trước  ngày',
+        'chat_luong':u'Hàng rời đóng bành 33.33kgs, cân đủ, không cong queo,không sống điểm, không ẩm mốc , không lẫn tạp chất, kéo ra có độ đàn hồi không rách. Hàng đóng bao PE có nhiệt dộ nóng chảy ≤ 109\u2103, hàn kín miệng bao. Hàng không tem.'
     }
     
     def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
@@ -1325,8 +1326,10 @@ class don_mua_hang(osv.osv):
         pricelist_id = False
 
         if 'type' in vals:
-            if (vals['type']=='dmh_trongnuoc') and vals.get('name','/')=='/':
-                vals['name'] = self.pool.get('ir.sequence').get(cr, uid, 'don.mua.hang.noi') or '/'
+            if (vals['type']=='dmh_trongnuoc'):
+                if (vals['partner_id']) and vals.get('name','/')=='/':
+                    partner = self.pool.get('res.partner').browse(cr,uid,vals['partner_id'])
+                    vals['name'] = self.pool.get('ir.sequence').get(cr, uid, 'don.mua.hang.noi') + (partner.ma_kh or '') or '/'
             if (vals['type']=='dmh_trongnuoc'):
                 currency_ids = currency_obj.search(cr,uid,[('name','=','VND')])
                 if currency_ids:
