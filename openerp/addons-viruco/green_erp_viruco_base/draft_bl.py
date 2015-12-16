@@ -185,7 +185,7 @@ class description_line(osv.osv):
             if len(a)==2 and len(a[0])!=11:
                 warning = {
                     'title': _('Cảnh báo!'),
-                    'message' : _('Container No hiện đang chưa đúng (cần có đủ 7 ký tự số) !')
+                    'message' : _('Container No hiện đang chưa đúng (cần có đủ 7 ký tự, số) !')
                 }
                         
         return {'warning': warning}
