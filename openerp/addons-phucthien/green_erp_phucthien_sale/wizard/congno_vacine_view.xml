@@ -14,6 +14,7 @@
                     </group>
                     <footer>
                         <button name="print_report" string="In" type="object" class="oe_highlight"/>
+                        <button string="Review" type="object" name="review_report_in" context="{'type_report':'congno_vacine_report'}" icon='gtk-execute'/>
                         or
                         <button string="Hủy bỏ" class="oe_link" special="cancel" />
                     </footer>
@@ -42,6 +43,7 @@
                     </group>
                     <footer>
                         <button name="print_report" string="In" type="object" class="oe_highlight"/>
+                        <button string="Review" type="object" name="review_report_in" context="{'type_report':'congno_mypham_report'}" icon='gtk-execute'/>
                         or
                         <button string="Hủy bỏ" class="oe_link" special="cancel" />
                     </footer>
@@ -70,6 +72,7 @@
                     </group>
                     <footer>
                         <button name="print_report" string="In" type="object" class="oe_highlight"/>
+                        <button string="Review" type="object" name="review_report_in" context="{'type_report':'congno_mypham_report'}" icon='gtk-execute'/>
                         or
                         <button string="Hủy bỏ" class="oe_link" special="cancel" />
                     </footer>

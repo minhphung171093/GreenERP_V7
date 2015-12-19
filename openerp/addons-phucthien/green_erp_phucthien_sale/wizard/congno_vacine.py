@@ -19,9 +19,21 @@
 #
 ##############################################################################
 import time
+from datetime import datetime
+from openerp.report import report_sxw
+from openerp import pooler
 from openerp.osv import osv,fields
 from openerp.tools.translate import _
+import random
+# from datetime import date
+from dateutil.rrule import rrule, DAILY
 
+DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
+DATE_FORMAT = "%Y-%m-%d"
+
+from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT, float_compare
+from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 
 class congno_vacine(osv.osv_memory):
     _name = 'congno.vacine'
@@ -48,7 +60,195 @@ class congno_vacine(osv.osv_memory):
         datas['form'] = self.read(cr, uid, ids)[0]
         datas['form'].update({'active_id':context.get('active_ids',False)})
         return {'type': 'ir.actions.report.xml', 'report_name': 'congno_vacine_report', 'datas': datas}
-     
+    def review_report_in(self, cr, uid, ids, context=None): 
+        report_obj = self.pool.get('congno.vacine.review')
+        report = self.browse(cr, uid, ids[0])   
+        self.date_from = False
+        self.date_to = False
+        self.cr = cr
+        self.uid = uid
+        self.tong_tien = 0
+        self.tong_exim = 0
+        self.tong_acb = 0
+        self.tong_agr = 0
+        def convert_date(o, date):
+            if date:
+                date = datetime.strptime(date, DATE_FORMAT)
+                return date.strftime('%d/%m/%Y')       
+        def display_address(o, partner_id):
+            partner = self.pool.get('res.partner').browse(self.cr, self.uid, partner_id)
+            address = partner.street and partner.street + ' , ' or ''
+            address += partner.street2 and partner.street2 + ' , ' or ''
+            address += partner.city and partner.city.name + ' , ' or ''
+            if address:
+                address = address[:-3]
+            return address       
+        def get_lines(o):
+            user_ids = [r.id for r in o.user_id]
+            invoice_obj = self.pool.get('account.invoice') 
+            period_obj = self.pool.get('account.period')
+            date_from = o.date_from   
+            date_to =  o.date_to
+    #         period_start = period_obj.browse(self.cr,self.uid,period_id[0]).date_start
+    #         period_stop = period_obj.browse(self.cr,self.uid,period_id[0]).date_stop
+            cus_ids = []
+            res = []
+            inv_ids = []
+            if not user_ids:
+                sql ='''
+                 select id from account_invoice where id in (select distinct invoice_id from account_invoice_line where product_id in (select product_product.id
+                                from product_product,product_template 
+                                where product_template.categ_id in (select id from product_category where code ='VC') 
+                                and product_product.product_tmpl_id = product_template.id) and invoice_id in 
+                                    (select id from account_invoice where date_invoice between '%s' and '%s'  and type ='out_invoice' and state in ('open','paid')))
+                                order by date_invoice
+                '''%(date_from,date_to)
+                self.cr.execute(sql)   
+                inv_ids = [r[0] for r in self.cr.fetchall()]
+            else:
+                user_ids = str(user_ids).replace("[","(")
+                user_ids = str(user_ids).replace("]",")")
+                sql = '''
+                    select id from res_partner where user_id in %s and customer is True
+                '''%(user_ids)
+                self.cr.execute(sql)
+                cus_ids = [r[0] for r in self.cr.fetchall()]  
+                if cus_ids:
+                    cus_ids = str(cus_ids).replace("[","(")
+                    cus_ids = str(cus_ids).replace("]",")")
+                    sql ='''
+                     select id from account_invoice where id in (select distinct invoice_id from account_invoice_line where product_id in (select product_product.id
+                                    from product_product,product_template 
+                                    where product_template.categ_id in (select id from product_category where code ='VC') 
+                                    and product_product.product_tmpl_id = product_template.id) and invoice_id in 
+                                        (select id from account_invoice where date_invoice between '%s' and '%s' and type ='out_invoice' and state in ('open','paid')))
+                                    and partner_id in %s
+                    '''%(date_from,date_to,cus_ids)
+                    self.cr.execute(sql)   
+                    inv_ids = [r[0] for r in self.cr.fetchall()] 
+            if inv_ids:
+                for inv in inv_ids:
+                    tien_mat = 0
+                    exim = 0
+                    acb = 0 
+                    agr = 0
+                    ngay_tt = ''
+                    so_ngay_no = 0
+                    sql = ''' 
+                        select date_invoice, reference_number, amount_total, rp.name as cus, rp.id as cus_id, rp.internal_code as code from account_invoice ai, res_partner rp 
+                            where ai.partner_id = rp.id and ai.id = %s 
+                            
+                    '''%(inv)
+                    self.cr.execute(sql) 
+                    inv_id = self.cr.dictfetchone()
+                    
+                    sql = '''
+                        select case when sum(residual)!=0 then sum(residual) else 0 end nodk from account_invoice 
+                        where state='open' and date_invoice < '%s' and partner_id = %s
+                    '''%(date_from,inv_id['cus_id'])
+                    self.cr.execute(sql) 
+                    nodk = self.cr.fetchone()[0]
+                    invoice_id = invoice_obj.browse(self.cr,self.uid,inv)
+                    nock = nodk + (invoice_id.residual and invoice_id.residual or 0)
+                    tdv_name = self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).user_id and self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).user_id.name or ''
+                    kv = self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).state_id and self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).state_id.name or ''
+                    for pay in invoice_id.payment_ids:
+                        if pay.journal_id.code == '11':
+                            tien_mat += pay.credit
+                            self.tong_tien += tien_mat
+                        if pay.journal_id.code == '12':
+                            acb += pay.credit
+                            self.tong_acb += acb
+                        if pay.journal_id.code == '13':
+                            exim += pay.credit
+                            self.tong_exim += exim
+                        if pay.journal_id.code == '16':
+                            agr += pay.credit 
+                            self.tong_agr += agr
+                        if pay.date:
+                            ngay_tt +=  convert_date(o,pay.date) + ', '
+                    sql='''
+                        select ma.name from account_invoice_line acc, product_product pr , manufacturer_product ma
+                        where invoice_id = %s and acc.product_id = pr.id and ma.id = pr.manufacturer_product_id
+                    '''%(inv)
+                    cr.execute(sql) 
+                    hang_sx = self.cr.fetchone() or False
+                    if invoice_id.state != 'paid':
+                        sql='''
+                            select case when ('%s'::date - date_invoice)!=0 then ('%s'::date - date_invoice) else 0 end ngayno from account_invoice where id = %s
+                        '''%(date_to,date_to,inv)
+                        self.cr.execute(sql) 
+                        so_ngay_no = self.cr.fetchone()[0]
+                    res.append({'cus_name': inv_id['cus'],
+                                'dia_chi': inv_id['cus_id'] and display_address(o,inv_id['cus_id']) or False,
+                                'ngay_xuat': inv_id['date_invoice'] or False,
+                                'date_invoice':inv_id['date_invoice'],
+                                'reference_number':inv_id['reference_number'],
+                                'internal_code':inv_id['code'],
+                                'nodk': nodk,
+                                'phatsinh':float(inv_id['amount_total']),
+                                'tienmat': tien_mat,
+                                'acb': acb,
+                                'exim': exim,
+                                'agr': agr,
+                                'nock': nock,
+                                'ngay_tt': ngay_tt and ngay_tt[:-2] or '',
+                                'tdv_name': tdv_name,
+                                'kv': kv,
+                                'hang_sx': hang_sx and hang_sx[0] or '',
+                                'so_ngay_no':so_ngay_no,
+                                })
+                    
+            return res     
+        def get_info(o):
+            mang=[]
+            dem = 0
+            for line in get_lines(o):
+                dem = dem + 1
+                mang.append((0,0,{
+                        'stt':dem,
+                        'ngay_xuat': line['ngay_xuat'] or False,
+                        'ma_kh': line['internal_code'] or '',
+                        'so_hd':line['reference_number'] or '',
+                        'khach_hang':line['cus_name'] or '',
+                        'dia_chi':line['dia_chi'] or '',
+                        'no_dk':line['nodk'] or '',
+                        'phat_sinh':line['phatsinh'] or '',
+                        'tt_tien_mat':line['tienmat'] or '',
+                        'tt_ck_exim': line['exim'] or '',
+                        'tt_ck_acb': line['acb'] or '',
+                        'tt_ck_agr':line['agr'] or '',
+                        'no_ck':line['nock'] or '',
+                        'ngay_thanh_toan':line['ngay_tt'] or '',
+                        'so_ngay_no':line['so_ngay_no'] or '',
+                        'tdv':line['tdv_name'] or '',
+                        'tinh_tp':line['kv'] or '',
+                        'hang':line['hang_sx'] or '',
+                                 }))
+            return mang 
+        vals = {
+            'date_from':report.date_from,
+            'date_to':report.date_to,
+#             'date_from_title':'Từ ngày: ',
+#             'date_to_title':'đến ngày: ',
+#             'tong_begin_dr':get_info(report)[self.sum_amount],
+#             'tong_period_dr':get_info(report)[self.sum_amount_2],
+            'congno_vacine_review_line':get_info(report),
+        }        
+        report_id = report_obj.create(cr, uid, vals)
+        res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
+                                        'green_erp_phucthien_sale', 'congno_vacine_review')
+        return {
+                    'name': 'Công Nợ Vaccine',
+                    'view_type': 'form',
+                    'view_mode': 'form',
+                    'res_model': 'congno.vacine.review',
+                    'domain': [],
+                    'view_id': res and res[1] or False,
+                    'type': 'ir.actions.act_window',
+                    'target': 'current',
+                    'res_id': report_id,
+                }        
 congno_vacine()
 
 class congno_mypham(osv.osv_memory):
@@ -76,6 +276,196 @@ class congno_mypham(osv.osv_memory):
         datas['form'] = self.read(cr, uid, ids)[0]
         datas['form'].update({'active_id':context.get('active_ids',False)})
         return {'type': 'ir.actions.report.xml', 'report_name': 'congno_mypham_report', 'datas': datas}
+
+    def review_report_in(self, cr, uid, ids, context=None): 
+        report_obj = self.pool.get('congno.mypham.review')
+        report = self.browse(cr, uid, ids[0])   
+        self.date_from = False
+        self.date_to = False
+        self.cr = cr
+        self.uid = uid
+        self.tong_tien = 0
+        self.tong_exim = 0
+        self.tong_acb = 0
+        self.tong_agr = 0
+        def convert_date(o, date):
+            if date:
+                date = datetime.strptime(date, DATE_FORMAT)
+                return date.strftime('%d/%m/%Y')       
+        def display_address(o, partner_id):
+            partner = self.pool.get('res.partner').browse(self.cr, self.uid, partner_id)
+            address = partner.street and partner.street + ' , ' or ''
+            address += partner.street2 and partner.street2 + ' , ' or ''
+            address += partner.city and partner.city.name + ' , ' or ''
+            if address:
+                address = address[:-3]
+            return address       
+        def get_lines(o):
+            user_ids = [r.id for r in o.user_ids]
+            invoice_obj = self.pool.get('account.invoice') 
+            period_obj = self.pool.get('account.period')
+            date_from = o.date_from   
+            date_to =  o.date_to
+    #         period_start = period_obj.browse(self.cr,self.uid,period_id[0]).date_start
+    #         period_stop = period_obj.browse(self.cr,self.uid,period_id[0]).date_stop
+            cus_ids = []
+            res = []
+            inv_ids = []
+            my_pham_id = self.pool.get('product.category').search(self.cr,self.uid,[('code','=','MP')])
+            my_pham_ids = self.pool.get('product.category').search(self.cr,self.uid,[('parent_id','child_of',my_pham_id)])
+            my_pham_ids = str(my_pham_ids).replace('[', '(')
+            my_pham_ids = str(my_pham_ids).replace(']', ')')
+            if not user_ids:
+                sql ='''
+                 select id from account_invoice where id in (select distinct invoice_id from account_invoice_line where product_id in (select product_product.id
+                                from product_product,product_template 
+                                where product_template.categ_id in %s
+                                and product_product.product_tmpl_id = product_template.id) and invoice_id in 
+                                    (select id from account_invoice where date_invoice between '%s' and '%s'  and type ='out_invoice' and state in ('open','paid')))
+                                order by date_invoice
+                '''%(my_pham_ids,date_from,date_to)
+                self.cr.execute(sql)   
+                inv_ids = [r[0] for r in self.cr.fetchall()]
+            else:
+                user_ids = str(user_ids).replace("[","(")
+                user_ids = str(user_ids).replace("]",")")
+                sql = '''
+                    select id from res_partner where user_id in %s and customer is True
+                '''%(user_ids)
+                self.cr.execute(sql)
+                cus_ids = [r[0] for r in self.cr.fetchall()]  
+                if cus_ids:
+                    cus_ids = str(cus_ids).replace("[","(")
+                    cus_ids = str(cus_ids).replace("]",")")
+                    sql ='''
+                     select id from account_invoice where id in (select distinct invoice_id from account_invoice_line where product_id in (select product_product.id
+                                    from product_product,product_template 
+                                    where product_template.categ_id in %s 
+                                    and product_product.product_tmpl_id = product_template.id) and invoice_id in 
+                                        (select id from account_invoice where date_invoice between '%s' and '%s'  and type ='out_invoice' and state in ('open','paid')))
+                                    and partner_id in %s
+                    '''%(my_pham_ids,date_from,date_to,cus_ids)
+                    self.cr.execute(sql)   
+                    inv_ids = [r[0] for r in self.cr.fetchall()] 
+            if inv_ids:
+                for inv in inv_ids:
+                    tien_mat = 0
+                    exim = 0
+                    acb = 0 
+                    agr = 0
+                    ngay_tt = ''
+                    so_ngay_no = 0
+                    sql = ''' 
+                        select date_invoice, reference_number, amount_total, rp.name as cus, rp.id as cus_id, rp.internal_code as code from account_invoice ai, res_partner rp 
+                            where ai.partner_id = rp.id and ai.id = %s 
+                            
+                    '''%(inv)
+                    self.cr.execute(sql) 
+                    inv_id = self.cr.dictfetchone()
+                    
+                    sql = '''
+                        select case when sum(residual)!=0 then sum(residual) else 0 end nodk from account_invoice 
+                        where state='open' and date_invoice < '%s' and partner_id = %s
+                    '''%(date_from,inv_id['cus_id'])
+                    self.cr.execute(sql) 
+                    nodk = self.cr.fetchone()[0]
+                    invoice_id = invoice_obj.browse(self.cr,self.uid,inv)
+                    nock = nodk + (invoice_id.residual and invoice_id.residual or 0)
+                    tdv_name = self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).user_id and self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).user_id.name or ''
+                    kv = self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).kv_benh_vien and self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).kv_benh_vien.name or ''
+                    for pay in invoice_id.payment_ids:
+                        if pay.journal_id.code == '11':
+                            tien_mat += pay.credit
+                            self.tong_tien += tien_mat
+                        if pay.journal_id.code == '12':
+                            acb += pay.credit
+                            self.tong_acb += acb
+                        if pay.journal_id.code == '13':
+                            exim += pay.credit
+                            self.tong_exim += exim
+                        if pay.journal_id.code == '16':
+                            agr += pay.credit 
+                            self.tong_agr += agr
+                        if ngay_tt < pay.date:
+                            ngay_tt = pay.date
+                    sql='''
+                        select ma.name from account_invoice_line acc, product_product pr , manufacturer_product ma
+                        where invoice_id = %s and acc.product_id = pr.id and ma.id = pr.manufacturer_product_id
+                    '''%(inv)
+                    self.cr.execute(sql) 
+                    hang_sx = self.cr.fetchone() or False
+                    if invoice_id.state != 'paid':
+                        sql='''
+                            select case when ('%s'::date - date_invoice)!=0 then ('%s'::date - date_invoice) else 0 end ngayno from account_invoice where id = %s
+                        '''%(date_to,date_to,inv)
+                        self.cr.execute(sql) 
+                        so_ngay_no = self.cr.fetchone()[0]
+                    res.append({'cus_name': inv_id['cus'],
+                                'dia_chi': inv_id['cus_id'] and display_address(o,inv_id['cus_id']) or '',
+                                'ngay_xuat': inv_id['date_invoice'] and convert_date(o,inv_id['date_invoice']) or False,
+                                'date_invoice':inv_id['date_invoice'],
+                                'reference_number':inv_id['reference_number'],
+                                'internal_code':inv_id['code'],
+                                'nodk': nodk,
+                                'phatsinh':float(inv_id['amount_total']),
+                                'tienmat': tien_mat,
+                                'acb': acb,
+                                'exim': exim,
+                                'agr': agr,
+                                'nock': nock,
+                                'ngay_tt': ngay_tt or '',
+                                'tdv_name': tdv_name,
+                                'kv': kv,
+                                'hang_sx': hang_sx and hang_sx[0] or '',
+                                'so_ngay_no':so_ngay_no,
+                                })
+                    
+            return res     
+        def get_info(o):
+            mang=[]
+            dem = 0
+            for line in get_lines(o):
+                dem = dem + 1
+                mang.append((0,0,{
+                        'stt':dem,
+                        'ngay_xuat': line['ngay_xuat'] or '',
+                        'ma_kh': line['internal_code'] or '',
+                        'so_hd':line['reference_number'] or '',
+                        'khach_hang':line['cus_name'] or '',
+                        'dia_chi':line['dia_chi'] or '',
+                        'no_dk':line['nodk'] or '',
+                        'phat_sinh':line['phatsinh'] or '',
+                        'tt_tien_mat':line['tienmat'] or '',
+                        'tt_ck_exim': line['exim'] or '',
+                        'tt_ck_acb': line['acb'] or '',
+                        'tt_ck_agr':line['agr'] or '',
+                        'no_ck':line['nock'] or '',
+                        'ngay_thanh_toan':convert_date(o, line['ngay_tt']) or '',
+                        'so_ngay_no':line['so_ngay_no'] or '',
+                        'tdv':line['tdv_name'] or '',
+                        'tinh_tp':line['kv'] or '',
+                        'hang':line['hang_sx'] or '',
+                                 }))
+            return mang 
+        vals = {
+            'date_from':report.date_from,
+            'date_to':report.date_to,
+            'congno_mypham_review_line':get_info(report),
+        }        
+        report_id = report_obj.create(cr, uid, vals)
+        res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
+                                        'green_erp_phucthien_sale', 'congno_mypham_review')
+        return {
+                    'name': 'Công Nợ Mỹ Phẩm',
+                    'view_type': 'form',
+                    'view_mode': 'form',
+                    'res_model': 'congno.mypham.review',
+                    'domain': [],
+                    'view_id': res and res[1] or False,
+                    'type': 'ir.actions.act_window',
+                    'target': 'current',
+                    'res_id': report_id,
+                }    
      
 congno_mypham()
 
@@ -103,6 +493,196 @@ class congno_duocpham(osv.osv_memory):
         datas['form'] = self.read(cr, uid, ids)[0]
         datas['form'].update({'active_id':context.get('active_ids',False)})
         return {'type': 'ir.actions.report.xml', 'report_name': 'congno_duocpham_report', 'datas': datas}
+
+    def review_report_in(self, cr, uid, ids, context=None): 
+        report_obj = self.pool.get('congno.duocpham.review')
+        report = self.browse(cr, uid, ids[0])   
+        self.date_from = False
+        self.date_to = False
+        self.cr = cr
+        self.uid = uid
+        self.tong_tien = 0
+        self.tong_exim = 0
+        self.tong_acb = 0
+        self.tong_agr = 0
+        def convert_date(o, date):
+            if date:
+                date = datetime.strptime(date, DATE_FORMAT)
+                return date.strftime('%d/%m/%Y')       
+        def display_address(o, partner_id):
+            partner = self.pool.get('res.partner').browse(self.cr, self.uid, partner_id)
+            address = partner.street and partner.street + ' , ' or ''
+            address += partner.street2 and partner.street2 + ' , ' or ''
+            address += partner.city and partner.city.name + ' , ' or ''
+            if address:
+                address = address[:-3]
+            return address       
+        def get_lines(o):
+            user_ids = [r.id for r in o.user_ids]
+            invoice_obj = self.pool.get('account.invoice') 
+            period_obj = self.pool.get('account.period')
+            date_from = o.date_from   
+            date_to =  o.date_to
+    #         period_start = period_obj.browse(self.cr,self.uid,period_id[0]).date_start
+    #         period_stop = period_obj.browse(self.cr,self.uid,period_id[0]).date_stop
+            cus_ids = []
+            res = []
+            inv_ids = []
+            if not user_ids:
+                sql ='''
+                 select id from account_invoice where id in (select distinct invoice_id from account_invoice_line where product_id in (select product_product.id
+                                from product_product,product_template 
+                                where product_template.categ_id in (select id from product_category where code ='DP') 
+                                and product_product.product_tmpl_id = product_template.id) and invoice_id in 
+                                    (select id from account_invoice where date_invoice between '%s' and '%s'  and type ='out_invoice' and state in ('open','paid')))
+                                order by date_invoice
+                '''%(date_from,date_to)
+                self.cr.execute(sql)   
+                inv_ids = [r[0] for r in self.cr.fetchall()]
+            else:
+                user_ids = str(user_ids).replace("[","(")
+                user_ids = str(user_ids).replace("]",")")
+                sql = '''
+                    select id from res_partner where user_id in %s and customer is True
+                '''%(user_ids)
+                self.cr.execute(sql)
+                cus_ids = [r[0] for r in self.cr.fetchall()]  
+                if cus_ids:
+                    cus_ids = str(cus_ids).replace("[","(")
+                    cus_ids = str(cus_ids).replace("]",")")
+                    sql ='''
+                     select id from account_invoice where id in (select distinct invoice_id from account_invoice_line where product_id in (select product_product.id
+                                    from product_product,product_template 
+                                    where product_template.categ_id in (select id from product_category where code ='DP') 
+                                    and product_product.product_tmpl_id = product_template.id) and invoice_id in 
+                                        (select id from account_invoice where date_invoice between '%s' and '%s' and type ='out_invoice' and state in ('open','paid')))
+                                    and partner_id in %s
+                    '''%(date_from,date_to,cus_ids)
+                    self.cr.execute(sql)   
+                    inv_ids = [r[0] for r in self.cr.fetchall()] 
+            if inv_ids:
+                for inv in inv_ids:
+                    tien_mat = 0
+                    exim = 0
+                    acb = 0 
+                    agr = 0
+                    ngay_tt = ''
+                    so_ngay_no = 0
+                    sql = ''' 
+                        select date_invoice, reference_number, amount_total, rp.name as cus, rp.id as cus_id, rp.internal_code as code from account_invoice ai, res_partner rp 
+                            where ai.partner_id = rp.id and ai.id = %s 
+                            
+                    '''%(inv)
+                    self.cr.execute(sql) 
+                    inv_id = self.cr.dictfetchone()
+                    
+                    sql = '''
+                        select case when sum(residual)!=0 then sum(residual) else 0 end nodk from account_invoice 
+                        where state='open' and date_invoice < '%s' and partner_id = %s
+                    '''%(date_from,inv_id['cus_id'])
+                    self.cr.execute(sql) 
+                    nodk = self.cr.fetchone()[0]
+                    invoice_id = invoice_obj.browse(self.cr,self.uid,inv)
+                    nock = nodk + (invoice_id.residual and invoice_id.residual or 0)
+                    tdv_name = self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).user_id and self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).user_id.name or ''
+                    kv = self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).state_id and self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).state_id.name or ''
+                    for pay in invoice_id.payment_ids:
+                        if pay.journal_id.code == '11':
+                            tien_mat += pay.credit
+                            self.tong_tien += tien_mat
+                        if pay.journal_id.code == '12':
+                            acb += pay.credit
+                            self.tong_acb += acb
+                        if pay.journal_id.code == '13':
+                            exim += pay.credit
+                            self.tong_exim += exim
+                        if pay.journal_id.code == '16':
+                            agr += pay.credit 
+                            self.tong_agr += agr
+                        if pay.date:
+                            ngay_tt +=  convert_date(o,pay.date) + ', '
+                    sql='''
+                        select ma.name from account_invoice_line acc, product_product pr , manufacturer_product ma
+                        where invoice_id = %s and acc.product_id = pr.id and ma.id = pr.manufacturer_product_id
+                    '''%(inv)
+                    cr.execute(sql) 
+                    hang_sx = self.cr.fetchone() or False
+                    if invoice_id.state != 'paid':
+                        sql='''
+                            select case when ('%s'::date - date_invoice)!=0 then ('%s'::date - date_invoice) else 0 end ngayno from account_invoice where id = %s
+                        '''%(date_to,date_to,inv)
+                        self.cr.execute(sql) 
+                        so_ngay_no = self.cr.fetchone()[0]
+                    res.append({'cus_name': inv_id['cus'],
+                                'dia_chi': inv_id['cus_id'] and display_address(o,inv_id['cus_id']) or False,
+                                'ngay_xuat': inv_id['date_invoice'] and convert_date(o,inv_id['date_invoice']) or False,
+                                'date_invoice':inv_id['date_invoice'],
+                                'reference_number':inv_id['reference_number'],
+                                'internal_code':inv_id['code'],
+                                'nodk': nodk,
+                                'phatsinh':float(inv_id['amount_total']),
+                                'tienmat': tien_mat,
+                                'acb': acb,
+                                'exim': exim,
+                                'agr': agr,
+                                'nock': nock,
+                                'ngay_tt': ngay_tt and ngay_tt[:-2] or '',
+                                'tdv_name': tdv_name,
+                                'kv': kv,
+                                'hang_sx': hang_sx and hang_sx[0] or '',
+                                'so_ngay_no':so_ngay_no,
+                                })
+                    
+            return res     
+        def get_info(o):
+            mang=[]
+            dem = 0
+            for line in get_lines(o):
+                dem = dem + 1
+                mang.append((0,0,{
+                        'stt':dem,
+                        'ngay_xuat': line['ngay_xuat'] or '',
+                        'ma_kh': line['internal_code'] or '',
+                        'so_hd':line['reference_number'] or '',
+                        'khach_hang':line['cus_name'] or '',
+                        'dia_chi':line['dia_chi'] or '',
+                        'no_dk':line['nodk'] or '',
+                        'phat_sinh':line['phatsinh'] or '',
+                        'tt_tien_mat':line['tienmat'] or '',
+                        'tt_ck_exim': line['exim'] or '',
+                        'tt_ck_acb': line['acb'] or '',
+                        'tt_ck_agr':line['agr'] or '',
+                        'no_ck':line['nock'] or '',
+                        'ngay_thanh_toan':line['ngay_tt'] or '',
+                        'so_ngay_no':line['so_ngay_no'] or '',
+                        'tdv':line['tdv_name'] or '',
+                        'tinh_tp':line['kv'] or '',
+                        'hang':line['hang_sx'] or '',
+                                 }))
+            return mang 
+        vals = {
+            'date_from':report.date_from,
+            'date_to':report.date_to,
+#             'date_from_title':'Từ ngày: ',
+#             'date_to_title':'đến ngày: ',
+#             'tong_begin_dr':get_info(report)[self.sum_amount],
+#             'tong_period_dr':get_info(report)[self.sum_amount_2],
+            'congno_duocpham_review_line':get_info(report),
+        }        
+        report_id = report_obj.create(cr, uid, vals)
+        res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
+                                        'green_erp_phucthien_sale', 'congno_duocpham_review')
+        return {
+                    'name': 'Công Nợ Dược Phẩm',
+                    'view_type': 'form',
+                    'view_mode': 'form',
+                    'res_model': 'congno.duocpham.review',
+                    'domain': [],
+                    'view_id': res and res[1] or False,
+                    'type': 'ir.actions.act_window',
+                    'target': 'current',
+                    'res_id': report_id,
+                }  
      
 congno_duocpham()
 
