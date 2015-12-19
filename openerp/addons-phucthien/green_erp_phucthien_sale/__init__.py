@@ -21,6 +21,7 @@
 ##############################################################################
 import hop_dong
 import amount_to_text_vn
+import report_review
 import report
 import sale
 import wizard

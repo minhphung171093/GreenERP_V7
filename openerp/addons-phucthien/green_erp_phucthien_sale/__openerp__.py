@@ -47,6 +47,7 @@
             'wizard/danhsach_canhtranh_view.xml',
             'wizard/congno_vacine_view.xml',
             'wizard/danhsach_khachhang_view.xml',
+            'report_review.xml',
             'hop_dong_view.xml',
             'sale_view.xml',
             'sale_sequence.xml',
@@ -54,7 +55,9 @@
             'menu.xml',
             'edi/sale_order_action_data.xml',
         ],
-  
+    'css' : [
+        "static/src/css/base.css",
+    ],  
     'test': [
     ],
     "installable": True,

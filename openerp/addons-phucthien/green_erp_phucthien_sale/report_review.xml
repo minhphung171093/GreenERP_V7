@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+ <!--  ========================= Create Cong No Vacine Review ================= -->     
+         <record id="congno_vacine_review" model="ir.ui.view">
+            <field name="name">congno.vacine.review</field>
+            <field name="model">congno.vacine.review</field>
+            <field name="arch" type="xml">
+                <form string="Công Nợ Vaccine Review" version="7.0">
+               <!--   	<header>
+                        <button string="Print (.xls)" type="object" name="print_xls" context="{'type_report':'general_trial_balance'}" icon='gtk-execute'/>
+                    </header> -->
+                    <sheet>
+
+                    <div class="oe_text_center">
+            				<h2><b>CÔNG NỢ VACCINE</b></h2>
+            		</div>
+            		<div class="oe_text_center">
+            			<label for="date_from" class="oe_inline"/>
+                		<field name="date_from" class="oe_bold oe_inline"/>
+                		<label for="date_to" class="oe_inline"/>
+                		<field name="date_to" class="oe_bold oe_inline"/>
+                	</div>
+                    	<div class='oe_green_erp_scroll' >
+		                	<field name="congno_vacine_review_line" nolabel='1'>
+		                		<tree create="false" edit="false" delete="false">          
+		                			<field name="stt"/>
+		                			<field name="ngay_xuat"/>
+		                			<field name="ma_kh" />
+		                			<field name="so_hd" />
+		                			<field name="khach_hang" />
+		                			<field name="no_dk" sum='Tổng cộng: ' />
+		                			<field name="phat_sinh" sum='' />
+		                			<field name="tt_tien_mat" sum='' />
+		                			<field name="tt_ck_exim" sum='' />
+		                			<field name="tt_ck_acb" sum='' />
+		                			<field name="tt_ck_agr" sum='' />
+		                			<field name="no_ck" sum='' />
+		                			<field name="ngay_thanh_toan" />
+		                			<field name="so_ngay_no" />
+		                			<field name="tdv" />
+		                			<field name="tinh_tp" />
+		                			<field name="hang" />		                			
+		                		</tree>
+		                	</field>
+	                	</div> 
+			       </sheet>
+                </form>
+            </field>
+        </record>      	                	
+       <record id="green_congno_vacine_review" model="greenerp.report">
+            <field name="name">congno_vacine_review</field>
+            <field name="delete_after">7</field>
+        </record>
+        
+ <!--  ========================= Create Cong No My Pham Review ================= -->     
+         <record id="congno_mypham_review" model="ir.ui.view">
+            <field name="name">congno.mypham.review</field>
+            <field name="model">congno.mypham.review</field>
+            <field name="arch" type="xml">
+                <form string="Công Nợ Mỹ Phẩm Review" version="7.0">
+               <!--   	<header>
+                        <button string="Print (.xls)" type="object" name="print_xls" context="{'type_report':'general_trial_balance'}" icon='gtk-execute'/>
+                    </header> -->
+                    <sheet>
+
+                    <div class="oe_text_center">
+            				<h2><b>CÔNG NỢ MỸ PHẨM</b></h2>
+            		</div>
+            		<div class="oe_text_center">
+            			<label for="date_from" class="oe_inline"/>
+                		<field name="date_from" class="oe_bold oe_inline"/>
+                		<label for="date_to" class="oe_inline"/>
+                		<field name="date_to" class="oe_bold oe_inline"/>
+                	</div>
+                    	<div class='oe_green_erp_scroll' >
+		                	<field name="congno_mypham_review_line" nolabel='1'>
+		                		<tree create="false" edit="false" delete="false">          
+		                			<field name="stt"/>
+		                			<field name="ngay_xuat"/>
+		                			<field name="ma_kh" />
+		                			<field name="so_hd" />
+		                			<field name="khach_hang" />
+		                			<field name="no_dk" sum='Tổng cộng: ' />
+		                			<field name="phat_sinh" sum='' />
+		                			<field name="tt_tien_mat" sum='' />
+		                			<field name="tt_ck_exim" sum='' />
+		                			<field name="tt_ck_acb" sum='' />
+		                			<field name="tt_ck_agr" sum='' />
+		                			<field name="no_ck" sum='' />
+		                			<field name="ngay_thanh_toan" />
+		                			<field name="so_ngay_no" />
+		                			<field name="tdv" />
+		                			<field name="tinh_tp" />
+		                			<field name="hang" />		                			
+		                		</tree>
+		                	</field>
+	                	</div> 
+			       </sheet>
+                </form>
+            </field>
+        </record>      	                	
+       <record id="green_congno_mypham_review" model="greenerp.report">
+            <field name="name">congno_mypham_review</field>
+            <field name="delete_after">7</field>
+        </record> 
+
+ <!--  ========================= Create Cong No Duoc Pham Review ================= -->     
+         <record id="congno_duocpham_review" model="ir.ui.view">
+            <field name="name">congno.duocpham.review</field>
+            <field name="model">congno.duocpham.review</field>
+            <field name="arch" type="xml">
+                <form string="Công Nợ Dược Phẩm Review" version="7.0">
+             <!--       	<header>
+                        <button string="Print (.xls)" type="object" name="print_xls" context="{'type_report':'general_trial_balance'}" icon='gtk-execute'/>
+                    </header> -->
+                    <sheet>
+
+                    <div class="oe_text_center">
+            				<h2><b>CÔNG NỢ DƯỢC PHẨM</b></h2>
+            		</div>
+            		<div class="oe_text_center">
+            			<label for="date_from" class="oe_inline"/>
+                		<field name="date_from" class="oe_bold oe_inline"/>
+                		<label for="date_to" class="oe_inline"/>
+                		<field name="date_to" class="oe_bold oe_inline"/>
+                	</div>
+                    	<div class='oe_green_erp_scroll' >
+		                	<field name="congno_duocpham_review_line" nolabel='1'>
+		                		<tree create="false" edit="false" delete="false">          
+		                			<field name="stt"/>
+		                			<field name="ngay_xuat"/>
+		                			<field name="ma_kh" />
+		                			<field name="so_hd" />
+		                			<field name="khach_hang" />
+		                			<field name="no_dk" sum='Tổng cộng: ' />
+		                			<field name="phat_sinh" sum='' />
+		                			<field name="tt_tien_mat" sum='' />
+		                			<field name="tt_ck_exim" sum='' />
+		                			<field name="tt_ck_acb" sum='' />
+		                			<field name="tt_ck_agr" sum='' />
+		                			<field name="no_ck" sum='' />
+		                			<field name="ngay_thanh_toan" />
+		                			<field name="so_ngay_no" />
+		                			<field name="tdv" />
+		                			<field name="tinh_tp" />
+		                			<field name="hang" />		                			
+		                		</tree>
+		                	</field>
+	                	</div> 
+			       </sheet>
+                </form>
+            </field>
+        </record>      	               	
+       <record id="green_congno_duocpham_review" model="greenerp.report">
+            <field name="name">congno_duocpham_review</field>
+            <field name="delete_after">7</field>
+        </record>    
+        
+   </data>
+</openerp>
+        
+        
