@@ -44,6 +44,17 @@
 		        	name="Deliveries to Invoice"
 		        	parent="account.menu_finance_payables"
 		        	sequence="90"/>
+		        	
+		<menuitem
+        id="stock.next_id_61"
+        name="Warehouse"
+        sequence="15"
+        parent="base.menu_reporting"
+        groups="stock.group_stock_user"/>
+		        	
+		<menuitem action="stock.action_stock_inventory_report"
+        id="stock.menu_action_stock_inventory_report"
+        parent="stock.next_id_61" groups="stock.group_stock_user" sequence="4"/>
         
         
 	        

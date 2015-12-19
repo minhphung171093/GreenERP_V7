@@ -602,17 +602,87 @@ class sale_order(osv.osv):
         wf_service.trg_validate(uid, 'sale.order', ids[0], 'order_confirm', cr)
         return self.write(cr, uid, ids, {'nv_duyet_id':uid})
     
+    def send_mail(self, cr, uid, lead_email, msg_id,context=None):
+        mail_message_pool = self.pool.get('mail.message')
+        mail_mail = self.pool.get('mail.mail')
+        msg = mail_message_pool.browse(cr, SUPERUSER_ID, msg_id, context=context)
+        body_html = msg.body
+        # email_from: partner-user alias or partner email or mail.message email_from
+        if msg.author_id and msg.author_id.user_ids and msg.author_id.user_ids[0].alias_domain and msg.author_id.user_ids[0].alias_name:
+            email_from = '%s <%s@%s>' % (msg.author_id.name, msg.author_id.user_ids[0].alias_name, msg.author_id.user_ids[0].alias_domain)
+        elif msg.author_id:
+            email_from = '%s <%s>' % (msg.author_id.name, msg.author_id.email)
+        else:
+            email_from = msg.email_from
+
+        references = False
+        if msg.parent_id:
+            references = msg.parent_id.message_id
+
+        mail_values = {
+            'mail_message_id': msg.id,
+            'auto_delete': True,
+            'body_html': body_html,
+            'email_from': email_from,
+            'email_to' : lead_email,
+            'references': references,
+        }
+        email_notif_id = mail_mail.create(cr, uid, mail_values, context=context)
+        try:
+             mail_mail.send(cr, uid, [email_notif_id], context=context)
+        except Exception:
+            a = 1
+        return True
+    
+    
     def duyet_khong_dieukien(self, cr, uid, ids, context=None):
         assert len(ids) == 1, 'This option should only be used for a single id at a time.'
         wf_service = netsvc.LocalService('workflow')
         wf_service.trg_validate(uid, 'sale.order', ids[0], 'order_confirm', cr)
+        sale = self.browse(cr,uid,ids[0])
+        now = time.strftime("%Y-%m-%d")
+        if sale.date_order < now:
+            u = self.pool.get('res.users').browse(cr, uid, uid)
+            user = self.pool.get('res.users').browse(cr, uid, sale.user_id.id)
+            partner = user.partner_id
+            partner.signup_prepare()
+            date_vn = datetime.datetime.strptime(sale.date_order, DATE_FORMAT)
+            body = '''<p><b>Nội dung:</b><br/>%s đã duyệt vượt cấp đơn hàng %s của ngày %s</p>
+            '''%(u.name, sale.name, date_vn.strftime('%d/%m/%Y'))
+            if body:
+                post_values = {
+                    'subject': 'Cấp trên duyệt vượt cấp đơn hàng %s'%(sale.name),
+                    'body': body,
+                    'partner_ids': [],
+                    }
+                lead_email = user.email
+                msg_id = self.message_post(cr, uid, [sale.id], type='comment', subtype=False, context=context, **post_values)
+                self.send_mail(cr, uid, lead_email, msg_id, context)
         return self.write(cr, uid, ids, {'tp_duyet_id':uid})
     
     def chiu_trach_nhiem(self, cr, uid, ids, context=None):
         for sale in self.browse(cr,uid,ids):
             sale_reason_peding_ids = [s.id for s in sale.sale_reason_peding_ids]
+            now = time.strftime("%Y-%m-%d")
             if not sale_reason_peding_ids:
                 raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa chọn lý do không được duyệt !'))
+            if sale.date_order < now:
+                u = self.pool.get('res.users').browse(cr, uid, uid)
+                user = self.pool.get('res.users').browse(cr, uid, sale.user_id.id)
+                partner = user.partner_id
+                partner.signup_prepare()
+                date_vn = datetime.datetime.strptime(sale.date_order, DATE_FORMAT)
+                body = '''<p><b>Nội dung:</b><br/>%s đã chịu trách nhiệm đơn hàng %s của ngày %s</p>
+                '''%(u.name, sale.name, date_vn.strftime('%d/%m/%Y'))
+                if body:
+                    post_values = {
+                        'subject': 'Chịu trách nhiệm cho đơn hàng %s'%(sale.name),
+                        'body': body,
+                        'partner_ids': [],
+                        }
+                    lead_email = user.email
+                    msg_id = self.message_post(cr, uid, [sale.id], type='comment', subtype=False, context=context, **post_values)
+                    self.send_mail(cr, uid, lead_email, msg_id, context)
         return self.write(cr, uid, ids, {'chiu_trach_nhiem_id':uid})
 
     def print_sale_order(self, cr, uid, ids, context=None): 

@@ -2,7 +2,7 @@
     "name" : "Human resource",
     "author" : "Trần Hưng<tranhung07081989@gmail.com>",
     'category': 'General 70',
-    "depends" : ['hr','hr_contract','hr_payroll'],
+    "depends" : ['hr','hr_contract','hr_payroll','hr_expense'],
     "init_xml" : [],
     "demo_xml" : [],
     "description": """

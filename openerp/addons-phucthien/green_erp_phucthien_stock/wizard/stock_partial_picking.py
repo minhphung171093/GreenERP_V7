@@ -29,9 +29,22 @@ class stock_partial_picking(osv.osv_memory):
             if picking.type=='out' and line.prodlot_id:
                 prodlot_ids = prodlot_obj.search(cr, uid, [('product_id','=',line.product_id.id)],order='life_date')
                 for prodlot in prodlot_obj.browse(cr, uid, prodlot_ids):
-                    if (uid in user_ids and uid not in user_manager_ids and prodlot.stock_available>=line.quantity and prodlot.id==line.prodlot_id.id) or uid in user_manager_ids:
+                    sql = '''
+                        select case when sum(foo.product_qty)>0 then sum(foo.product_qty) else 0 end ton_sl from 
+                            (select st.product_qty
+                                from stock_move st 
+                                where st.state='done' and st.product_id=%s and st.location_dest_id = %s and prodlot_id = %s
+                            union all
+                            select st.product_qty*-1
+                                from stock_move st 
+                                where st.state='done' and st.product_id=%s and st.location_id = %s and prodlot_id = %s
+                            )foo
+                    '''%(prodlot.product_id.id,line.location_id.id,prodlot.id,prodlot.product_id.id,line.location_id.id,prodlot.id)
+                    cr.execute(sql)
+                    ton_sl = cr.dictfetchone()['ton_sl']
+                    if (uid in user_ids and uid not in user_manager_ids and ton_sl>=line.quantity and prodlot.id==line.prodlot_id.id) or uid in user_manager_ids:
                         break
-                    if uid in user_ids and uid not in user_manager_ids and prodlot.stock_available>=line.quantity and prodlot.id!=line.prodlot_id.id:
+                    if uid in user_ids and uid not in user_manager_ids and ton_sl>=line.quantity and prodlot.id!=line.prodlot_id.id:
                         raise osv.except_osv(_('Cảnh báo!'),_('Bạn không được phép duyệt hàng có ngày hết hạn xa!'))
                     if prodlot.id==line.prodlot_id.id:
                         break

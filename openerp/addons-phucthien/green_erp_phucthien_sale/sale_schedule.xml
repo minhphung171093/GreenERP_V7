@@ -12,6 +12,17 @@
             <field name="function" eval="'send_mail_for_remind_work'"/>
             <field name="args" eval="'()'" />
         </record>
+        
+        <record model="ir.cron" id="chuyen_tt_het_han">
+            <field name="name">Hết hạn hợp đồng</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="True"/>
+            <field name="model" eval="'hop.dong'"/>
+            <field name="function" eval="'chuyen_tt_het_han'"/>
+            <field name="args" eval="'()'" />
+        </record>
 
     </data>
 </openerp>
