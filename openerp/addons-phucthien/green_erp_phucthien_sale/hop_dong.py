@@ -150,8 +150,22 @@ class hop_dong(osv.osv):
     def da_gui(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids, {'state': 'da_gui'})
     def da_nhan(self, cr, uid, ids, context=None):
-        return self.write(cr, uid, ids, {'state': 'da_nhan'})
+        hd = self.browse(cr,uid,ids[0])
+        if hd.den_ngay < time.strftime("%Y-%m-%d"):
+            return self.write(cr, uid, ids, {'state': 'het_han'})
+        else:
+            return self.write(cr, uid, ids, {'state': 'da_nhan'})
     
+    def chuyen_tt_het_han(self, cr, uid, context=None):
+        sql = '''
+            select id from hop_dong where state = 'da_nhan' and den_ngay < '%s'
+        '''%(time.strftime("%Y-%m-%d"))
+        cr.execute(sql)
+        het_han_ids = [r[0] for r in cr.fetchall()]
+        if het_han_ids:
+            return self.write(cr, uid, het_han_ids, {'state': 'het_han'})
+        return True
+            
     def het_han(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids, {'state': 'het_han'})
     
@@ -191,11 +205,13 @@ class hopdong_line(osv.osv):
         'product_country_id': fields.many2one('res.country', 'Nước sản xuất'),
         'sodangky_gpnk':fields.char('Số đăng ký, giấy phép nhập khẩu',size=64),
         'product_qty': fields.float('Số lượng', digits_compute= dp.get_precision('Product UoS')),
-        'price_unit': fields.float('Đơn giá', digits_compute= dp.get_precision('Product Price')),
+        'price_unit': fields.float('Đơn giá có VAT', digits_compute= dp.get_precision('Product Price')),
         'tax_id': fields.many2many('account.tax', 'hopdong_order_tax', 'hopdong_id', 'tax_id', 'Taxes'),
         'price_subtotal': fields.function(_amount_line, string='Subtotal', digits_compute= dp.get_precision('Account')),
         'handung_tuoitho':fields.char('Hạn dùng, tuổi thọ', size = 64),
-        
+        'type_rel': fields.related('hopdong_id', 'type', type='selection',store = True,selection=([('kinh_te','Hợp đồng kinh tế'),('thau','Hợp đồng thầu'),('nguyen_tac','Hợp đồng nguyên tắc')
+                                 ,('mua','Hợp đồng mua'),('ky_gui','Hợp đồng ký gửi'),('tai_tro','Hợp đồng tài trợ')
+                                 ,('khac','Hợp đồng khác')])),
         
     }
     

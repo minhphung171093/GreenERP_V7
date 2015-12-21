@@ -39,6 +39,7 @@ class Parser(report_sxw.rml_parse):
             'get_quarter_date': self.get_quarter_date,
             'get_start_date':self.get_start_date,
             'get_end_date':self.get_end_date,
+            'get_total': self.get_total,
         })
     
     def get_company(self, company_id):
@@ -138,5 +139,17 @@ class Parser(report_sxw.rml_parse):
         '''%(self.start_date,self.end_date,self.company_id)
         self.cr.execute(sql)
         return self.cr.dictfetchall()
+    
+    def get_total(self, get_line):
+        total_debit = 0
+        total_credit = 0
+        for line in get_line:
+            total_debit += line['debit']
+            total_credit += line['credit']
+        return {
+                'total_debit': total_debit,
+                'total_credit': total_credit,
+                }
+            
         
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

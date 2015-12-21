@@ -77,7 +77,7 @@ class Parser(report_sxw.rml_parse):
         hd_from = wizard_data['hd_from']
         hd_to = wizard_data['hd_to']
         sql = '''
-            select ail.id as id,ai.partner_id as partner_id,ai.date_invoice as ngay_hd,ai.reference_number as so_hd,rp.internal_code as ma_kh,rp.name as ten_kh,pp.default_code as ma_sp,
+            select ail.id as id,ai.partner_id as partner_id,ai.date_invoice as ngay_hd,ai.supplier_invoice_number as so_hd,rp.internal_code as ma_kh,rp.name as ten_kh,pp.default_code as ma_sp,
                 pp.name_template as ten_sp,pu.name as dvt,spl.name as so_lo,spl.life_date as han_dung,ail.quantity as so_luong,ail.price_unit as gia_ban,
                 ail.price_unit*ail.quantity as dt_truocthue,at.amount_tax as tien_thue,(ail.price_unit*ail.quantity)+at.amount_tax as dt_sauthue,pt.standard_price as gia_von,
                 sl.name as loc_name,mp.name as nsx,aa.code as so_tk,aa.name as ten_tk
