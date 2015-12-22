@@ -920,10 +920,11 @@ class account_invoice_line(osv.osv):
 #                 '''%(invoiceline.id,invoiceline.source_id)
 #                 cr.execute(sql)
                 move = self.pool.get('stock.move').browse(cr,uid,invoiceline.source_id)
-                self.pool.get('stock.move').write(cr,uid,[move.id],{
-                                                                    'price_unit': vals['price_unit']
-                                                                    })
-                self.pool.get('purchase.order.line').write(cr,uid,[move.purchase_line_id.id],{
+                if move.purchase_line_id:
+                    self.pool.get('stock.move').write(cr,uid,[move.id],{
+                                                                        'price_unit': vals['price_unit']
+                                                                        })
+                    self.pool.get('purchase.order.line').write(cr,uid,[move.purchase_line_id.id],{
                                                                                            'price_unit': vals['price_unit']
                                                                                            })
         return renew_id
