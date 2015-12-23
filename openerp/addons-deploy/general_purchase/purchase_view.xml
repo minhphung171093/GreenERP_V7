@@ -12,6 +12,36 @@
                     <filter string="Date" domain="[]" context="{'group_by':'day_user_tz'}"/>
                 	<filter string="Month" domain="[]" context="{'group_by':'date_user_tz'}"/>
                 </xpath>
+                <xpath expr="//group/filter[@string='Source']" position="after">
+                    <filter string="Trạng thái" domain="[]" context="{'group_by':'trang_thai'}"/>
+                </xpath>
+                <xpath expr="//group/filter[@string='Status']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>     
+                <xpath expr="//filter[@name='draft']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//filter[@name='approved']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//filter[@name='exception']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>    
+                <xpath expr="//filter[@name='not_invoiced']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>                                               
+                <xpath expr="//filter[@string='Month']" position="after">
+                	<separator/>
+					<filter name="draft" string="Đơn hàng chờ duuyệt" domain="[('trang_thai','=','draft')]"/>
+					<filter name="sent" string="Yêu cầu đơn hàng đã được gửi" domain="[('trang_thai','=','sent')]"/>
+					<filter name="confirmed" string="Chờ nhân sự duyệt" domain="[('trang_thai','=','confirmed')]"/>
+					<filter name="approved" string="Đơn mua hàng" domain="[('trang_thai','=','approved')]"/>
+					<filter name="cho_nhanhang" string="Chờ nhận hàng" domain="[('trang_thai','=','cho_nhanhang')]"/>
+					<filter name="cho_hd" string="Chờ hoá đơn" domain="[('trang_thai','=','cho_hd')]"/>
+					<filter name="cho_thanhtoan" string="Chờ thanh toán" domain="[('trang_thai','=','cho_thanhtoan')]"/>
+					<filter name="done" string="Hoàn tất" domain="[('trang_thai','=','done')]"/>
+					<filter name="cancel" string="Đã huỷ bỏ" domain="[('trang_thai','=','cancel')]"/>
+                </xpath>  
             </field>
         </record>
         

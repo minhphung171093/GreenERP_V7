@@ -27,6 +27,27 @@
           			<field name="chiu_trach_nhiem_id"/>
           			<field name="product_id_rel"/>
             	</xpath>
+                <xpath expr="//group/filter[@string='Status']" position="replace">
+                    <filter string="Trạng thái" domain="[]" context="{'group_by':'trang_thai'}"/>
+                </xpath>      
+                <xpath expr="//filter[@name='draft']" position="replace">
+                    <filter name="draft" string="Dự thảo báo giá" domain="[('trang_thai','=','draft')]"/>
+                </xpath>        
+                <xpath expr="//filter[@string='Done']" position="replace">
+                    <filter name="done" string="Hoàn tất" domain="[('trang_thai','=','done')]"/>
+                </xpath>     
+                <xpath expr="//filter[@name='sales']" position="replace">
+                </xpath>        
+                <xpath expr="//filter[@string='To Invoice']" position="replace">
+                </xpath>      
+                <xpath expr="//filter[@name='draft']" position="after">
+                    <filter name="sent" string="Đơn hàng đã gửi đi" domain="[('trang_thai','=','sent')]"/>
+                    <filter name="progress" string="Đơn bán hàng" domain="[('trang_thai','=','progress')]"/>
+                    <filter name="cho_giaohang" string="Chờ giao hàng" domain="[('trang_thai','=','cho_giaohang')]"/>
+                    <filter name="cho_hd" string="Chờ hoá đơn" domain="[('trang_thai','=','cho_hd')]"/>    
+                    <filter name="cho_thanhtoan" string="Chờ giao hàng" domain="[('trang_thai','=','cho_thanhtoan')]"/>
+                    <filter name="cancel" string="Đã huỷ bỏ" domain="[('trang_thai','=','cancel')]"/>                                        
+                </xpath>                                           	
             </field>
        </record>
 
