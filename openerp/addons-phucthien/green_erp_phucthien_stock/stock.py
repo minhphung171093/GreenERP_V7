@@ -329,7 +329,30 @@ class stock_picking_in(osv.osv):
             else:
                 res[picking.id] = False
         return res
-    
+    def _trang_thai_hd(self, cr, uid, ids, name, args, context=None):
+        res = {}
+        picking_ids =[]
+        if context is None:
+            context = {}
+        for picking in self.browse(cr, uid, ids, context=context):
+            if picking.type == 'in':
+                for move in picking.move_lines:
+                    sql = '''
+                        select state from account_invoice where type = 'in_invoice'
+                        and id in (select invoice_id from account_invoice_line where source_id = %s)
+                    '''%(move.id)
+                    cr.execute(sql)
+                    trang_thai = cr.fetchone()
+                    if not trang_thai:
+                        res[picking.id] = 'Chưa có hóa đơn'
+                    else:
+                        if trang_thai[0] == 'draft':
+                            res[picking.id] = 'Chờ duyệt hóa đơn'
+                        if trang_thai[0] == 'open':
+                            res[picking.id] = 'Chờ thanh toán'
+                        if trang_thai[0] == 'paid':
+                            res[picking.id] = 'Đã thanh toán'
+        return res    
     _columns = {
         'description': fields.text('Description', track_visibility='onchange'),
         'nhiet_do':fields.char('Nhiệt độ'),
@@ -362,6 +385,8 @@ class stock_picking_in(osv.osv):
         'ghi_chu_xhd': fields.char('Ghi chú xuất hóa đơn', size = 1024),
         'exist': fields.function(_kiemtra_trahang, string='Đã tồn tại trong trahang.chokho',
             type='boolean'),
+        'trang_thai_hd': fields.function(_trang_thai_hd, string='Trạng thái hóa đơn',
+            type='char'),
     }
     
     def tao_hoa_don(self, cr, uid,ids, context=None):
@@ -489,6 +514,23 @@ class stock_picking(osv.osv):
                 for move in picking.move_lines:
                     sql = '''
                         select state from account_invoice where type = 'out_invoice'
+                        and id in (select invoice_id from account_invoice_line where source_id = %s)
+                    '''%(move.id)
+                    cr.execute(sql)
+                    trang_thai = cr.fetchone()
+                    if not trang_thai:
+                        res[picking.id] = 'Chưa có hóa đơn'
+                    else:
+                        if trang_thai[0] == 'draft':
+                            res[picking.id] = 'Chờ duyệt hóa đơn'
+                        if trang_thai[0] == 'open':
+                            res[picking.id] = 'Chờ thanh toán'
+                        if trang_thai[0] == 'paid':
+                            res[picking.id] = 'Đã thanh toán'
+            if picking.type == 'in':
+                for move in picking.move_lines:
+                    sql = '''
+                        select state from account_invoice where type = 'in_invoice'
                         and id in (select invoice_id from account_invoice_line where source_id = %s)
                     '''%(move.id)
                     cr.execute(sql)

@@ -50,7 +50,94 @@ sale_order_rule()
 
 class sale_order(osv.osv):
     _inherit = "sale.order"
+
+    def _trangthai(self, cr, uid, ids, name, arg, context=None):
+        res = {}
+        stock_obj = self.pool.get('stock.picking')
+        for tt in self.browse(cr,uid,ids):
+            sql = '''
+                select id from stock_picking where sale_id = %s and type = 'out'
+            '''%(tt.id)
+            cr.execute(sql)
+            sale_ids = [r[0] for r in cr.fetchall()]
+            if sale_ids:
+                for picking in stock_obj.browse(cr, uid, sale_ids):     
+                    if picking.type == 'out':
+                        for move in picking.move_lines:
+                            sql = '''
+                                select state from account_invoice where type = 'out_invoice'
+                                and id in (select invoice_id from account_invoice_line where source_id = %s)
+                            '''%(move.id)
+                            cr.execute(sql)
+                            trang_thai = cr.fetchone()
+                            if not trang_thai:
+                                res[tt.id]='cho_hd'
+                            else:
+                                if trang_thai[0] == 'draft':
+                                    res[tt.id]='cho_hd'
+                                if trang_thai[0] == 'open':
+                                    res[tt.id]='cho_thanhtoan'   
+                                if trang_thai[0] == 'paid':
+                                    res[tt.id]='done'                      
+                    if picking.state not in ['cancel','done']:
+                        res[tt.id]='cho_giaohang'                     
+                       
+#                     if line.state not in ['cancel','done']:
+#                         res[tt.id]='cho_giaohang'
+#                     if line.state == 'done' and line.trang_thai_hd == 'Chưa có hóa đơn':
+#                         res[tt.id]='cho_hd'
+#                     if line.state == 'done' and line.trang_thai_hd == 'Chờ thanh toán':
+#                         res[tt.id]='cho_thanhtoan'        
+#                     if line.state == 'done' and line.trang_thai_hd == 'Đã thanh toán':
+#                         res[tt.id]='done'  
+#                     if line.state == 'done' and line.trang_thai_hd == 'Chờ duyệt hóa đơn':
+#                         res[tt.id]='cho_hd'                                     
+            else:           
+                if tt.state == 'sent':
+                    res[tt.id] = 'sent'
+                if tt.state == 'draft':
+                    res[tt.id]='draft'
+                if tt.state == 'cancel':
+                    res[tt.id]='cancel'
+                if tt.state == 'progress':
+                    res[tt.id]='progress'
+        return res
+    def _get_stock_picking(self, cr, uid, ids, context=None):
+        result = {}
+        co_cau_ids =[]
+        for line in self.pool.get('stock.picking').browse(cr, uid, ids, context=context):
+            sql = '''
+                select id from sale_order where id in (select sale_id from stock_picking where id = %s and type = 'out' )
+            '''%(line.id)
+            cr.execute(sql)
+            for r in cr.fetchall():
+                result[r[0]] = True
+        return result.keys()
     
+    def _get_stock_picking_in(self, cr, uid, ids, context=None):
+        result = {}
+        co_cau_ids =[]
+        for line in self.pool.get('stock.picking.in').browse(cr, uid, ids, context=context):
+            sql = '''
+                select id from sale_order where id in (select sale_id from stock_picking where id = %s and type = 'out' )
+            '''%(line.id)
+            cr.execute(sql)
+            for r in cr.fetchall():
+                result[r[0]] = True
+        return result.keys()
+    
+    def _get_account_invoice(self, cr, uid, ids, context=None):
+        result = {}
+        co_cau_ids =[]
+        for line in self.pool.get('account.invoice').browse(cr, uid, ids, context=context):
+            sql = '''
+                select id from sale_order where id in (select sale_id from stock_picking 
+                where id in (select picking_id from stock_move where id in (select source_id from account_invoice_line where invoice_id = %s)) and type = 'out' )
+            '''%(line.id)
+            cr.execute(sql)
+            for r in cr.fetchall():
+                result[r[0]] = True
+        return result.keys()    
     _columns = {
         'product_category_id': fields.many2one('product.category','Loại sản phẩm'),
         'nv_duyet_id': fields.many2one('res.users','Nhân viên duyệt',readonly=1),
@@ -66,6 +153,18 @@ class sale_order(osv.osv):
         'huy_ids': fields.many2many('ly.do.huy','sale_order_lydohuy_ref','sale_id','lydohuy_id','Lý do hủy'),
         'dia_chi_kh':fields.text('Địa chỉ Khách hàng',readonly=True),
         'product_id_rel': fields.related('order_line', 'product_id', type="many2one", relation="product.product", string="Product"),
+        'trang_thai':fields.function(_trangthai, string='Trạng thái',
+                                      type='selection', selection=[('draft','Dự thảo báo giá'),('sent','Đơn hàng đã gửi đi'),
+                                                                                                   ('progress','Đơn bán hàng'),('cho_giaohang','Chờ giao hàng'),('cho_hd','Chờ hoá đơn'),
+                                                                                                   ('cho_thanhtoan','Chờ thanh toán'),('done','Hoàn tất'),
+                                                                                                   ('cancel','Đã huỷ bỏ')],
+                                     store={
+                                                'stock.picking': (_get_stock_picking, ['state'], 10),
+                                                'stock.picking.in': (_get_stock_picking_in, ['state'], 10),
+                                                'account.invoice': (_get_account_invoice, ['state'], 10),
+                                                'sale.order':(lambda self, cr, uid, ids, c={}: ids, ['state'], 10),
+#                                                 'stock.picking': (_get_stock_picking, ['trang_thai_hd'], 10),
+                                            }),
     }
     
     def onchange_partner_id(self, cr, uid, ids, part, context=None):
