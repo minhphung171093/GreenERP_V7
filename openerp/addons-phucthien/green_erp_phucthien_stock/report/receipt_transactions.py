@@ -183,7 +183,8 @@ class Parser(report_sxw.rml_parse):
                         st = self.pool.get('stock.move').browse(self.cr,self.uid,line.source_id)
                         if st.purchase_line_id:
                             for t in st.purchase_line_id.taxes_id:
-                                amount_tax_po+= t.amount*st.price_subtotal
+                                amount_tax_po+= round(t.amount*st.price_subtotal)
+                    amount_tax_po = round(amount_tax_po)
                     if amount_tax_po != invoice.amount_tax:
                         if amount_tax_po < invoice.amount_tax:
                             du = invoice.amount_tax - amount_tax_po
@@ -203,7 +204,7 @@ class Parser(report_sxw.rml_parse):
             if not amount_tax and move.purchase_line_id:
                 for t in move.purchase_line_id.taxes_id:
                     amount_tax+= t.amount*move.price_subtotal
-        return amount_tax
+        return round(amount_tax)
     
     def get_chungtu(self,o):
         invoice_obj = self.pool.get('account.invoice')

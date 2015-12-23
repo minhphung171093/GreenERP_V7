@@ -110,6 +110,24 @@ class stock_picking_out(osv.osv):
                             res[picking.id] = 'Đã thanh toán'
         return res
     
+    def _trangthai(self, cr, uid, ids, name, arg, context=None):
+        res = {}
+        stock_obj = self.pool.get('stock.picking')
+        for tt in self.browse(cr,uid,ids):
+            if tt.state == 'draft':
+                res[tt.id] = 'draft'
+            if tt.state == 'confirmed' and tt.flag == False:
+                res[tt.id]='confirmed'
+            if tt.state == 'confirmed' and tt.flag == True:
+                res[tt.id]='assigned'
+            if tt.state == 'cancel':
+                res[tt.id]='cancel'
+            if tt.state == 'assigned':
+                res[tt.id]='assigned'
+            if tt.state == 'done':
+                res[tt.id]='done'
+        return res
+    
     _columns = {
         'description': fields.text('Description', track_visibility='onchange'),
         'ngay_gui':fields.date('Ngày gửi'),
@@ -147,8 +165,19 @@ class stock_picking_out(osv.osv):
             type='boolean'),
         'trang_thai_hd': fields.function(_trang_thai_hd, string='Trạng thái hóa đơn',
             type='char'),
+        'trang_thai':fields.function(_trangthai, string='Trạng thái',
+                                      type='selection', selection=[('draft','Nháp'),
+                                                                   ('confirmed','Đơn hàng chờ xử lý'),('assigned','Đơn hàng chưa xử lý'),
+                                                                   ('done','Đã chuyển'),
+                                                                   ('cancel','Đã huỷ bỏ')],
+                                     store={
+                                                'stock.picking.out':(lambda self, cr, uid, ids, c={}: ids, ['state','flag'], 10),
+                                            }),        
+        'flag':fields.boolean('Check DH chua xu ly')
+        
     }
     _defaults = {
+                 'flag': False,
                  'state_receive':'draft',
                  }
     
@@ -226,6 +255,11 @@ class stock_picking_out(osv.osv):
             '''%(line.date, line.id)
             cr.execute(sql)
         return new_write
+    
+    def bt_chua_xu_ly(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {
+                                         'flag': True,
+                                         })
     
     def bt_hanggui_kh(self, cr, uid, ids, context=None):
         res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
@@ -353,6 +387,25 @@ class stock_picking_in(osv.osv):
                         if trang_thai[0] == 'paid':
                             res[picking.id] = 'Đã thanh toán'
         return res    
+    
+    def _trangthai(self, cr, uid, ids, name, arg, context=None):
+        res = {}
+        stock_obj = self.pool.get('stock.picking')
+        for tt in self.browse(cr,uid,ids):
+            if tt.state == 'draft':
+                res[tt.id] = 'draft'
+            if tt.state == 'confirmed' and tt.flag == False:
+                res[tt.id]='confirmed'
+            if tt.state == 'confirmed' and tt.flag == True:
+                res[tt.id]='assigned'
+            if tt.state == 'cancel':
+                res[tt.id]='cancel'
+            if tt.state == 'assigned':
+                res[tt.id]='assigned'
+            if tt.state == 'done':
+                res[tt.id]='done'
+        return res
+    
     _columns = {
         'description': fields.text('Description', track_visibility='onchange'),
         'nhiet_do':fields.char('Nhiệt độ'),
@@ -387,7 +440,21 @@ class stock_picking_in(osv.osv):
             type='boolean'),
         'trang_thai_hd': fields.function(_trang_thai_hd, string='Trạng thái hóa đơn',
             type='char'),
+        'trang_thai':fields.function(_trangthai, string='Trạng thái',
+                                      type='selection', selection=[('draft','Nháp'),
+                                                                   ('confirmed','Đơn hàng chờ xử lý'),('assigned','Đơn hàng chưa xử lý'),
+                                                                   ('done','Đã chuyển'),
+                                                                   ('cancel','Đã huỷ bỏ')],
+                                     store={
+                                            'stock.picking.in':(lambda self, cr, uid, ids, c={}: ids, ['state','flag'], 10),
+                                            }),
+        'flag':fields.boolean('Check DH chua xu ly')
+        
     }
+    _defaults = {
+                 'flag': False,
+                 }
+    
     
     def tao_hoa_don(self, cr, uid,ids, context=None):
         picking = self.browse(cr, uid, ids[0])
@@ -439,6 +506,10 @@ class stock_picking_in(osv.osv):
             '''%(line.date, line.id)
             cr.execute(sql)
         return new_write
+    def bt_chua_xu_ly(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {
+                                         'flag': True,
+                                         })
 stock_picking_in()
 
 
@@ -546,6 +617,24 @@ class stock_picking(osv.osv):
                             res[picking.id] = 'Đã thanh toán'
         return res
     
+    def _trangthai(self, cr, uid, ids, name, arg, context=None):
+        res = {}
+        stock_obj = self.pool.get('stock.picking')
+        for tt in self.browse(cr,uid,ids):
+            if tt.state == 'draft':
+                res[tt.id] = 'draft'
+            if tt.state == 'confirmed' and tt.flag == False:
+                res[tt.id]='confirmed'
+            if tt.state == 'confirmed' and tt.flag == True:
+                res[tt.id]='assigned'    
+            if tt.state == 'cancel':
+                res[tt.id]='cancel'
+            if tt.state == 'assigned':
+                res[tt.id]='assigned'
+            if tt.state == 'done':
+                res[tt.id]='done'
+        return res
+    
     _columns = {
         'picking_packaging_line': fields.one2many('stock.picking.packaging','picking_id','Đóng gói'),
         'description': fields.text('Description', track_visibility='onchange'),
@@ -589,9 +678,20 @@ class stock_picking(osv.osv):
             type='boolean'),
         'trang_thai_hd': fields.function(_trang_thai_hd, string='Trạng thái hóa đơn',
             type='char'),
+                
+        'trang_thai':fields.function(_trangthai, string='Trạng thái',
+                                      type='selection', selection=[('draft','Nháp'),
+                                                                   ('confirmed','Đơn hàng chờ xử lý'),('assigned','Đơn hàng chưa xử lý'),
+                                                                   ('done','Đã chuyển'),
+                                                                   ('cancel','Đã huỷ bỏ')],
+                                     store={
+                                                'stock.picking':(lambda self, cr, uid, ids, c={}: ids, ['state','flag'], 10),
+                                            }),
+        'flag':fields.boolean('Check DH chua xu ly')
         
     }
     _defaults = {
+                 'flag': False,
                  'state_receive':'draft',
                  }
     
@@ -733,6 +833,11 @@ class stock_picking(osv.osv):
             '''%(line.date, line.id)
             cr.execute(sql)
         return new_write
+    
+    def bt_chua_xu_ly(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {
+                                         'flag': True,
+                                         })
         
 stock_picking()
 

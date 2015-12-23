@@ -356,6 +356,12 @@
 	                	<filter string="Month (Done)" icon="terp-folder-orange" domain="[]" context="{'group_by':'day_done_user_tz'}"/>
 	                	<filter string="Return Reason" name="groupby_return_reason" icon="terp-gtk-jump-to-ltr" domain="[]" context="{'group_by':'return_reason_id'}"/>
 	                </xpath>
+	                <xpath expr="/search/group/filter[@string='Status']" position="after">
+	                	<filter string="Trạng thái" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'trang_thai'}"/>
+	                </xpath>
+	                <xpath expr="/search/group/filter[@string='Status']" position="attributes">
+	                	<attribute name="invisible">1</attribute>
+	                </xpath>
 	            </field>
 	        </record>
 	        
@@ -375,6 +381,12 @@
 	                    <filter string="Date done" icon="terp-folder-orange" domain="[]" context="{'group_by':'date_done_user_tz'}"/>
 	                	<filter string="Month (Done)" icon="terp-folder-orange" domain="[]" context="{'group_by':'day_done_user_tz'}"/>
 	                	<filter string="Return Reason" name="groupby_return_reason" icon="terp-gtk-jump-to-ltr" domain="[]" context="{'group_by':'return_reason_id'}"/>
+	                </xpath>
+	                <xpath expr="/search/group/filter[@string='Status']" position="after">
+	                	<filter string="Trạng thái" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'trang_thai'}"/>
+	                </xpath>
+	                <xpath expr="/search/group/filter[@string='Status']" position="attributes">
+	                	<attribute name="invisible">1</attribute>
 	                </xpath>
 	            </field>
 	        </record>

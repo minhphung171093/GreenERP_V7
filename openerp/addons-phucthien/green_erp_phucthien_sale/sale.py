@@ -163,7 +163,6 @@ class sale_order(osv.osv):
                                                 'stock.picking.in': (_get_stock_picking_in, ['state'], 10),
                                                 'account.invoice': (_get_account_invoice, ['state'], 10),
                                                 'sale.order':(lambda self, cr, uid, ids, c={}: ids, ['state'], 10),
-#                                                 'stock.picking': (_get_stock_picking, ['trang_thai_hd'], 10),
                                             }),
     }
     

@@ -24,6 +24,12 @@
                 <xpath expr="//field[@name='origin']" position="after">
 					<field name="so_hd"/>
 				</xpath>
+				<xpath expr="//field[@name='state']" position="attributes">
+                	<attribute name="invisible">1</attribute>
+                </xpath>
+          		<xpath expr="//field[@name='state']" position="before">
+                	<field name="trang_thai" />
+                </xpath>
 			</field>
 		</record>
 					
@@ -85,6 +91,10 @@
                 	<field name="nhietdo_di" attrs="{'invisible':[('type','!=','out')]}"/>
                 	<field name="nhietdo_den" attrs="{'invisible':[('type','!=','out')]}"/>
                 	<field name="exist" invisible = '1'/>
+                	<field name="flag" invisible = '1'/>
+                </xpath>
+                <xpath expr="//button[@name='force_assign']" position="after">
+                	<button name="bt_chua_xu_ly" string="Đơn hàng chưa xử lý" type="object" attrs="{'invisible':['|',('state','!=','confirmed'),('flag','=',True)]}" groups="base.group_user"/>
                 </xpath>
                 <xpath expr="//button[@name='force_assign']" position="attributes">
                 	<attribute name="groups">general_stock.group_stock_chophepduhang</attribute>
@@ -97,6 +107,12 @@
 	                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
 	                    <field name="message_ids" widget="mail_thread"/>
                 	</div>
+                </xpath>
+                <xpath expr="//field[@name='state']" position="attributes">
+                	<attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='state']" position="before">
+                	<field name="trang_thai" widget="statusbar" statusbar_visible="draft,confirmed,assigned,done,cancel"/>
                 </xpath>
                 
             </field>
@@ -115,6 +131,12 @@
 					<button name="status_send" attrs="{'invisible':[('state_receive','!=','draft')]}" string="Send" icon="gtk-go-up" type="object" class="oe_highlight"/>
 					<button name="status_receive" attrs="{'invisible':[('state_receive','!=','da_gui')]}" string="Receive" icon="gtk-goto-bottom" type="object" class="oe_highlight"/>
 					<button name="status_refresh" attrs="{'invisible':[('state_receive','=','draft')]}" string="Refresh" icon="gtk-refresh" type="object" class="oe_highlight"/>
+                </xpath>
+                <xpath expr="//field[@name='state']" position="attributes">
+                	<attribute name="invisible">1</attribute>
+                </xpath>
+          		<xpath expr="//field[@name='state']" position="before">
+                	<field name="trang_thai" />
                 </xpath>
             </field>
         </record>
