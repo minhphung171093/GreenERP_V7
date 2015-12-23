@@ -12,6 +12,60 @@ import openerp.addons.decimal_precision as dp
 
 class purchase_order(osv.osv):
     _inherit = "purchase.order"
+
+    def _trangthai(self, cr, uid, ids, name, arg, context=None):
+        res = {}
+        stock_obj = self.pool.get('stock.picking')
+        for tt in self.browse(cr,uid,ids):
+            sql = '''
+                select id from stock_picking where purchase_id = %s and type = 'in'
+            '''%(tt.id)
+            cr.execute(sql)
+            purchase_ids = [r[0] for r in cr.fetchall()]
+            if purchase_ids:
+                for picking in stock_obj.browse(cr, uid, purchase_ids):      
+                    if picking.type == 'in':
+                        for move in picking.move_lines:
+                            sql = '''
+                                select state from account_invoice where type = 'in_invoice'
+                                and id in (select invoice_id from account_invoice_line where source_id = %s)
+                            '''%(move.id)
+                            cr.execute(sql)
+                            trang_thai = cr.fetchone()
+                            if not trang_thai:
+                                res[tt.id]='cho_hd'
+                            else:
+                                if trang_thai[0] == 'draft':
+                                    res[tt.id]='cho_hd'
+                                if trang_thai[0] == 'open':
+                                    res[tt.id]='cho_thanhtoan'   
+                                if trang_thai[0] == 'paid':
+                                    res[tt.id]='done'                      
+                    if picking.state not in ['cancel','done']:
+                        res[tt.id]='cho_nhanhang'
+#                     if line.state == 'done' and line.trang_thai_hd == 'Chưa có hóa đơn':
+#                         res[tt.id]='cho_hd'
+#                     if line.state == 'done' and line.trang_thai_hd == 'Chờ thanh toán':
+#                         res[tt.id]='cho_thanhtoan'        
+#                     if line.state == 'done' and line.trang_thai_hd == 'Đã thanh toán':
+#                         res[tt.id]='done'    
+#                     if line.state == 'done' and line.trang_thai_hd == 'Chờ duyệt hóa đơn':
+#                         res[tt.id]='cho_hd'                                
+            else:           
+                if tt.state == 'sent':
+                    res[tt.id] = 'sent'
+                if tt.state == 'draft':
+                    res[tt.id]='draft'
+                if tt.state == 'cancel':
+                    res[tt.id]='cancel'
+                if tt.state == 'confirmed':
+                    res[tt.id]='confirmed'
+                if tt.state == 'approved':
+                    res[tt.id]='approved'
+#             if tt.id not in res:
+#                 res[tt.id]='done'
+#         print 'PHUNG',res
+        return res
     
     def _amount_all(self, cr, uid, ids, field_name, arg, context=None):
         res = {}
@@ -33,6 +87,43 @@ class purchase_order(osv.osv):
             res[order.id]['amount_untaxed']=cur_obj.round(cr, uid, cur, val1)
             res[order.id]['amount_total']=res[order.id]['amount_untaxed'] + res[order.id]['amount_tax']
         return res
+
+    def _get_stock_picking(self, cr, uid, ids, context=None):
+        result = {}
+        co_cau_ids =[]
+        for line in self.pool.get('stock.picking').browse(cr, uid, ids, context=context):
+            sql = '''
+                select id from purchase_order where id in (select purchase_id from stock_picking where id = %s and type = 'in' )
+            '''%(line.id)
+            cr.execute(sql)
+            for r in cr.fetchall():
+                result[r[0]] = True
+        return result.keys()
+    
+    def _get_stock_picking_in(self, cr, uid, ids, context=None):
+        result = {}
+        co_cau_ids =[]
+        for line in self.pool.get('stock.picking.in').browse(cr, uid, ids, context=context):
+            sql = '''
+                select id from purchase_order where id in (select purchase_id from stock_picking where id = %s and type = 'in' )
+            '''%(line.id)
+            cr.execute(sql)
+            for r in cr.fetchall():
+                result[r[0]] = True
+        return result.keys()
+    
+    def _get_account_invoice(self, cr, uid, ids, context=None):
+        result = {}
+        co_cau_ids =[]
+        for line in self.pool.get('account.invoice').browse(cr, uid, ids, context=context):
+            sql = '''
+                select id from purchase_order where id in (select purchase_id from stock_picking 
+                where id in (select picking_id from stock_move where id in (select source_id from account_invoice_line where invoice_id = %s)) and type = 'in' )
+            '''%(line.id)
+            cr.execute(sql)
+            for r in cr.fetchall():
+                result[r[0]] = True
+        return result.keys()
     
     def _get_order(self, cr, uid, ids, context=None):
         result = {}
@@ -54,6 +145,19 @@ class purchase_order(osv.osv):
                 'purchase.order.line': (_get_order, None, 10),
             }, multi="sums",help="The total amount"),
         'sampham_lanh':fields.boolean('Sản phẩm lạnh'),
+        'trang_thai':fields.function(_trangthai, string='Trạng thái', 
+                                     type='selection', selection=[('draft','Phiếu thu mua nháp'),('sent','Yêu cầu đơn hàng đã được gửi'),
+                                                                                                   ('confirmed','Chở nhân sự duyệt'),('approved','Đơn mua hàng'),
+                                                                                                   ('cho_nhanhang','Chờ nhận hàng'),('cho_hd','Chờ hoá đơn'),
+                                                                                                   ('cho_thanhtoan','Chờ thanh toán'),('done','Hoàn tất'),
+                                                                                                   ('cancel','Đã huỷ bỏ')],                                    
+                                     store={
+                                                'stock.picking': (_get_stock_picking, ['state'], 10),
+                                                'stock.picking.in': (_get_stock_picking_in, ['state'], 10),
+                                                'account.invoice': (_get_account_invoice, ['state'], 10),
+                                                'purchase.order':(lambda self, cr, uid, ids, c={}: ids, ['state'], 10),
+#                                                 'stock.picking': (_get_stock_picking, ['trang_thai_hd'], 10),
+                                            }),
     }
     
     def print_purchase_order(self, cr, uid, ids, context=None): 
