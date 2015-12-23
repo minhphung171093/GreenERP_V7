@@ -643,7 +643,12 @@ class sale_order(osv.osv):
         now = time.strftime("%Y-%m-%d")
         if sale.date_order < now:
             u = self.pool.get('res.users').browse(cr, uid, uid)
-            user = self.pool.get('res.users').browse(cr, uid, sale.user_id.id)
+            sql = '''
+                select create_uid from sale_order where id = %s
+            '''%(ids[0])
+            cr.execute(sql)
+            user_id = cr.dictfetchone()['create_uid']
+            user = self.pool.get('res.users').browse(cr, uid, user_id)
             partner = user.partner_id
             partner.signup_prepare()
             date_vn = datetime.datetime.strptime(sale.date_order, DATE_FORMAT)
@@ -668,7 +673,12 @@ class sale_order(osv.osv):
                 raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa chọn lý do không được duyệt !'))
             if sale.date_order < now:
                 u = self.pool.get('res.users').browse(cr, uid, uid)
-                user = self.pool.get('res.users').browse(cr, uid, sale.user_id.id)
+                sql = '''
+                    select create_uid from sale_order where id = %s
+                '''%(ids[0])
+                cr.execute(sql)
+                user_id = cr.dictfetchone()['create_uid']
+                user = self.pool.get('res.users').browse(cr, uid, user_id)
                 partner = user.partner_id
                 partner.signup_prepare()
                 date_vn = datetime.datetime.strptime(sale.date_order, DATE_FORMAT)
