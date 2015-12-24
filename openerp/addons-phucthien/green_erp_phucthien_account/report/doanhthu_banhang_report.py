@@ -100,6 +100,7 @@ class Parser(report_sxw.rml_parse):
         date_to = wizard_data['date_to']
         partner_ids = wizard_data['partner_ids']
         users_ids = wizard_data['users_ids']
+        tinh_ids = wizard_data['tinh_ids']
         product_ids = wizard_data['product_ids']
         categ_ids = wizard_data['categ_ids']
         loc_ids = wizard_data['loc_ids']
@@ -125,6 +126,7 @@ class Parser(report_sxw.rml_parse):
                     left join product_category pc on pt.categ_id=pc.id
                     left join product_uom pu on ail.uos_id=pu.id
                     left join stock_production_lot spl on ail.prodlot_id = spl.id
+                    left join res_country_state rcs on rp.state_id = rcs.id
                     left join (
                             select ail.id,sum(at.amount*ail.price_unit*ail.quantity) as amount_tax
                                 from account_invoice_line ail
@@ -151,6 +153,12 @@ class Parser(report_sxw.rml_parse):
             sql+='''
                 and rp.user_id in %s 
             '''%(users_ids)
+        if tinh_ids:
+            tinh_ids = str(tinh_ids).replace('[', '(')
+            tinh_ids = str(tinh_ids).replace(']', ')')
+            sql+='''
+                and rp.state_id in %s 
+            '''%(tinh_ids)
         if product_ids:
             product_ids = str(product_ids).replace('[', '(')
             product_ids = str(product_ids).replace(']', ')')

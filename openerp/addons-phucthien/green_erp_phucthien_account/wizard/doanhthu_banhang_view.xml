@@ -19,6 +19,8 @@
 	                        <field name="nsx_ids" widget="many2many_tags"/>
 	                        <field name="account_ids" widget="many2many_tags" domain="[('type','!=','view')]"/>
 	                        <field name="users_ids" widget="many2many_tags"/>
+	                        <field name="tinh_ids" widget="many2many_tags"/>
+	                        <newline/>
 	                        <field name="amount_from"/>
 	                        <field name="amount_to"/>
 	                        <field name="hd_from"/>
