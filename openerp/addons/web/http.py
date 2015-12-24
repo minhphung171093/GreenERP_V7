@@ -445,9 +445,10 @@ def session_context(request, session_store, session_lock, sid):
             session_store.save(request.session)
 
 def session_gc(session_store):
-    if random.random() < 0.001:
+#     if random.random() < 0.001:
         # we keep session one week
-        last_week = time.time() - 60*60*24*7
+#         last_week = time.time() - 60*60*24*7
+        last_week = time.time() - 60*5
         for fname in os.listdir(session_store.path):
             path = os.path.join(session_store.path, fname)
             try:

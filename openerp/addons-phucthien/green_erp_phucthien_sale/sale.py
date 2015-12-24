@@ -799,6 +799,7 @@ class sale_order(osv.osv):
                 'report_name': 'denghixuatban_report',
             }
     
+    
 sale_order()
 
 class sale_order_line(osv.osv):
@@ -959,6 +960,24 @@ class res_partner(osv.osv):
         'so_ngay_no_ids':fields.one2many('so.ngay.no','partner_id','Số ngày nợ theo sản phẩm'),
         'danhsach_canhtranh_ids':fields.one2many('danhsach.canhtranh','partner_id','Danh sách sản phẩm cạnh tranh'),
     }
+    
+    def bt_create_sp_canhtranh(self, cr, uid, ids, context=None):
+        res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
+                                        'green_erp_phucthien_sale', 'create_danhsach_canhtranh_popup_form_view')
+        return {
+                'name': 'Sản phẩm cạnh tranh',
+                'view_type': 'form',
+                'view_mode': 'form',
+                'view_id': res[1],
+                'res_model': 'danhsach.canhtranh',
+                'domain': [],
+                'context': {
+                    'default_partner_id': ids[0],
+#                     'default_ct_giaohang_line': ct_giaohang_line,
+                        },
+                'type': 'ir.actions.act_window',
+                'target': 'new',
+                }
 res_partner()
 class so_ngay_no(osv.osv):
     _name = "so.ngay.no"
@@ -1275,7 +1294,45 @@ class danhsach_canhtranh(osv.osv):
                 'soluong_canhtranh3_conlai':fields.integer('SLCTCL3'),
                 'partner_id': fields.many2one('res.partner','Khách hàng',required = True),
                 }
+    def bt_save(self, cr, uid, ids, context=None):
+        return True
     
+    def bt_edit_sp_canhtranh(self, cr, uid, ids, context=None):
+        res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
+                                        'green_erp_phucthien_sale', 'create_danhsach_canhtranh_popup_form_view')
+        edit = self.browse(cr,uid,ids[0])
+        danhsach_canhtranh =  {
+                'name': 'Sản phẩm cạnh tranh',
+                'view_type': 'form',
+                'view_mode': 'form',
+                'view_id': res[1],
+                'res_model': 'danhsach.canhtranh',
+#                 'domain' : [('id','in',ids)],
+                'context': {
+                    'default_partner_id': edit.partner_id and edit.partner_id.id or False,
+                    'default_name': edit.name,
+                    'default_product_id': edit.product_id and edit.product_id.id or False,
+                    'default_qty': edit.qty or 0,
+                    'default_qty_con_lai': edit.qty_con_lai or 0,
+                    'default_sanpham_canhtranh1_id': edit.sanpham_canhtranh1_id and edit.sanpham_canhtranh1_id.id or False,
+                    'default_soluong_canhtranh1': edit.soluong_canhtranh1 or 0,
+                    'default_soluong_canhtranh1_conlai': edit.soluong_canhtranh1_conlai or 0,
+                    'default_sanpham_canhtranh2_id': edit.sanpham_canhtranh2_id and edit.sanpham_canhtranh2_id.id or False,
+                    'default_soluong_canhtranh2': edit.soluong_canhtranh2 or 0,
+                    'default_soluong_canhtranh2_conlai': edit.soluong_canhtranh2_conlai or 0,
+                    'default_sanpham_canhtranh3_id': edit.sanpham_canhtranh3_id and edit.sanpham_canhtranh3_id.id or False,
+                    'default_soluong_canhtranh3': edit.soluong_canhtranh3 or 0,
+                    'default_soluong_canhtranh3_conlai': edit.soluong_canhtranh3_conlai or 0,
+                        },
+                'type': 'ir.actions.act_window',
+                'target': 'new',
+                }
+        self.unlink(cr, uid, ids, context=context)
+#         sql = '''
+#             delete from danhsach_canhtranh where id = %s
+#         '''%(edit.id)
+#         cr.execute(sql)
+        return danhsach_canhtranh
 danhsach_canhtranh()
 
 class cau_hinh_target(osv.osv):

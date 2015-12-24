@@ -236,6 +236,10 @@
           				</field>
 	                </page>
 	                <page string="Danh sách sản phẩm cạnh tranh" attrs="{'invisible': [('customer','=',False)]}">
+          				<header>
+          					<button name="bt_create_sp_canhtranh" string="Tạo sản phẩm cạnh tranh" class="oe_highlight" type="object"/>
+          				</header>
+          				
           				<field name = "danhsach_canhtranh_ids" >
           					<tree editable='top'>
           						<field name="name" />
@@ -251,6 +255,7 @@
                                 <field name="sanpham_canhtranh3_id"/>
                                 <field name="soluong_canhtranh3"/>
                                 <field name="soluong_canhtranh3_conlai"/>
+                                <button name="bt_edit_sp_canhtranh" string="Edit" icon="gtk-go-up" type="object" class="oe_highlight"/>
                             </tree>
           				</field>
 	                </page>
@@ -844,6 +849,37 @@
     		name="Cảnh báo của các đơn hàng"
     		parent="base.menu_base_config"
     		sequence="16"
-    		groups="base.group_sale_manager"/>  
+    		groups="base.group_sale_manager"/> 
+    		
+    	<record id="create_danhsach_canhtranh_popup_form_view" model="ir.ui.view">
+            <field name="name">create.danhsach.canhtranh.popup.form</field>
+            <field name="model">danhsach.canhtranh</field>
+            <field name="arch" type="xml">
+	            <form string="Danh sách cạnh tranh" version="7.0"> 
+	            	<sheet>
+	                    <group col='4' colspan='2'>
+                    		<field name="name" />
+							<field name="product_id" />
+							<field name="qty"/>
+							<field name="qty_con_lai"/>
+                            <field name="sanpham_canhtranh1_id"/>
+                            <field name="soluong_canhtranh1"/>
+                            <field name="soluong_canhtranh1_conlai"/>
+                            <field name="sanpham_canhtranh2_id"/>
+                            <field name="soluong_canhtranh2"/>
+                            <field name="soluong_canhtranh2_conlai"/>
+                            <field name="sanpham_canhtranh3_id"/>
+                            <field name="soluong_canhtranh3"/>
+                            <field name="soluong_canhtranh3_conlai"/>
+	                    </group>
+						<footer>
+	                        <button string="Lưu" type="object" name="bt_save"/>
+	                        or
+	                        <button string="Hủy bỏ" class="oe_link" special="cancel"/>
+                    	</footer>
+		         	</sheet>
+		         </form>
+			</field>
+		</record> 
     </data>
 </openerp>
