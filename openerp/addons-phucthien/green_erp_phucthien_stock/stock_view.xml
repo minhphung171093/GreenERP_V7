@@ -1326,5 +1326,41 @@
 		        	name="Phiếu xuất tạm"
 		        	parent="account.menu_finance_payables"
 		        	sequence="95"/>
+		        	
+		<record id="so_hoadon_dauvao_tree_view" model="ir.ui.view">
+			<field name="name">so.hoadon.dauvao.tree</field>
+			<field name="model">so.hoadon.dauvao</field>
+			<field name="arch" type="xml">
+				<tree string="Số hoá đơn đầu vào" create='false' delete='false' >
+					<field name="name"/>
+				</tree>
+			</field>
+		</record>
+		<record id="so_hoadon_dauvao_form_view" model="ir.ui.view">
+			<field name="name">so.hoadon.dauvao.form</field>
+			<field name="model">so.hoadon.dauvao</field>
+			<field name="arch" type="xml">
+				<form string="Số hoá đơn đầu vào" version="7.0" create='false' delete='false' >
+				<group>
+					<field name="name"/>
+				</group>
+				</form>
+			</field>
+		</record>
+		
+		<record id="action_so_hoadon_dauvao" model="ir.actions.act_window">
+            <field name="name">Số hoá đơn đầu vào</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">so.hoadon.dauvao</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="so_hoadon_dauvao_tree_view"/>
+        </record>	
+        
+        <menuitem action="action_so_hoadon_dauvao"
+		        	id="menu_action_so_hoadon_dauvao"
+		        	name="Số hoá đơn đầu vào"
+		        	parent="stock.menu_stock_configuration"
+		        	sequence="100"/>	          	
     </data>
 </openerp>

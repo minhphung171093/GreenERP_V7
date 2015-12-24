@@ -806,8 +806,8 @@ class stock_picking(osv.osv):
             'payment_mode_id':payment_mode_id,
             'shop_id': shop_ids and shop_ids[0] or False,
             'address': picking.diachi_giaohang_id and picking.diachi_giaohang_id.name or False,
-            'supplier_invoice_number': picking.so_hd or '',
-#             'supplier_invoice_number': self.pool.get('ir.sequence').get(cr, uid, 'so.hd.dau.vao.seq') or '/',
+#             'supplier_invoice_number': picking.so_hd or '',
+            'supplier_invoice_number': self.pool.get('ir.sequence').get(cr, uid, 'so.hd.dau.vao.seq') or '/',
         }
         cur_id = self.get_currency_id(cr, uid, picking)
         if cur_id:
@@ -2053,5 +2053,33 @@ class ct_giaohang_line(osv.osv):
     ]
     
 ct_giaohang_line()
-
+class so_hoadon_dauvao(osv.osv):
+    _name = 'so.hoadon.dauvao'
+    
+    _columns = {
+        'name':fields.integer('Số hợp đồng ngoại'),
+        
+    }
+    def duyet(self, cr, uid, ids, context=None):
+        account_model, so_hoadon = self.pool.get('ir.model.data').get_object_reference(cr,uid, 'general_account', 'sequence_hoadon_dauvao_1_item')
+        self.pool.get('ir.sequence').check_access_rule(cr,uid, [so_hoadon], 'read', context = context)
+        for line in self.browse(cr,uid,ids):
+            self.pool.get('ir.sequence').write(cr,uid,[so_hoadon],{'number_next_actual':line.name})
+        return self.write(cr, uid, ids, {'state': 'da_duyet'})
+    def create(self, cr, uid, vals, context=None):
+        account_model, so_hoadon = self.pool.get('ir.model.data').get_object_reference(cr,uid, 'general_account', 'sequence_hoadon_dauvao_1_item')
+        self.pool.get('ir.sequence').check_access_rule(cr,uid, [so_hoadon], 'read', context = context)
+        new_id = super(so_hoadon_dauvao, self).create(cr, uid, vals, context)
+        line = self.browse(cr, uid, new_id)
+        self.pool.get('ir.sequence').write(cr,uid,[so_hoadon],{'number_next_actual':line.name})
+        return new_id
+    
+    def write(self, cr, uid, ids, vals, context=None):
+        account_model, so_hoadon = self.pool.get('ir.model.data').get_object_reference(cr,uid, 'general_account', 'sequence_hoadon_dauvao_1_item')
+        self.pool.get('ir.sequence').check_access_rule(cr,uid, [so_hoadon], 'read', context = context)
+        new_write = super(so_hoadon_dauvao, self).write(cr, uid, ids, vals, context=context) 
+        for line in self.browse(cr,uid,ids):
+           self.pool.get('ir.sequence').write(cr,uid,[so_hoadon],{'number_next_actual':line.name}) 
+        return new_write    
+so_hoadon_dauvao()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
