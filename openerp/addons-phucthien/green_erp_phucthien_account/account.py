@@ -85,6 +85,7 @@ class account_invoice(osv.osv):
             res.append((record['id'], name))
         return res
     
+    
 #         types = {
 #                 'out_invoice': _('Invoice'),
 #                 'in_invoice': _('Supplier Invoice'),

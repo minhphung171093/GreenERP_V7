@@ -250,9 +250,11 @@ class account_invoice(osv.osv):
         'product_showin_report': fields.function(_get_product_showin_report, type='char', store=True),
         'invoice_refund': fields.boolean('Invoice Refund'),
         'invoice_dieuchinh': fields.boolean('Invoice Refund'),
+        'flag': fields.boolean('Flag'),
 #         'supplier_invoice_number': fields.char('Supplier Invoice Number', size=64, help="The reference of this invoice as provided by the supplier.", readonly=True, states={'draft':[('readonly',False)]}),
     }
     _defaults = {
+        'flag': False,
         'invoice_refund': False,
         'invoice_dieuchinh': False,
 #         'supplier_invoice_number': '/',
@@ -277,6 +279,12 @@ class account_invoice(osv.osv):
             book_obj = book.browse(cr,uid,vals['invoice_book_id'])
             number = book.create_sohoadonketiep(cr,uid,vals['invoice_book_id'],context)
             vals.update({'reference_number':number,'reference':book_obj.kyhieuhoadon})
+        if vals.get('state',False)=='open':
+            for line in self.browse(cr,uid,ids):
+                account_ids = self.pool.get('account.account').search(cr,uid,[('code', '=', '64189')])
+                if line.account_id.id == account_ids[0]:
+                    vals.update({'state':'paid'})
+                    
 #         if vals.get('state',False):
 #             if vals['state'] == 'open':
 #                 for acc_inv in self.browse(cr,uid,ids):
@@ -806,6 +814,13 @@ class account_invoice(osv.osv):
         osv.osv.unlink(self, cr, uid, unlink_ids, context=context)
         return True
     
+    def bt_ghinhan_vao_chiphi(self, cr, uid,ids, context=None):
+        line = self.browse(cr,uid,ids[0])
+        account_ids = self.pool.get('account.account').search(cr,uid,[('code', '=', '64189')])
+        return self.write(cr,uid,ids,{
+                                      'account_id': account_ids[0],
+                                      'flag': True,
+                                      })
 account_invoice()
 
 class account_invoice_line(osv.osv):
