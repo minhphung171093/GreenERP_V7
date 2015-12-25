@@ -15,6 +15,8 @@ class users(osv.osv):
         'profile_id': fields.many2one('profile', string='Profile', required=False, readonly=False, help='The profile of the user. The admin should have no profile.'),
         'profile_ids': fields.many2many('profile', 'res_users_profiles_rel', 'user_id', 'profile', string='Profiles', 
                                         required=False, readonly=False, help='The profile of the user. The admin should have no profile.'),
+        'nguoi_quanly_id': fields.many2one('res.users', 'Người quản lý'),    
+        'nhan_vien_line':fields.one2many('res.users','nguoi_quanly_id','Nhan Vien'),   
     }
     
     def create(self, cr, uid, vals, context=None):         
