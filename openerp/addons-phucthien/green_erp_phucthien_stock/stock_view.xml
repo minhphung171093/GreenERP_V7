@@ -1331,7 +1331,7 @@
 			<field name="name">so.hoadon.dauvao.tree</field>
 			<field name="model">so.hoadon.dauvao</field>
 			<field name="arch" type="xml">
-				<tree string="Số hoá đơn đầu vào" create='false' delete='false' >
+				<tree string="Số hoá đơn đầu ra" create='false' delete='false' >
 					<field name="name"/>
 				</tree>
 			</field>
@@ -1340,7 +1340,7 @@
 			<field name="name">so.hoadon.dauvao.form</field>
 			<field name="model">so.hoadon.dauvao</field>
 			<field name="arch" type="xml">
-				<form string="Số hoá đơn đầu vào" version="7.0" create='false' delete='false' >
+				<form string="Số hoá đơn đầu ra" version="7.0" create='false' delete='false' >
 				<group>
 					<field name="name"/>
 				</group>
@@ -1349,7 +1349,7 @@
 		</record>
 		
 		<record id="action_so_hoadon_dauvao" model="ir.actions.act_window">
-            <field name="name">Số hoá đơn đầu vào</field>
+            <field name="name">Số hoá đơn đầu ra</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">so.hoadon.dauvao</field>
             <field name="view_type">form</field>
@@ -1359,8 +1359,8 @@
         
         <menuitem action="action_so_hoadon_dauvao"
 		        	id="menu_action_so_hoadon_dauvao"
-		        	name="Số hoá đơn đầu vào"
-		        	parent="stock.menu_stock_configuration"
-		        	sequence="100"/>	          	
+		        	name="Số hoá đơn đầu ra"
+		        	parent="account.menu_finance_receivables"
+		        	sequence="105"/>	          	
     </data>
 </openerp>

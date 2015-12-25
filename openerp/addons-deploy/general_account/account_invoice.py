@@ -266,9 +266,9 @@ class account_invoice(osv.osv):
             book_obj = book.browse(cr,uid,vals['invoice_book_id'])
             number = book.create_sohoadonketiep(cr,uid,vals['invoice_book_id'],context)
             vals.update({'reference_number':number,'reference':book_obj.kyhieuhoadon})
-        if vals.get('supplier_invoice_number',False):
-            if vals.get('supplier_invoice_number','/')=='/':
-                vals['supplier_invoice_number'] = self.pool.get('ir.sequence').get(cr, uid, 'so.hd.dau.vao.seq') or '/'
+#         if vals.get('supplier_invoice_number',False):
+#             if vals.get('supplier_invoice_number','/')=='/':
+#                 vals['supplier_invoice_number'] = self.pool.get('ir.sequence').get(cr, uid, 'so.hd.dau.vao.seq') or '/'
         return super(account_invoice, self).create(cr, uid, vals, context)
     
     def write(self,cr,uid,ids,vals,context=None):

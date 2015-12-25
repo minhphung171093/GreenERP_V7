@@ -814,6 +814,8 @@ class stock_picking(osv.osv):
             invoice_vals['currency_id'] = cur_id
         if journal_id:
             invoice_vals['journal_id'] = journal_id
+        if inv_type in ['out_invoice']:
+            invoice_vals['reference_number'] = self.pool.get('ir.sequence').get(cr, uid, 'so.hd.dau.vao.seq') or '/'
         return invoice_vals
     
     def tao_hoa_don(self, cr, uid,ids, context=None):
@@ -2057,7 +2059,7 @@ class so_hoadon_dauvao(osv.osv):
     _name = 'so.hoadon.dauvao'
     
     _columns = {
-        'name':fields.integer('Số hợp đồng ngoại'),
+        'name':fields.integer('Số hóa đơn', required = True),
         
     }
     def duyet(self, cr, uid, ids, context=None):
