@@ -1332,6 +1332,7 @@
 			<field name="model">so.hoadon.dauvao</field>
 			<field name="arch" type="xml">
 				<tree string="Số hoá đơn đầu ra" create='false' delete='false' >
+					<field name="ki_hieu_hd"/>
 					<field name="name"/>
 				</tree>
 			</field>
@@ -1342,6 +1343,7 @@
 			<field name="arch" type="xml">
 				<form string="Số hoá đơn đầu ra" version="7.0" create='false' delete='false' >
 				<group>
+					<field name="ki_hieu_hd"/>
 					<field name="name"/>
 				</group>
 				</form>

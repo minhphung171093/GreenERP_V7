@@ -255,7 +255,7 @@
                                 <field name="sanpham_canhtranh3_id"/>
                                 <field name="soluong_canhtranh3"/>
                                 <field name="soluong_canhtranh3_conlai"/>
-                                <button name="bt_edit_sp_canhtranh" string="Edit" icon="gtk-go-up" type="object" class="oe_highlight"/>
+              <!--                  <button name="bt_edit_sp_canhtranh" string="Edit" icon="gtk-go-up" type="object" class="oe_highlight"/>   -->
                             </tree>
           				</field>
 	                </page>
