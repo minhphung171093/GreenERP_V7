@@ -429,7 +429,7 @@
 	                    <field name="day_done_user_tz" invisible='1'/>
 	                    <field name="backorder_id" invisible="1"/>
 	                    <field name="stock_journal_id"/>
-	                    <field name="invoice_state"/>
+	                    <field name="invoice_state" invisible="1"/>
 	                    <field name="state"/>
 	                </tree>
 	            </field>
