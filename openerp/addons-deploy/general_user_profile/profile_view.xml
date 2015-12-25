@@ -64,6 +64,9 @@
                    <field name="profile_ids" widget="many2many_tags"/>
                    <button name="update_profile" type="object" string="Update Profile" icon="gtk-ok" />
               	</field>
+              	<field name="active" position='after'>
+                   <field name="nguoi_quanly_id"/>
+              	</field>
             </field>
         </record>
         
