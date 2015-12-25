@@ -806,8 +806,8 @@ class stock_picking(osv.osv):
             'payment_mode_id':payment_mode_id,
             'shop_id': shop_ids and shop_ids[0] or False,
             'address': picking.diachi_giaohang_id and picking.diachi_giaohang_id.name or False,
-#             'supplier_invoice_number': picking.so_hd or '',
-            'supplier_invoice_number': self.pool.get('ir.sequence').get(cr, uid, 'so.hd.dau.vao.seq') or '/',
+            'supplier_invoice_number': picking.so_hd or '',
+#             'supplier_invoice_number': self.pool.get('ir.sequence').get(cr, uid, 'so.hd.dau.vao.seq') or '/',
         }
         cur_id = self.get_currency_id(cr, uid, picking)
         if cur_id:
