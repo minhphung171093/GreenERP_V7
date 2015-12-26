@@ -18,6 +18,41 @@ class users(osv.osv):
         'shop_ids':fields.many2many('sale.shop', 'sale_shop_users_rel', 'user_id', 'shop_id', 'Shops'),
     }
     
+    def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
+        if context is None:
+            context = {}
+        if context.get('search_nhanvien_id'):
+            if context.get('uid'):
+                sql = '''
+                    select res_id from ir_model_data where name = 'group_sale_salesman' and module = 'base'
+                '''
+                cr.execute(sql)
+                group_sale_salesman_id = cr.dictfetchone()['res_id']
+                
+                sql = '''
+                    select res_id from ir_model_data where name = 'group_sale_salesman_all_leads' and module = 'base'
+                '''
+                cr.execute(sql)
+                group_sale_salesman_all_id = cr.dictfetchone()['res_id']
+                sql = '''
+                    select uid from res_groups_users_rel 
+                    where gid = %s and uid not in (select uid from res_groups_users_rel where gid = %s)
+                '''%(group_sale_salesman_id,group_sale_salesman_all_id)
+                cr.execute(sql)
+                user_kinhdoanh_ids = [row[0] for row in cr.fetchall()]
+                if context.get('uid') in user_kinhdoanh_ids:
+                    sql = '''
+                        select id from res_users 
+                        where nguoi_quanly_id = %s or id = %s
+                    '''%(context.get('uid'),context.get('uid'))
+                    cr.execute(sql)
+                    user_dc_quanly_ids = [row[0] for row in cr.fetchall()]
+                    args += [('id','in',user_dc_quanly_ids)]
+        return super(users, self).search(cr, uid, args, offset=offset, limit=limit, order=order, context=context, count=count)
+    def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
+       ids = self.search(cr, user, args, context=context, limit=limit)
+       return self.name_get(cr, user, ids, context=context)
+    
     def on_change_shop_id(self, cr, uid, ids, context_shop_id):
         return {
                 'warning' : {
