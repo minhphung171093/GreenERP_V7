@@ -651,7 +651,7 @@
         </field>
     </record>
       
-       	<record model="ir.actions.act_window" id="action_remind_work">
+   	<record model="ir.actions.act_window" id="action_remind_work">
         <field name="name">Nhắc nhở công việc</field>
         <field name="res_model">remind.work</field>
         <field name="view_type">form</field>

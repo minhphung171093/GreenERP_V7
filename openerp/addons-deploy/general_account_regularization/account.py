@@ -106,7 +106,8 @@ class account_regularization(osv.osv):
 				continue
 #				raise osv.except_osv('Warning!', 'Nothing to regularize')
 			move = move_obj.create(cr, uid, {'journal_id': journal, 
-																'period_id': period, 
+																'period_id': period,
+																'date': date,
 																'regularization_id': regularization.id,
 																'company_id': regularization.company_id.id,}, context=context)
 			sum = 0.0
@@ -127,6 +128,7 @@ class account_regularization(osv.osv):
 			diff_line = {
 						'name': regularization.name,
 						'date': date,
+						'date_created': date,
 						'move_id': move,
 						'account_id': (sum>0) and regularization.debit_account_id.id or regularization.credit_account_id.id,
 						'credit': ((sum<0.0) and -sum) or 0.0,
