@@ -558,6 +558,7 @@
             <field name="arch" type="xml">
                 <tree string="Nhắc nhở công việc">
                     <field name="name"/>
+                    <field name="bo_phan_id"/>
                     <field name="user_ids" widget="many2many_tags"/>
                     <field name="situation_id"/>
                     <field name="date_start"/>
@@ -598,16 +599,17 @@
 	                	<group>
 		                	<group>
 			                    <field name="name"/>
+			                    <field name="bo_phan_id" on_change = "onchange_bo_phan_id(bo_phan_id, user_ids)"/>
 			                    <field name="user_ids" widget="many2many_tags"/>
 			                    <field name="noidung_chinh_id"/>
 			                    <field name="situation_id"/>
-			                    <field name="thoigian_dukien" on_change = "onchange_ngay_canh_bao(date_start, thoigian_dukien)"/>
 		                    </group>
 		                    <group>
 			                    <field name="date_start" on_change = "onchange_ngay_canh_bao(date_start, thoigian_dukien)"/>
 			                    <field name="date_end"/>
                					<field name="partner_id"/>
                					<field name="lydo_huy"/>
+               					<field name="thoigian_dukien" on_change = "onchange_ngay_canh_bao(date_start, thoigian_dukien)"/>
                					<field name="email_start_date" invisible = '1'/>
                					<field name="email_end_date" invisible = '1'/>
 		                    </group>
@@ -660,6 +662,37 @@
         <field name="context">{"search_default_user_ids":uid}</field>
         <field name="search_view_id" ref="view_remind_work_filter"/>
     </record>
+    
+    <record model='ir.ui.view' id='view_bo_phan_tree'>
+            <field name="name">bo.phan.tree</field>
+            <field name="model">bo.phan</field>
+            <field name="arch" type="xml">
+                <tree string="Bộ phận">
+                    <field name="name"/>
+                    <field name="user_ids"/>
+                </tree>
+            </field>
+    </record>
+        
+    <record model='ir.ui.view' id='view_bo_phan_form'>
+            <field name="name">bo.phan.form</field>
+            <field name="model">bo.phan</field>
+            <field name="arch" type="xml">
+                <form string="Bộ phận">
+                	<group>
+	                    <field name="name"/>
+	                    <field name="user_ids" widget = "many2many_tags"/> 
+                   </group>
+                </form>
+            </field>
+    </record>
+      
+    <record id="action_bo_phan" model="ir.actions.act_window">
+            <field name="name">Bộ phận</field>
+            <field name="res_model">bo.phan</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_bo_phan_tree"/>
+     </record>
     
     <record model='ir.ui.view' id='view_sanpham_canhtranh_tree'>
             <field name="name">sanpham.canhtranh.tree</field>

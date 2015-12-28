@@ -1137,6 +1137,16 @@ class remind_work_situation(osv.osv):
     
 remind_work_situation()
 
+class bo_phan(osv.osv):
+    _name = "bo.phan"
+    
+    _columns = {
+        'name': fields.char('Tên',size = 1024,required=True),
+        'user_ids': fields.many2many('res.users','bo_phan_users_ref','bo_phan_id','user_id', 'Gán cho',required=True),
+    }
+    
+bo_phan()
+
 class remind_work(osv.osv):
     _name = "remind.work"
     _inherit = ['mail.thread']
@@ -1170,12 +1180,36 @@ class remind_work(osv.osv):
         'thoigian_dukien': fields.integer('Số ngày cảnh báo'),
         'email_start_date': fields.date('Ngay bat dau canh bao'),
         'email_end_date': fields.date('Ngay ket thuc canh bao'),
+        'bo_phan_id': fields.many2one('bo.phan', 'Bộ phận', states={'draft': [('readonly', False)]}),
     }
     _defaults = {
         'date_start': fields.datetime.now,
         'state':  'draft',
         'user_ids': lambda self,cr,uid,ctx: [(6,0,[uid])],
     }
+    
+    def _check_date_start(self, cr, uid, ids, context=None):
+        for work in self.browse(cr, uid, ids, context=context):
+            datetime_now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            if work.date_start < datetime_now:
+                raise osv.except_osv(_('Warning!'),_('Thời gian bắt đầu không được nhỏ hơn thời gian hiện tại'))
+                return False
+        return True
+    _constraints = [
+        (_check_date_start, 'Identical Data', []),
+    ]   
+    
+    def onchange_bo_phan_id(self, cr, uid, ids, bo_phan_id=False, gan_cho_ids=False):
+        vals = {}
+        if bo_phan_id :
+            bo_phan = self.pool.get('bo.phan').browse(cr,uid,bo_phan_id)
+            user_ids = [row.id for row in bo_phan.user_ids]
+            if gan_cho_ids:
+                for user in gan_cho_ids:
+                    user_ids += user[2]
+            vals = {'user_ids':[(6, 0, user_ids)],
+                }
+        return {'value': vals}   
     
     def onchange_ngay_canh_bao(self, cr, uid, ids, date_start=False, thoigian_dukien=False):
         vals = {}
@@ -1193,10 +1227,11 @@ class remind_work(osv.osv):
         return self.write(cr, uid, ids, {'state': 'open'})
     def case_done(self, cr, uid, ids, context=None):
         for line in self.browse(cr, uid, ids):
-            start_end = datetime.datetime.strptime(line.date_end, DATETIME_FORMAT)
-            dt = datetime.datetime.now()
-            if dt < start_end:
-                raise osv.except_osv(_('Cảnh báo!'),_('Không thể hoàn thành trước ngày kết thúc!'))        
+            if line.date_end:
+                start_end = datetime.datetime.strptime(line.date_end, DATETIME_FORMAT)
+                dt = datetime.datetime.now()
+                if dt < start_end:
+                    raise osv.except_osv(_('Cảnh báo!'),_('Không thể hoàn thành trước ngày kết thúc!'))        
         return self.write(cr, uid, ids, {'state': 'done'})
     def case_cancel(self, cr, uid, ids, context=None):
         for line in self.browse(cr, uid, ids):

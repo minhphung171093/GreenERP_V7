@@ -11,6 +11,9 @@ import openerp.addons.decimal_precision as dp
 from openerp import netsvc
 import httplib
 from openerp import SUPERUSER_ID
+from datetime import timedelta
+from datetime import datetime
+import datetime
 
 class tinhtrang_suckhoe(osv.osv):
     _name= 'tinhtrang.suckhoe'
@@ -326,6 +329,22 @@ class dm_congtacphi_line(osv.osv):
         'dm_bandau': fields.float('ĐM ban đầu', readonly = True),
         'dm_conlai': fields.float('ĐM còn lại', readonly = True),
         }
-dm_congtacphi_line()       
+dm_congtacphi_line()      
+
+class hr_holidays(osv.osv):
+    _inherit = "hr.holidays"
+    
+    def _check_date_from(self, cr, uid, ids, context=None):
+        for hr in self.browse(cr, uid, ids, context=context):
+            datetime_now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            if hr.date_from < datetime_now:
+                raise osv.except_osv(_('Warning!'),_('Thời gian bắt đầu không được nhỏ hơn thời gian hiện tại'))
+                return False
+        return True
+    _constraints = [
+        (_check_date_from, 'Identical Data', []),
+    ]   
+
+hr_holidays()  
 
     

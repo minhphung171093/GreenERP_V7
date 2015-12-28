@@ -17,3 +17,4 @@ access_phucthien_sale_15,target.sale,model_target_sale,base.group_sale_salesman,
 access_phucthien_sale_16,target.sale.line,model_target_sale_line,base.group_sale_salesman,True,True,True,True
 access_phucthien_sale_17,sale.canh.bao,model_sale_canh_bao,base.group_sale_salesman,True,True,True,True
 access_phucthien_sale_18,sale.canh.bao.line,model_sale_canh_bao_line,base.group_sale_salesman,True,True,True,True
+access_phucthien_sale_19,bo.phan,model_bo_phan,base.group_sale_salesman,True,True,True,True
