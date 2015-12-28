@@ -277,7 +277,7 @@ class account_voucher(osv.osv):
             'partner_id':fields.many2one('res.partner', 'Partner', change_default=1, required = False,readonly=True, states={'draft':[('readonly',False)]}),
             'date':fields.date('Date', required = True, readonly=True, select=True, states={'draft':[('readonly',False)]}, help="Effective date for accounting entries"),
             'date_document': fields.date('Document Date', readonly=True, states={'draft':[('readonly',False)]},),
-            'tax_amount':fields.float('Tax Amount', digits_compute=dp.get_precision('Account'), readonly=True, states={'draft':[('readonly',False)]}),
+            'tax_amount':fields.integer('Tax Amount', readonly=True, states={'draft':[('readonly',False)]}),
             
             'batch_id': fields.many2one('account.voucher.batch', 'Related Batch', ondelete='cascade'),
             'partner_bank_id':fields.many2one('res.partner.bank', 'Partner Bank', required=False, readonly=True, states={'draft':[('readonly',False)]}),
