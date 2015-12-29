@@ -91,10 +91,28 @@ class stock_picking_out(osv.osv):
         if context is None:
             context = {}
         for picking in self.browse(cr, uid, ids, context=context):
+            res[picking.id] = ''
             if picking.type == 'out':
                 for move in picking.move_lines:
                     sql = '''
                         select state from account_invoice where type = 'out_invoice'
+                        and id in (select invoice_id from account_invoice_line where source_id = %s)
+                    '''%(move.id)
+                    cr.execute(sql)
+                    trang_thai = cr.fetchone()
+                    if not trang_thai:
+                        res[picking.id] = 'Chưa có hóa đơn'
+                    else:
+                        if trang_thai[0] == 'draft':
+                            res[picking.id] = 'Chờ duyệt hóa đơn'
+                        if trang_thai[0] == 'open':
+                            res[picking.id] = 'Chờ thanh toán'
+                        if trang_thai[0] == 'paid':
+                            res[picking.id] = 'Đã thanh toán'
+            if picking.type == 'in':
+                for move in picking.move_lines:
+                    sql = '''
+                        select state from account_invoice where type = 'in_invoice'
                         and id in (select invoice_id from account_invoice_line where source_id = %s)
                     '''%(move.id)
                     cr.execute(sql)
@@ -369,6 +387,24 @@ class stock_picking_in(osv.osv):
         if context is None:
             context = {}
         for picking in self.browse(cr, uid, ids, context=context):
+            res[picking.id] = ''
+            if picking.type == 'out':
+                for move in picking.move_lines:
+                    sql = '''
+                        select state from account_invoice where type = 'out_invoice'
+                        and id in (select invoice_id from account_invoice_line where source_id = %s)
+                    '''%(move.id)
+                    cr.execute(sql)
+                    trang_thai = cr.fetchone()
+                    if not trang_thai:
+                        res[picking.id] = 'Chưa có hóa đơn'
+                    else:
+                        if trang_thai[0] == 'draft':
+                            res[picking.id] = 'Chờ duyệt hóa đơn'
+                        if trang_thai[0] == 'open':
+                            res[picking.id] = 'Chờ thanh toán'
+                        if trang_thai[0] == 'paid':
+                            res[picking.id] = 'Đã thanh toán'
             if picking.type == 'in':
                 for move in picking.move_lines:
                     sql = '''
@@ -386,7 +422,7 @@ class stock_picking_in(osv.osv):
                             res[picking.id] = 'Chờ thanh toán'
                         if trang_thai[0] == 'paid':
                             res[picking.id] = 'Đã thanh toán'
-        return res    
+        return res  
     
     def _trangthai(self, cr, uid, ids, name, arg, context=None):
         res = {}
@@ -581,6 +617,7 @@ class stock_picking(osv.osv):
         if context is None:
             context = {}
         for picking in self.browse(cr, uid, ids, context=context):
+            res[picking.id] = ''
             if picking.type == 'out':
                 for move in picking.move_lines:
                     sql = '''
