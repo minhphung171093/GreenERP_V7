@@ -872,6 +872,7 @@
                     <filter string="SKU" name="groupby_sku" icon="terp-gtk-jump-to-ltr" domain="[]" context="{'group_by':'product_code'}"/>
                     <filter string="Origin" name="groupby_origin" icon="terp-gtk-jump-to-ltr" domain="[]" context="{'group_by':'origin'}"/>
                     <filter string="Return Reason" name="groupby_return_reason" icon="terp-gtk-jump-to-ltr" domain="[]" context="{'group_by':'return_reason_id'}"/>
+                    <filter string="Ngày" name="groupby_ngay" icon="terp-go-month" domain="[]" context="{'group_by':'date'}"/>
                 </xpath>
             </field>
         </record>
