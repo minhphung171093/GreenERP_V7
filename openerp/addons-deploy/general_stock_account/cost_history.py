@@ -166,225 +166,225 @@ class average_cost_detail_history(osv.osv):
                 qty_first = qty_previous
                 value_first = previous_value
                 
-                if history.product_id.valuation=='real_time':
-                    sql='''
-                        SELECT sm.id,(primary_qty * price_unit) as total,primary_qty,sm.type,price_unit,sp.return return
+#                 if history.product_id.valuation=='real_time':
+#                     sql='''
+#                         SELECT sm.id,(primary_qty * price_unit) as total,primary_qty,sm.type,price_unit,sp.return return
+#                         FROM
+#                             stock_move sm inner join stock_picking sp on sp.id = sm.picking_id
+#                         WHERE 
+#                             product_id = %s
+#                             and date(timezone('UTC',sp.date_done)) between '%s' and '%s'
+#                             and sm.state = 'done'
+#                         Order by sp.date_done,id
+#                     '''%(history.product_id.id , start_date ,end_date )
+#                     cr.execute(sql)
+#                     res = cr.dictfetchall()
+#                     
+#                     current_qty = qty_first
+#                     current_value = value_first
+#                     for line in res:
+#                         if line['type']=='in':
+#                             if line['return']=='none':
+#                                 current_qty += line['primary_qty']
+#                                 current_value += line['total']
+#                             else:
+#                                 sql ='''
+#                                      UPDATE stock_move
+#                                      SET price_unit = (select m.price_unit 
+#                                                      from stock_move m join stock_move_history_ids mh on m.id=mh.child_id 
+#                                                      where mh.parent_id=%s limit 1)
+#                                      WHERE id = %s    
+#                                 '''%(line['id'],line['id'])
+#                                 cr.execute(sql)
+#                                 current_qty -= line['primary_qty']
+#                                 cr.execute('''
+#                                 SELECT primary_qty * price_unit
+#                                 FROM stock_move
+#                                 WHERE id=%s
+#                                 '''%(line['id']))
+#                                 value = cr.fetchone()
+#                                 current_value -= value and value[0] or 0.0
+#                                 
+#                         if line['type'] in ['internal','out']:
+#                             average_cost = current_qty and round(current_value / current_qty,2) or 0.0
+#                             if line['type'] == 'out':
+#                                 sql ='''
+#                                     UPDATE 
+#                                         stock_move 
+#                                         SET price_unit = %s
+#                                     WHERE
+#                                         id = %s
+#                                 '''%(average_cost,line['id'])
+#                                 cr.execute(sql)
+#                             else:
+#                                 sql ='''
+#                                     UPDATE 
+#                                         stock_move 
+#                                         SET price_unit = %s
+#                                     WHERE
+#                                         id = %s and ini_flag=False
+#                                 '''%(average_cost,line['id'])
+#                                 cr.execute(sql)
+#                                 
+#                                 sql ='''
+#                                     UPDATE 
+#                                         stock_inventory_line 
+#                                     SET freeze_cost = %s
+#                                     WHERE
+#                                         move_id = %s
+#                                 '''%(average_cost,line['id'])
+#                                 cr.execute(sql)
+#                                 
+#                             current_qty -= line['primary_qty']
+#                             current_value = (current_qty * average_cost)
+#                                 
+#                             
+#                     avera_qty = current_qty
+#                     avera_cost = current_qty and round(current_value / current_qty,2) or 0.0
+#                 else:
+                    #SUM QTY Nhap va SUM VALUE Nhap
+                sql ='''
+                    SELECT sum(primary_qty) qty, sum(price_unit * primary_qty) total
                         FROM
-                            stock_move sm inner join stock_picking sp on sp.id = sm.picking_id
+                            stock_move stm 
                         WHERE 
                             product_id = %s
-                            and date(timezone('UTC',sp.date_done)) between '%s' and '%s'
-                            and sm.state = 'done'
-                        Order by sp.date_done,id
-                    '''%(history.product_id.id , start_date ,end_date )
-                    cr.execute(sql)
-                    res = cr.dictfetchall()
+                            and date(timezone('UTC',date)) between '%s' and '%s'
+                            and state = 'done'
+                            and (stm.type='in' or stm.ini_flag=True) 
+                '''%(history.product_id.id , start_date ,end_date)
+                cr.execute(sql)
+                nhap_res = cr.fetchone()
+                nhap_qty = nhap_res and nhap_res[0] or 0
+                nhap_value = nhap_res and nhap_res[1] or 0
+                sql ='''
+                    SELECT sum(quantity) qty_hoantien, sum(price_unit * quantity) total_hoantien
+                        FROM
+                            account_invoice_line  
+                        WHERE 
+                            product_id = %s and invoice_id in (select id from account_invoice where type = 'out_refund'
+                            and date(timezone('UTC',date_invoice)) between '%s' and '%s'
+                            and state not in ('draft','cancel'))
+                '''%(history.product_id.id , start_date ,end_date)
+                cr.execute(sql)
+                nhap_ht_res = cr.fetchone()
+                nhap_qty += nhap_ht_res and nhap_ht_res[0] or 0
+                nhap_value += nhap_ht_res and nhap_ht_res[1] or 0
+                
+                peridical_cost = (nhap_qty + qty_previous) and float(nhap_value + previous_value)/float(nhap_qty + qty_previous) or 0.0
+                
+                if not peridical_cost:
+                    peridical_cost = qty_previous and float(previous_value)/float(qty_previous) or 0.0
                     
-                    current_qty = qty_first
-                    current_value = value_first
-                    for line in res:
-                        if line['type']=='in':
-                            if line['return']=='none':
-                                current_qty += line['primary_qty']
-                                current_value += line['total']
-                            else:
-                                sql ='''
-                                     UPDATE stock_move
-                                     SET price_unit = (select m.price_unit 
-                                                     from stock_move m join stock_move_history_ids mh on m.id=mh.child_id 
-                                                     where mh.parent_id=%s limit 1)
-                                     WHERE id = %s    
-                                '''%(line['id'],line['id'])
-                                cr.execute(sql)
-                                current_qty -= line['primary_qty']
-                                cr.execute('''
-                                SELECT primary_qty * price_unit
-                                FROM stock_move
-                                WHERE id=%s
-                                '''%(line['id']))
-                                value = cr.fetchone()
-                                current_value -= value and value[0] or 0.0
-                                
-                        if line['type'] in ['internal','out']:
-                            average_cost = current_qty and round(current_value / current_qty,2) or 0.0
-                            if line['type'] == 'out':
-                                sql ='''
-                                    UPDATE 
-                                        stock_move 
-                                        SET price_unit = %s
-                                    WHERE
-                                        id = %s
-                                '''%(average_cost,line['id'])
-                                cr.execute(sql)
-                            else:
-                                sql ='''
-                                    UPDATE 
-                                        stock_move 
-                                        SET price_unit = %s
-                                    WHERE
-                                        id = %s and ini_flag=False
-                                '''%(average_cost,line['id'])
-                                cr.execute(sql)
-                                
-                                sql ='''
-                                    UPDATE 
-                                        stock_inventory_line 
-                                    SET freeze_cost = %s
-                                    WHERE
-                                        move_id = %s
-                                '''%(average_cost,line['id'])
-                                cr.execute(sql)
-                                
-                            current_qty -= line['primary_qty']
-                            current_value = (current_qty * average_cost)
-                                
-                            
-                    avera_qty = current_qty
-                    avera_cost = current_qty and round(current_value / current_qty,2) or 0.0
-                else:
-                    #SUM QTY Nhap va SUM VALUE Nhap
-                    sql ='''
-                        SELECT sum(primary_qty) qty, sum(price_unit * primary_qty) total
-                            FROM
-                                stock_move stm 
-                            WHERE 
-                                product_id = %s
-                                and date(timezone('UTC',date)) between '%s' and '%s'
-                                and state = 'done'
-                                and (stm.type='in' or stm.ini_flag=True) 
-                    '''%(history.product_id.id , start_date ,end_date)
-                    cr.execute(sql)
-                    nhap_res = cr.fetchone()
-                    nhap_qty = nhap_res and nhap_res[0] or 0
-                    nhap_value = nhap_res and nhap_res[1] or 0
-                    sql ='''
-                        SELECT sum(quantity) qty_hoantien, sum(price_unit * quantity) total_hoantien
-                            FROM
-                                account_invoice_line  
-                            WHERE 
-                                product_id = %s and invoice_id in (select id from account_invoice where type = 'out_refund'
-                                and date(timezone('UTC',date_invoice)) between '%s' and '%s'
-                                and state not in ('draft','cancel'))
-                    '''%(history.product_id.id , start_date ,end_date)
-                    cr.execute(sql)
-                    nhap_ht_res = cr.fetchone()
-                    nhap_qty += nhap_ht_res and nhap_ht_res[0] or 0
-                    nhap_value += nhap_ht_res and nhap_ht_res[1] or 0
-                    
-                    peridical_cost = (nhap_qty + qty_previous) and (nhap_value + previous_value)/(nhap_qty + qty_previous) or 0.0
-                    
-                    if not peridical_cost:
-                        peridical_cost = qty_previous and previous_value/qty_previous or 0.0
-                        
-                    #Tinh Periodical
-                    sql = '''
-                            UPDATE 
-                                stock_move
-                            SET price_unit = %s
-                            WHERE id in (SELECT stm.id
-                                        FROM
-                                            stock_move stm
-                                        WHERE 
-                                            product_id = %s
-                                            and date(timezone('UTC',stm.date)) between '%s' and '%s'
-                                            and stm.state = 'done'
-                                            and stm.type!='in' and stm.ini_flag=False)
-                    '''%(peridical_cost, history.product_id.id, start_date, end_date)
-                    cr.execute(sql)
-                    
-                    sql ='''
+                #Tinh Periodical
+                sql = '''
                         UPDATE 
-                            stock_inventory_line 
-                        SET freeze_cost = %s
-                        WHERE
-                            move_id in (SELECT stm.id
-                                        FROM
-                                            stock_move stm
-                                        WHERE 
-                                            product_id = %s
-                                            and date(timezone('UTC',stm.date)) between '%s' and '%s'
-                                            and stm.state = 'done'
-                                            and stm.type!='in' and stm.ini_flag=False) 
-                    '''%(peridical_cost, history.product_id.id, start_date, end_date)
-                    cr.execute(sql)
-                                
-                    #SUM QTY and VALUE trong ky
-                    sql ='''
-                       SELECT sum(onhand_qty) onhand_qty --, sum(val) val
-                       FROM
-                        (
-                            SELECT
-                                stm.product_id,
-                                case when loc1.usage != 'internal' and loc2.usage = 'internal'
-                                    then stm.primary_qty
-                                else
-                                    case when loc1.usage = 'internal' and loc2.usage != 'internal'
-                                        then -1*stm.primary_qty 
-                                    else 0.0 end
-                                end onhand_qty
-                                --,
-                                --case when loc1.usage != 'internal' and loc2.usage = 'internal'
-                                --    then (stm.price_unit * stm.product_qty)
-                                --else
-                                --    case when loc1.usage = 'internal' and loc2.usage != 'internal'
-                                --        then -1*(stm.price_unit * stm.product_qty)
-                                --    else 0.0 end
-                                --end val
-                            FROM stock_move stm 
-                                join stock_location loc1 on stm.location_id=loc1.id
-                                join stock_location loc2 on stm.location_dest_id=loc2.id
-                            WHERE stm.state= 'done'
-                            and date(timezone('UTC',stm.date)) between '%s' and '%s'
-                            and stm.product_id = %s
-                        ) foo
-                        GROUP BY foo.product_id
-                    '''%(start_date ,end_date, history.product_id.id)
-                    cr.execute(sql)
-                    current = cr.fetchone()
-                    current_qty = current and current[0] or 0.0
+                            stock_move
+                        SET price_unit = %s
+                        WHERE id in (SELECT stm.id
+                                    FROM
+                                        stock_move stm
+                                    WHERE 
+                                        product_id = %s
+                                        and date(timezone('UTC',stm.date)) between '%s' and '%s'
+                                        and stm.state = 'done'
+                                        and stm.type!='in' and stm.ini_flag=False)
+                '''%(peridical_cost, history.product_id.id, start_date, end_date)
+                cr.execute(sql)
+                
+                sql ='''
+                    UPDATE 
+                        stock_inventory_line 
+                    SET freeze_cost = %s
+                    WHERE
+                        move_id in (SELECT stm.id
+                                    FROM
+                                        stock_move stm
+                                    WHERE 
+                                        product_id = %s
+                                        and date(timezone('UTC',stm.date)) between '%s' and '%s'
+                                        and stm.state = 'done'
+                                        and stm.type!='in' and stm.ini_flag=False) 
+                '''%(peridical_cost, history.product_id.id, start_date, end_date)
+                cr.execute(sql)
+                            
+                #SUM QTY and VALUE trong ky
+                sql ='''
+                   SELECT sum(onhand_qty) onhand_qty --, sum(val) val
+                   FROM
+                    (
+                        SELECT
+                            stm.product_id,
+                            case when loc1.usage != 'internal' and loc2.usage = 'internal'
+                                then stm.primary_qty
+                            else
+                                case when loc1.usage = 'internal' and loc2.usage != 'internal'
+                                    then -1*stm.primary_qty 
+                                else 0.0 end
+                            end onhand_qty
+                            --,
+                            --case when loc1.usage != 'internal' and loc2.usage = 'internal'
+                            --    then (stm.price_unit * stm.product_qty)
+                            --else
+                            --    case when loc1.usage = 'internal' and loc2.usage != 'internal'
+                            --        then -1*(stm.price_unit * stm.product_qty)
+                            --    else 0.0 end
+                            --end val
+                        FROM stock_move stm 
+                            join stock_location loc1 on stm.location_id=loc1.id
+                            join stock_location loc2 on stm.location_dest_id=loc2.id
+                        WHERE stm.state= 'done'
+                        and date(timezone('UTC',stm.date)) between '%s' and '%s'
+                        and stm.product_id = %s
+                    ) foo
+                    GROUP BY foo.product_id
+                '''%(start_date ,end_date, history.product_id.id)
+                cr.execute(sql)
+                current = cr.fetchone()
+                current_qty = current and current[0] or 0.0
 #                     current_value = current and current[1] or 0.0
-                    
-                    avera_qty = qty_previous + current_qty
+                
+                avera_qty = qty_previous + current_qty
 #                     avera_cost = avera_qty and (previous_value + current_value)/avera_qty or 0.0
-                    avera_cost = peridical_cost
-                    
-                #update lai product standard_price
-                sql='''
-                    UPDATE product_template SET standard_price = %s
-                        WHERE id = (select pt.id from product_product pp inner join product_template pt on
-                                        pt.id = pp.product_tmpl_id and pp.id = %s)
-                '''%(avera_cost,history.product_id.id)  
-                cr.execute(sql)
+                avera_cost = peridical_cost
                 
-                sql='''
-                    SELECT id
-                    FROM
-                        stock_move
-                    WHERE 
-                        product_id = %s
-                        and date(timezone('UTC',date)) between '%s' and '%s'
-                        and state = 'done'
-                    Order by date,id
-                '''%(history.product_id.id , start_date ,end_date )
-                cr.execute(sql)
-                history_ids = [x[0] for x in cr.fetchall()]
-                var ={
-                        'move_ids':[(6, 0, history_ids)],#
-                        'previous_cost': qty_previous and previous_value/qty_previous or 0.0,
-                        'qty_previous':qty_previous or 0.0,
-                        'this_cost':avera_cost or 0,
-                        'qty_onhand':avera_qty or 0,
-                        'previous_value': previous_value or 0.0,
-                        'this_value': avera_cost * avera_qty,
-                      }
-                self.write(cr,uid,history.id,var)
-                
-                if len(history_ids):
-                    cr.execute('''
-                    UPDATE stock_move
-                    SET costed=True
-                    WHERE id in (%s)
-                    '''%(','.join(map(str, history_ids))))
+            #update lai product standard_price
+            sql='''
+                UPDATE product_template SET standard_price = %s
+                    WHERE id = (select pt.id from product_product pp inner join product_template pt on
+                                    pt.id = pp.product_tmpl_id and pp.id = %s)
+            '''%(avera_cost,history.product_id.id)  
+            cr.execute(sql)
+            
+            sql='''
+                SELECT id
+                FROM
+                    stock_move
+                WHERE 
+                    product_id = %s
+                    and date(timezone('UTC',date)) between '%s' and '%s'
+                    and state = 'done'
+                Order by date,id
+            '''%(history.product_id.id , start_date ,end_date )
+            cr.execute(sql)
+            history_ids = [x[0] for x in cr.fetchall()]
+            var ={
+                    'move_ids':[(6, 0, history_ids)],#
+                    'previous_cost': qty_previous and previous_value/qty_previous or 0.0,
+                    'qty_previous':qty_previous or 0.0,
+                    'this_cost':avera_cost or 0,
+                    'qty_onhand':avera_qty or 0,
+                    'previous_value': previous_value or 0.0,
+                    'this_value': avera_cost * avera_qty,
+                  }
+            self.write(cr,uid,history.id,var)
+            
+            if len(history_ids):
+                cr.execute('''
+                UPDATE stock_move
+                SET costed=True
+                WHERE id in (%s)
+                '''%(','.join(map(str, history_ids))))
                 
         return True 
     

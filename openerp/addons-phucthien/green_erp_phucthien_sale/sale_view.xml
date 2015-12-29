@@ -138,7 +138,6 @@
                 </xpath>
                 <xpath expr="//field[@name='name']" position="after">
           			<field name="street"/>
-          			<field name="street2"/>
                 </xpath>
                 <xpath expr="//field[@name='name']" position="after">
                 	<field name="gsk_code" invisible = '1'/>
