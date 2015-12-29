@@ -391,7 +391,7 @@ class Parser(report_sxw.rml_parse):
                         end start_onhand_qty,
                         
                         case when loc1.usage != 'internal' and loc2.usage = 'internal' and date(timezone('UTC',stm.date::timestamp)) < '%(start_date)s'
-                        then round(stm.price_unit * stm.product_qty)
+                        then (stm.price_unit * stm.product_qty)
                         else
                         case when loc1.usage = 'internal' and loc2.usage != 'internal' and date(timezone('UTC',stm.date::timestamp)) < '%(start_date)s'
                         then -1*(stm.price_unit * stm.product_qty)
