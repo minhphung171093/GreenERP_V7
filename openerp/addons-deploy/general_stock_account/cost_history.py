@@ -143,10 +143,10 @@ class average_cost_detail_history(osv.osv):
                                 else 0.0 end
                             end onhand_qty,
                             case when loc1.usage != 'internal' and loc2.usage = 'internal'
-                                then (stm.price_unit * stm.product_qty)
+                                then round(stm.price_unit * stm.product_qty)
                             else
                                 case when loc1.usage = 'internal' and loc2.usage != 'internal'
-                                    then -1*(stm.price_unit * stm.product_qty)
+                                    then -1*round(stm.price_unit * stm.product_qty)
                                 else 0.0 end
                             end val
                         FROM stock_move stm 
@@ -244,7 +244,7 @@ class average_cost_detail_history(osv.osv):
 #                 else:
                     #SUM QTY Nhap va SUM VALUE Nhap
                 sql ='''
-                    SELECT sum(primary_qty) qty, sum(price_unit * primary_qty) total
+                    SELECT sum(primary_qty) qty, sum(round(price_unit * primary_qty)) total
                         FROM
                             stock_move stm 
                         WHERE 
@@ -258,7 +258,7 @@ class average_cost_detail_history(osv.osv):
                 nhap_qty = nhap_res and nhap_res[0] or 0
                 nhap_value = nhap_res and nhap_res[1] or 0
                 sql ='''
-                    SELECT sum(quantity) qty_hoantien, sum(price_unit * quantity) total_hoantien
+                    SELECT sum(quantity) qty_hoantien, sum(round(price_unit * quantity)) total_hoantien
                         FROM
                             account_invoice_line  
                         WHERE 
@@ -271,10 +271,10 @@ class average_cost_detail_history(osv.osv):
                 nhap_qty += nhap_ht_res and nhap_ht_res[0] or 0
                 nhap_value += nhap_ht_res and nhap_ht_res[1] or 0
                 
-                peridical_cost = (nhap_qty + qty_previous) and float(nhap_value + previous_value)/float(nhap_qty + qty_previous) or 0.0
+                peridical_cost = (nhap_qty + qty_previous) and round(float(nhap_value + previous_value)/float(nhap_qty + qty_previous),4) or 0.0
                 
                 if not peridical_cost:
-                    peridical_cost = qty_previous and float(previous_value)/float(qty_previous) or 0.0
+                    peridical_cost = qty_previous and round(float(previous_value)/float(qty_previous),4) or 0.0
                     
                 #Tinh Periodical
                 sql = '''
@@ -389,11 +389,11 @@ class average_cost_detail_history(osv.osv):
         return True 
     
     _columns = {
-        'cost_history_id':fields.many2one('average.cost.history', 'Cost History'),
+        'cost_history_id':fields.many2one('average.cost.history', 'Cost History', ondelete='cascade'),
         'product_id': fields.many2one('product.product', 'Product', readonly=True),
         'product_uom_id': fields.related('product_id','uom_id', type="many2one", relation="product.uom", string="UoM", store=True, readonly=True),
-        'previous_cost': fields.float('Previous Cost', readonly=True, digits_compute= dp.get_precision('Product Price')),
-        'this_cost': fields.float('This Cost', readonly=True, digits_compute= dp.get_precision('Product Price')),
+        'previous_cost': fields.float('Previous Cost', readonly=True, digits=(16,4)),
+        'this_cost': fields.float('This Cost', readonly=True, digits=(16,4)),
         'this_value': fields.float('This Value', readonly=True, digits_compute= dp.get_precision('Product Price')),
         'qty_previous':fields.float('Previous Onhand Qty', readonly=True, digits_compute= dp.get_precision('Product Unit of Measure')),
         'qty_onhand':fields.float('This Onhand Qty', readonly=True, digits_compute= dp.get_precision('Product Unit of Measure'),),

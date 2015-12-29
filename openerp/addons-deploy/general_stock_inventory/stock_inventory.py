@@ -247,7 +247,7 @@ class stock_inventory_line(osv.osv):
         'product_ean': fields.char('Barcode', size=20),
         #'sys_uom': fields.many2one('product.uom', 'Primary UoM', required=True),
         'count_quantity': fields.float('Count Qty',digits=(16,3)),
-        'freeze_cost': fields.float('Freeze Cost', readonly=False, digits=(16,2)),
+        'freeze_cost': fields.float('Freeze Cost', readonly=False, digits=(16,4)),
 #         'freeze_cost': fields.related('move_id','price_unit', type="float", string="freeze_cost", store=True, readonly=True),
         'adjust_quantity': fields.function(_get_adjust_qty, string='Adjust Quantity',type ='float',multi='pro_info'), #adjust = count - sysonhand
         'adjust_value':    fields.function(_get_adjust_qty, string='Adjust Value',type ='float',multi='pro_info'),

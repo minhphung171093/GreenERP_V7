@@ -374,11 +374,11 @@ class Parser(report_sxw.rml_parse):
         if not self.category_ids:
             if not self.location_id:
                 sql ='''  
-                SELECT pp.id,pp.default_code,pp.name_template,sum(start_onhand_qty) start_onhand_qty, sum(start_val) start_val, 
-                    sum(nhaptk_qty) nhaptk_qty, sum(nhaptk_val) nhaptk_val,
-                    sum(xuattk_qty) xuattk_qty, sum(xuattk_val) xuattk_val,    
+                SELECT pp.id,pp.default_code,pp.name_template,sum(start_onhand_qty) start_onhand_qty, round(sum(start_val)) start_val, 
+                    sum(nhaptk_qty) nhaptk_qty, round(sum(nhaptk_val)) nhaptk_val,
+                    sum(xuattk_qty) xuattk_qty, round(sum(xuattk_val)) xuattk_val,    
                     sum(end_onhand_qty) end_onhand_qty,
-                    sum(end_val) end_val
+                    round(sum(end_val)) end_val
                     From
                     (SELECT
                         stm.product_id,stm.product_uom,    
@@ -391,7 +391,7 @@ class Parser(report_sxw.rml_parse):
                         end start_onhand_qty,
                         
                         case when loc1.usage != 'internal' and loc2.usage = 'internal' and date(timezone('UTC',stm.date::timestamp)) < '%(start_date)s'
-                        then (stm.price_unit * stm.product_qty)
+                        then round(stm.price_unit * stm.product_qty)
                         else
                         case when loc1.usage = 'internal' and loc2.usage != 'internal' and date(timezone('UTC',stm.date::timestamp)) < '%(start_date)s'
                         then -1*(stm.price_unit * stm.product_qty)
@@ -408,7 +408,7 @@ class Parser(report_sxw.rml_parse):
                         end xuattk_qty,
                 
                         case when loc1.usage != 'internal' and loc2.usage = 'internal' and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
-                        then (stm.price_unit * stm.product_qty)
+                        then round(stm.price_unit * stm.product_qty)
                         else 0.0 end nhaptk_val,
                         
                         case when loc1.usage = 'internal' and loc2.usage != 'internal' and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
@@ -425,7 +425,7 @@ class Parser(report_sxw.rml_parse):
                         end end_onhand_qty,
                         
                         case when loc1.usage != 'internal' and loc2.usage = 'internal' and date(timezone('UTC',stm.date::timestamp)) <= '%(end_date)s'
-                        then (stm.price_unit * stm.product_qty)
+                        then round(stm.price_unit * stm.product_qty)
                         else
                         case when loc1.usage = 'internal' and loc2.usage != 'internal' and date(timezone('UTC',stm.date::timestamp)) <= '%(end_date)s'
                         then -1*(stm.price_unit * stm.product_qty)
@@ -467,10 +467,10 @@ class Parser(report_sxw.rml_parse):
                         end start_onhand_qty,
                         
                         case when loc1.id != '%(location_id)s' and loc2.id = '%(location_id)s' and date(timezone('UTC',stm.date::timestamp)) < '%(start_date)s'
-                        then (stm.price_unit * stm.product_qty)
+                        then (round(stm.price_unit * stm.product_qty))
                         else
                         case when loc1.id = '%(location_id)s' and loc2.id != '%(location_id)s' and date(timezone('UTC',stm.date::timestamp)) < '%(start_date)s'
-                        then -1*(stm.price_unit * stm.product_qty)
+                        then -1*(round(stm.price_unit * stm.product_qty))
                         else 0.0 end
                         end start_val,
                         
@@ -484,11 +484,11 @@ class Parser(report_sxw.rml_parse):
                         end xuattk_qty,
                 
                         case when loc1.id != '%(location_id)s' and loc2.id = '%(location_id)s' and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
-                        then (stm.price_unit * stm.product_qty)
+                        then (round(stm.price_unit * stm.product_qty))
                         else 0.0 end nhaptk_val,
                         
                         case when loc1.id = '%(location_id)s' and loc2.id != '%(location_id)s' and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
-                        then 1*(stm.price_unit * stm.product_qty)
+                        then 1*(round(stm.price_unit * stm.product_qty))
                         else 0.0
                         end xuattk_val,        
                          
@@ -501,10 +501,10 @@ class Parser(report_sxw.rml_parse):
                         end end_onhand_qty,
                         
                         case when loc1.id != '%(location_id)s' and loc2.id = '%(location_id)s' and date(timezone('UTC',stm.date::timestamp)) <= '%(end_date)s'
-                        then (stm.price_unit * stm.product_qty)
+                        then (round(stm.price_unit * stm.product_qty))
                         else
                         case when loc1.id = '%(location_id)s' and loc2.id != '%(location_id)s' and date(timezone('UTC',stm.date::timestamp)) <= '%(end_date)s'
-                        then -1*(stm.price_unit * stm.product_qty)
+                        then -1*(round(stm.price_unit * stm.product_qty))
                         else 0.0 end
                         end end_val            
                     FROM stock_move stm 
