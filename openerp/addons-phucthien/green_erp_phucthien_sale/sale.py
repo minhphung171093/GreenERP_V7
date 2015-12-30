@@ -1188,16 +1188,24 @@ class remind_work(osv.osv):
         'user_ids': lambda self,cr,uid,ctx: [(6,0,[uid])],
     }
     
-    def _check_date_start(self, cr, uid, ids, context=None):
-        for work in self.browse(cr, uid, ids, context=context):
+    def create(self, cr, uid, vals, context=None):
+        if 'date_start' in vals:
             datetime_now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            if work.date_start < datetime_now:
+            if (vals['date_start'] < datetime_now):
                 raise osv.except_osv(_('Warning!'),_('Thời gian bắt đầu không được nhỏ hơn thời gian hiện tại'))
-                return False
-        return True
-    _constraints = [
-        (_check_date_start, 'Identical Data', []),
-    ]   
+        return super(remind_work, self).create(cr, uid, vals, context=context)
+    
+#     def _check_date_start(self, cr, uid, ids, context=None):
+#         for work in self.browse(cr, uid, ids, context=context):
+#             if work.state == 'draft':
+#                 datetime_now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+#                 if work.date_start < datetime_now:
+#                     raise osv.except_osv(_('Warning!'),_('Thời gian bắt đầu không được nhỏ hơn thời gian hiện tại'))
+#                     return False
+#         return True
+#     _constraints = [
+#         (_check_date_start, 'Identical Data', []),
+#     ]   
     
     def onchange_bo_phan_id(self, cr, uid, ids, bo_phan_id=False, gan_cho_ids=False):
         vals = {}
