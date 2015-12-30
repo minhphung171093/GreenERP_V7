@@ -434,7 +434,7 @@ class Parser(report_sxw.rml_parse):
                     FROM stock_move stm 
                         join stock_location loc1 on stm.location_id=loc1.id
                         join stock_location loc2 on stm.location_dest_id=loc2.id
-                    WHERE stm.state= 'done'    )foo
+                    WHERE stm.state= 'done' and (stm.picking_id is not null or stm.id in (select move_id from stock_inventory_move_rel))   )foo
                     inner join product_product pp on foo.product_id = pp.id
                     inner join product_uom pu on foo.product_uom = pu.id
                     WHERE (pp.id in (select product_id  from product_shop_rel where shop_id in('%(shop_ids)s'))
