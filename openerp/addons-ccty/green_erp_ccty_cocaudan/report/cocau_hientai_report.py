@@ -30,7 +30,9 @@ DATE_FORMAT = "%Y-%m-%d"
 from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT, float_compare
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
-
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 class Parser(report_sxw.rml_parse):
     
     def __init__(self, cr, uid, name, context):

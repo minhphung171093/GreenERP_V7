@@ -14,6 +14,8 @@
     	<menuitem id="menu_phuong_xa" parent="menu_danh_muc" name="Phường (xã)" action="action_phuong_xa" />
     	<menuitem id="menu_khu_pho" parent="menu_danh_muc" name="Khu phố (Ấp)" action="action_khu_pho"/>
     	<menuitem id="menu_loai_ho" parent="menu_danh_muc" name="Loại hộ" action="action_loai_ho" groups = "green_erp_ccty_base.group_base_admin_ccty"/>
+    	<menuitem id="menu_xu_ly_moi_truong" parent="menu_danh_muc" name="Xử lý môi trường" action="action_xu_ly_moi_truong" groups = "green_erp_ccty_base.group_base_admin_ccty"/>
+    	<menuitem id="menu_san_xuat_giong" parent="menu_danh_muc" name="Hướng sản xuất giống" action="action_san_xuat_giong" groups = "green_erp_ccty_base.group_base_admin_ccty"/>
     	<menuitem id="menu_loai_giay_tp" parent="menu_danh_muc" name="Loại giấy tiêm phòng" action="action_loai_giay_tp" groups = "green_erp_ccty_base.group_base_admin_ccty"/>
  <!--    	<menuitem id="menu_don_vi_tinh" parent="menu_danh_muc" name="Đơn vị tính" action="action_don_vi_tinh"/> -->
     	<menuitem id="menu_loai_hoa_chat" parent="menu_danh_muc" name="Loại hoá chất" action="action_loai_hoa_chat" groups = "green_erp_ccty_base.group_base_admin_ccty"/>

@@ -244,7 +244,7 @@ class nhap_xuat_canh_giasuc(osv.osv):
                 for loai in line.chitiet_loai_nx:
                     chi_tiet_loai.append((0,0,{
                     'ct_loai_id': loai.ct_loai_id.id,
-                    'name':loai.name,
+                    'name':loai.name and loai.name or '',
                     'so_luong':loai.so_luong,     
                     'tiem_phong':loai.tiem_phong,        
                     'ct_tiem_phong_line': ct_tiem_phong,   
@@ -287,13 +287,14 @@ class nhap_xuat_canh_giasuc(osv.osv):
                         'loai_hinh_so_huu_id':line.ten_ho_id and line.ten_ho_id.loai_hinh_so_huu_id.id or False,
                         'cty_gia_cong_ids': line.ten_ho_id and [(6,0,[r.id for r in line.ten_ho_id.cty_gia_cong_ids])] or False,
                         'quy_cach': line.ten_ho_id and line.ten_ho_id.quy_cach or False,
-                        'xu_ly_moi_truong': line.ten_ho_id and line.ten_ho_id.xu_ly_moi_truong or False,
+                        'xu_ly_moi_truong_ids': line.ten_ho_id and [(6,0,[r.id for r in line.ten_ho_id.xu_ly_moi_truong_ids])] or False,
                         'bao_ve_moi_truong':line.ten_ho_id and line.ten_ho_id.bao_ve_moi_truong or False,
                         'danh_gia_moi_truong':line.ten_ho_id and line.ten_ho_id.danh_gia_moi_truong or False,
-                        'san_xuat_giong':line.ten_ho_id and line.ten_ho_id.san_xuat_giong or False,
+                        'san_xuat_giong_id':line.ten_ho_id and line.ten_ho_id.san_xuat_giong_id.id or False,
                         'tieu_chuan_viet':line.ten_ho_id and line.ten_ho_id.tieu_chuan_viet or False,
                         'tieu_chuan_global':line.ten_ho_id and line.ten_ho_id.tieu_chuan_global or False,
                         'an_toan_dich':line.ten_ho_id and line.ten_ho_id.an_toan_dich or False,
+                        'du_dk_thu_y':line.ten_ho_id and line.ten_ho_id.du_dk_thu_y or False,
                         'tieu_chuan_khac':line.ten_ho_id and line.ten_ho_id.tieu_chuan_khac or False,
                                 }
                         co_cau_id = co_cau_obj.create(cr,uid,value)
@@ -318,13 +319,14 @@ class nhap_xuat_canh_giasuc(osv.osv):
                         'loai_hinh_so_huu_id':line.ten_ho_id and line.ten_ho_id.loai_hinh_so_huu_id.id or False,
                         'cty_gia_cong_ids': line.ten_ho_id and [(6,0,[r.id for r in line.ten_ho_id.cty_gia_cong_ids])] or False,
                         'quy_cach': line.ten_ho_id and line.ten_ho_id.quy_cach or False,
-                        'xu_ly_moi_truong': line.ten_ho_id and line.ten_ho_id.xu_ly_moi_truong or False,
+                        'xu_ly_moi_truong_ids': line.ten_ho_id and [(6,0,[r.id for r in line.ten_ho_id.xu_ly_moi_truong_ids])] or False,
                         'bao_ve_moi_truong':line.ten_ho_id and line.ten_ho_id.bao_ve_moi_truong or False,
                         'danh_gia_moi_truong':line.ten_ho_id and line.ten_ho_id.danh_gia_moi_truong or False,
-                        'san_xuat_giong':line.ten_ho_id and line.ten_ho_id.san_xuat_giong or False,
+                        'san_xuat_giong_id':line.ten_ho_id and line.ten_ho_id.san_xuat_giong_id.id or False,
                         'tieu_chuan_viet':line.ten_ho_id and line.ten_ho_id.tieu_chuan_viet or False,
                         'tieu_chuan_global':line.ten_ho_id and line.ten_ho_id.tieu_chuan_global or False,
                         'an_toan_dich':line.ten_ho_id and line.ten_ho_id.an_toan_dich or False,
+                        'du_dk_thu_y':line.ten_ho_id and line.ten_ho_id.du_dk_thu_y or False,
                         'tieu_chuan_khac':line.ten_ho_id and line.ten_ho_id.tieu_chuan_khac or False,
                                 }
                         co_cau_id = co_cau_obj.create(cr,uid,value)
@@ -352,20 +354,23 @@ class nhap_xuat_canh_giasuc(osv.osv):
                         'loai_ho_id':line.loai_ho_id and line.loai_ho_id.id or False,
                         'chitiet_loai':chi_tiet_loai,
                         'trang_thai':'new',
-                        'company_id':line.company_id.id,
+                        'company_id':line.company_id and line.company_id.id or False ,
                         'nhap_xuat_id': line.id,
                         'trang_thai_id': trang and trang['id'] or False,
                         'loai_hinh_so_huu_id':line.ten_ho_id and line.ten_ho_id.loai_hinh_so_huu_id.id or False,
                         'cty_gia_cong_ids': line.ten_ho_id and [(6,0,[r.id for r in line.ten_ho_id.cty_gia_cong_ids])] or False,
                         'quy_cach': line.ten_ho_id and line.ten_ho_id.quy_cach or False,
-                        'xu_ly_moi_truong': line.ten_ho_id and line.ten_ho_id.xu_ly_moi_truong or False,
+                        'xu_ly_moi_truong_ids': line.ten_ho_id and [(6,0,[r.id for r in line.ten_ho_id.xu_ly_moi_truong_ids])] or False,
                         'bao_ve_moi_truong':line.ten_ho_id and line.ten_ho_id.bao_ve_moi_truong or False,
                         'danh_gia_moi_truong':line.ten_ho_id and line.ten_ho_id.danh_gia_moi_truong or False,
-                        'san_xuat_giong':line.ten_ho_id and line.ten_ho_id.san_xuat_giong or False,
+                        'san_xuat_giong_id':line.ten_ho_id and line.ten_ho_id.san_xuat_giong_id.id or False,
                         'tieu_chuan_viet':line.ten_ho_id and line.ten_ho_id.tieu_chuan_viet or False,
                         'tieu_chuan_global':line.ten_ho_id and line.ten_ho_id.tieu_chuan_global or False,
                         'an_toan_dich':line.ten_ho_id and line.ten_ho_id.an_toan_dich or False,
+                        'du_dk_thu_y':line.ten_ho_id and line.ten_ho_id.du_dk_thu_y or False,
                         'tieu_chuan_khac':line.ten_ho_id and line.ten_ho_id.tieu_chuan_khac or False,
+#                         'dien_tich_chuong':line.ten_ho_id and line.ten_ho_id.dien_tich_chuong or False,
+#                         'mo_ta':line.ten_ho_id and line.ten_ho_id.mo_ta or False,
                                 }
                         co_cau_id = co_cau_obj.create(cr,uid,value)
                         co_cau_obj.bt_duyet(cr,uid,[co_cau_id])
@@ -389,14 +394,17 @@ class nhap_xuat_canh_giasuc(osv.osv):
                         'loai_hinh_so_huu_id':line.ten_ho_id and line.ten_ho_id.loai_hinh_so_huu_id.id or False,
                         'cty_gia_cong_ids': line.ten_ho_id and [(6,0,[r.id for r in line.ten_ho_id.cty_gia_cong_ids])] or False,
                         'quy_cach': line.ten_ho_id and line.ten_ho_id.quy_cach or False,
-                        'xu_ly_moi_truong': line.ten_ho_id and line.ten_ho_id.xu_ly_moi_truong or False,
+                        'xu_ly_moi_truong_ids': line.ten_ho_id and [(6,0,[r.id for r in line.ten_ho_id.xu_ly_moi_truong_ids])] or False,
                         'bao_ve_moi_truong':line.ten_ho_id and line.ten_ho_id.bao_ve_moi_truong or False,
                         'danh_gia_moi_truong':line.ten_ho_id and line.ten_ho_id.danh_gia_moi_truong or False,
-                        'san_xuat_giong':line.ten_ho_id and line.ten_ho_id.san_xuat_giong or False,
+                        'san_xuat_giong_id':line.ten_ho_id and line.ten_ho_id.san_xuat_giong_id.id or False,
                         'tieu_chuan_viet':line.ten_ho_id and line.ten_ho_id.tieu_chuan_viet or False,
                         'tieu_chuan_global':line.ten_ho_id and line.ten_ho_id.tieu_chuan_global or False,
                         'an_toan_dich':line.ten_ho_id and line.ten_ho_id.an_toan_dich or False,
+                        'du_dk_thu_y':line.ten_ho_id and line.ten_ho_id.du_dk_thu_y or False,
                         'tieu_chuan_khac':line.ten_ho_id and line.ten_ho_id.tieu_chuan_khac or False,
+#                         'dien_tich_chuong':line.ten_ho_id and line.ten_ho_id.dien_tich_chuong or False,
+#                         'mo_ta':line.ten_ho_id and line.ten_ho_id.mo_ta or False,
                                 }
                         co_cau_id = co_cau_obj.create(cr,uid,value)
                         co_cau_obj.bt_duyet(cr,uid,[co_cau_id])
@@ -454,14 +462,17 @@ class nhap_xuat_canh_giasuc(osv.osv):
                     'loai_hinh_so_huu_id':line.ten_ho_id and line.ten_ho_id.loai_hinh_so_huu_id.id or False,
                     'cty_gia_cong_ids': line.ten_ho_id and [(6,0,[r.id for r in line.ten_ho_id.cty_gia_cong_ids])] or False,
                     'quy_cach': line.ten_ho_id and line.ten_ho_id.quy_cach or False,
-                    'xu_ly_moi_truong': line.ten_ho_id and line.ten_ho_id.xu_ly_moi_truong or False,
+                    'xu_ly_moi_truong_ids': line.ten_ho_id and [(6,0,[r.id for r in line.ten_ho_id.xu_ly_moi_truong_ids])] or False,
                     'bao_ve_moi_truong':line.ten_ho_id and line.ten_ho_id.bao_ve_moi_truong or False,
                     'danh_gia_moi_truong':line.ten_ho_id and line.ten_ho_id.danh_gia_moi_truong or False,
-                    'san_xuat_giong':line.ten_ho_id and line.ten_ho_id.san_xuat_giong or False,
+                    'san_xuat_giong_id':line.ten_ho_id and line.ten_ho_id.san_xuat_giong_id.id or False,
                     'tieu_chuan_viet':line.ten_ho_id and line.ten_ho_id.tieu_chuan_viet or False,
                     'tieu_chuan_global':line.ten_ho_id and line.ten_ho_id.tieu_chuan_global or False,
                     'an_toan_dich':line.ten_ho_id and line.ten_ho_id.an_toan_dich or False,
+                    'du_dk_thu_y':line.ten_ho_id and line.ten_ho_id.du_dk_thu_y or False,
                     'tieu_chuan_khac':line.ten_ho_id and line.ten_ho_id.tieu_chuan_khac or False,
+#                     'dien_tich_chuong':line.ten_ho_id and line.ten_ho_id.dien_tich_chuong or False,
+#                     'mo_ta':line.ten_ho_id and line.ten_ho_id.mo_ta or False,
                         }
                     co_cau_id = co_cau_obj.create(cr,uid,value)
                     co_cau_obj.bt_duyet(cr,uid,[co_cau_id])
@@ -493,14 +504,17 @@ class nhap_xuat_canh_giasuc(osv.osv):
                     'loai_hinh_so_huu_id':line.ten_ho_id and line.ten_ho_id.loai_hinh_so_huu_id.id or False,
                     'cty_gia_cong_ids': line.ten_ho_id and [(6,0,[r.id for r in line.ten_ho_id.cty_gia_cong_ids])] or False,
                     'quy_cach': line.ten_ho_id and line.ten_ho_id.quy_cach or False,
-                    'xu_ly_moi_truong': line.ten_ho_id and line.ten_ho_id.xu_ly_moi_truong or False,
+                    'xu_ly_moi_truong_ids': line.ten_ho_id and [(6,0,[r.id for r in line.ten_ho_id.xu_ly_moi_truong_ids])] or False,
                     'bao_ve_moi_truong':line.ten_ho_id and line.ten_ho_id.bao_ve_moi_truong or False,
                     'danh_gia_moi_truong':line.ten_ho_id and line.ten_ho_id.danh_gia_moi_truong or False,
-                    'san_xuat_giong':line.ten_ho_id and line.ten_ho_id.san_xuat_giong or False,
+                    'san_xuat_giong_id':line.ten_ho_id and line.ten_ho_id.san_xuat_giong_id.id or False,
                     'tieu_chuan_viet':line.ten_ho_id and line.ten_ho_id.tieu_chuan_viet or False,
                     'tieu_chuan_global':line.ten_ho_id and line.ten_ho_id.tieu_chuan_global or False,
                     'an_toan_dich':line.ten_ho_id and line.ten_ho_id.an_toan_dich or False,
+                    'du_dk_thu_y':line.ten_ho_id and line.ten_ho_id.du_dk_thu_y or False,
                     'tieu_chuan_khac':line.ten_ho_id and line.ten_ho_id.tieu_chuan_khac or False,
+#                     'dien_tich_chuong':line.ten_ho_id and line.ten_ho_id.dien_tich_chuong or False,
+#                     'mo_ta':line.ten_ho_id and line.ten_ho_id.mo_ta or False,
                         }
                     co_cau_id = co_cau_obj.create(cr,uid,value)
                     co_cau_obj.bt_duyet(cr,uid,[co_cau_id])
@@ -526,7 +540,7 @@ class nhap_xuat_canh_giasuc(osv.osv):
             ho = self.pool.get('chan.nuoi').browse(cr,uid,ten_ho_id)
             loai_ho_id = ho.loai_ho_id.id
             company_id = ho.company_id.id
-        if loai_id:
+        if loai_id and ten_ho_id:
             loai = self.pool.get('loai.vat').browse(cr,uid,loai_id)    
             for line_loaivat in loai.chitiet_loaivat:
                 chi_tiet.append((0,0,{
@@ -542,41 +556,41 @@ class nhap_xuat_canh_giasuc(osv.osv):
                                                   'name': line_loaivat.name,
                                                   'ct_loai_id': line_loaivat.id,
                                                   }))
-                if loai_select == 'xuat':
-                    sql = '''
-                        select id from ct_tiem_phong_lmlm_line where tp_lmlm_id in (select id from tiem_phong_lmlm where loai_id = %s and ho_chan_nuoi_id = %s 
-                        and trang_thai_id in (select id from trang_thai where stt = 3) )
-                    '''%(loai_id, ten_ho_id)
-                    cr.execute(sql)
-                    lmlm_ids = [r[0] for r in cr.fetchall()]
-                    if lmlm_ids:
-                        for lmlm_line in self.pool.get('ct.tiem.phong.lmlm.line').browse(cr,uid,lmlm_ids):
-                            sql = '''
-                                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
-                                from chi_tiet_da_tiem_phong where nhap_xuat_tiemphong_id in (select id from nhap_xuat_canh_giasuc 
-                                where trang_thai_id in (select id from trang_thai where stt = 3) and loai = 'xuat')
-                                and tiem_phong_id = %s and ct_loai_id = %s and vacxin_id = %s
-                            '''%(lmlm_line.tp_lmlm_id.id,lmlm_line.ct_loai_id.id,lmlm_line.tp_lmlm_id.vacxin_id.id)
-                            cr.execute(sql)
-                            so_luong_xuat = cr.dictfetchone()['so_luong']
-    #                              
-                            sql = '''
-                                select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
-                                from ct_xuly_giasuc_tp_line where xuly_giasuc_id in (select id from xuly_giasuc 
-                                where trang_thai_id in (select id from trang_thai where stt = 3) )
-                                and tiem_phong_id = %s and ct_loai_id = %s and vacxin_id = %s
-                            '''%(lmlm_line.tp_lmlm_id.id,lmlm_line.ct_loai_id.id,lmlm_line.tp_lmlm_id.vacxin_id.id)
-                            cr.execute(sql)
-                            so_luong_chet = cr.dictfetchone()['so_luong']
-                     
-                            if lmlm_line.sl_thuc_tiem - so_luong_xuat - so_luong_chet> 0:
-                                tiem_phong.append((0,0,{
-                                              'tiem_phong_id': lmlm_line.tp_lmlm_id.id,
-                                              'ct_loai_id': lmlm_line.ct_loai_id.id,
-                                              'name': lmlm_line.name,
-                                              'vacxin_id':lmlm_line.tp_lmlm_id.vacxin_id.id,
-                                              'sl_tiem':lmlm_line.sl_thuc_tiem - so_luong_xuat - so_luong_chet,
-                                              }))
+            if loai_select == 'xuat':
+                sql = '''
+                    select id from ct_tiem_phong_lmlm_line where tp_lmlm_id in (select id from tiem_phong_lmlm where loai_id = %s and ho_chan_nuoi_id = %s 
+                    and trang_thai_id in (select id from trang_thai where stt = 3) )
+                '''%(loai_id, ten_ho_id)
+                cr.execute(sql)
+                lmlm_ids = [r[0] for r in cr.fetchall()]
+                if lmlm_ids:
+                    for lmlm_line in self.pool.get('ct.tiem.phong.lmlm.line').browse(cr,uid,lmlm_ids):
+                        sql = '''
+                            select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
+                            from chi_tiet_da_tiem_phong where nhap_xuat_tiemphong_id in (select id from nhap_xuat_canh_giasuc 
+                            where trang_thai_id in (select id from trang_thai where stt = 3) and loai = 'xuat')
+                            and tiem_phong_id = %s and ct_loai_id = %s and vacxin_id = %s
+                        '''%(lmlm_line.tp_lmlm_id.id,lmlm_line.ct_loai_id.id,lmlm_line.tp_lmlm_id.vacxin_id.id)
+                        cr.execute(sql)
+                        so_luong_xuat = cr.dictfetchone()['so_luong']
+#                              
+                        sql = '''
+                            select case when sum(so_luong)!=0 then sum(so_luong) else 0 end so_luong 
+                            from ct_xuly_giasuc_tp_line where xuly_giasuc_id in (select id from xuly_giasuc 
+                            where trang_thai_id in (select id from trang_thai where stt = 3) )
+                            and tiem_phong_id = %s and ct_loai_id = %s and vacxin_id = %s
+                        '''%(lmlm_line.tp_lmlm_id.id,lmlm_line.ct_loai_id.id,lmlm_line.tp_lmlm_id.vacxin_id.id)
+                        cr.execute(sql)
+                        so_luong_chet = cr.dictfetchone()['so_luong']
+                 
+                        if lmlm_line.sl_thuc_tiem + lmlm_line.sl_mien_dich - so_luong_xuat - so_luong_chet> 0:
+                            tiem_phong.append((0,0,{
+                                          'tiem_phong_id': lmlm_line.tp_lmlm_id.id,
+                                          'ct_loai_id': lmlm_line.ct_loai_id.id,
+                                          'name': lmlm_line.name,
+                                          'vacxin_id':lmlm_line.tp_lmlm_id.vacxin_id.id,
+                                          'sl_tiem':lmlm_line.sl_thuc_tiem + lmlm_line.sl_mien_dich - so_luong_xuat - so_luong_chet,
+                                          }))
                 
         return {'value': {'chitiet_loai_nx': chi_tiet,
                           'chitiet_da_tiem_phong': tiem_phong,

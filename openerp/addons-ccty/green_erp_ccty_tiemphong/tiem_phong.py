@@ -141,6 +141,7 @@ class tiem_phong_lmlm(osv.osv):
         
     _defaults = {
         'can_bo_id': _get_user,
+#         'tram_id':_get_company,
 #         'loai_benh_id': _get_loaibenh,
         'trang_thai_id': get_trangthai_nhap,
                  }
@@ -389,16 +390,16 @@ class ct_tiem_phong_vaccine_line(osv.osv):
 #         'trang_thai_id_relate': fields.related('tp_lmlm_id','trang_thai_id',type='many2one', relation='trang.thai',string='Trang Thai'),
                 }
     
-    def _check_so_luong_ton_vaccine(self, cr, uid, ids, context=None):
-        tong_sl = 0
-        for line in self.browse(cr, uid, ids, context=context):
-            if line.so_luong_vc > line.so_luong_ton:
-                raise osv.except_osv(_('Warning!'),_('Số lượng tiêm vaccine lớn hơn số lượng tồn vaccine'))
-                return False
-        return True
-    _constraints = [
-        (_check_so_luong_ton_vaccine, 'Identical Data', []),
-    ]
+#     def _check_so_luong_ton_vaccine(self, cr, uid, ids, context=None):
+#         tong_sl = 0
+#         for line in self.browse(cr, uid, ids, context=context):
+#             if line.so_luong_vc > line.so_luong_ton:
+#                 raise osv.except_osv(_('Warning!'),_('Số lượng tiêm vaccine lớn hơn số lượng tồn vaccine'))
+#                 return False
+#         return True
+#     _constraints = [
+#         (_check_so_luong_ton_vaccine, 'Identical Data', []),
+#     ]
     
 ct_tiem_phong_vaccine_line()
 

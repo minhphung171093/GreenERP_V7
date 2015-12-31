@@ -2,7 +2,8 @@
 <openerp>
     <data>
     
-    						 <!--cán bộ-->        
+    						 <!--cán bộ-->     
+    						 
     
         <record id="res_users_canbo_form_inherit" model="ir.ui.view">
             <field name="name">res.users.canbo.form.inherit</field>
@@ -12,6 +13,7 @@
             	<xpath expr="//field[@name='company_id']" position="after">
 					<field name="dien_thoai"/>
 					<field name="email"/>
+					<field name="ngon_ngu" on_change="onchange_ngon_ngu(ngon_ngu)"/>
 				</xpath>
 				<xpath expr="//field[@name='company_id']" position="attributes">
 					<attribute name='string'>Trạm</attribute>
@@ -304,15 +306,16 @@
 				                    <field name="loai_hinh_so_huu_id" options="{'create': false, 'create_edit': false}"  />       
 				                    <field name="cty_gia_cong_ids" widget="many2many_tags"  />             
 				                    <field name="quy_cach"  />
-				                    <field name="xu_ly_moi_truong"  />
+				                    <field name="xu_ly_moi_truong_ids" widget="many2many_tags" />
 				                    <field name="bao_ve_moi_truong" />
 				                    <field name="danh_gia_moi_truong"  />
-				                    <field name="san_xuat_giong" />
+				                    <field name="san_xuat_giong_id" string='Hướng sản xuất' />
                 				</group>
                 				<group string="Các tiêu chuẩn khác">
 				                    <field name="tieu_chuan_viet" />
 				                    <field name="tieu_chuan_global"  />
 				                    <field name="an_toan_dich" />
+				                    <field name="du_dk_thu_y" />
 				                    <field name="tieu_chuan_khac"  />
                 				</group>
 							</page>
@@ -620,6 +623,75 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
         </record>
+	<!-- Xử Lý Môi Trường --> 
+		<record model="ir.ui.view" id="xu_ly_moi_truong_tree">
+            <field name="name">xu.ly.moi.truong.tree</field>
+            <field name="model">xu.ly.moi.truong</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Xử lý môi trường">
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="xu_ly_moi_truong_form">
+            <field name="name">xu.ly.moi.truong.form</field>
+            <field name="model">xu.ly.moi.truong</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Xử lý môi trường" version="7.0">
+	                <sheet>
+                		<group>
+		                    <field name="name" />
+                		</group>
+	                </sheet>
+                </form>
+            </field>
+        </record>
+       
+        <record model="ir.actions.act_window" id="action_xu_ly_moi_truong">
+            <field name="name">Xử lý môi trường</field>
+            <field name="res_model">xu.ly.moi.truong</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record> 
+
+		<!-- Hướng sản xuất  -->
+		
+		<record model="ir.ui.view" id="san_xuat_giong_tree">
+            <field name="name">san.xuat.giong.tree</field>
+            <field name="model">san.xuat.giong</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Hướng sản xuất giống">
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="san_xuat_giong_form">
+            <field name="name">san.xuat.giong.form</field>
+            <field name="model">san.xuat.giong</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Hướng sản xuất giống" version="7.0">
+	                <sheet>
+                		<group>
+		                    <field name="name" />
+                		</group>
+	                </sheet>
+                </form>
+            </field>
+        </record>
+       
+        <record model="ir.actions.act_window" id="action_san_xuat_giong">
+            <field name="name">Hướng sản xuất giống</field>
+            <field name="res_model">san.xuat.giong</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
         
         <record model="ir.ui.view" id="loai_giay_tp_tree">
             <field name="name">loai.giay.tp.tree</field>
