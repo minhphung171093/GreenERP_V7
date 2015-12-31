@@ -57,6 +57,7 @@
             'report/bien_ban_gui_hang.xml',
             'stock_view.xml',
             'sequence.xml',
+            'report_review.xml',
             ],
     'demo': [],
     'test': [

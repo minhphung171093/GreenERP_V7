@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+ <!--  ========================= Create Du Lieu Dong Hang Review ================= -->     
+         <record id="dulieu_donghang_review" model="ir.ui.view">
+            <field name="name">dulieu.donghang.review</field>
+            <field name="model">dulieu.donghang.review</field>
+            <field name="arch" type="xml">
+                <form string="Dữ Liệu Đóng Hàng Review" version="7.0">
+               <!--   	<header>
+                        <button string="Print (.xls)" type="object" name="print_xls" context="{'type_report':'general_trial_balance'}" icon='gtk-execute'/>
+                    </header> -->
+                    <sheet>
+
+                    <div class="oe_text_center">
+            				<h2><b>BÁO CÁO DỮ LIỆU ĐÓNG HÀNG</b></h2>
+            		</div>
+            		<div class="oe_text_center">
+            			<label for="date_from" class="oe_inline"/>
+                		<field name="tu_ngay" class="oe_bold oe_inline"/>
+                		<label for="date_to" class="oe_inline"/>
+                		<field name="den_ngay" class="oe_bold oe_inline"/>
+                	</div>
+                    	<div class='oe_green_erp_scroll' >
+		                	<field name="dulieu_donghang_review_line" nolabel='1'>
+		                		<tree colors="red:bb_giaonhan =='Chua nhan' or sl_nhietke != '' " create="false" edit="false" delete="false">          
+		                			<field name="stt"/>
+		                			<field name="so_phieuxuat"/>
+		                			<field name="ngay" />
+		                			<field name="khach_hang" />
+		                			<field name="sl_nhietke" />
+		                			<field name="bb_giaonhan" />
+		                		</tree>
+		                	</field>
+	                	</div> 
+			       </sheet>
+                </form>
+            </field>
+        </record>      	                	
+   <!--      <record id="green_congno_vacine_review" model="greenerp.report">
+            <field name="name">congno_vacine_review</field>
+            <field name="delete_after">7</field>
+        </record> -->
+        
+        
+   </data>
+</openerp>
+        
+        
