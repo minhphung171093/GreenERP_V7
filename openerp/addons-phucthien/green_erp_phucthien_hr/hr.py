@@ -334,16 +334,23 @@ dm_congtacphi_line()
 class hr_holidays(osv.osv):
     _inherit = "hr.holidays"
     
-    def _check_date_from(self, cr, uid, ids, context=None):
-        for hr in self.browse(cr, uid, ids, context=context):
+    def create(self, cr, uid, vals, context=None):
+        if 'date_from' in vals:
             datetime_now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            if hr.date_from < datetime_now:
+            if (vals['date_from'] < datetime_now):
                 raise osv.except_osv(_('Warning!'),_('Thời gian bắt đầu không được nhỏ hơn thời gian hiện tại'))
-                return False
-        return True
-    _constraints = [
-        (_check_date_from, 'Identical Data', []),
-    ]   
+        return super(hr_holidays, self).create(cr, uid, vals, context=context)
+    
+#     def _check_date_from(self, cr, uid, ids, context=None):
+#         for hr in self.browse(cr, uid, ids, context=context):
+#             datetime_now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+#             if hr.date_from < datetime_now:
+#                 raise osv.except_osv(_('Warning!'),_('Thời gian bắt đầu không được nhỏ hơn thời gian hiện tại'))
+#                 return False
+#         return True
+#     _constraints = [
+#         (_check_date_from, 'Identical Data', []),
+#     ]   
 
 hr_holidays()  
 

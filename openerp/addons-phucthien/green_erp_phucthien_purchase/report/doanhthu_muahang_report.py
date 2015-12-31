@@ -81,7 +81,8 @@ class Parser(report_sxw.rml_parse):
                 pp.name_template as ten_sp,pu.name as dvt,spl.name as so_lo,spl.life_date as han_dung,ail.quantity as so_luong,ail.price_unit as gia_ban,
                 ail.price_unit*ail.quantity as dt_truocthue,at.amount_tax as tien_thue,(ail.price_unit*ail.quantity)+at.amount_tax as dt_sauthue,pt.standard_price as gia_von,
                 sl.name as loc_name,mp.name as nsx,aa.code as so_tk,aa.name as ten_tk
-                from account_invoice_line ail
+                from stock_move sm
+                    left join account_invoice_line ail on sm.id=ail.source_id
                     left join account_invoice ai on ail.invoice_id=ai.id
                     left join res_partner rp on ail.partner_id=rp.id
                     left join product_product pp on ail.product_id=pp.id
@@ -96,11 +97,10 @@ class Parser(report_sxw.rml_parse):
                                     left join account_tax at on ailt.tax_id=at.id
                                 group by ail.id
                         ) as at on ail.id=at.id
-                    left join stock_move sm on sm.id=ail.source_id
                     left join stock_location sl on sl.id=sm.location_dest_id
                     left join manufacturer_product mp on pp.manufacturer_product_id = mp.id
                     left join account_account aa on ai.account_id = aa.id
-                where ai.date_invoice between '%s' and '%s' and ai.state!='cancel' and ai.type='in_invoice' 
+                where date(timezone('UTC',sm.date)) between '%s' and '%s' and sm.state='done' and ai.type='in_invoice' 
         '''%(date_from,date_to)
         if partner_ids:
             partner_ids = str(partner_ids).replace('[', '(')
