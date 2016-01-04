@@ -31,19 +31,11 @@ class sale_order_line(osv.osv):
             lang=lang, update_tax=update_tax, date_order=date_order, packaging=packaging, fiscal_position=fiscal_position, flag=flag, context=context)
         if not pricelist:
             return res
-        if context is None:
-            context = {}
         frm_cur = self.pool.get('res.users').browse(cr, uid, uid).company_id.currency_id.id
         to_cur = self.pool.get('product.pricelist').browse(cr, uid, [pricelist])[0].currency_id.id
         if product:
-            product = self.pool['product.product'].browse(cr, uid, product, context=context)
-            purchase_price = product.standard_price
-            to_uom = res.get('product_uom', uom)
-            if to_uom != product.uom_id.id:
-                purchase_price = self.pool['product.uom']._compute_price(cr, uid, product.uom_id.id, purchase_price, to_uom)
-            ctx = context.copy()
-            ctx['date'] = date_order
-            price = self.pool.get('res.currency').compute(cr, uid, frm_cur, to_cur, purchase_price, round=False, context=ctx)
+            purchase_price = self.pool.get('product.product').browse(cr, uid, product).standard_price
+            price = self.pool.get('res.currency').compute(cr, uid, frm_cur, to_cur, purchase_price, round=False)
             res['value'].update({'purchase_price': price})
         return res
 
@@ -52,7 +44,10 @@ class sale_order_line(osv.osv):
         for line in self.browse(cr, uid, ids, context=context):
             res[line.id] = 0
             if line.product_id:
-                res[line.id] = round(line.price_subtotal - ((line.purchase_price or line.product_id.standard_price) * line.product_uos_qty), 2)
+                if line.purchase_price:
+                    res[line.id] = round((line.price_unit*line.product_uos_qty*(100.0-line.discount)/100.0) -(line.purchase_price*line.product_uos_qty), 2)
+                else:
+                    res[line.id] = round((line.price_unit*line.product_uos_qty*(100.0-line.discount)/100.0) -(line.product_id.standard_price*line.product_uos_qty), 2)
         return res
 
     _columns = {

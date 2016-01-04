@@ -1,102 +1,101 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * l10n_pe
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2013
+# Dutch translation for openobject-addons
+# Copyright (c) 2013 Rosetta Contributors and Canonical Ltd 2013
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2012-11-24 02:53+0000\n"
-"PO-Revision-Date: 2015-05-21 14:21+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Dutch (http://www.transifex.com/projects/p/odoo-7/language/nl/)\n"
+"PO-Revision-Date: 2013-11-12 08:45+0000\n"
+"Last-Translator: Jan Jurkus (GCE CAD-Service) <ict@gcecad-service.nl>\n"
+"Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: nl\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-11-21 06:18+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_EGP_FU_070
 msgid "Gastos Financieros"
-msgstr "Financiële kosten"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_EGP_NA_140
 msgid "Valuación y Deterioro de Activos y Provisiones"
-msgstr "Waardering en bijzondere waardevermindering van activa en voorzieningen"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_PTN_30
 msgid "Acciones de Inversión"
-msgstr "Investeringsaandelen"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_PAC_50
 msgid "Parte Corriente de las Deudas a Largo Plazo"
-msgstr "Kortlopend gedeelte van de langlopende schuld"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_EGP_NA_050
 msgid "Compras de Envases y Emabalajes"
-msgstr "Aankoop van containers en verpakkingen"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_PAC_10
 msgid "Sobregiros y Pagarés Bancarios"
-msgstr "Bankoverschrijvingen en bankbiljetten"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_ACC_40
 msgid "Cuentas por Cobrar a Vinculadas"
-msgstr "Debiteuren van verbonden partijen"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_EGP_NA_010
 msgid "Compras de Mercaderías"
-msgstr "Winkel koopwaar"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_EGP_FU_040
 msgid "Gastos de Administración"
-msgstr "Administratieve kosten"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_PAC_35
 msgid "Impuesto a la Renta y Participaciones Corrientes"
-msgstr "Inkomstenbelasting Aandelen en bezit"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_EGP_NA_020
 msgid "(+/-) Variación de Mercaderías"
-msgstr "(+/-) variatie van de goederen"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_ACN_60
 msgid "Activos Intangibles (neto de amortización acumulada)"
-msgstr "Immateriële vaste activa (na aftrek van cumulatieve afschrijvingen)"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_PTN_45
 msgid "Resultados No Realizados"
-msgstr "Niet-gerealiseerde resultaten"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_ACN_30
 msgid "Otras Cuentas por Cobrar a Largo Plazo"
-msgstr "Andere vorderingen op lange termijn"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_EGP_NA_100
 msgid "Gastos de Personal, Directores y Gerentes"
-msgstr "Personeelskosten, directeuren en managers"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_ACN_10
 msgid "Cuentas por Cobrar a Largo Plazo"
-msgstr "Debiteuren lange termijn"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_PTN_10
@@ -106,282 +105,282 @@ msgstr "Kapitaal"
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_NCLASIFICADO
 msgid "Cuentas No Clasificadas"
-msgstr "Rekeningen zonder classificatie"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_EGP_FU_060
 msgid "Ingresos Financieros"
-msgstr "Rente opbrengsten"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_ACC_62
 msgid "Activos Biológicos"
-msgstr "Biologische activa"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_PAN_30
 msgid "Ingresos Diferidos"
-msgstr "Uitgestelde opbrengsten"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_EGP_FU_120
 msgid "Impuesto a la Renta"
-msgstr "Inkomstenbelasting"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_ACC_20
 msgid "Valores Negociables"
-msgstr "Verhandelbare effecten"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_EGP_FU_080
 msgid "Otros Ingresos"
-msgstr "Overige inkomsten"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_ORD
 msgid "Cuentas de Orden"
-msgstr "Memorandum Rekeningen"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_EGP_NA_150
 msgid "Gastos Financieros por Naturaleza"
-msgstr "Rentelasten voor natuur"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_EGP_FU_090
 msgid "Otros Gastos"
-msgstr "Andere uitgaven"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_EGP_NA_060
 msgid "(+/-) Variación de Materias Primas"
-msgstr "(+/-) Variatie van grondstoffen"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_PTN_20
 msgid "Capital Adicional"
-msgstr "Aanvullend kapitaal"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_EGP_NA_070
 msgid "(+/-)Variación de Materiales Auxiliares, Suministros y Repuestos"
-msgstr "(+/-) Variatie van hulpmaterialen,  goederen en onderdelen"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_ACC_60
 msgid "Existencias"
-msgstr "Voorraad"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_ACN_35
 msgid "Activos Biologicos a Largo Plazo"
-msgstr "Biologische activa op lange termijn"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_ACN_20
 msgid "Cuentas por Cobrar a Vinculadas a Largo Plazo"
-msgstr "Debiteuren gerelateerde lange termijnen"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_EGP_FU_020
 msgid "Otros Ingresos Operacionales"
-msgstr "Overige bedrijfsopbrengsten"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_ACN_40
 msgid "Inversiones Permanentes"
-msgstr "Termijn investeringen"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_ACC_30
 msgid "Cuentas por Cobrar Comerciales"
-msgstr "Handelsdebiteuren"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_ACN_50
 msgid "Inmuebles, Maquinaria y Equipo (neto de depreciación acumulada)"
-msgstr "Materiële vaste activa (na aftrek van cumulatieve afschrijvingen)"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_PTN_50
 msgid "Reservas Legales"
-msgstr "Wettelijke reserves"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_PAN_40
 msgid "Impuesto a la Renta y Participaciones Diferidos Pasivo"
-msgstr "Belastingverplichtingen uitgestelde inkomsten en investeringen"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_PTN_70
 msgid "Resultados Acumulados"
-msgstr "Ingehouden winst"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_ACC_70
 msgid "Gastos Pagados por Anticipado"
-msgstr "Vooruitbetaalde kosten"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_EGP_FU_140
 msgid "Gastos Extraordinarios"
-msgstr "Uitzonderlijke uitgaven"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_EGP_NA_040
 msgid "Compras de Materiales Auxiliares, Suministros y Repuestos"
-msgstr "Aankopen hulpmaterialen, benodigdheden en onderdelen"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_EGP_FU_150
 msgid "Interés Minoritario"
-msgstr "Minderheidsintrest"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_EGP_FU_160
 msgid "Utilidad (Pérdida) Neta del Ejercicio"
-msgstr "Inkomen (verlies) van het jaar"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_ACC_65
 msgid "Activos No Corrientes Mantenidos para la Venta"
-msgstr "Vaste activa gehouden voor verkoop"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_EGP_FU_130
 msgid "Ingresos Extraordinarios"
-msgstr "Uitzonderlijke bate"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_PAC_40
 msgid "Otras Cuentas por Pagar"
-msgstr "Overige schulden"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_PAN_20
 msgid "Cuentas por Pagar a Vinculadas a Largo Plazo"
-msgstr "Betaalbare accounts op lange termijn"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_ACN_80
 msgid "Otros Activos"
-msgstr "Andere activa"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_PAC_45
 msgid "Provisiones"
-msgstr "Bevoorrading"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_EGP_FU_100
 msgid "Resultados por Exposición a la Inflación"
-msgstr "Resultaten voor de blootstelling aan de inflatie"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_PAO_10
 msgid "Contingencias"
-msgstr "Onvoorziene"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_EGP_NA_110
 msgid "Gastos por Tributos"
-msgstr "Kosten attributen"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_PAC_30
 msgid "Cuentas por Pagar a Vinculadas"
-msgstr "Betaalbaar aan gerelateerde partijen"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_EGP_NA_030
 msgid "Compras de Materia Prima"
-msgstr "Aankoop van grondstoffen"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_EGP_FU_030
 msgid "Costo de ventas"
-msgstr "Kosten van de verkoop"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_EGP_FU_170
 msgid "Dividendos de Acciones Preferentes"
-msgstr "Geprefereerde aandeel dividenten"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_PTN_40
 msgid "Excedentes de Revaluación"
-msgstr "Herwaarderingsmeerwaarden"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_ACC_50
 msgid "Otras Cuentas por Cobrar"
-msgstr "Andere vorderingen"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_EGP_FU_110
 msgid "Participaciones"
-msgstr "Aandelen"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_EGP_FU_055
 msgid "Ganancias (Pérdidas) por Venta de Activos"
-msgstr "Winst (verlies) op verkoop van activa"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_EGP_NA_090
 msgid "Gastos por Servicios Prestados por Terceros"
-msgstr "Uitgaven voor diensten door derden"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_PTN_60
 msgid "Otras Reservas"
-msgstr "Overige reserves"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_ACC_10
 msgid "Caja y Bancos"
-msgstr "Cash en Banken"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_PAO_20
 msgid "Interés minoritario"
-msgstr "Minderheidsintrest"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_EGP_FU_050
 msgid "Gastos de Venta"
-msgstr "Verkoopkosten"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_ACC_75
 msgid "Otros Activos Corrientes"
-msgstr "Overige vlottende activa"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_ACN_70
 msgid "Impuesto a la Renta y Participaciones Diferidos Activo"
-msgstr "Belastingvorderingen en uitgestelde activa"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_PAC_20
 msgid "Cuentas por Pagar Comerciales"
-msgstr "Handelsschulden"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_EGP_FU_010
 msgid "Ventas Netas (ingresos operacionales)"
-msgstr "Netto-omzet (bedrijfsopbrengsten)"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_BG_PAN_10
 msgid "Deudas a Largo Plazo"
-msgstr "Lange termijn schulden"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_EGP_NA_130
 msgid "Pérdida por Medición de Activos No Financieros a Valor Razonable"
-msgstr "Verliesmeting van niet-financiële activa tegen reële waarde"
+msgstr ""
 
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_view
@@ -391,4 +390,4 @@ msgstr "Weergave"
 #. module: l10n_pe
 #: model:account.account.type,name:l10n_pe.account_account_type_EGP_NA_080
 msgid "(+/-) Variación de Envases y Embalajes"
-msgstr "(+/-) Veranderingen in containers en verpakkingen"
+msgstr ""

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+    	<record id="tonghop_trungthuong_report" model="ir.actions.report.xml">
+	        <field name="name">tonghop.trungthuong.report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">tonghop.trungthuong</field>
+	        <field name="report_name">Bien Ban Tổng Hợp Giao Nhan Cui Trung Thuong</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-odt</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-doc'),('compatible_types','=','oo-odt')]"/>
+	        <field name="parser_loc">xsbp_ql_ve_loto/report/tonghop_trungthuong.py</field>
+	        <field name="report_rml">xsbp_ql_ve_loto/report/tonghop_trungthuong.odt</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record> 
+    	   
+    	<report 
+			auto="False" 
+			menu="False"
+			id="tonghop_trungthuong_report" 
+			model="tonghop.trungthuong" 
+			name="tonghop_trungthuong_report"
+	        string="Biên Bản Tổng Hợp Giao Nhận Cùi Trúng Thưởng"
+	        rml="xsbp_ql_ve_loto/report/tonghop_trungthuong.odt"/> 	
+	</data>
+</openerp>

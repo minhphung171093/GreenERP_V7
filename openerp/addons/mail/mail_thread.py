@@ -42,8 +42,6 @@ from openerp.tools.translate import _
 _logger = logging.getLogger(__name__)
 
 
-mail_header_msgid_re = re.compile('<[^<>]+>')
-
 def decode_header(message, header, separator=' '):
     return separator.join(map(decode, filter(None, message.get_all(header, []))))
 
@@ -255,15 +253,12 @@ class mail_thread(osv.AbstractModel):
 
         # automatic logging unless asked not to (mainly for various testing purpose)
         if not context.get('mail_create_nolog'):
-            ir_model_pool = self.pool['ir.model']
-            ids = ir_model_pool.search(cr, uid, [('model', '=', self._name)], context=context)
-            name = ir_model_pool.read(cr, uid, ids, ['name'], context=context)[0]['name']
-            self.message_post(cr, uid, thread_id, body=_('%s created') % name, context=context)
+            self.message_post(cr, uid, thread_id, body=_('%s created') % (self._description), context=context)
 
         # auto_subscribe: take values and defaults into account
         create_values = dict(values)
         for key, val in context.iteritems():
-            if key.startswith('default_') and key[8:] not in create_values:
+            if key.startswith('default_'):
                 create_values[key[8:]] = val
         self.message_auto_subscribe(cr, uid, [thread_id], create_values.keys(), context=context, values=create_values)
 
@@ -299,7 +294,7 @@ class mail_thread(osv.AbstractModel):
 
         if not context.get('mail_notrack'):
             # Perform the tracking
-            tracked_fields = self._get_tracked_fields(cr, uid, values.keys(), context=track_ctx)
+            tracked_fields = self._get_tracked_fields(cr, uid, values.keys(), context=context)
         else:
             tracked_fields = None
         if tracked_fields:
@@ -474,35 +469,18 @@ class mail_thread(osv.AbstractModel):
                 ret_dict[model_name] = model._description
         return ret_dict
 
-    def _message_partner_id_by_email(self, cr, uid, email_address, context=None):
-        """ Find a partner ID corresponding to the given email address """
-        partner_obj = self.pool['res.partner']
-        # Escape special SQL characters in email_address to avoid invalid matches
-        email_address = (email_address.replace('\\', '\\\\')
-                                      .replace('%', '\\%')
-                                      .replace('_', '\\_'))
-        # exact, case-insensitive match
-        result = partner_obj.search(cr, uid, [('email', '=ilike', email_address), ('user_ids', '!=', False)], limit=1, context=context)
-        if not result:
-            result = partner_obj.search(cr, uid, [('email', '=ilike', email_address)], limit=1, context=context)
-        # if no match with addr-spec, attempt substring match within name-addr pair (See RFC5322, section 3.4)
-        email_address = "<%s>" % email_address
-        if not result:
-            result = partner_obj.search(cr, uid, [('email', 'ilike', email_address), ('user_ids', '!=', False)], limit=1, context=context)
-        if not result:
-            result = partner_obj.search(cr, uid, [('email', 'ilike', email_address)], limit=1, context=context)
-        return result[0] if result else None
-
     def _message_find_partners(self, cr, uid, message, header_fields=['From'], context=None):
         """ Find partners related to some header fields of the message.
 
             TDE TODO: merge me with other partner finding methods in 8.0 """
+        partner_obj = self.pool.get('res.partner')
         partner_ids = []
         s = ', '.join([decode(message.get(h)) for h in header_fields if message.get(h)])
         for email_address in tools.email_split(s):
-            partner_id = self._message_partner_id_by_email(cr, uid, email_address, context=context)
-            if partner_id:
-                partner_ids.append(partner_id)
+            related_partners = partner_obj.search(cr, uid, [('email', 'ilike', email_address), ('user_ids', '!=', False)], limit=1, context=context)
+            if not related_partners:
+                related_partners = partner_obj.search(cr, uid, [('email', 'ilike', email_address)], limit=1, context=context)
+            partner_ids += related_partners
         return partner_ids
 
     def _message_find_user_id(self, cr, uid, message, context=None):
@@ -554,7 +532,7 @@ class mail_thread(osv.AbstractModel):
         email_from = decode_header(message, 'From')
         email_to = decode_header(message, 'To')
         references = decode_header(message, 'References')
-        in_reply_to = decode_header(message, 'In-Reply-To').strip()
+        in_reply_to = decode_header(message, 'In-Reply-To')
 
         # 1. Verify if this is a reply to an existing thread
         thread_references = references or in_reply_to
@@ -802,14 +780,7 @@ class mail_thread(osv.AbstractModel):
         body = u''
         if save_original:
             attachments.append(('original_email.eml', message.as_string()))
-
-        # Be careful, content-type may contain tricky content like in the
-        # following example so test the MIME type with startswith()
-        #
-        # Content-Type: multipart/related;
-        #   boundary="_004_3f1e4da175f349248b8d43cdeb9866f1AMSPR06MB343eurprd06pro_";
-        #   type="text/html"
-        if not message.is_multipart() or message.get('content-type', '').startswith("text/"):
+        if not message.is_multipart() or 'text/' in message.get('content-type', ''):
             encoding = message.get_content_charset()
             body = message.get_payload(decode=True)
             body = tools.ustr(body, encoding, errors='replace')
@@ -818,13 +789,9 @@ class mail_thread(osv.AbstractModel):
                 body = tools.append_content_to_html(u'', body, preserve=True)
         else:
             alternative = False
-            mixed = False
-            html = u''
             for part in message.walk():
                 if part.get_content_type() == 'multipart/alternative':
                     alternative = True
-                if part.get_content_type() == 'multipart/mixed':
-                    mixed = True
                 if part.get_content_maintype() == 'multipart':
                     continue  # skip container
                 # part.get_filename returns decoded value if able to decode, coded otherwise.
@@ -851,11 +818,8 @@ class mail_thread(osv.AbstractModel):
                                                                          encoding, errors='replace'), preserve=True)
                 # 3) text/html -> raw
                 elif part.get_content_type() == 'text/html':
-                    # mutlipart/alternative have one text and a html part, keep only the second
-                    # mixed allows several html parts, append html content
-                    append_content = not alternative or (html and mixed)
                     html = tools.ustr(part.get_payload(decode=True), encoding, errors='replace')
-                    if not append_content:
+                    if alternative:
                         body = html
                     else:
                         body = tools.append_content_to_html(body, html, plaintext=False)
@@ -942,13 +906,13 @@ class mail_thread(osv.AbstractModel):
             msg_dict['date'] = stored_date.strftime(tools.DEFAULT_SERVER_DATETIME_FORMAT)
 
         if message.get('In-Reply-To'):
-            parent_ids = self.pool.get('mail.message').search(cr, uid, [('message_id', '=', decode(message['In-Reply-To'].strip()))])
+            parent_ids = self.pool.get('mail.message').search(cr, uid, [('message_id', '=', decode(message['In-Reply-To']))])
             if parent_ids:
                 msg_dict['parent_id'] = parent_ids[0]
 
         if message.get('References') and 'parent_id' not in msg_dict:
-            msg_list =  mail_header_msgid_re.findall(decode(message['References']))
-            parent_ids = self.pool.get('mail.message').search(cr, uid, [('message_id', 'in', [x.strip() for x in msg_list])])
+            parent_ids = self.pool.get('mail.message').search(cr, uid, [('message_id', 'in',
+                                                                         [x.strip() for x in decode(message['References']).split()])])
             if parent_ids:
                 msg_dict['parent_id'] = parent_ids[0]
 
@@ -980,7 +944,7 @@ class mail_thread(osv.AbstractModel):
             return result
         if partner and partner in obj.message_follower_ids:  # recipient already in the followers -> skip
             return result
-        if partner and partner.id in [val[0] for val in result[obj.id]]:  # already existing partner ID -> skip
+        if partner and partner in [val[0] for val in result[obj.id]]:  # already existing partner ID -> skip
             return result
         if partner and partner.email:  # complete profile: id, name <email>
             result[obj.id].append((partner.id, '%s<%s>' % (partner.name, partner.email), reason))
@@ -1016,6 +980,7 @@ class mail_thread(osv.AbstractModel):
 
             TDE TODO: merge me with other partner finding methods in 8.0 """
         mail_message_obj = self.pool.get('mail.message')
+        partner_obj = self.pool.get('res.partner')
         result = list()
         if id and self._name != 'mail.thread':
             obj = self.browse(cr, SUPERUSER_ID, id, context=context)
@@ -1023,10 +988,10 @@ class mail_thread(osv.AbstractModel):
             obj = None
         for email in emails:
             partner_info = {'full_name': email, 'partner_id': False}
-            split = tools.email_split(email)
-            if not split:
+            m = re.search(r"((.+?)\s*<)?([^<>]+@[^<>]+)>?", email, re.IGNORECASE | re.DOTALL)
+            if not m:
                 continue
-            email_address = split[0]
+            email_address = m.group(3)
             # first try: check in document's followers
             if obj:
                 for follower in obj.message_follower_ids:
@@ -1034,9 +999,11 @@ class mail_thread(osv.AbstractModel):
                         partner_info['partner_id'] = follower.id
             # second try: check in partners
             if not partner_info.get('partner_id'):
-                partner_id = self._message_partner_id_by_email(cr, uid, email_address, context=context)
-                if partner_id:
-                    partner_info['partner_id'] = partner_id
+                ids = partner_obj.search(cr, SUPERUSER_ID, [('email', 'ilike', email_address), ('user_ids', '!=', False)], limit=1, context=context)
+                if not ids:
+                    ids = partner_obj.search(cr, SUPERUSER_ID, [('email', 'ilike', email_address)], limit=1, context=context)
+                if ids:
+                    partner_info['partner_id'] = ids[0]
             result.append(partner_info)
 
             # link mail with this from mail to the new partner id
@@ -1180,9 +1147,7 @@ class mail_thread(osv.AbstractModel):
 
         # _mail_flat_thread: automatically set free messages to the first posted message
         if self._mail_flat_thread and not parent_id and thread_id:
-            message_ids = mail_message.search(cr, uid, ['&', ('res_id', '=', thread_id), ('model', '=', model), ('type', '=', 'email')], context=context, order="id ASC", limit=1)
-            if not message_ids:
-                message_ids = message_ids = mail_message.search(cr, uid, ['&', ('res_id', '=', thread_id), ('model', '=', model)], context=context, order="id ASC", limit=1)
+            message_ids = mail_message.search(cr, uid, ['&', ('res_id', '=', thread_id), ('model', '=', model)], context=context, order="id ASC", limit=1)
             parent_id = message_ids and message_ids[0] or False
         # we want to set a parent: force to set the parent_id to the oldest ancestor, to avoid having more than 1 level of thread
         elif parent_id:
@@ -1376,7 +1341,6 @@ class mail_thread(osv.AbstractModel):
         """
         subtype_obj = self.pool.get('mail.message.subtype')
         follower_obj = self.pool.get('mail.followers')
-        notification_obj = self.pool.get('mail.notification')
         new_followers = dict()
 
         # fetch auto_follow_fields: res.users relation fields whose changes are tracked for subscription
@@ -1447,16 +1411,7 @@ class mail_thread(osv.AbstractModel):
                         ('model', '=', self._name),
                         ('res_id', '=', record_id)], limit=1, context=context)
                 if msg_ids:
-                    notification_obj._notify(cr, uid, msg_ids[0], partners_to_notify=user_pids, context=context)
-                    message = message_obj.browse(cr, uid, msg_ids[0], context=context)
-                    if message.parent_id:
-                        partner_ids_to_parent_notify = set(user_pids).difference(partner.id for partner in message.parent_id.notified_partner_ids)
-                        for partner_id in partner_ids_to_parent_notify:
-                            notification_obj.create(cr, uid, {
-                                'message_id': message.parent_id.id,
-                                'partner_id': partner_id,
-                                'read': True,
-                            }, context=context)
+                    self.pool.get('mail.notification')._notify(cr, uid, msg_ids[0], partners_to_notify=user_pids, context=context)
 
         return True
 

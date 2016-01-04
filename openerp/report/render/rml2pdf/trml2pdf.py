@@ -32,7 +32,6 @@ import os
 import logging
 from lxml import etree
 import base64
-from distutils.version import LooseVersion
 from reportlab.platypus.doctemplate import ActionFlowable
 from openerp.tools.safe_eval import safe_eval as eval
 from reportlab.lib.units import inch,cm,mm
@@ -89,6 +88,7 @@ class NumberedCanvas(canvas.Canvas):
         self._saved_page_states = []
 
     def showPage(self):
+        self._saved_page_states.append(dict(self.__dict__))
         self._startPage()
 
     def save(self):
@@ -104,7 +104,7 @@ class NumberedCanvas(canvas.Canvas):
         self.setFont("Helvetica", 8)
         self.drawRightString((self._pagesize[0]-30), (self._pagesize[1]-40),
             " %(this)i / %(total)i" % {
-               'this': self._pageNumber,
+               'this': self._pageNumber+1,
                'total': page_count,
             }
         )
@@ -123,8 +123,6 @@ class PageCount(platypus.Flowable):
 
 class PageReset(platypus.Flowable):
     def draw(self):
-        """Flag to close current story page numbering and prepare for the next
-        should be executed after the rendering of the full story"""
         self.canv._doPageReset = True
 
 class _rml_styles(object,):
@@ -176,7 +174,6 @@ class _rml_styles(object,):
                 'justify':reportlab.lib.enums.TA_JUSTIFY
             }
             data['alignment'] = align.get(node.get('alignment').lower(), reportlab.lib.enums.TA_LEFT)
-        data['splitLongWords'] = 0
         return data
 
     def _table_style_get(self, style_node):
@@ -376,11 +373,7 @@ class _rml_canvas(object):
         v = utils.attr_get(node, ['x','y'])
         text=self._textual(node, **v)
         text = utils.xml2str(text)
-        try:
-            self.canvas.drawString(text=text, **v)
-        except TypeError as e:
-            _logger.error("Bad RML: <drawString> tag requires attributes 'x' and 'y'!")
-            raise e
+        self.canvas.drawString(text=text, **v)
 
     def _drawCenteredString(self, node):
         v = utils.attr_get(node, ['x','y'])
@@ -768,11 +761,9 @@ class _rml_flowable(object):
             style = self.styles.para_style_get(node)
             if extra_style:
                 style.__dict__.update(extra_style)
-            text_node = self._textual(node).strip().replace('\n\n', '\n').replace('\n', '<br/>')
-            instance = platypus.Paragraph(text_node, style, **(utils.attr_get(node, [], {'bulletText':'str'})))
-            result = [instance]
-            if LooseVersion(reportlab.Version) > LooseVersion('3.0') and not instance.getPlainText().strip() and instance.text.strip():
-                result.append(platypus.Paragraph('&nbsp;<br/>', style, **(utils.attr_get(node, [], {'bulletText': 'str'}))))
+            result = []
+            for i in self._textual(node).split('\n'):
+                result.append(platypus.Paragraph(i, style, **(utils.attr_get(node, [], {'bulletText':'str'}))))
             return result
         elif node.tag=='barCode':
             try:
@@ -935,9 +926,6 @@ class TinyDocTemplate(platypus.BaseDocTemplate):
         self.handle_frameBegin()
 
     def afterPage(self):
-        if isinstance(self.canv, NumberedCanvas):
-            # save current page states before eventual reset
-            self.canv._saved_page_states.append(dict(self.canv.__dict__))
         if self.canv._doPageReset:
             # Following a <pageReset/> tag:
             # - we reset page number to 0
@@ -1013,7 +1001,7 @@ class _rml_template(object):
             if story_cnt > 0:
                 fis.append(platypus.PageBreak())
             fis += r.render(node_story)
-            # end of story numbering computation
+            # Reset Page Number with new story tag
             fis.append(PageReset())
             story_cnt += 1
         try:

@@ -1,21 +1,21 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * hr_attendance
-# 
-# Translators:
+# Lithuanian translation for openobject-addons
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-14 00:10+0000\n"
-"PO-Revision-Date: 2015-05-29 13:00+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Lithuanian (http://www.transifex.com/projects/p/odoo-7/language/lt/)\n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2013-06-07 19:37+0000\n"
+"PO-Revision-Date: 2012-12-21 23:00+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Lithuanian <lt@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: lt\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-11-21 06:10+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #. module: hr_attendance
 #: model:ir.model,name:hr_attendance.model_hr_attendance_month
@@ -33,10 +33,11 @@ msgid "Last Sign"
 msgstr ""
 
 #. module: hr_attendance
-#: view:hr.attendance:0 field:hr.employee,state:0
+#: view:hr.attendance:0
+#: field:hr.employee,state:0
 #: model:ir.model,name:hr_attendance.model_hr_attendance
 msgid "Attendance"
-msgstr "Buvimas darbe"
+msgstr ""
 
 #. module: hr_attendance
 #. openerp-web
@@ -85,12 +86,12 @@ msgstr ""
 #. module: hr_attendance
 #: view:hr.attendance:0
 msgid "Group By..."
-msgstr "Grupuoti pagal..."
+msgstr ""
 
 #. module: hr_attendance
 #: selection:hr.attendance.month,month:0
 msgid "October"
-msgstr "Spalis"
+msgstr ""
 
 #. module: hr_attendance
 #: field:hr.employee,attendance_access:0
@@ -99,10 +100,11 @@ msgstr ""
 
 #. module: hr_attendance
 #: code:addons/hr_attendance/hr_attendance.py:154
-#: selection:hr.attendance,action:0 view:hr.employee:0
+#: selection:hr.attendance,action:0
+#: view:hr.employee:0
 #, python-format
 msgid "Sign Out"
-msgstr "Išsiregistruoti"
+msgstr ""
 
 #. module: hr_attendance
 #: code:addons/hr_attendance/wizard/hr_attendance_error.py:49
@@ -111,21 +113,23 @@ msgid "No records are found for your selection!"
 msgstr ""
 
 #. module: hr_attendance
-#: view:hr.attendance.error:0 view:hr.attendance.month:0
+#: view:hr.attendance.error:0
+#: view:hr.attendance.month:0
 #: view:hr.attendance.week:0
 msgid "Print"
-msgstr "Spausdinti"
+msgstr ""
 
 #. module: hr_attendance
-#: view:hr.attendance:0 field:hr.attendance,employee_id:0
+#: view:hr.attendance:0
+#: field:hr.attendance,employee_id:0
 #: model:ir.model,name:hr_attendance.model_hr_employee
 msgid "Employee"
-msgstr "Darbuotojas"
+msgstr ""
 
 #. module: hr_attendance
 #: field:hr.attendance.month,month:0
 msgid "Month"
-msgstr "Mėnuo"
+msgstr ""
 
 #. module: hr_attendance
 #: report:report.hr.timesheet.attendance.error:0
@@ -134,38 +138,40 @@ msgstr ""
 
 #. module: hr_attendance
 #: code:addons/hr_attendance/hr_attendance.py:154
-#: selection:hr.attendance,action:0 view:hr.employee:0
+#: selection:hr.attendance,action:0
+#: view:hr.employee:0
 #, python-format
 msgid "Sign In"
-msgstr "Užsiregistruoti"
+msgstr ""
 
 #. module: hr_attendance
-#: field:hr.attendance.error,init_date:0 field:hr.attendance.week,init_date:0
+#: field:hr.attendance.error,init_date:0
+#: field:hr.attendance.week,init_date:0
 msgid "Starting Date"
-msgstr "Pradžios data"
+msgstr ""
 
 #. module: hr_attendance
 #: model:ir.actions.act_window,name:hr_attendance.open_view_attendance
 #: model:ir.ui.menu,name:hr_attendance.menu_hr_attendance
 #: model:ir.ui.menu,name:hr_attendance.menu_open_view_attendance
 msgid "Attendances"
-msgstr "Lankomumas"
+msgstr ""
 
 #. module: hr_attendance
 #: selection:hr.attendance.month,month:0
 msgid "March"
-msgstr "Kovas"
+msgstr ""
 
 #. module: hr_attendance
 #: selection:hr.attendance.month,month:0
 msgid "August"
-msgstr "Rugpjūtis"
+msgstr ""
 
 #. module: hr_attendance
 #: code:addons/hr_attendance/hr_attendance.py:161
 #, python-format
 msgid "Warning"
-msgstr "Įspėjimas"
+msgstr ""
 
 #. module: hr_attendance
 #: help:hr.config.settings,group_hr_attendance:0
@@ -180,7 +186,7 @@ msgstr ""
 #. module: hr_attendance
 #: selection:hr.attendance.month,month:0
 msgid "June"
-msgstr "Birželis"
+msgstr ""
 
 #. module: hr_attendance
 #: code:addons/hr_attendance/report/attendance_by_month.py:190
@@ -206,7 +212,7 @@ msgstr ""
 #. module: hr_attendance
 #: field:hr.action.reason,name:0
 msgid "Reason"
-msgstr "Priežastis"
+msgstr ""
 
 #. module: hr_attendance
 #: view:hr.attendance.error:0
@@ -224,7 +230,7 @@ msgstr ""
 #. module: hr_attendance
 #: view:hr.attendance:0
 msgid "Today"
-msgstr "Šiandien"
+msgstr ""
 
 #. module: hr_attendance
 #: report:report.hr.timesheet.attendance.error:0
@@ -234,7 +240,7 @@ msgstr ""
 #. module: hr_attendance
 #: field:hr.attendance,name:0
 msgid "Date"
-msgstr "Data"
+msgstr ""
 
 #. module: hr_attendance
 #: field:hr.config.settings,group_hr_attendance:0
@@ -244,7 +250,7 @@ msgstr ""
 #. module: hr_attendance
 #: selection:hr.attendance.month,month:0
 msgid "July"
-msgstr "Liepa"
+msgstr ""
 
 #. module: hr_attendance
 #: model:ir.actions.act_window,name:hr_attendance.action_hr_attendance_error
@@ -253,24 +259,25 @@ msgid "Attendance Error Report"
 msgstr ""
 
 #. module: hr_attendance
-#: view:hr.attendance:0 field:hr.attendance,day:0
+#: view:hr.attendance:0
+#: field:hr.attendance,day:0
 msgid "Day"
-msgstr "Data"
+msgstr ""
 
 #. module: hr_attendance
 #: selection:hr.employee,state:0
 msgid "Present"
-msgstr "Yra darbo vietoje"
+msgstr ""
 
 #. module: hr_attendance
 #: selection:hr.employee,state:0
 msgid "Absent"
-msgstr "Nėra darbo vietoje"
+msgstr ""
 
 #. module: hr_attendance
 #: selection:hr.attendance.month,month:0
 msgid "February"
-msgstr "Vasaris"
+msgstr ""
 
 #. module: hr_attendance
 #: field:hr.attendance,action_desc:0
@@ -281,7 +288,7 @@ msgstr ""
 #. module: hr_attendance
 #: field:hr.attendance.month,year:0
 msgid "Year"
-msgstr "Metai"
+msgstr ""
 
 #. module: hr_attendance
 #: report:report.hr.timesheet.attendance.error:0
@@ -301,7 +308,7 @@ msgstr ""
 #. module: hr_attendance
 #: selection:hr.action.reason,action_type:0
 msgid "Sign in"
-msgstr "Prisijungti"
+msgstr ""
 
 #. module: hr_attendance
 #: view:hr.attendance.error:0
@@ -316,12 +323,18 @@ msgstr ""
 #. module: hr_attendance
 #: selection:hr.attendance.month,month:0
 msgid "January"
-msgstr "Sausis"
+msgstr ""
+
+#. module: hr_attendance
+#: code:addons/hr_attendance/wizard/hr_attendance_error.py:49
+#, python-format
+msgid "No Data Available !"
+msgstr ""
 
 #. module: hr_attendance
 #: selection:hr.attendance.month,month:0
 msgid "April"
-msgstr "Balandis"
+msgstr ""
 
 #. module: hr_attendance
 #: view:hr.attendance.week:0
@@ -334,9 +347,10 @@ msgid "Attendance Errors"
 msgstr ""
 
 #. module: hr_attendance
-#: field:hr.attendance,action:0 selection:hr.attendance,action:0
+#: field:hr.attendance,action:0
+#: selection:hr.attendance,action:0
 msgid "Action"
-msgstr "Veiksmas"
+msgstr ""
 
 #. module: hr_attendance
 #: model:ir.ui.menu,name:hr_attendance.menu_hr_time_tracking
@@ -352,7 +366,7 @@ msgstr ""
 #. module: hr_attendance
 #: selection:hr.attendance.month,month:0
 msgid "November"
-msgstr "Lapkritis"
+msgstr ""
 
 #. module: hr_attendance
 #: view:hr.attendance.error:0
@@ -365,20 +379,15 @@ msgid "Max. Delay (Min)"
 msgstr ""
 
 #. module: hr_attendance
-#: field:hr.attendance.error,end_date:0 field:hr.attendance.week,end_date:0
+#: field:hr.attendance.error,end_date:0
+#: field:hr.attendance.week,end_date:0
 msgid "Ending Date"
-msgstr "Pabaigos data"
-
-#. module: hr_attendance
-#: code:addons/hr_attendance/wizard/hr_attendance_error.py:49
-#, python-format
-msgid "No Data Available!"
 msgstr ""
 
 #. module: hr_attendance
 #: selection:hr.attendance.month,month:0
 msgid "September"
-msgstr "Rugsėjis"
+msgstr ""
 
 #. module: hr_attendance
 #: view:hr.action.reason:0
@@ -410,7 +419,7 @@ msgstr ""
 #. module: hr_attendance
 #: selection:hr.attendance.month,month:0
 msgid "May"
-msgstr "Gegužė"
+msgstr ""
 
 #. module: hr_attendance
 #: code:addons/hr_attendance/hr_attendance.py:161
@@ -423,13 +432,14 @@ msgstr ""
 #. module: hr_attendance
 #: selection:hr.attendance.month,month:0
 msgid "December"
-msgstr "Gruodis"
+msgstr ""
 
 #. module: hr_attendance
-#: view:hr.attendance.error:0 view:hr.attendance.month:0
+#: view:hr.attendance.error:0
+#: view:hr.attendance.month:0
 #: view:hr.attendance.week:0
 msgid "Cancel"
-msgstr "Atsisakyti"
+msgstr ""
 
 #. module: hr_attendance
 #: report:report.hr.timesheet.attendance.error:0
@@ -438,14 +448,16 @@ msgstr ""
 
 #. module: hr_attendance
 #: report:report.hr.timesheet.attendance.error:0
-msgid "(*) A negative delay means that the employee worked more than encoded."
+msgid ""
+"(*) A negative delay means that the employee worked more than encoded."
 msgstr ""
 
 #. module: hr_attendance
-#: view:hr.attendance.error:0 view:hr.attendance.month:0
+#: view:hr.attendance.error:0
+#: view:hr.attendance.month:0
 #: view:hr.attendance.week:0
 msgid "or"
-msgstr "arba"
+msgstr ""
 
 #. module: hr_attendance
 #: help:hr.attendance,action_desc:0

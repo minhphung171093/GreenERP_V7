@@ -104,17 +104,11 @@ class document_file(osv.osv):
         visible_parent_ids = self.pool.get('document.directory').search(cr, uid, [('id', 'in', list(parent_ids))])
 
         # null parents means allowed
-        orig_ids = ids # save the ids, to keep order
         ids = parents.get(None,[])
         for parent_id in visible_parent_ids:
             ids.extend(parents[parent_id])
 
-        # sort result according to the original sort ordering
-        if count:
-            return len(ids)
-        else:
-            set_ids = set(ids)
-            return [id for id in orig_ids if id in set_ids]
+        return len(ids) if count else ids
 
     def copy(self, cr, uid, id, default=None, context=None):
         if not default:
@@ -242,8 +236,18 @@ class document_directory(osv.osv):
         _parent(dir_id, path)
         return path
 
+    def _check_recursion(self, cr, uid, ids, context=None):
+        level = 100
+        while len(ids):
+            cr.execute('select distinct parent_id from document_directory where id in ('+','.join(map(str,ids))+')')
+            ids = filter(None, map(lambda x:x[0], cr.fetchall()))
+            if not level:
+                return False
+            level -= 1
+        return True
+
     _constraints = [
-        (osv.osv._check_recursion, 'Error! You cannot create recursive directories.', ['parent_id'])
+        (_check_recursion, 'Error! You cannot create recursive directories.', ['parent_id'])
     ]
 
     def onchange_content_id(self, cr, uid, ids, ressource_type_id):

@@ -1,22 +1,21 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * crm_partner_assign
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2012
+# Dutch translation for openobject-addons
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-03-07 08:38+0000\n"
-"PO-Revision-Date: 2015-05-27 09:58+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Dutch (http://www.transifex.com/projects/p/odoo-7/language/nl/)\n"
+"PO-Revision-Date: 2013-06-20 12:13+0000\n"
+"Last-Translator: Erwin van der Ploeg (BAS Solutions) <Unknown>\n"
+"Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: nl\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-11-21 06:06+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,delay_close:0
@@ -38,7 +37,9 @@ msgstr "Geplande omzet"
 msgid ""
 "Message type: email for email message, notification for system message, "
 "comment for other messages such as user replies"
-msgstr "Berichttype: e-mail voor e-mailbericht, notificatie voor systeembericht, commentaar voor andere berichten zoals gebruiker beantwoord"
+msgstr ""
+"Berichttype: e-mail voor e-mailbericht, notificatie voor systeembericht, "
+"commentaar voor andere berichten zoals gebruiker beantwoord"
 
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,nbr:0
@@ -46,7 +47,8 @@ msgid "# of Cases"
 msgstr "# Dossiers"
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 view:crm.partner.report.assign:0
+#: view:crm.lead.report.assign:0
+#: view:crm.partner.report.assign:0
 msgid "Group By..."
 msgstr "Groepeer op..."
 
@@ -80,7 +82,9 @@ msgstr "Inhoud"
 msgid ""
 "Email address of the sender. This field is set when no matching partner is "
 "found for incoming emails."
-msgstr "E-mail adres van zender. Dit veld wordt ingesteld wanneer geen relatie wordt gevonden voor binnenkomende e-mails."
+msgstr ""
+"E-mail adres van zender. Dit veld wordt ingesteld wanneer geen relatie wordt "
+"gevonden voor binnenkomende e-mails."
 
 #. module: crm_partner_assign
 #: view:crm.partner.report.assign:0
@@ -103,7 +107,8 @@ msgid "Whole Story"
 msgstr "Hele verhaal"
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,company_id:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,company_id:0
 msgid "Company"
 msgstr "Bedrijf"
 
@@ -118,7 +123,8 @@ msgid "Partner Date"
 msgstr "Relatie datum"
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 view:crm.partner.report.assign:0
+#: view:crm.lead.report.assign:0
+#: view:crm.partner.report.assign:0
 #: view:res.partner:0
 msgid "Salesperson"
 msgstr "Verkoper"
@@ -129,7 +135,8 @@ msgid "Highest"
 msgstr "Hoogste"
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,day:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,day:0
 msgid "Day"
 msgstr "Dag"
 
@@ -149,7 +156,8 @@ msgid "Latest email"
 msgstr "Laatste email"
 
 #. module: crm_partner_assign
-#: field:crm.lead,partner_latitude:0 field:res.partner,partner_latitude:0
+#: field:crm.lead,partner_latitude:0
+#: field:res.partner,partner_latitude:0
 msgid "Geo Latitude"
 msgstr "Geo breedtegraad"
 
@@ -183,7 +191,9 @@ msgstr "Sluitdatum"
 msgid ""
 "Gives the probability to assign a lead to this partner. (0 means no "
 "assignation.)"
-msgstr "Geeft de waarschijnlijkheid om de lead aan deze relatie toe te kennen (0 betekent geen toekenning)."
+msgstr ""
+"Geeft de waarschijnlijkheid om de lead aan deze relatie toe te kennen (0 "
+"betekent geen toekenning)."
 
 #. module: crm_partner_assign
 #: view:res.partner:0
@@ -230,7 +240,8 @@ msgid "Partner Grade"
 msgstr "Relatie klasse"
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 view:crm.partner.report.assign:0
+#: view:crm.lead.report.assign:0
+#: view:crm.partner.report.assign:0
 msgid "Section"
 msgstr "Afdeling"
 
@@ -245,7 +256,8 @@ msgid "Next"
 msgstr "Volgende"
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,priority:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,priority:0
 msgid "Priority"
 msgstr "Prioriteit"
 
@@ -341,12 +353,14 @@ msgid "Date Review"
 msgstr "Datum review"
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,stage_id:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,stage_id:0
 msgid "Stage"
 msgstr "Stadium"
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,state:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,state:0
 msgid "Status"
 msgstr "Status"
 
@@ -367,12 +381,14 @@ msgid "Geo Localization"
 msgstr "Geo lokalisatie"
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 view:crm.partner.report.assign:0
+#: view:crm.lead.report.assign:0
+#: view:crm.partner.report.assign:0
 msgid "Opportunities Assignment Analysis"
 msgstr "Prospect toekenning analyse"
 
 #. module: crm_partner_assign
-#: view:crm.lead.forward.to.partner:0 view:res.partner:0
+#: view:crm.lead.forward.to.partner:0
+#: view:res.partner:0
 msgid "Cancel"
 msgstr "Annuleren"
 
@@ -406,7 +422,9 @@ msgstr "Aantal dagen om dossier af te sluiten"
 #: help:crm.lead.forward.to.partner,notified_partner_ids:0
 msgid ""
 "Partners that have a notification pushing this message in their mailboxes"
-msgstr "Relaties die een notificatie hebben, die dit bericht doorgestuurd hebben naar hun e-mailbox"
+msgstr ""
+"Relaties die een notificatie hebben, die dit bericht doorgestuurd hebben "
+"naar hun e-mailbox"
 
 #. module: crm_partner_assign
 #: selection:crm.lead.forward.to.partner,type:0
@@ -424,8 +442,10 @@ msgid "April"
 msgstr "April"
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,grade_id:0
-#: view:crm.partner.report.assign:0 field:crm.partner.report.assign,grade_id:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,grade_id:0
+#: view:crm.partner.report.assign:0
+#: field:crm.partner.report.assign,grade_id:0
 msgid "Grade"
 msgstr "Klasse"
 
@@ -440,7 +460,8 @@ msgid "Users that voted for this message"
 msgstr "Gebruikers die op dit bericht hebben gestemd."
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,month:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,month:0
 msgid "Month"
 msgstr "Maand"
 
@@ -488,7 +509,8 @@ msgstr "#Prospects"
 #. module: crm_partner_assign
 #: help:crm.lead.forward.to.partner,starred:0
 msgid "Current user has a starred notification linked to this message"
-msgstr "De huidige gebruiker heeft een ster notificatie gekoppeld aan dit bericht."
+msgstr ""
+"De huidige gebruiker heeft een ster notificatie gekoppeld aan dit bericht."
 
 #. module: crm_partner_assign
 #: field:crm.partner.report.assign,date_partnership:0
@@ -512,7 +534,8 @@ msgid "Low"
 msgstr "Laag"
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 selection:crm.lead.report.assign,state:0
+#: view:crm.lead.report.assign:0
+#: selection:crm.lead.report.assign,state:0
 msgid "Closed"
 msgstr "Gesloten"
 
@@ -522,7 +545,8 @@ msgid "Mass forward to partner"
 msgstr "Als bulk doorsturen naar relatie"
 
 #. module: crm_partner_assign
-#: view:res.partner:0 field:res.partner,opportunity_assigned_ids:0
+#: view:res.partner:0
+#: field:res.partner,opportunity_assigned_ids:0
 msgid "Assigned Opportunities"
 msgstr "Toegewezen prospects"
 
@@ -593,7 +617,8 @@ msgid "Extended Filters..."
 msgstr "Uitgebreide filters..."
 
 #. module: crm_partner_assign
-#: field:crm.lead,partner_longitude:0 field:res.partner,partner_longitude:0
+#: field:crm.lead,partner_longitude:0
+#: field:res.partner,partner_longitude:0
 msgid "Geo Longitude"
 msgstr "Geo lengtegraad"
 
@@ -669,7 +694,8 @@ msgid "Message Record Name"
 msgstr "Bericht veldnaam"
 
 #. module: crm_partner_assign
-#: field:res.partner.activation,sequence:0 field:res.partner.grade,sequence:0
+#: field:res.partner.activation,sequence:0
+#: field:res.partner.grade,sequence:0
 msgid "Sequence"
 msgstr "Volgnummer"
 
@@ -679,7 +705,9 @@ msgstr "Volgnummer"
 msgid ""
 "Cannot contact geolocation servers. Please make sure that your internet "
 "connection is up and running (%s)."
-msgstr "Kan geen contact maken met geolocatie servers. Controleer a.u.b. of uw internet verbinding werkt (%s)."
+msgstr ""
+"Kan geen contact maken met geolocatie servers. Controleer a.u.b. of uw "
+"internet verbinding werkt (%s)."
 
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,month:0
@@ -694,10 +722,12 @@ msgstr "Klassenaam"
 #. module: crm_partner_assign
 #: help:crm.lead,date_assign:0
 msgid "Last date this case was forwarded/assigned to a partner"
-msgstr "Laatste datum dat dit dossier was doorgestuurd/toegewezen aan een relatie"
+msgstr ""
+"Laatste datum dat dit dossier was doorgestuurd/toegewezen aan een relatie"
 
 #. module: crm_partner_assign
-#: selection:crm.lead.report.assign,state:0 view:res.partner:0
+#: selection:crm.lead.report.assign,state:0
+#: view:res.partner:0
 msgid "Open"
 msgstr "Openen"
 
@@ -750,13 +780,16 @@ msgstr "Verwachte omzet"
 
 #. module: crm_partner_assign
 #: view:crm.partner.report.assign:0
-#: field:crm.partner.report.assign,activation:0 view:res.partner:0
-#: field:res.partner,activation:0 view:res.partner.activation:0
+#: field:crm.partner.report.assign,activation:0
+#: view:res.partner:0
+#: field:res.partner,activation:0
+#: view:res.partner.activation:0
 msgid "Activation"
 msgstr "Activatie"
 
 #. module: crm_partner_assign
-#: view:crm.lead:0 field:crm.lead,partner_assigned_id:0
+#: view:crm.lead:0
+#: field:crm.lead,partner_assigned_id:0
 msgid "Assigned Partner"
 msgstr "Toegewezen relatie"
 
@@ -768,7 +801,9 @@ msgstr "Relatie nivo"
 #. module: crm_partner_assign
 #: help:crm.lead.forward.to.partner,to_read:0
 msgid "Current user has an unread notification linked to this message"
-msgstr "De huidige gebruiker heeft een ongelezen notificatie gekoppeld aan dit bericht."
+msgstr ""
+"De huidige gebruiker heeft een ongelezen notificatie gekoppeld aan dit "
+"bericht."
 
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,type:0
@@ -797,14 +832,16 @@ msgid "Partner Activations"
 msgstr "Partner activaties"
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,country_id:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,country_id:0
 #: view:crm.partner.report.assign:0
 #: field:crm.partner.report.assign,country_id:0
 msgid "Country"
 msgstr "Land"
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,year:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,year:0
 msgid "Year"
 msgstr "Jaar"
 
@@ -834,7 +871,9 @@ msgstr "Relatieanalyses"
 msgid ""
 "Technical field holding the message notifications. Use notified_partner_ids "
 "to access notified partners."
-msgstr "Technisch veld bevat de berichtnotificaties. Gebruik notified_partner_ids voor toegang tot geïnformeerde partners."
+msgstr ""
+"Technisch veld bevat de berichtnotificaties. Gebruik notified_partner_ids "
+"voor toegang tot geïnformeerde partners."
 
 #. module: crm_partner_assign
 #: view:crm.partner.report.assign:0
@@ -864,9 +903,11 @@ msgstr "Dossier informatie"
 #. module: crm_partner_assign
 #: help:crm.lead.forward.to.partner,author_id:0
 msgid ""
-"Author of the message. If not set, email_from may hold an email address that"
-" did not match any partner."
-msgstr "Schrijver van het bericht. Als deze niet ingesteld is, kan email_from een e-mailadres bevatten wat niet overeenkomt met een relatie."
+"Author of the message. If not set, email_from may hold an email address that "
+"did not match any partner."
+msgstr ""
+"Schrijver van het bericht. Als deze niet ingesteld is, kan email_from een e-"
+"mailadres bevatten wat niet overeenkomt met een relatie."
 
 #. module: crm_partner_assign
 #: model:ir.model,name:crm_partner_assign.model_crm_partner_report_assign

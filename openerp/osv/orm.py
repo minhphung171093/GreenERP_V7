@@ -55,7 +55,6 @@ import simplejson
 import time
 import traceback
 import types
-from collections import defaultdict
 
 import psycopg2
 from lxml import etree
@@ -501,17 +500,7 @@ class browse_record(object):
     def __getattr__(self, name):
         try:
             return self[name]
-        except KeyError as e:
-            if name in self._all_columns:
-                raise ValueError(
-                    'Cannot fetch field "%(field)s" for "%(model)s" record '
-                    'with ID %(id)s, that record does not exist or has been '
-                    'deleted' % {
-                        'field': name,
-                        'model': self._model._name,
-                        'id': self._id,
-                    }
-                )
+        except KeyError, e:
             raise AttributeError(e)
 
     def __contains__(self, name):
@@ -602,12 +591,7 @@ def get_pg_type(f, type_override=None):
     if field_type in FIELDS_TO_PGTYPES:
         pg_type =  (FIELDS_TO_PGTYPES[field_type], FIELDS_TO_PGTYPES[field_type])
     elif issubclass(field_type, fields.float):
-        # Explicit support for "falsy" digits (0, False) to indicate a
-        # NUMERIC field with no fixed precision. The values will be saved
-        # in the database with all significant digits.
-        # FLOAT8 type is still the default when there is no precision because
-        # it is faster for most operations (sums, etc.)
-        if f.digits is not None:
+        if f.digits:
             pg_type = ('numeric', 'NUMERIC')
         else:
             pg_type = ('float8', 'DOUBLE PRECISION')
@@ -1215,6 +1199,17 @@ class BaseModel(object):
                                 for fpos2 in range(len(fields)):
                                     if lines2 and lines2[0][fpos2]:
                                         data[fpos2] = lines2[0][fpos2]
+                                if not data[fpos]:
+                                    dt = ''
+                                    for rr in r:
+                                        name_relation = self.pool.get(rr._table_name)._rec_name
+                                        if isinstance(rr[name_relation], browse_record):
+                                            rr = rr[name_relation]
+                                        rr_name = self.pool.get(rr._table_name).name_get(cr, uid, [rr.id], context=context)
+                                        rr_name = rr_name and rr_name[0] and rr_name[0][1] or ''
+                                        dt += tools.ustr(rr_name or '') + ','
+                                    data[fpos] = dt[:-1]
+                                    break
                                 lines += lines2[1:]
                                 first = False
                             else:
@@ -1393,16 +1388,6 @@ class BaseModel(object):
                     **PGERROR_TO_OE[e.pgcode](self, fg, info, e)))
                 # Failed to write, log to messages, rollback savepoint (to
                 # avoid broken transaction) and keep going
-                cr.execute('ROLLBACK TO SAVEPOINT model_load_save')
-            except Exception, e:
-                message = (_('Unknown error during import:') +
-                           u' %s: %s' % (type(e), unicode(e)))
-                moreinfo = _('Resolve other errors first')
-                messages.append(dict(info, type='error',
-                                     message=message,
-                                     moreinfo=moreinfo))
-                # Failed for some reason, perhaps due to invalid data supplied,
-                # rollback savepoint and keep going
                 cr.execute('ROLLBACK TO SAVEPOINT model_load_save')
         if any(message['type'] == 'error' for message in messages):
             cr.execute('ROLLBACK TO SAVEPOINT model_load')
@@ -2177,7 +2162,7 @@ class BaseModel(object):
                             node.getparent().remove(node)
                     elif pos == 'attributes':
                         for child in spec.getiterator('attribute'):
-                            attribute = (child.get('name'), child.text or None)
+                            attribute = (child.get('name'), child.text and child.text.encode('utf8') or None)
                             if attribute[1]:
                                 node.set(attribute[0], attribute[1])
                             else:
@@ -2573,19 +2558,13 @@ class BaseModel(object):
         # same ordering, and can be merged in one pass.
         result = []
         known_values = {}
-
-        if len(groupby_list) < 2 and context.get('group_by_no_leaf'):
-            count_attr = '_'
-        else:
-            count_attr = groupby
-        count_attr += '_count'
-
         def append_left(left_side):
             grouped_value = left_side[groupby] and left_side[groupby][0]
             if not grouped_value in known_values:
                 result.append(left_side)
                 known_values[grouped_value] = left_side
             else:
+                count_attr = groupby + '_count'
                 known_values[grouped_value].update({count_attr: left_side[count_attr]})
         def append_right(right_side):
             grouped_value = right_side[0]
@@ -3021,9 +3000,6 @@ class BaseModel(object):
             if len(constraints) == 1:
                 # Is it the right constraint?
                 cons, = constraints
-                if self.is_transient() and not dest_model.is_transient():
-                    # transient foreign keys are added as cascade by default
-                    ondelete = ondelete or 'cascade'
                 if cons['ondelete_rule'] != POSTGRES_CONFDELTYPES.get((ondelete or 'set null').upper(), 'a')\
                     or cons['foreign_table'] != dest_model._table:
                     # Wrong FK: drop it and recreate
@@ -3149,7 +3125,7 @@ class BaseModel(object):
                                 ('numeric', 'float', get_pg_type(f)[1], '::'+get_pg_type(f)[1]),
                                 ('float8', 'float', get_pg_type(f)[1], '::'+get_pg_type(f)[1]),
                             ]
-                            if f_pg_type == 'varchar' and f._type == 'char' and f_pg_size and (f.size is None or f_pg_size < f.size):
+                            if f_pg_type == 'varchar' and f._type == 'char' and ((f.size is None and f_pg_size) or f_pg_size < f.size):
                                 cr.execute('ALTER TABLE "%s" RENAME COLUMN "%s" TO temp_change_size' % (self._table, k))
                                 cr.execute('ALTER TABLE "%s" ADD COLUMN "%s" %s' % (self._table, k, pg_varchar(f.size)))
                                 cr.execute('UPDATE "%s" SET "%s"=temp_change_size::%s' % (self._table, k, pg_varchar(f.size)))
@@ -3409,11 +3385,7 @@ class BaseModel(object):
 
     def _m2m_raise_or_create_relation(self, cr, f):
         m2m_tbl, col1, col2 = f._sql_names(self)
-        # do not create relations for custom fields as they do not belong to a module
-        # they will be automatically removed when dropping the corresponding ir.model.field
-        # table name for custom relation all starts with x_, see __init__
-        if not m2m_tbl.startswith('x_'):
-            self._save_relation_table(cr, m2m_tbl)
+        self._save_relation_table(cr, m2m_tbl)
         cr.execute("SELECT relname FROM pg_class WHERE relkind IN ('r','v') AND relname=%s", (m2m_tbl,))
         if not cr.dictfetchall():
             if not self.pool.get(f._obj):
@@ -3722,8 +3694,6 @@ class BaseModel(object):
             return []
         if fields_to_read is None:
             fields_to_read = self._columns.keys()
-        else:
-            fields_to_read = list(set(fields_to_read))
 
         # all inherited fields + all non inherited fields for which the attribute whose name is in load is True
         fields_pre = [f for f in fields_to_read if
@@ -4058,7 +4028,6 @@ class BaseModel(object):
         self.check_access_rights(cr, uid, 'unlink')
 
         ir_property = self.pool.get('ir.property')
-        ir_attachment_obj = self.pool.get('ir.attachment')
 
         # Check if the records are used as default properties.
         domain = [('res_id', '=', False),
@@ -4096,13 +4065,6 @@ class BaseModel(object):
                     context=context)
             if ir_value_ids:
                 ir_values_obj.unlink(cr, uid, ir_value_ids, context=context)
-
-            # For the same reason, removing the record relevant to ir_attachment
-            # The search is performed with sql as the search method of ir_attachment is overridden to hide attachments of deleted records
-            cr.execute('select id from ir_attachment where res_model = %s and res_id in %s', (self._name, sub_ids))
-            ir_attachment_ids = [ir_attachment[0] for ir_attachment in cr.fetchall()]
-            if ir_attachment_ids:
-                ir_attachment_obj.unlink(cr, uid, ir_attachment_ids, context=context)
 
         for order, object, store_ids, fields in result_store:
             if object == self._name:
@@ -4171,7 +4133,6 @@ class BaseModel(object):
         """
         readonly = None
         self.check_field_access_rights(cr, user, 'write', vals.keys())
-        deleted_related = defaultdict(list)
         for field in vals.copy():
             fobj = None
             if field in self._columns:
@@ -4180,10 +4141,6 @@ class BaseModel(object):
                 fobj = self._inherit_fields[field][2]
             if not fobj:
                 continue
-            if fobj._type in ['one2many', 'many2many'] and vals[field]:
-                for wtuple in vals[field]:
-                    if isinstance(wtuple, (tuple, list)) and wtuple[0] == 2:
-                        deleted_related[fobj._obj].append(wtuple[1])
             groups = fobj.write
 
             if groups:
@@ -4390,8 +4347,7 @@ class BaseModel(object):
             for id in ids_to_update:
                 if id not in done[key]:
                     done[key][id] = True
-                    if id not in deleted_related[object]:
-                        todo.append(id)
+                    todo.append(id)
             self.pool.get(object)._store_set_values(cr, user, todo, fields_to_recompute, context)
 
         self._workflow_trigger(cr, user, ids, 'trg_write', context=context)
@@ -4432,8 +4388,6 @@ class BaseModel(object):
             self._transient_vacuum(cr, user)
 
         self.check_access_rights(cr, user, 'create')
-        
-        vals = self._add_missing_default_values(cr, user, vals, context)
 
         if self._log_access:
             for f in LOG_ACCESS_COLUMNS:
@@ -4441,6 +4395,7 @@ class BaseModel(object):
                     _logger.warning(
                         'Field `%s` is not allowed when creating the model `%s`.',
                         f, self._name)
+        vals = self._add_missing_default_values(cr, user, vals, context)
 
         tocreate = {}
         for v in self._inherits:
@@ -5458,10 +5413,10 @@ class ImportWarning(Warning):
 def convert_pgerror_23502(model, fields, info, e):
     m = re.match(r'^null value in column "(?P<field>\w+)" violates '
                  r'not-null constraint\n',
-                 tools.ustr(e))
+                 str(e))
     field_name = m.group('field')
     if not m or field_name not in fields:
-        return {'message': tools.ustr(e)}
+        return {'message': unicode(e)}
     message = _(u"Missing required value for the field '%s'.") % field_name
     field = fields.get(field_name)
     if field:
@@ -5473,10 +5428,10 @@ def convert_pgerror_23502(model, fields, info, e):
     }
 def convert_pgerror_23505(model, fields, info, e):
     m = re.match(r'^duplicate key (?P<field>\w+) violates unique constraint',
-                 tools.ustr(e))
+                 str(e))
     field_name = m.group('field')
     if not m or field_name not in fields:
-        return {'message': tools.ustr(e)}
+        return {'message': unicode(e)}
     message = _(u"The value for the field '%s' already exists.") % field_name
     field = fields.get(field_name)
     if field:
@@ -5489,7 +5444,7 @@ def convert_pgerror_23505(model, fields, info, e):
 
 PGERROR_TO_OE = collections.defaultdict(
     # shape of mapped converters
-    lambda: (lambda model, fvg, info, pgerror: {'message': tools.ustr(pgerror)}), {
+    lambda: (lambda model, fvg, info, pgerror: {'message': unicode(pgerror)}), {
     # not_null_violation
     '23502': convert_pgerror_23502,
     # unique constraint error

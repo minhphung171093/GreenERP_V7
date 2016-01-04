@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    	
+    	<record id="import_ve_loto_tree" model="ir.ui.view">
+            <field name="name">import.ve.loto.tree</field>
+            <field name="model">import.ve.loto</field>
+            <field name="arch" type="xml">
+                <tree string="Import Vé Loto">
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+    	
+		<record id="import_ve_loto_form" model="ir.ui.view">
+            <field name="name">import.ve.loto.form</field>
+            <field name="model">import.ve.loto</field>
+            <field name="arch" type="xml">
+                <form string="Import Vé Loto" version="7.0">
+	                <header>
+	                	<button name="importloto" type="object" states="draft" string="Import" class="oe_highlight"/>
+	                	<field name="state" widget="statusbar" nolabel="1" statusbar_visible="draft,import"/>
+	                </header>
+                    <group>
+                        <field name="name"/>
+                        <field name="date"/>
+                        <field name="file_name" invisible="1"/>
+                    </group>
+                    <group>
+                        <group>
+                        	<field name="file" width="100" filename="file_name"/>
+                        </group>
+                        <group>
+                        	<button name="read_file" type="object" states="draft" string="Read File" class="oe_highlight"/>
+                        </group>
+                    </group>
+                    <group>
+						<field name="import_ve_loto_line" nolabel='1'>
+							<tree>
+								<field name="name" invisible='1'/>
+			                    <field name="daily_id"/>
+			                    <field name="ngay"/>
+			                    <field name="product_id"/>
+			                    <field name="ky_ve_id"/>
+			                    <field name="sophieu"/>
+			                    <field name="tong_sai_kythuat"/>
+		                    	<field name="tong_cong"/>
+		                    	<field name="thanh_tien"/>
+							</tree>
+							<form>
+			                    <group>
+				                    <group>
+				                        <field name="name" invisible='1'/>
+				                        <field name="daily_id" context="{'default_dai_ly':True}"/>
+				                        <field name="ngay"/>
+				                        <field name="so_chungtu"/>
+				                    </group>
+				                    <group>
+				                    	<field name="product_id" context="{'default_menh_gia':True}"/>
+				                    	<field name="ky_ve_id"/>
+				                    	<field name="sophieu"/>
+				                    </group>
+				                    <group>
+				                    	<field name="tong_sai_kythuat"/>
+				                    	<field name="tong_cong"/>
+				                    	<field name="thanh_tien"/>
+				                    </group>
+			                    </group>
+			                    <group col='22' colspan='22'>
+			                    	<group colspan='9' string="2 số">
+			                    		<group col='9' colspan='9'>
+			                    			<label string="Đầu" colspan='3'/>
+			                    			<label string="Cuối" colspan='2'/>
+			                    			<label string="Đầu/Cuối" colspan='2'/>
+			                    			<label string="18 lô" colspan='2'/>
+			                    		</group>
+			                    		<group colspan='9'>
+					                        <field name="ve_loto_2_line" nolabel='1'>
+					                        	<tree editable='bottom'>
+							                        <field name="name"/>
+							                        <field name="so_dt_2_d"/>
+							                        <field name="sl_2_d" sum="Tổng"/>
+							                        <field name="so_dt_2_c"/>
+							                        <field name="sl_2_c" sum="Tổng"/>
+							                        <field name="so_dt_2_dc"/>
+							                        <field name="sl_2_dc" sum="Tổng"/>
+							                        <field name="so_dt_2_18"/>
+							                        <field name="sl_2_18" sum="Tổng"/>
+					                        	</tree>
+					                        </field>
+				                        </group>
+				                	</group>
+				                	<group colspan='10' string="3 số">
+				                		<group col='9' colspan='9'>
+			                    			<label string="Đầu" colspan='2'/>
+			                    			<label string="Cuối" colspan='2'/>
+			                    			<label string="Đầu/Cuối" colspan='2'/>
+			                    			<label string="7 lô" colspan='2'/>
+			                    			<label string="17 lô" colspan='1'/>
+			                    		</group>
+				                        <field name="ve_loto_3_line" nolabel='1'>
+				                        	<tree editable='bottom'>
+						                        <field name="so_dt_3_d"/>
+						                        <field name="sl_3_d" sum="Tổng"/>
+						                        <field name="so_dt_3_c"/>
+						                        <field name="sl_3_c" sum="Tổng"/>
+						                        <field name="so_dt_3_dc"/>
+						                        <field name="sl_3_dc" sum="Tổng"/>
+						                        <field name="so_dt_3_7"/>
+						                        <field name="sl_3_7" sum="Tổng"/>
+						                        <field name="so_dt_3_17"/>
+						                        <field name="sl_3_17" sum="Tổng"/>
+				                        	</tree>
+				                        </field>
+				                	</group>
+				                	<group colspan='2' string="4 số">
+					                	<group colspan='2'>
+			                    			<label string="16 lô"/>
+			                    		</group>
+			                    		<group>
+					                        <field name="ve_loto_4_line" nolabel='1'>
+					                        	<tree editable='bottom'>
+							                        <field name="so_dt_4_16" string="Số - DT"/>
+							                        <field name="sl_4_16" sum="Tổng"/>
+					                        	</tree>
+					                        </field>
+				                        </group>
+				                	</group>
+			                    </group>
+			                </form>
+						</field>                    
+                    </group>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_import_ve_loto" model="ir.actions.act_window">
+            <field name="name">Import Vé Loto</field>
+            <field name="res_model">import.ve.loto</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="import_ve_loto_tree"/>
+        </record>
+        
+        <menuitem action="action_import_ve_loto" id="menu_action_import_ve_loto" parent="menu_ve_loto" sequence="12" groups="group_ql_ve_loto"/>
+        
+    </data>
+</openerp>

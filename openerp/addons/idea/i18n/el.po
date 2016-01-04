@@ -1,32 +1,32 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * idea
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2012
+# Greek translation for openobject-addons
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-14 00:10+0000\n"
-"PO-Revision-Date: 2015-05-27 08:59+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Greek (http://www.transifex.com/projects/p/odoo-7/language/el/)\n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2013-06-07 19:37+0000\n"
+"PO-Revision-Date: 2012-12-21 23:00+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Greek <el@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: el\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-11-21 06:14+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #. module: idea
 #: view:idea.category:0
+#: view:idea.idea:0
 msgid "Category"
 msgstr "Κατηγορία"
 
 #. module: idea
 #: view:idea.idea:0
 msgid "In Progress"
-msgstr "Σε Εξέλιξη"
+msgstr ""
 
 #. module: idea
 #: view:idea.idea:0
@@ -36,6 +36,11 @@ msgstr ""
 #. module: idea
 #: sql_constraint:idea.category:0
 msgid "The name of the category must be unique"
+msgstr ""
+
+#. module: idea
+#: view:idea.idea:0
+msgid "By Idea Category"
 msgstr ""
 
 #. module: idea
@@ -51,17 +56,18 @@ msgstr ""
 #. module: idea
 #: view:idea.idea:0
 msgid "Group By..."
-msgstr "Ομαδοποίηση Κατά..."
+msgstr ""
 
 #. module: idea
 #: field:idea.category,name:0
 msgid "Category Name"
-msgstr "Όνομα Κατηγορίας"
+msgstr ""
 
 #. module: idea
-#: view:idea.idea:0 selection:idea.idea,state:0
+#: view:idea.idea:0
+#: selection:idea.idea,state:0
 msgid "New"
-msgstr "Νέο"
+msgstr ""
 
 #. module: idea
 #: view:idea.idea:0
@@ -69,7 +75,8 @@ msgid "New Ideas"
 msgstr ""
 
 #. module: idea
-#: view:idea.idea:0 field:idea.idea,state:0
+#: view:idea.idea:0
+#: field:idea.idea,state:0
 msgid "Status"
 msgstr "Κατάσταση"
 
@@ -86,51 +93,53 @@ msgstr ""
 #. module: idea
 #: field:idea.idea,category_ids:0
 msgid "Tags"
-msgstr "Ετικέτες"
+msgstr ""
 
 #. module: idea
 #: field:idea.idea,message_unread:0
 msgid "Unread Messages"
-msgstr "Αδιάβαστα Μυνήματα"
+msgstr ""
 
 #. module: idea
 #: help:idea.idea,message_ids:0
 msgid "Messages and communication history"
-msgstr "Μηνύματα και ιστορικό επικοινωνίας"
+msgstr ""
 
 #. module: idea
 #: field:idea.idea,message_is_follower:0
 msgid "Is a Follower"
-msgstr "Είναι Ακόλουθος"
+msgstr ""
 
 #. module: idea
 #: model:ir.model,name:idea.model_idea_idea
 msgid "Email Thread"
-msgstr "Νήμα Email"
+msgstr ""
 
 #. module: idea
-#: view:idea.idea:0 selection:idea.idea,state:0
+#: view:idea.idea:0
+#: selection:idea.idea,state:0
 msgid "Accepted"
-msgstr "Αποδεχθείς"
+msgstr ""
 
 #. module: idea
 #: model:ir.actions.act_window,name:idea.action_idea_category
 #: model:ir.ui.menu,name:idea.menu_idea_category
 msgid "Categories"
-msgstr "Κατηγορίες"
+msgstr ""
 
 #. module: idea
 #: view:idea.idea:0
 msgid "Refuse"
-msgstr "Άρνηση"
+msgstr ""
 
 #. module: idea
 #: field:idea.idea,message_ids:0
 msgid "Messages"
-msgstr "Μηνύματα"
+msgstr ""
 
 #. module: idea
-#: view:idea.idea:0 model:ir.actions.act_window,name:idea.action_idea_idea
+#: view:idea.idea:0
+#: model:ir.actions.act_window,name:idea.action_idea_idea
 #: model:ir.ui.menu,name:idea.menu_idea_idea
 #: model:ir.ui.menu,name:idea.menu_ideas
 msgid "Ideas"
@@ -149,12 +158,12 @@ msgstr ""
 #. module: idea
 #: field:idea.idea,message_summary:0
 msgid "Summary"
-msgstr "Περίληψη"
+msgstr ""
 
 #. module: idea
 #: help:idea.idea,message_unread:0
 msgid "If checked new messages require your attention."
-msgstr "Εάν επιλεγεί τα νέα μηνύματα χρειάζονται την προσοχή σας"
+msgstr ""
 
 #. module: idea
 #: field:idea.idea,description:0
@@ -164,17 +173,18 @@ msgstr "Περιγραφή"
 #. module: idea
 #: selection:idea.idea,state:0
 msgid "Refused"
-msgstr "Απορριφθέντα"
+msgstr ""
 
 #. module: idea
-#: view:idea.idea:0 field:idea.idea,create_uid:0
+#: view:idea.idea:0
+#: field:idea.idea,create_uid:0
 msgid "Creator"
-msgstr "Δημιουργός"
+msgstr ""
 
 #. module: idea
 #: view:idea.idea:0
 msgid "Open"
-msgstr "Άνοιγμα"
+msgstr ""
 
 #. module: idea
 #: view:idea.idea:0
@@ -184,19 +194,19 @@ msgstr ""
 #. module: idea
 #: view:idea.idea:0
 msgid "Accept"
-msgstr "Αποδοχή"
+msgstr ""
 
 #. module: idea
 #: help:idea.idea,message_summary:0
 msgid ""
 "Holds the Chatter summary (number of messages, ...). This summary is "
 "directly in html format in order to be inserted in kanban views."
-msgstr "Κρατά την συνολική σύνοψη (αριθμός των μυνημάτων, ...). Αυτή η σύνοψη είναι κατ' ευθείαν σε html format για να μπορεί να ενσωματωθεί σε εμφανίσεις kanban."
+msgstr ""
 
 #. module: idea
 #: selection:idea.idea,state:0
 msgid "Done"
-msgstr "Εκπληρωμένο"
+msgstr ""
 
 #. module: idea
 #: view:idea.idea:0
@@ -206,7 +216,7 @@ msgstr ""
 #. module: idea
 #: field:idea.idea,message_follower_ids:0
 msgid "Followers"
-msgstr "Ακόλουθοι"
+msgstr ""
 
 #. module: idea
 #: view:idea.category:0

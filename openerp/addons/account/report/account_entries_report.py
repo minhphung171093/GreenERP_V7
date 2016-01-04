@@ -145,7 +145,7 @@ class account_entries_report(osv.osv):
                 l.amount_currency as amount_currency,
                 l.debit as debit,
                 l.credit as credit,
-                coalesce(l.debit, 0.0) - coalesce(l.credit, 0.0) as balance
+                l.debit-l.credit as balance
             from
                 account_move_line l
                 left join account_account a on (l.account_id = a.id)

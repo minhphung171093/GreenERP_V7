@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+ <data>
+            
+         <record model="ir.cron" id="check_kyhientai_cron">
+            <field name="name">Check Kỳ hiện tại của kỳ vé</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="True"/>
+            <field name="model" eval="'ky.ve'"/>
+            <field name="function" eval="'check_kyhientai'"/>
+            <field name="args" eval="'()'" />
+        </record>
+        
+        <record model="ir.cron" id="dongbo_dulieu_ve_trungtam_cron">
+            <field name="name">Đồng bộ dữ liệu về trung tâm</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="True"/>
+            <field name="model" eval="'lichsu.dongbo'"/>
+            <field name="function" eval="'dongbo_dulieu_ve_trungtam'"/>
+            <field name="args" eval="'()'" />
+        </record>
+        
+        <record model="ir.cron" id="dongbo_veloto_ve_trungtam_cron">
+            <field name="name">Đồng bộ vé loto về trung tâm</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="True"/>
+            <field name="model" eval="'dongbo.veloto'"/>
+            <field name="function" eval="'dongbo_veloto_ve_trungtam'"/>
+            <field name="args" eval="'()'" />
+        </record>
+        
+   </data>
+</openerp>

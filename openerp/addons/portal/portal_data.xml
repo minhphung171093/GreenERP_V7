@@ -39,7 +39,7 @@
             }"/>
             <field name="help" type="html">
                 <p>
-                    You don't have unread company's news.
+                    Youd don't have unread company's news.
                 </p>
             </field>
         </record>
@@ -71,7 +71,7 @@
             }"/>
             <field name="help" type="html">
                 <p>
-                    You don't have unread job offers.
+                    Youd don't have unread job offers.
                 </p>
             </field>
         </record>

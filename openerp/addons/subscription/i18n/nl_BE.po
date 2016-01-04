@@ -1,37 +1,31 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * subscription
-# 
-# Translators:
+# Dutch (Belgium) translation for openobject-addons
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-14 00:11+0000\n"
-"PO-Revision-Date: 2015-05-23 13:53+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Dutch (Belgium) (http://www.transifex.com/projects/p/odoo-7/language/nl_BE/)\n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2013-06-07 19:37+0000\n"
+"PO-Revision-Date: 2012-12-21 23:00+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Dutch (Belgium) <nl_BE@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: nl_BE\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-11-21 06:37+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #. module: subscription
 #: field:subscription.subscription,doc_source:0
 #: field:subscription.subscription.history,document_id:0
 msgid "Source Document"
-msgstr "Brondocument"
+msgstr ""
 
 #. module: subscription
 #: field:subscription.document,model:0
 msgid "Object"
-msgstr ""
-
-#. module: subscription
-#: code:addons/subscription/subscription.py:147
-#, python-format
-msgid "You cannot delete an active subscription!"
 msgstr ""
 
 #. module: subscription
@@ -47,7 +41,7 @@ msgstr ""
 #. module: subscription
 #: field:subscription.document.fields,field:0
 msgid "Field"
-msgstr "Veld"
+msgstr ""
 
 #. module: subscription
 #: model:ir.model,name:subscription.model_subscription_subscription_history
@@ -57,7 +51,7 @@ msgstr ""
 #. module: subscription
 #: selection:subscription.subscription,state:0
 msgid "Draft"
-msgstr "Voorlopig"
+msgstr ""
 
 #. module: subscription
 #: selection:subscription.document.fields,value:0
@@ -70,9 +64,10 @@ msgid "Weeks"
 msgstr ""
 
 #. module: subscription
-#: view:subscription.subscription:0 field:subscription.subscription,state:0
+#: view:subscription.subscription:0
+#: field:subscription.subscription,state:0
 msgid "Status"
-msgstr "Status"
+msgstr ""
 
 #. module: subscription
 #: model:ir.ui.menu,name:subscription.config_recuuring_event
@@ -88,11 +83,6 @@ msgid "Subscriptions"
 msgstr ""
 
 #. module: subscription
-#: view:subscription.subscription:0
-msgid "Subsription Data"
-msgstr ""
-
-#. module: subscription
 #: field:subscription.subscription,interval_number:0
 msgid "Interval Qty"
 msgstr ""
@@ -105,13 +95,13 @@ msgstr ""
 #. module: subscription
 #: view:subscription.subscription:0
 msgid "Set to Draft"
-msgstr "Terugzetten naar Voorlopig"
+msgstr ""
 
 #. module: subscription
 #: view:subscription.subscription:0
 #: selection:subscription.subscription,state:0
 msgid "Running"
-msgstr "Lopend"
+msgstr ""
 
 #. module: subscription
 #: view:subscription.subscription.history:0
@@ -119,9 +109,10 @@ msgid "Subscription History"
 msgstr ""
 
 #. module: subscription
-#: view:subscription.subscription:0 field:subscription.subscription,user_id:0
+#: view:subscription.subscription:0
+#: field:subscription.subscription,user_id:0
 msgid "User"
-msgstr "Gebruiker"
+msgstr ""
 
 #. module: subscription
 #: field:subscription.subscription,interval_type:0
@@ -131,7 +122,7 @@ msgstr ""
 #. module: subscription
 #: field:subscription.subscription.history,date:0
 msgid "Date"
-msgstr "Datum"
+msgstr ""
 
 #. module: subscription
 #: field:subscription.subscription,exec_init:0
@@ -146,9 +137,16 @@ msgid ""
 msgstr ""
 
 #. module: subscription
-#: field:subscription.document,name:0 field:subscription.subscription,name:0
+#: field:subscription.document,name:0
+#: field:subscription.subscription,name:0
 msgid "Name"
-msgstr "Naam"
+msgstr ""
+
+#. module: subscription
+#: code:addons/subscription/subscription.py:147
+#, python-format
+msgid "You cannot delete an active subscription !"
+msgstr ""
 
 #. module: subscription
 #: field:subscription.document,field_ids:0
@@ -156,10 +154,11 @@ msgid "Fields"
 msgstr ""
 
 #. module: subscription
-#: view:subscription.subscription:0 field:subscription.subscription,note:0
+#: view:subscription.subscription:0
+#: field:subscription.subscription,note:0
 #: field:subscription.subscription,notes:0
 msgid "Notes"
-msgstr "Opmerkingen"
+msgstr ""
 
 #. module: subscription
 #: selection:subscription.subscription,interval_type:0
@@ -175,7 +174,7 @@ msgstr ""
 #: code:addons/subscription/subscription.py:147
 #, python-format
 msgid "Error!"
-msgstr "Fout"
+msgstr ""
 
 #. module: subscription
 #: field:subscription.subscription,cron_id:0
@@ -187,13 +186,13 @@ msgstr ""
 #: view:subscription.subscription:0
 #: field:subscription.subscription.history,subscription_id:0
 msgid "Subscription"
-msgstr "Abonnement"
+msgstr ""
 
 #. module: subscription
 #: view:subscription.subscription:0
 #: field:subscription.subscription,partner_id:0
 msgid "Partner"
-msgstr "Relatie"
+msgstr ""
 
 #. module: subscription
 #: help:subscription.subscription,cron_id:0
@@ -201,17 +200,8 @@ msgid "Scheduler which runs on subscription"
 msgstr ""
 
 #. module: subscription
-#: code:addons/subscription/subscription.py:120
-#, python-format
-msgid "Wrong Source Document!"
-msgstr ""
-
-#. module: subscription
-#: code:addons/subscription/subscription.py:120
-#, python-format
-msgid ""
-"Please provide another source document.\n"
-"This one does not exist!"
+#: view:subscription.subscription:0
+msgid "Subsription Data"
 msgstr ""
 
 #. module: subscription
@@ -241,12 +231,12 @@ msgstr ""
 #. module: subscription
 #: selection:subscription.document.fields,value:0
 msgid "False"
-msgstr "Onwaar"
+msgstr ""
 
 #. module: subscription
 #: view:subscription.subscription:0
 msgid "Group By..."
-msgstr "Groeperen op..."
+msgstr ""
 
 #. module: subscription
 #: view:subscription.subscription:0
@@ -266,6 +256,12 @@ msgid "Document Types"
 msgstr ""
 
 #. module: subscription
+#: code:addons/subscription/subscription.py:120
+#, python-format
+msgid "Wrong Source Document !"
+msgstr ""
+
+#. module: subscription
 #: model:ir.model,name:subscription.model_subscription_document_fields
 #: view:subscription.document.fields:0
 msgid "Subscription Document Fields"
@@ -274,7 +270,15 @@ msgstr ""
 #. module: subscription
 #: selection:subscription.subscription,state:0
 msgid "Done"
-msgstr "Voltooid"
+msgstr ""
+
+#. module: subscription
+#: code:addons/subscription/subscription.py:120
+#, python-format
+msgid ""
+"Please provide another source document.\n"
+"This one does not exist !"
+msgstr ""
 
 #. module: subscription
 #: field:subscription.document.fields,value:0
@@ -291,4 +295,4 @@ msgstr ""
 #: field:subscription.document,active:0
 #: field:subscription.subscription,active:0
 msgid "Active"
-msgstr "Actief"
+msgstr ""

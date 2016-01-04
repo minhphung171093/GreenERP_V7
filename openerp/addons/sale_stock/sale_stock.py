@@ -125,8 +125,7 @@ class sale_order(osv.osv):
             ('shipping_except', 'Shipping Exception'),
             ('invoice_except', 'Invoice Exception'),
             ('done', 'Done'),
-            ], 'Status', readonly=True, track_visibility='onchange',
-            help="Gives the status of the quotation or sales order.\
+            ], 'Status', readonly=True,help="Gives the status of the quotation or sales order.\
               \nThe exception status is automatically set when a cancel operation occurs \
               in the invoice validation (Invoice Exception) or in the picking list process (Shipping Exception).\nThe 'Waiting Schedule' status is set when the invoice is confirmed\
                but waiting for the scheduler to run on the order date.", select=True),
@@ -600,14 +599,6 @@ class sale_order_line(osv.osv):
         if not product:
             res['value'].update({'product_packaging': False})
             return res
-
-        # set product uom in context to get virtual stock in current uom
-        if res.get('value', {}).get('product_uom'):
-            # use the uom changed by super call
-            context.update({'uom': res['value']['product_uom']})
-        elif uom:
-            # fallback on selected
-            context.update({'uom': uom})
 
         #update of result obtained in super function
         product_obj = product_obj.browse(cr, uid, product, context=context)

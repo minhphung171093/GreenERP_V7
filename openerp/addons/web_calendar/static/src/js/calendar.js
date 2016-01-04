@@ -57,7 +57,6 @@ instance.web_calendar.CalendarView = instance.web.View.extend({
         this.range_stop = null;
         this.update_range_dates(Date.today());
         this.selected_filters = [];
-        this.is_slow_open = false;
     },
     view_loading: function(r) {
         return this.load_calendar(r);
@@ -393,13 +392,6 @@ instance.web_calendar.CalendarView = instance.web.View.extend({
             }).done(function(events) {
                 self.dataset_events = events;
                 self.events_loaded(events);
-                if (self.dataset.index === null) {
-                    if (events.length) {
-                        self.dataset.index = 0;
-                    }
-                } else if (self.dataset.index >= events.length) {
-                    self.dataset.index = events.length ? 0 : null;
-                }
             });
         });
     },
@@ -473,17 +465,9 @@ instance.web_calendar.CalendarView = instance.web.View.extend({
     },
     slow_create: function(event_id, event_obj) {
         var self = this;
-        // Workaround, some browsers trigger onEmptyClick as well as onBeforeLightbox
-        // during drag&drop which calls two slow_create calls, kills the second one
-        if (this.is_slow_open) {
-            scheduler.deleteEvent(event_id);
-            return;
-        }
-        this.is_slow_open = true;
         if (this.current_mode() === 'month') {
             event_obj['start_date'].addHours(8);
-            var timediff = Math.abs(event_obj['end_date'] - event_obj['start_date']);
-            if (timediff <= 24*60*60*1000) {  // If it spans one day or less
+            if (event_obj._length === 1) {
                 event_obj['end_date'] = new Date(event_obj['start_date']);
                 event_obj['end_date'].addHours(1);
             } else {
@@ -503,7 +487,6 @@ instance.web_calendar.CalendarView = instance.web.View.extend({
             view_id: pop_infos.view_id,
         });
         pop.on('closed', self, function() {
-            this.is_slow_open = false;
             if (!something_saved) {
                 scheduler.deleteEvent(event_id);
             }

@@ -1,25 +1,25 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * event
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2012
+# Turkish translation for openobject-addons
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-14 00:10+0000\n"
-"PO-Revision-Date: 2015-05-29 13:00+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Turkish (http://www.transifex.com/projects/p/odoo-7/language/tr/)\n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2013-06-07 19:37+0000\n"
+"PO-Revision-Date: 2013-04-13 17:54+0000\n"
+"Last-Translator: Ayhan KIZILTAN <Unknown>\n"
+"Language-Team: Turkish <tr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: tr\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-11-21 06:08+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #. module: event
-#: view:event.event:0 view:report.event.registration:0
+#: view:event.event:0
+#: view:report.event.registration:0
 msgid "My Events"
 msgstr "Etkinliklerim"
 
@@ -39,7 +39,8 @@ msgid "Main Speaker"
 msgstr "Ana Konuşmacı"
 
 #. module: event
-#: view:event.event:0 view:event.registration:0
+#: view:event.event:0
+#: view:event.registration:0
 #: view:report.event.registration:0
 msgid "Group By..."
 msgstr "Gruplandır..."
@@ -55,7 +56,10 @@ msgid ""
 "You can for each event define a minimum registration level. If you do not "
 "enough registrations you are not able to confirm your event. (put 0 to "
 "ignore this rule )"
-msgstr "Her olay için bir tane enaz kayıt seviyesi tanımlayabilirsiniz. Eğer yeterli kayıt yapmazsanız etkinliklerinizi onaylamanız mümkün olmayacaktır. (bu kuralı gözardı etmek için 0 koyun)"
+msgstr ""
+"Her olay için bir tane enaz kayıt seviyesi tanımlayabilirsiniz. Eğer yeterli "
+"kayıt yapmazsanız etkinliklerinizi onaylamanız mümkün olmayacaktır. (bu "
+"kuralı gözardı etmek için 0 koyun)"
 
 #. module: event
 #: field:event.registration,date_open:0
@@ -73,7 +77,8 @@ msgid "Concert of Bon Jovi"
 msgstr "Bon Jovi Konseri"
 
 #. module: event
-#: view:event.registration:0 selection:event.registration,state:0
+#: view:event.registration:0
+#: selection:event.registration,state:0
 #: selection:report.event.registration,registration_state:0
 msgid "Attended"
 msgstr "Katıldı"
@@ -89,7 +94,8 @@ msgid "Send Email"
 msgstr "Eposta Gönder"
 
 #. module: event
-#: field:event.event,company_id:0 field:event.registration,company_id:0
+#: field:event.event,company_id:0
+#: field:event.registration,company_id:0
 #: view:report.event.registration:0
 #: field:report.event.registration,company_id:0
 msgid "Company"
@@ -172,21 +178,25 @@ msgid "Register"
 msgstr "Kayıt"
 
 #. module: event
-#: field:event.event,message_ids:0 field:event.registration,message_ids:0
+#: field:event.event,message_ids:0
+#: field:event.registration,message_ids:0
 msgid "Messages"
 msgstr "Mesajlar"
 
 #. module: event
-#: view:event.event:0 field:event.event,registration_ids:0
+#: view:event.event:0
+#: field:event.event,registration_ids:0
 #: model:ir.actions.act_window,name:event.act_event_list_register_event
 #: model:ir.actions.act_window,name:event.action_registration
-#: model:ir.ui.menu,name:event.menu_action_registration view:res.partner:0
+#: model:ir.ui.menu,name:event.menu_action_registration
+#: view:res.partner:0
 msgid "Registrations"
 msgstr "Kayıtlar"
 
 #. module: event
-#: code:addons/event/event.py:89 code:addons/event/event.py:100
-#: code:addons/event/event.py:357
+#: code:addons/event/event.py:89
+#: code:addons/event/event.py:100
+#: code:addons/event/event.py:355
 #, python-format
 msgid "Error!"
 msgstr "Hata!"
@@ -197,12 +207,14 @@ msgid "Confirm Event"
 msgstr "Etkinlik Onayla"
 
 #. module: event
-#: view:board.board:0 model:ir.actions.act_window,name:event.act_event_view
+#: view:board.board:0
+#: model:ir.actions.act_window,name:event.act_event_view
 msgid "Next Events"
 msgstr "Sonraki Etkinlikler"
 
 #. module: event
-#: selection:event.event,state:0 selection:event.registration,state:0
+#: selection:event.event,state:0
+#: selection:event.registration,state:0
 #: selection:report.event.registration,event_state:0
 #: selection:report.event.registration,registration_state:0
 msgid "Cancelled"
@@ -219,7 +231,8 @@ msgid "Opera of Verdi"
 msgstr "Verdi Operası"
 
 #. module: event
-#: help:event.event,message_unread:0 help:event.registration,message_unread:0
+#: help:event.event,message_unread:0
+#: help:event.registration,message_unread:0
 msgid "If checked new messages require your attention."
 msgstr "Eğer işaretliyse yeni mesajlar ilginizi gerektirir."
 
@@ -255,7 +268,9 @@ msgstr "Etkinlik Bitiş Tarihi"
 msgid ""
 "Holds the Chatter summary (number of messages, ...). This summary is "
 "directly in html format in order to be inserted in kanban views."
-msgstr "Sohbetçi özetini tutar (mesajların sayısı, ...). Bu özet, kanban ekranlarına eklenebilmesi için html biçimindedir."
+msgstr ""
+"Sohbetçi özetini tutar (mesajların sayısı, ...). Bu özet, kanban ekranlarına "
+"eklenebilmesi için html biçimindedir."
 
 #. module: event
 #: view:report.event.registration:0
@@ -263,18 +278,21 @@ msgid "Registrations in confirmed or done state"
 msgstr "Onaylandı ya da yapıldı durumundaki kayıtlar"
 
 #. module: event
-#: code:addons/event/event.py:106 code:addons/event/event.py:108
+#: code:addons/event/event.py:106
+#: code:addons/event/event.py:108
 #, python-format
 msgid "Warning!"
 msgstr "Uyarı!"
 
 #. module: event
-#: view:event.event:0 view:event.registration:0
+#: view:event.event:0
+#: view:event.registration:0
 msgid "Registration"
 msgstr "Kayıt"
 
 #. module: event
-#: view:event.registration:0 field:event.registration,partner_id:0
+#: view:event.registration:0
+#: field:event.registration,partner_id:0
 #: model:ir.model,name:event.model_res_partner
 msgid "Partner"
 msgstr "İş Ortağı"
@@ -290,15 +308,19 @@ msgid " Event Type "
 msgstr " Etkinlik Türü "
 
 #. module: event
-#: view:event.registration:0 field:event.registration,event_id:0
+#: view:event.registration:0
+#: field:event.registration,event_id:0
 #: model:ir.model,name:event.model_event_event
-#: view:report.event.registration:0 field:report.event.registration,event_id:0
+#: view:report.event.registration:0
+#: field:report.event.registration,event_id:0
 #: view:res.partner:0
 msgid "Event"
 msgstr "Etkinlik"
 
 #. module: event
-#: view:event.event:0 selection:event.event,state:0 view:event.registration:0
+#: view:event.event:0
+#: selection:event.event,state:0
+#: view:event.registration:0
 #: selection:event.registration,state:0
 #: selection:report.event.registration,event_state:0
 #: selection:report.event.registration,registration_state:0
@@ -311,7 +333,8 @@ msgid "Participant"
 msgstr "Katılımcı"
 
 #. module: event
-#: view:event.registration:0 view:report.event.registration:0
+#: view:event.registration:0
+#: view:report.event.registration:0
 msgid "Confirm"
 msgstr "Onayla"
 
@@ -330,7 +353,8 @@ msgstr "Bu etkinliğe kayıt"
 msgid ""
 "It will select this default confirmation registration mail value when you "
 "choose this event"
-msgstr "Bu etkinliği seçtiğinizde, bu varsayılan onay epostası değerini seçecektir"
+msgstr ""
+"Bu etkinliği seçtiğinizde, bu varsayılan onay epostası değerini seçecektir"
 
 #. module: event
 #: view:event.event:0
@@ -349,13 +373,16 @@ msgid "Location"
 msgstr "Konum"
 
 #. module: event
-#: view:event.event:0 field:event.event,message_unread:0
-#: view:event.registration:0 field:event.registration,message_unread:0
+#: view:event.event:0
+#: field:event.event,message_unread:0
+#: view:event.registration:0
+#: field:event.registration,message_unread:0
 msgid "Unread Messages"
 msgstr "Okunmamış Mesajlar"
 
 #. module: event
-#: view:event.registration:0 view:report.event.registration:0
+#: view:event.registration:0
+#: view:report.event.registration:0
 msgid "New"
 msgstr "Yeni"
 
@@ -370,7 +397,7 @@ msgid "Email"
 msgstr "Eposta"
 
 #. module: event
-#: code:addons/event/event.py:331
+#: code:addons/event/event.py:329
 #, python-format
 msgid "New registration confirmed: %s."
 msgstr "Yeni kayıt onaylandı: %s."
@@ -386,12 +413,15 @@ msgid "Creation Date"
 msgstr "Oluşturma Tarihi"
 
 #. module: event
-#: view:report.event.registration:0 field:report.event.registration,user_id:0
+#: view:report.event.registration:0
+#: field:report.event.registration,user_id:0
 msgid "Event Responsible"
 msgstr "Etkinlik Sorumlusu"
 
 #. module: event
-#: view:event.event:0 view:event.registration:0 view:res.partner:0
+#: view:event.event:0
+#: view:event.registration:0
+#: view:res.partner:0
 msgid "Cancel Registration"
 msgstr "Kaydı İptal et"
 
@@ -424,6 +454,11 @@ msgstr "Etkinlik Organizasyonu"
 #: view:event.confirm:0
 msgid "Confirm Anyway"
 msgstr "Yine de Onayla"
+
+#. module: event
+#: field:report.event.registration,nbevent:0
+msgid "Number Of Events"
+msgstr "Etkinlik Sayısı"
 
 #. module: event
 #: help:event.event,main_speaker_id:0
@@ -468,7 +503,8 @@ msgid "Logs"
 msgstr "Kayıtlar"
 
 #. module: event
-#: view:event.event:0 field:event.event,state_id:0
+#: view:event.event:0
+#: field:event.event,state_id:0
 msgid "State"
 msgstr "Durum"
 
@@ -499,7 +535,8 @@ msgid "Registration Confirmation Email"
 msgstr "Kayıt Onayı Epostası"
 
 #. module: event
-#: view:report.event.registration:0 field:report.event.registration,month:0
+#: view:report.event.registration:0
+#: field:report.event.registration,month:0
 msgid "Month"
 msgstr "Ay"
 
@@ -548,10 +585,14 @@ msgstr "Hiç bilet yok!"
 #: help:event.event,state:0
 msgid ""
 "If event is created, the status is 'Draft'.If event is confirmed for the "
-"particular dates the status is set to 'Confirmed'. If the event is over, the"
-" status is set to 'Done'.If event is cancelled the status is set to "
+"particular dates the status is set to 'Confirmed'. If the event is over, the "
+"status is set to 'Done'.If event is cancelled the status is set to "
 "'Cancelled'."
-msgstr "Etkinlik oluşturulursa, durumu 'Taslak' tır. Etkinlik belirli tarihler için onaylanırsa durumu 'Onaylı' olarak ayarlanır. Etkinlik, bitmişse durumu 'Yapıldı' olarak ayarlanır. Etkinlik iptal edilirse durumu 'İptal edildi' olarak ayarlanır"
+msgstr ""
+"Etkinlik oluşturulursa, durumu 'Taslak' tır. Etkinlik belirli tarihler için "
+"onaylanırsa durumu 'Onaylı' olarak ayarlanır. Etkinlik, bitmişse durumu "
+"'Yapıldı' olarak ayarlanır. Etkinlik iptal edilirse durumu 'İptal edildi' "
+"olarak ayarlanır"
 
 #. module: event
 #: model:ir.actions.act_window,help:event.action_event_view
@@ -559,12 +600,24 @@ msgid ""
 "<p class=\"oe_view_nocontent_create\">\n"
 "               Click to add a new event.\n"
 "             </p><p>\n"
-"               OpenERP helps you schedule and efficiently organize your events:\n"
-"               track subscriptions and participations, automate the confirmation emails,\n"
+"               OpenERP helps you schedule and efficiently organize your "
+"events:\n"
+"               track subscriptions and participations, automate the "
+"confirmation emails,\n"
 "               sell tickets, etc.\n"
 "             </p>\n"
 "           "
-msgstr "<p class=\"oe_view_nocontent_create\">\n               Yeni bir etkinlik eklemek için tıklayın.\n             </p><p>\n               OpenERP etkinliğinizi planlamanıza ve verimli olarak düzenlemenize yardımcı olur:\n               abonelik ve katılımların izlenmesi, onay e-postası otomatikleştirmesi ,\n               bilet satışları vb.\n             </p>\n           "
+msgstr ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"               Yeni bir etkinlik eklemek için tıklayın.\n"
+"             </p><p>\n"
+"               OpenERP etkinliğinizi planlamanıza ve verimli olarak "
+"düzenlemenize yardımcı olur:\n"
+"               abonelik ve katılımların izlenmesi, onay e-postası "
+"otomatikleştirmesi ,\n"
+"               bilet satışları vb.\n"
+"             </p>\n"
+"           "
 
 #. module: event
 #: help:event.event,register_max:0
@@ -572,7 +625,10 @@ msgid ""
 "You can for each event define a maximum registration level. If you have too "
 "much registrations you are not able to confirm your event. (put 0 to ignore "
 "this rule )"
-msgstr "Her olay için bir tane ençok kayıt seviyesi tanımlayabilirsiniz. Eğer çok fazla kayıtınız varsa etkinliğinizi onaylamanız mümkün değildir. (bu kuralı gözardı etmek için 0 koyun)"
+msgstr ""
+"Her olay için bir tane ençok kayıt seviyesi tanımlayabilirsiniz. Eğer çok "
+"fazla kayıtınız varsa etkinliğinizi onaylamanız mümkün değildir. (bu kuralı "
+"gözardı etmek için 0 koyun)"
 
 #. module: event
 #: code:addons/event/event.py:106
@@ -587,14 +643,19 @@ msgid ""
 "The total of confirmed registration for the event '%s' does not meet the "
 "expected minimum/maximum. Please reconsider those limits before going "
 "further."
-msgstr "'% s' Etkinliği için onaylanmış kayıtların toplamı umulan enaz/ençok sayısını karşılamıyor. Lütfen devam etmeden önce bu sınırları yeniden gözden geçirin."
+msgstr ""
+"'% s' Etkinliği için onaylanmış kayıtların toplamı umulan enaz/ençok "
+"sayısını karşılamıyor. Lütfen devam etmeden önce bu sınırları yeniden gözden "
+"geçirin."
 
 #. module: event
 #: help:event.event,email_confirmation_id:0
 msgid ""
 "If you set an email template, each participant will receive this email "
 "announcing the confirmation of the event."
-msgstr "Eğer bir eposta şablonu ayarlarsanız, her katılımcıya etkinliğin onaylandığını bildiren bu eposta gidecektir."
+msgstr ""
+"Eğer bir eposta şablonu ayarlarsanız, her katılımcıya etkinliğin "
+"onaylandığını bildiren bu eposta gidecektir."
 
 #. module: event
 #: view:board.board:0
@@ -618,18 +679,22 @@ msgid "Events which are in New state"
 msgstr "Yeni durumundaki Etkinlikler"
 
 #. module: event
-#: view:event.event:0 model:ir.actions.act_window,name:event.action_event_view
+#: view:event.event:0
+#: model:ir.actions.act_window,name:event.action_event_view
 #: model:ir.actions.act_window,name:event.open_board_associations_manager
 #: model:ir.module.category,name:event.module_category_event_management
 #: model:ir.ui.menu,name:event.event_main_menu
 #: model:ir.ui.menu,name:event.menu_board_associations_manager
 #: model:ir.ui.menu,name:event.menu_event_event
-#: model:ir.ui.menu,name:event.menu_reporting_events view:res.partner:0
+#: model:ir.ui.menu,name:event.menu_reporting_events
+#: view:res.partner:0
 msgid "Events"
 msgstr "Etkinlikler"
 
 #. module: event
-#: view:event.event:0 field:event.event,state:0 view:event.registration:0
+#: view:event.event:0
+#: field:event.event,state:0
+#: view:event.registration:0
 #: field:event.registration,state:0
 msgid "Status"
 msgstr "Durumu"
@@ -650,7 +715,8 @@ msgid "zip"
 msgstr "pkodu"
 
 #. module: event
-#: field:res.partner,event_ids:0 field:res.partner,event_registration_ids:0
+#: field:res.partner,event_ids:0
+#: field:res.partner,event_registration_ids:0
 msgid "unknown"
 msgstr "bilinmeyen"
 
@@ -670,10 +736,14 @@ msgid ""
 "The email address of the organizer which is put in the 'Reply-To' of all "
 "emails sent automatically at event or registrations confirmation. You can "
 "also put your email address of your mail gateway if you use one."
-msgstr "Etkinliğin ya da kayıtların onaylanmasından sonra kendiliğinden gönderilen epostaların 'Yanıtlanan' kısmına konulacak organizatör eposta adresi. Eğer posta ağ geçidi kullanıyorsanız eposta adresinizi de koyabilirsiniz."
+msgstr ""
+"Etkinliğin ya da kayıtların onaylanmasından sonra kendiliğinden gönderilen "
+"epostaların 'Yanıtlanan' kısmına konulacak organizatör eposta adresi. Eğer "
+"posta ağ geçidi kullanıyorsanız eposta adresinizi de koyabilirsiniz."
 
 #. module: event
-#: help:event.event,message_ids:0 help:event.registration,message_ids:0
+#: help:event.event,message_ids:0
+#: help:event.registration,message_ids:0
 msgid "Messages and communication history"
 msgstr "Mesajlar ve iletişim geçmişi"
 
@@ -687,11 +757,24 @@ msgstr "Telefon"
 msgid ""
 "\n"
 "        <p>Hello ${object.name},</p>\n"
-"        <p>The event ${object.event_id.name} that you registered for is confirmed and will be held from ${object.event_id.date_begin} to ${object.event_id.date_end}.\n"
-"        For any further information please contact our event department.</p>\n"
+"        <p>The event ${object.event_id.name} that you registered for is "
+"confirmed and will be held from ${object.event_id.date_begin} to "
+"${object.event_id.date_end}.\n"
+"        For any further information please contact our event "
+"department.</p>\n"
 "        <p>Thank you for your participation!</p>\n"
 "        <p>Best regards</p>"
-msgstr "\n        <p>Merhaba ${object.name},</p>\n        <p> Kayıt yaptırmış olduğunuz ${object.event_id.name} etkinliği onaylanmış olup\n${object.event_id.date_begin} tarihinden ${object.event_id.date_end} tarihine kadar yapılacaktır.\n        Herhangi bir ayrıntı için lütfen etkinlik bölümümüzle iletişim kurun.</p>\n        <p>Katılımınız için teşekkür ederiz!</p>\n        <p>Saygılarımızla</p>"
+msgstr ""
+"\n"
+"        <p>Merhaba ${object.name},</p>\n"
+"        <p> Kayıt yaptırmış olduğunuz ${object.event_id.name} etkinliği "
+"onaylanmış olup\n"
+"${object.event_id.date_begin} tarihinden ${object.event_id.date_end} "
+"tarihine kadar yapılacaktır.\n"
+"        Herhangi bir ayrıntı için lütfen etkinlik bölümümüzle iletişim "
+"kurun.</p>\n"
+"        <p>Katılımınız için teşekkür ederiz!</p>\n"
+"        <p>Saygılarımızla</p>"
 
 #. module: event
 #: field:event.event,message_is_follower:0
@@ -710,7 +793,9 @@ msgstr "Kullanıcı"
 msgid ""
 "Warning: This Event has not reached its Minimum Registration Limit. Are you "
 "sure you want to confirm it?"
-msgstr "Uyarı: Bu Etkinlik Enaz Kayıt Sınırına erişmemiştir. Bunu onaylamak istediğinizden emin misiniz?"
+msgstr ""
+"Uyarı: Bu Etkinlik Enaz Kayıt Sınırına erişmemiştir. Bunu onaylamak "
+"istediğinizden emin misiniz?"
 
 #. module: event
 #: view:event.event:0
@@ -733,11 +818,6 @@ msgid "Extended Filters..."
 msgstr "Genişletilmiş Süzgeçler..."
 
 #. module: event
-#: field:report.event.registration,nbevent:0
-msgid "Number of Registrations"
-msgstr "Kayıt Sayısı"
-
-#. module: event
 #: selection:report.event.registration,month:0
 msgid "October"
 msgstr "Ekim"
@@ -753,7 +833,9 @@ msgid "Set To Draft"
 msgstr "Taslağa Ayarla"
 
 #. module: event
-#: view:event.event:0 view:event.registration:0 view:res.partner:0
+#: view:event.event:0
+#: view:event.registration:0
+#: view:res.partner:0
 msgid "Confirm Registration"
 msgstr "Kaydı Onayla"
 
@@ -763,7 +845,9 @@ msgstr "Kaydı Onayla"
 msgid ""
 "You have already set a registration for this event as 'Attended'. Please "
 "reset it to draft if you want to cancel this event."
-msgstr "'Katıldı' olarak zaten bu etkinlik için bir kayıt belirlediniz. Bu etkinliği iptal etmek istiyorsanız lütfen taslağı sıfırlayın."
+msgstr ""
+"'Katıldı' olarak zaten bu etkinlik için bir kayıt belirlediniz. Bu etkinliği "
+"iptal etmek istiyorsanız lütfen taslağı sıfırlayın."
 
 #. module: event
 #: view:res.partner:0
@@ -794,12 +878,15 @@ msgstr "Etkinlik Türleri"
 #. module: event
 #: help:event.event,email_registration_id:0
 msgid ""
-"This field contains the template of the mail that will be automatically sent"
-" each time a registration for this event is confirmed."
-msgstr "Bu alan, bu etkinlik için her kayıt onaylandığında kendiliğinden gönderilen eposta şablonunu içerir."
+"This field contains the template of the mail that will be automatically sent "
+"each time a registration for this event is confirmed."
+msgstr ""
+"Bu alan, bu etkinlik için her kayıt onaylandığında kendiliğinden gönderilen "
+"eposta şablonunu içerir."
 
 #. module: event
-#: view:event.event:0 view:event.registration:0
+#: view:event.event:0
+#: view:event.registration:0
 msgid "Attended the Event"
 msgstr "Etkinliğe Katıldı"
 
@@ -809,10 +896,11 @@ msgid "Error ! Closing Date cannot be set before Beginning Date."
 msgstr "Hata ! Kapanış Tarihi, Başlama Tarihinden önceye ayarlanamaz."
 
 #. module: event
-#: code:addons/event/event.py:357
+#: code:addons/event/event.py:355
 #, python-format
 msgid "You must wait for the starting day of the event to do this action."
-msgstr "Bu işlemi yapmak için etkinlik başlangıç ​​gününü beklemeniz gerekir."
+msgstr ""
+"Bu işlemi yapmak için etkinlik başlangıç ​​gününü beklemeniz gerekir."
 
 #. module: event
 #: field:event.event,user_id:0
@@ -857,7 +945,8 @@ msgid "Set To Unconfirmed"
 msgstr "Onaylanmamışa Ayarla"
 
 #. module: event
-#: view:event.event:0 field:event.event,is_subscribed:0
+#: view:event.event:0
+#: field:event.event,is_subscribed:0
 msgid "Subscribed"
 msgstr "Abone"
 
@@ -867,7 +956,8 @@ msgid "Unsubscribe"
 msgstr "Abonelik iptali"
 
 #. module: event
-#: view:event.event:0 view:event.registration:0
+#: view:event.event:0
+#: view:event.registration:0
 msgid "Responsible"
 msgstr "Sorumlu"
 
@@ -878,7 +968,8 @@ msgstr "Kişi Kaydı"
 
 #. module: event
 #: view:report.event.registration:0
-#: field:report.event.registration,speaker_id:0 field:res.partner,speaker:0
+#: field:report.event.registration,speaker_id:0
+#: field:res.partner,speaker:0
 msgid "Speaker"
 msgstr "Konuşmacı"
 
@@ -935,7 +1026,8 @@ msgid "Maximum Registrations"
 msgstr "Ençok Kayıt"
 
 #. module: event
-#: view:event.event:0 selection:event.event,state:0
+#: view:event.event:0
+#: selection:event.event,state:0
 #: selection:event.registration,state:0
 msgid "Unconfirmed"
 msgstr "Onaysız"
@@ -956,12 +1048,15 @@ msgid "Association Dashboard"
 msgstr "Dernek Kontrol Paneli"
 
 #. module: event
-#: view:event.event:0 field:event.event,name:0 field:event.registration,name:0
+#: view:event.event:0
+#: field:event.event,name:0
+#: field:event.registration,name:0
 msgid "Name"
 msgstr "Adı"
 
 #. module: event
-#: view:event.event:0 field:event.event,country_id:0
+#: view:event.event:0
+#: field:event.event,country_id:0
 msgid "Country"
 msgstr "Ülke"
 
@@ -985,7 +1080,9 @@ msgstr "Nisan"
 msgid ""
 "It will select this default confirmation event mail value when you choose "
 "this event"
-msgstr "Bu etkinliği seçtiğinizde bu varsayılan etkinlik onayı postası değeri seçecektir"
+msgstr ""
+"Bu etkinliği seçtiğinizde bu varsayılan etkinlik onayı postası değeri "
+"seçecektir"
 
 #. module: event
 #: view:report.event.registration:0
@@ -993,7 +1090,9 @@ msgid "Events which are in confirm state"
 msgstr "Onaylı durumundaki Etkinlikler"
 
 #. module: event
-#: view:event.event:0 view:event.type:0 field:event.type,name:0
+#: view:event.event:0
+#: view:event.type:0
+#: field:event.type,name:0
 #: view:report.event.registration:0
 #: field:report.event.registration,event_type:0
 msgid "Event Type"
@@ -1041,20 +1140,35 @@ msgstr "Mevcut Kayıtlar"
 msgid ""
 "\n"
 "        <p>Hello ${object.name},</p>\n"
-"        <p>We confirm that your registration to the event ${object.event_id.name} has been recorded.\n"
-"        You will automatically receive an email providing you more practical information (such as the schedule, the agenda...) as soon as the event is confirmed.</p>\n"
+"        <p>We confirm that your registration to the event "
+"${object.event_id.name} has been recorded.\n"
+"        You will automatically receive an email providing you more practical "
+"information (such as the schedule, the agenda...) as soon as the event is "
+"confirmed.</p>\n"
 "        <p>Thank you for your participation!</p>\n"
 "        <p>Best regards</p>"
-msgstr "\n        <p>Merhaba ${object.name},</p>\n        <p>Yapılıcak olan${object.event_id.name} etkinliğine kaydınızın yapılmış olduğunu onaylıyoruz.\n        Etkinlik onaylanır onaylanmaz otomatik eposta ile daha pratik bilgiler (program, gündem gibi) alacaksınız.</p>\n        <p>Katılımınız için teşekkür ederiz!</p>\n        <p>Saygılarımızla</p>"
+msgstr ""
+"\n"
+"        <p>Merhaba ${object.name},</p>\n"
+"        <p>Yapılıcak olan${object.event_id.name} etkinliğine kaydınızın "
+"yapılmış olduğunu onaylıyoruz.\n"
+"        Etkinlik onaylanır onaylanmaz otomatik eposta ile daha pratik "
+"bilgiler (program, gündem gibi) alacaksınız.</p>\n"
+"        <p>Katılımınız için teşekkür ederiz!</p>\n"
+"        <p>Saygılarımızla</p>"
 
 #. module: event
 #: help:event.event,reply_to:0
 msgid ""
-"The email address of the organizer is likely to be put here, with the effect"
-" to be in the 'Reply-To' of the mails sent automatically at event or "
+"The email address of the organizer is likely to be put here, with the effect "
+"to be in the 'Reply-To' of the mails sent automatically at event or "
 "registrations confirmation. You can also put the email address of your mail "
 "gateway if you use one."
-msgstr "Etkinlikte ya da kayıt onaylamalarında otomatik olarak gönderilen epostaların 'Yanıtlanan' kısmına organizatörün eposta adresi konulabilecektir. Eğer kullanıyorsanız posta ağgeçidi eposta adresini de koyabilirsiniz."
+msgstr ""
+"Etkinlikte ya da kayıt onaylamalarında otomatik olarak gönderilen "
+"epostaların 'Yanıtlanan' kısmına organizatörün eposta adresi "
+"konulabilecektir. Eğer kullanıyorsanız posta ağgeçidi eposta adresini de "
+"koyabilirsiniz."
 
 #. module: event
 #: view:event.event:0
@@ -1080,7 +1194,8 @@ msgid "Event Confirmation"
 msgstr "Etkinlik Onaylama"
 
 #. module: event
-#: view:report.event.registration:0 field:report.event.registration,year:0
+#: view:report.event.registration:0
+#: field:report.event.registration,year:0
 msgid "Year"
 msgstr "Yıl"
 

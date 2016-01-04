@@ -1,36 +1,36 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * product_expiry
-# 
-# Translators:
+# Latvian translation for openobject-addons
+# Copyright (c) 2014 Rosetta Contributors and Canonical Ltd 2014
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-06-07 19:37+0000\n"
-"PO-Revision-Date: 2015-05-22 15:53+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Latvian (http://www.transifex.com/projects/p/odoo-7/language/lv/)\n"
+"PO-Revision-Date: 2014-02-14 10:38+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Latvian <lv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: lv\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2014-02-15 07:37+0000\n"
+"X-Generator: Launchpad (build 16916)\n"
 
 #. module: product_expiry
 #: model:product.template,name:product_expiry.product_product_from_product_template
 msgid "Ham"
-msgstr "Šķiņķis"
+msgstr ""
 
 #. module: product_expiry
 #: model:product.template,name:product_expiry.product_product_lait_product_template
 msgid "Cow milk"
-msgstr "Govs piens"
+msgstr ""
 
 #. module: product_expiry
 #: field:product.product,life_time:0
 msgid "Product Life Time"
-msgstr "Preces Dzīves Ilgums"
+msgstr ""
 
 #. module: product_expiry
 #: help:stock.production.lot,removal_date:0
@@ -49,12 +49,12 @@ msgstr ""
 #. module: product_expiry
 #: field:product.product,use_time:0
 msgid "Product Use Time"
-msgstr "Produkta Lietošanas Ilgums"
+msgstr ""
 
 #. module: product_expiry
 #: model:ir.model,name:product_expiry.model_product_product
 msgid "Product"
-msgstr "Produkts"
+msgstr ""
 
 #. module: product_expiry
 #: help:product.product,use_time:0
@@ -66,7 +66,7 @@ msgstr ""
 #. module: product_expiry
 #: field:product.product,removal_time:0
 msgid "Product Removal Time"
-msgstr "Produkta izņemšanas laiks"
+msgstr ""
 
 #. module: product_expiry
 #: help:stock.production.lot,alert_date:0
@@ -78,7 +78,7 @@ msgstr ""
 #. module: product_expiry
 #: model:ir.model,name:product_expiry.model_stock_production_lot
 msgid "Serial Number"
-msgstr "Sērijas numurs"
+msgstr ""
 
 #. module: product_expiry
 #: help:product.product,alert_time:0
@@ -90,27 +90,27 @@ msgstr ""
 #. module: product_expiry
 #: field:stock.production.lot,removal_date:0
 msgid "Removal Date"
-msgstr "Izņemšanas datums"
+msgstr ""
 
 #. module: product_expiry
 #: model:product.template,name:product_expiry.product_product_pain_product_template
 msgid "Bread"
-msgstr "Maize"
+msgstr ""
 
 #. module: product_expiry
 #: view:product.product:0
 msgid "Dates"
-msgstr "Datumi"
+msgstr ""
 
 #. module: product_expiry
 #: field:stock.production.lot,life_date:0
 msgid "End of Life Date"
-msgstr "Dzīves cikla beigu datums"
+msgstr ""
 
 #. module: product_expiry
 #: field:stock.production.lot,use_date:0
 msgid "Best before Date"
-msgstr "Derīguma termiņš"
+msgstr ""
 
 #. module: product_expiry
 #: model:product.template,name:product_expiry.product_product_jambon_product_template
@@ -127,7 +127,7 @@ msgstr ""
 #. module: product_expiry
 #: field:stock.production.lot,alert_date:0
 msgid "Alert Date"
-msgstr "Trauksmes datums"
+msgstr ""
 
 #. module: product_expiry
 #: help:stock.production.lot,use_date:0
@@ -146,4 +146,4 @@ msgstr ""
 #. module: product_expiry
 #: field:product.product,alert_time:0
 msgid "Product Alert Time"
-msgstr "Brīdināt datumā par produktu"
+msgstr ""

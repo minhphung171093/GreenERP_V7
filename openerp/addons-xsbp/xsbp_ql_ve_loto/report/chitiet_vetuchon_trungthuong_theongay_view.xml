@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+    	<record id="chitiet_vetuchon_trungthuong_theongay_report" model="ir.actions.report.xml">
+	        <field name="name">chitiet.vetuchon.trungthuong.theongay.report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">chitiet.vetuchon.trungthuong.theongay</field>
+	        <field name="report_name">Vé tự chọn trúng thưởng theo ngay</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-odt</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-doc'),('compatible_types','=','oo-odt')]"/>
+	        <field name="parser_loc">xsbp_ql_ve_loto/report/chitiet_vetuchon_trungthuong_theongay.py</field>
+	        <field name="report_rml">xsbp_ql_ve_loto/report/chitiet_vetuchon_trungthuong_theongay.odt</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record> 
+    	   
+    	<report 
+			auto="False" 
+			menu="False"
+			id="chitiet_vetuchon_trungthuong_theongay_report" 
+			model="chitiet.vetuchon.trungthuong.theongay" 
+			name="chitiet_vetuchon_trungthuong_theongay_report"
+	        string="Vé tự chọn trúng thưởng theo ngay"
+	        rml="xsbp_ql_ve_loto/report/chitiet_vetuchon_trungthuong_theongay.odt"/> 	
+	</data>
+</openerp>

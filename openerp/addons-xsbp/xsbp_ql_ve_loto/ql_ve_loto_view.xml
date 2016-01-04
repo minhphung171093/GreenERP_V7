@@ -1,0 +1,592 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    	
+    	<menuitem name="QL Vé Loto" id="ql_ve_loto" sequence="10" groups="group_ql_ve_loto"/>
+        <menuitem name="Đại lý" id="menu_dai_ly" parent="ql_ve_loto" sequence="5" groups="group_ql_ve_loto"/>
+        
+        <record id="loto_view_partner_form" model="ir.ui.view">
+            <field name="name">res.partner.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+            	<data>
+                	<xpath expr="//field[@name='website']" position="after">
+                		<field name="ma_daily"/>
+                		<field name="parent_id"/>
+                    </xpath>
+                    <xpath expr="//field[@name='customer']" position="before">
+                		<field name="dai_ly"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+        
+        <record id="action_daily" model="ir.actions.act_window">
+            <field name="name">Đại lý</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="context">{'order_by_ma_daily':1}</field>
+            <field name="domain">[('dai_ly','=',True)]</field>
+            <field name="context">{'default_dai_ly':True}</field>
+        </record>
+        
+        <menuitem action="action_daily" id="menu_action_daily" parent="menu_dai_ly" sequence="20" groups="group_ql_ve_loto"/>
+    	
+    	<record id="view_cautruc_daily_tree" model="ir.ui.view" >
+            <field name="name">res.partner.tree</field>
+            <field name="model">res.partner</field>
+            <field name="field_parent">child_id</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Cấu trúc đại lý">
+                	<field name="ma_daily"/>
+                    <field name="name"/>
+                    <field name="function" invisible="1"/>
+                    <field name="phone"/>
+                    <field name="email"/>
+                    <field name="user_id" invisible="1"/>
+                    <field name="is_company" invisible="1"/>
+                    <field name="country" invisible="1"/>
+                    <field name="country_id" invisible="1"/>
+                    <field name="parent_id" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+        
+		<record id="action_cautruc_daily" model="ir.actions.act_window">
+            <field name="name">Cấu trúc đại lý</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_type">tree</field>
+            <field name="view_mode">tree</field>
+            <field name="context">{'order_by_ma_daily':1}</field>
+            <field name="domain">[('parent_id','=',False),('dai_ly','=',True)]</field>
+            <field name="view_id" ref="view_cautruc_daily_tree"/>
+        </record>
+        
+        <menuitem action="action_cautruc_daily" id="menu_action_cautruc_daily" parent="menu_dai_ly" sequence="30" groups="group_ql_ve_loto"/>
+    	
+        <record id="ketqua_xoso_tree" model="ir.ui.view">
+            <field name="name">ketqua.xoso.tree</field>
+            <field name="model">ketqua.xoso</field>
+            <field name="arch" type="xml">
+                <tree string="Kết quả xổ số">
+                    <field name="name"/>
+                    <field name="dai_duthuong_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+    	
+		<record id="ketqua_xoso_form" model="ir.ui.view">
+            <field name="name">ketqua.xoso.form</field>
+            <field name="model">ketqua.xoso</field>
+            <field name="arch" type="xml">
+                <form string="Kết quả xổ số" version="7.0">
+                	<header>
+                        <button name="validate_winning" type="object" states="new" string="Validate Winning" class="oe_highlight"/>
+	                    <field name="state" widget="statusbar" statusbar_visible="new,validate" statusbar_colors='{"new":"blue","validate":"blue"}'/>
+	                </header>
+	                <sheet string="Kết quả xổ số">
+	                    <group>
+		                    <group>
+		                        <field name="name"/>
+		                    </group>
+		                    <group>
+		                        <field name="dai_duthuong_id"/>
+		                    </group>
+	                    </group>
+	                    <group>
+	                        <field name="ketqua_xoso_line" nolabel='1'>
+	                        	<tree editable='bottom'>
+	                        		<field name="ma"/>
+			                        <field name="name"/>
+			                        <field name="so"/>
+			                        <field name="dm_7_so" attrs="{'invisible':[('ma','=','01')]}"/>
+	                        	</tree>
+	                        </field>
+	                    </group>
+	                </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_ketqua_xoso" model="ir.actions.act_window">
+            <field name="name">Kết quả xổ số</field>
+            <field name="res_model">ketqua.xoso</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="ketqua_xoso_tree"/>
+        </record>
+        
+        <menuitem name="Vé Loto" id="menu_ve_loto" parent="ql_ve_loto" sequence="10" groups="group_ql_ve_loto"/>
+        <menuitem action="action_ketqua_xoso" id="menu_action_ketqua_xoso" parent="menu_ve_loto" sequence="20" groups="group_ql_ve_loto_man"/>
+        
+        <record id="loto_view_product_normal_form_view_inherit" model="ir.ui.view">
+            <field name="name">product.product.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+				<xpath expr="//field[@name='default_code']" position="after">
+					<field name="menh_gia"/>
+				</xpath>
+            </field>
+        </record>
+        
+        <record id="action_loai_ve" model="ir.actions.act_window">
+            <field name="name">Loại vé</field>
+            <field name="res_model">product.product</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('menh_gia','=',True)]</field>
+            <field name="context">{'default_menh_gia':True}</field>
+        </record>
+        
+        <menuitem action="action_loai_ve" id="menu_action_loai_ve" parent="menu_ve_loto" sequence="20" groups="group_ql_ve_loto_man"/>
+        
+        <record id="ve_loto_filter" model="ir.ui.view">
+            <field name="name">ve.loto.filter</field>
+            <field name="model">ve.loto</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Nhập liệu vé loto">
+                    <field name="name" invisible='1'/>
+                    <field name="daily_id"/>
+                    <field name="ngay"/>
+                    <field name="product_id"/>
+                    <field name="ky_ve_id"/>
+                    <field name="sophieu"/>
+                    <field name="state"/>
+                    <filter icon="terp-go-year" string="Chưa dò" name="chuado" domain="[('state','=','new')]" />
+                    <group expand="0" string="Group By...">
+                        <filter name="group_thang" string="Theo tháng" icon="terp-personal" domain="[]" context="{'group_by':'ngay'}"/>
+                        <filter name="group_daily_id" string="Theo đại lý" icon="terp-personal" domain="[]" context="{'group_by':'daily_id'}"/>
+                        <filter name="group_product_id" string="Theo mệnh giá" icon="terp-personal" domain="[]" context="{'group_by':'product_id'}"/>
+                        <filter name="group_ky_ve_id" string="Theo kỳ vé" icon="terp-personal" domain="[]" context="{'group_by':'ky_ve_id'}"/>
+                        <filter name="group_sophieu" string="Theo số phiếu" icon="terp-personal" domain="[]" context="{'group_by':'sophieu'}"/>
+                        <filter name="group_create_uid" string="Theo người nhập" icon="terp-personal" domain="[]" context="{'group_by':'create_uid'}"/>
+                        <filter name="group_state" string="Theo trạng thái" icon="terp-personal" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <record id="ve_loto_tree" model="ir.ui.view">
+            <field name="name">ve.loto.tree</field>
+            <field name="model">ve.loto</field>
+            <field name="arch" type="xml">
+                <tree string="Nhập liệu vé loto" create="false" edit="false">
+                    <field name="name" invisible='1'/>
+                    <field name="daily_id"/>
+                    <field name="ngay"/>
+                    <field name="product_id"/>
+                    <field name="ky_ve_id"/>
+                    <field name="sophieu"/>
+                    <field name="tong_sai_kythuat" sum="Tổng"/>
+                	<field name="tong_cong" sum="Tổng"/>
+                	<field name="thanh_tien" sum="Tổng"/>
+                    <field name="create_uid"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+    	
+		<record id="ve_loto_form" model="ir.ui.view">
+            <field name="name">ve.loto.form</field>
+            <field name="model">ve.loto</field>
+            <field name="arch" type="xml">
+                <form string="Nhập liệu vé loto" version="7.0" create="false" edit="false">
+                	<header>
+	                    <field name="state" widget="statusbar" statusbar_visible="new,done" statusbar_colors='{"new":"blue","done":"blue"}'/>
+	                </header>
+                    <group>
+	                    <group>
+	                        <field name="name" invisible='1'/>
+	                        <field name="daily_id" context="{'default_dai_ly':True}"/>
+	                        <field name="ngay"/>
+	                        <field name="so_chungtu"/>
+	                    </group>
+	                    <group>
+	                    	<field name="product_id" context="{'default_menh_gia':True}"/>
+	                    	<field name="ky_ve_id"/>
+	                    	<field name="sophieu"/>
+	                    </group>
+	                    <group>
+	                    	<field name="create_uid"/>
+	                    	<field name="tong_sai_kythuat"/>
+	                    	<field name="tong_cong"/>
+	                    	<field name="thanh_tien"/>
+	                    </group>
+                    </group>
+                    <group col='22' colspan='22'>
+                    	<group colspan='9' string="2 số">
+                    		<group col='9' colspan='9'>
+                    			<label string="Đầu" colspan='3'/>
+                    			<label string="Cuối" colspan='2'/>
+                    			<label string="Đầu/Cuối" colspan='2'/>
+                    			<label string="18 lô" colspan='2'/>
+                    		</group>
+                    		<group colspan='9'>
+		                        <field name="ve_loto_2_line" nolabel='1'>
+		                        	<tree editable='bottom'>
+				                        <field name="name"/>
+				                        <field name="so_dt_2_d"/>
+				                        <field name="sl_2_d" sum="Tổng"/>
+				                        <field name="so_dt_2_c"/>
+				                        <field name="sl_2_c" sum="Tổng"/>
+				                        <field name="so_dt_2_dc"/>
+				                        <field name="sl_2_dc" sum="Tổng"/>
+				                        <field name="so_dt_2_18"/>
+				                        <field name="sl_2_18" sum="Tổng"/>
+		                        	</tree>
+		                        </field>
+	                        </group>
+	                	</group>
+	                	<group colspan='10' string="3 số">
+	                		<group col='9' colspan='9'>
+                    			<label string="Đầu" colspan='2'/>
+                    			<label string="Cuối" colspan='2'/>
+                    			<label string="Đầu/Cuối" colspan='2'/>
+                    			<label string="7 lô" colspan='2'/>
+                    			<label string="17 lô" colspan='1'/>
+                    		</group>
+	                        <field name="ve_loto_3_line" nolabel='1'>
+	                        	<tree editable='bottom'>
+			                        <field name="so_dt_3_d"/>
+			                        <field name="sl_3_d" sum="Tổng"/>
+			                        <field name="so_dt_3_c"/>
+			                        <field name="sl_3_c" sum="Tổng"/>
+			                        <field name="so_dt_3_dc"/>
+			                        <field name="sl_3_dc" sum="Tổng"/>
+			                        <field name="so_dt_3_7"/>
+			                        <field name="sl_3_7" sum="Tổng"/>
+			                        <field name="so_dt_3_17"/>
+			                        <field name="sl_3_17" sum="Tổng"/>
+	                        	</tree>
+	                        </field>
+	                	</group>
+	                	<group colspan='2' string="4 số">
+		                	<group colspan='2'>
+                    			<label string="16 lô"/>
+                    		</group>
+                    		<group>
+		                        <field name="ve_loto_4_line" nolabel='1'>
+		                        	<tree editable='bottom'>
+				                        <field name="so_dt_4_16" string="Số - DT"/>
+				                        <field name="sl_4_16" sum="Tổng"/>
+		                        	</tree>
+		                        </field>
+	                        </group>
+	                	</group>
+                    </group>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_ve_loto" model="ir.actions.act_window">
+            <field name="name">Nhập liệu vé loto</field>
+            <field name="res_model">ve.loto</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="ve_loto_tree"/>
+            <field name="context">{'search_default_chuado':1}</field>
+            <field name="domain">[('parent_id','=',False)]</field>
+            <field name="search_view_id" ref="ve_loto_filter"/>
+        </record>
+        
+        <record id="action_ve_loto1" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="ve_loto_tree"/>
+            <field name="act_window_id" ref="action_ve_loto"/>
+        </record>
+        
+        <record id="action_ve_loto2" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="ve_loto_form"/>
+            <field name="act_window_id" ref="action_ve_loto"/>
+        </record>
+        
+        <menuitem action="action_ve_loto" id="menu_action_ve_loto" parent="menu_ve_loto" sequence="10" groups="group_ql_ve_loto_man"/>
+        
+        <record id="ve_loto_chinhsua_form" model="ir.ui.view">
+            <field name="name">ve.loto.chinhsua.form</field>
+            <field name="model">ve.loto</field>
+            <field name="arch" type="xml">
+                <form string="Chỉnh sửa vé loto" version="7.0" create="false">
+                	<header>
+	                    <field name="state" widget="statusbar" statusbar_visible="new,done" statusbar_colors='{"new":"blue","done":"blue"}'/>
+	                </header>
+                    <group>
+	                    <group>
+	                        <field name="name" invisible='1'/>
+	                        <field name="daily_id" context="{'default_dai_ly':True}"/>
+	                        <field name="ngay"/>
+	                        <field name="so_chungtu"/>
+	                    </group>
+	                    <group>
+	                    	<field name="product_id" context="{'default_menh_gia':True}"/>
+	                    	<field name="ky_ve_id"/>
+	                    	<field name="sophieu"/>
+	                    </group>
+	                    <group>
+	                    	<field name="create_uid"/>
+	                    	<field name="tong_sai_kythuat"/>
+	                    	<field name="tong_cong"/>
+	                    	<field name="thanh_tien"/>
+	                    </group>
+                    </group>
+                    <notebook>
+                    	<page string="2 số">
+                    		<group>
+		                        <field name="ve_loto_2_line" nolabel='1'>
+		                        	<tree editable='bottom'>
+				                        <field name="name"/>
+				                        <field name="so_dt_2_d"/>
+				                        <field name="sl_2_d" sum="Tổng"/>
+				                        <field name="sl_2_d_trung" sum="Tổng"/>
+				                        <field name="so_dt_2_c"/>
+				                        <field name="sl_2_c" sum="Tổng"/>
+				                        <field name="sl_2_c_trung" sum="Tổng"/>
+				                        <field name="so_dt_2_dc"/>
+				                        <field name="sl_2_dc" sum="Tổng"/>
+				                        <field name="sl_2_dc_trung" sum="Tổng"/>
+				                        <field name="so_dt_2_18"/>
+				                        <field name="sl_2_18" sum="Tổng"/>
+				                        <field name="sl_2_18_trung" sum="Tổng"/>
+		                        	</tree>
+		                        </field>
+	                        </group>
+	                    </page>
+	                	<page string="3 số">
+	                		<group>
+		                        <field name="ve_loto_3_line" nolabel='1'>
+		                        	<tree editable='bottom'>
+				                        <field name="so_dt_3_d"/>
+				                        <field name="sl_3_d" sum="Tổng"/>
+				                        <field name="sl_3_d_trung" sum="Tổng"/>
+				                        <field name="so_dt_3_c"/>
+				                        <field name="sl_3_c" sum="Tổng"/>
+				                        <field name="sl_3_c_trung" sum="Tổng"/>
+				                        <field name="so_dt_3_dc"/>
+				                        <field name="sl_3_dc" sum="Tổng"/>
+				                        <field name="sl_3_dc_trung" sum="Tổng"/>
+				                        <field name="so_dt_3_7"/>
+				                        <field name="sl_3_7" sum="Tổng"/>
+				                        <field name="sl_3_7_trung" sum="Tổng"/>
+				                        <field name="so_dt_3_17"/>
+				                        <field name="sl_3_17" sum="Tổng"/>
+				                        <field name="sl_3_17_trung" sum="Tổng"/>
+		                        	</tree>
+		                        </field>
+		                	</group>
+		                </page>
+	                	<page string="4 số">
+                    		<group>
+		                        <field name="ve_loto_4_line" nolabel='1'>
+		                        	<tree editable='bottom'>
+				                        <field name="so_dt_4_16" string="Số - DT"/>
+				                        <field name="sl_4_16" sum="Tổng"/>
+				                        <field name="sl_4_16_trung" sum="Tổng"/>
+		                        	</tree>
+		                        </field>
+	                        </group>
+	                	</page>
+	                	<page string="Lịch sử">
+                    		<group>
+		                        <field name="lichsu_line" nolabel='1'>
+		                        	<tree string="Nhập liệu vé loto" create="false" edit="false">
+					                    <field name="name" invisible='1'/>
+					                    <field name="daily_id"/>
+					                    <field name="ngay"/>
+					                    <field name="product_id"/>
+					                    <field name="ky_ve_id"/>
+					                    <field name="sophieu"/>
+					                    <field name="tong_sai_kythuat"/>
+					                	<field name="tong_cong"/>
+					                	<field name="thanh_tien"/>
+					                	<field name="create_date"/>
+					                    <field name="create_uid" string="Người chỉnh sửa"/>
+					                    <field name="state" invisible='1'/>
+					                </tree>
+		                        	<form string="Chỉnh sửa vé loto" version="7.0" create="false">
+					                	<header>
+						                    <field name="state" widget="statusbar" statusbar_visible="new,done" statusbar_colors='{"new":"blue","done":"blue"}'/>
+						                </header>
+					                    <group>
+						                    <group>
+						                        <field name="name" invisible='1'/>
+						                        <field name="daily_id" context="{'default_dai_ly':True}"/>
+						                        <field name="ngay"/>
+						                        <field name="so_chungtu"/>
+						                    </group>
+						                    <group>
+						                    	<field name="product_id" context="{'default_menh_gia':True}"/>
+						                    	<field name="ky_ve_id"/>
+						                    	<field name="sophieu"/>
+						                    </group>
+						                    <group>
+						                    	<field name="create_date"/>
+						                    	<field name="create_uid" string="Người chỉnh sửa"/>
+						                    	<field name="tong_sai_kythuat"/>
+						                    	<field name="tong_cong"/>
+						                    	<field name="thanh_tien"/>
+						                    </group>
+					                    </group>
+					                    <notebook>
+					                    	<page string="2 số">
+					                    		<group>
+							                        <field name="ve_loto_2_line" nolabel='1'>
+							                        	<tree editable='bottom'>
+									                        <field name="name"/>
+									                        <field name="so_dt_2_d"/>
+									                        <field name="sl_2_d" sum="Tổng"/>
+									                        <field name="sl_2_d_trung" sum="Tổng"/>
+									                        <field name="so_dt_2_c"/>
+									                        <field name="sl_2_c" sum="Tổng"/>
+									                        <field name="sl_2_c_trung" sum="Tổng"/>
+									                        <field name="so_dt_2_dc"/>
+									                        <field name="sl_2_dc" sum="Tổng"/>
+									                        <field name="sl_2_dc_trung" sum="Tổng"/>
+									                        <field name="so_dt_2_18"/>
+									                        <field name="sl_2_18" sum="Tổng"/>
+									                        <field name="sl_2_18_trung" sum="Tổng"/>
+							                        	</tree>
+							                        </field>
+						                        </group>
+						                    </page>
+						                	<page string="3 số">
+						                		<group>
+							                        <field name="ve_loto_3_line" nolabel='1'>
+							                        	<tree editable='bottom'>
+									                        <field name="so_dt_3_d"/>
+									                        <field name="sl_3_d" sum="Tổng"/>
+									                        <field name="sl_3_d_trung" sum="Tổng"/>
+									                        <field name="so_dt_3_c"/>
+									                        <field name="sl_3_c" sum="Tổng"/>
+									                        <field name="sl_3_c_trung" sum="Tổng"/>
+									                        <field name="so_dt_3_dc"/>
+									                        <field name="sl_3_dc" sum="Tổng"/>
+									                        <field name="sl_3_dc_trung" sum="Tổng"/>
+									                        <field name="so_dt_3_7"/>
+									                        <field name="sl_3_7" sum="Tổng"/>
+									                        <field name="sl_3_7_trung" sum="Tổng"/>
+									                        <field name="so_dt_3_17"/>
+									                        <field name="sl_3_17" sum="Tổng"/>
+									                        <field name="sl_3_17_trung" sum="Tổng"/>
+							                        	</tree>
+							                        </field>
+							                	</group>
+							                </page>
+						                	<page string="4 số">
+					                    		<group>
+							                        <field name="ve_loto_4_line" nolabel='1'>
+							                        	<tree editable='bottom'>
+									                        <field name="so_dt_4_16" string="Số - DT"/>
+									                        <field name="sl_4_16" sum="Tổng"/>
+									                        <field name="sl_4_16_trung" sum="Tổng"/>
+							                        	</tree>
+							                        </field>
+						                        </group>
+						                	</page>
+					                    </notebook>
+					                </form>
+		                        </field>
+	                        </group>
+	                    </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_ve_loto_chinhsua" model="ir.actions.act_window">
+            <field name="name">Chỉnh sửa vé loto</field>
+            <field name="res_model">ve.loto</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="ve_loto_tree"/>
+            <field name="context">{'search_default_chuado':1}</field>
+            <field name="domain">[('parent_id','=',False)]</field>
+            <field name="search_view_id" ref="ve_loto_filter"/>
+        </record>
+        
+        <record id="action_ve_loto_chinhsua1" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="ve_loto_tree"/>
+            <field name="act_window_id" ref="action_ve_loto_chinhsua"/>
+        </record>
+        
+        <record id="action_ve_loto_chinhsua2" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="ve_loto_chinhsua_form"/>
+            <field name="act_window_id" ref="action_ve_loto_chinhsua"/>
+        </record>
+        
+        <menuitem action="action_ve_loto_chinhsua" id="menu_action_ve_loto_chinhsua" parent="menu_ve_loto" sequence="11" groups="group_ql_ve_loto_man"/>
+        
+        <record id="ky_ve_tree" model="ir.ui.view">
+            <field name="name">ky.ve.tree</field>
+            <field name="model">ky.ve</field>
+            <field name="arch" type="xml">
+                <tree string="Kỳ vé" editable='top'>
+                    <field name="ma"/>
+                    <field name="name"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="ky_hien_tai"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="action_ky_ve" model="ir.actions.act_window">
+            <field name="name">Kỳ vé</field>
+            <field name="res_model">ky.ve</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="ky_ve_tree"/>
+        </record>
+        
+        <menuitem action="action_ky_ve" id="menu_action_ky_ve" parent="menu_ve_loto" sequence="40" groups="group_ql_ve_loto_man"/>
+        
+        <record id="dai_duthuong_tree" model="ir.ui.view">
+            <field name="name">dai.duthuong.tree</field>
+            <field name="model">dai.duthuong</field>
+            <field name="arch" type="xml">
+                <tree string="Đài dự thưởng" editable='top'>
+                    <field name="ma"/>
+                    <field name="name"/>
+                    <field name="thu"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="action_dai_duthuong" model="ir.actions.act_window">
+            <field name="name">Đài dự thưởng</field>
+            <field name="res_model">dai.duthuong</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="dai_duthuong_tree"/>
+        </record>
+        
+        <menuitem action="action_dai_duthuong" id="menu_action_dai_duthuong" parent="menu_ve_loto" sequence="50" groups="group_ql_ve_loto_man"/>
+        
+        <!--<record id="loto_view_view_picking_in_form_inherit" model="ir.ui.view">
+            <field name="name">stock.picking.inherit</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+            	<data>
+                	<xpath expr="//button[@name='button_cancel']" position="before">
+                		<button name="print_phieunhap" string="In Phiếu nhập" type="object" class="oe_highlight" attrs="{'invisible':[('type','!=','in')]}" groups="xsbp_ql_ve_loto.group_ql_ve_loto_man"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>-->
+        
+    </data>
+</openerp>

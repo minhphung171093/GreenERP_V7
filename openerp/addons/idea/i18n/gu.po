@@ -1,32 +1,32 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * idea
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2012
+# Gujarati translation for openobject-addons
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-14 00:10+0000\n"
-"PO-Revision-Date: 2015-05-27 09:18+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Gujarati (http://www.transifex.com/projects/p/odoo-7/language/gu/)\n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2013-06-07 19:37+0000\n"
+"PO-Revision-Date: 2012-12-21 23:00+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Gujarati <gu@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: gu\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-11-21 06:14+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #. module: idea
 #: view:idea.category:0
+#: view:idea.idea:0
 msgid "Category"
-msgstr "શ્રેણી"
+msgstr ""
 
 #. module: idea
 #: view:idea.idea:0
 msgid "In Progress"
-msgstr "પ્રગતિમાં છે"
+msgstr ""
 
 #. module: idea
 #: view:idea.idea:0
@@ -37,6 +37,11 @@ msgstr ""
 #: sql_constraint:idea.category:0
 msgid "The name of the category must be unique"
 msgstr "શ્રેણી નામ વિશિષ્ટ હોવું જ જોઈએ"
+
+#. module: idea
+#: view:idea.idea:0
+msgid "By Idea Category"
+msgstr ""
 
 #. module: idea
 #: model:ir.model,name:idea.model_idea_category
@@ -51,7 +56,7 @@ msgstr ""
 #. module: idea
 #: view:idea.idea:0
 msgid "Group By..."
-msgstr "ગ્રુપ દ્વારા..."
+msgstr ""
 
 #. module: idea
 #: field:idea.category,name:0
@@ -59,9 +64,10 @@ msgid "Category Name"
 msgstr ""
 
 #. module: idea
-#: view:idea.idea:0 selection:idea.idea,state:0
+#: view:idea.idea:0
+#: selection:idea.idea,state:0
 msgid "New"
-msgstr "નવું"
+msgstr ""
 
 #. module: idea
 #: view:idea.idea:0
@@ -69,9 +75,10 @@ msgid "New Ideas"
 msgstr "નવા વિચારો"
 
 #. module: idea
-#: view:idea.idea:0 field:idea.idea,state:0
+#: view:idea.idea:0
+#: field:idea.idea,state:0
 msgid "Status"
-msgstr "સ્થિતિ"
+msgstr ""
 
 #. module: idea
 #: sql_constraint:idea.idea:0
@@ -109,7 +116,8 @@ msgid "Email Thread"
 msgstr ""
 
 #. module: idea
-#: view:idea.idea:0 selection:idea.idea,state:0
+#: view:idea.idea:0
+#: selection:idea.idea,state:0
 msgid "Accepted"
 msgstr "સ્વીકૃત"
 
@@ -117,7 +125,7 @@ msgstr "સ્વીકૃત"
 #: model:ir.actions.act_window,name:idea.action_idea_category
 #: model:ir.ui.menu,name:idea.menu_idea_category
 msgid "Categories"
-msgstr "શ્રેણીઓ"
+msgstr ""
 
 #. module: idea
 #: view:idea.idea:0
@@ -127,10 +135,11 @@ msgstr "નકારવા"
 #. module: idea
 #: field:idea.idea,message_ids:0
 msgid "Messages"
-msgstr "સંદેશાઓ"
+msgstr ""
 
 #. module: idea
-#: view:idea.idea:0 model:ir.actions.act_window,name:idea.action_idea_idea
+#: view:idea.idea:0
+#: model:ir.actions.act_window,name:idea.action_idea_idea
 #: model:ir.ui.menu,name:idea.menu_idea_idea
 #: model:ir.ui.menu,name:idea.menu_ideas
 msgid "Ideas"
@@ -149,7 +158,7 @@ msgstr "વિચારો ની  શ્રેણી"
 #. module: idea
 #: field:idea.idea,message_summary:0
 msgid "Summary"
-msgstr "સાર"
+msgstr ""
 
 #. module: idea
 #: help:idea.idea,message_unread:0
@@ -159,7 +168,7 @@ msgstr ""
 #. module: idea
 #: field:idea.idea,description:0
 msgid "Description"
-msgstr "વર્ણન"
+msgstr ""
 
 #. module: idea
 #: selection:idea.idea,state:0
@@ -167,14 +176,15 @@ msgid "Refused"
 msgstr ""
 
 #. module: idea
-#: view:idea.idea:0 field:idea.idea,create_uid:0
+#: view:idea.idea:0
+#: field:idea.idea,create_uid:0
 msgid "Creator"
-msgstr "રચનાર"
+msgstr ""
 
 #. module: idea
 #: view:idea.idea:0
 msgid "Open"
-msgstr "ખોલો"
+msgstr ""
 
 #. module: idea
 #: view:idea.idea:0
@@ -196,7 +206,7 @@ msgstr ""
 #. module: idea
 #: selection:idea.idea,state:0
 msgid "Done"
-msgstr "પુર્ણ થયુ"
+msgstr ""
 
 #. module: idea
 #: view:idea.idea:0

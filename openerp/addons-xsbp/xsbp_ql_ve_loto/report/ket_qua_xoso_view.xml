@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+    	<record id="ket_qua_xoso_report" model="ir.actions.report.xml">
+	        <field name="name">ketqua.xoso.report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">ketqua.xoso</field>
+	        <field name="report_name">Kết quả xổ số</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-odt</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-doc'),('compatible_types','=','oo-odt')]"/>
+	        <field name="parser_loc">xsbp_ql_ve_loto/report/ket_qua_xoso.py</field>
+	        <field name="report_rml">xsbp_ql_ve_loto/report/ket_qua_xoso.odt</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record> 
+    	   
+    	<report 
+			auto="False" 
+			menu="True"
+			id="ket_qua_xoso_report" 
+			model="ketqua.xoso" 
+			name="ket_qua_xoso_report"
+	        string="Kết quả xổ số"
+	        rml="xsbp_ql_ve_loto/report/ket_qua_xoso.odt"/> 	
+	</data>
+</openerp>

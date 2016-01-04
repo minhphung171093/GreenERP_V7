@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+        <record id="view_tonghop_doanhthu_tieuthu_all_report" model="ir.ui.view">
+            <field name="name">tonghop.doanhthu.tieuthu.all.report</field>
+            <field name="model">tonghop.doanhthu.tieuthu.all</field>
+            <field name="arch" type="xml">
+                <form string="Doanh Thu Tiêu Thụ Chi Tiết" version="7.0">
+                    <group colspan='4'>
+                    	<field name='date'/>
+                    </group>
+                    <footer>
+                        <button name="print_report" string="In" type="object" class="oe_highlight" context="{'type':'appointments'}"/>
+                        hoặc
+                        <button string="Hủy bỏ" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_view_tonghop_doanhthu_tieuthu_all_report" model="ir.actions.act_window">
+            <field name="name">Doanh Thu Tiêu Thụ Chi Tiết</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">tonghop.doanhthu.tieuthu.all</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        
+        <menuitem id="menu_action_view_tonghop_doanhthu_tieuthu_all_report" action="action_view_tonghop_doanhthu_tieuthu_all_report" parent="menu_baocao" sequence="21" groups="group_ql_ve_loto_man"/>
+        
+    </data>
+</openerp>
+
