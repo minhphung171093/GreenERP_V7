@@ -128,7 +128,7 @@ class Parser(report_sxw.rml_parse):
         count = 0
         subtotal =0
         res =[]
-        line_limit = 9
+        line_limit = 8
         for data in line:
             count += 1
             res.append({
@@ -141,6 +141,17 @@ class Parser(report_sxw.rml_parse):
                             'quantity': self.convert_amount(data.quantity),
                             'price_unit': self.convert_f_amount(data.price_unit),
                             'price_subtotal': self.convert_amount(data.price_subtotal),
+                            })
+        res.append({
+                            'stt': ' ',
+                            'name': 'Chiết khấu',
+                            'nuoc_sx': ' ',
+                            'so_lo': ' ',
+                            'han_dung': ' ',
+                            'uos_id': ' ',
+                            'quantity': ' ',
+                            'price_unit': ' ',
+                            'price_subtotal': self.convert_amount(float(o.amount_untaxed)/0.98),
                             })
         for data in line:
             if line_limit and line_limit > count:
