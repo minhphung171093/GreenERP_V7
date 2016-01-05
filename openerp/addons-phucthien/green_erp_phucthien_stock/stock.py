@@ -293,6 +293,7 @@ class stock_picking_out(osv.osv):
                                    'product_uom': line.product_uom and line.product_uom.id or False,
                                    'prodlot_id': line.prodlot_id and line.prodlot_id.id or False,
                                    'tracking_id': line.tracking_id and line.tracking_id.id or False,
+                                   'move_id': line.id and line.id or False,
                                    }))
             sql = '''
                 select id from account_invoice where id in (select invoice_id from account_invoice_line where source_id = %s)
@@ -1982,6 +1983,7 @@ class trahang_chokho(osv.osv):
                                        'prodlot_id': gh_line.prodlot_id and gh_line.prodlot_id.id or False,
                                        'tracking_id': gh_line.tracking_id and gh_line.tracking_id.id or False,
                                        'guihang_id': gh_line.id and gh_line.id or False,
+                                       'move_id': gh_line.move_id and gh_line.move_id.id or False,
                                        }))
             return {
                     'name': 'Giao Hàng',
@@ -2017,6 +2019,7 @@ class trahang_chokho_line(osv.osv):
     
     _columns = {
         'trahang_id': fields.many2one('trahang.chokho', 'Tra Hang Hoa', ondelete = 'cascade'),
+        'move_id': fields.many2one('stock.move', 'Stock Move'),
         'product_id': fields.many2one('product.product', 'Sản phẩm'),
         'product_code': fields.char('Mã sản phẩm', size = 1024),
         'product_qty': fields.float('Số lượng'),
@@ -2086,6 +2089,7 @@ class ct_giaohang_line(osv.osv):
         'tracking_id': fields.many2one('stock.tracking', 'Kệ'),
         'guihang_id': fields.many2one('trahang.chokho.line', 'GuiHang_id'),
         'qty_conlai': fields.float('Số lượng còn lại'),
+        'move_id': fields.many2one('stock.move', 'Stock Move'),
     }
     
     def _check_qty_conlai(self, cr, uid, ids, context=None):

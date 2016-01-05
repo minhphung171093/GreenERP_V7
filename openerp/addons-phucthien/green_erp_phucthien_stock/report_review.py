@@ -19,9 +19,9 @@ class dulieu_donghang_review(osv.osv):
     _columns = {
         'name': fields.char('Name', size=1024),
         'tu_ngay':fields.date('Từ ngày'),
-        'den_ngay':fields.date('đến ngày'),
+        'den_ngay':fields.date('Đến ngày'),
         'date_from_title':fields.char('Từ ngày', size=1024),
-        'date_to_title':fields.char('đến ngày', size=1024),
+        'date_to_title':fields.char('Đến ngày', size=1024),
         'dulieu_donghang_review_line':fields.one2many('dulieu.donghang.review.line','dulieu_donghang_id','Review In'),
 
         }

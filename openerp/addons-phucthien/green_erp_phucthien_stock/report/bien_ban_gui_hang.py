@@ -36,7 +36,19 @@ class Parser(report_sxw.rml_parse):
             'get_line':self.get_line,
             'get_picking': self.get_picking,
             'get_stt': self.get_stt,
+            'get_so_hoa_don': self.get_so_hoa_don,
         })
+        
+    def get_so_hoa_don(self, move_id):
+        if move_id:
+            sql = '''
+                select reference_number from account_invoice where id in (select invoice_id from account_invoice_line where source_id = %s)
+            '''%(move_id)
+            self.cr.execute(sql)
+            invoice_id = self.cr.fetchone()
+            return invoice_id and invoice_id[0] or ''
+        else:
+            return ''
     
     def get_stt(self,seq_1,seq):
         stt = 1

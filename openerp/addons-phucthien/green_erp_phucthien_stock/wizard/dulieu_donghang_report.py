@@ -61,7 +61,7 @@ class dulieu_donghang_report(osv.osv_memory):
             sql ='''
                 select sp.name as so_phieuxuat,sp.ngay_gui, rp.name as ten_kh,    
                     sum(spp.sl_nhietke_conlai) as sl_nhietke_conlai,
-                    case when sp.ngay_nhan is not null then 'Da nhan' else 'Chua nhan' end as bb_giaonhan
+                    case when sp.ngay_nhan is not null then 'Đã nhận' else 'Chưa nhận' end as bb_giaonhan
                 from stock_picking_packaging spp
                 left join stock_picking sp on sp.id = spp.picking_id
                 left join res_partner rp ON sp.partner_id = rp.id
@@ -80,7 +80,7 @@ class dulieu_donghang_report(osv.osv_memory):
                     and sp.ngay_nhan is null
                 '''    
             sql+='''
-                 group by sp.name,sp.ngay_gui, rp.name,case when sp.ngay_nhan is not null then 'Da nhan' else 'Chua nhan' end
+                 group by sp.name,sp.ngay_gui, rp.name,case when sp.ngay_nhan is not null then 'Đã nhận' else 'Chưa nhận' end
                 order by sp.name
                 '''
             self.cr.execute(sql)
@@ -109,6 +109,8 @@ class dulieu_donghang_report(osv.osv_memory):
             return mang 
         
         vals = {
+            'date_from_title': 'Từ ngày',
+            'date_to_title': 'Đến ngày',
             'tu_ngay':report.tu_ngay,
             'den_ngay':report.den_ngay,
             'dulieu_donghang_review_line':get_info(report),
