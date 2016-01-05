@@ -1087,13 +1087,13 @@
 	            	<sheet>
 	                    <group col='4' colspan='2'>
                     		<field name="partner_id"/>
-                    		<field name="invoice_id"/>
                     		<field name="picking_id"/>
                     		<field name="date"/>
+                    		<field name="invoice_id" invisible = '1'/>
 	                    </group>
 	                    <notebook>
 							<page string = "Thông tin gửi kho">
-								<field name="trahang_chokho_line" nolabel='1'>
+								<field name="trahang_chokho_line" nolabel='1' readonly = '1'>
 									<tree editable='bottom'>
 										<field name="product_code"/>
 										<field name="product_id" />
@@ -1102,7 +1102,7 @@
 										<field name="product_uom" /> 
 										<field name="prodlot_id" /> 
 										<field name="tracking_id" /> 
-										<field name="move_id" invisible = '0'/> 
+										<field name="move_id" invisible = '1'/> 
 									</tree>
 								</field>
 							</page>
@@ -1136,7 +1136,7 @@
 										<group>
 											<notebook >
 												<page string = "Chi tiết lấy hàng">
-													<field name="ct_giaohang_line" nolabel='1' readonly = '0'>
+													<field name="ct_giaohang_line" nolabel='1' readonly = '1'>
 														<tree editable='bottom'>
 															<field name="product_code"/>
 															<field name="product_id" />
@@ -1144,7 +1144,7 @@
 															<field name="product_uom" /> 
 															<field name="prodlot_id" /> 
 															<field name="tracking_id" /> 
-															<field name="move_id" invisible = '0'/> 
+															<field name="move_id" invisible = '1'/> 
 															<field name="guihang_id" invisible = '1'/> 
 															<field name="qty_conlai" invisible = '1'/> 
 														</tree>
@@ -1169,9 +1169,9 @@
 	            	<sheet>
 	                    <group col='4' colspan='2'>
                     		<field name="partner_id"/>
-                    		<field name="invoice_id"/>
                     		<field name="picking_id"/>
                     		<field name="date"/>
+                    		<field name="invoice_id" invisible = '1'/>
 	                    </group>
 	                    <notebook>
 							<page string = "Chi tiết gửi hàng">
@@ -1183,7 +1183,7 @@
 										<field name="product_uom" /> 
 										<field name="prodlot_id" /> 
 										<field name="tracking_id" /> 
-										<field name="move_id" invisible = '0'/> 
+										<field name="move_id" invisible = '1'/> 
 									</tree>
 								</field>
 							</page>
@@ -1217,7 +1217,7 @@
 										<field name="product_uom" /> 
 										<field name="prodlot_id" /> 
 										<field name="tracking_id" /> 
-										<field name="move_id" invisible = '0'/>
+										<field name="move_id" invisible = '1'/>
 										<field name="guihang_id" invisible = '1'/> 
 										<field name="qty_conlai" invisible = '1'/> 
 									</tree>
