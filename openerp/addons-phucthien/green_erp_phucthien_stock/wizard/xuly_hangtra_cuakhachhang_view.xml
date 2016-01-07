@@ -11,6 +11,24 @@
                 		<field name="name" />
                 		<field name="picking_in_id" domain="[('type','=','in'),('return','=','none'),('state','=','done')]" attrs="{'invisible': [('name','!=','trahang_ncc')],'required': [('name','=','trahang_ncc')]}" />
                 	</group>
+                	
+                	<notebook>
+						<page string = "Hàng bán">
+							<field name="xuly_hangtra_line" nolabel='1'>
+								<tree editable='bottom'>
+									<field name="product_code"/>
+									<field name="product_id" />
+									<field name="product_qty" />
+									<field name="product_uom" /> 
+									<field name="prodlot_id" /> 
+									<field name="tracking_id" /> 
+									<field name="location_id" /> 
+									<field name="location_dest_id" /> 
+									<field name="move_id" invisible = '1'/> 
+								</tree>
+							</field>
+						</page>
+					</notebook>
                     <footer>
                         <button name="mo_phieu_nhap" string="Mở phiếu nhập" attrs="{'invisible': [('name','!=','trahang_ncc')]}" type="object" class="oe_highlight" />
                         <button name="taophieu_chuyenkhohuy" string="Tạo phiếu chuyển kho hàng hủy" attrs="{'invisible': [('name','!=','huy_hang')]}" type="object" class="oe_highlight" />

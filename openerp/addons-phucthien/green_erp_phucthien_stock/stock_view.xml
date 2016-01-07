@@ -63,10 +63,9 @@
                 	<field name="description" attrs="{'invisible':[('type','!=','out')]}"/>
                 </xpath>
                 <xpath expr="//button[@name='button_cancel']" position="after">
-                	<button name="%(action_xuly_hangtra_cuakhachhang)d" type='action' attrs="{'invisible': ['|','|','|',('state','!=','done'),('type','!=','in'),('return','!=','customer'),('loai_xuly','!=',False)]}" string="Xử lý"/>
-                	<button name="xem_phieu_xu_ly" type='object' attrs="{'invisible': [('loai_xuly','=',False)]}" string="Xem phiếu xử lý"/>
+                	<button name="%(action_xuly_hangtra_cuakhachhang)d" type='action' attrs="{'invisible': ['|','|','|',('state','!=','done'),('type','!=','in'),('return','!=','customer')]}" string="Xử lý"/>
+                <!--	<button name="xem_phieu_xu_ly" type='object' attrs="{'invisible': [('loai_xuly','=',False)]}" string="Xem phiếu xử lý"/>  -->
                 	<field name="return" invisible='1'/>
-                	<field name="loai_xuly" invisible='1'/>
                 </xpath>
                 <xpath expr="//field[@name='origin']" position="after">
                 	<field name="ngay_gui" attrs="{'invisible':[('type','!=','out')]}"/>
@@ -85,6 +84,7 @@
                 	<field name="time_ketthuc" attrs="{'invisible':[('type','!=','in')]}"/>
                 	<field name="so_hd" attrs="{'invisible':[('type','!=','in')]}"/>
                 	<field name="tinhtrang_chatluong" attrs="{'invisible':['|',('type','!=','in'),('return','!=','customer')]}"/>
+                	<field name="loai_xuly" invisible='1'/>
                 </xpath>
                 <xpath expr="//field[@name='partner_id']" position="after">
                 	<field name="diachi_giaohang_id" domain="[('partner_id','=',partner_id)]" attrs="{'invisible':[('type','!=','out')]}"/>
@@ -115,6 +115,19 @@
                 	<field name="trang_thai" widget="statusbar" statusbar_visible="draft,confirmed,assigned,done,cancel"/>
                 </xpath>
                 
+            </field>
+        </record>
+        
+        <record id="view_move_picking_tree_inherie_add_field" model="ir.ui.view">
+            <field name="name">stock.move.tree.add.field</field>
+            <field name="model">stock.move</field>
+            <field name="type">tree</field>
+            <field name="inherit_id" ref="stock.view_move_picking_tree" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='product_uos']" position="after">
+                	<field name="flag_trahang" invisible = '1'/>
+                    <field name="qty_hangtra_conlai" invisible = '1'/>
+                </xpath>
             </field>
         </record>
 		

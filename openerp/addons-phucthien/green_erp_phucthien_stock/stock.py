@@ -21,7 +21,41 @@ from datetime import date
 DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 DATE_FORMAT = "%Y-%m-%d"
 
-
+class stock_move(osv.osv):
+    _inherit = 'stock.move'
+    def _qty_hangtra_conlai(self, cr, uid, ids, name, arg, context=None):
+        res = {}
+        for hangtra_line in self.browse(cr,uid,ids):
+            sql = '''
+                select case when sum(product_qty)!=0 then sum(product_qty) else 0 end qty_trahang from stock_move 
+                where hang_tra_kh_move_id = %s and hang_tra_kh_move_id is not null and state = 'done'
+            '''%(hangtra_line.id)
+            cr.execute(sql)
+            qty_trahang = cr.dictfetchone()['qty_trahang']
+            res[hangtra_line.id] = hangtra_line.product_qty-qty_trahang
+        return res
+    _columns = {
+               'hang_tra_kh_move_id': fields.many2one('stock.move','Hang Tra KH'),
+               'qty_hangtra_conlai': fields.function(_qty_hangtra_conlai, string='Số lượng chưa xử lý', type='float'),
+               'flag_trahang': fields.selection([
+                                        ('co', 'Co'), 
+                                        ('khong', 'Khong'),
+                                        ], 'Flag', size=16),
+               }
+    _defaults = {
+                 'flag_trahang': 'khong',
+                 }
+    def create(self, cr, uid, vals, context=None):
+        new_id = super(stock_move, self).create(cr, uid, vals, context)
+        line = self.browse(cr,uid,new_id)
+        sql = '''
+            update stock_move set flag_trahang = 'co' where picking_id in (select id from stock_picking where type = 'in' and return = 'customer')
+        '''
+        cr.execute(sql)
+        return new_id
+stock_move()
+    
+    
 class stock_picking_out(osv.osv):
     _inherit = 'stock.picking.out'
     def _set_minimum_date(self, cr, uid, ids, name, value, arg, context=None):
@@ -191,7 +225,7 @@ class stock_picking_out(osv.osv):
                                      store={
                                                 'stock.picking.out':(lambda self, cr, uid, ids, c={}: ids, ['state','flag'], 10),
                                             }),        
-        'flag':fields.boolean('Check DH chua xu ly')
+        'flag':fields.boolean('Check DH chua xu ly'),
         
     }
     _defaults = {
@@ -271,6 +305,16 @@ class stock_picking_out(osv.osv):
             sql = '''
                 update stock_move set date = '%s' where picking_id = %s
             '''%(line.date, line.id)
+            cr.execute(sql)
+            
+            sql = '''
+                update stock_move set location_dest_id = %s where picking_id in (select id from stock_picking where type = 'in' and return = 'customer') and picking_id = %s
+            '''%(line.location_dest_id.id, line.id)
+            cr.execute(sql)
+            
+            sql = '''
+                update stock_move set location_id = %s where picking_id in (select id from stock_picking where type = 'in' and return = 'customer') and picking_id = %s
+            '''%(line.location_id.id, line.id)
             cr.execute(sql)
         return new_write
     
@@ -542,13 +586,22 @@ class stock_picking_in(osv.osv):
                 update stock_move set date = '%s' where picking_id = %s
             '''%(line.date, line.id)
             cr.execute(sql)
+            
+            sql = '''
+                update stock_move set location_dest_id = %s where picking_id in (select id from stock_picking where type = 'in' and return = 'customer') and picking_id = %s
+            '''%(line.location_dest_id.id, line.id)
+            cr.execute(sql)
+            
+            sql = '''
+                update stock_move set location_id = %s where picking_id in (select id from stock_picking where type = 'in' and return = 'customer') and picking_id = %s
+            '''%(line.location_id.id, line.id)
+            cr.execute(sql)
         return new_write
     def bt_chua_xu_ly(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids, {
                                          'flag': True,
                                          })
 stock_picking_in()
-
 
 class stock_picking(osv.osv):
     _inherit = 'stock.picking'
@@ -725,7 +778,7 @@ class stock_picking(osv.osv):
                                      store={
                                                 'stock.picking':(lambda self, cr, uid, ids, c={}: ids, ['state','flag'], 10),
                                             }),
-        'flag':fields.boolean('Check DH chua xu ly')
+        'flag':fields.boolean('Check DH chua xu ly'),
         
     }
     _defaults = {
@@ -877,6 +930,16 @@ class stock_picking(osv.osv):
             sql = '''
                 update stock_move set date = '%s' where picking_id = %s
             '''%(line.date, line.id)
+            cr.execute(sql)
+            
+            sql = '''
+                update stock_move set location_dest_id = %s where picking_id in (select id from stock_picking where type = 'in' and return = 'customer') and picking_id = %s
+            '''%(line.location_dest_id.id, line.id)
+            cr.execute(sql)
+            
+            sql = '''
+                update stock_move set location_id = %s where picking_id in (select id from stock_picking where type = 'in' and return = 'customer') and picking_id = %s
+            '''%(line.location_id.id, line.id)
             cr.execute(sql)
         return new_write
     

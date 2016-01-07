@@ -45,7 +45,6 @@ class account_invoice(osv.osv):
         'product_id_relate': fields.related('invoice_line','product_id', type='many2one', readonly=True, relation='product.product', string='Sản phẩm'),
         'categ_id_relate': fields.related('product_id_relate', 'categ_id', type='many2one', readonly=True, relation='product.category', string='Danh mục sản phẩm'),
     }
-    
     def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
         if not args:
             args = []

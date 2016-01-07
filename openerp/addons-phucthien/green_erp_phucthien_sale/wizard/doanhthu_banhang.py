@@ -644,6 +644,11 @@ class doanhthu_banhang(osv.osv_memory):
             if address:
                 address = address[:-3]
             return address
+        
+        def display_name_partner(o, partner_id):
+            partner = self.pool.get('res.partner').browse(cr, uid, partner_id)
+            name = partner.name and partner.name or ''
+            return name
 #         
 #         def get_kho(self,invoice_line_id):
 #             sql = '''
@@ -665,7 +670,7 @@ class doanhthu_banhang(osv.osv_memory):
             mang.append((0,0,{
                 'ngay_hd': convert_date(report,line['ngay_hd']),
                 'so_hd': line['so_hd'],
-                'ten_kh':line['partner_id'],
+                'ten_kh':display_name_partner(report,line['partner_id']),
                 'dia_chi': display_address(report,line['partner_id']),
                 'ten_sp': line['ten_sp'],
                 'hang_sx':line['nsx'],

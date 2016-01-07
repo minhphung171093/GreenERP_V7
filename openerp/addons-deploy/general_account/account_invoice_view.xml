@@ -94,12 +94,14 @@
 	        			string="Original invoice"/>
 	        		<field name="reference" readonly="0"/>
 	        		<field name="reference_number" readonly="0"/>
+	        		<field name="is_chiet_khau"/>
 	        		<field name="invoice_refund" invisible="1"/>
 	        		<field name="flag" invisible="1"/>
 	        	</xpath>
 	        	
 	        	<xpath expr="//button[@name='invoice_open']" position="after">
           			<button name="bt_ghinhan_vao_chiphi" type="object" attrs="{'invisible': ['|','|',('state','!=','draft'),('type','!=','out_invoice'),('flag','=',True)]}" string="Ghi nhận vào chi phí" groups="base.group_user"/>
+          			<button name="bt_huy_paid" type="object" attrs="{'invisible': ['|','|',('state','!=','paid'),('type','!=','out_invoice'),('flag','!=',True)]}" string="Hủy" groups="base.group_user"/>
             	</xpath>
 	        	
 	        	<xpath expr="//field[@name='account_id']" position="after">

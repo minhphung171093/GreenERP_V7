@@ -251,15 +251,16 @@ class account_invoice(osv.osv):
         'invoice_refund': fields.boolean('Invoice Refund'),
         'invoice_dieuchinh': fields.boolean('Invoice Refund'),
         'flag': fields.boolean('Flag'),
+         'is_chiet_khau': fields.boolean('Có chiết khấu'),
 #         'supplier_invoice_number': fields.char('Supplier Invoice Number', size=64, help="The reference of this invoice as provided by the supplier.", readonly=True, states={'draft':[('readonly',False)]}),
     }
     _defaults = {
         'flag': False,
         'invoice_refund': False,
         'invoice_dieuchinh': False,
+        'is_chiet_khau': False,
 #         'supplier_invoice_number': '/',
                  }
-    
     
     # kiet Add sinh so number
     def create(self, cr,uid,vals,context=None):
@@ -283,7 +284,8 @@ class account_invoice(osv.osv):
             for line in self.browse(cr,uid,ids):
                 account_ids = self.pool.get('account.account').search(cr,uid,[('code', '=', '64189')])
                 if line.account_id.id == account_ids[0]:
-                    vals.update({'state':'paid'})
+                    vals.update({'state':'paid',
+                                 'flag': True})
                     
 #         if vals.get('state',False):
 #             if vals['state'] == 'open':
@@ -813,6 +815,15 @@ class account_invoice(osv.osv):
 
         osv.osv.unlink(self, cr, uid, unlink_ids, context=context)
         return True
+    
+    def bt_huy_paid(self, cr, uid,ids, context=None):
+        line = self.browse(cr,uid,ids[0])
+        wf_service = netsvc.LocalService('workflow')
+        wf_service.trg_validate(uid, 'account.invoice', line.id, 'invoice_cancel', cr)
+        
+        return self.write(cr,uid,ids,{
+                                      'state': 'cancel',
+                                      })
     
     def bt_ghinhan_vao_chiphi(self, cr, uid,ids, context=None):
         line = self.browse(cr,uid,ids[0])

@@ -254,6 +254,7 @@
 	                                    <field name="scrapped" invisible="1"/>
 	                                    <field name="prodlot_id" groups="stock.group_production_lot" domain="[('product_id','=',product_id)]"/>
 	                                    <field name="tracking_id" groups="stock.group_tracking_lot" invisible="0"/>
+	                                    
 	                                    <button icon="gtk-justify-fill"
 					                    	string="Theo ngày nhập"
 					                    	name="theo_ngay_nhap" type="object"

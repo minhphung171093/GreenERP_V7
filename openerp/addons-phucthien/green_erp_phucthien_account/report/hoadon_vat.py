@@ -142,17 +142,18 @@ class Parser(report_sxw.rml_parse):
                             'price_unit': self.convert_f_amount(data.price_unit),
                             'price_subtotal': self.convert_amount(data.price_subtotal),
                             })
-        res.append({
-                            'stt': ' ',
-                            'name': 'Chiết khấu',
-                            'nuoc_sx': ' ',
-                            'so_lo': ' ',
-                            'han_dung': ' ',
-                            'uos_id': ' ',
-                            'quantity': ' ',
-                            'price_unit': ' ',
-                            'price_subtotal': self.convert_amount(float(o.amount_untaxed)/0.98),
-                            })
+        if o.is_chiet_khau == True:
+            res.append({
+                                'stt': ' ',
+                                'name': 'Chiết khấu',
+                                'nuoc_sx': ' ',
+                                'so_lo': ' ',
+                                'han_dung': ' ',
+                                'uos_id': ' ',
+                                'quantity': ' ',
+                                'price_unit': ' ',
+                                'price_subtotal': self.convert_amount(float(o.amount_untaxed)/0.98),
+                                })
         for data in line:
             if line_limit and line_limit > count:
                 while(line_limit != count):
