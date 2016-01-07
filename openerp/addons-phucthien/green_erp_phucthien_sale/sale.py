@@ -891,46 +891,46 @@ class res_partner(osv.osv):
         for line in self.browse(cr, uid, ids):
             result = False
             if line.date_gpkd:
-                b = datetime.now()
+                b = datetime.datetime.now()
                 a = line.date_gpkd
-                temp = datetime(int(a[0:4]),int(a[5:7]),int(a[8:10]))
+                temp = datetime.datetime(int(a[0:4]),int(a[5:7]),int(a[8:10]))
                 kq = temp - b
                 if kq.days <= 15:
                     result = True
             if line.date_cchn:
-                b = datetime.now()
+                b = datetime.datetime.now()
                 a = line.date_cchn
-                temp = datetime(int(a[0:4]),int(a[5:7]),int(a[8:10]))
+                temp = datetime.datetime(int(a[0:4]),int(a[5:7]),int(a[8:10]))
                 kq = temp - b
                 if kq.days <= 15:
                     result = True
             if line.date_gptn:
-                b = datetime.now()
+                b = datetime.datetime.now()
                 a = line.date_gptn
-                temp = datetime(int(a[0:4]),int(a[5:7]),int(a[8:10]))
+                temp = datetime.datetime(int(a[0:4]),int(a[5:7]),int(a[8:10]))
                 kq = temp - b
                 if kq.days <= 15:
                     result = True
             if line.date_gdp:
-                b = datetime.now()
+                b = datetime.datetime.now()
                 a = line.date_gdp
-                temp = datetime(int(a[0:4]),int(a[5:7]),int(a[8:10]))
+                temp = datetime.datetime(int(a[0:4]),int(a[5:7]),int(a[8:10]))
                 kq = temp - b
                 if kq.days <= 15:
                     result = True
             res[line.id] = result
             if line.date_gpp:
-                b = datetime.now()
+                b = datetime.datetime.now()
                 a = line.date_gpp
-                temp = datetime(int(a[0:4]),int(a[5:7]),int(a[8:10]))
+                temp = datetime.datetime(int(a[0:4]),int(a[5:7]),int(a[8:10]))
                 kq = temp - b
                 if kq.days <= 15:
                     result = True
             res[line.id] = result
             if line.date_gsp:
-                b = datetime.now()
+                b = datetime.datetime.now()
                 a = line.date_gsp
-                temp = datetime(int(a[0:4]),int(a[5:7]),int(a[8:10]))
+                temp = datetime.datetime(int(a[0:4]),int(a[5:7]),int(a[8:10]))
                 kq = temp - b
                 if kq.days <= 15:
                     result = True
@@ -998,78 +998,78 @@ class res_company(osv.osv):
         for line in self.browse(cr, uid, ids):
             result = False
             if line.date_cchn_duoc:
-                b = datetime.now()
+                b = datetime.datetime.now()
                 a = line.date_cchn_duoc
-                temp = datetime(int(a[0:4]),int(a[5:7]),int(a[8:10]))
+                temp = datetime.datetime(int(a[0:4]),int(a[5:7]),int(a[8:10]))
                 kq = temp - b
                 if kq.days <= 1800:
                     result = True
             if line.date_gpddk_kd_thuoc:
-                b = datetime.now()
+                b = datetime.datetime.now()
                 a = line.date_gpddk_kd_thuoc
-                temp = datetime(int(a[0:4]),int(a[5:7]),int(a[8:10]))
+                temp = datetime.datetime(int(a[0:4]),int(a[5:7]),int(a[8:10]))
                 kq = temp - b
                 if kq.days <= 1800:
                     result = True
             if line.date_gdp:
-                b = datetime.now()
+                b = datetime.datetime.now()
                 a = line.date_gdp
-                temp = datetime(int(a[0:4]),int(a[5:7]),int(a[8:10]))
+                temp = datetime.datetime(int(a[0:4]),int(a[5:7]),int(a[8:10]))
                 kq = temp - b
                 if kq.days <= 1800:
                     result = True
             if line.date_gpp:
-                b = datetime.now()
+                b = datetime.datetime.now()
                 a = line.date_gpp
-                temp = datetime(int(a[0:4]),int(a[5:7]),int(a[8:10]))
+                temp = datetime.datetime(int(a[0:4]),int(a[5:7]),int(a[8:10]))
                 kq = temp - b
                 if kq.days <= 1800:
                     result = True
             res[line.id] = result
             if line.date_gsp:
-                b = datetime.now()
+                b = datetime.datetime.now()
                 a = line.date_gsp
-                temp = datetime(int(a[0:4]),int(a[5:7]),int(a[8:10]))
+                temp = datetime.datetime(int(a[0:4]),int(a[5:7]),int(a[8:10]))
                 kq = temp - b
                 if kq.days <= 1800:
                     result = True
             res[line.id] = result
             if line.date_lhtp_daugoi_norinse:
-                b = datetime.now()
+                b = datetime.datetime.now()
                 a = line.date_lhtp_daugoi_norinse
-                temp = datetime(int(a[0:4]),int(a[5:7]),int(a[8:10]))
+                temp = datetime.datetime(int(a[0:4]),int(a[5:7]),int(a[8:10]))
                 kq = temp - b
                 if kq.days <= 1800:
                     result = True
             res[line.id] = result
             if line.date_lhtp_suatam_norinse:
-                b = datetime.now()
+                b = datetime.datetime.now()
                 a = line.date_lhtp_suatam_norinse
-                temp = datetime(int(a[0:4]),int(a[5:7]),int(a[8:10]))
+                temp = datetime.datetime(int(a[0:4]),int(a[5:7]),int(a[8:10]))
                 kq = temp - b
                 if kq.days <= 1800:
                     result = True
             res[line.id] = result
             if line.date_lhtp_rabipur:
-                b = datetime.now()
+                b = datetime.datetime.now()
                 a = line.date_lhtp_rabipur
-                temp = datetime(int(a[0:4]),int(a[5:7]),int(a[8:10]))
+                temp = datetime.datetime(int(a[0:4]),int(a[5:7]),int(a[8:10]))
                 kq = temp - b
                 if kq.days <= 1800:
                     result = True
             res[line.id] = result
             if line.date_lhtp_hepavax_gene_10mcg:
-                b = datetime.now()
+                b = datetime.datetime.now()
                 a = line.date_lhtp_hepavax_gene_10mcg
-                temp = datetime(int(a[0:4]),int(a[5:7]),int(a[8:10]))
+                temp = datetime.datetime(int(a[0:4]),int(a[5:7]),int(a[8:10]))
                 kq = temp - b
                 if kq.days <= 1800:
                     result = True
             res[line.id] = result
             if line.date_lhtp_hepavax_gene_20mcg:
-                b = datetime.now()
+                b = datetime.datetime.now()
                 a = line.date_lhtp_hepavax_gene_20mcg
-                temp = datetime(int(a[0:4]),int(a[5:7]),int(a[8:10]))
+                temp = datetime.datetime(int(a[0:4]),int(a[5:7]),int(a[8:10]))
                 kq = temp - b
                 if kq.days <= 1800:
                     result = True
