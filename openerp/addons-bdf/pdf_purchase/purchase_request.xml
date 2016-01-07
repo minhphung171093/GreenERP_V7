@@ -78,7 +78,7 @@
                     <field name="user_id" attrs="{'invisible':[('state','=','procurement')]}"/>
                     <field name="state" invisible='1'/>
                     <field name="bdf_state"/>
-                    <button name="button_request" icon="approve" string ="Sumbit For Approval" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_purchase_request"/>
+                    <button name="button_request" icon="approve" string ="Submit For Approval" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_purchase_request"/>
             		<button name="button_reject" icon="reject" string ="Reject" class="oe_highlight" type ="object" groups="pdf_purchase.group_country_manager"/>
                 </tree>
             </field>
@@ -99,7 +99,7 @@
                     <field name="user_id" attrs="{'invisible':[('state','=','procurement')]}"/>
                     <field name="state" invisible='1'/>
                     <field name="bdf_state"/>
-                    <button name="button_request" icon="approve" string ="Sumbit For Approval" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_purchase_request"/>
+                    <button name="button_request" icon="approve" string ="Submit For Approval" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_purchase_request"/>
             		<button name="button_reject" icon="reject" string ="Reject" class="oe_highlight" type ="object" groups="pdf_purchase.group_country_manager"/>
                 </tree>
             </field>
@@ -152,7 +152,7 @@
 	                <header>
 	                	<button name="print_purchase" string="Print" type="object" groups="pdf_purchase.group_purchase_request,pdf_purchase.group_procurement,pdf_purchase.group_budget_control"/>
 	                	
-	            		<button name="button_request" states="purchase_request,reject" string ="Sumbit For Approval" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_purchase_request"/>
+	            		<button name="button_request" states="purchase_request,reject" string ="Submit For Approval" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_purchase_request"/>
 	            		<button name="button_request" states="category_manager" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_category_manager"/>
 	            		<button name="button_request" states="channel_manager" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_channel_manager"/>
 	            		<button name="button_request" states="product_manager" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_product_manager"/>
@@ -317,7 +317,7 @@
 	                <header>
 	                	<button name="print_purchase" string="Print" type="object" groups="pdf_purchase.group_purchase_request,pdf_purchase.group_procurement,pdf_purchase.group_budget_control"/>
 	                	
-	            		<button name="button_request" states="purchase_request,reject" string ="Sumbit For Approval" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_purchase_request"/>
+	            		<button name="button_request" states="purchase_request,reject" string ="Submit For Approval" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_purchase_request"/>
 	            		<button name="button_request" states="category_manager" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_category_manager"/>
 	            		<button name="button_request" states="channel_manager" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_channel_manager"/>
 	            		<button name="button_request" states="product_manager" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_product_manager"/>
@@ -482,7 +482,7 @@
 	                <header>
 	                	<button name="print_purchase" string="Print" type="object" groups="pdf_purchase.group_purchase_request,pdf_purchase.group_procurement,pdf_purchase.group_budget_control"/>
 	                	
-	            		<button name="button_request" states="purchase_request,reject" string ="Sumbit For Approval" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_purchase_request"/>
+	            		<button name="button_request" states="purchase_request,reject" string ="Submit For Approval" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_purchase_request"/>
 	            		<button name="button_request" states="category_manager" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_category_manager"/>
 	            		<button name="button_request" states="channel_manager" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_channel_manager"/>
 	            		<button name="button_request" states="product_manager" string ="Approve" class="oe_bdf_approve" type ="object" groups="pdf_purchase.group_product_manager"/>
