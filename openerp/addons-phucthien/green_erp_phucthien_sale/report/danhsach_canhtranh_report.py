@@ -72,9 +72,10 @@ class Parser(report_sxw.rml_parse):
         sql = '''
             select dsct.partner_id as partner_id, rp.internal_code as ma_kh, rp.name as ten_kh,
                 pp.default_code as ma_sp, pp.name_template as ten_sp, mp.name as nsx,pu.name as dvt,
-                dsct.qty as so_luong, spct1.name as spct1, dsct.soluong_canhtranh1 as sl1,
-                spct2.name as spct2, dsct.soluong_canhtranh2 as sl2,
-                spct3.name as spct3, dsct.soluong_canhtranh3 as sl3
+                dsct.qty as so_luong, dsct.qty_con_lai as so_luong_cl,
+                spct1.name as spct1, dsct.soluong_canhtranh1 as sl1, dsct.soluong_canhtranh1_conlai as sl_cl_1,
+                spct2.name as spct2, dsct.soluong_canhtranh2 as sl2, dsct.soluong_canhtranh2_conlai as sl_cl_2,
+                spct3.name as spct3, dsct.soluong_canhtranh3 as sl3, dsct.soluong_canhtranh3_conlai as sl_cl_3
             from danhsach_canhtranh dsct
             left join res_partner rp on dsct.partner_id = rp.id
             left join product_product pp on dsct.product_id=pp.id
