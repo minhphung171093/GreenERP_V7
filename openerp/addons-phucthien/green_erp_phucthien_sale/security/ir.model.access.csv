@@ -24,3 +24,5 @@ access_phucthien_sale_22,congno.mypham.review,model_congno_mypham_review,base.gr
 access_phucthien_sale_23,congno.mypham.review.line,model_congno_mypham_review_line,base.group_user,True,True,True,True
 access_phucthien_sale_24,congno.duocpham.review,model_congno_duocpham_review,base.group_user,True,True,True,True
 access_phucthien_sale_25,congno.duocpham.review.line,model_congno_duocpham_review_line,base.group_user,True,True,True,True
+access_phucthien_sale_26,account.move,account.model_account_move,green_erp_phucthien_sale.group_hopdong_user,True,False,False,False
+access_phucthien_sale_27,account.move.reconcile,account.model_account_move_reconcile,green_erp_phucthien_sale.group_hopdong_user,True,False,False,False
