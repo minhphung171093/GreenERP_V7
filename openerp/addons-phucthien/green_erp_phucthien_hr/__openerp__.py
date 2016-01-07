@@ -8,6 +8,7 @@
     "description": """
     """,
     'update_xml': [
+                   'security/ir.model.access.csv',
                    'hr_view.xml',
                    'hr_contract_view.xml',
                    'hr_payroll_view.xml',

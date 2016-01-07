@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_phucthien_hr_1,tinhtrang.suckhoe,model_tinhtrang_suckhoe,base.group_user,True,True,True,True
+access_phucthien_hr_2,hr.family,model_hr_family,base.group_user,True,True,True,True
+access_phucthien_hr_3,dinhmuc.congtacphi,model_dinhmuc_congtacphi,base.group_user,True,True,True,True
+access_phucthien_hr_4,dm.congtacphi.line,model_dm_congtacphi_line,base.group_user,True,True,True,True
+access_phucthien_hr_4,dm.congtacphi.line,model_dm_congtacphi_line,base.group_user,True,True,True,True
