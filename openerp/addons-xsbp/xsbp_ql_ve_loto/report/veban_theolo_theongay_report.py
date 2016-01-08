@@ -85,7 +85,7 @@ class Parser(report_sxw.rml_parse):
         date_to = wizard_data['date_to']
         sql = '''
             select list_price as menhgia, list_price/10000 as gt_menhgia from product_template where id in 
-                (select product_tmpl_id from product_product where menh_gia = True and id in 
+                (select product_tmpl_id from product_product where id in 
                         (select product_id from ve_loto where (ngay between '%s' and '%s') and state = 'done' ))
         '''%(date_from,date_to)
         self.cr.execute(sql)
@@ -145,6 +145,7 @@ class Parser(report_sxw.rml_parse):
                 tong_dt_4 = line['tong_dt_4']
                 
                 tong_dt = tong_dt_2 + tong_dt_3 + tong_dt_4
+            
 #         sql = '''
 #                 select id from ve_loto where (ngay between '%s' and '%s') and state = 'done' 
 #         '''
