@@ -83,6 +83,11 @@ class Parser(report_sxw.rml_parse):
         wizard_data = self.localcontext['data']['form']
         date_from = wizard_data['date_from']
         date_to = wizard_data['date_to']
+# select pp.id,pt.list_price as menhgia, pt.list_price/10000 as gt_menhgia from product_product pp
+#             left join product_template pt on pp.product_tmpl_id=pt.id
+# 
+# where pp.id in (select product_id from ve_loto where (ngay between '2015-10-01' and '2015-10-02') and state = 'done' )
+
         sql = '''
             select list_price as menhgia, list_price/10000 as gt_menhgia from product_template where id in 
                 (select product_tmpl_id from product_product where id in 
