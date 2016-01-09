@@ -48,6 +48,7 @@ class Parser(report_sxw.rml_parse):
             'get_htxl': self.get_htxl,
             'get_chungtu': self.get_chungtu,
             'get_ngayxuat': self.get_ngayxuat,
+            'get_hinhthuc': self.get_hinhthuc,
         })
         
     def display_address_partner(self, partner):
@@ -132,7 +133,33 @@ class Parser(report_sxw.rml_parse):
             if picking.xuly_huyhang_id.state=='done':
                 date = self.get_vietname_date(picking.xuly_huyhang_id.date[:10])
         return date
+    
+    def get_hinhthuc(self,picking_id):
+        picking_obj = self.pool.get('stock.picking')
+        picking = picking_obj.browse(self.cr, self.uid, picking_id)
+        if picking.type=='internal' and picking.stock_journal_id.source_type=='phys_adj':
+            return 'Hủy hàng'
+        else:
+            return 'Trả hàng cho nhà cung cấp'
         
+#     def get_lines(self):
+#         wizard_data = self.localcontext['data']['form']
+#         tu_ngay = wizard_data['tu_ngay']
+#         den_ngay = wizard_data['den_ngay']
+#         product_id = wizard_data['product_id'][0]
+#         location_id = wizard_data['location_id'][0]
+#         sql = '''
+#             select sp.id as id, sp.origin as origin, sp.date as ngaynhap, spl.name as solo, spl.life_date as handung, sm.product_qty as soluong,
+#                 sp.tinhtrang_chatluong as tinhtrangchatluong, sp.note as ghichu, sp.loai_xuly as loaixuly
+#                 from stock_move sm
+#                 left join stock_picking sp on sp.id=sm.picking_id
+#                 left join stock_production_lot spl on spl.id = sm.prodlot_id 
+#                 where sp.return='customer' and sp.type='in' and sp.state='done' and sm.location_dest_id=%s and sm.product_id=%s
+#                     and date(timezone('UTC',sp.date)) between '%s' and '%s'
+#         '''%(location_id,product_id,tu_ngay,den_ngay)
+#         self.cr.execute(sql)
+#         return self.cr.dictfetchall()
+    
     def get_lines(self):
         wizard_data = self.localcontext['data']['form']
         tu_ngay = wizard_data['tu_ngay']
@@ -140,13 +167,38 @@ class Parser(report_sxw.rml_parse):
         product_id = wizard_data['product_id'][0]
         location_id = wizard_data['location_id'][0]
         sql = '''
-            select sp.id as id, sp.origin as origin, sp.date as ngaynhap, spl.name as solo, spl.life_date as handung, sm.product_qty as soluong,
-                sp.tinhtrang_chatluong as tinhtrangchatluong, sp.note as ghichu, sp.loai_xuly as loaixuly
-                from stock_move sm
-                left join stock_picking sp on sp.id=sm.picking_id
-                left join stock_production_lot spl on spl.id = sm.prodlot_id 
-                where sp.return='customer' and sp.type='in' and sp.state='done' and sm.location_dest_id=%s and sm.product_id=%s
-                    and date(timezone('UTC',sp.date)) between '%s' and '%s'
-        '''%(location_id,product_id,tu_ngay,den_ngay)
+
+            select sp_huyhang.id as id, sp.origin as origin, sp.date as ngaynhap, spl.name as solo, spl.life_date as handung, 
+            case when sm_huyhang.product_qty!=0 then sm_huyhang.product_qty else 0 end sl, 
+            
+            sm_huyhang.date as date_xuat,
+            sp.tinhtrang_chatluong as tinhtrangchatluong, sp.note as ghichu, sp.loai_xuly as loaixuly
+            from stock_move sm_huyhang
+            left join stock_move sm on sm_huyhang.hang_tra_kh_move_id = sm.id 
+            left join stock_picking sp_huyhang on sp_huyhang.id=sm_huyhang.picking_id
+            left join stock_picking sp on sp.id=sm.picking_id
+            left join stock_production_lot spl on spl.id = sm.prodlot_id 
+            left join stock_journal sj on sj.id = sm_huyhang.stock_journal_id 
+            
+            where sp.return='customer' and sp.type='in' and sp.state='done' and sm.location_dest_id=%s and sm.product_id=%s
+                and date(timezone('UTC',sp.date)) between '%s' and '%s' and sp_huyhang.state='done'
+                and sj.source_type='phys_adj' and sp_huyhang.type='internal'
+                
+            union
+            
+            select sp_ncc.id as id, sp.origin as origin, sp.date as ngaynhap, spl.name as solo, spl.life_date as handung, 
+            case when sm_ncc.product_qty!=0 then sm_ncc.product_qty else 0 end sl,
+            sm_ncc.date as date_xuat,
+            sp.tinhtrang_chatluong as tinhtrangchatluong, sp.note as ghichu, sp.loai_xuly as loaixuly
+            from stock_move sm_ncc
+            left join stock_move sm on sm_ncc.hang_tra_kh_move_id = sm.id 
+            left join stock_picking sp_ncc on sp_ncc.id=sm_ncc.picking_id
+            left join stock_picking sp on sp.id=sm.picking_id
+            left join stock_production_lot spl on spl.id = sm.prodlot_id 
+            
+            where sp.return='customer' and sp.type='in' and sp.state='done' and sm.location_dest_id=%s and sm.product_id=%s
+                and date(timezone('UTC',sp.date)) between '%s' and '%s' and sp_ncc.state='done' and sp_ncc.return='supplier'
+
+        '''%(location_id,product_id,tu_ngay,den_ngay,location_id,product_id,tu_ngay,den_ngay)
         self.cr.execute(sql)
         return self.cr.dictfetchall()

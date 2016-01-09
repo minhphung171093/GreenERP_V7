@@ -125,6 +125,7 @@
             <field name="inherit_id" ref="stock.view_move_picking_tree" />
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='product_uos']" position="after">
+                	<field name="hang_tra_kh_move_id" invisible = '1'/>
                 	<field name="flag_trahang" invisible = '1'/>
                     <field name="qty_hangtra_conlai" invisible = '1'/>
                 </xpath>

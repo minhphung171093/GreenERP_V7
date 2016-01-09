@@ -69,6 +69,8 @@ class Parser(report_sxw.rml_parse):
         product_ids = wizard_data['product_ids']
         categ_ids = wizard_data['categ_ids']
         nsx_ids = wizard_data['nsx_ids']
+        if not partner_ids:
+            partner_ids = self.pool.get('res.partner').search(self.cr,self.uid, [('customer','=',True)])
         sql = '''
             select dsct.partner_id as partner_id, rp.internal_code as ma_kh, rp.name as ten_kh,
                 pp.default_code as ma_sp, pp.name_template as ten_sp, mp.name as nsx,pu.name as dvt,
@@ -119,7 +121,7 @@ class Parser(report_sxw.rml_parse):
         return self.cr.dictfetchall()
     
     def display_address(self, partner_id):
-        partner = self.pool.get('res.partner').browse(self.cr, 1, partner_id)
+        partner = self.pool.get('res.partner').browse(self.cr, self.uid, partner_id)
         address = partner.street and partner.street + ' , ' or ''
         address += partner.street2 and partner.street2 + ' , ' or ''
         address += partner.city and partner.city.name + ' , ' or ''

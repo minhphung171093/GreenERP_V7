@@ -3,3 +3,6 @@ access_phucthien_hr_1,tinhtrang.suckhoe,model_tinhtrang_suckhoe,base.group_user,
 access_phucthien_hr_2,hr.family,model_hr_family,base.group_user,True,True,True,True
 access_phucthien_hr_3,dinhmuc.congtacphi,model_dinhmuc_congtacphi,base.group_user,True,True,True,True
 access_phucthien_hr_4,dm.congtacphi.line,model_dm_congtacphi_line,base.group_user,True,True,True,True
+access_phucthien_hr_5,hr.template,model_hr_template,base.group_user,True,True,True,True
+access_phucthien_hr_6,hr.template.line,model_hr_template_line,base.group_user,True,True,True,True
+access_phucthien_hr_7,loai.hd,model_loai_hd,base.group_user,True,True,True,True

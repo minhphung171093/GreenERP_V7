@@ -2555,7 +2555,14 @@ class stock_partial_picking(osv.osv_memory):
     
 stock_partial_picking()
 
+class stock_return_picking_memory(osv.osv):
+    _inherit = "stock.return.picking.memory"
 
+    _columns = {
+        'hang_tra_kh_move_id': fields.many2one('stock.move', "Move hang tra"),
+    }
+
+stock_return_picking_memory()
 class stock_return_picking(osv.osv):
     _inherit = 'stock.return.picking'
 
@@ -2595,12 +2602,26 @@ class stock_return_picking(osv.osv):
                     
             result1 = []
             return_history = self.get_return_history(cr, uid, record_id, context)       
+            
+#             if context.get('xuly_trahang_ncc',False) and context['xuly_trahang_ncc']:
+#                 for ctx in context['xuly_trahang_ncc']:
+#                     result1.append({'product_id': False, 'quantity': ctx['product_qty'],'move_id':False, 'prodlot_id': False})
+#             else:
             for line in pick.move_lines:
-                if line.state in ('cancel') or line.scrapped:
-                    continue
-                qty = line.product_qty - return_history.get(line.id, 0)
-                if qty > 0:
-                    result1.append({'product_id': line.product_id.id, 'quantity': qty,'move_id':line.id, 'prodlot_id': line.prodlot_id and line.prodlot_id.id or False})
+                if context.get('xuly_trahang_ncc',False) and context['xuly_trahang_ncc']:
+                    for ctx in context['xuly_trahang_ncc']:
+                        if line.product_id.id == ctx['product_id']:
+                            if line.state in ('cancel') or line.scrapped:
+                                continue
+                            qty = line.product_qty - return_history.get(line.id, 0)
+                            if qty - ctx['product_qty'] > 0:
+                                result1.append({'product_id': line.product_id.id, 'quantity': ctx['product_qty'],'move_id':line.id, 'prodlot_id': line.prodlot_id and line.prodlot_id.id or False, 'hang_tra_kh_move_id': ctx['move_id']})
+                else:        
+                    if line.state in ('cancel') or line.scrapped:
+                        continue
+                    qty = line.product_qty - return_history.get(line.id, 0)
+                    if qty > 0:
+                        result1.append({'product_id': line.product_id.id, 'quantity': qty,'move_id':line.id, 'prodlot_id': line.prodlot_id and line.prodlot_id.id or False})
             if 'product_return_moves' in fields:
                 res.update({'product_return_moves': result1})
         return res
@@ -2741,8 +2762,13 @@ class stock_return_picking(osv.osv):
                                             'location_id': new_location, 
                                             'location_dest_id': move.location_id.id,
                                             'date': date_cur,
+                                            'hang_tra_kh_move_id': data_get.hang_tra_kh_move_id and data_get.hang_tra_kh_move_id.id or False,
                 })
                 move_obj.write(cr, uid, [move.id], {'move_history_ids2':[(4,new_move)]}, context=context)
+#             sql = '''
+#                 update stock_move set hang_tra_kh_move_id = null where product_id = %s and picking_id = %s and hang_tra_kh_move_id is not null
+#             '''%(move.product_id.id, move.picking_id.id)
+#             cr.execute(sql)
         if not returned_lines:
             raise osv.except_osv(_('Warning!'), _("Please specify at least one non-zero quantity."))
         #LY make it can be invoiced

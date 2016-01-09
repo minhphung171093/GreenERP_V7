@@ -28,7 +28,7 @@ class stock_move(osv.osv):
         for hangtra_line in self.browse(cr,uid,ids):
             sql = '''
                 select case when sum(product_qty)!=0 then sum(product_qty) else 0 end qty_trahang from stock_move 
-                where hang_tra_kh_move_id = %s and hang_tra_kh_move_id is not null and state = 'done'
+                where hang_tra_kh_move_id = %s and hang_tra_kh_move_id is not null
             '''%(hangtra_line.id)
             cr.execute(sql)
             qty_trahang = cr.dictfetchone()['qty_trahang']

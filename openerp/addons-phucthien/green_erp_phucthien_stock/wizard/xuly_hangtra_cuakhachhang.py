@@ -55,22 +55,51 @@ class xuly_hangtra_cuakhachhang(osv.osv_memory):
     }
     
     def mo_phieu_nhap(self, cr, uid, ids, context=None):
-        line = self.browse(cr, uid, ids[0])
+        if context is None:
+            context = {}
+        xuly = self.browse(cr, uid, ids[0])
+        xuly_trahang_ncc = []
         return_cus_id = context.get('active_id', False)
         if return_cus_id:
-            self.pool.get('stock.picking.out').write(cr, uid, [return_cus_id], {'loai_xuly':line.name,'xuly_thncc_id': line.picking_in_id.id})
+            self.pool.get('stock.picking.out').write(cr, uid, [return_cus_id], {'loai_xuly':xuly.name,'xuly_thncc_id': xuly.picking_in_id.id})
         res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
-                                        'stock', 'view_picking_form')
+                                        'stock', 'view_stock_return_picking_form')
+        for line in xuly.xuly_hangtra_line:
+            xuly_trahang_ncc.append({
+                                            'xuly_id': line.xuly_id and line.xuly_id.id or False,
+                                            'product_code': line.product_code,
+                                            'product_id': line.product_id and line.product_id.id or False,
+                                            'product_qty': line.product_qty,
+                                            'product_uom': line.product_uom and line.product_uom.id or False,
+                                            'prodlot_id': line.prodlot_id and line.prodlot_id.id or False,
+                                            'tracking_id': line.tracking_id and line.tracking_id.id or False,
+                                            'location_id': line.location_id and line.location_id.id or False,
+                                            'location_dest_id': line.location_dest_id and line.location_dest_id.id or False,
+                                            'move_id': line.move_id and line.move_id.id or False,
+                                          })
+#             sql = '''
+#                 update stock_move set hang_tra_kh_move_id = %s where picking_id = %s and product_id = %s and hang_tra_kh_move_id is null
+#             '''%(line.move_id.id, xuly.picking_in_id.id, line.product_id.id)
+#             cr.execute(sql)
+        ctx = context
+        ctx.update({
+            'active_id': xuly.picking_in_id.id,
+            'active_ids': [xuly.picking_in_id.id],
+            'active_model': 'stock.picking.in',
+            'xuly_trahang_ncc': xuly_trahang_ncc,
+        })
         return {
                     'name': 'Phiếu nhập hàng mua',
                     'view_type': 'form',
                     'view_mode': 'form',
-                    'res_model': 'stock.picking.in',
+                    'res_model': 'stock.return.picking',
                     'domain': [],
-                    'res_id': line.picking_in_id.id,
+#                     'res_id': xuly.picking_in_id.id,
                     'type': 'ir.actions.act_window',
                     'view_id': res[1],
-                    'target': 'current',
+                    'context':ctx,
+                    'target': 'new',
+                    
                 }
         
     def taophieu_chuyenkhohuy(self, cr, uid, ids, context=None):
