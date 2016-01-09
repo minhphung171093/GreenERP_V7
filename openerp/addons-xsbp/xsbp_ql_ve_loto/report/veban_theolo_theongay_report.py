@@ -83,28 +83,17 @@ class Parser(report_sxw.rml_parse):
         wizard_data = self.localcontext['data']['form']
         date_from = wizard_data['date_from']
         date_to = wizard_data['date_to']
-# select pp.id,pt.list_price as menhgia, pt.list_price/10000 as gt_menhgia from product_product pp
-#             left join product_template pt on pp.product_tmpl_id=pt.id
-# 
-# where pp.id in (select product_id from ve_loto where (ngay between '2015-10-01' and '2015-10-02') and state = 'done' )
-
-        sql = '''
-            select list_price as menhgia, list_price/10000 as gt_menhgia from product_template where id in 
-                (select product_tmpl_id from product_product where id in 
-                        (select product_id from ve_loto where (ngay between '%s' and '%s') and state = 'done' ))
+        sql='''
+                select pp.id as product_id,pt.list_price as menhgia from product_product pp
+                    left join product_template pt on pp.product_tmpl_id=pt.id
+         
+                    where pp.id in (select product_id from ve_loto where (ngay between '%s' and '%s') and state = 'done' )
         '''%(date_from,date_to)
         self.cr.execute(sql)
-#         sql = '''
-#                 select id from ve_loto where (ngay between '%s' and '%s') and state = 'done' 
-#         '''%(date_from,date_to)
-#         self.cr.execute(sql)
-#         menhgia_ids = [r[0] for r in self.cr.fetchall()]
-#         for loto in ve_loto_obj.browse(self.cr, self.uid, menhgia_ids):
-#             gt_menhgia = loto.product_id.list_price/10000
-#             menhgia = loto.product_id.list_price
         for loto in self.cr.dictfetchall():
-            gt_menhgia = loto['gt_menhgia']
+            gt_menhgia = loto['menhgia']/10000
             menhgia = loto['menhgia']
+            product_id = loto['product_id']
             sql='''
                 select sl_2_d_trung,sl_2_d,sl_2_c_trung,sl_2_c,sl_2_dc_trung,sl_2_dc,sl_2_18_trung,sl_2_18,sl_3_d_trung,sl_3_d,sl_3_c_trung,sl_3_c,sl_3_dc_trung,sl_3_dc,
                         sl_3_7_trung,sl_3_7,sl_3_17_trung,sl_3_17,sl_4_16_trung,sl_4_16,
@@ -124,30 +113,31 @@ class Parser(report_sxw.rml_parse):
                         case when sum(coalesce(sl_4_16,0)*%(menh_gia)s) != 0 then sum(coalesce(sl_4_16,0)*%(menh_gia)s) else 0 end tong_dt_4
                         
                 from ve_loto_line  
-                where ve_loto_id in (select id from ve_loto where (ngay between '%(date_from)s' and '%(date_to)s') and state = 'done')
+                where ve_loto_id in (select id from ve_loto where (ngay between '%(date_from)s' and '%(date_to)s') and product_id = %(product_id)s and state = 'done')
                 group by sl_2_d_trung,sl_2_d,sl_2_c_trung,sl_2_c,sl_2_dc_trung,sl_2_dc,sl_2_18_trung,sl_2_18,sl_3_d_trung,sl_3_d,sl_3_c_trung,sl_3_c,sl_3_dc_trung,sl_3_dc,
                         sl_3_7_trung,sl_3_7,sl_3_17_trung,sl_3_17,sl_4_16_trung,sl_4_16
             '''%({'date_from':date_from,
                   'date_to':date_to,
-                  'menh_gia':menhgia})
+                  'menh_gia':menhgia,
+                  'product_id':product_id})
             self.cr.execute(sql)
             for line in self.cr.dictfetchall():
-                tong_dt_2_d = line['tong_dt_2_d']
-                tong_dt_2_c = line['tong_dt_2_c']
-                tong_dt_2_dc = line['tong_dt_2_dc']
-                tong_dt_2_18 = line['tong_dt_2_18']
+                tong_dt_2_d += line['tong_dt_2_d']
+                tong_dt_2_c += line['tong_dt_2_c']
+                tong_dt_2_dc += line['tong_dt_2_dc']
+                tong_dt_2_18 += line['tong_dt_2_18']
                 tong_dt_2 = tong_dt_2_d + tong_dt_2_c + tong_dt_2_dc + tong_dt_2_18
                 # 3 so 
-                tong_dt_3_d = line['tong_dt_3_d']
-                tong_dt_3_c = line['tong_dt_3_c']
-                tong_dt_3_dc = line['tong_dt_3_dc']
-                tong_dt_3_7 = line['tong_dt_3_7']
-                tong_dt_3_17 = line['tong_dt_3_17']
+                tong_dt_3_d += line['tong_dt_3_d']
+                tong_dt_3_c += line['tong_dt_3_c']
+                tong_dt_3_dc += line['tong_dt_3_dc']
+                tong_dt_3_7 += line['tong_dt_3_7']
+                tong_dt_3_17 += line['tong_dt_3_17']
                 tong_dt_3 = tong_dt_3_d + tong_dt_3_c + tong_dt_3_dc + tong_dt_3_7 + tong_dt_3_17
                 #4 so
-                tong_dt_4_16 = line['tong_dt_4_16']
+                tong_dt_4_16 += line['tong_dt_4_16']
                 
-                tong_dt_4 = line['tong_dt_4']
+                tong_dt_4 += line['tong_dt_4']
                 
                 tong_dt = tong_dt_2 + tong_dt_3 + tong_dt_4
             
@@ -276,7 +266,7 @@ class Parser(report_sxw.rml_parse):
                     tong_tt += thanhtien
                     tong_tt_4 += thanhtien
                     
-        res = {
+        res = [{
             'tong_dt_2_d': tong_dt_2_d,
             'tong_tt_2_d': tong_tt_2_d,
             'tong_dt_2_c': tong_dt_2_c,
@@ -305,7 +295,8 @@ class Parser(report_sxw.rml_parse):
             'tong_tt_4': tong_tt_4,
             'tong_dt': tong_dt,
             'tong_tt': tong_tt,
-        }
+        }]
+        print res
         return res
     
     
