@@ -63,9 +63,10 @@
                 	<field name="description" attrs="{'invisible':[('type','!=','out')]}"/>
                 </xpath>
                 <xpath expr="//button[@name='button_cancel']" position="after">
-                	<button name="%(action_xuly_hangtra_cuakhachhang)d" type='action' attrs="{'invisible': ['|','|','|',('state','!=','done'),('type','!=','in'),('return','!=','customer')]}" string="Xử lý"/>
+                	<button name="%(action_xuly_hangtra_cuakhachhang)d" type='action' attrs="{'invisible': ['|','|','|','|',('state','!=','done'),('type','!=','in'),('return','!=','customer'),('flag_bt_xuly_invisible','=',False)]}" string="Xử lý"/>
                 <!--	<button name="xem_phieu_xu_ly" type='object' attrs="{'invisible': [('loai_xuly','=',False)]}" string="Xem phiếu xử lý"/>  -->
                 	<field name="return" invisible='1'/>
+                	<field name="flag_bt_xuly_invisible" invisible='1'/>
                 </xpath>
                 <xpath expr="//field[@name='origin']" position="after">
                 	<field name="ngay_gui" attrs="{'invisible':[('type','!=','out')]}"/>

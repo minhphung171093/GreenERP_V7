@@ -28,7 +28,7 @@ class stock_move(osv.osv):
         for hangtra_line in self.browse(cr,uid,ids):
             sql = '''
                 select case when sum(product_qty)!=0 then sum(product_qty) else 0 end qty_trahang from stock_move 
-                where hang_tra_kh_move_id = %s and hang_tra_kh_move_id is not null
+                where hang_tra_kh_move_id = %s and hang_tra_kh_move_id is not null and state != 'cancel'
             '''%(hangtra_line.id)
             cr.execute(sql)
             qty_trahang = cr.dictfetchone()['qty_trahang']
@@ -179,7 +179,15 @@ class stock_picking_out(osv.osv):
             if tt.state == 'done':
                 res[tt.id]='done'
         return res
-    
+    def _xuly_invisible(self, cr, uid, ids, name, arg, context=None):
+        res = {}
+        stock_obj = self.pool.get('stock.picking')
+        for tt in self.browse(cr,uid,ids):
+            res[tt.id] = False
+            for line in tt.move_lines:
+                if line.qty_hangtra_conlai > 0:
+                    res[tt.id] = True
+        return res
     _columns = {
         'description': fields.text('Description', track_visibility='onchange'),
         'ngay_gui':fields.date('Ngày gửi'),
@@ -226,7 +234,8 @@ class stock_picking_out(osv.osv):
                                                 'stock.picking.out':(lambda self, cr, uid, ids, c={}: ids, ['state','flag'], 10),
                                             }),        
         'flag':fields.boolean('Check DH chua xu ly'),
-        
+        'flag_bt_xuly_invisible': fields.function(_xuly_invisible, string='Xử lý ẩn hiện',
+            type='boolean'),
     }
     _defaults = {
                  'flag': False,
@@ -487,6 +496,16 @@ class stock_picking_in(osv.osv):
                 res[tt.id]='done'
         return res
     
+    def _xuly_invisible(self, cr, uid, ids, name, arg, context=None):
+        res = {}
+        stock_obj = self.pool.get('stock.picking')
+        for tt in self.browse(cr,uid,ids):
+            res[tt.id] = False
+            for line in tt.move_lines:
+                if line.qty_hangtra_conlai > 0:
+                    res[tt.id] = True
+        return res
+    
     _columns = {
         'description': fields.text('Description', track_visibility='onchange'),
         'nhiet_do':fields.char('Nhiệt độ'),
@@ -529,8 +548,9 @@ class stock_picking_in(osv.osv):
                                      store={
                                             'stock.picking.in':(lambda self, cr, uid, ids, c={}: ids, ['state','flag'], 10),
                                             }),
-        'flag':fields.boolean('Check DH chua xu ly')
-        
+        'flag':fields.boolean('Check DH chua xu ly'),
+        'flag_bt_xuly_invisible': fields.function(_xuly_invisible, string='Xử lý ẩn hiện',
+            type='boolean'),
     }
     _defaults = {
                  'flag': False,
@@ -725,7 +745,15 @@ class stock_picking(osv.osv):
             if tt.state == 'done':
                 res[tt.id]='done'
         return res
-    
+    def _xuly_invisible(self, cr, uid, ids, name, arg, context=None):
+        res = {}
+        stock_obj = self.pool.get('stock.picking')
+        for tt in self.browse(cr,uid,ids):
+            res[tt.id] = False
+            for line in tt.move_lines:
+                if line.qty_hangtra_conlai > 0:
+                    res[tt.id] = True
+        return res
     _columns = {
         'picking_packaging_line': fields.one2many('stock.picking.packaging','picking_id','Đóng gói'),
         'description': fields.text('Description', track_visibility='onchange'),
@@ -779,7 +807,8 @@ class stock_picking(osv.osv):
                                                 'stock.picking':(lambda self, cr, uid, ids, c={}: ids, ['state','flag'], 10),
                                             }),
         'flag':fields.boolean('Check DH chua xu ly'),
-        
+        'flag_bt_xuly_invisible': fields.function(_xuly_invisible, string='Xử lý ẩn hiện',
+            type='boolean'),
     }
     _defaults = {
                  'flag': False,
