@@ -79,6 +79,10 @@ class Parser(report_sxw.rml_parse):
         # tong cong
         tong_dt = 0
         tong_tt = 0
+        
+#         slan_trung = 0
+#         sluong_trung = 0
+        thanhtien = 0
         ve_loto_obj = self.pool.get('ve.loto')
         wizard_data = self.localcontext['data']['form']
         date_from = wizard_data['date_from']
@@ -95,9 +99,7 @@ class Parser(report_sxw.rml_parse):
             menhgia = loto['menhgia']
             product_id = loto['product_id']
             sql='''
-                select sl_2_d_trung,sl_2_d,sl_2_c_trung,sl_2_c,sl_2_dc_trung,sl_2_dc,sl_2_18_trung,sl_2_18,sl_3_d_trung,sl_3_d,sl_3_c_trung,sl_3_c,sl_3_dc_trung,sl_3_dc,
-                        sl_3_7_trung,sl_3_7,sl_3_17_trung,sl_3_17,sl_4_16_trung,sl_4_16,
-                        case when sum(coalesce(sl_2_d,0)*%(menh_gia)s) != 0 then sum(coalesce(sl_2_d,0)*%(menh_gia)s) else 0 end tong_dt_2_d,
+                select  case when sum(coalesce(sl_2_d,0)*%(menh_gia)s) != 0 then sum(coalesce(sl_2_d,0)*%(menh_gia)s) else 0 end tong_dt_2_d,
                         case when sum(coalesce(sl_2_c,0)*%(menh_gia)s) != 0 then sum(coalesce(sl_2_c,0)*%(menh_gia)s) else 0 end tong_dt_2_c,
                         case when sum(coalesce(sl_2_dc,0)*%(menh_gia)s) != 0 then sum(coalesce(sl_2_dc,0)*%(menh_gia)s) else 0 end tong_dt_2_dc,
                         case when sum(coalesce(sl_2_18,0)*%(menh_gia)s) != 0 then sum(coalesce(sl_2_18,0)*%(menh_gia)s) else 0 end tong_dt_2_18,
@@ -114,8 +116,6 @@ class Parser(report_sxw.rml_parse):
                         
                 from ve_loto_line  
                 where ve_loto_id in (select id from ve_loto where (ngay between '%(date_from)s' and '%(date_to)s') and product_id = %(product_id)s and state = 'done')
-                group by sl_2_d_trung,sl_2_d,sl_2_c_trung,sl_2_c,sl_2_dc_trung,sl_2_dc,sl_2_18_trung,sl_2_18,sl_3_d_trung,sl_3_d,sl_3_c_trung,sl_3_c,sl_3_dc_trung,sl_3_dc,
-                        sl_3_7_trung,sl_3_7,sl_3_17_trung,sl_3_17,sl_4_16_trung,sl_4_16
             '''%({'date_from':date_from,
                   'date_to':date_to,
                   'menh_gia':menhgia,
@@ -140,40 +140,14 @@ class Parser(report_sxw.rml_parse):
                 tong_dt_4 += line['tong_dt_4']
                 
                 tong_dt = tong_dt_2 + tong_dt_3 + tong_dt_4
-            
-#         sql = '''
-#                 select id from ve_loto where (ngay between '%s' and '%s') and state = 'done' 
-#         '''
-#         self.cr.execute(sql)
-#         ve_loto_ids = [r[0] for r in self.cr.fetchall()]   
-#         ve_loto_obj = self.pool.get('ve.loto')
-# #         ve_loto_ids = ve_loto_obj.search(self.cr, self.uid, [('ngay','>=',date_from),('ngay','<=',date_to),('state','=','done')])
-#     
-#         for loto in ve_loto_obj.browse(self.cr, self.uid, ve_loto_ids):
-#             gt_menhgia = loto.product_id.list_price/10000
-#             menhgia = loto.product_id.list_price
-#             for line in loto.ve_loto_2_line:
-#                 # 2 so
-#                 tong_dt_2_d += line.sl_2_d*menhgia
-#                 tong_dt_2_c += line.sl_2_c*menhgia
-#                 tong_dt_2_dc += line.sl_2_dc*menhgia
-#                 tong_dt_2_18 += line.sl_2_18*menhgia
-#                 tong_dt_2 += line.sl_2_d*menhgia + line.sl_2_c*menhgia + line.sl_2_dc*menhgia + line.sl_2_18*menhgia
-#                 # 3 so
-#                 tong_dt_3_d += line.sl_3_d*menhgia
-#                 tong_dt_3_c += line.sl_3_c*menhgia
-#                 tong_dt_3_dc += line.sl_3_dc*menhgia
-#                 tong_dt_3_7 += line.sl_3_7*menhgia
-#                 tong_dt_3_17 += line.sl_3_17*menhgia
-#                 tong_dt_3 += line.sl_3_d*menhgia + line.sl_3_c*menhgia + line.sl_3_dc*menhgia + line.sl_3_7*menhgia + line.sl_3_17*menhgia
-#                 #4 so
-#                 tong_dt_4_16 += line.sl_4_16*menhgia
-#                 
-#                 tong_dt_4 += line.sl_4_16*menhgia
-#                 
-#                 tong_dt += line.sl_2_d*menhgia + line.sl_2_c*menhgia + line.sl_2_dc*menhgia + line.sl_2_18*menhgia + line.sl_3_d*menhgia + line.sl_3_c*menhgia + line.sl_3_dc*menhgia + line.sl_3_7*menhgia + line.sl_3_17*menhgia+ line.sl_4_16*menhgia
-                
-                # 2 so
+            sql = '''
+                select sl_2_d_trung,sl_2_d,sl_2_c_trung,sl_2_c,sl_2_dc_trung,sl_2_dc,sl_2_18_trung,sl_2_18,sl_3_d_trung,sl_3_d,sl_3_c_trung,sl_3_c,sl_3_dc_trung,sl_3_dc,
+                    sl_3_7_trung,sl_3_7,sl_3_17_trung,sl_3_17,sl_4_16_trung,sl_4_16
+                from ve_loto_line  
+                where ve_loto_id in (select id from ve_loto where (ngay between '%s' and '%s') and product_id = %s and state = 'done')
+            '''%(date_from,date_to,product_id)
+            self.cr.execute(sql)
+            for line in self.cr.dictfetchall():
                 if line['sl_2_d_trung']:
                     slan_trung = line['sl_2_d_trung']
                     sluong_trung = line['sl_2_d']
@@ -182,7 +156,7 @@ class Parser(report_sxw.rml_parse):
                     tong_tt_2_d += thanhtien
                     tong_tt += thanhtien
                     tong_tt_2 += thanhtien
-
+    
                 if line['sl_2_c_trung']:
                     slan_trung = line['sl_2_c_trung']
                     sluong_trung = line['sl_2_c']
@@ -265,7 +239,7 @@ class Parser(report_sxw.rml_parse):
                     tong_tt_4_16 += thanhtien
                     tong_tt += thanhtien
                     tong_tt_4 += thanhtien
-                    
+                
         res = [{
             'tong_dt_2_d': tong_dt_2_d,
             'tong_tt_2_d': tong_tt_2_d,
@@ -296,7 +270,7 @@ class Parser(report_sxw.rml_parse):
             'tong_dt': tong_dt,
             'tong_tt': tong_tt,
         }]
-        print res
+        
         return res
     
     
