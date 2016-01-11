@@ -78,6 +78,7 @@
                                     <field name="stage_id"/>
                                     <button name="task_login" attrs="{'invisible':[('flag','=',False)]}" string="Paused" type="object" icon="logout" class="oe_highlight"/>
                                     <button name="task_logout" attrs="{'invisible':[('flag','=',True)]}" string="Working" type="object" icon="login" class="oe_highlight"/>
+                                    <button name="task_delivery" attrs="{'invisible':[('flag','=',False)]}" string="Ready for delivery" type="object" icon="delivery" class="oe_highlight"/>
                                     <button name="open_task" string="Open Task" icon="gtk-redo" type="object" class="oe_highlight"/>
                                     <button name="quick_check" string="Quick Check" icon="gtk-apply" type="object" class="oe_highlight" context="{'quick_check':True}"/>
                                     <field name="state" invisible="1"/>

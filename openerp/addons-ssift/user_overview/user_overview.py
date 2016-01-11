@@ -502,7 +502,18 @@ class project_task(osv.osv):
             'target': 'new',
             'context': context,
         }
-        
+    
+    def task_delivery(self, cr, uid, ids, context=None):
+        task_type_ids = self.pool.get('project.task.type').search(cr, uid, [('name','=','Ready for delivery')])
+        if task_type_ids:
+            self.write(cr, uid, ids, {'flag':True,'status_task': 'paused','checking_task': 'none','stage_id':task_type_ids[0]})
+        res = {
+               'type': 'ir.actions.client',
+               'tag': 'reload',
+               'context' : context,
+               }
+        return res
+    
     def open_task(self, cr, uid, ids, context=None):
         obj_model = self.pool.get('ir.model.data')
         model_data_ids = obj_model.search(cr,uid,[('model','=','ir.ui.view'),('name','=','view_task_form2')])

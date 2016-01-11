@@ -6,8 +6,8 @@
 #
 ##############################################################################
 
-import timesheet_from_attendance
-import import_attendance
+# import timesheet_from_attendance
+# import import_attendance
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
 
