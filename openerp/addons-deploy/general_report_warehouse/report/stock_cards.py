@@ -300,34 +300,35 @@ class Parser(report_sxw.rml_parse):
                 tongnhap=0
                 tongxuat=0
                 for invoice in invoice_obj.browse(self.cr, self.uid, invoice_ids):
-                    sql = '''
-                        select case when sum(primary_qty)!=0 then sum(primary_qty) else 0 end qty
-                            from account_invoice_line where product_id=%s and prodlot_id=%s and invoice_id=%s
-                    '''%(self.product_id,self.prod_lot_id,invoice.id)
-                    self.cr.execute(sql)
-                    qty = self.cr.fetchone()[0]
-                    nhap=0
-                    xuat=0
-                    if invoice.type in ('in_invoice','out_refund'):
-                        nhap=qty
-                        tongnhap+=qty
-                    else:
-                        xuat=qty
-                        tongxuat+=qty
-                    ton = ton+nhap-xuat
-                    if nhap != 0 or xuat != 0:
-                        res.append(
-                           {'date':self.get_vietname_date(i['date']),
-                           'des':invoice.number or i['picking_name'],
-                           'ngay_hd':self.get_vietname_date(invoice.date_invoice),
-                           'name':i['name'],
-                           'journal_name':i['journal_name'],
-                           'nhap_qty':nhap,
-                           'xuat_qty':xuat,
-                           'ton_qty':ton,
-                           'note':i['note'],
-                           'ngaysapxep': invoice.date_invoice,
-                           })
+                    if invoice.state != 'cancel':
+                        sql = '''
+                            select case when sum(primary_qty)!=0 then sum(primary_qty) else 0 end qty
+                                from account_invoice_line where product_id=%s and prodlot_id=%s and invoice_id=%s
+                        '''%(self.product_id,self.prod_lot_id,invoice.id)
+                        self.cr.execute(sql)
+                        qty = self.cr.fetchone()[0]
+                        nhap=0
+                        xuat=0
+                        if invoice.type in ('in_invoice','out_refund'):
+                            nhap=qty
+                            tongnhap+=qty
+                        else:
+                            xuat=qty
+                            tongxuat+=qty
+                        ton = ton+nhap-xuat
+                        if nhap != 0 or xuat != 0:
+                            res.append(
+                               {'date':self.get_vietname_date(i['date']),
+                               'des':invoice.number or i['picking_name'],
+                               'ngay_hd':self.get_vietname_date(invoice.date_invoice),
+                               'name':i['name'],
+                               'journal_name':i['journal_name'],
+                               'nhap_qty':nhap,
+                               'xuat_qty':xuat,
+                               'ton_qty':ton,
+                               'note':i['note'],
+                               'ngaysapxep': invoice.date_invoice,
+                               })
                 if ton!=self.qty_fist:
                     if i['nhap_qty']-tongnhap != 0 or i['xuat_qty']-tongxuat != 0:
                         res.append(
