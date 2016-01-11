@@ -1,22 +1,21 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * portal
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2013
+# Korean translation for openobject-addons
+# Copyright (c) 2013 Rosetta Contributors and Canonical Ltd 2013
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-14 00:10+0000\n"
-"PO-Revision-Date: 2015-05-29 13:15+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Korean (http://www.transifex.com/projects/p/odoo-7/language/ko/)\n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2013-06-07 19:37+0000\n"
+"PO-Revision-Date: 2013-05-14 01:13+0000\n"
+"Last-Translator: AhnJD <zion64@msn.com>\n"
+"Language-Team: Korean <ko@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: ko\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-11-21 06:25+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #. module: portal
 #: view:portal.payment.acquirer:0
@@ -33,8 +32,10 @@ msgstr ""
 #: view:portal.wizard:0
 msgid ""
 "Select which contacts should belong to the portal in the list below.\n"
-"                        The email address of each selected contact must be valid and unique.\n"
-"                        If necessary, you can fix any contact's email address directly in the list."
+"                        The email address of each selected contact must be "
+"valid and unique.\n"
+"                        If necessary, you can fix any contact's email "
+"address directly in the list."
 msgstr ""
 
 #. module: portal
@@ -58,7 +59,8 @@ msgid "This text is included in the email sent to new portal users."
 msgstr ""
 
 #. module: portal
-#: view:share.wizard:0 field:share.wizard,group_ids:0
+#: view:share.wizard:0
+#: field:share.wizard,group_ids:0
 msgid "Existing groups"
 msgstr "기존 그룹"
 
@@ -80,7 +82,8 @@ msgstr "초대 메시지"
 
 #. module: portal
 #: model:ir.actions.act_window,name:portal.partner_wizard_action
-#: model:ir.model,name:portal.model_portal_wizard view:portal.wizard:0
+#: model:ir.model,name:portal.model_portal_wizard
+#: view:portal.wizard:0
 msgid "Portal Access Management"
 msgstr ""
 
@@ -119,15 +122,6 @@ msgid "Share Wizard"
 msgstr ""
 
 #. module: portal
-#: model:ir.actions.client,help:portal.action_jobs
-msgid ""
-"<p>\n"
-"                    You don't have unread job offers.\n"
-"                </p>\n"
-"            "
-msgstr ""
-
-#. module: portal
 #: view:portal.payment.acquirer:0
 msgid ""
 ", so it may use Mako expressions.\n"
@@ -135,20 +129,29 @@ msgid ""
 msgstr ""
 
 #. module: portal
+#: model:ir.actions.client,help:portal.action_news
+msgid ""
+"<p>\n"
+"                    Youd don't have unread company's news.\n"
+"                </p>\n"
+"            "
+msgstr ""
+
+#. module: portal
 #: field:portal.wizard.user,email:0
 msgid "Email"
-msgstr "이메일"
+msgstr ""
 
 #. module: portal
 #: view:portal.wizard:0
 msgid "or"
-msgstr "또는"
+msgstr ""
 
 #. module: portal
 #: model:ir.actions.client,name:portal.action_mail_star_feeds_portal
 #: model:ir.ui.menu,name:portal.portal_mail_starfeeds
 msgid "To-do"
-msgstr "할일"
+msgstr ""
 
 #. module: portal
 #: code:addons/portal/wizard/portal_wizard.py:194
@@ -164,9 +167,9 @@ msgid "Jobs"
 msgstr ""
 
 #. module: portal
-#: model:ir.model,name:portal.model_res_users field:portal.wizard,user_ids:0
+#: field:portal.wizard,user_ids:0
 msgid "Users"
-msgstr "사용자"
+msgstr ""
 
 #. module: portal
 #: code:addons/portal/acquirer.py:82
@@ -181,10 +184,11 @@ msgid "No online payment acquirers configured"
 msgstr ""
 
 #. module: portal
-#: code:addons/portal/mail_message.py:60
+#: code:addons/portal/mail_message.py:54
 #, python-format
 msgid ""
-"The requested operation cannot be completed due to security restrictions. Please contact your system administrator.\n"
+"The requested operation cannot be completed due to security restrictions. "
+"Please contact your system administrator.\n"
 "\n"
 "(Document type: %s, Operation: %s)"
 msgstr ""
@@ -201,10 +205,12 @@ msgid "Users you already shared with"
 msgstr ""
 
 #. module: portal
-#: view:portal.payment.acquirer:0
+#: model:ir.actions.client,help:portal.action_jobs
 msgid ""
-"object: the document on which the payment form is rendered (usually an "
-"invoice or sales order record)"
+"<p>\n"
+"                    Youd don't have unread job offers.\n"
+"                </p>\n"
+"            "
 msgstr ""
 
 #. module: portal
@@ -214,16 +220,19 @@ msgid ""
 "                    No message found and no message sent yet.\n"
 "                </p><p>\n"
 "                    Click on the top-right icon to compose a message. This\n"
-"                    message will be sent by email if it's an internal contact.\n"
+"                    message will be sent by email if it's an internal "
+"contact.\n"
 "                </p>\n"
 "            "
 msgstr ""
 
 #. module: portal
-#: model:ir.ui.menu,name:portal.portal_menu field:portal.wizard,portal_id:0
-#: field:res.groups,is_portal:0 model:res.groups,name:portal.group_portal
+#: model:ir.ui.menu,name:portal.portal_menu
+#: field:portal.wizard,portal_id:0
+#: field:res.groups,is_portal:0
+#: model:res.groups,name:portal.group_portal
 msgid "Portal"
-msgstr "포털"
+msgstr ""
 
 #. module: portal
 #: code:addons/portal/wizard/portal_wizard.py:34
@@ -248,21 +257,15 @@ msgid "News"
 msgstr ""
 
 #. module: portal
-#: code:addons/portal/mail_message.py:59
-#, python-format
-msgid "Access Denied"
-msgstr "접근이 거부됨"
-
-#. module: portal
-#: model:ir.actions.client,name:portal.action_mail_inbox_feeds_portal
-#: model:ir.ui.menu,name:portal.portal_inbox
-msgid "Inbox"
-msgstr "받은 편지함"
+#: model:ir.ui.menu,name:portal.portal_after_sales
+msgid "After Sale Services"
+msgstr ""
 
 #. module: portal
 #: model:res.groups,comment:portal.group_portal
 msgid ""
-"Portal members have specific access rights (such as record rules and restricted menus).\n"
+"Portal members have specific access rights (such as record rules and "
+"restricted menus).\n"
 "                They usually do not belong to the usual OpenERP groups."
 msgstr ""
 
@@ -275,44 +278,45 @@ msgstr ""
 #. module: portal
 #: model:ir.ui.menu,name:portal.portal_projects
 msgid "Projects"
-msgstr "프로젝트"
-
-#. module: portal
-#: code:addons/portal/wizard/share_wizard.py:39
-#, python-format
-msgid "Existing Groups (e.g Portal Groups)"
 msgstr ""
 
 #. module: portal
-#: view:share.wizard:0 field:share.wizard,user_ids:0
+#: model:ir.actions.client,name:portal.action_mail_inbox_feeds_portal
+#: model:ir.ui.menu,name:portal.portal_inbox
+msgid "Inbox"
+msgstr ""
+
+#. module: portal
+#: view:share.wizard:0
+#: field:share.wizard,user_ids:0
 msgid "Existing users"
 msgstr ""
 
 #. module: portal
 #: field:portal.wizard.user,wizard_id:0
 msgid "Wizard"
-msgstr "마법사"
+msgstr ""
 
 #. module: portal
 #: field:portal.payment.acquirer,name:0
 msgid "Name"
-msgstr "이름"
+msgstr ""
 
 #. module: portal
 #: model:ir.model,name:portal.model_res_groups
 msgid "Access Groups"
-msgstr "접근 그룹"
+msgstr ""
 
 #. module: portal
-#: model:ir.model,name:portal.model_mail_message
-msgid "Message"
-msgstr "메시지"
+#: view:portal.payment.acquirer:0
+msgid "uid: the current user id"
+msgstr ""
 
 #. module: portal
 #: view:portal.payment.acquirer:0
 msgid ""
-"kind: the kind of document on which the payment form is rendered (translated"
-" to user language, e.g. \"Invoice\")"
+"kind: the kind of document on which the payment form is rendered (translated "
+"to user language, e.g. \"Invoice\")"
 msgstr ""
 
 #. module: portal
@@ -336,34 +340,36 @@ msgid ""
 msgstr ""
 
 #. module: portal
-#: field:portal.wizard.user,partner_id:0
-msgid "Contact"
-msgstr "담당자"
-
-#. module: portal
-#: model:ir.model,name:portal.model_mail_mail
-msgid "Outgoing Mails"
-msgstr "발신 이메일"
-
-#. module: portal
 #: field:portal.payment.acquirer,form_template:0
 msgid "Payment form template (HTML)"
 msgstr ""
 
 #. module: portal
-#: model:ir.ui.menu,name:portal.portal_messages
-msgid "Messaging"
-msgstr "메시지 발송"
+#: field:portal.wizard.user,partner_id:0
+msgid "Contact"
+msgstr ""
 
 #. module: portal
-#: view:portal.payment.acquirer:0
-msgid "uid: the current user id"
+#: model:ir.model,name:portal.model_mail_mail
+msgid "Outgoing Mails"
+msgstr ""
+
+#. module: portal
+#: code:addons/portal/wizard/portal_wizard.py:193
+#, python-format
+msgid "Email required"
+msgstr ""
+
+#. module: portal
+#: model:ir.ui.menu,name:portal.portal_messages
+msgid "Messaging"
 msgstr ""
 
 #. module: portal
 #: model:res.groups,comment:portal.group_anonymous
 msgid ""
-"Anonymous users have specific access rights (such as record rules and restricted menus).\n"
+"Anonymous users have specific access rights (such as record rules and "
+"restricted menus).\n"
 "                They usually do not belong to the usual OpenERP groups."
 msgstr ""
 
@@ -373,8 +379,9 @@ msgid "Online Payment Acquirer"
 msgstr ""
 
 #. module: portal
-#: model:ir.ui.menu,name:portal.portal_after_sales
-msgid "After Sale Services"
+#: code:addons/portal/mail_message.py:53
+#, python-format
+msgid "Access Denied"
 msgstr ""
 
 #. module: portal
@@ -386,8 +393,7 @@ msgstr ""
 #: code:addons/portal/acquirer.py:76
 #, python-format
 msgid ""
-"You can finish the configuration in the <a href=\"%s\">Bank&Cash "
-"settings</a>"
+"You can finish the configuration in the <a href=\"%s\">Bank&Cash settings</a>"
 msgstr ""
 
 #. module: portal
@@ -401,12 +407,21 @@ msgid ""
 "<p>\n"
 "                    <b>Good Job!</b> Your inbox is empty.\n"
 "                </p><p>\n"
-"                    Your inbox contains private messages or emails sent to you\n"
-"                    as well as information related to documents or people you\n"
+"                    Your inbox contains private messages or emails sent to "
+"you\n"
+"                    as well as information related to documents or people "
+"you\n"
 "                    follow.\n"
 "                </p>\n"
 "            "
-msgstr "<p>\n                    <b>좋아요!</b> 받은 편집함이 비어있습니다.\n                </p><p>\n                    받은 편지함에는 개인 메세지나 사용자가 따르는 사람이나 문서의 관련 정보와 이메일을 포함합니다.\n                </p>\n            "
+msgstr ""
+
+#. module: portal
+#: view:portal.payment.acquirer:0
+msgid ""
+"object: the document on which the payment form is rendered (usually an "
+"invoice or sales order record)"
+msgstr ""
 
 #. module: portal
 #: help:portal.wizard,welcome_message:0
@@ -462,13 +477,18 @@ msgstr ""
 msgid ""
 "\n"
 "% if object.company_id.paypal_account:\n"
-"<form action=\"https://www.paypal.com/cgi-bin/webscr\" method=\"post\" target=\"_blank\">\n"
+"<form action=\"https://www.paypal.com/cgi-bin/webscr\" method=\"post\" "
+"target=\"_blank\">\n"
 "  <input type=\"hidden\" name=\"cmd\" value=\"_xclick\"/>\n"
-"  <input type=\"hidden\" name=\"business\" value=\"${object.company_id.paypal_account}\"/>\n"
-"  <input type=\"hidden\" name=\"item_name\" value=\"${object.company_id.name} ${kind.title()} ${reference}\"/>\n"
+"  <input type=\"hidden\" name=\"business\" "
+"value=\"${object.company_id.paypal_account}\"/>\n"
+"  <input type=\"hidden\" name=\"item_name\" "
+"value=\"${object.company_id.name} ${kind.title()} ${reference}\"/>\n"
 "  <input type=\"hidden\" name=\"amount\" value=\"${amount}\"/>\n"
-"  <input type=\"hidden\" name=\"currency_code\" value=\"${currency.name}\"/>\n"
-"  <input type=\"image\" name=\"submit\" src=\"https://www.paypal.com/en_US/i/btn/btn_paynowCC_LG.gif\"/>\n"
+"  <input type=\"hidden\" name=\"currency_code\" "
+"value=\"${currency.name}\"/>\n"
+"  <input type=\"image\" name=\"submit\" "
+"src=\"https://www.paypal.com/en_US/i/btn/btn_paynowCC_LG.gif\"/>\n"
 "</form>\n"
 "% endif\n"
 "            "
@@ -489,31 +509,27 @@ msgstr ""
 #. module: portal
 #: field:portal.payment.acquirer,visible:0
 msgid "Visible"
-msgstr "보임"
+msgstr ""
 
 #. module: portal
-#: code:addons/portal/wizard/portal_wizard.py:193
+#: code:addons/portal/wizard/share_wizard.py:39
 #, python-format
-msgid "Email Required"
+msgid "Existing Groups (e.g Portal Groups)"
 msgstr ""
 
 #. module: portal
 #: view:portal.wizard:0
 msgid "Cancel"
-msgstr "취소"
+msgstr ""
 
 #. module: portal
 #: view:portal.wizard:0
 msgid "Apply"
-msgstr "적용"
+msgstr ""
 
 #. module: portal
-#: model:ir.actions.client,help:portal.action_news
-msgid ""
-"<p>\n"
-"                    You don't have unread company's news.\n"
-"                </p>\n"
-"            "
+#: model:ir.model,name:portal.model_mail_message
+msgid "Message"
 msgstr ""
 
 #. module: portal
@@ -534,11 +550,13 @@ msgid ""
 "<p>\n"
 "                    <b>No todo.</b>\n"
 "                </p><p>\n"
-"                    When you process messages in your inbox, you can mark some\n"
-"                    as <i>todo</i>. From this menu, you can process all your todo.\n"
+"                    When you process messages in your inbox, you can mark "
+"some\n"
+"                    as <i>todo</i>. From this menu, you can process all your "
+"todo.\n"
 "                </p>\n"
 "            "
-msgstr "<p>\n                    <b>할 일 없음.</b>\n                </p><p>\n                    받은 편지함의 메세지를 처리할 때, <i>할일</i>로 설정할 수 있습니다. 이 메뉴에서 사용자의 모든 할일을 처리할 수 있습니다.\n                </p>\n            "
+msgstr ""
 
 #. module: portal
 #: view:portal.payment.acquirer:0
@@ -548,4 +566,4 @@ msgstr ""
 #. module: portal
 #: view:share.wizard:0
 msgid "Details"
-msgstr "세부사항"
+msgstr ""

@@ -1,22 +1,21 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * hr
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2012
+# Danish translation for openobject-addons
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-14 00:10+0000\n"
-"PO-Revision-Date: 2015-05-29 13:14+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Danish (http://www.transifex.com/projects/p/odoo-7/language/da/)\n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2013-06-07 19:36+0000\n"
+"PO-Revision-Date: 2013-11-06 22:34+0000\n"
+"Last-Translator: Per G. Rasmussen <pgr@msteknik.dk>\n"
+"Language-Team: Danish <da@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: da\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-11-21 06:10+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #. module: hr
 #: model:process.node,name:hr.process_node_openerpuser0
@@ -41,7 +40,7 @@ msgstr "Knyt den ansatte til information"
 #. module: hr
 #: field:hr.employee,sinid:0
 msgid "SIN No"
-msgstr "Person nummer"
+msgstr ""
 
 #. module: hr
 #: model:ir.actions.act_window,name:hr.open_board_hr
@@ -67,7 +66,8 @@ msgid "Time Tracking"
 msgstr "Tids styring"
 
 #. module: hr
-#: view:hr.employee:0 view:hr.job:0
+#: view:hr.employee:0
+#: view:hr.job:0
 msgid "Group By..."
 msgstr "Gruppér efter..."
 
@@ -84,11 +84,14 @@ msgstr "Antal ansatte p.t. i denne stilling"
 #. module: hr
 #: field:hr.config.settings,module_hr_evaluation:0
 msgid "Organize employees periodic evaluation"
-msgstr "Organisér periodisk medarbejder vurdering"
+msgstr ""
 
 #. module: hr
-#: view:hr.department:0 view:hr.employee:0 field:hr.employee,department_id:0
-#: view:hr.job:0 field:hr.job,department_id:0
+#: view:hr.department:0
+#: view:hr.employee:0
+#: field:hr.employee,department_id:0
+#: view:hr.job:0
+#: field:hr.job,department_id:0
 #: model:ir.model,name:hr.model_hr_department
 msgid "Department"
 msgstr "Afdeling"
@@ -108,7 +111,7 @@ msgstr ""
 #. module: hr
 #: help:hr.config.settings,module_hr_holidays:0
 msgid "This installs the module hr_holidays."
-msgstr "Dette installerer modulet hr_holidays."
+msgstr ""
 
 #. module: hr
 #: view:hr.job:0
@@ -118,7 +121,7 @@ msgstr "Job"
 #. module: hr
 #: view:hr.job:0
 msgid "In Recruitment"
-msgstr "I ansættelsesforløb"
+msgstr ""
 
 #. module: hr
 #: field:hr.job,message_unread:0
@@ -126,7 +129,9 @@ msgid "Unread Messages"
 msgstr "Ulæste beskeder"
 
 #. module: hr
-#: field:hr.department,company_id:0 view:hr.employee:0 view:hr.job:0
+#: field:hr.department,company_id:0
+#: view:hr.employee:0
+#: view:hr.job:0
 #: field:hr.job,company_id:0
 msgid "Company"
 msgstr "Firma"
@@ -149,7 +154,7 @@ msgstr "Fejl ! Du kan ikke oprette rekursive kategorier."
 #. module: hr
 #: help:hr.config.settings,module_hr_recruitment:0
 msgid "This installs the module hr_recruitment."
-msgstr "Dette installerer modulet hr_recruitment."
+msgstr ""
 
 #. module: hr
 #: view:hr.employee:0
@@ -260,7 +265,8 @@ msgid "Child Categories"
 msgstr "Underkatagorier"
 
 #. module: hr
-#: field:hr.job,description:0 model:ir.model,name:hr.model_hr_job
+#: field:hr.job,description:0
+#: model:ir.model,name:hr.model_hr_job
 msgid "Job Description"
 msgstr "Jobbeskrivelse"
 
@@ -275,7 +281,8 @@ msgid "Followers"
 msgstr "Followers"
 
 #. module: hr
-#: view:hr.employee:0 model:ir.model,name:hr.model_hr_employee
+#: view:hr.employee:0
+#: model:ir.model,name:hr.model_hr_employee
 #: model:process.node,name:hr.process_node_employee0
 msgid "Employee"
 msgstr "Ansat"
@@ -289,8 +296,8 @@ msgstr "Anden information"
 #: help:hr.employee,image_small:0
 msgid ""
 "Small-sized photo of the employee. It is automatically resized as a 64x64px "
-"image, with aspect ratio preserved. Use this field anywhere a small image is"
-" required."
+"image, with aspect ratio preserved. Use this field anywhere a small image is "
+"required."
 msgstr ""
 
 #. module: hr
@@ -313,14 +320,16 @@ msgstr "Åben HR menu"
 msgid ""
 "Holds the Chatter summary (number of messages, ...). This summary is "
 "directly in html format in order to be inserted in kanban views."
-msgstr "Indeholder chat sammendraget (antal beskeder). Dette sammendrag er i html format for at kunne sættes ind i kanban views."
+msgstr ""
+"Indeholder chat sammendraget (antal beskeder). Dette sammendrag er i html "
+"format for at kunne sættes ind i kanban views."
 
 #. module: hr
 #: help:hr.config.settings,module_account_analytic_analysis:0
 msgid ""
-"This installs the module account_analytic_analysis, which will install sales"
-" management too."
-msgstr "Dette installerer modulet \"account_analytic_analysis, som også installerer salgsmodulet."
+"This installs the module account_analytic_analysis, which will install sales "
+"management too."
+msgstr ""
 
 #. module: hr
 #: view:board.board:0
@@ -328,7 +337,9 @@ msgid "Human Resources Dashboard"
 msgstr "HR Dashboard"
 
 #. module: hr
-#: view:hr.employee:0 field:hr.employee,job_id:0 view:hr.job:0
+#: view:hr.employee:0
+#: field:hr.employee,job_id:0
+#: view:hr.job:0
 msgid "Job"
 msgstr "Job"
 
@@ -345,7 +356,7 @@ msgstr "Medlemmer"
 #. module: hr
 #: model:ir.ui.menu,name:hr.menu_hr_configuration
 msgid "Configuration"
-msgstr "Konfiguration"
+msgstr ""
 
 #. module: hr
 #: model:process.node,note:hr.process_node_employee0
@@ -355,7 +366,7 @@ msgstr ""
 #. module: hr
 #: field:hr.config.settings,module_hr_expense:0
 msgid "Manage employees expenses"
-msgstr "Medarbejder udgifter"
+msgstr ""
 
 #. module: hr
 #: view:hr.employee:0
@@ -365,19 +376,19 @@ msgstr ""
 #. module: hr
 #: selection:hr.employee,marital:0
 msgid "Divorced"
-msgstr "Skilt"
+msgstr ""
 
 #. module: hr
 #: field:hr.employee.category,parent_id:0
 msgid "Parent Category"
-msgstr "Moder-kategori"
+msgstr ""
 
 #. module: hr
 #: view:hr.department:0
 #: model:ir.actions.act_window,name:hr.open_module_tree_department
 #: model:ir.ui.menu,name:hr.menu_hr_department_tree
 msgid "Departments"
-msgstr "Afdelinger"
+msgstr ""
 
 #. module: hr
 #: model:process.node,name:hr.process_node_employeecontact0
@@ -387,7 +398,7 @@ msgstr ""
 #. module: hr
 #: view:hr.employee:0
 msgid "e.g. Part Time"
-msgstr "f.eks. deltid"
+msgstr ""
 
 #. module: hr
 #: model:ir.actions.act_window,help:hr.action_hr_job
@@ -395,13 +406,18 @@ msgid ""
 "<p class=\"oe_view_nocontent_create\">\n"
 "                Click to define a new job position.\n"
 "              </p><p>\n"
-"                Job Positions are used to define jobs and their requirements.\n"
-"                You can keep track of the number of employees you have per job\n"
-"                position and follow the evolution according to what you planned\n"
+"                Job Positions are used to define jobs and their "
+"requirements.\n"
+"                You can keep track of the number of employees you have per "
+"job\n"
+"                position and follow the evolution according to what you "
+"planned\n"
 "                for the future.\n"
 "              </p><p>\n"
-"                You can attach a survey to a job position. It will be used in\n"
-"                the recruitment process to evaluate the applicants for this job\n"
+"                You can attach a survey to a job position. It will be used "
+"in\n"
+"                the recruitment process to evaluate the applicants for this "
+"job\n"
 "                position.\n"
 "              </p>\n"
 "            "
@@ -410,7 +426,7 @@ msgstr ""
 #. module: hr
 #: selection:hr.employee,gender:0
 msgid "Male"
-msgstr "Mand"
+msgstr ""
 
 #. module: hr
 #: view:hr.employee:0
@@ -422,103 +438,110 @@ msgstr ""
 #. module: hr
 #: help:hr.config.settings,module_hr_evaluation:0
 msgid "This installs the module hr_evaluation."
-msgstr "Dette installerer modulet hr_evaluation."
+msgstr ""
 
 #. module: hr
 #: constraint:hr.employee:0
 msgid "Error! You cannot create recursive hierarchy of Employee(s)."
-msgstr "Fejl! Du kan ikke oprette rekursive medarebejder hierarkier"
+msgstr ""
 
 #. module: hr
 #: help:hr.config.settings,module_hr_attendance:0
 msgid "This installs the module hr_attendance."
-msgstr "Dette installerer komme/gå modulet i HR"
+msgstr ""
+
+#. module: hr
+#: field:hr.employee,image_small:0
+msgid "Smal-sized photo"
+msgstr ""
 
 #. module: hr
 #: view:hr.employee.category:0
 #: model:ir.model,name:hr.model_hr_employee_category
 msgid "Employee Category"
-msgstr "Medarbejder kategori"
+msgstr ""
 
 #. module: hr
 #: field:hr.employee,category_ids:0
 msgid "Tags"
-msgstr "Tags"
+msgstr ""
 
 #. module: hr
 #: help:hr.config.settings,module_hr_contract:0
 msgid "This installs the module hr_contract."
-msgstr "Dette installerer hr_contract modulet."
+msgstr ""
 
 #. module: hr
 #: view:hr.employee:0
 msgid "Related User"
-msgstr "Relateret bruger"
+msgstr ""
 
 #. module: hr
 #: view:hr.config.settings:0
 msgid "or"
-msgstr "eller"
+msgstr ""
 
 #. module: hr
 #: field:hr.employee.category,name:0
 msgid "Category"
-msgstr "Kategori"
+msgstr ""
 
 #. module: hr
 #: view:hr.job:0
 msgid "Stop Recruitment"
-msgstr "Stop ansættelse"
+msgstr ""
 
 #. module: hr
 #: field:hr.config.settings,module_hr_attendance:0
 msgid "Install attendances feature"
-msgstr "Installér komme/gå"
+msgstr ""
 
 #. module: hr
 #: help:hr.employee,bank_account_id:0
 msgid "Employee bank salary account"
-msgstr "Medarbejder lønkonto i bank"
+msgstr ""
 
 #. module: hr
 #: field:hr.department,note:0
 msgid "Note"
-msgstr "Notat"
+msgstr ""
 
 #. module: hr
 #: model:ir.actions.act_window,name:hr.open_view_employee_tree
 msgid "Employees Structure"
-msgstr "Medarbejder struktur"
+msgstr ""
 
 #. module: hr
 #: view:hr.employee:0
 msgid "Contact Information"
-msgstr "Kontaktoplysninger"
+msgstr ""
 
 #. module: hr
 #: field:res.users,employee_ids:0
 msgid "Related employees"
-msgstr "Relaterede medarbejdere"
+msgstr ""
 
 #. module: hr
 #: field:hr.config.settings,module_hr_holidays:0
 msgid "Manage holidays, leaves and allocation requests"
-msgstr "Ferie-anmodninger"
+msgstr ""
 
 #. module: hr
 #: field:hr.department,child_ids:0
 msgid "Child Departments"
-msgstr "Under afdelinger"
+msgstr ""
 
 #. module: hr
-#: view:hr.employee:0 view:hr.job:0 field:hr.job,state:0
+#: view:hr.employee:0
+#: view:hr.job:0
+#: field:hr.job,state:0
 msgid "Status"
-msgstr "Status"
+msgstr ""
 
 #. module: hr
 #: field:hr.employee,otherid:0
 msgid "Other Id"
-msgstr "Andet Id"
+msgstr ""
 
 #. module: hr
 #: model:process.process,name:hr.process_process_employeecontractprocess0
@@ -528,12 +551,12 @@ msgstr ""
 #. module: hr
 #: view:hr.config.settings:0
 msgid "Contracts"
-msgstr "Kontrakter"
+msgstr ""
 
 #. module: hr
 #: help:hr.job,message_ids:0
 msgid "Messages and communication history"
-msgstr "Besked- og kommunikations historik"
+msgstr ""
 
 #. module: hr
 #: field:hr.employee,ssnid:0
@@ -543,42 +566,42 @@ msgstr ""
 #. module: hr
 #: field:hr.job,message_is_follower:0
 msgid "Is a Follower"
-msgstr "Er en \"follower\""
+msgstr ""
 
 #. module: hr
 #: field:hr.config.settings,module_hr_recruitment:0
 msgid "Manage the recruitment process"
-msgstr "Ansættelses proces"
+msgstr ""
 
 #. module: hr
 #: view:hr.employee:0
 msgid "Active"
-msgstr "Aktiv"
+msgstr ""
 
 #. module: hr
 #: view:hr.config.settings:0
 msgid "Human Resources Management"
-msgstr "Personale (HR)"
+msgstr ""
 
 #. module: hr
 #: view:hr.config.settings:0
 msgid "Install your country's payroll"
-msgstr "Installer dit lands lønsystem"
+msgstr ""
 
 #. module: hr
 #: field:hr.employee,bank_account_id:0
 msgid "Bank Account Number"
-msgstr "Bankkontonummer"
+msgstr ""
 
 #. module: hr
 #: view:hr.department:0
 msgid "Companies"
-msgstr "Firmaer"
+msgstr ""
 
 #. module: hr
 #: field:hr.job,message_summary:0
 msgid "Summary"
-msgstr "Sammendrag"
+msgstr ""
 
 #. module: hr
 #: model:process.transition,note:hr.process_transition_contactofemployee0
@@ -593,8 +616,10 @@ msgid ""
 "<p class=\"oe_view_nocontent_create\">\n"
 "                Click to add a new employee.\n"
 "              </p><p>\n"
-"                With just a quick glance on the OpenERP employee screen, you\n"
-"                can easily find all the information you need for each person;\n"
+"                With just a quick glance on the OpenERP employee screen, "
+"you\n"
+"                can easily find all the information you need for each "
+"person;\n"
 "                contact data, job position, availability, etc.\n"
 "              </p>\n"
 "            "
@@ -613,22 +638,22 @@ msgstr ""
 #. module: hr
 #: constraint:hr.department:0
 msgid "Error! You cannot create recursive departments."
-msgstr "Fejl! du kan ikke oprette rekursive afdelinger."
+msgstr ""
 
 #. module: hr
 #: field:hr.employee,address_id:0
 msgid "Working Address"
-msgstr "Arbejds adresse"
+msgstr ""
 
 #. module: hr
 #: view:hr.employee:0
 msgid "Public Information"
-msgstr "Offentlig information"
+msgstr ""
 
 #. module: hr
 #: field:hr.employee,marital:0
 msgid "Marital Status"
-msgstr "Civilstand"
+msgstr ""
 
 #. module: hr
 #: model:ir.model,name:hr.model_ir_actions_act_window
@@ -638,17 +663,17 @@ msgstr ""
 #. module: hr
 #: field:hr.employee,last_login:0
 msgid "Latest Connection"
-msgstr "Seneste forbindelse"
+msgstr ""
 
 #. module: hr
 #: field:hr.employee,image:0
 msgid "Photo"
-msgstr "Foto"
+msgstr ""
 
 #. module: hr
 #: view:hr.config.settings:0
 msgid "Cancel"
-msgstr "Annullér"
+msgstr ""
 
 #. module: hr
 #: model:ir.actions.act_window,help:hr.open_module_tree_department
@@ -656,7 +681,8 @@ msgid ""
 "<p class=\"oe_view_nocontent_create\">\n"
 "                Click to create a department.\n"
 "              </p><p>\n"
-"                OpenERP's department structure is used to manage all documents\n"
+"                OpenERP's department structure is used to manage all "
+"documents\n"
 "                related to employees by departments: expenses, timesheets,\n"
 "                leaves and holidays, recruitments, etc.\n"
 "              </p>\n"
@@ -666,13 +692,13 @@ msgstr ""
 #. module: hr
 #: help:hr.config.settings,module_hr_timesheet:0
 msgid "This installs the module hr_timesheet."
-msgstr "Dette installerer modulet hr_timesheet"
+msgstr ""
 
 #. module: hr
 #: help:hr.job,expected_employees:0
 msgid ""
 "Expected number of employees for this job position after new recruitment."
-msgstr "Forventet antal medarbejdere i denne stilling efter nyansættelse."
+msgstr ""
 
 #. module: hr
 #: model:ir.actions.act_window,help:hr.view_department_form_installer
@@ -681,7 +707,8 @@ msgid ""
 "                Click to define a new department.\n"
 "              </p><p>\n"
 "                Your departments structure is used to manage all documents\n"
-"                related to employees by departments: expenses and timesheets,\n"
+"                related to employees by departments: expenses and "
+"timesheets,\n"
 "                leaves and holidays, recruitments, etc.\n"
 "              </p>\n"
 "            "
@@ -690,22 +717,22 @@ msgstr ""
 #. module: hr
 #: view:hr.employee:0
 msgid "Personal Information"
-msgstr "Personlige oplysninger"
+msgstr ""
 
 #. module: hr
 #: field:hr.employee,city:0
 msgid "City"
-msgstr "By"
+msgstr ""
 
 #. module: hr
 #: field:hr.employee,passport_id:0
 msgid "Passport No"
-msgstr "Pas nummer"
+msgstr ""
 
 #. module: hr
 #: field:hr.employee,mobile_phone:0
 msgid "Work Mobile"
-msgstr "Arbejdsmobil"
+msgstr ""
 
 #. module: hr
 #: selection:hr.job,state:0
@@ -716,10 +743,10 @@ msgstr ""
 #: field:hr.config.settings,module_account_analytic_analysis:0
 msgid ""
 "Allow invoicing based on timesheets (the sale application will be installed)"
-msgstr "Tillad fakturing baseret på tidsskemaer (salgsmodulerne bliver installeret)"
+msgstr ""
 
 #. module: hr
-#: code:addons/hr/hr.py:227
+#: code:addons/hr/hr.py:221
 #, python-format
 msgid "Welcome to %s! Please help him/her take the first steps with OpenERP!"
 msgstr ""
@@ -727,124 +754,126 @@ msgstr ""
 #. module: hr
 #: view:hr.employee.category:0
 msgid "Employees Categories"
-msgstr "Medarbejder kategorier"
+msgstr ""
 
 #. module: hr
 #: field:hr.employee,address_home_id:0
 msgid "Home Address"
-msgstr "Hjemmeadresse"
+msgstr ""
 
 #. module: hr
 #: field:hr.config.settings,module_hr_timesheet:0
 msgid "Manage timesheets"
-msgstr "Tidsskemaer"
+msgstr ""
 
 #. module: hr
 #: model:ir.actions.act_window,name:hr.open_payroll_modules
 msgid "Payroll"
-msgstr "Løn"
+msgstr ""
 
 #. module: hr
 #: selection:hr.employee,marital:0
 msgid "Single"
-msgstr "Single"
+msgstr ""
 
 #. module: hr
 #: field:hr.job,name:0
 msgid "Job Name"
-msgstr "Jobnavn"
+msgstr ""
 
 #. module: hr
 #: view:hr.job:0
 msgid "In Position"
-msgstr "I stilling"
+msgstr ""
 
 #. module: hr
 #: help:hr.config.settings,module_hr_payroll:0
 msgid "This installs the module hr_payroll."
-msgstr "Dette installerer modulet hr_payroll."
+msgstr ""
 
 #. module: hr
 #: field:hr.config.settings,module_hr_contract:0
 msgid "Record contracts per employee"
-msgstr "Kontrakter pr. medarbejder"
+msgstr ""
 
 #. module: hr
 #: view:hr.department:0
 msgid "department"
-msgstr "afdeling"
+msgstr ""
 
 #. module: hr
 #: field:hr.employee,country_id:0
 msgid "Nationality"
-msgstr "Nationalitet"
+msgstr ""
 
 #. module: hr
 #: view:hr.config.settings:0
 msgid "Additional Features"
-msgstr "Yderligere egenskaber"
+msgstr ""
 
 #. module: hr
 #: field:hr.employee,notes:0
 msgid "Notes"
-msgstr "Noter"
+msgstr ""
 
 #. module: hr
 #: model:ir.actions.act_window,name:hr.action2
 msgid "Subordinate Hierarchy"
-msgstr "Underordnet hierarki"
+msgstr ""
 
 #. module: hr
 #: field:hr.employee,resource_id:0
 msgid "Resource"
-msgstr "Ressource"
+msgstr ""
 
 #. module: hr
-#: field:hr.department,complete_name:0 field:hr.employee,name_related:0
+#: field:hr.department,complete_name:0
+#: field:hr.employee,name_related:0
 #: field:hr.employee.category,complete_name:0
 msgid "Name"
-msgstr "Navn"
+msgstr ""
 
 #. module: hr
 #: field:hr.employee,gender:0
 msgid "Gender"
-msgstr "Køn"
+msgstr ""
 
 #. module: hr
-#: view:hr.employee:0 field:hr.employee.category,employee_ids:0
+#: view:hr.employee:0
+#: field:hr.employee.category,employee_ids:0
 #: field:hr.job,employee_ids:0
 #: model:ir.actions.act_window,name:hr.hr_employee_normal_action_tree
 #: model:ir.actions.act_window,name:hr.open_view_employee_list
 #: model:ir.actions.act_window,name:hr.open_view_employee_list_my
 #: model:ir.ui.menu,name:hr.menu_open_view_employee_list_my
 msgid "Employees"
-msgstr "Ansatte"
+msgstr ""
 
 #. module: hr
 #: help:hr.employee,sinid:0
 msgid "Social Insurance Number"
-msgstr "CPR nummer"
+msgstr ""
 
 #. module: hr
 #: field:hr.department,name:0
 msgid "Department Name"
-msgstr "Afdelingsnavn"
+msgstr ""
 
 #. module: hr
 #: model:ir.ui.menu,name:hr.menu_hr_reporting_timesheet
 msgid "Reports"
-msgstr "Rapporter"
+msgstr ""
 
 #. module: hr
 #: field:hr.config.settings,module_hr_payroll:0
 msgid "Manage payroll"
-msgstr "Løn"
+msgstr ""
 
 #. module: hr
 #: view:hr.config.settings:0
 #: model:ir.actions.act_window,name:hr.action_human_resources_configuration
 msgid "Configure Human Resources"
-msgstr "Konfigurér medarbejdere"
+msgstr ""
 
 #. module: hr
 #: selection:hr.job,state:0
@@ -864,12 +893,12 @@ msgstr ""
 #. module: hr
 #: field:hr.employee,login:0
 msgid "Login"
-msgstr "Log ind"
+msgstr ""
 
 #. module: hr
 #: field:hr.job,expected_employees:0
 msgid "Total Forecasted Employees"
-msgstr "Totalt forventet antal medarbejdere"
+msgstr ""
 
 #. module: hr
 #: help:hr.job,state:0
@@ -881,13 +910,13 @@ msgstr ""
 #. module: hr
 #: model:ir.model,name:hr.model_res_users
 msgid "Users"
-msgstr "Bruger"
+msgstr ""
 
 #. module: hr
 #: model:ir.actions.act_window,name:hr.action_hr_job
 #: model:ir.ui.menu,name:hr.menu_hr_job
 msgid "Job Positions"
-msgstr "Stillinger"
+msgstr ""
 
 #. module: hr
 #: model:ir.actions.act_window,help:hr.open_board_hr
@@ -897,7 +926,8 @@ msgid ""
 "                    <b>Human Resources dashboard is empty.</b>\n"
 "                  </p><p>\n"
 "                    To add your first report into this dashboard, go to any\n"
-"                    menu, switch to list or graph view, and click <i>'Add to\n"
+"                    menu, switch to list or graph view, and click <i>'Add "
+"to\n"
 "                    Dashboard'</i> in the extended search options.\n"
 "                  </p><p>\n"
 "                    You can filter and group data before inserting into the\n"
@@ -908,9 +938,10 @@ msgid ""
 msgstr ""
 
 #. module: hr
-#: view:hr.employee:0 field:hr.employee,coach_id:0
+#: view:hr.employee:0
+#: field:hr.employee,coach_id:0
 msgid "Coach"
-msgstr "Træner/coach"
+msgstr ""
 
 #. module: hr
 #: sql_constraint:hr.job:0
@@ -920,7 +951,7 @@ msgstr ""
 #. module: hr
 #: help:hr.config.settings,module_hr_expense:0
 msgid "This installs the module hr_expense."
-msgstr "Dette installerer modulet hr_expense."
+msgstr ""
 
 #. module: hr
 #: model:ir.model,name:hr.model_hr_config_settings
@@ -928,27 +959,23 @@ msgid "hr.config.settings"
 msgstr ""
 
 #. module: hr
-#: field:hr.department,manager_id:0 view:hr.employee:0
+#: field:hr.department,manager_id:0
+#: view:hr.employee:0
 #: field:hr.employee,parent_id:0
 msgid "Manager"
-msgstr "Leder"
+msgstr ""
 
 #. module: hr
 #: selection:hr.employee,marital:0
 msgid "Widower"
-msgstr "enkemand"
+msgstr ""
 
 #. module: hr
 #: field:hr.employee,child_ids:0
 msgid "Subordinates"
-msgstr "Underordnede"
+msgstr ""
 
 #. module: hr
 #: view:hr.config.settings:0
 msgid "Apply"
-msgstr "Anvend"
-
-#. module: hr
-#: field:hr.employee,image_small:0
-msgid "Small-sized photo"
-msgstr "Lille foto"
+msgstr ""

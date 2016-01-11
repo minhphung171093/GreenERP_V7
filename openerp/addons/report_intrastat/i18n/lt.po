@@ -1,26 +1,26 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * report_intrastat
-# 
-# Translators:
+# Lithuanian translation for openobject-addons
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-06-07 19:37+0000\n"
-"PO-Revision-Date: 2015-05-29 13:13+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Lithuanian (http://www.transifex.com/projects/p/odoo-7/language/lt/)\n"
+"PO-Revision-Date: 2012-12-21 23:00+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Lithuanian <lt@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: lt\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-11-21 06:32+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Cancelled Invoice"
-msgstr "ATŠAUKTA SĄSKAITA"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
@@ -30,28 +30,28 @@ msgstr ""
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Disc. (%)"
-msgstr "Nuol. (%)"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Supplier Invoice"
-msgstr "Tiekėjo sąskaita faktūra"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Unit Price"
-msgstr "Vieneto kaina"
+msgstr ""
 
 #. module: report_intrastat
 #: selection:report.intrastat,type:0
 msgid "Import"
-msgstr "Importuoti"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 #: field:report.intrastat.code,description:0
 msgid "Description"
-msgstr "Aprašymas"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
@@ -61,37 +61,37 @@ msgstr ""
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Document"
-msgstr "Dokumentas"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "PRO-FORMA"
-msgstr "IŠANKSTINĖ SĄSKAITA"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Taxes:"
-msgstr "Mokesčiai:"
+msgstr ""
 
 #. module: report_intrastat
 #: selection:report.intrastat,month:0
 msgid "March"
-msgstr "Kovas"
+msgstr ""
 
 #. module: report_intrastat
 #: selection:report.intrastat,month:0
 msgid "August"
-msgstr "Rugpjūtis"
+msgstr ""
 
 #. module: report_intrastat
 #: selection:report.intrastat,month:0
 msgid "May"
-msgstr "Gegužė"
+msgstr ""
 
 #. module: report_intrastat
 #: field:report.intrastat,type:0
 msgid "Type"
-msgstr "Tipas"
+msgstr ""
 
 #. module: report_intrastat
 #: model:ir.actions.report.xml,name:report_intrastat.invoice_intrastat_id
@@ -101,37 +101,37 @@ msgstr ""
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Invoice Date"
-msgstr "Sąskaitos data"
+msgstr ""
 
 #. module: report_intrastat
 #: selection:report.intrastat,month:0
 msgid "June"
-msgstr "Birželis"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Tel. :"
-msgstr "Tel.:"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Base"
-msgstr "Bazė"
+msgstr ""
 
 #. module: report_intrastat
 #: selection:report.intrastat,month:0
 msgid "January"
-msgstr "Sausis"
+msgstr ""
 
 #. module: report_intrastat
 #: selection:report.intrastat,month:0
 msgid "July"
-msgstr "Liepa"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Quantity"
-msgstr "Kiekis"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
@@ -141,12 +141,12 @@ msgstr ""
 #. module: report_intrastat
 #: selection:report.intrastat,month:0
 msgid "February"
-msgstr "Vasaris"
+msgstr ""
 
 #. module: report_intrastat
 #: selection:report.intrastat,month:0
 msgid "October"
-msgstr "Spalis"
+msgstr ""
 
 #. module: report_intrastat
 #: model:ir.model,name:report_intrastat.model_report_intrastat
@@ -156,32 +156,32 @@ msgstr ""
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Invoice"
-msgstr "PVM SĄSKAITA-FAKTŪRA"
+msgstr ""
 
 #. module: report_intrastat
 #: model:ir.model,name:report_intrastat.model_res_country
 msgid "Country"
-msgstr "Valstybė"
+msgstr ""
 
 #. module: report_intrastat
 #: selection:report.intrastat,month:0
 msgid "September"
-msgstr "Rugsėjis"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Taxes"
-msgstr "Mokesčiai"
+msgstr ""
 
 #. module: report_intrastat
 #: selection:report.intrastat,month:0
 msgid "April"
-msgstr "Balandis"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Amount"
-msgstr "Suma"
+msgstr ""
 
 #. module: report_intrastat
 #: view:report.intrastat:0
@@ -191,7 +191,7 @@ msgstr ""
 #. module: report_intrastat
 #: field:report.intrastat,value:0
 msgid "Value"
-msgstr "Reikšmė"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
@@ -203,7 +203,7 @@ msgstr ""
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Draft Invoice"
-msgstr "SĄSKAITOS JUODRAŠTIS"
+msgstr ""
 
 #. module: report_intrastat
 #: field:report.intrastat,supply_units:0
@@ -213,11 +213,12 @@ msgstr ""
 #. module: report_intrastat
 #: selection:report.intrastat,month:0
 msgid "November"
-msgstr "Lapkritis"
+msgstr ""
 
 #. module: report_intrastat
 #: model:ir.model,name:report_intrastat.model_report_intrastat_code
-#: field:product.template,intrastat_id:0 field:report.intrastat,intrastat_id:0
+#: field:product.template,intrastat_id:0
+#: field:report.intrastat,intrastat_id:0
 #: view:report.intrastat.code:0
 msgid "Intrastat code"
 msgstr ""
@@ -225,7 +226,7 @@ msgstr ""
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Refund"
-msgstr "Grąžinimas"
+msgstr ""
 
 #. module: report_intrastat
 #: field:report.intrastat,ref:0
@@ -238,14 +239,15 @@ msgid "Fiscal Position Remark :"
 msgstr ""
 
 #. module: report_intrastat
-#: report:account.invoice.intrastat:0 field:report.intrastat,weight:0
+#: report:account.invoice.intrastat:0
+#: field:report.intrastat,weight:0
 msgid "Weight"
-msgstr "Svoris"
+msgstr ""
 
 #. module: report_intrastat
 #: model:ir.model,name:report_intrastat.model_product_template
 msgid "Product Template"
-msgstr "Produkto šablonas"
+msgstr ""
 
 #. module: report_intrastat
 #: field:res.country,intrastat:0
@@ -255,12 +257,12 @@ msgstr ""
 #. module: report_intrastat
 #: selection:report.intrastat,month:0
 msgid "December"
-msgstr "Gruodis"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Tax"
-msgstr "Mokesčiai"
+msgstr ""
 
 #. module: report_intrastat
 #: field:report.intrastat,code:0
@@ -270,32 +272,32 @@ msgstr ""
 #. module: report_intrastat
 #: field:report.intrastat,month:0
 msgid "Month"
-msgstr "Mėnuo"
+msgstr ""
 
 #. module: report_intrastat
 #: field:report.intrastat,currency_id:0
 msgid "Currency"
-msgstr "Valiuta"
+msgstr ""
 
 #. module: report_intrastat
 #: selection:report.intrastat,type:0
 msgid "Export"
-msgstr "Eksportuoti"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Fax :"
-msgstr "Faksas :"
+msgstr ""
 
 #. module: report_intrastat
 #: field:report.intrastat,name:0
 msgid "Year"
-msgstr "Metai"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Supplier Refund"
-msgstr "TIEKĖJO KREDITINĖ SĄSKAITA"
+msgstr ""
 
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
@@ -305,11 +307,12 @@ msgstr ""
 #. module: report_intrastat
 #: report:account.invoice.intrastat:0
 msgid "Price"
-msgstr "Suma"
+msgstr ""
 
 #. module: report_intrastat
 #: model:ir.actions.act_window,name:report_intrastat.action_report_intrastat_code_tree
 #: model:ir.ui.menu,name:report_intrastat.menu_report_intrastat_code
-#: view:report.intrastat.code:0 field:report.intrastat.code,name:0
+#: view:report.intrastat.code:0
+#: field:report.intrastat.code,name:0
 msgid "Intrastat Code"
 msgstr ""

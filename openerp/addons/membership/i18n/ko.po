@@ -1,22 +1,21 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * membership
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2012
+# Korean translation for openobject-addons
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-06-07 19:37+0000\n"
-"PO-Revision-Date: 2015-05-29 13:15+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Korean (http://www.transifex.com/projects/p/odoo-7/language/ko/)\n"
+"PO-Revision-Date: 2012-12-21 23:00+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Korean <ko@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: ko\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-11-21 06:20+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #. module: membership
 #: model:process.transition,name:membership.process_transition_invoicetoassociate0
@@ -41,9 +40,10 @@ msgid "This will display waiting, invoiced and total pending columns"
 msgstr ""
 
 #. module: membership
-#: view:report.membership:0 view:res.partner:0
+#: view:report.membership:0
+#: view:res.partner:0
 msgid "Group By..."
-msgstr "분류 기준..."
+msgstr ""
 
 #. module: membership
 #: field:report.membership,num_paid:0
@@ -63,7 +63,7 @@ msgstr ""
 #. module: membership
 #: selection:report.membership,month:0
 msgid "March"
-msgstr "3월"
+msgstr ""
 
 #. module: membership
 #: model:process.node,note:membership.process_node_setassociation0
@@ -76,15 +76,17 @@ msgid "Invoice is be paid."
 msgstr "인보이스가 결제됨"
 
 #. module: membership
-#: field:membership.membership_line,company_id:0 view:report.membership:0
+#: field:membership.membership_line,company_id:0
+#: view:report.membership:0
 #: field:report.membership,company_id:0
 msgid "Company"
-msgstr "회사"
+msgstr ""
 
 #. module: membership
 #: selection:membership.membership_line,state:0
 #: selection:report.membership,membership_state:0
-#: field:res.partner,free_member:0 selection:res.partner,membership_state:0
+#: field:res.partner,free_member:0
+#: selection:res.partner,membership_state:0
 msgid "Free Member"
 msgstr "자유 멤버"
 
@@ -105,10 +107,11 @@ msgid "Membership End Date"
 msgstr ""
 
 #. module: membership
-#: view:report.membership:0 field:report.membership,user_id:0
+#: view:report.membership:0
+#: field:report.membership,user_id:0
 #: view:res.partner:0
 msgid "Salesperson"
-msgstr "영업사원"
+msgstr ""
 
 #. module: membership
 #: model:process.transition,name:membership.process_transition_waitingtoinvoice0
@@ -123,7 +126,7 @@ msgstr ""
 #. module: membership
 #: view:res.partner:0
 msgid "Suppliers"
-msgstr "공급업체"
+msgstr ""
 
 #. module: membership
 #: selection:membership.membership_line,state:0
@@ -135,7 +138,7 @@ msgstr "비 멤버"
 #. module: membership
 #: view:product.product:0
 msgid "Taxes"
-msgstr "세금"
+msgstr ""
 
 #. module: membership
 #: view:res.partner:0
@@ -152,7 +155,7 @@ msgstr ""
 #: code:addons/membership/membership.py:413
 #, python-format
 msgid "Error!"
-msgstr "오류!"
+msgstr ""
 
 #. module: membership
 #: model:process.transition,name:membership.process_transition_producttomember0
@@ -182,7 +185,7 @@ msgstr "연관 파트너."
 #. module: membership
 #: view:res.partner:0
 msgid "Supplier Partners"
-msgstr "공급업체 협력업체"
+msgstr ""
 
 #. module: membership
 #: field:report.membership,num_invoiced:0
@@ -220,12 +223,12 @@ msgstr "결제할 인보이스"
 #. module: membership
 #: view:res.partner:0
 msgid "Customer Partners"
-msgstr "고객 협력업체"
+msgstr ""
 
 #. module: membership
 #: field:membership.membership_line,date_from:0
 msgid "From"
-msgstr "보낸 사람"
+msgstr ""
 
 #. module: membership
 #: constraint:membership.membership_line:0
@@ -265,7 +268,8 @@ msgstr ""
 #. module: membership
 #: model:ir.actions.act_window,name:membership.action_membership_members
 #: model:ir.ui.menu,name:membership.menu_members
-#: model:ir.ui.menu,name:membership.menu_membership view:res.partner:0
+#: model:ir.ui.menu,name:membership.menu_membership
+#: view:res.partner:0
 msgid "Members"
 msgstr "멤버"
 
@@ -282,7 +286,7 @@ msgstr "인보이스 열기"
 #. module: membership
 #: selection:report.membership,month:0
 msgid "July"
-msgstr "7월"
+msgstr ""
 
 #. module: membership
 #: model:product.template,name:membership.membership_0_product_template
@@ -297,7 +301,8 @@ msgid ""
 msgstr ""
 
 #. module: membership
-#: view:product.product:0 view:report.membership:0
+#: view:product.product:0
+#: view:report.membership:0
 #: field:report.membership,membership_id:0
 msgid "Membership Product"
 msgstr ""
@@ -361,22 +366,23 @@ msgstr "결제된 멤버십 인보이스"
 #. module: membership
 #: selection:report.membership,month:0
 msgid "September"
-msgstr "9월"
+msgstr ""
 
 #. module: membership
 #: selection:report.membership,month:0
 msgid "December"
-msgstr "12월"
+msgstr ""
 
 #. module: membership
 #: model:ir.model,name:membership.model_account_invoice_line
 msgid "Invoice Line"
-msgstr "인보이스 라인"
+msgstr ""
 
 #. module: membership
-#: view:report.membership:0 field:report.membership,month:0
+#: view:report.membership:0
+#: field:report.membership,month:0
 msgid "Month"
-msgstr "월"
+msgstr ""
 
 #. module: membership
 #: view:product.product:0
@@ -395,7 +401,8 @@ msgid "Buy Membership"
 msgstr ""
 
 #. module: membership
-#: field:report.membership,associate_member_id:0 view:res.partner:0
+#: field:report.membership,associate_member_id:0
+#: view:res.partner:0
 #: field:res.partner,associate_member:0
 msgid "Associate Member"
 msgstr ""
@@ -425,12 +432,12 @@ msgstr "멤버십 상품 정의"
 #. module: membership
 #: view:product.product:0
 msgid "Category"
-msgstr "카테고리"
+msgstr ""
 
 #. module: membership
 #: view:res.partner:0
 msgid "Contacts"
-msgstr "연락처"
+msgstr ""
 
 #. module: membership
 #: view:report.membership:0
@@ -440,7 +447,7 @@ msgstr ""
 #. module: membership
 #: field:report.membership,partner_id:0
 msgid "Member"
-msgstr "구성원"
+msgstr ""
 
 #. module: membership
 #: view:product.product:0
@@ -465,17 +472,17 @@ msgstr ""
 #. module: membership
 #: view:res.partner:0
 msgid "Customers"
-msgstr "고객"
+msgstr ""
 
 #. module: membership
 #: view:membership.invoice:0
 msgid "or"
-msgstr "또는"
+msgstr ""
 
 #. module: membership
 #: selection:report.membership,month:0
 msgid "August"
-msgstr "8월"
+msgstr ""
 
 #. module: membership
 #: model:ir.actions.act_window,name:membership.action_membership_products
@@ -492,7 +499,7 @@ msgstr ""
 #. module: membership
 #: selection:report.membership,month:0
 msgid "June"
-msgstr "6월"
+msgstr ""
 
 #. module: membership
 #: help:product.product,membership:0
@@ -508,9 +515,12 @@ msgstr "인보이스된 멤버"
 
 #. module: membership
 #: field:membership.invoice,product_id:0
-#: field:membership.membership_line,membership_id:0 view:product.product:0
-#: field:product.product,membership:0 view:report.membership:0
-#: view:res.partner:0 field:res.partner,member_lines:0
+#: field:membership.membership_line,membership_id:0
+#: view:product.product:0
+#: field:product.product,membership:0
+#: view:report.membership:0
+#: view:res.partner:0
+#: field:res.partner,member_lines:0
 msgid "Membership"
 msgstr "멤버십"
 
@@ -527,36 +537,42 @@ msgid "Association Partner"
 msgstr "연관 파트너"
 
 #. module: membership
-#: field:report.membership,date_from:0 view:res.partner:0
+#: field:report.membership,date_from:0
+#: view:res.partner:0
 msgid "Start Date"
-msgstr "시작 날짜"
+msgstr ""
 
 #. module: membership
 #: selection:report.membership,month:0
 msgid "November"
-msgstr "11월"
+msgstr ""
 
 #. module: membership
 #: selection:report.membership,month:0
 msgid "October"
-msgstr "10월"
+msgstr ""
 
 #. module: membership
 #: help:res.partner,membership_state:0
 msgid ""
 "It indicates the membership state.\n"
-"                    -Non Member: A partner who has not applied for any membership.\n"
-"                    -Cancelled Member: A member who has cancelled his membership.\n"
-"                    -Old Member: A member whose membership date has expired.\n"
-"                    -Waiting Member: A member who has applied for the membership and whose invoice is going to be created.\n"
-"                    -Invoiced Member: A member whose invoice has been created.\n"
+"                    -Non Member: A partner who has not applied for any "
+"membership.\n"
+"                    -Cancelled Member: A member who has cancelled his "
+"membership.\n"
+"                    -Old Member: A member whose membership date has "
+"expired.\n"
+"                    -Waiting Member: A member who has applied for the "
+"membership and whose invoice is going to be created.\n"
+"                    -Invoiced Member: A member whose invoice has been "
+"created.\n"
 "                    -Paying member: A member who has paid the membership fee."
 msgstr ""
 
 #. module: membership
 #: selection:report.membership,month:0
 msgid "January"
-msgstr "1월"
+msgstr ""
 
 #. module: membership
 #: view:res.partner:0
@@ -564,7 +580,8 @@ msgid "Membership Partners"
 msgstr ""
 
 #. module: membership
-#: field:membership.membership_line,member_price:0 view:product.product:0
+#: field:membership.membership_line,member_price:0
+#: view:product.product:0
 msgid "Membership Fee"
 msgstr ""
 
@@ -593,10 +610,11 @@ msgstr "옛 멤버"
 #. module: membership
 #: field:membership.membership_line,date_to:0
 msgid "To"
-msgstr "받는 사람"
+msgstr ""
 
 #. module: membership
-#: view:report.membership:0 field:report.membership,membership_state:0
+#: view:report.membership:0
+#: field:report.membership,membership_state:0
 msgid "Current Membership State"
 msgstr ""
 
@@ -604,12 +622,18 @@ msgstr ""
 #: help:membership.membership_line,state:0
 msgid ""
 "It indicates the membership status.\n"
-"                        -Non Member: A member who has not applied for any membership.\n"
-"                        -Cancelled Member: A member who has cancelled his membership.\n"
-"                        -Old Member: A member whose membership date has expired.\n"
-"                        -Waiting Member: A member who has applied for the membership and whose invoice is going to be created.\n"
-"                        -Invoiced Member: A member whose invoice has been created.\n"
-"                        -Paid Member: A member who has paid the membership amount."
+"                        -Non Member: A member who has not applied for any "
+"membership.\n"
+"                        -Cancelled Member: A member who has cancelled his "
+"membership.\n"
+"                        -Old Member: A member whose membership date has "
+"expired.\n"
+"                        -Waiting Member: A member who has applied for the "
+"membership and whose invoice is going to be created.\n"
+"                        -Invoiced Member: A member whose invoice has been "
+"created.\n"
+"                        -Paid Member: A member who has paid the membership "
+"amount."
 msgstr ""
 
 #. module: membership
@@ -626,7 +650,7 @@ msgstr ""
 #: model:ir.model,name:membership.model_account_invoice
 #: field:membership.membership_line,account_invoice_id:0
 msgid "Invoice"
-msgstr "송장"
+msgstr ""
 
 #. module: membership
 #: view:membership.invoice:0
@@ -661,12 +685,12 @@ msgstr ""
 #. module: membership
 #: model:ir.model,name:membership.model_product_product
 msgid "Product"
-msgstr "상품"
+msgstr ""
 
 #. module: membership
 #: selection:report.membership,month:0
 msgid "May"
-msgstr "5월"
+msgstr ""
 
 #. module: membership
 #: field:product.product,membership_date_from:0
@@ -685,14 +709,15 @@ msgid "Membership Amount"
 msgstr ""
 
 #. module: membership
-#: field:report.membership,date_to:0 view:res.partner:0
+#: field:report.membership,date_to:0
+#: view:res.partner:0
 msgid "End Date"
-msgstr "마감 날짜"
+msgstr ""
 
 #. module: membership
 #: selection:report.membership,month:0
 msgid "February"
-msgstr "2월"
+msgstr ""
 
 #. module: membership
 #: model:process.node,name:membership.process_node_invoicedmember0
@@ -702,7 +727,7 @@ msgstr "인보이스된 멤버"
 #. module: membership
 #: selection:report.membership,month:0
 msgid "April"
-msgstr "4월"
+msgstr ""
 
 #. module: membership
 #: view:res.partner:0
@@ -753,14 +778,15 @@ msgid "Cancelled Member"
 msgstr ""
 
 #. module: membership
-#: view:report.membership:0 field:report.membership,year:0
+#: view:report.membership:0
+#: field:report.membership,year:0
 msgid "Year"
 msgstr "년도"
 
 #. module: membership
 #: view:product.product:0
 msgid "Accounting"
-msgstr "회계"
+msgstr ""
 
 #. module: membership
 #: view:report.membership:0

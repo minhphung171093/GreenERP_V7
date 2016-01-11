@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    	<record id="view_holiday_inherit" model="ir.ui.view">
+            <field name="name">hr.holidays.form.inherit</field>
+            <field name="model">hr.holidays</field>
+            <field name="inherit_id" ref="hr_holidays.view_holiday"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//field[@name='number_of_days']" position="replace">
+            		<field name="number_of_days" string="Number of Hours" sum="Remaining Hours"/>
+            	</xpath>
+            </field>
+        </record>
+        
+        <record id="view_holiday_allocation_tree_inherit" model="ir.ui.view">
+            <field name="name">hr.holidays.form.inherit</field>
+            <field name="model">hr.holidays</field>
+            <field name="inherit_id" ref="hr_holidays.view_holiday_allocation_tree"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//field[@name='number_of_days']" position="replace">
+            		<field name="number_of_days" string="Allocated Hours" sum="Remaining Hours"/>
+            	</xpath>
+            </field>
+        </record>
+        
+        <record id="view_holiday_simple_inherit" model="ir.ui.view">
+            <field name="name">hr.holidays.form.inherit</field>
+            <field name="model">hr.holidays</field>
+            <field name="inherit_id" ref="hr_holidays.view_holiday_simple"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//field[@name='number_of_days']" position="replace">
+            		<field name="number_of_days" string="Number of Hours" sum="Remaining Hours"/>
+            	</xpath>
+            </field>
+        </record>
+	</data>      
+</openerp>

@@ -1,22 +1,21 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * account_voucher
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2013
+# Finnish translation for openobject-addons
+# Copyright (c) 2013 Rosetta Contributors and Canonical Ltd 2013
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-14 00:10+0000\n"
-"PO-Revision-Date: 2015-05-22 15:26+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Finnish (http://www.transifex.com/projects/p/odoo-7/language/fi/)\n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2013-06-07 19:36+0000\n"
+"PO-Revision-Date: 2014-02-20 13:37+0000\n"
+"Last-Translator: Harri Luuppala <Unknown>\n"
+"Language-Team: Finnish <fi@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: fi\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2014-02-21 06:38+0000\n"
+"X-Generator: Launchpad (build 16916)\n"
 
 #. module: account_voucher
 #: field:account.bank.statement.line,voucher_id:0
@@ -50,7 +49,8 @@ msgid "Open Customer Journal Entries"
 msgstr ""
 
 #. module: account_voucher
-#: view:account.voucher:0 view:sale.receipt.report:0
+#: view:account.voucher:0
+#: view:sale.receipt.report:0
 msgid "Group By..."
 msgstr "Ryhmittely..."
 
@@ -116,7 +116,7 @@ msgstr "Tapahtuman viitenumero"
 #. module: account_voucher
 #: view:account.voucher:0
 msgid "Allocation"
-msgstr "Varaus"
+msgstr ""
 
 #. module: account_voucher
 #: help:account.voucher,currency_help_label:0
@@ -126,7 +126,8 @@ msgid ""
 msgstr ""
 
 #. module: account_voucher
-#: view:sale.receipt.report:0 field:sale.receipt.report,user_id:0
+#: view:sale.receipt.report:0
+#: field:sale.receipt.report,user_id:0
 msgid "Salesperson"
 msgstr "Myyjä"
 
@@ -136,7 +137,7 @@ msgid "Voucher Statistics"
 msgstr "Tositetilastot"
 
 #. module: account_voucher
-#: code:addons/account_voucher/account_voucher.py:1655
+#: code:addons/account_voucher/account_voucher.py:1641
 #, python-format
 msgid ""
 "You can not change the journal as you already reconciled some statement "
@@ -169,7 +170,14 @@ msgid ""
 "                supplier payment related to this purchase receipt.\n"
 "              </p>\n"
 "            "
-msgstr "<p class=\"oe_view_nocontent_create\">\n                Klikkaa rekisteröidäksesi ostokuitin.\n              </p><p>\n                Kun ostokuitti on vahvistettu, voit kirjata toimittajalle\n                tähän ostokuittiin liittyvän maksun.\n              </p>\n            "
+msgstr ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"                Klikkaa rekisteröidäksesi ostokuitin.\n"
+"              </p><p>\n"
+"                Kun ostokuitti on vahvistettu, voit kirjata toimittajalle\n"
+"                tähän ostokuittiin liittyvän maksun.\n"
+"              </p>\n"
+"            "
 
 #. module: account_voucher
 #: view:account.voucher:0
@@ -182,7 +190,8 @@ msgid "Counterpart Account"
 msgstr "Vastatili"
 
 #. module: account_voucher
-#: field:account.voucher,account_id:0 field:account.voucher.line,account_id:0
+#: field:account.voucher,account_id:0
+#: field:account.voucher.line,account_id:0
 #: field:sale.receipt.report,account_id:0
 msgid "Account"
 msgstr "Tili"
@@ -195,7 +204,7 @@ msgstr ""
 #. module: account_voucher
 #: view:account.statement.from.invoice.lines:0
 msgid "Ok"
-msgstr "OK"
+msgstr ""
 
 #. module: account_voucher
 #: field:account.voucher.line,reconcile:0
@@ -203,8 +212,10 @@ msgid "Full Reconcile"
 msgstr ""
 
 #. module: account_voucher
-#: field:account.voucher,date_due:0 field:account.voucher.line,date_due:0
-#: view:sale.receipt.report:0 field:sale.receipt.report,date_due:0
+#: field:account.voucher,date_due:0
+#: field:account.voucher.line,date_due:0
+#: view:sale.receipt.report:0
+#: field:sale.receipt.report,date_due:0
 msgid "Due Date"
 msgstr "Eräpäivä"
 
@@ -216,7 +227,7 @@ msgstr "Muistiinpanot"
 #. module: account_voucher
 #: field:account.voucher,message_ids:0
 msgid "Messages"
-msgstr "Viestit"
+msgstr ""
 
 #. module: account_voucher
 #: model:ir.actions.act_window,name:account_voucher.action_purchase_receipt
@@ -231,15 +242,15 @@ msgstr ""
 
 #. module: account_voucher
 #: code:addons/account_voucher/account_voucher.py:558
-#: code:addons/account_voucher/account_voucher.py:1085
+#: code:addons/account_voucher/account_voucher.py:1073
 #, python-format
 msgid "Error!"
-msgstr "Virhe!"
+msgstr ""
 
 #. module: account_voucher
 #: field:account.voucher.line,amount:0
 msgid "Amount"
-msgstr "Summa"
+msgstr ""
 
 #. module: account_voucher
 #: view:account.voucher:0
@@ -254,19 +265,19 @@ msgstr ""
 #. module: account_voucher
 #: view:account.voucher:0
 msgid "Other Information"
-msgstr "Lisätiedot"
+msgstr ""
 
 #. module: account_voucher
-#: selection:account.voucher,state:0 selection:sale.receipt.report,state:0
+#: selection:account.voucher,state:0
+#: selection:sale.receipt.report,state:0
 msgid "Cancelled"
-msgstr "Peruutettu"
+msgstr ""
 
 #. module: account_voucher
-#: code:addons/account_voucher/account_voucher.py:1261
+#: code:addons/account_voucher/account_voucher.py:1249
 #, python-format
 msgid ""
-"You have to configure account base code and account tax code on the '%s' "
-"tax!"
+"You have to configure account base code and account tax code on the '%s' tax!"
 msgstr ""
 
 #. module: account_voucher
@@ -275,37 +286,47 @@ msgid ""
 "<p class=\"oe_view_nocontent_create\">\n"
 "                Click to create a sale receipt.\n"
 "              </p><p>\n"
-"                When the sale receipt is confirmed, you can record the customer\n"
+"                When the sale receipt is confirmed, you can record the "
+"customer\n"
 "                payment related to this sales receipt.\n"
 "              </p>\n"
 "            "
-msgstr "<p class=\"oe_view_nocontent_create\">\n                Klikkaa luodaksesi myyntikuitin.\n              </p><p>\n                Kun myyntikuitti on vahvistettu, voit kirjata asiakkaan\n                tähän kuittin littyvän suorituksen.\n              </p>\n            "
+msgstr ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"                Klikkaa luodaksesi myyntikuitin.\n"
+"              </p><p>\n"
+"                Kun myyntikuitti on vahvistettu, voit kirjata asiakkaan\n"
+"                tähän kuittin littyvän suorituksen.\n"
+"              </p>\n"
+"            "
 
 #. module: account_voucher
 #: help:account.voucher,message_unread:0
 msgid "If checked new messages require your attention."
-msgstr "Jos valittu, uudet viestit vaativat huomiosi."
+msgstr ""
 
 #. module: account_voucher
 #: model:ir.model,name:account_voucher.model_account_bank_statement_line
 msgid "Bank Statement Line"
-msgstr "Pankin tiliotteen rivi"
+msgstr ""
 
 #. module: account_voucher
-#: view:sale.receipt.report:0 field:sale.receipt.report,day:0
+#: view:sale.receipt.report:0
+#: field:sale.receipt.report,day:0
 msgid "Day"
-msgstr "Päivä"
+msgstr ""
 
 #. module: account_voucher
-#: view:account.voucher:0 field:account.voucher,tax_id:0
+#: view:account.voucher:0
+#: field:account.voucher,tax_id:0
 msgid "Tax"
-msgstr "Vero"
+msgstr ""
 
 #. module: account_voucher
-#: code:addons/account_voucher/account_voucher.py:981
+#: code:addons/account_voucher/account_voucher.py:971
 #, python-format
 msgid "Invalid Action!"
-msgstr "Virheellinen toiminto!"
+msgstr ""
 
 #. module: account_voucher
 #: field:account.voucher,comment:0
@@ -315,14 +336,14 @@ msgstr ""
 #. module: account_voucher
 #: field:account.voucher.line,account_analytic_id:0
 msgid "Analytic Account"
-msgstr "Analyyttinen tili"
+msgstr ""
 
 #. module: account_voucher
 #: help:account.voucher,message_summary:0
 msgid ""
 "Holds the Chatter summary (number of messages, ...). This summary is "
 "directly in html format in order to be inserted in kanban views."
-msgstr "Sisältää viestien yhteenvedon (viestien määrän,...). Tämä yhteenveto on valmiiksi  html-muodossa, jotta se voidaan viedä kanban näkymään."
+msgstr ""
 
 #. module: account_voucher
 #: view:account.voucher:0
@@ -340,10 +361,12 @@ msgid "(update)"
 msgstr "(päivitys)"
 
 #. module: account_voucher
-#: view:account.voucher:0 selection:account.voucher,state:0
-#: view:sale.receipt.report:0 selection:sale.receipt.report,state:0
+#: view:account.voucher:0
+#: selection:account.voucher,state:0
+#: view:sale.receipt.report:0
+#: selection:sale.receipt.report,state:0
 msgid "Draft"
-msgstr "Luonnos"
+msgstr ""
 
 #. module: account_voucher
 #: view:account.bank.statement:0
@@ -356,24 +379,26 @@ msgid "e.g. Invoice SAJ/0042"
 msgstr ""
 
 #. module: account_voucher
-#: code:addons/account_voucher/account_voucher.py:1220
+#: code:addons/account_voucher/account_voucher.py:1208
 #, python-format
 msgid "Wrong voucher line"
 msgstr "Väärä tositerivi"
 
 #. module: account_voucher
-#: selection:account.voucher,pay_now:0 selection:sale.receipt.report,pay_now:0
+#: selection:account.voucher,pay_now:0
+#: selection:sale.receipt.report,pay_now:0
 msgid "Pay Later or Group Funds"
 msgstr ""
 
 #. module: account_voucher
-#: view:account.voucher:0 selection:account.voucher,type:0
+#: view:account.voucher:0
+#: selection:account.voucher,type:0
 #: selection:sale.receipt.report,type:0
 msgid "Receipt"
-msgstr "Kuitti"
+msgstr ""
 
 #. module: account_voucher
-#: code:addons/account_voucher/account_voucher.py:1122
+#: code:addons/account_voucher/account_voucher.py:1110
 #, python-format
 msgid ""
 "You should configure the 'Gain Exchange Rate Account' in the accounting "
@@ -384,7 +409,7 @@ msgstr ""
 #. module: account_voucher
 #: view:account.voucher:0
 msgid "Sales Lines"
-msgstr "Myyntirivit"
+msgstr ""
 
 #. module: account_voucher
 #: view:account.voucher:0
@@ -392,15 +417,17 @@ msgid "Cancel Voucher"
 msgstr "Peruuta tosite"
 
 #. module: account_voucher
-#: view:account.voucher:0 field:account.voucher,period_id:0
+#: view:account.voucher:0
+#: field:account.voucher,period_id:0
 msgid "Period"
-msgstr "Jakso"
+msgstr ""
 
 #. module: account_voucher
-#: view:account.voucher:0 code:addons/account_voucher/account_voucher.py:231
+#: view:account.voucher:0
+#: code:addons/account_voucher/account_voucher.py:231
 #, python-format
 msgid "Supplier"
-msgstr "Toimittaja"
+msgstr ""
 
 #. module: account_voucher
 #: view:account.voucher:0
@@ -410,22 +437,30 @@ msgstr "Ostotosite"
 #. module: account_voucher
 #: field:account.voucher,message_follower_ids:0
 msgid "Followers"
-msgstr "Seuraajat"
+msgstr ""
 
 #. module: account_voucher
 #: selection:account.voucher.line,type:0
 msgid "Debit"
-msgstr "Debet"
+msgstr ""
 
 #. module: account_voucher
-#: view:sale.receipt.report:0 field:sale.receipt.report,nbr:0
+#: code:addons/account_voucher/account_voucher.py:1641
+#, python-format
+msgid "Unable to change journal !"
+msgstr ""
+
+#. module: account_voucher
+#: view:sale.receipt.report:0
+#: field:sale.receipt.report,nbr:0
 msgid "# of Voucher Lines"
 msgstr "kpl tositerivejä"
 
 #. module: account_voucher
-#: view:sale.receipt.report:0 field:sale.receipt.report,type:0
+#: view:sale.receipt.report:0
+#: field:sale.receipt.report,type:0
 msgid "Type"
-msgstr "Tyyppi"
+msgstr ""
 
 #. module: account_voucher
 #: view:sale.receipt.report:0
@@ -438,7 +473,9 @@ msgstr "Proformatositteet"
 msgid ""
 "At the operation date, the exchange rate was\n"
 "%s = %s"
-msgstr "Tapahtumapäivänä vaihtokurssi oli\n%s = %s"
+msgstr ""
+"Tapahtumapäivänä vaihtokurssi oli\n"
+"%s = %s"
 
 #. module: account_voucher
 #: model:ir.actions.act_window,help:account_voucher.action_vendor_payment
@@ -446,7 +483,8 @@ msgid ""
 "<p class=\"oe_view_nocontent_create\">\n"
 "                Click to create a new supplier payment.\n"
 "              </p><p>\n"
-"                OpenERP helps you easily track payments you make and the remaining balances you need to pay your suppliers.\n"
+"                OpenERP helps you easily track payments you make and the "
+"remaining balances you need to pay your suppliers.\n"
 "              </p>\n"
 "            "
 msgstr ""
@@ -495,16 +533,27 @@ msgstr ""
 #. module: account_voucher
 #: selection:sale.receipt.report,month:0
 msgid "July"
-msgstr "Heinäkuu"
+msgstr ""
 
 #. module: account_voucher
 #: help:account.voucher,state:0
 msgid ""
-" * The 'Draft' status is used when a user is encoding a new and unconfirmed Voucher.                         \n"
-"* The 'Pro-forma' when voucher is in Pro-forma status,voucher does not have an voucher number.                         \n"
-"* The 'Posted' status is used when user create voucher,a voucher number is generated and voucher entries are created in account                         \n"
+" * The 'Draft' status is used when a user is encoding a new and unconfirmed "
+"Voucher.                         \n"
+"* The 'Pro-forma' when voucher is in Pro-forma status,voucher does not have "
+"an voucher number.                         \n"
+"* The 'Posted' status is used when user create voucher,a voucher number is "
+"generated and voucher entries are created in account                         "
+"\n"
 "* The 'Cancelled' status is used when user cancel voucher."
-msgstr " * 'Luonnos' on uuden syötetyn ja vielä vahvistamattoman tositteen tila.                                                   \n* 'Proforma' -tilassa on tosite, jolle ei ole annettu tositenumeroa.                                                                \n* 'Kirjattu' -tila syntyy tositteelle, joka on viety kirjanpitoon ja on saanut samalla tositenumeron.     \n* 'Peruttu' -tila syntyy, kun käyttäjä peruu tositteen."
+msgstr ""
+" * 'Luonnos' on uuden syötetyn ja vielä vahvistamattoman tositteen tila.     "
+"                                              \n"
+"* 'Proforma' -tilassa on tosite, jolle ei ole annettu tositenumeroa.         "
+"                                                       \n"
+"* 'Kirjattu' -tila syntyy tositteelle, joka on viety kirjanpitoon ja on "
+"saanut samalla tositenumeron.     \n"
+"* 'Peruttu' -tila syntyy, kun käyttäjä peruu tositteen."
 
 #. module: account_voucher
 #: field:account.voucher,writeoff_amount:0
@@ -512,7 +561,8 @@ msgid "Difference Amount"
 msgstr ""
 
 #. module: account_voucher
-#: view:sale.receipt.report:0 field:sale.receipt.report,due_delay:0
+#: view:sale.receipt.report:0
+#: field:sale.receipt.report,due_delay:0
 msgid "Avg. Due Delay"
 msgstr ""
 
@@ -522,7 +572,7 @@ msgid "Are you sure you want to unreconcile this record?"
 msgstr ""
 
 #. module: account_voucher
-#: code:addons/account_voucher/account_voucher.py:1261
+#: code:addons/account_voucher/account_voucher.py:1249
 #, python-format
 msgid "No Account Base Code and Account Tax Code!"
 msgstr ""
@@ -530,7 +580,7 @@ msgstr ""
 #. module: account_voucher
 #: field:account.voucher,tax_amount:0
 msgid "Tax Amount"
-msgstr "Verotili"
+msgstr ""
 
 #. module: account_voucher
 #: view:sale.receipt.report:0
@@ -544,12 +594,23 @@ msgid ""
 "                Click to register a new payment. \n"
 "              </p><p>\n"
 "                Enter the customer and the payment method and then, either\n"
-"                create manually a payment record or OpenERP will propose to you\n"
-"                automatically the reconciliation of this payment with the open\n"
+"                create manually a payment record or OpenERP will propose to "
+"you\n"
+"                automatically the reconciliation of this payment with the "
+"open\n"
 "                invoices or sales receipts.\n"
 "              </p>\n"
 "            "
-msgstr "<p class=\"oe_view_nocontent_create\">\n                Klikkaa rekisteröidäksesi uuden maksusuorituksen.\n              </p><p>\n                Anna asikas ja maksumenetelmä ja sen jälkeen, joko luo \n                manauaalisesti maksutietue tai OpenERP ehdottaa sinulle \n                automaattisesti tämän maksun täsmäytystä avoimien laskujen \n                tai myyntikuittien kanssa.\n              </p>\n            "
+msgstr ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"                Klikkaa rekisteröidäksesi uuden maksusuorituksen.\n"
+"              </p><p>\n"
+"                Anna asikas ja maksumenetelmä ja sen jälkeen, joko luo \n"
+"                manauaalisesti maksutietue tai OpenERP ehdottaa sinulle \n"
+"                automaattisesti tämän maksun täsmäytystä avoimien laskujen \n"
+"                tai myyntikuittien kanssa.\n"
+"              </p>\n"
+"            "
 
 #. module: account_voucher
 #: field:account.config.settings,expense_currency_exchange_account_id:0
@@ -568,20 +629,21 @@ msgid "Payment Difference"
 msgstr ""
 
 #. module: account_voucher
-#: view:account.voucher:0 field:account.voucher,audit:0
+#: view:account.voucher:0
+#: field:account.voucher,audit:0
 msgid "To Review"
-msgstr "Tarkastettavaksi"
+msgstr ""
 
 #. module: account_voucher
-#: code:addons/account_voucher/account_voucher.py:1132
-#: code:addons/account_voucher/account_voucher.py:1146
-#: code:addons/account_voucher/account_voucher.py:1297
+#: code:addons/account_voucher/account_voucher.py:1120
+#: code:addons/account_voucher/account_voucher.py:1134
+#: code:addons/account_voucher/account_voucher.py:1286
 #, python-format
 msgid "change"
 msgstr ""
 
 #. module: account_voucher
-#: code:addons/account_voucher/account_voucher.py:1118
+#: code:addons/account_voucher/account_voucher.py:1106
 #, python-format
 msgid ""
 "You should configure the 'Loss Exchange Rate Account' in the accounting "
@@ -592,7 +654,7 @@ msgstr ""
 #. module: account_voucher
 #: view:account.voucher:0
 msgid "Expense Lines"
-msgstr "Kululajit"
+msgstr ""
 
 #. module: account_voucher
 #: help:account.voucher,is_multi_currency:0
@@ -609,12 +671,12 @@ msgstr ""
 #. module: account_voucher
 #: field:account.statement.from.invoice.lines,line_ids:0
 msgid "Invoices"
-msgstr "Laskut"
+msgstr ""
 
 #. module: account_voucher
 #: selection:sale.receipt.report,month:0
 msgid "December"
-msgstr "Joulukuu"
+msgstr ""
 
 #. module: account_voucher
 #: view:sale.receipt.report:0
@@ -622,9 +684,10 @@ msgid "Group by month of Invoice Date"
 msgstr "Ryhmitä laskutuskuukauden mukaan"
 
 #. module: account_voucher
-#: view:sale.receipt.report:0 field:sale.receipt.report,month:0
+#: view:sale.receipt.report:0
+#: field:sale.receipt.report,month:0
 msgid "Month"
-msgstr "Kuukausi"
+msgstr ""
 
 #. module: account_voucher
 #: field:account.voucher,currency_id:0
@@ -632,7 +695,7 @@ msgstr "Kuukausi"
 #: model:ir.model,name:account_voucher.model_res_currency
 #: field:sale.receipt.report,currency_id:0
 msgid "Currency"
-msgstr "Valuutta"
+msgstr ""
 
 #. module: account_voucher
 #: view:account.statement.from.invoice.lines:0
@@ -650,10 +713,12 @@ msgid "Voucher Status"
 msgstr "Tositteen tilat"
 
 #. module: account_voucher
-#: field:account.voucher,company_id:0 field:account.voucher.line,company_id:0
-#: view:sale.receipt.report:0 field:sale.receipt.report,company_id:0
+#: field:account.voucher,company_id:0
+#: field:account.voucher.line,company_id:0
+#: view:sale.receipt.report:0
+#: field:sale.receipt.report,company_id:0
 msgid "Company"
-msgstr "Yritys"
+msgstr ""
 
 #. module: account_voucher
 #: help:account.voucher,paid:0
@@ -671,18 +736,20 @@ msgid "Cancel Receipt"
 msgstr ""
 
 #. module: account_voucher
-#: code:addons/account_voucher/account_voucher.py:1079
+#: code:addons/account_voucher/account_voucher.py:1067
 #, python-format
 msgid "Configuration Error !"
 msgstr ""
 
 #. module: account_voucher
-#: view:account.voucher:0 view:sale.receipt.report:0
+#: view:account.voucher:0
+#: view:sale.receipt.report:0
 msgid "Draft Vouchers"
 msgstr "Tositeluonnokset"
 
 #. module: account_voucher
-#: view:sale.receipt.report:0 field:sale.receipt.report,price_total_tax:0
+#: view:sale.receipt.report:0
+#: field:sale.receipt.report,price_total_tax:0
 msgid "Total With Tax"
 msgstr "Yhteensä (verollinen)"
 
@@ -692,7 +759,8 @@ msgid "Purchase Voucher"
 msgstr "Ostotosite"
 
 #. module: account_voucher
-#: view:account.voucher:0 field:account.voucher,state:0
+#: view:account.voucher:0
+#: field:account.voucher,state:0
 #: view:sale.receipt.report:0
 msgid "Status"
 msgstr "Tila"
@@ -703,14 +771,15 @@ msgid "Group by year of Invoice Date"
 msgstr "Ryhmitä laskutusvuoden mukaan"
 
 #. module: account_voucher
-#: view:account.statement.from.invoice.lines:0 view:account.voucher:0
+#: view:account.statement.from.invoice.lines:0
+#: view:account.voucher:0
 msgid "or"
-msgstr "tai"
+msgstr ""
 
 #. module: account_voucher
 #: selection:sale.receipt.report,month:0
 msgid "August"
-msgstr "Elokuu"
+msgstr ""
 
 #. module: account_voucher
 #: view:account.voucher:0
@@ -722,15 +791,15 @@ msgstr "Vahvista maksusuoritus"
 msgid ""
 "Check this box if you are unsure of that journal entry and if you want to "
 "note it as 'to be reviewed' by an accounting expert."
-msgstr "Valitse tämä valintalaatikko jos et ole varma tästä päiväkirjakirjauksesta ja haluat lähettää huomautuksen \"tarkastettava\" asiantuntijalle."
+msgstr ""
 
 #. module: account_voucher
 #: selection:sale.receipt.report,month:0
 msgid "October"
-msgstr "Lokakuu"
+msgstr ""
 
 #. module: account_voucher
-#: code:addons/account_voucher/account_voucher.py:1080
+#: code:addons/account_voucher/account_voucher.py:1068
 #, python-format
 msgid "Please activate the sequence of selected journal !"
 msgstr ""
@@ -738,7 +807,7 @@ msgstr ""
 #. module: account_voucher
 #: selection:sale.receipt.report,month:0
 msgid "June"
-msgstr "Kesäkuu"
+msgstr ""
 
 #. module: account_voucher
 #: field:account.voucher,payment_rate_currency_id:0
@@ -748,7 +817,7 @@ msgstr ""
 #. module: account_voucher
 #: field:account.voucher,paid:0
 msgid "Paid"
-msgstr "Maksettu"
+msgstr ""
 
 #. module: account_voucher
 #: model:ir.actions.act_window,name:account_voucher.action_sale_receipt
@@ -759,7 +828,7 @@ msgstr "Myyntikuitit"
 #. module: account_voucher
 #: field:account.voucher,message_is_follower:0
 msgid "Is a Follower"
-msgstr "on seuraaja"
+msgstr ""
 
 #. module: account_voucher
 #: field:account.voucher,analytic_id:0
@@ -767,7 +836,8 @@ msgid "Write-Off Analytic Account"
 msgstr ""
 
 #. module: account_voucher
-#: field:account.voucher,date:0 field:account.voucher.line,date_original:0
+#: field:account.voucher,date:0
+#: field:account.voucher.line,date_original:0
 #: field:sale.receipt.report,date:0
 msgid "Date"
 msgstr "Päivä"
@@ -775,12 +845,12 @@ msgstr "Päivä"
 #. module: account_voucher
 #: selection:sale.receipt.report,month:0
 msgid "November"
-msgstr "Marraskuu"
+msgstr ""
 
 #. module: account_voucher
 #: view:sale.receipt.report:0
 msgid "Extended Filters..."
-msgstr "Laajennetut suodattimet..."
+msgstr ""
 
 #. module: account_voucher
 #: field:account.voucher,paid_amount_in_company_currency:0
@@ -793,7 +863,8 @@ msgid "Amount reconciled"
 msgstr ""
 
 #. module: account_voucher
-#: selection:account.voucher,pay_now:0 selection:sale.receipt.report,pay_now:0
+#: selection:account.voucher,pay_now:0
+#: selection:sale.receipt.report,pay_now:0
 msgid "Pay Directly"
 msgstr ""
 
@@ -808,7 +879,7 @@ msgid "Previous Payments ?"
 msgstr ""
 
 #. module: account_voucher
-#: code:addons/account_voucher/account_voucher.py:1220
+#: code:addons/account_voucher/account_voucher.py:1208
 #, python-format
 msgid "The invoice you are willing to pay is not valid anymore."
 msgstr ""
@@ -816,7 +887,7 @@ msgstr ""
 #. module: account_voucher
 #: selection:sale.receipt.report,month:0
 msgid "January"
-msgstr "Tammikuu"
+msgstr ""
 
 #. module: account_voucher
 #: model:ir.actions.act_window,name:account_voucher.action_voucher_list
@@ -827,20 +898,20 @@ msgstr "Päiväkirjatositteet"
 #. module: account_voucher
 #: model:ir.model,name:account_voucher.model_res_company
 msgid "Companies"
-msgstr "Yritykset"
+msgstr ""
 
 #. module: account_voucher
 #: field:account.voucher,message_summary:0
 msgid "Summary"
-msgstr "Yhteenveto"
+msgstr ""
 
 #. module: account_voucher
 #: field:account.voucher,active:0
 msgid "Active"
-msgstr "Aktiivinen"
+msgstr ""
 
 #. module: account_voucher
-#: code:addons/account_voucher/account_voucher.py:1086
+#: code:addons/account_voucher/account_voucher.py:1074
 #, python-format
 msgid "Please define a sequence on the journal."
 msgstr ""
@@ -880,7 +951,8 @@ msgid "Helping Sentence"
 msgstr ""
 
 #. module: account_voucher
-#: view:sale.receipt.report:0 field:sale.receipt.report,price_total:0
+#: view:sale.receipt.report:0
+#: field:sale.receipt.report,price_total:0
 msgid "Total Without Tax"
 msgstr "Yhteensä (veroton)"
 
@@ -892,7 +964,7 @@ msgstr "Laskupäivä"
 #. module: account_voucher
 #: view:account.voucher:0
 msgid "Unreconcile"
-msgstr "Poista suoritukset"
+msgstr ""
 
 #. module: account_voucher
 #: view:account.voucher:0
@@ -908,12 +980,12 @@ msgstr "Numero"
 #. module: account_voucher
 #: selection:account.voucher.line,type:0
 msgid "Credit"
-msgstr "Kredit"
+msgstr ""
 
 #. module: account_voucher
 #: model:ir.model,name:account_voucher.model_account_bank_statement
 msgid "Bank Statement"
-msgstr "Pankin tiliote"
+msgstr ""
 
 #. module: account_voucher
 #: view:account.bank.statement:0
@@ -923,7 +995,7 @@ msgstr ""
 #. module: account_voucher
 #: selection:sale.receipt.report,month:0
 msgid "September"
-msgstr "Syyskuu"
+msgstr ""
 
 #. module: account_voucher
 #: view:account.voucher:0
@@ -931,7 +1003,8 @@ msgid "Sales Information"
 msgstr ""
 
 #. module: account_voucher
-#: view:account.voucher:0 field:account.voucher.line,voucher_id:0
+#: view:account.voucher:0
+#: field:account.voucher.line,voucher_id:0
 #: model:res.request.link,name:account_voucher.req_link_voucher
 msgid "Voucher"
 msgstr "Tosite"
@@ -939,7 +1012,7 @@ msgstr "Tosite"
 #. module: account_voucher
 #: model:ir.model,name:account_voucher.model_account_invoice
 msgid "Invoice"
-msgstr "Lasku"
+msgstr ""
 
 #. module: account_voucher
 #: view:account.voucher:0
@@ -947,9 +1020,10 @@ msgid "Voucher Items"
 msgstr "Tositteen kohteet"
 
 #. module: account_voucher
-#: view:account.statement.from.invoice.lines:0 view:account.voucher:0
+#: view:account.statement.from.invoice.lines:0
+#: view:account.voucher:0
 msgid "Cancel"
-msgstr "Peruuta"
+msgstr ""
 
 #. module: account_voucher
 #: model:ir.actions.client,name:account_voucher.action_client_invoice_menu
@@ -957,15 +1031,17 @@ msgid "Open Invoicing Menu"
 msgstr ""
 
 #. module: account_voucher
-#: selection:account.voucher,state:0 view:sale.receipt.report:0
+#: selection:account.voucher,state:0
+#: view:sale.receipt.report:0
 #: selection:sale.receipt.report,state:0
 msgid "Pro-forma"
-msgstr "Proforma"
+msgstr ""
 
 #. module: account_voucher
-#: view:account.voucher:0 field:account.voucher,move_ids:0
+#: view:account.voucher:0
+#: field:account.voucher,move_ids:0
 msgid "Journal Items"
-msgstr "Päiväkirjan tapahtumat"
+msgstr ""
 
 #. module: account_voucher
 #: code:addons/account_voucher/account_voucher.py:558
@@ -974,12 +1050,14 @@ msgid "Please define default credit/debit accounts on the journal \"%s\"."
 msgstr ""
 
 #. module: account_voucher
-#: selection:account.voucher,type:0 selection:sale.receipt.report,type:0
+#: selection:account.voucher,type:0
+#: selection:sale.receipt.report,type:0
 msgid "Purchase"
-msgstr "Osto"
+msgstr ""
 
 #. module: account_voucher
-#: view:account.invoice:0 view:account.voucher:0
+#: view:account.invoice:0
+#: view:account.voucher:0
 msgid "Pay"
 msgstr ""
 
@@ -992,8 +1070,8 @@ msgstr ""
 #: help:account.voucher,payment_option:0
 msgid ""
 "This field helps you to choose what you want to do with the eventual "
-"difference between the paid amount and the sum of allocated amounts. You can"
-" either choose to keep open this difference on the partner's account, or "
+"difference between the paid amount and the sum of allocated amounts. You can "
+"either choose to keep open this difference on the partner's account, or "
 "reconcile it with the payment(s)"
 msgstr ""
 
@@ -1001,7 +1079,8 @@ msgstr ""
 #: model:ir.actions.act_window,help:account_voucher.action_sale_receipt_report_all
 msgid ""
 "<p>\n"
-"            From this report, you can have an overview of the amount invoiced\n"
+"            From this report, you can have an overview of the amount "
+"invoiced\n"
 "            to your customer as well as payment delays. The tool search can\n"
 "            also be used to personalise your Invoices reports and so, match\n"
 "            this analysis to your needs.\n"
@@ -1017,7 +1096,7 @@ msgstr "Kirjatut tositteet"
 #. module: account_voucher
 #: field:account.voucher,payment_rate:0
 msgid "Exchange Rate"
-msgstr "Valuuttakurssi"
+msgstr ""
 
 #. module: account_voucher
 #: view:account.voucher:0
@@ -1027,18 +1106,20 @@ msgstr ""
 #. module: account_voucher
 #: field:account.voucher.line,name:0
 msgid "Description"
-msgstr "Kuvaus"
+msgstr ""
 
 #. module: account_voucher
 #: selection:sale.receipt.report,month:0
 msgid "May"
-msgstr "Toukokuu"
+msgstr ""
 
 #. module: account_voucher
-#: view:account.voucher:0 field:account.voucher,journal_id:0
-#: view:sale.receipt.report:0 field:sale.receipt.report,journal_id:0
+#: view:account.voucher:0
+#: field:account.voucher,journal_id:0
+#: view:sale.receipt.report:0
+#: field:sale.receipt.report,journal_id:0
 msgid "Journal"
-msgstr "Päiväkirja"
+msgstr ""
 
 #. module: account_voucher
 #: view:account.voucher:0
@@ -1046,14 +1127,15 @@ msgid "Internal Notes"
 msgstr "Sisäiset muistiinpanot"
 
 #. module: account_voucher
-#: view:account.voucher:0 field:account.voucher,line_cr_ids:0
+#: view:account.voucher:0
+#: field:account.voucher,line_cr_ids:0
 msgid "Credits"
 msgstr ""
 
 #. module: account_voucher
 #: field:account.voucher.line,amount_original:0
 msgid "Original Amount"
-msgstr "Alkuperäinen summa"
+msgstr ""
 
 #. module: account_voucher
 #: view:account.voucher:0
@@ -1068,27 +1150,31 @@ msgid ""
 msgstr ""
 
 #. module: account_voucher
-#: view:account.voucher:0 field:account.voucher,pay_now:0
-#: selection:account.voucher,type:0 field:sale.receipt.report,pay_now:0
+#: view:account.voucher:0
+#: field:account.voucher,pay_now:0
+#: selection:account.voucher,type:0
+#: field:sale.receipt.report,pay_now:0
 #: selection:sale.receipt.report,type:0
 msgid "Payment"
-msgstr "Maksu"
+msgstr ""
 
 #. module: account_voucher
-#: view:account.voucher:0 selection:account.voucher,state:0
-#: view:sale.receipt.report:0 selection:sale.receipt.report,state:0
+#: view:account.voucher:0
+#: selection:account.voucher,state:0
+#: view:sale.receipt.report:0
+#: selection:sale.receipt.report,state:0
 msgid "Posted"
-msgstr "Kirjattu"
+msgstr ""
 
 #. module: account_voucher
 #: view:account.voucher:0
 msgid "Customer"
-msgstr "Asiakas"
+msgstr ""
 
 #. module: account_voucher
 #: selection:sale.receipt.report,month:0
 msgid "February"
-msgstr "Helmikuu"
+msgstr ""
 
 #. module: account_voucher
 #: view:account.voucher:0
@@ -1107,9 +1193,10 @@ msgid "Voucher Entries"
 msgstr "Tositteen viennit"
 
 #. module: account_voucher
-#: view:sale.receipt.report:0 field:sale.receipt.report,year:0
+#: view:sale.receipt.report:0
+#: field:sale.receipt.report,year:0
 msgid "Year"
-msgstr "Vuosi"
+msgstr ""
 
 #. module: account_voucher
 #: field:account.config.settings,income_currency_exchange_account_id:0
@@ -1118,19 +1205,14 @@ msgid "Gain Exchange Rate Account"
 msgstr "Voittotili valuttakurssierolle"
 
 #. module: account_voucher
-#: selection:account.voucher,type:0 selection:sale.receipt.report,type:0
+#: selection:account.voucher,type:0
+#: selection:sale.receipt.report,type:0
 msgid "Sale"
-msgstr "Myynti"
+msgstr ""
 
 #. module: account_voucher
 #: selection:sale.receipt.report,month:0
 msgid "April"
-msgstr "Huhtikuu"
-
-#. module: account_voucher
-#: code:addons/account_voucher/account_voucher.py:1655
-#, python-format
-msgid "Unable to Change Journal!"
 msgstr ""
 
 #. module: account_voucher
@@ -1146,7 +1228,7 @@ msgstr ""
 #. module: account_voucher
 #: help:account.voucher,message_ids:0
 msgid "Messages and communication history"
-msgstr "Viesti- ja kommunikointihistoria"
+msgstr ""
 
 #. module: account_voucher
 #: model:ir.model,name:account_voucher.model_account_statement_from_invoice_lines
@@ -1154,14 +1236,15 @@ msgid "Entries by Statement from Invoices"
 msgstr ""
 
 #. module: account_voucher
-#: view:account.voucher:0 field:account.voucher,amount:0
+#: view:account.voucher:0
+#: field:account.voucher,amount:0
 msgid "Total"
 msgstr "Yhteensä"
 
 #. module: account_voucher
 #: field:account.voucher,move_id:0
 msgid "Account Entry"
-msgstr "Kirjanpitovienti"
+msgstr ""
 
 #. module: account_voucher
 #: constraint:account.bank.statement.line:0
@@ -1171,7 +1254,7 @@ msgid ""
 msgstr ""
 
 #. module: account_voucher
-#: code:addons/account_voucher/account_voucher.py:981
+#: code:addons/account_voucher/account_voucher.py:971
 #, python-format
 msgid "Cannot delete voucher(s) which are already opened or paid."
 msgstr "Avattua tai maksettua tositetta ei voi poistaa!"
@@ -1192,13 +1275,15 @@ msgid "Keep Open"
 msgstr ""
 
 #. module: account_voucher
-#: field:account.voucher,line_ids:0 view:account.voucher.line:0
+#: field:account.voucher,line_ids:0
+#: view:account.voucher.line:0
 #: model:ir.model,name:account_voucher.model_account_voucher_line
 msgid "Voucher Lines"
 msgstr "Tositerivit"
 
 #. module: account_voucher
-#: view:sale.receipt.report:0 field:sale.receipt.report,delay_to_pay:0
+#: view:sale.receipt.report:0
+#: field:sale.receipt.report,delay_to_pay:0
 msgid "Avg. Delay To Pay"
 msgstr ""
 
@@ -1213,8 +1298,10 @@ msgid "Sales Receipt Statistics"
 msgstr ""
 
 #. module: account_voucher
-#: view:account.voucher:0 field:account.voucher,partner_id:0
-#: field:account.voucher.line,partner_id:0 view:sale.receipt.report:0
+#: view:account.voucher:0
+#: field:account.voucher,partner_id:0
+#: field:account.voucher.line,partner_id:0
+#: view:sale.receipt.report:0
 #: field:sale.receipt.report,partner_id:0
 msgid "Partner"
 msgstr "Kumppani"
@@ -1225,8 +1312,8 @@ msgid "Open Balance"
 msgstr ""
 
 #. module: account_voucher
-#: code:addons/account_voucher/account_voucher.py:1118
-#: code:addons/account_voucher/account_voucher.py:1122
+#: code:addons/account_voucher/account_voucher.py:1106
+#: code:addons/account_voucher/account_voucher.py:1110
 #, python-format
 msgid "Insufficient Configuration!"
 msgstr ""
@@ -1234,7 +1321,7 @@ msgstr ""
 #. module: account_voucher
 #: help:account.voucher,active:0
 msgid ""
-"By default, reconciliation vouchers made on draft bank statements are set as"
-" inactive, which allow to hide the customer/supplier payment while the bank "
+"By default, reconciliation vouchers made on draft bank statements are set as "
+"inactive, which allow to hide the customer/supplier payment while the bank "
 "statement isn't confirmed."
 msgstr ""

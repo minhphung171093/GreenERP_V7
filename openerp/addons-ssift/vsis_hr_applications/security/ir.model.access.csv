@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_applicant,portal.applications,model_hr_applicant,portal.group_portal,1,1,1,0
+access_hr_education_background,portal.hr.education.background,model_hr_education_background,portal.group_portal,1,1,1,1
+access_hr_work_history,portal.hr.work.history,model_hr_work_history,portal.group_portal,1,1,1,1
+access_hr_computer_skill,portal.hr.computer.skill,model_hr_computer_skill,portal.group_portal,1,1,1,1
+access_hr_foreign_languages,portal.hr.foreign.languages,model_hr_foreign_languages,portal.group_portal,1,1,1,1

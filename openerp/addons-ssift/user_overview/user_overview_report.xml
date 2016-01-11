@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <report auto="False" id="report_users_attendance" menu="False" model="hr.employee" name="hr.analytical.attendance_users" string="Employees Attendance" xsl="user_overview/report/users_attendance.xsl"/>
+    </data>
+</openerp>

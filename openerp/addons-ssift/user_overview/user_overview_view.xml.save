@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+ <data>
+    <menuitem id="user_overview1" name="Overview" parent="base.menu_main_pm" sequence="0"/>
+
+        <record id="view_user_overview_form_vew" model="ir.ui.view">
+            <field name="name">view.user.overview.form.vew</field>
+            <field name="model">user.overview</field>
+            <field name="arch" type="xml">
+                <form string="User Overview" version="7.0">               
+            		<h2>
+            		<label string="Attendances"/>
+            		</h2>
+            		<group col="8" colspan="2">
+	                    <group colspan="2">
+	                    	<field name="total_attendance"/>
+	                    	<field name="total_timesheet"/>
+	                    	<field name="difference"/>
+	                    	<field name="current_status"/>
+	                    </group>
+	                    <group colspan="6">
+                            <field name="attendances_times" nolabel="1">
+                                <tree string="Attendance" editable="bottom">
+                                    <field name="name" />
+                                    <field name="action" />
+                                    <field name="task_id" />
+                                </tree>
+                            </field>
+	                    </group>		                    
+	                </group>
+            		<h2>
+            			<label string="My Checking 1" groups="project.group_project_manager"/>
+            		</h2>		                
+	                <group groups="project.group_project_manager">
+	                    <group col="2">	                    
+                            <field name="checking_tasks1" nolabel="1" context="{'active_id':active_id}">
+                                <tree string="Tasks" editable="bottom" colors="blue:checking_task in ['checking1','checking2']">
+                                    <field name="name" string="Task" attrs="{'readonly':[('state','=','open')]}"/>
+                                    <field name="project_id" attrs="{'readonly':[('state','=','open')]}"/>
+                                    <field name="date_deadline" attrs="{'readonly':[('state','=','open')]}"/>
+                                    <field name="priority" attrs="{'readonly':[('state','=','open')]}"/>
+                                    <field name="planned_hours_user" string="Planned Hours" sum="Planned Hours"/>
+                                    <field name="effective_hours" string="Hours Spent" sum="Hours Spent"/>
+                                    <field name="progress" widget="progressbar" />
+                                    <field name="flag" invisible="1"/>
+                                    <button name="task_login" attrs="{'invisible':[('flag','=',False)]}" string="Paused" type="object" icon="logout" class="oe_highlight" context="{'inventory_id':True}"/>
+                                    <button name="task_logout" attrs="{'invisible':[('flag','=',True)]}" string="Working" type="object" icon="login" class="oe_highlight" context="{'inventory_id':True}"/>
+                                    <field name="state"/>
+                                    <field name="status_task" invisible="1"/>
+                                    <field name="checking_task" invisible="1"/>
+                                </tree>
+                            </field>
+	                    </group>
+                    </group>
+            		
+            		<h2>
+            			<label string="My Checking 2" groups="project.group_project_manager"/>
+            		</h2>		                
+	                <group groups="project.group_project_manager">
+	                    <group col="2">	                    
+                            <field name="checking_tasks2" nolabel="1" context="{'active_id':active_id}">
+                                <tree string="Tasks" editable="bottom" colors="blue:checking_task in ['checking1','checking2']">
+                                    <field name="name" string="Task" attrs="{'readonly':[('state','=','open')]}"/>
+                                    <field name="project_id" attrs="{'readonly':[('state','=','open')]}"/>
+                                    <field name="date_deadline" attrs="{'readonly':[('state','=','open')]}"/>
+                                    <field name="priority" attrs="{'readonly':[('state','=','open')]}"/>
+                                    <field name="planned_hours_user" string="Planned Hours" sum="Planned Hours"/>
+                                    <field name="effective_hours" string="Hours Spent" sum="Hours Spent"/>
+                                    <field name="progress" widget="progressbar" />
+                                    <field name="flag" invisible="1"/>
+                                    <button name="task_login" attrs="{'invisible':[('flag','=',False)]}" string="Paused" type="object" icon="logout" class="oe_highlight" context="{'inventory_id':True}"/>
+                                    <button name="task_logout" attrs="{'invisible':[('flag','=',True)]}" string="Working" type="object" icon="login" class="oe_highlight" context="{'inventory_id':True}"/>
+                                    <field name="state"/>
+                                    <field name="status_task" invisible="
+
+1"/>
+                                    <field name="checking_task" invisible="1"/>
+                                </tree>
+                            </field>
+	                    </group>
+                    </group>
+            		
+            		<h2>
+            			<label string="My Tasks"/>
+            		</h2>		                
+	                <group>
+	                    <group col="2">	                    
+                            <field name="tasks" nolabel="1" context="{'active_id':active_id}">
+                                <tree string="Tasks" editable="bottom" colors="blue:checking_task in ['checking1','checking2']">
+                                    <field name="name" string="Task" attrs="{'readonly':[('state','=','open')]}"/>
+                                    <field name="project_id" attrs="{'readonly':[('state','=','open')]}"/>
+                                    <field name="date_deadline" attrs="{'readonly':[('state','=','open')]}"/>
+                                    <field name="priority" attrs="{'readonly':[('state','=','open')]}"/>
+                                    <field name="planned_hours_user" string="Planned Hours" sum="Planned Hours"/>
+                                    <field name="effective_hours" string="Hours Spent" sum="Hours Spent"/>
+                                    <field name="progress" widget="progressbar" />
+                                    <field name="flag" invisible="1"/>
+                                    <button name="task_login" attrs="{'invisible':[('flag','=',False)]}" string="Paused" type="object" icon="logout" class="oe_highlight" context="{'inventory_id':True}"/>
+                                    <button name="task_logout" attrs="{'invisible':[('flag','=',True)]}" string="Working" type="object" icon="login" class="oe_highlight" context="{'inventory_id':True}"/>
+                                    <field name="state"/>
+                                    <field name="status_task" invisible="1"/>
+                                    <field name="checking_task" invisible="1"/>
+                                </tree>
+                            </field>
+	                    </group>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+		<record id="view_user_overview_tree_vew" model="ir.ui.view">
+			<field name="name">view.user.overview.tree.vewt</field>
+			<field name="model">user.overview</field>
+			<field name="priority">1</field>
+			<field name="arch" type="xml">
+				<tree string="User Overview">
+					<field name="total_attendance"/>
+				</tree>
+			</field>
+		</record>
+		
+        <record id="user_overview_action_form" model="ir.actions.act_window">
+            <field name="name">User Overview</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">user.overview</field>
+            <field name="view_mode">form</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="view_user_overview_form_vew"/>
+        </record>
+        
+        <menuitem action="user_overview_action_form"
+            id="menu_user_overview_action_form"
+            parent="user_overview1" sequence="10"/>
+            
+         <record model="ir.cron" id="project_task_cron">
+            <field name="name">Auto Attendance Recorder</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model" eval="'project.task'"/>
+            <field name="function" eval="'logout_all_task'"/>
+            <field name="args" eval="'()'" />
+        </record>
+        
+        <record model="ir.cron" id="logout_attendance_cron">
+            <field name="name">Auto Attendance Logout</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model" eval="'project.task'"/>
+            <field name="function" eval="'logout_all_attendance'"/>
+            <field name="args" eval="'()'" />
+        </record>
+        
+        <record model="ir.cron" id="attendance_update_cron">
+            <field name="name">Auto Attendance Update</field>
+            <field name="interval_number">10</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model" eval="'project.task'"/>
+            <field name="function" eval="'attendance_update'"/>
+            <field name="args" eval="'()'" />
+        </record>
+        
+        <record id="project_task_view_form_inherit" model="ir.ui.view">
+            <field name="name">project.task.view.form.inherit</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='planned_hours']" position="after">
+                        <field name="planned_hours_user" widget="float_time" groups="project.group_project_user"/>
+                    </xpath>
+                    
+                    <xpath expr="//field[@name='work_ids']" position="after">
+                        <field name="error_ids">
+                        	<tree string="Error Reporting" editable="top">
+                                <field name="error_id"/>
+                                <field name="date"/>
+                            </tree>
+                        </field>
+                    </xpath>
+                    
+                    <xpath  expr="//field[@name='planned_hours']" position="attributes">
+                    	<attribute name="groups">project.group_project_manager</attribute>
+                	</xpath>
+                	
+                	<xpath expr="//field[@name='sequence']" position="after">
+                        <field name="previous_assigned_to1"/>
+                        <field name="previous_assigned_to2"/>
+                        <field name="status_task" invisible="1"/>
+                    </xpath>
+			<xpath expr="//tree/field[@name='hours']" position="attributes">
+			            <attribute name="readonly">1</attribute>
+			        </xpath>
+                </data>
+            </field>
+        </record>
+        
+        <record id="project_project_view_form_inherit" model="ir.ui.view">
+            <field name="name">project.project.view.form.inherit</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath  expr="//field[@name='type_ids']" position="attributes">
+                    	<attribute name="on_change">onchange_type_ids()</attribute>
+                	</xpath>
+                </data>
+            </field>
+        </record>
+                
+   </data>  
+</openerp>

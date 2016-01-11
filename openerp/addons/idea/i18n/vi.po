@@ -1,31 +1,32 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * idea
-# 
-# Translators:
+# Vietnamese translation for openobject-addons
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-14 00:10+0000\n"
-"PO-Revision-Date: 2015-05-27 09:18+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Vietnamese (http://www.transifex.com/projects/p/odoo-7/language/vi/)\n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2013-06-07 19:37+0000\n"
+"PO-Revision-Date: 2012-12-21 23:00+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Vietnamese <vi@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: vi\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-11-21 06:15+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #. module: idea
 #: view:idea.category:0
+#: view:idea.idea:0
 msgid "Category"
-msgstr "Phân loại"
+msgstr ""
 
 #. module: idea
 #: view:idea.idea:0
 msgid "In Progress"
-msgstr "Đang tiến hành"
+msgstr ""
 
 #. module: idea
 #: view:idea.idea:0
@@ -35,6 +36,11 @@ msgstr ""
 #. module: idea
 #: sql_constraint:idea.category:0
 msgid "The name of the category must be unique"
+msgstr ""
+
+#. module: idea
+#: view:idea.idea:0
+msgid "By Idea Category"
 msgstr ""
 
 #. module: idea
@@ -50,17 +56,18 @@ msgstr ""
 #. module: idea
 #: view:idea.idea:0
 msgid "Group By..."
-msgstr "Nhóm theo..."
+msgstr ""
 
 #. module: idea
 #: field:idea.category,name:0
 msgid "Category Name"
-msgstr "Tên danh mục"
+msgstr ""
 
 #. module: idea
-#: view:idea.idea:0 selection:idea.idea,state:0
+#: view:idea.idea:0
+#: selection:idea.idea,state:0
 msgid "New"
-msgstr "Mới"
+msgstr ""
 
 #. module: idea
 #: view:idea.idea:0
@@ -68,9 +75,10 @@ msgid "New Ideas"
 msgstr ""
 
 #. module: idea
-#: view:idea.idea:0 field:idea.idea,state:0
+#: view:idea.idea:0
+#: field:idea.idea,state:0
 msgid "Status"
-msgstr "Tình trạng"
+msgstr ""
 
 #. module: idea
 #: sql_constraint:idea.idea:0
@@ -85,12 +93,12 @@ msgstr ""
 #. module: idea
 #: field:idea.idea,category_ids:0
 msgid "Tags"
-msgstr "Các từ khóa"
+msgstr ""
 
 #. module: idea
 #: field:idea.idea,message_unread:0
 msgid "Unread Messages"
-msgstr "Tin chưa đọc"
+msgstr ""
 
 #. module: idea
 #: help:idea.idea,message_ids:0
@@ -108,7 +116,8 @@ msgid "Email Thread"
 msgstr ""
 
 #. module: idea
-#: view:idea.idea:0 selection:idea.idea,state:0
+#: view:idea.idea:0
+#: selection:idea.idea,state:0
 msgid "Accepted"
 msgstr ""
 
@@ -116,20 +125,21 @@ msgstr ""
 #: model:ir.actions.act_window,name:idea.action_idea_category
 #: model:ir.ui.menu,name:idea.menu_idea_category
 msgid "Categories"
-msgstr "Danh mục"
+msgstr ""
 
 #. module: idea
 #: view:idea.idea:0
 msgid "Refuse"
-msgstr "Từ chối"
+msgstr ""
 
 #. module: idea
 #: field:idea.idea,message_ids:0
 msgid "Messages"
-msgstr "Các thông điệp"
+msgstr ""
 
 #. module: idea
-#: view:idea.idea:0 model:ir.actions.act_window,name:idea.action_idea_idea
+#: view:idea.idea:0
+#: model:ir.actions.act_window,name:idea.action_idea_idea
 #: model:ir.ui.menu,name:idea.menu_idea_idea
 #: model:ir.ui.menu,name:idea.menu_ideas
 msgid "Ideas"
@@ -148,7 +158,7 @@ msgstr ""
 #. module: idea
 #: field:idea.idea,message_summary:0
 msgid "Summary"
-msgstr "Tóm tắt"
+msgstr ""
 
 #. module: idea
 #: help:idea.idea,message_unread:0
@@ -158,22 +168,23 @@ msgstr ""
 #. module: idea
 #: field:idea.idea,description:0
 msgid "Description"
-msgstr "Mô tả"
+msgstr ""
 
 #. module: idea
 #: selection:idea.idea,state:0
 msgid "Refused"
-msgstr "Đã từ chối"
+msgstr ""
 
 #. module: idea
-#: view:idea.idea:0 field:idea.idea,create_uid:0
+#: view:idea.idea:0
+#: field:idea.idea,create_uid:0
 msgid "Creator"
 msgstr ""
 
 #. module: idea
 #: view:idea.idea:0
 msgid "Open"
-msgstr "Mở"
+msgstr ""
 
 #. module: idea
 #: view:idea.idea:0
@@ -195,7 +206,7 @@ msgstr ""
 #. module: idea
 #: selection:idea.idea,state:0
 msgid "Done"
-msgstr "Hoàn tất"
+msgstr ""
 
 #. module: idea
 #: view:idea.idea:0
@@ -205,7 +216,7 @@ msgstr ""
 #. module: idea
 #: field:idea.idea,message_follower_ids:0
 msgid "Followers"
-msgstr "Người theo dõi"
+msgstr ""
 
 #. module: idea
 #: view:idea.category:0

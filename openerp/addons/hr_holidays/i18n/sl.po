@@ -1,22 +1,21 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * hr_holidays
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2012
+# Slovenian translation for openobject-addons
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-14 00:10+0000\n"
-"PO-Revision-Date: 2015-05-29 13:14+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Slovenian (http://www.transifex.com/projects/p/odoo-7/language/sl/)\n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2013-06-07 19:36+0000\n"
+"PO-Revision-Date: 2013-12-07 09:01+0000\n"
+"Last-Translator: Darja Zorman <darja.zorman@mentis.si>\n"
+"Language-Team: Slovenian <sl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: sl\n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-12-08 05:46+0000\n"
+"X-Generator: Launchpad (build 16869)\n"
 
 #. module: hr_holidays
 #: selection:hr.holidays.status,color_name:0
@@ -34,22 +33,24 @@ msgid "Waiting Second Approval"
 msgstr "Čakanje na drugo potrditev"
 
 #. module: hr_holidays
-#: code:addons/hr_holidays/hr_holidays.py:314
+#: code:addons/hr_holidays/hr_holidays.py:309
 #, python-format
 msgid ""
 "You cannot modify a leave request that has been approved. Contact a human "
 "resource manager."
-msgstr "Ne morete spremeniti zahtevka za odhod, ki je bil potrjen. Kontaktirajte vodjo kadrovske službe."
+msgstr ""
+"Ne morete spremeniti zahtevka za odhod, ki je bil potrjen. Kontaktirajte "
+"vodjo kadrovske službe."
 
 #. module: hr_holidays
 #: help:hr.holidays.status,remaining_leaves:0
 msgid "Maximum Leaves Allowed - Leaves Already Taken"
-msgstr "Maksimalno število dovoljenih odsotnosti - že izkoriščene odsotnosti"
+msgstr ""
 
 #. module: hr_holidays
 #: view:hr.holidays:0
 msgid "Leaves Management"
-msgstr "Upravljanje odsotnosti"
+msgstr ""
 
 #. module: hr_holidays
 #: view:hr.holidays:0
@@ -59,7 +60,7 @@ msgstr "Združi po ..."
 #. module: hr_holidays
 #: field:hr.holidays,holiday_type:0
 msgid "Allocation Mode"
-msgstr "Metoda dodelitve"
+msgstr ""
 
 #. module: hr_holidays
 #: field:hr.employee,leave_date_from:0
@@ -67,7 +68,8 @@ msgid "From Date"
 msgstr "Od datuma"
 
 #. module: hr_holidays
-#: view:hr.holidays:0 field:hr.holidays,department_id:0
+#: view:hr.holidays:0
+#: field:hr.holidays,department_id:0
 msgid "Department"
 msgstr "Oddelek"
 
@@ -75,7 +77,7 @@ msgstr "Oddelek"
 #: model:ir.actions.act_window,name:hr_holidays.request_approve_allocation
 #: model:ir.ui.menu,name:hr_holidays.menu_request_approve_allocation
 msgid "Allocation Requests to Approve"
-msgstr "Zahtevki po dodelitvi za odobritev"
+msgstr ""
 
 #. module: hr_holidays
 #: help:hr.holidays,category_id:0
@@ -95,7 +97,7 @@ msgstr "Preostali dnevi"
 #. module: hr_holidays
 #: xsl:holidays.summary:0
 msgid "of the"
-msgstr "od"
+msgstr ""
 
 #. module: hr_holidays
 #: selection:hr.holidays,holiday_type:0
@@ -107,7 +109,9 @@ msgstr "Po zaposlenih"
 msgid ""
 "The default duration interval between the start date and the end date is 8 "
 "hours.  Feel free to adapt it to your needs."
-msgstr "Privzeto trajanje med začetnim in končnim datumom je 8 ur. Prilagodite, če je potrebno."
+msgstr ""
+"Privzeto trajanje med začetnim in končnim datumom je 8 ur. Prilagodite, če "
+"je potrebno."
 
 #. module: hr_holidays
 #: model:mail.message.subtype,description:hr_holidays.mt_holidays_refused
@@ -117,7 +121,7 @@ msgstr "Zahtevek zavrnjen"
 #. module: hr_holidays
 #: field:hr.holidays,number_of_days_temp:0
 msgid "Allocation"
-msgstr "Dodelitev"
+msgstr ""
 
 #. module: hr_holidays
 #: xsl:holidays.summary:0
@@ -132,7 +136,7 @@ msgstr "Svetlo turkizna"
 #. module: hr_holidays
 #: constraint:hr.holidays:0
 msgid "You can not have 2 leaves that overlaps on same day!"
-msgstr "Ne morete imeti dveh odsotnosti na isti dan!"
+msgstr ""
 
 #. module: hr_holidays
 #: selection:hr.holidays.status,color_name:0
@@ -142,15 +146,16 @@ msgstr "Svetlo zelena"
 #. module: hr_holidays
 #: field:hr.employee,current_leave_id:0
 msgid "Current Leave Type"
-msgstr "Tip trenutne odsotnosti"
+msgstr ""
 
 #. module: hr_holidays
 #: view:hr.holidays:0
 msgid "Validate"
-msgstr "Potrditev"
+msgstr ""
 
 #. module: hr_holidays
-#: selection:hr.employee,current_leave_state:0 selection:hr.holidays,state:0
+#: selection:hr.employee,current_leave_state:0
+#: selection:hr.holidays,state:0
 #: selection:hr.holidays.summary.dept,holiday_type:0
 #: selection:hr.holidays.summary.employee,holiday_type:0
 #: model:mail.message.subtype,name:hr_holidays.mt_holidays_approved
@@ -172,100 +177,104 @@ msgstr "Zavrni"
 #: model:ir.actions.act_window,name:hr_holidays.act_hr_employee_holiday_request
 #: model:ir.ui.menu,name:hr_holidays.menu_open_ask_holidays
 msgid "Leaves"
-msgstr "Odhodi"
+msgstr ""
 
 #. module: hr_holidays
 #: field:hr.holidays,message_ids:0
 msgid "Messages"
-msgstr "Sporočila"
+msgstr ""
 
 #. module: hr_holidays
 #: model:ir.model,name:hr_holidays.model_hr_holidays
 msgid "Leave"
-msgstr "Odsotnost"
+msgstr ""
 
 #. module: hr_holidays
 #: code:addons/hr_holidays/wizard/hr_holidays_summary_department.py:44
 #, python-format
 msgid "Error!"
-msgstr "Error!"
+msgstr ""
 
 #. module: hr_holidays
 #: model:ir.ui.menu,name:hr_holidays.menu_request_approve_holidays
 msgid "Leave Requests to Approve"
-msgstr "Zahtevki za dopust za odobritev"
+msgstr ""
 
 #. module: hr_holidays
 #: view:hr.holidays.summary.dept:0
 #: model:ir.actions.act_window,name:hr_holidays.action_hr_holidays_summary_dept
 #: model:ir.ui.menu,name:hr_holidays.menu_account_central_journal
 msgid "Leaves by Department"
-msgstr "Odsotnosti po oddelku"
+msgstr ""
 
 #. module: hr_holidays
-#: field:hr.holidays,manager_id2:0 selection:hr.holidays,state:0
+#: field:hr.holidays,manager_id2:0
+#: selection:hr.holidays,state:0
 msgid "Second Approval"
-msgstr "Druga overitev"
+msgstr ""
 
 #. module: hr_holidays
-#: selection:hr.employee,current_leave_state:0 selection:hr.holidays,state:0
+#: selection:hr.employee,current_leave_state:0
+#: selection:hr.holidays,state:0
 msgid "Cancelled"
-msgstr "Preklicano"
+msgstr ""
 
 #. module: hr_holidays
 #: help:hr.holidays,type:0
 msgid ""
 "Choose 'Leave Request' if someone wants to take an off-day. \n"
-"Choose 'Allocation Request' if you want to increase the number of leaves available for someone"
-msgstr "Izberite 'Zahtevek za dopust' če nekdo želi prost dan. \nIzberite 'Zahtevek po dodelitvi' če za nekoga želite povečati količino razpoložljivega dopusta"
+"Choose 'Allocation Request' if you want to increase the number of leaves "
+"available for someone"
+msgstr ""
 
 #. module: hr_holidays
 #: view:hr.holidays.status:0
 msgid "Validation"
-msgstr "Potrjevanje"
+msgstr ""
 
 #. module: hr_holidays
 #: help:hr.holidays,message_unread:0
 msgid "If checked new messages require your attention."
-msgstr "Če je izbrano, zahtevajo nova sporočila vašo pozornost."
+msgstr ""
 
 #. module: hr_holidays
 #: field:hr.holidays.status,color_name:0
 msgid "Color in Report"
-msgstr "Barva v poročilu"
+msgstr ""
 
 #. module: hr_holidays
 #: help:hr.holidays,manager_id:0
 msgid "This area is automatically filled by the user who validate the leave"
-msgstr "Območje se samodejno zapolni, ko uporabnik overi dopust"
+msgstr ""
 
 #. module: hr_holidays
-#: xsl:holidays.summary:0 field:hr.holidays,holiday_status_id:0
+#: xsl:holidays.summary:0
+#: field:hr.holidays,holiday_status_id:0
 #: field:hr.holidays.remaining.leaves.user,leave_type:0
-#: view:hr.holidays.status:0 field:hr.holidays.status,name:0
+#: view:hr.holidays.status:0
+#: field:hr.holidays.status,name:0
 #: field:hr.holidays.summary.dept,holiday_type:0
 #: model:ir.model,name:hr_holidays.model_hr_holidays_status
 msgid "Leave Type"
-msgstr "Tip odsotnosti"
+msgstr ""
 
 #. module: hr_holidays
 #: help:hr.holidays,message_summary:0
 msgid ""
 "Holds the Chatter summary (number of messages, ...). This summary is "
 "directly in html format in order to be inserted in kanban views."
-msgstr "Povzetek (število sporočil,..)"
+msgstr ""
 
 #. module: hr_holidays
-#: code:addons/hr_holidays/hr_holidays.py:254
-#: code:addons/hr_holidays/hr_holidays.py:265
-#: code:addons/hr_holidays/hr_holidays.py:290
-#: code:addons/hr_holidays/hr_holidays.py:314
-#: code:addons/hr_holidays/hr_holidays.py:437
-#: code:addons/hr_holidays/hr_holidays.py:487
-#: code:addons/hr_holidays/hr_holidays.py:494
+#: code:addons/hr_holidays/hr_holidays.py:249
+#: code:addons/hr_holidays/hr_holidays.py:260
+#: code:addons/hr_holidays/hr_holidays.py:285
+#: code:addons/hr_holidays/hr_holidays.py:309
+#: code:addons/hr_holidays/hr_holidays.py:432
+#: code:addons/hr_holidays/hr_holidays.py:482
 #, python-format
 msgid "Warning!"
-msgstr "Opozorilo!"
+msgstr ""
 
 #. module: hr_holidays
 #: selection:hr.holidays.status,color_name:0
@@ -275,7 +284,12 @@ msgstr "Magenta"
 #. module: hr_holidays
 #: model:ir.actions.act_window,name:hr_holidays.act_hr_leave_request_to_meeting
 msgid "Leave Meetings"
-msgstr "Sestanki dopusti"
+msgstr ""
+
+#. module: hr_holidays
+#: model:hr.holidays.status,name:hr_holidays.holiday_status_cl
+msgid "Legal Leaves 2013"
+msgstr ""
 
 #. module: hr_holidays
 #: selection:hr.holidays.summary.dept,holiday_type:0
@@ -290,20 +304,26 @@ msgid "From"
 msgstr "Od"
 
 #. module: hr_holidays
-#: model:hr.holidays.status,name:hr_holidays.holiday_status_cl
-msgid "Legal Leaves 2014"
+#: model:hr.holidays.status,name:hr_holidays.holiday_status_sl
+msgid "Sick Leaves"
+msgstr ""
+
+#. module: hr_holidays
+#: code:addons/hr_holidays/hr_holidays.py:489
+#, python-format
+msgid "Leave Request for %s"
 msgstr ""
 
 #. module: hr_holidays
 #: xsl:holidays.summary:0
 msgid "Sum"
-msgstr "Vsota"
+msgstr ""
 
 #. module: hr_holidays
 #: view:hr.holidays.status:0
 #: model:ir.actions.act_window,name:hr_holidays.open_view_holiday_status
 msgid "Leave Types"
-msgstr "Tipi odsotnosti"
+msgstr ""
 
 #. module: hr_holidays
 #: field:hr.holidays.status,remaining_leaves:0
@@ -313,15 +333,17 @@ msgstr "Preostali odhodi"
 #. module: hr_holidays
 #: field:hr.holidays,message_follower_ids:0
 msgid "Followers"
-msgstr "Sledilci"
+msgstr ""
 
 #. module: hr_holidays
 #: model:ir.model,name:hr_holidays.model_hr_holidays_remaining_leaves_user
 msgid "Total holidays by type"
-msgstr "Skupaj dela prostih dni po tipu"
+msgstr ""
 
 #. module: hr_holidays
-#: view:hr.employee:0 view:hr.holidays:0 field:hr.holidays,employee_id:0
+#: view:hr.employee:0
+#: view:hr.holidays:0
+#: field:hr.holidays,employee_id:0
 #: field:hr.holidays.remaining.leaves.user,name:0
 #: model:ir.model,name:hr_holidays.model_hr_employee
 msgid "Employee"
@@ -330,12 +352,12 @@ msgstr "Zaposlenec"
 #. module: hr_holidays
 #: selection:hr.employee,current_leave_state:0
 msgid "New"
-msgstr "Novo"
+msgstr ""
 
 #. module: hr_holidays
 #: view:hr.holidays:0
 msgid "Type"
-msgstr "Vrsta"
+msgstr ""
 
 #. module: hr_holidays
 #: selection:hr.holidays.status,color_name:0
@@ -345,12 +367,12 @@ msgstr "Rdeča"
 #. module: hr_holidays
 #: view:hr.holidays.remaining.leaves.user:0
 msgid "Leaves by Type"
-msgstr "Odsotnosti po tipu"
+msgstr ""
 
 #. module: hr_holidays
 #: selection:hr.holidays.status,color_name:0
 msgid "Light Salmon"
-msgstr "Svetlo rožnata"
+msgstr ""
 
 #. module: hr_holidays
 #: selection:hr.holidays.status,color_name:0
@@ -358,47 +380,56 @@ msgid "Wheat"
 msgstr "Pšenična"
 
 #. module: hr_holidays
-#: code:addons/hr_holidays/hr_holidays.py:492
+#: code:addons/hr_holidays/hr_holidays.py:487
 #, python-format
 msgid "Allocation for %s"
-msgstr "Dodelitev za %s"
+msgstr ""
 
 #. module: hr_holidays
 #: help:hr.holidays,state:0
 msgid ""
-"The status is set to 'To Submit', when a holiday request is created.            \n"
-"The status is 'To Approve', when holiday request is confirmed by user.            \n"
-"The status is 'Refused', when holiday request is refused by manager.            \n"
+"The status is set to 'To Submit', when a holiday request is created.         "
+"   \n"
+"The status is 'To Approve', when holiday request is confirmed by user.       "
+"     \n"
+"The status is 'Refused', when holiday request is refused by manager.         "
+"   \n"
 "The status is 'Approved', when holiday request is approved by manager."
-msgstr "Status je nastavljen kot 'Za predložitev', ko se zahtevek po dopustu ustvari,            \n'V odobritvi', ko ga uporabnik potrdi,            \n'Zavrnjeno', če ga upravitelj zavrne,            \n'Odobreno', če ga upravitelj odobri."
+msgstr ""
 
 #. module: hr_holidays
-#: view:hr.holidays:0 field:hr.holidays,number_of_days:0
+#: view:hr.holidays:0
+#: field:hr.holidays,number_of_days:0
 msgid "Number of Days"
 msgstr "Število dni"
 
 #. module: hr_holidays
-#: code:addons/hr_holidays/hr_holidays.py:487
+#: code:addons/hr_holidays/hr_holidays.py:482
 #, python-format
 msgid ""
-"The feature behind the field 'Remaining Legal Leaves' can only be used when there is only one leave type with the option 'Allow to Override Limit' unchecked. (%s Found). Otherwise, the update is ambiguous as we cannot decide on which leave type the update has to be done. \n"
-"You may prefer to use the classic menus 'Leave Requests' and 'Allocation Requests' located in 'Human Resources \\ Leaves' to manage the leave days of the employees if the configuration does not allow to use this field."
-msgstr "Funkcija polja 'Preostali redni dopust' se lahko uporabi le, ko je le en tip odsotnosti z neoznačeno opcijo 'Dovoli prekoračenje limita'. (%s Found). V nasprotnem primeru je posodobitev dvoumna, saj se ni mogoče odločiti za tip odsotnosti ki naj bi bil posodobljen. \nVerjetno boste raje uporabljali klasične menije 'Zahtevki po dopustu' in 'Zahtevki po dodelitvi' v 'Kadri/Odsotnosti' za upravljanje dela prostih dni kadrov, če nastavitve ne dovoljujejo uporabe tega polja."
+"The feature behind the field 'Remaining Legal Leaves' can only be used when "
+"there is only one leave type with the option 'Allow to Override Limit' "
+"unchecked. (%s Found). Otherwise, the update is ambiguous as we cannot "
+"decide on which leave type the update has to be done. \n"
+"You may prefer to use the classic menus 'Leave Requests' and 'Allocation "
+"Requests' located in 'Human Resources \\ Leaves' to manage the leave days of "
+"the employees if the configuration does not allow to use this field."
+msgstr ""
 
 #. module: hr_holidays
 #: view:hr.holidays.status:0
 msgid "Search Leave Type"
-msgstr "Iskanje tipa odsotnosti"
+msgstr ""
 
 #. module: hr_holidays
 #: selection:hr.employee,current_leave_state:0
 msgid "Waiting Approval"
-msgstr "Čaka Odobritev"
+msgstr ""
 
 #. module: hr_holidays
 #: field:hr.holidays,category_id:0
 msgid "Employee Tag"
-msgstr "Kadrovska oznaka"
+msgstr ""
 
 #. module: hr_holidays
 #: field:hr.holidays.summary.employee,emp:0
@@ -408,15 +439,16 @@ msgstr "Zaposlenec/Zaposlenci"
 #. module: hr_holidays
 #: view:hr.holidays:0
 msgid ""
-"Filters only on allocations and requests that belong to an holiday type that"
-" is 'active' (active field is True)"
-msgstr "Filtriranje le po dodelitvah in zahtevkih za počitnice tipa 'aktivno' (oznaka aktivno = True)"
+"Filters only on allocations and requests that belong to an holiday type that "
+"is 'active' (active field is True)"
+msgstr ""
 
 #. module: hr_holidays
 #: model:ir.actions.act_window,help:hr_holidays.hr_holidays_leaves_assign_legal
 msgid ""
 "<p>\n"
-"               You can assign remaining Legal Leaves for each employee, OpenERP\n"
+"               You can assign remaining Legal Leaves for each employee, "
+"OpenERP\n"
 "               will automatically create and validate allocation requests.\n"
 "             </p>\n"
 "           "
@@ -433,12 +465,12 @@ msgstr ""
 #: code:addons/hr_holidays/wizard/hr_holidays_summary_department.py:44
 #, python-format
 msgid "You have to select at least one Department. And try again."
-msgstr "Izbrati morate vsaj  oddelek in ponovno poskusiti."
+msgstr ""
 
 #. module: hr_holidays
 #: field:hr.holidays,parent_id:0
 msgid "Parent"
-msgstr "Nadrejeni"
+msgstr ""
 
 #. module: hr_holidays
 #: selection:hr.holidays.status,color_name:0
@@ -448,37 +480,33 @@ msgstr "Sivka"
 #. module: hr_holidays
 #: xsl:holidays.summary:0
 msgid "Month"
-msgstr "Mesec"
+msgstr ""
 
 #. module: hr_holidays
 #: field:hr.holidays,message_unread:0
 msgid "Unread Messages"
-msgstr "Neprebrana sporočila"
-
-#. module: hr_holidays
-#: xsl:holidays.summary:0
-msgid "leaves."
-msgstr "odsotnosti."
+msgstr ""
 
 #. module: hr_holidays
 #: view:hr.holidays:0
 #: model:ir.actions.act_window,name:hr_holidays.open_ask_holidays
 #: model:ir.ui.menu,name:hr_holidays.menu_open_ask_holidays_new
 msgid "Leave Requests"
-msgstr "Zahtevki za dopust"
+msgstr ""
 
 #. module: hr_holidays
 #: field:hr.holidays.status,limit:0
 msgid "Allow to Override Limit"
-msgstr "Dovoli prekoračitev limita"
+msgstr ""
 
 #. module: hr_holidays
-#: view:hr.holidays:0 field:hr.holidays,date_from:0
+#: view:hr.holidays:0
+#: field:hr.holidays,date_from:0
 msgid "Start Date"
-msgstr "Začetni datum"
+msgstr ""
 
 #. module: hr_holidays
-#: code:addons/hr_holidays/hr_holidays.py:437
+#: code:addons/hr_holidays/hr_holidays.py:432
 #, python-format
 msgid ""
 "There are not enough %s allocated for employee %s; please create an "
@@ -486,9 +514,10 @@ msgid ""
 msgstr ""
 
 #. module: hr_holidays
-#: view:hr.holidays.summary.dept:0 view:hr.holidays.summary.employee:0
+#: view:hr.holidays.summary.dept:0
+#: view:hr.holidays.summary.employee:0
 msgid "or"
-msgstr "ali"
+msgstr ""
 
 #. module: hr_holidays
 #: model:ir.actions.act_window,help:hr_holidays.open_ask_holidays
@@ -502,19 +531,19 @@ msgid ""
 "                number of open days related to your leave.\n"
 "              </p>\n"
 "            "
-msgstr "<p class=\"oe_view_nocontent_create\">\n                Ustvari nov zahtevek za dopust.\n              </p><p>\n                Po vpisu zahtevka za dopust, bo ta poslan\n                upravitelju v overitev. Bodite pozorni na pravilen\n                tip (regeneracijski, redni, bolniški dopust) in točno\n                število dni dopusta.\n              </p>\n            "
+msgstr ""
 
 #. module: hr_holidays
 #: view:hr.holidays:0
 msgid "Category"
-msgstr "Kategorija"
+msgstr ""
 
 #. module: hr_holidays
 #: help:hr.holidays.status,max_leaves:0
 msgid ""
 "This value is given by the sum of all holidays requests with a positive "
 "value."
-msgstr "Vrednost podana z vsoto vseh zahtevkov po dopustu s pozitivno vrednostjo."
+msgstr ""
 
 #. module: hr_holidays
 #: help:hr.holidays.status,limit:0
@@ -532,17 +561,17 @@ msgstr ""
 #. module: hr_holidays
 #: sql_constraint:hr.holidays:0
 msgid "The number of days must be greater than 0."
-msgstr "Število dni mora biti večje od 0!"
+msgstr ""
 
 #. module: hr_holidays
 #: selection:hr.holidays.status,color_name:0
 msgid "Light Coral"
-msgstr "Svetlo koralna"
+msgstr ""
 
 #. module: hr_holidays
 #: field:hr.employee,leave_date_to:0
 msgid "To Date"
-msgstr "Do datuma"
+msgstr ""
 
 #. module: hr_holidays
 #: selection:hr.holidays.status,color_name:0
@@ -552,29 +581,30 @@ msgstr "Črna"
 #. module: hr_holidays
 #: model:ir.actions.act_window,name:hr_holidays.hr_holidays_leaves_assign_legal
 msgid "Allocate Leaves for Employees"
-msgstr "Dodeljeni dopust po kadrih"
+msgstr ""
 
 #. module: hr_holidays
 #: model:ir.ui.menu,name:hr_holidays.menu_open_view_holiday_status
 msgid "Leaves Types"
-msgstr "Tipi odsotnosti"
+msgstr ""
 
 #. module: hr_holidays
 #: field:hr.holidays,meeting_id:0
 msgid "Meeting"
-msgstr "Sestanek"
+msgstr ""
 
 #. module: hr_holidays
 #: help:hr.holidays.status,color_name:0
 msgid ""
 "This color will be used in the leaves summary located in Reporting\\Leaves "
 "by Department."
-msgstr "Barva uporabljena v povzetku odsotnosti v Poročila/Odsotnosti po oddelku."
+msgstr ""
 
 #. module: hr_holidays
-#: view:hr.holidays:0 field:hr.holidays,state:0
+#: view:hr.holidays:0
+#: field:hr.holidays,state:0
 msgid "Status"
-msgstr "Stanje"
+msgstr ""
 
 #. module: hr_holidays
 #: selection:hr.holidays.status,color_name:0
@@ -584,22 +614,22 @@ msgstr "Slonokoščena"
 #. module: hr_holidays
 #: model:ir.model,name:hr_holidays.model_hr_holidays_summary_employee
 msgid "HR Leaves Summary Report By Employee"
-msgstr "Kadrovsko poročilo o odsotnostih po kadrih"
+msgstr ""
 
 #. module: hr_holidays
 #: model:ir.actions.act_window,name:hr_holidays.request_approve_holidays
 msgid "Requests to Approve"
-msgstr "Zahtevki v odobritvi"
+msgstr ""
 
 #. module: hr_holidays
 #: field:hr.holidays.status,leaves_taken:0
 msgid "Leaves Already Taken"
-msgstr "Že izkoriščen dopust"
+msgstr ""
 
 #. module: hr_holidays
 #: field:hr.holidays,message_is_follower:0
 msgid "Is a Follower"
-msgstr "Je sledilec"
+msgstr ""
 
 #. module: hr_holidays
 #: field:hr.holidays,user_id:0
@@ -617,47 +647,48 @@ msgstr "Aktivno"
 msgid ""
 "The employee or employee category of this request is missing. Please make "
 "sure that your user login is linked to an employee."
-msgstr "Na zahtevku manjka delojemalec ali kadrovska kategorija. Preverite, če je vaše uporabniško ime povezano z delojemalcem."
+msgstr ""
 
 #. module: hr_holidays
 #: view:hr.holidays:0
 msgid "Add a reason..."
-msgstr "Dodaj razlog..."
+msgstr ""
 
 #. module: hr_holidays
 #: field:hr.holidays,manager_id:0
 msgid "First Approval"
-msgstr "Prva odobritev"
+msgstr ""
 
 #. module: hr_holidays
 #: field:hr.holidays,message_summary:0
 msgid "Summary"
-msgstr "Povzetek"
+msgstr ""
 
 #. module: hr_holidays
 #: model:hr.holidays.status,name:hr_holidays.holiday_status_unpaid
 msgid "Unpaid"
-msgstr "Neplačano"
+msgstr ""
 
 #. module: hr_holidays
-#: xsl:holidays.summary:0 view:hr.holidays:0
+#: xsl:holidays.summary:0
+#: view:hr.holidays:0
 #: view:hr.holidays.summary.employee:0
 #: model:ir.actions.act_window,name:hr_holidays.action_hr_holidays_summary_employee
 #: model:ir.actions.act_window,name:hr_holidays.open_company_allocation
 #: model:ir.actions.report.xml,name:hr_holidays.report_holidays_summary
 #: model:ir.ui.menu,name:hr_holidays.menu_open_company_allocation
 msgid "Leaves Summary"
-msgstr "Povzetek odsotnosti"
+msgstr ""
 
 #. module: hr_holidays
 #: view:hr.holidays:0
 msgid "Submit to Manager"
-msgstr "Posreduj vodji"
+msgstr ""
 
 #. module: hr_holidays
 #: view:hr.employee:0
 msgid "Assign Leaves"
-msgstr "Dodeli dopuste"
+msgstr ""
 
 #. module: hr_holidays
 #: selection:hr.holidays.status,color_name:0
@@ -667,34 +698,34 @@ msgstr "Svetlo modra"
 #. module: hr_holidays
 #: view:hr.holidays:0
 msgid "My Department Leaves"
-msgstr "Odsotnosti mojega oddelka"
+msgstr ""
 
 #. module: hr_holidays
 #: field:hr.employee,current_leave_state:0
 msgid "Current Leave Status"
-msgstr "Tekoče stanje odsotnosti"
+msgstr ""
 
 #. module: hr_holidays
 #: field:hr.holidays,type:0
 msgid "Request Type"
-msgstr "Tip zahtevka"
+msgstr ""
 
 #. module: hr_holidays
 #: help:hr.holidays.status,active:0
 msgid ""
 "If the active field is set to false, it will allow you to hide the leave "
 "type without removing it."
-msgstr "Če nastavljeno na 'false' omogoči skrivanje tipa odsotnosti, ne da bi ga brisali."
+msgstr ""
 
 #. module: hr_holidays
 #: view:hr.holidays.status:0
 msgid "Misc"
-msgstr "Razno"
+msgstr ""
 
 #. module: hr_holidays
 #: model:hr.holidays.status,name:hr_holidays.holiday_status_comp
 msgid "Compensatory Days"
-msgstr "Nadomestni dnevi"
+msgstr ""
 
 #. module: hr_holidays
 #: selection:hr.holidays.status,color_name:0
@@ -705,10 +736,11 @@ msgstr "Svetlo rumena"
 #: model:ir.actions.act_window,name:hr_holidays.action_hr_available_holidays_report
 #: model:ir.ui.menu,name:hr_holidays.menu_hr_available_holidays_report_tree
 msgid "Leaves Analysis"
-msgstr "Analiza odsotnosti"
+msgstr ""
 
 #. module: hr_holidays
-#: view:hr.holidays.summary.dept:0 view:hr.holidays.summary.employee:0
+#: view:hr.holidays.summary.dept:0
+#: view:hr.holidays.summary.employee:0
 msgid "Cancel"
 msgstr "Prekliči"
 
@@ -723,51 +755,55 @@ msgid "Validated"
 msgstr "Potrjeno"
 
 #. module: hr_holidays
-#: code:addons/hr_holidays/hr_holidays.py:254
+#: code:addons/hr_holidays/hr_holidays.py:249
 #, python-format
 msgid "You cannot delete a leave which is in %s state."
-msgstr "Dopusta, ki je v stanju %s ne morete brisati."
+msgstr ""
 
 #. module: hr_holidays
-#: view:hr.holidays:0 selection:hr.holidays,type:0
+#: view:hr.holidays:0
+#: selection:hr.holidays,type:0
 msgid "Allocation Request"
-msgstr "Zahtevek po dodelitvi"
+msgstr ""
 
 #. module: hr_holidays
 #: help:hr.holidays,holiday_type:0
 msgid ""
 "By Employee: Allocation/Request for individual Employee, By Employee Tag: "
 "Allocation/Request for group of employees in category"
-msgstr "Po kadru: dodelitev/zahtevek za posamezni kader. Po kadrovski oznaki: dodelitev/zahtevek za skupino kadrov določene kategorije"
+msgstr ""
 
 #. module: hr_holidays
 #: model:ir.model,name:hr_holidays.model_resource_calendar_leaves
 msgid "Leave Detail"
-msgstr "Podrobnosti odhoda"
+msgstr ""
 
 #. module: hr_holidays
 #: field:hr.holidays,double_validation:0
 #: field:hr.holidays.status,double_validation:0
 msgid "Apply Double Validation"
-msgstr "Uporabi dvojno overjanje"
+msgstr ""
 
 #. module: hr_holidays
-#: view:hr.employee:0 view:hr.holidays:0
+#: view:hr.employee:0
+#: view:hr.holidays:0
 msgid "days"
-msgstr "dan;dni"
+msgstr ""
 
 #. module: hr_holidays
-#: view:hr.holidays.summary.dept:0 view:hr.holidays.summary.employee:0
+#: view:hr.holidays.summary.dept:0
+#: view:hr.holidays.summary.employee:0
 msgid "Print"
 msgstr "Natisni"
 
 #. module: hr_holidays
 #: view:hr.holidays.status:0
 msgid "Details"
-msgstr "Podrobnosti"
+msgstr ""
 
 #. module: hr_holidays
-#: view:board.board:0 view:hr.holidays:0
+#: view:board.board:0
+#: view:hr.holidays:0
 #: model:ir.actions.act_window,name:hr_holidays.action_hr_holidays_leaves_by_month
 msgid "My Leaves"
 msgstr ""
@@ -775,37 +811,42 @@ msgstr ""
 #. module: hr_holidays
 #: field:hr.holidays.summary.dept,depts:0
 msgid "Department(s)"
-msgstr "Oddelki"
+msgstr ""
 
 #. module: hr_holidays
 #: selection:hr.holidays,state:0
 msgid "To Submit"
-msgstr "Za predložitev"
+msgstr ""
 
 #. module: hr_holidays
-#: code:addons/hr_holidays/hr_holidays.py:359 view:hr.holidays:0
-#: selection:hr.holidays,type:0 field:resource.calendar.leaves,holiday_id:0
+#: code:addons/hr_holidays/hr_holidays.py:354
+#: view:hr.holidays:0
+#: selection:hr.holidays,type:0
+#: field:resource.calendar.leaves,holiday_id:0
 #, python-format
 msgid "Leave Request"
-msgstr "Zahtevek za dopust"
+msgstr ""
 
 #. module: hr_holidays
-#: view:hr.holidays:0 field:hr.holidays,name:0
+#: view:hr.holidays:0
+#: field:hr.holidays,name:0
 msgid "Description"
 msgstr "Opis"
 
 #. module: hr_holidays
-#: view:hr.employee:0 field:hr.employee,remaining_leaves:0
+#: view:hr.employee:0
+#: field:hr.employee,remaining_leaves:0
 msgid "Remaining Legal Leaves"
-msgstr "Preostali redni dopusti"
+msgstr ""
 
 #. module: hr_holidays
 #: selection:hr.holidays,holiday_type:0
 msgid "By Employee Tag"
-msgstr "Po kadrovski oznaki"
+msgstr ""
 
 #. module: hr_holidays
-#: selection:hr.employee,current_leave_state:0 selection:hr.holidays,state:0
+#: selection:hr.employee,current_leave_state:0
+#: selection:hr.holidays,state:0
 #: model:mail.message.subtype,name:hr_holidays.mt_holidays_refused
 msgid "Refused"
 msgstr "Zavrnjeno"
@@ -813,39 +854,34 @@ msgstr "Zavrnjeno"
 #. module: hr_holidays
 #: field:hr.holidays.status,categ_id:0
 msgid "Meeting Type"
-msgstr "Tip sestanka"
+msgstr ""
 
 #. module: hr_holidays
 #: field:hr.holidays.remaining.leaves.user,no_of_leaves:0
 msgid "Remaining leaves"
-msgstr "Preostale odsotnosti"
+msgstr ""
 
 #. module: hr_holidays
 #: view:hr.holidays:0
 msgid "Allocated Days"
-msgstr "Dodeljeni dnevi"
+msgstr ""
 
 #. module: hr_holidays
 #: view:hr.holidays:0
 msgid "To Confirm"
-msgstr "Za potrditev"
+msgstr ""
 
 #. module: hr_holidays
 #: field:hr.holidays,date_to:0
 msgid "End Date"
-msgstr "Končni datum"
-
-#. module: hr_holidays
-#: model:hr.holidays.status,name:hr_holidays.holiday_status_sl
-msgid "Sick Leaves"
-msgstr "Bolniški dopusti"
+msgstr ""
 
 #. module: hr_holidays
 #: help:hr.holidays.status,leaves_taken:0
 msgid ""
 "This value is given by the sum of all holidays requests with a negative "
 "value."
-msgstr "Vrednost podana kot vsota vseh zahtevkov po dopustu z negativno vrednostjo."
+msgstr ""
 
 #. module: hr_holidays
 #: selection:hr.holidays.status,color_name:0
@@ -855,72 +891,73 @@ msgstr "Vijolična"
 #. module: hr_holidays
 #: field:hr.holidays.status,max_leaves:0
 msgid "Maximum Allowed"
-msgstr "Največ dovoljeno"
+msgstr ""
 
 #. module: hr_holidays
 #: help:hr.holidays,manager_id2:0
 msgid ""
 "This area is automaticly filled by the user who validate the leave with "
 "second level (If Leave type need second validation)"
-msgstr "Območje se samodejno izpolni, ko ga overi uporabnik, ki overja odsotnost na drugi stopnji (če tip odsotnosti zahteva dvojno overjanje)"
+msgstr ""
 
 #. module: hr_holidays
 #: view:hr.holidays:0
 msgid "Mode"
-msgstr "Način"
+msgstr ""
 
 #. module: hr_holidays
 #: selection:hr.holidays.summary.dept,holiday_type:0
 #: selection:hr.holidays.summary.employee,holiday_type:0
 msgid "Both Approved and Confirmed"
-msgstr "Overjeno in potrjeno"
+msgstr ""
 
 #. module: hr_holidays
-#: code:addons/hr_holidays/hr_holidays.py:456
+#: code:addons/hr_holidays/hr_holidays.py:451
 #, python-format
 msgid "Request approved, waiting second validation."
-msgstr "Zahtevek odobren, čaka drugo overitev."
+msgstr ""
 
 #. module: hr_holidays
 #: view:hr.holidays:0
 msgid "Approve"
-msgstr "Potrdi"
+msgstr ""
 
 #. module: hr_holidays
 #: help:hr.holidays,message_ids:0
 msgid "Messages and communication history"
-msgstr "Sporočila in zgodovina sporočil"
+msgstr ""
 
 #. module: hr_holidays
-#: code:addons/hr_holidays/hr_holidays.py:265
-#: code:addons/hr_holidays/hr_holidays.py:290 sql_constraint:hr.holidays:0
+#: code:addons/hr_holidays/hr_holidays.py:260
+#: code:addons/hr_holidays/hr_holidays.py:285
+#: sql_constraint:hr.holidays:0
 #, python-format
 msgid "The start date must be anterior to the end date."
-msgstr "Začetni datum mora biti pred končnim!"
+msgstr ""
 
 #. module: hr_holidays
 #: xsl:holidays.summary:0
 msgid "Analyze from"
-msgstr "Analiziraj od"
+msgstr ""
 
 #. module: hr_holidays
 #: help:hr.holidays.status,double_validation:0
 msgid ""
 "When selected, the Allocation/Leave Requests for this type require a second "
 "validation to be approved."
-msgstr "Če izbrano, je za odobritev potrebno drugo overjanje zahtevkov za dodelitev/dopust tega tipa."
+msgstr ""
 
 #. module: hr_holidays
 #: view:hr.holidays:0
 #: model:ir.actions.act_window,name:hr_holidays.open_allocation_holidays
 #: model:ir.ui.menu,name:hr_holidays.menu_open_allocation_holidays
 msgid "Allocation Requests"
-msgstr "Zahtevki po dodelitvi"
+msgstr ""
 
 #. module: hr_holidays
 #: xsl:holidays.summary:0
 msgid "Color"
-msgstr "Barva"
+msgstr ""
 
 #. module: hr_holidays
 #: help:hr.employee,remaining_leaves:0
@@ -928,7 +965,7 @@ msgid ""
 "Total number of legal leaves allocated to this employee, change this value "
 "to create allocation/leave request. Total based on all the leave types "
 "without overriding limit."
-msgstr "Skupno število rednega dopusta dodeljenega temu delojemalcu. Spremenite to vrednost, da bi ustvarili zahtevek po dodelitvi/dopustu. Skupna vsota je osnovana na tipih odsotnosti brez prekoračenja limita."
+msgstr ""
 
 #. module: hr_holidays
 #: selection:hr.holidays.status,color_name:0
@@ -936,48 +973,48 @@ msgid "Light Pink"
 msgstr "Svetlo rožnata"
 
 #. module: hr_holidays
-#: code:addons/hr_holidays/hr_holidays.py:494
-#, python-format
-msgid "You cannot reduce validated allocation requests"
-msgstr "Ne morete nižati overjenih zahtevkov po dodelitvi"
+#: xsl:holidays.summary:0
+msgid "leaves."
+msgstr ""
 
 #. module: hr_holidays
 #: view:hr.holidays:0
 msgid "Manager"
-msgstr "Vodja"
+msgstr ""
 
 #. module: hr_holidays
 #: model:ir.model,name:hr_holidays.model_hr_holidays_summary_dept
 msgid "HR Leaves Summary Report By Department"
-msgstr "Kadrovsko poročilo o odsotnostih po oddelku"
+msgstr ""
 
 #. module: hr_holidays
 #: view:hr.holidays:0
 msgid "Year"
-msgstr "Leto"
+msgstr ""
 
 #. module: hr_holidays
 #: view:hr.holidays:0
 msgid "Duration"
-msgstr "Trajanje"
+msgstr ""
 
 #. module: hr_holidays
-#: view:hr.holidays:0 selection:hr.holidays,state:0
+#: view:hr.holidays:0
+#: selection:hr.holidays,state:0
 #: model:mail.message.subtype,name:hr_holidays.mt_holidays_confirmed
 msgid "To Approve"
-msgstr "Za potrditi"
+msgstr ""
 
 #. module: hr_holidays
 #: model:mail.message.subtype,description:hr_holidays.mt_holidays_approved
 msgid "Request approved"
-msgstr "Zahtevek odobren"
+msgstr ""
 
 #. module: hr_holidays
 #: field:hr.holidays,notes:0
 msgid "Reasons"
-msgstr "Razlogi"
+msgstr ""
 
 #. module: hr_holidays
 #: field:hr.holidays.summary.employee,holiday_type:0
 msgid "Select Leave Type"
-msgstr "Izbira tipa odsotnosti"
+msgstr ""

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <record id="portal_read_own_sale_order" model="ir.rule">
+            <field name="name">Vsis Quotations/Sales Orders for portal</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="domain_force">[('message_follower_ids', 'in', [user.partner_id.id])]</field>
+            <field name="groups" eval="[(4, ref('portal.group_portal'))]"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="perm_write" eval="False"/>
+        </record>
+        
+        <record id="portal_read_own_applicant" model="ir.rule">
+            <field name="name">Vsis Applicant for portal</field>
+            <field name="model_id" ref="hr_recruitment.model_hr_applicant"/>
+            <field name="domain_force">[('message_follower_ids', 'in', [user.partner_id.id])]</field>
+            <field name="groups" eval="[(4, ref('portal.group_portal'))]"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <record id="portal_read_own_foreign_languages" model="ir.rule">
+            <field name="name">Vsis Foreign Languages for portal</field>
+            <field name="model_id" ref="vsis_hr_applications.model_hr_foreign_languages"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('portal.group_portal'))]"/>
+        </record>
+        
+        <record id="portal_read_own_computer_skill" model="ir.rule">
+            <field name="name">Vsis Computer Skill for portal</field>
+            <field name="model_id" ref="vsis_hr_applications.model_hr_computer_skill"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('portal.group_portal'))]"/>
+        </record>
+        
+        <record id="portal_read_own_certification" model="ir.rule">
+            <field name="name">Vsis certification for portal</field>
+            <field name="model_id" ref="vsis_hr.model_hr_certification"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('portal.group_portal'))]"/>
+        </record>
+        
+        <record id="portal_read_own_hr_recruitment_degree" model="ir.rule">
+            <field name="name">Vsis recruitment degree for portal</field>
+            <field name="model_id" ref="hr_recruitment.model_hr_recruitment_degree"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('portal.group_portal'))]"/>
+        </record>
+        
+        <record id="portal_read_own_partner" model="ir.rule">
+            <field name="name">Vsis Partner for portal</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="domain_force">[('message_follower_ids', 'in', [user.partner_id.id])]</field>
+            <field name="groups" eval="[(4, ref('portal.group_portal'))]"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+            <field name="perm_write" eval="False"/>
+        </record>
+
+    </data>
+</openerp>

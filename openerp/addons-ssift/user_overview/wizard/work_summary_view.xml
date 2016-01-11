@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+ <data>
+	
+   		<record id="work_summary_view_form" model="ir.ui.view">
+            <field name="name">work.summary</field>
+            <field name="model">work.summary</field>
+            <field name="arch" type="xml">
+                <form string="Work Summary" version="7.0">
+                	<sheet>
+                		<h2>
+		            		<label string="Work Summary"/>
+	            		</h2>
+	            		<h3>
+	            			<field name='task_id'/>
+	            		</h3>
+                		<group>
+                			<field name="checking_task" invisible="1"/>
+		                    <field name="work_ids" nolabel="1">
+                                <tree string="Task Work" editable="top">
+                                    <field name="name"/>
+                                    <field name="hours" widget="float_time" sum="Spent Hours"/>
+                                    <field name="date"/>
+                                    <field name="user_id"/>
+                                </tree>
+                            </field>
+	                    </group>
+	                    <group col="6" colspan="2">
+	                    	<group colspan="2">
+		                    	<field name="is_done" attrs="{'invisible':[('checking_task','in',['checking1','checking2'])]}"/>
+		                    </group>
+		                    <group colspan="2">
+		                    	<field name="back_for_repair" attrs="{'invisible':[('checking_task','in','none')]}" on_change="onchange_back_for_repair(back_for_repair,ready_for_delivery)" invisible="1"/>
+		                    </group>
+		                    <group colspan="2">
+		                    	<field name="ready_for_delivery" attrs="{'invisible':[('checking_task','in','none')]}" on_change="onchange_ready_for_delivery(back_for_repair,ready_for_delivery)" invisible="1"/>
+		                    </group>
+	                    </group>
+	                    <group col="4" colspan="4" attrs="{'invisible':[('is_done','=',False),('back_for_repair','=',False),('ready_for_delivery','=',False)]}">
+		                    <group colspan="4" attrs="{'invisible':[('checking_task','=','checking2'),('ready_for_delivery','=',True)]}">
+		                    	<field name="previous_assigned_to" attrs="{'invisible':[('checking_task','in',['checking1','checking2']),('back_for_repair','=',True)]}"/>
+		                    </group>
+	                    	<group colspan="4">
+	                    		<field name="send_message" attrs="{'invisible':[('checking_task','=','checking2'),('ready_for_delivery','=',True)]}"/>
+	                    		<field name="attachment_ids" widget="many2many_binary" attrs="{'invisible':[('checking_task','=','checking2'),('ready_for_delivery','=',True)]}"/>
+	                    	</group>
+	                    </group>
+	                    <h2>
+		            		<label string="Error Reporting" attrs="{'invisible':[('back_for_repair','=',False)]}"/>
+	            		</h2>
+	                    <group colspan="4" attrs="{'invisible':[('back_for_repair','=',False)]}">
+		                    <field name="error_ids" nolabel="1">
+                                <tree string="Error Reporting" editable="top">
+                                    <field name="error_id"/>
+                                    <field name="date"/>
+                                </tree>
+                            </field>
+	                    </group>
+                    </sheet>
+                    <footer>
+                        <button name="save" string="Save" type="object" class="oe_highlight"/>
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+        			</footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_work_summary" model="ir.actions.act_window">
+            <field name="name">Work Summary</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">work.summary</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="work_summary_view_form"/>
+            <field name="view_type">form</field>
+            <field name="target">new</field>
+        </record>
+		
+		<record id="work_summary_form_cust_ref_readonly" model="ir.ui.view">
+		    <field name="name">work.summary.form.readonly.cust</field>
+		    <field name="model">work.summary</field>
+		    <field name="inherit_id" ref="work_summary_view_form"/>
+		    <field name="groups_id" eval="[(6, 0, [ref('project.group_project_manager') ])]"/>
+		    <field name="arch" type="xml">
+		        <field name='back_for_repair' position="attributes">
+		            <attribute name="invisible">0</attribute>
+		        </field>
+		        <field name='ready_for_delivery' position="attributes">
+		            <attribute name="invisible">0</attribute>
+		        </field>
+		    </field>
+		</record>
+		
+		<record id="prject_task_form_cust_ref_readonly_hr" model="ir.ui.view">
+		    <field name="name">project.task.form.readonly.cust</field>
+		    <field name="model">project.task</field>
+		    <field name="inherit_id" ref="project.view_task_form2"/>
+		    <field name="groups_id" eval="[(6, 0, [ref('group_project_hr') ])]"/>
+		    <field name="arch" type="xml">
+		        <field name='hours' position="attributes">
+		            <attribute name="readonly">0</attribute>
+		        </field>
+		    </field>
+		</record>
+		
+		<record id="work_summary_form_cust_ref_readonly_manger_hr" model="ir.ui.view">
+		    <field name="name">work.summary.form.readonly.cust</field>
+		    <field name="model">work.summary</field>
+		    <field name="inherit_id" ref="work_summary_view_form"/>
+		    <field name="groups_id" eval="[(6, 0, [ref('group_project_hr') ])]"/>
+		    <field name="arch" type="xml">
+		        <field name='hours' position="attributes">
+		            <attribute name="readonly">0</attribute>
+		        </field>
+		        <field name='date' position="attributes">
+		            <attribute name="readonly">0</attribute>
+		        </field>
+		        <field name='user_id' position="attributes">
+		            <attribute name="readonly">0</attribute>
+		        </field>
+		        <field name='back_for_repair' position="attributes">
+		            <attribute name="invisible">0</attribute>
+		        </field>
+		        <field name='ready_for_delivery' position="attributes">
+		            <attribute name="invisible">0</attribute>
+		        </field>
+		    </field>
+		</record>
+		
+   </data>  
+</openerp>

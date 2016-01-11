@@ -1,22 +1,21 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * account_payment
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2012
+# Bulgarian translation for openobject-addons
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-14 00:10+0000\n"
-"PO-Revision-Date: 2015-05-29 12:59+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Bulgarian (http://www.transifex.com/projects/p/odoo-7/language/bg/)\n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2013-06-07 19:36+0000\n"
+"PO-Revision-Date: 2012-12-21 23:00+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Bulgarian <bg@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: bg\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-11-21 05:59+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #. module: account_payment
 #: model:ir.actions.act_window,help:account_payment.action_payment_order_tree
@@ -24,7 +23,8 @@ msgid ""
 "<p class=\"oe_view_nocontent_create\">\n"
 "                Click to create a payment order.\n"
 "              </p><p>\n"
-"                A payment order is a payment request from your company to pay a\n"
+"                A payment order is a payment request from your company to "
+"pay a\n"
 "                supplier invoice or a customer refund.\n"
 "              </p>\n"
 "            "
@@ -46,7 +46,8 @@ msgid "Select the Payment Mode to be applied."
 msgstr "Избор на метода на плащане"
 
 #. module: account_payment
-#: view:payment.mode:0 view:payment.order:0
+#: view:payment.mode:0
+#: view:payment.order:0
 msgid "Group By..."
 msgstr "Групиране по..."
 
@@ -56,12 +57,15 @@ msgid "Payment lines"
 msgstr "Редове от плащане"
 
 #. module: account_payment
-#: view:payment.line:0 field:payment.line,info_owner:0 view:payment.order:0
+#: view:payment.line:0
+#: field:payment.line,info_owner:0
+#: view:payment.order:0
 msgid "Owner Account"
 msgstr "Сметка на собственка"
 
 #. module: account_payment
-#: field:payment.line,company_id:0 field:payment.mode,company_id:0
+#: field:payment.line,company_id:0
+#: field:payment.mode,company_id:0
 #: field:payment.order,company_id:0
 msgid "Company"
 msgstr "Фирма"
@@ -77,7 +81,8 @@ msgid "Free"
 msgstr "Свободен"
 
 #. module: account_payment
-#: view:payment.order.create:0 field:payment.order.create,entries:0
+#: view:payment.order.create:0
+#: field:payment.order.create,entries:0
 msgid "Entries"
 msgstr "Записи"
 
@@ -87,7 +92,8 @@ msgid "Used Account"
 msgstr ""
 
 #. module: account_payment
-#: field:payment.line,ml_maturity_date:0 field:payment.order.create,duedate:0
+#: field:payment.line,ml_maturity_date:0
+#: field:payment.order.create,duedate:0
 msgid "Due Date"
 msgstr "Дата на падеж"
 
@@ -115,10 +121,11 @@ msgstr ""
 #: code:addons/account_payment/account_move_line.py:110
 #, python-format
 msgid "Error!"
-msgstr "Грешка!"
+msgstr ""
 
 #. module: account_payment
-#: report:payment.order:0 view:payment.order:0
+#: report:payment.order:0
+#: view:payment.order:0
 msgid "Amount"
 msgstr "Сума"
 
@@ -138,7 +145,8 @@ msgid "New Payment Order"
 msgstr "Ново платежно нареждане"
 
 #. module: account_payment
-#: report:payment.order:0 field:payment.order,reference:0
+#: report:payment.order:0
+#: field:payment.order,reference:0
 msgid "Reference"
 msgstr "Отпратка"
 
@@ -160,7 +168,8 @@ msgstr "Директно"
 
 #. module: account_payment
 #: model:ir.actions.act_window,name:account_payment.action_payment_line_form
-#: model:ir.model,name:account_payment.model_payment_line view:payment.line:0
+#: model:ir.model,name:account_payment.model_payment_line
+#: view:payment.line:0
 #: view:payment.order:0
 msgid "Payment Line"
 msgstr "Ред от плащане"
@@ -179,7 +188,8 @@ msgid ""
 msgstr ""
 
 #. module: account_payment
-#: view:payment.order:0 selection:payment.order,state:0
+#: view:payment.order:0
+#: selection:payment.order,state:0
 msgid "Confirmed"
 msgstr "Потвърдено"
 
@@ -204,7 +214,8 @@ msgid "Import Payment Lines"
 msgstr ""
 
 #. module: account_payment
-#: view:payment.line:0 view:payment.order:0
+#: view:payment.line:0
+#: view:payment.order:0
 msgid "Transaction Information"
 msgstr "Информация за транзакция"
 
@@ -212,7 +223,9 @@ msgstr "Информация за транзакция"
 #: model:ir.actions.act_window,name:account_payment.action_payment_mode_form
 #: model:ir.model,name:account_payment.model_payment_mode
 #: model:ir.ui.menu,name:account_payment.menu_action_payment_mode_form
-#: view:payment.mode:0 view:payment.order:0 field:payment.order,mode:0
+#: view:payment.mode:0
+#: view:payment.order:0
+#: field:payment.order,mode:0
 msgid "Payment Mode"
 msgstr "Режим на плащане"
 
@@ -237,7 +250,7 @@ msgstr ""
 #. module: account_payment
 #: field:payment.order,date_created:0
 msgid "Creation Date"
-msgstr "Дата на създаване"
+msgstr ""
 
 #. module: account_payment
 #: help:payment.mode,journal:0
@@ -250,7 +263,8 @@ msgid "Fixed date"
 msgstr "Определена дата"
 
 #. module: account_payment
-#: field:payment.line,info_partner:0 view:payment.order:0
+#: field:payment.line,info_partner:0
+#: view:payment.order:0
 msgid "Destination Account"
 msgstr "Сметка назначение"
 
@@ -290,7 +304,8 @@ msgid "Communication Type"
 msgstr "Вид комуникация"
 
 #. module: account_payment
-#: field:payment.line,partner_id:0 field:payment.mode,partner_id:0
+#: field:payment.line,partner_id:0
+#: field:payment.mode,partner_id:0
 #: report:payment.order:0
 msgid "Partner"
 msgstr "Партньор"
@@ -364,14 +379,16 @@ msgid "Payment amount in the partner currency"
 msgstr "Сума за плащане във валутата на партньора"
 
 #. module: account_payment
-#: view:payment.order:0 selection:payment.order,state:0
+#: view:payment.order:0
+#: selection:payment.order,state:0
 msgid "Draft"
 msgstr "Проект"
 
 #. module: account_payment
-#: view:payment.order:0 field:payment.order,state:0
+#: view:payment.order:0
+#: field:payment.order,state:0
 msgid "Status"
-msgstr "Състояние"
+msgstr ""
 
 #. module: account_payment
 #: help:payment.line,communication2:0
@@ -418,12 +435,12 @@ msgstr "Търси"
 #. module: account_payment
 #: field:payment.order,user_id:0
 msgid "Responsible"
-msgstr "Отговорник"
+msgstr ""
 
 #. module: account_payment
 #: field:payment.line,date:0
 msgid "Payment Date"
-msgstr "Дата на плащане"
+msgstr ""
 
 #. module: account_payment
 #: report:payment.order:0
@@ -433,7 +450,7 @@ msgstr "Общо:"
 #. module: account_payment
 #: field:payment.order,date_done:0
 msgid "Execution Date"
-msgstr "Дата на изпълнение"
+msgstr ""
 
 #. module: account_payment
 #: view:account.payment.populate.statement:0
@@ -481,12 +498,14 @@ msgid "Payment order"
 msgstr ""
 
 #. module: account_payment
-#: view:payment.line:0 view:payment.order:0
+#: view:payment.line:0
+#: view:payment.order:0
 msgid "General Information"
 msgstr "Обща информация"
 
 #. module: account_payment
-#: view:payment.order:0 selection:payment.order,state:0
+#: view:payment.order:0
+#: selection:payment.order,state:0
 msgid "Done"
 msgstr "Завършен"
 
@@ -502,7 +521,8 @@ msgstr "Комуникация"
 
 #. module: account_payment
 #: view:account.payment.make.payment:0
-#: view:account.payment.populate.statement:0 view:payment.order.create:0
+#: view:account.payment.populate.statement:0
+#: view:payment.order.create:0
 msgid "Cancel"
 msgstr "Отмяна"
 
@@ -512,7 +532,8 @@ msgid "Destination Bank Account"
 msgstr ""
 
 #. module: account_payment
-#: view:payment.line:0 view:payment.order:0
+#: view:payment.line:0
+#: view:payment.order:0
 msgid "Information"
 msgstr "Информация"
 
@@ -546,7 +567,7 @@ msgstr ""
 #. module: account_payment
 #: field:payment.order,date_scheduled:0
 msgid "Scheduled Date"
-msgstr "Планирана дата"
+msgstr ""
 
 #. module: account_payment
 #: view:account.payment.make.payment:0
@@ -554,7 +575,8 @@ msgid "Are you sure you want to make payment?"
 msgstr ""
 
 #. module: account_payment
-#: view:payment.mode:0 field:payment.mode,journal:0
+#: view:payment.mode:0
+#: field:payment.mode,journal:0
 msgid "Journal"
 msgstr "Журнал"
 
@@ -569,12 +591,14 @@ msgid "Confirm Payments"
 msgstr ""
 
 #. module: account_payment
-#: field:payment.line,company_currency:0 report:payment.order:0
+#: field:payment.line,company_currency:0
+#: report:payment.order:0
 msgid "Company Currency"
 msgstr "Валута на фирмата"
 
 #. module: account_payment
-#: model:ir.ui.menu,name:account_payment.menu_main_payment view:payment.line:0
+#: model:ir.ui.menu,name:account_payment.menu_main_payment
+#: view:payment.line:0
 #: view:payment.order:0
 msgid "Payment"
 msgstr "Плащане"
@@ -607,7 +631,8 @@ msgid "Bank Account"
 msgstr "Банкова сметка"
 
 #. module: account_payment
-#: view:payment.line:0 view:payment.order:0
+#: view:payment.line:0
+#: view:payment.order:0
 msgid "Entry Information"
 msgstr ""
 
@@ -632,10 +657,10 @@ msgid "Total"
 msgstr "Общо"
 
 #. module: account_payment
-#: code:addons/account_payment/wizard/account_payment_order.py:113
+#: code:addons/account_payment/wizard/account_payment_order.py:112
 #, python-format
 msgid "Entry Lines"
-msgstr "Редове на запис"
+msgstr ""
 
 #. module: account_payment
 #: view:account.payment.make.payment:0
@@ -655,11 +680,19 @@ msgstr ""
 
 #. module: account_payment
 #: view:account.payment.make.payment:0
-#: view:account.payment.populate.statement:0 view:payment.order.create:0
+#: view:account.payment.populate.statement:0
+#: view:payment.order.create:0
 msgid "or"
-msgstr "или"
+msgstr ""
 
 #. module: account_payment
 #: help:payment.mode,bank_id:0
 msgid "Bank Account for the Payment Mode"
 msgstr ""
+
+#~ msgid ""
+#~ "The amount which should be paid at the current date\n"
+#~ "minus the amount which is already in payment order"
+#~ msgstr ""
+#~ "Сумата която трябва да бъде платена на днешната дата\n"
+#~ "без сумата която вече е платена по платежното нареждане"

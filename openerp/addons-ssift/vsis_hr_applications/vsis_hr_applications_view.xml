@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>  
+
+
+		
+		 <record model="ir.actions.act_window" id="action_vsis_view_hr_applicant">
+            <field name="name">Applications</field>
+            <field name="res_model">hr.applicant</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+            <field name="search_view_id"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to add a new job applicant.
+              </p><p>
+                OpenERP helps you track applicants in the recruitment
+                process and follow up all operations: meetings, interviews, etc.
+              </p><p>
+                If you setup the email gateway, applicants and their attached
+                CV are created automatically when an email is sent to
+                jobs@yourcompany.com. If you install the document management
+                modules, all resumes are indexed automatically, so that you can
+                easily search through their content.
+              </p>
+            </field>
+        </record>
+        
+        
+        <record id="vsis_view_hr_applicant_tree" model="ir.ui.view">
+            <field name="name">vsis.view.hr.applicant.tree</field>
+            <field name="model">hr.applicant</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">	
+            	<tree string="hr_applicant">
+            		<field name="name"/>
+            		<field name="partner_name"/>
+            		<field name="day_of_birth"/>
+	            	<field name="place_of_birth"/>
+	            	<field name="per_address"/>
+	            	<field name="job_id"/>
+	            	<field name="Day_for_start_to_work"/>
+            	</tree>
+            </field>
+        </record>
+        
+		<record id="vsis_view_hr_applicant_form" model="ir.ui.view">
+            <field name="name">vsis.view.hr.applicant.form</field>
+            <field name="model">hr.applicant</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">	
+            	<form string="Hr Applicant Form" version="7.0">
+            		<sheet>
+            			<group col="8">
+		            		<group colspan="2" col="6">
+		            			<field name="partner_name" string="Full Name/Họ tên :" col="6" colspan="6" required='1'/>
+		            			<newline/>
+		            			<h4><label string="Sex/Giới tính:" col="2"/> </h4>
+		            			<field name="male" col="2" on_change="onchange_male(male,female)"/>
+		            			<field name="female" col="2" on_change="onchange_female(male,female)"/>
+		            			<newline/>
+		            			<h4><label string="Marital status/hôn nhân:" col="2" /></h4>
+		            			<field name="single" col="2" on_change="onchange_single(single,married)"/>
+		            			<field name="married" col="2" on_change="onchange_married(single,married)"/>
+			            	</group>
+			            	<group col="2">
+			            		<field name="day_of_birth"/>
+			            		<field name="place_of_birth"/>
+			            	</group>
+			           	 <newline/>
+			            	<group col="8" colspan="6">
+			            		<field name="national"/>
+			            		<field name="religion"/>
+		            			<field name="type_id" string="Education level/Trình độ văn hóa:"/>
+		            			<newline/>
+	            				<field name="partner_phone" string="Telephone/ĐT:"/>
+			            		<field name="partner_mobile" string="Cellphone/DĐ:" required='1'/>
+			            	
+		            			<field name="email_from" string="Email:" required='1'/>
+		            			<newline/>
+		            			<field name="per_address" col="8" colspan="8"/>
+		            			<field name="resident_address" col="8" colspan="8"/>
+		            			<newline/>
+		            			<field name="id_pass"/>
+			            		<field name="doi"/>
+		            			<field name="poi"/>
+		            			<newline/>
+		            			<field name="name" string="Position Applied for:" col="8" colspan="8"/>
+		            			<newline/>
+		            			<field name="salary_expected" col="4" colspan="4"/>
+		            			<field name="Day_for_start_to_work" string="" col="4" colspan="4"/>
+		            			<newline/>
+		            			<field name="source_id" string="Information from source:" col="4" colspan="4"/>
+		            			<field name="reference" string="Other/Khác:" col="4" colspan="4"/>
+			            	</group>
+		            	</group>
+		            	
+	            		<notebook>
+	            		<page string="Education Background">
+		            		<field name="education_id">
+	                            <tree editable="bottom">
+	                                <field name="degrees"/>
+	                                <field name="major_info"/>
+	                                <field name="school_name" />
+	                           		<field name="period" />
+	                           		<field name="foreign_languages_ids" widget="many2many_tags" />
+	                           		<field name="computer_skill_ids" widget="many2many_tags"/>                       		
+	                            </tree>
+		                    </field>
+	                    </page> 
+	                    <page string="Work History">
+		            		<field name="work_history_id">
+	                            <tree editable="bottom">
+	                                <field name="period"/>
+	                                <field name="company_name"/>
+	                                <field name="Position" />
+	                           		<field name="responsible_area" />
+	                           		<field name="reason" />                      		
+	                            </tree>
+		                    </field>
+	                    </page> 
+                    </notebook> 
+	            		
+	            	
+	            	</sheet>
+           		</form>
+           	</field>
+        </record>           
+                 
+        <record model="ir.actions.act_window.view" id="action_vsis_view_hr_applicant_tree">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="vsis_view_hr_applicant_tree"/>
+            <field name="act_window_id" ref="action_vsis_view_hr_applicant"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_vsis_view_hr_applicant_form">
+            <field name="sequence" eval="3"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="vsis_view_hr_applicant_form"/>
+            <field name="act_window_id" ref="action_vsis_view_hr_applicant"/>
+        </record>
+        
+     
+     <menuitem name="Application" id="menu_application" parent="portal.portal_menu" sequence="30"/>
+     
+        <menuitem name="Applications" id="menu_vsis_view_hr_applicant" parent="menu_application" 
+        action="action_vsis_view_hr_applicant" sequence="1"/>
+     
+	        
+       	<record model="ir.ui.view" id="vsis_hr_crm_case_form_view_job">
+	        <field name="name">Vsis Jobs - Recruitment Form</field>
+	        <field name="model">hr.applicant</field>
+	        <field name="inherit_id" ref="hr_recruitment.crm_case_form_view_job"/>
+	        <field name="arch" type="xml">  
+	        	<xpath expr="//form/sheet/separator[@string='Application Summary']" position="replace">   
+            		<notebook>
+	            		<page string="Education Background">
+		            		<field name="education_id">
+	                            <tree editable="bottom">
+	                                <field name="degrees"/>
+	                                <field name="major_info"/>
+	                                <field name="school_name" />
+	                           		<field name="period" />
+	                           		<field name="foreign_languages_ids" widget="many2many_tags" />
+	                           		<field name="computer_skill_ids" widget="many2many_tags"/>                       		
+	                            </tree>
+		                    </field>
+	                    </page> 
+	                    <page string="Work History">
+		            		<field name="work_history_id">
+	                            <tree editable="bottom">
+	                                <field name="period"/>
+	                                <field name="company_name"/>
+	                                <field name="Position" />
+	                           		<field name="responsible_area" />
+	                           		<field name="reason" />                      		
+	                            </tree>
+		                    </field>
+	                    </page> 
+                    </notebook>                  
+            	</xpath>	  
+	    	</field>
+       	</record> 
+    </data>
+</openerp>
