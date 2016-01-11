@@ -55,16 +55,23 @@ class draft_bl(osv.osv):
         'note':fields.text('Note'),
         'meansurement':fields.char('Meansurement'),  
         'freight':fields.selection([('prepaid', 'Prepaid'),('collect', 'Collect')], 'Freight'),
-        'bl_no':fields.char('B/L No',required=True),  
+        'bl_no':fields.char('B/L No'),  
         'draft_bl_line': fields.one2many('draft.bl.line','draft_bl_id','Line'),
         'country_id': fields.many2one('res.country','The Country Of Origin'),
         'customs_declaration': fields.char('Customs Declaration', size=1024),
         'shipping_line_id': fields.many2one('shipping.line','Shipping line'),
         'forwarder_line_id': fields.many2one('forwarder.line','Forwarder line'),
         'mean_transport': fields.char('Means of Transport', size=1024),
+        'state': fields.selection([
+            ('moi_tao', 'Mới tạo'),
+            ('da_duyet', 'Xác nhận'),
+            ('hoan_tat', 'Hoàn tất'),
+            ('huy_bo', 'Hủy bỏ'),
+            ], 'Trạng thái',readonly=True, states={'moi_tao': [('readonly', False)]}),
     }
     
     _defaults = {
+        'state':'moi_tao',
         'date': time.strftime('%Y-%m-%d'),
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'draft.bl', context=c),
     }

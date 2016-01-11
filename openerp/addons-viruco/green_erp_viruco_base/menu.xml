@@ -5,7 +5,7 @@
 	    	<menuitem id="menu_hopdong_ban" parent="green_erp_viruco_base.hop_dong" name="Hợp Đồng Bán" sequence="10"/>
 	        	<menuitem id="menu_action_hop_dong_noi" action="action_hop_dong_noi" name="Hợp đồng nội" parent="menu_hopdong_ban" sequence="0"/>
 				<menuitem id="menu_action_hop_dong_ngoai" action="action_hop_dong_ngoai" name="Hợp đồng ngoại" parent="menu_hopdong_ban" sequence="1"/>
-	        	<menuitem id="menu_action_draft_bl" action="action_draft_bl" name="Draft BL" parent="green_erp_viruco_base.menu_hopdong_ban" sequence="3"/>
+	        	<menuitem id="menu_action_draft_bl" action="action_draft_bl" name="Chứng từ xuất khẩu" parent="green_erp_viruco_base.menu_hopdong_ban" sequence="3"/>
 	        <menuitem id="menu_phuluc_hopdong_ban" parent="green_erp_viruco_base.hop_dong" name="Phụ lục hợp Đồng Bán" sequence="15"/>
 		        <menuitem id="menu_action_phuluc_hop_dong_noi" action="action_phuluc_hop_dong_noi" name="Phụ lục hợp đồng nội" parent="menu_phuluc_hopdong_ban" sequence="0"/>
 				<menuitem id="menu_action_phuluc_hop_dong_ngoai" action="action_phuluc_hop_dong_ngoai" name="Phụ lục hợp đồng ngoại" parent="menu_phuluc_hopdong_ban" sequence="1"/>

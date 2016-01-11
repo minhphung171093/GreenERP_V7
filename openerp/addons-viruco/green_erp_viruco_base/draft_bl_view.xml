@@ -7,7 +7,7 @@
 			<field name="name">draft.bl.tree</field>
 			<field name="model">draft.bl</field>
 			<field name="arch" type="xml">
-				<tree string="Draft BL">
+				<tree string="Chứng từ xuất khẩu">
 					<field name="name"/>
 					<field name="hopdong_id"/>
 					<field name="date"/>
@@ -24,7 +24,7 @@
             <field name="name">draft.bl.select</field>
             <field name="model">draft.bl</field>
             <field name="arch" type="xml">
-                <search string="Search Draft BL">
+                <search string="Search Chứng từ xuất khẩu">
                     <field name="name"/>
                     <field name="hopdong_id"/>
                     <field name="notify_party_id"/>
@@ -40,9 +40,9 @@
             <field name="name">draft.bl.form</field>
             <field name="model">draft.bl</field>
             <field name="arch" type="xml">
-	            <form string="Draft BL" version="7.0">
+	            <form string="Chứng từ xuất khẩu" version="7.0">
 					<header>
-						<!--<button name="print_draft_bl" string="Print Draft BL" type="object" class="oe_highlight"/>
+						<!--<button name="print_draft_bl" string="Print Chứng từ xuất khẩu" type="object" class="oe_highlight"/>
 						<button name="bt_wizard" string="In" type="object" class="oe_highlight"/>-->
 					</header>
 	            	<sheet>
@@ -50,7 +50,7 @@
 	                    <group>
 	                    	<field name="hopdong_id" domain="[('type','=','hd_ngoai'),('state','not in',('moi_tao','da_duyet','da_ky','het_han'))]" on_change = "onchange_hopdong_id(hopdong_id)" context="{'form_view_ref':'green_erp_viruco_base.hop_dong_ngoai_form_view'}"/>
 	                        <field name="date"/>
-	                        <field name="bl_no" required = '0'/>
+	                        <field name="bl_no"/>
 	                    </group>
 	                    <group>
 	                    	<field name="name" string="Booking No."/>
@@ -78,7 +78,7 @@
 	                    	<field name="note"/>
 						</group>
 						<notebook>
-							<page string="Draft BL Line" >
+							<page string="Chứng từ xuất khẩu Line" >
 								<field name="draft_bl_line" context="{'default_hopdong_id':hopdong_id}">
 									<tree>
 	                                    <field name="ocean_vessel" />
@@ -137,7 +137,7 @@
 		
         
         <record id="action_draft_bl" model="ir.actions.act_window">
-            <field name="name">Draft BL</field>
+            <field name="name">Chứng từ xuất khẩu</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">draft.bl</field>
             <field name="view_type">form</field>
