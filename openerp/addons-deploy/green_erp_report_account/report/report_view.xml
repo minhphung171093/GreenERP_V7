@@ -621,8 +621,7 @@
 			id="sochitiet_taikhoan_report" 
 			model="sochitiet.taikhoan" 
 			name="sochitiet_taikhoan_report"
-	        string="Sổ chi tiết tài khoản"
+	        string="Sổ chi tiết tài khoản (CTGS)"
 	        rml="green_erp_report_account/report/sochitiet_taikhoan_report.ods"/>
-	        
 	</data>
 </openerp>

@@ -26,16 +26,22 @@
       		parent="account.menu_finance_reports"/>
       			
   			<menuitem id="menu_action_account_ledger_report"
-  				name="Sổ cái"
+  				name="Sổ cái(CTGS)"
 	      		action="action_account_ledger_report" 
 	      		icon="terp-graph"  
 	      		parent="menu_report_general_account" sequence="6"/>
+	      		
+	      	<menuitem id="menu_action_account_ledger_nkc_report"
+  				name="Sổ cái(NKC)"
+	      		action="action_account_ledger_nkc_report" 
+	      		icon="terp-graph"  
+	      		parent="menu_report_general_account" sequence="7"/>
 	      		
       		<menuitem id="menu_action_sochitiet_taikhoan"
   				name="Sổ chi tiết tài khoản"
 	      		action="action_sochitiet_taikhoan" 
 	      		icon="terp-graph"  
-	      		parent="menu_report_general_account" sequence="7"/>
+	      		parent="menu_report_general_account" sequence="8"/>
 	      		
       		<menuitem id="menu_action_so_nhatky_chung"
   				name="Sổ nhật ký chung"
@@ -54,6 +60,12 @@
 	      		action="action_soquy_tienmat_report" 
 	      		icon="terp-graph"  
 	      		parent="menu_report_general_account" sequence="15"/>
+	      		
+	      	<menuitem id="menu_action_soquy_chitiet_tienmat_report"
+      			name="Sổ quỹ chi tiết tiền mặt"
+	      		action="action_soquy_chitiet_tienmat_report" 
+	      		icon="terp-graph"  
+	      		parent="menu_report_general_account" sequence="16"/>
 	      		
       		<menuitem id="menu_action_so_tiengui_nganhang_report"
       			name="Sổ tiền gửi ngân hàng"

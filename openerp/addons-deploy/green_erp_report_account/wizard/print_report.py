@@ -672,8 +672,6 @@ class report_account_in_out_tax(osv.osv_memory):
     
 report_account_in_out_tax()
 
-
-
 class account_ledger_report(osv.osv_memory):
     _name = "account.ledger.report"    
     
@@ -727,7 +725,7 @@ class account_ledger_report(osv.osv_memory):
         'fiscalyear_stop': _get_fiscalyear,
         'quarter': '1',
         'company_id': _get_company,
-        'showdetails':True
+#         'showdetails':True
         }
     
     def finance_report(self, cr, uid, ids, context=None): 
@@ -1294,6 +1292,7 @@ class general_ledger_report(osv.osv_memory):
         return {'type': 'ir.actions.report.xml', 'report_name': report_name , 'datas': datas}
     
 general_ledger_report()
+
 
 class general_trial_balance(osv.osv_memory):
     _name = "general.trial.balance"    
@@ -2667,7 +2666,7 @@ class so_quy(osv.osv_memory):
         'fiscalyear_stop': _get_fiscalyear,
         'quarter': '1',
         'company_id': _get_company,
-        'showdetails': True,
+#         'showdetails': True,
         }
     
     def finance_report(self, cr, uid, ids, context=None): 

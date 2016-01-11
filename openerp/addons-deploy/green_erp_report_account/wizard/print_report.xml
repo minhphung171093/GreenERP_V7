@@ -94,7 +94,7 @@
 		        			<field name="shop_ids" widget="many2many_tags"/>
 			        		<field name="times"/>
 			        		<field name="company_id" groups="base.group_multi_company"/>
-			        		<field name="showdetails"/>
+			        		<field name="showdetails" invisible = '1'/>
 		        		</group>
 		        		<group>
 			        		<field name="quarter" attrs="{'invisible':[('times', 'in', ['dates','years','periods'])],'required':[('times', 'not in', ['dates','years','periods'])]}"/>
@@ -118,10 +118,21 @@
 		</record>
 		
 		<record id="action_account_ledger_report" model="ir.actions.act_window">
-		    <field name="name">Account Ledger</field>
+		    <field name="name">Account Ledger (CTGS)</field>
 		    <field name="res_model">account.ledger.report</field>
 		    <field name="view_type">form</field>
 		    <field name="view_mode">form</field>
+		    <field name="context">{'default_showdetails':1}</field>
+		    <field name="target">new</field>
+		    <field name="view_id" ref="view_account_ledger_report_form"/>
+		</record>
+		
+		<record id="action_account_ledger_nkc_report" model="ir.actions.act_window">
+		    <field name="name">Account Ledger (NKC)</field>
+		    <field name="res_model">account.ledger.report</field>
+		    <field name="view_type">form</field>
+		    <field name="view_mode">form</field>
+		    <field name="context">{'default_showdetails':0}</field>
 		    <field name="target">new</field>
 		    <field name="view_id" ref="view_account_ledger_report_form"/>
 		</record>
@@ -319,7 +330,7 @@
 		        			<field name="shop_ids" widget="many2many_tags"/>
 			        		<field name="times"/>
 			        		<field name="company_id" groups="base.group_multi_company"/>
-			        		<field name="showdetails"/>
+			        		<field name="showdetails" invisible = '1'/>
 		        		</group>
 		        		<group>
 			        		<field name="quarter" attrs="{'invisible':[('times', 'in', ['dates','years','periods'])],'required':[('times', 'not in', ['dates','years','periods'])]}"/>
@@ -349,7 +360,17 @@
 		    <field name="view_mode">form</field>
 		    <field name="target">new</field>
 		    <field name="view_id" ref="view_soquy_tienmat_report_form"/>
-		    <field name="context">{'report_type':'soquy_tienmat_report'}</field>
+		    <field name="context">{'report_type':'soquy_tienmat_report', 'default_showdetails':0}</field>
+		</record>
+		
+		<record id="action_soquy_chitiet_tienmat_report" model="ir.actions.act_window">
+		    <field name="name">Sổ quỹ chi tiết tiền mặt</field>
+		    <field name="res_model">so.quy</field>
+		    <field name="view_type">form</field>
+		    <field name="view_mode">form</field>
+		    <field name="target">new</field>
+		    <field name="view_id" ref="view_soquy_tienmat_report_form"/>
+		    <field name="context">{'report_type':'soquy_tienmat_report', 'default_showdetails':1}</field>
 		</record>
 
 <!--  ========================= Sổ tiền gửi ngân hàng ================= -->
