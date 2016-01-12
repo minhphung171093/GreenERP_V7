@@ -128,7 +128,10 @@ class Parser(report_sxw.rml_parse):
         count = 0
         subtotal =0
         res =[]
-        line_limit = 8
+        if o.is_chiet_khau == True:
+            line_limit = 6
+        else:
+            line_limit = 7
         for data in line:
             count += 1
             res.append({
