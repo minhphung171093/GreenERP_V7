@@ -57,11 +57,11 @@ class stock_picking(osv.osv):
                     if vals['state'] == 'done':
                         for move in line.move_lines:
                             hopdong_ban = self.pool.get('hop.dong').browse(cr,uid,move.hop_dong_ban_id.id)
-                            if hopdong_ban.state == 'thuc_hien':
+                            chung_tu = self.pool.get('draft.bl').browse(cr,uid,move.hop_dong_ban_id.id)
+                            if hopdong_ban.state == 'thuc_hien' and chung_tu.state == 'da_duyet':
                                 self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'giaohang_chochungtu'})
                             if hopdong_ban.state == 'thuc_hien_xongchungtu':
                                 self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'giaohang_xongchungtu'})
-                    
         return super(stock_picking, self).write(cr, uid,ids, vals, context)
     
     def do_partial(self, cr, uid, ids, partial_datas, context=None):

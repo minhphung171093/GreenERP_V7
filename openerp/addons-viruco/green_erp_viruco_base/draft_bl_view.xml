@@ -16,6 +16,7 @@
 					<field name="port_of_loading"/>
 					<field name="port_of_charge"/>
 	                <field name="diadiem_nhanhang" string = "Place of delivery"/>
+	                <field name="state"/>
 				</tree>
 			</field>
 		</record>
@@ -31,6 +32,7 @@
                     <field name="bl_no"/>
                     <group expand="0" string="Group By...">
                         <filter string="Contract" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'hopdong_id'}"/>
+                        <filter string="Status" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
                     </group>
                </search>
             </field>
@@ -42,6 +44,10 @@
             <field name="arch" type="xml">
 	            <form string="Chứng từ xuất khẩu" version="7.0">
 					<header>
+						<field name="state" widget="statusbar" statusbar_visible="moi_tao,da_duyet,hoan_tat,huy_bo"/>
+						<button name="xac_nhan" string="Xác nhận" states="moi_tao" type="object" class="oe_highlight"/>
+						<button name="hoan_tat" string="Hoàn tất" states="da_duyet" type="object" class="oe_highlight"/>
+						<button name="huy_bo" string="Huỷ" states="moi_tao,da_duyet,hoan_tat" type="object" class="oe_highlight"/>
 						<!--<button name="print_draft_bl" string="Print Chứng từ xuất khẩu" type="object" class="oe_highlight"/>
 						<button name="bt_wizard" string="In" type="object" class="oe_highlight"/>-->
 					</header>

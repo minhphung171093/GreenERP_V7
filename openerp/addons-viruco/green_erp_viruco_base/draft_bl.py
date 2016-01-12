@@ -108,7 +108,15 @@ class draft_bl(osv.osv):
                     'type': 'ir.actions.act_window',
                     'target': 'new',
                 }
+
+    def xac_nhan(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {'state': 'da_duyet'})
     
+    def hoan_tat(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {'state': 'hoan_tat'})
+    
+    def huy_bo(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {'state': 'huy_bo'})    
 draft_bl()
 
 class draft_bl_line(osv.osv):
