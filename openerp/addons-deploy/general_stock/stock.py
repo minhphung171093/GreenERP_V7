@@ -2616,6 +2616,10 @@ class stock_return_picking(osv.osv):
                             qty = line.product_qty - return_history.get(line.id, 0)
                             if qty - ctx['product_qty'] > 0:
                                 result1.append({'product_id': line.product_id.id, 'quantity': ctx['product_qty'],'move_id':line.id, 'prodlot_id': line.prodlot_id and line.prodlot_id.id or False, 'hang_tra_kh_move_id': ctx['move_id']})
+#                         if result1:
+#                             sql = '''
+#                                 update stock_picking set location_id = %s where 
+#                             '''
                 else:        
                     if line.state in ('cancel') or line.scrapped:
                         continue
@@ -2753,17 +2757,18 @@ class stock_return_picking(osv.osv):
                 set_invoice_state_to_none = False
             if new_qty:
                 returned_lines += 1
-                new_move=move_obj.copy(cr, uid, move.id, {
-                                            'prodlot_id':move.prodlot_id and move.prodlot_id.id or False,
-                                            'product_qty': new_qty,
-                                            'product_uos_qty': uom_obj._compute_qty(cr, uid, move.product_uom.id, new_qty, move.product_uos.id),
-                                            'picking_id': new_picking, 
-                                            'state': 'draft',
-                                            'location_id': new_location, 
-                                            'location_dest_id': move.location_id.id,
-                                            'date': date_cur,
-                                            'hang_tra_kh_move_id': data_get.hang_tra_kh_move_id and data_get.hang_tra_kh_move_id.id or False,
-                })
+                vals = {
+                        'prodlot_id':move.prodlot_id and move.prodlot_id.id or False,
+                        'product_qty': new_qty,
+                        'product_uos_qty': uom_obj._compute_qty(cr, uid, move.product_uom.id, new_qty, move.product_uos.id),
+                        'picking_id': new_picking, 
+                        'state': 'draft',
+                        'location_id': data_get.hang_tra_kh_move_id and data_get.hang_tra_kh_move_id.location_dest_id.id or new_location, 
+                        'location_dest_id': move.location_id.id,
+                        'date': date_cur,
+                        'hang_tra_kh_move_id': data_get.hang_tra_kh_move_id and data_get.hang_tra_kh_move_id.id or False,
+                        }
+                new_move=move_obj.copy(cr, uid, move.id, vals)
                 move_obj.write(cr, uid, [move.id], {'move_history_ids2':[(4,new_move)]}, context=context)
 #             sql = '''
 #                 update stock_move set hang_tra_kh_move_id = null where product_id = %s and picking_id = %s and hang_tra_kh_move_id is not null
