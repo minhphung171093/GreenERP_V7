@@ -2616,6 +2616,10 @@ class stock_return_picking(osv.osv):
                             qty = line.product_qty - return_history.get(line.id, 0)
                             if qty - ctx['product_qty'] > 0:
                                 result1.append({'product_id': line.product_id.id, 'quantity': ctx['product_qty'],'move_id':line.id, 'prodlot_id': line.prodlot_id and line.prodlot_id.id or False, 'hang_tra_kh_move_id': ctx['move_id']})
+#                         if result1:
+#                             sql = '''
+#                                 update stock_picking set location_id = %s where 
+#                             '''
                 else:        
                     if line.state in ('cancel') or line.scrapped:
                         continue

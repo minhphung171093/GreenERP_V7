@@ -187,6 +187,15 @@ class account_invoice(osv.osv):
             res[obj.id]['day_user_tz'] = self.get_vietname_date(obj.date_invoice)
         return res
     
+    def _huy_invisible(self, cr, uid, ids, name, arg, context=None):
+        res = {}
+        for tt in self.browse(cr,uid,ids):
+            res[tt.id] = False
+            account_ids = self.pool.get('account.account').search(cr,uid,[('code', '=', '64189')])
+            if tt.account_id.id == account_ids[0]:
+                res[tt.id] = True
+        return res
+    
     _columns = {
         'date_user_tz': fields.function(_compute_date_user_tz, type='date', method=True, string='Date User TZ', store={
                 'account.invoice': (lambda self, cr, uid, ids, c={}: ids, ['date_order'], 10),
@@ -250,12 +259,14 @@ class account_invoice(osv.osv):
         'product_showin_report': fields.function(_get_product_showin_report, type='char', store=True),
         'invoice_refund': fields.boolean('Invoice Refund'),
         'invoice_dieuchinh': fields.boolean('Invoice Refund'),
-        'flag': fields.boolean('Flag'),
+#         'flag': fields.boolean('Flag'),
          'is_chiet_khau': fields.boolean('Có chiết khấu'),
+         'flag': fields.function(_huy_invisible, string='Xử lý ẩn hiện nút hủy cho account 64189',
+            type='boolean'),
 #         'supplier_invoice_number': fields.char('Supplier Invoice Number', size=64, help="The reference of this invoice as provided by the supplier.", readonly=True, states={'draft':[('readonly',False)]}),
     }
     _defaults = {
-        'flag': False,
+#         'flag': False,
         'invoice_refund': False,
         'invoice_dieuchinh': False,
         'is_chiet_khau': False,
@@ -284,8 +295,7 @@ class account_invoice(osv.osv):
             for line in self.browse(cr,uid,ids):
                 account_ids = self.pool.get('account.account').search(cr,uid,[('code', '=', '64189')])
                 if line.account_id.id == account_ids[0]:
-                    vals.update({'state':'paid',
-                                 'flag': True})
+                    vals.update({'state':'paid'})
                     
 #         if vals.get('state',False):
 #             if vals['state'] == 'open':

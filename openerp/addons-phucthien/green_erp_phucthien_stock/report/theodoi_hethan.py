@@ -170,15 +170,16 @@ class Parser(report_sxw.rml_parse):
 
             select sp_huyhang.id as id, sp.origin as origin, sp.date as ngaynhap, spl.name as solo, spl.life_date as handung, 
             case when sm_huyhang.product_qty!=0 then sm_huyhang.product_qty else 0 end sl, 
-            
             sm_huyhang.date as date_xuat,
-            sp.tinhtrang_chatluong as tinhtrangchatluong, sp.note as ghichu, sp.loai_xuly as loaixuly
+            sp.tinhtrang_chatluong as tinhtrangchatluong, sp.note as ghichu, sp.loai_xuly as loaixuly,
+            rs.name as partner_name
             from stock_move sm_huyhang
             left join stock_move sm on sm_huyhang.hang_tra_kh_move_id = sm.id 
             left join stock_picking sp_huyhang on sp_huyhang.id=sm_huyhang.picking_id
             left join stock_picking sp on sp.id=sm.picking_id
             left join stock_production_lot spl on spl.id = sm.prodlot_id 
             left join stock_journal sj on sj.id = sm_huyhang.stock_journal_id 
+            left join res_partner rs on rs.id = sp.partner_id 
             
             where sp.return='customer' and sp.type='in' and sp.state='done' and sm.location_dest_id=%s and sm.product_id=%s
                 and date(timezone('UTC',sp.date)) between '%s' and '%s' and sp_huyhang.state='done'
@@ -189,12 +190,14 @@ class Parser(report_sxw.rml_parse):
             select sp_ncc.id as id, sp.origin as origin, sp.date as ngaynhap, spl.name as solo, spl.life_date as handung, 
             case when sm_ncc.product_qty!=0 then sm_ncc.product_qty else 0 end sl,
             sm_ncc.date as date_xuat,
-            sp.tinhtrang_chatluong as tinhtrangchatluong, sp.note as ghichu, sp.loai_xuly as loaixuly
+            sp.tinhtrang_chatluong as tinhtrangchatluong, sp.note as ghichu, sp.loai_xuly as loaixuly,
+            rs.name as partner_name
             from stock_move sm_ncc
             left join stock_move sm on sm_ncc.hang_tra_kh_move_id = sm.id 
             left join stock_picking sp_ncc on sp_ncc.id=sm_ncc.picking_id
             left join stock_picking sp on sp.id=sm.picking_id
             left join stock_production_lot spl on spl.id = sm.prodlot_id 
+            left join res_partner rs on rs.id = sp.partner_id 
             
             where sp.return='customer' and sp.type='in' and sp.state='done' and sm.location_dest_id=%s and sm.product_id=%s
                 and date(timezone('UTC',sp.date)) between '%s' and '%s' and sp_ncc.state='done' and sp_ncc.return='supplier'

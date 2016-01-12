@@ -127,6 +127,7 @@ class xuly_hangtra_cuakhachhang(osv.osv_memory):
             'stock_journal_id': stock_journal_ids and stock_journal_ids[0] or False,
             'type': 'internal',
             'return': 'none',
+            'location_id': picking.location_dest_id and picking.location_dest_id.id or False,
             'move_lines': move_lines,
             'partner_id': picking.partner_id and picking.partner_id.id or False,
             'origin': picking.name + ':' + picking.origin,
@@ -135,6 +136,10 @@ class xuly_hangtra_cuakhachhang(osv.osv_memory):
             self.pool.get('stock.picking').onchange_journal(cr, uid, [], stock_journal_ids and stock_journal_ids[0] or False)['value']
         )
         xuly_huyhang_id = self.pool.get('stock.picking').create(cr, uid, vals)
+        sql = '''
+            update stock_picking set location_id = %s where id = %s
+        '''%(picking.location_dest_id.id, xuly_huyhang_id)
+        cr.execute(sql)
         if return_cus_id:
             self.pool.get('stock.picking.out').write(cr, uid, [return_cus_id], {'loai_xuly':line.name,'xuly_huyhang_id': xuly_huyhang_id})
         res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
