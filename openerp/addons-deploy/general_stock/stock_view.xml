@@ -347,6 +347,7 @@
 	            <field name="arch" type="xml">
 	                <xpath expr="/search/filter[@name='done']" position="after">
 	                	<field name="date_done_user_tz"/>
+	                	<field name="product_id"/>
 	                    <filter icon="terp-go-today" string="Today" domain="[('min_date','&lt;=',time.strftime('%%Y-%%m-%%d 23:59:59')),('min_date','&gt;=',time.strftime('%%Y-%%m-%%d 00:00:00'))]" help="Orders processed Today or planned for Today"/>
 	                	<separator/>
 	                    <filter string="Normal Return" name="filter_return_reason" icon="terp-gtk-jump-to-ltr" domain="[('return_reason_id','=',False)]" context="{}"/>
