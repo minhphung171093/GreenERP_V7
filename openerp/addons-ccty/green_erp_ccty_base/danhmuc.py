@@ -210,7 +210,7 @@ class chan_nuoi(osv.osv):
         'name': fields.char('Tên hộ',size = 50, required = True),
         'dien_thoai': fields.char('Điện thoại',size = 50),
         'so_nha': fields.char('Số nhà',size = 50),
-        'ngay_cap': fields.date('Thời gian cấp', required = True),
+        'ngay_cap': fields.date('Thời gian cấp', required = False),
         'phuong_xa_id': fields.many2one( 'phuong.xa','Phường (xã)', required = True),
         'khu_pho_id': fields.many2one('khu.pho','Khu phố (ấp)', required = True),
         'quan_huyen_id': fields.many2one('quan.huyen','Quận (huyện)', required = True),
