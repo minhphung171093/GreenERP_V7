@@ -52,6 +52,7 @@
 		            id="base.menu_action_res_partner_bank_typeform"
 		            parent="menu_bank_configuration"
 		            sequence="15"/>
+		            
         
     </data>
 </openerp>

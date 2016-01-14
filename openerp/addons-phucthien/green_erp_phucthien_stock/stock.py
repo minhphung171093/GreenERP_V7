@@ -2064,6 +2064,7 @@ class trahang_chokho(osv.osv):
         res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
                                         'green_erp_phucthien_stock', 'giaohang_popup_form_view')
         ct_giaohang_line = []
+        ct_thung_line = []
         for guihang in self.browse(cr,uid,ids):
             for gh_line in guihang.trahang_chokho_line:
                 ct_giaohang_line.append((0,0,{
@@ -2077,6 +2078,23 @@ class trahang_chokho(osv.osv):
                                        'guihang_id': gh_line.id and gh_line.id or False,
                                        'move_id': gh_line.move_id and gh_line.move_id.id or False,
                                        }))
+                
+            for thung in guihang.picking_id.picking_packaging_line:
+                ct_thung_line.append((0,0,{
+                                       'loai_thung_id': thung.loai_thung_id and thung.loai_thung_id.id or False,
+                                       'sl_thung': thung.sl_thung,
+                                       'chi_phi_thung': thung.chi_phi_thung,
+                                       'sl_da': thung.sl_da,
+                                       'chi_phi_da': thung.chi_phi_da,
+                                       'sl_nhietke': thung.sl_nhietke,
+                                       'chi_phi_nhiet_ke': thung.chi_phi_nhiet_ke,
+                                       'chi_phi_gui_hang': thung.chi_phi_gui_hang,
+                                       'chiphi_vanchuyen': thung.chiphi_vanchuyen,
+                                       'employee_id': thung.employee_id and thung.employee_id.id or False,
+                                       'nhietdo_packaging_di': thung.nhietdo_packaging_di,
+                                       'nhietdo_packaging_den': thung.nhietdo_packaging_den,
+                                       'packaging_id': thung.id and thung.id or False,
+                                       }))
             return {
                     'name': 'Giao Hàng',
                     'view_type': 'form',
@@ -2087,6 +2105,7 @@ class trahang_chokho(osv.osv):
                     'context': {
                         'default_trahang_id': guihang.id,
                         'default_ct_giaohang_line': ct_giaohang_line,
+                        'default_ct_thung_line': ct_thung_line,
                             },
                     'type': 'ir.actions.act_window',
                     'target': 'new',
@@ -2132,6 +2151,7 @@ class giaohang_line(osv.osv):
         'ngay_gui':fields.date('Ngày gửi'),
         'ngay_nhan':fields.date('Ngày nhận lại'),
         'ct_giaohang_line': fields.one2many('ct.giaohang.line','giaohang_id','Giao Hang'),
+        'ct_thung_line': fields.one2many('ct.thung.line','giaohang_id','Giao Hang'),
         'state_receive':fields.selection([('draft','Tạo mới'),('da_gui','Đã gửi'),('da_nhan','Đã nhận')],'Trạng thái',required=True),
     }
     _defaults = {
@@ -2194,6 +2214,29 @@ class ct_giaohang_line(osv.osv):
     ]
     
 ct_giaohang_line()
+
+class ct_thung_line(osv.osv):
+    _name = "ct.thung.line"
+    
+    _columns = {
+        'giaohang_id': fields.many2one('giaohang.line', 'Giao Hàng', ondelete = 'cascade'),
+        'loai_thung_id': fields.many2one('loai.thung', 'Loại thùng'),
+        'sl_thung': fields.float('Số lượng thùng'),
+        'chi_phi_thung': fields.float('Chi phí thùng'),
+        'sl_da': fields.float('Số lượng đá'),
+        'chi_phi_da': fields.float('Chi phí đá'),
+        'sl_nhietke': fields.integer('Số lượng nhiệt kế'),
+        'chi_phi_nhiet_ke': fields.float('Chi phí nhiệt kế'),
+        'chi_phi_gui_hang': fields.float('Chi phí gửi hàng'),
+        'chiphi_vanchuyen': fields.float('Chi phí vận chuyển'),
+        'employee_id': fields.many2one('hr.employee', 'Nhân viên đóng gói'),
+        'nhietdo_packaging_di': fields.char('Nhiệt độ đi', size = 64),
+        'nhietdo_packaging_den': fields.char('Nhiệt độ đến', size = 64),
+        'packaging_id': fields.many2one('stock.picking.packaging', 'packaging'),
+    }
+    
+ct_thung_line()
+
 class so_hoadon_dauvao(osv.osv):
     _name = 'so.hoadon.dauvao'
     

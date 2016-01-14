@@ -889,20 +889,21 @@
             <field name="arch" type="xml">
 	            <form string="Danh sách cạnh tranh" version="7.0"> 
 	            	<sheet>
-	                    <group col='4' colspan='2'>
+	                    <group col='6' colspan='2'>
                     		<field name="name" />
-							<field name="product_id" />
-							<field name="qty"/>
-							<field name="qty_con_lai"/>
-                            <field name="sanpham_canhtranh1_id"/>
-                            <field name="soluong_canhtranh1"/>
-                            <field name="soluong_canhtranh1_conlai"/>
-                            <field name="sanpham_canhtranh2_id"/>
-                            <field name="soluong_canhtranh2"/>
-                            <field name="soluong_canhtranh2_conlai"/>
-                            <field name="sanpham_canhtranh3_id"/>
-                            <field name="soluong_canhtranh3"/>
-                            <field name="soluong_canhtranh3_conlai"/>
+                    		<newline/>
+							<field name="product_id" string = "Sản phẩm"/>
+							<field name="qty" string = "Số lượng"/>
+							<field name="qty_con_lai" string = "Số lượng còn lại"/>
+                            <field name="sanpham_canhtranh1_id" string = "Sản phẩm cạnh tranh 1"/>
+                            <field name="soluong_canhtranh1" string = "Số lượng cạnh tranh 1"/>
+                            <field name="soluong_canhtranh1_conlai" string = "Số lượng cạnh tranh còn lại 1"/>
+                            <field name="sanpham_canhtranh2_id" string = "Sản phẩm cạnh tranh 2"/>
+                            <field name="soluong_canhtranh2" string = "Số lượng cạnh tranh 2"/>
+                            <field name="soluong_canhtranh2_conlai" string = "Số lượng cạnh tranh còn lại 2"/>
+                            <field name="sanpham_canhtranh3_id" string = "Sản phẩm cạnh tranh 3"/>
+                            <field name="soluong_canhtranh3" string = "Số lượng cạnh tranh 3"/>
+                            <field name="soluong_canhtranh3_conlai" string = "Số lượng cạnh tranh còn lại 3"/>
 	                    </group>
 						<footer>
 	                        <button string="Lưu" type="object" name="bt_save"/>

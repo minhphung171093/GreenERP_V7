@@ -43,6 +43,7 @@ class Parser(report_sxw.rml_parse):
         self.tong_exim = 0
         self.tong_acb = 0
         self.tong_agr = 0
+        self.tong_ck = 0
         self.localcontext.update({
             'convert_date': self.convert_date,
             'get_period_name': self.get_period_name,
@@ -97,15 +98,27 @@ class Parser(report_sxw.rml_parse):
         cus_ids = []
         res = []
         inv_ids = []
+        inv_truoc_ids = []
         if not user_ids:
             sql ='''
              select id from account_invoice where id in (select distinct invoice_id from account_invoice_line where product_id in (select product_product.id
                             from product_product,product_template 
                             where product_template.categ_id in (select id from product_category where code ='DP') 
                             and product_product.product_tmpl_id = product_template.id) and invoice_id in 
-                                (select id from account_invoice where date_invoice between '%s' and '%s'  and type ='out_invoice' and state in ('open','paid')))
+                                (select id from account_invoice where date_invoice < '%s' and type ='out_invoice' and state in ('open','paid')))
                             order by date_invoice
-            '''%(date_from,date_to)
+            '''%(date_from)
+            self.cr.execute(sql)   
+            inv_truoc_ids = [r[0] for r in self.cr.fetchall()]
+            
+            sql ='''
+             select id from account_invoice where id in (select distinct invoice_id from account_invoice_line where product_id in (select product_product.id
+                            from product_product,product_template 
+                            where product_template.categ_id in (select id from product_category where code ='DP') 
+                            and product_product.product_tmpl_id = product_template.id) and invoice_id in 
+                                (select id from account_invoice where date_invoice between '%s' and '%s' and type ='out_invoice' and state in ('open','paid')))
+                            order by date_invoice
+            '''%(date_from, date_to)
             self.cr.execute(sql)   
             inv_ids = [r[0] for r in self.cr.fetchall()]
         else:
@@ -124,11 +137,69 @@ class Parser(report_sxw.rml_parse):
                                 from product_product,product_template 
                                 where product_template.categ_id in (select id from product_category where code ='DP') 
                                 and product_product.product_tmpl_id = product_template.id) and invoice_id in 
+                                    (select id from account_invoice where date_invoice < '%s' and type ='out_invoice' and state in ('open','paid')))
+                                and partner_id in %s
+                                order by date_invoice
+                '''%(date_from,cus_ids)
+                self.cr.execute(sql)   
+                inv_truoc_ids = [r[0] for r in self.cr.fetchall()] 
+                
+                sql ='''
+                 select id from account_invoice where id in (select distinct invoice_id from account_invoice_line where product_id in (select product_product.id
+                                from product_product,product_template 
+                                where product_template.categ_id in (select id from product_category where code ='DP') 
+                                and product_product.product_tmpl_id = product_template.id) and invoice_id in 
                                     (select id from account_invoice where date_invoice between '%s' and '%s' and type ='out_invoice' and state in ('open','paid')))
                                 and partner_id in %s
+                                order by date_invoice
                 '''%(date_from,date_to,cus_ids)
                 self.cr.execute(sql)   
                 inv_ids = [r[0] for r in self.cr.fetchall()] 
+        if inv_truoc_ids:
+            for inv in inv_truoc_ids:
+                tien_mat = 0
+                exim = 0
+                acb = 0 
+                agr = 0
+                ngay_tt = ''
+                so_ngay_no = 0
+                sql = ''' 
+                    select ai.residual as residual, date_invoice, reference_number, amount_total, rp.name as cus, rp.id as cus_id, rp.internal_code as code from account_invoice ai, res_partner rp 
+                        where ai.partner_id = rp.id and ai.id = %s 
+                        
+                '''%(inv)
+                self.cr.execute(sql) 
+                inv_id = self.cr.dictfetchone()
+                nodk = inv_id and inv_id['residual'] or 0
+                tdv_name = self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).user_id and self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).user_id.name or ''
+                kv = self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).state_id and self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).state_id.name or ''
+                sql='''
+                    select ma.name from account_invoice_line acc, product_product pr , manufacturer_product ma
+                    where invoice_id = %s and acc.product_id = pr.id and ma.id = pr.manufacturer_product_id
+                '''%(inv)
+                self.cr.execute(sql) 
+                hang_sx = self.cr.fetchone() or False
+                if nodk != 0:
+                    res.append({'cus_name': inv_id['cus'],
+                                'dia_chi': inv_id['cus_id'] and self.display_address(inv_id['cus_id']) or '',
+                                'ngay_xuat': inv_id['date_invoice'] and self.convert_date(inv_id['date_invoice']) or '',
+                                'date_invoice':inv_id['date_invoice'],
+                                'reference_number':inv_id['reference_number'],
+                                'internal_code':inv_id['code'],
+                                'nodk': nodk,
+                                'phatsinh':0,
+                                'tienmat': 0,
+                                'acb': 0,
+                                'exim': 0,
+                                'agr': 0,
+                                'nock': 0,
+                                'ngay_tt': '',
+                                'tdv_name': tdv_name,
+                                'kv': kv,
+                                'hang_sx': hang_sx and hang_sx[0] or '',
+                                'so_ngay_no':so_ngay_no,
+                                })
+                    
         if inv_ids:
             for inv in inv_ids:
                 tien_mat = 0
@@ -137,39 +208,55 @@ class Parser(report_sxw.rml_parse):
                 agr = 0
                 ngay_tt = ''
                 so_ngay_no = 0
+                tong_ck = 0
+                thuc_thu = 0
                 sql = ''' 
-                    select date_invoice, reference_number, amount_total, rp.name as cus, rp.id as cus_id, rp.internal_code as code from account_invoice ai, res_partner rp 
+                    select ai.residual as residual, date_invoice, reference_number, amount_total, rp.name as cus, rp.id as cus_id, rp.internal_code as code from account_invoice ai, res_partner rp 
                         where ai.partner_id = rp.id and ai.id = %s 
                         
                 '''%(inv)
                 self.cr.execute(sql) 
                 inv_id = self.cr.dictfetchone()
-                
                 sql = '''
-                    select case when sum(residual)!=0 then sum(residual) else 0 end nodk from account_invoice 
-                    where state='open' and date_invoice < '%s' and partner_id = %s
-                '''%(date_from,inv_id['cus_id'])
+                    select case when sum(residual)!=0 then sum(residual) else 0 end residual from account_invoice where partner_id = %s
+                    and id in (select distinct invoice_id from account_invoice_line where product_id in (select product_product.id
+                    from product_product,product_template 
+                    where product_template.categ_id in (select id from product_category where code ='DP') 
+                    and product_product.product_tmpl_id = product_template.id) and invoice_id in 
+                        (select id from account_invoice where date_invoice < '%s' and type ='out_invoice' and state in ('open')))
+                '''%(inv_id['cus_id'],date_from)
                 self.cr.execute(sql) 
                 nodk = self.cr.fetchone()[0]
                 invoice_id = invoice_obj.browse(self.cr,self.uid,inv)
-                nock = nodk + (invoice_id.residual and invoice_id.residual or 0)
+#                 nock = nodk + (invoice_id.residual and invoice_id.residual or 0)
                 tdv_name = self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).user_id and self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).user_id.name or ''
                 kv = self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).state_id and self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).state_id.name or ''
                 for pay in invoice_id.payment_ids:
-                    if pay.journal_id.code == '11':
-                        tien_mat += pay.credit
-                        self.tong_tien += tien_mat
-                    if pay.journal_id.code == '12':
-                        acb += pay.credit
-                        self.tong_acb += acb
-                    if pay.journal_id.code == '13':
-                        exim += pay.credit
-                        self.tong_exim += exim
-                    if pay.journal_id.code == '16':
-                        agr += pay.credit 
-                        self.tong_agr += agr
-                    if pay.date:
-                        ngay_tt +=  self.convert_date(pay.date) + ', '
+                    if pay.date >= date_from and pay.date <= date_to:
+                        if pay.journal_id.code == '11':
+                            tien_mat += pay.credit
+                            self.tong_tien += tien_mat
+                        if pay.journal_id.code == '12':
+                            acb += pay.credit
+                            self.tong_acb += acb
+                        if pay.journal_id.code == '13':
+                            exim += pay.credit
+                            self.tong_exim += exim
+                        if pay.journal_id.code == '16':
+                            agr += pay.credit 
+                            self.tong_agr += agr
+                        if pay.date:
+                            ngay_tt +=  self.convert_date(pay.date) + ', '
+                if tien_mat:
+                    thuc_thu = tien_mat
+                elif acb:
+                    thuc_thu = tien_mat
+                elif exim:
+                    thuc_thu = tien_mat
+                elif agr:
+                    thuc_thu = tien_mat
+                else:
+                    thuc_thu = 0
                 sql='''
                     select ma.name from account_invoice_line acc, product_product pr , manufacturer_product ma
                     where invoice_id = %s and acc.product_id = pr.id and ma.id = pr.manufacturer_product_id
@@ -182,19 +269,23 @@ class Parser(report_sxw.rml_parse):
                     '''%(date_to,date_to,inv)
                     self.cr.execute(sql) 
                     so_ngay_no = self.cr.fetchone()[0]
+                    
+                tong_ck = nodk+float(inv_id['amount_total'])-thuc_thu
+                self.tong_ck += tong_ck
+    
                 res.append({'cus_name': inv_id['cus'],
                             'dia_chi': inv_id['cus_id'] and self.display_address(inv_id['cus_id']) or '',
                             'ngay_xuat': inv_id['date_invoice'] and self.convert_date(inv_id['date_invoice']) or '',
                             'date_invoice':inv_id['date_invoice'],
                             'reference_number':inv_id['reference_number'],
                             'internal_code':inv_id['code'],
-                            'nodk': nodk,
+                            'nodk': 0,
                             'phatsinh':float(inv_id['amount_total']),
                             'tienmat': tien_mat,
                             'acb': acb,
                             'exim': exim,
                             'agr': agr,
-                            'nock': nock,
+                            'nock': tong_ck,
                             'ngay_tt': ngay_tt and ngay_tt[:-2] or '',
                             'tdv_name': tdv_name,
                             'kv': kv,
@@ -231,11 +322,6 @@ class Parser(report_sxw.rml_parse):
             if inv_ids:
                 inv_ids = str(inv_ids).replace("[","(")
                 inv_ids = str(inv_ids).replace("]",")")
-                sql='''
-                    select partner_id from account_invoice where id in %s
-                '''%(inv_ids)
-                self.cr.execute(sql)   
-                customer_ids = [r[0] for r in self.cr.fetchall()]
         else:
             user_ids = str(user_ids).replace("[","(")
             user_ids = str(user_ids).replace("]",")")
@@ -260,38 +346,55 @@ class Parser(report_sxw.rml_parse):
                 if inv_ids:
                     inv_ids = str(inv_ids).replace("[","(")
                     inv_ids = str(inv_ids).replace("]",")")
-                    sql='''
-                        select partner_id from account_invoice where id in %s
-                    '''%(inv_ids)
-                    self.cr.execute(sql)   
-                    customer_ids = [r[0] for r in self.cr.fetchall()]
-        if customer_ids:
-            customer_ids = str(customer_ids).replace("[","(")
-            customer_ids = str(customer_ids).replace("]",")")
+        if not user_ids:             
             sql = '''
-                select case when sum(residual)!=0 then sum(residual) else 0 end nodk from account_invoice 
-                where state='open' and date_invoice < '%s' and partner_id in %s
-            '''%(date_from,customer_ids)
+                select sum(residual) from account_invoice where id in (select distinct invoice_id from account_invoice_line where product_id in (select product_product.id
+                from product_product,product_template 
+                where product_template.categ_id in (select id from product_category where code ='DP') 
+                and product_product.product_tmpl_id = product_template.id) and invoice_id in 
+                    (select id from account_invoice where date_invoice < '%s' and type ='out_invoice' and state in ('open','paid')))
+            '''%(date_from)
             self.cr.execute(sql) 
             tong_nodk = self.cr.fetchone()[0]
-            if inv_ids:
-                sql = '''
-                    select case when sum(amount_total)!=0 then sum(amount_total) else 0 end phatsinh, case when sum(residual)!=0 then sum(residual) else 0 end notrongki from account_invoice 
-                    where state in ('open','paid') and date_invoice between '%s' and '%s' and id in %s
-                '''%(date_from,date_to,inv_ids)
-                self.cr.execute(sql) 
-                tong =self.cr.fetchone()
-                tong_phatsinh = tong[0]
-                tong_notrongki = tong[1]
-                tong_no_ck = tong_nodk + tong_notrongki
-                res.update({'tong_nodk':tong_nodk,
-                            'tong_phatsinh':tong_phatsinh,
-                            'tong_tien':self.tong_tien,
-                            'tong_exim':self.tong_exim,
-                            'tong_acb':self.tong_acb,
-                            'tong_agr':self.tong_agr,
-                            'tong_no_ck': tong_no_ck,
-                            })
+        else:
+            user_ids = str(user_ids).replace("[","(")
+            user_ids = str(user_ids).replace("]",")")
+            sql = '''
+                select id from res_partner where user_id in %s and customer is True
+            '''%(user_ids)
+            self.cr.execute(sql)
+            cus_ids = [r[0] for r in self.cr.fetchall()]  
+            if cus_ids:
+                cus_ids = str(cus_ids).replace("[","(")
+                cus_ids = str(cus_ids).replace("]",")")
+            sql ='''
+                select sum(residual) from account_invoice where id in (select distinct invoice_id from account_invoice_line where product_id in (select product_product.id
+                from product_product,product_template 
+                where product_template.categ_id in (select id from product_category where code ='DP') 
+                and product_product.product_tmpl_id = product_template.id) and invoice_id in 
+                (select id from account_invoice where date_invoice < '%s' and type ='out_invoice' and state in ('open','paid')))
+                            and partner_id in %s
+                '''%(date_from,cus_ids)
+            self.cr.execute(sql) 
+            tong_nodk = self.cr.fetchone()[0]
+        if inv_ids:
+            sql = '''
+                select case when sum(amount_total)!=0 then sum(amount_total) else 0 end phatsinh, case when sum(residual)!=0 then sum(residual) else 0 end notrongki from account_invoice 
+                where state in ('open','paid') and date_invoice between '%s' and '%s' and id in %s
+            '''%(date_from,date_to,inv_ids)
+            self.cr.execute(sql) 
+            tong =self.cr.fetchone()
+            tong_phatsinh = tong[0]
+#             tong_notrongki = tong[1]
+#             tong_no_ck = tong_nodk + tong_notrongki
+            res.update({'tong_nodk':tong_nodk,
+                        'tong_phatsinh':tong_phatsinh,
+                        'tong_tien':self.tong_tien,
+                        'tong_exim':self.tong_exim,
+                        'tong_acb':self.tong_acb,
+                        'tong_agr':self.tong_agr,
+                        'tong_no_ck': self.tong_ck,
+                        })
         return res
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

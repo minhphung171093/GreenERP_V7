@@ -1235,9 +1235,13 @@ class remind_work(osv.osv):
         return self.write(cr, uid, ids, {'state': 'open'})
     def case_done(self, cr, uid, ids, context=None):
         for line in self.browse(cr, uid, ids):
+            dt = datetime.datetime.now()
+            if line.date_start:
+                start_date = datetime.datetime.strptime(line.date_start, DATETIME_FORMAT)
+                if start_date > dt:
+                    raise osv.except_osv(_('Cảnh báo!'),_('Không thể hoàn thành trước ngày bắt đầu!')) 
             if line.date_end:
                 start_end = datetime.datetime.strptime(line.date_end, DATETIME_FORMAT)
-                dt = datetime.datetime.now()
                 if dt < start_end:
                     raise osv.except_osv(_('Cảnh báo!'),_('Không thể hoàn thành trước ngày kết thúc!'))        
         return self.write(cr, uid, ids, {'state': 'done'})

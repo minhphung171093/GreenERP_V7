@@ -1165,6 +1165,26 @@
 														</tree>
 													</field>
 												</page>
+												
+												<page string = "Chi tiết thùng">
+													<field name="ct_thung_line" nolabel='1'>
+														<tree editable='bottom'>
+															<field name="loai_thung_id"/>
+															<field name="sl_thung" />
+															<field name="chi_phi_thung" />
+															<field name="sl_da" /> 
+															<field name="chi_phi_da" /> 
+															<field name="sl_nhietke" /> 
+															<field name="chi_phi_nhiet_ke"/>
+															<field name="chi_phi_gui_hang"/> 
+															<field name="chiphi_vanchuyen"/> 
+															<field name="employee_id"/> 
+															<field name="nhietdo_packaging_di"/> 
+															<field name="nhietdo_packaging_den"/> 
+															<field name="packaging_id" invisible = '1'/> 
+														</tree>
+													</field>
+												</page>
 											</notebook>
 										</group>
 									</form>
@@ -1235,6 +1255,26 @@
 										<field name="move_id" invisible = '1'/>
 										<field name="guihang_id" invisible = '1'/> 
 										<field name="qty_conlai" invisible = '1'/> 
+									</tree>
+								</field>
+							</page>
+							
+							<page string = "Chi tiết thùng">
+								<field name="ct_thung_line" nolabel='1'>
+									<tree editable='bottom'>
+										<field name="loai_thung_id"/>
+										<field name="sl_thung" />
+										<field name="chi_phi_thung" />
+										<field name="sl_da" /> 
+										<field name="chi_phi_da" /> 
+										<field name="sl_nhietke" /> 
+										<field name="chi_phi_nhiet_ke"/>
+										<field name="chi_phi_gui_hang"/> 
+										<field name="chiphi_vanchuyen"/> 
+										<field name="employee_id"/> 
+										<field name="nhietdo_packaging_di"/> 
+										<field name="nhietdo_packaging_den"/> 
+										<field name="packaging_id" invisible = '1'/> 
 									</tree>
 								</field>
 							</page>

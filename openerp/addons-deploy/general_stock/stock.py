@@ -35,6 +35,25 @@ class users(osv.osv):
     _columns = {
         'location_ids':fields.many2many('stock.location', 'stock_location_users_rel', 'user_id', 'location_id', 'Locations'),
     }
+    
+    def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
+        if context is None:
+            context = {}
+            
+        if context.get('search_user_with_name', False):
+            name = context.get('name')
+            user_ids = self.search(cr, uid, [('name','like',name)])
+            args += [('id','in',user_ids)]
+        return super(users, self).search(cr, uid, args, offset=offset, limit=limit, order=order, context=context, count=count)
+    
+    def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
+        if context is None:
+            context = {}
+        if name:
+            context.update({'search_user_with_name':1,'name':name})
+        ids = self.search(cr, user, args, context=context, limit=limit)
+        return self.name_get(cr, user, ids, context=context)
+    
 users()
 
 class stock_return_reason(osv.osv):
@@ -2555,7 +2574,7 @@ class stock_partial_picking(osv.osv_memory):
     
 stock_partial_picking()
 
-class stock_return_picking_memory(osv.osv):
+class stock_return_picking_memory(osv.osv_memory):
     _inherit = "stock.return.picking.memory"
 
     _columns = {
