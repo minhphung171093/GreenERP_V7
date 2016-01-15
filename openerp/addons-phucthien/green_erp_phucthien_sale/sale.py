@@ -705,13 +705,19 @@ class sale_order(osv.osv):
         mail_mail = self.pool.get('mail.mail')
         msg = mail_message_pool.browse(cr, SUPERUSER_ID, msg_id, context=context)
         body_html = msg.body
+        mail_server_obj = self.pool.get('ir.mail_server')
+        mail_server_ids = mail_server_obj.search(cr, 1, [], limit=1)
+        email_from = False
+        if mail_server_ids:
+            email_from = mail_server_obj.browse(cr, 1, mail_server_ids[0]).smtp_user
         # email_from: partner-user alias or partner email or mail.message email_from
-        if msg.author_id and msg.author_id.user_ids and msg.author_id.user_ids[0].alias_domain and msg.author_id.user_ids[0].alias_name:
-            email_from = '%s <%s@%s>' % (msg.author_id.name, msg.author_id.user_ids[0].alias_name, msg.author_id.user_ids[0].alias_domain)
-        elif msg.author_id:
-            email_from = '%s <%s>' % (msg.author_id.name, msg.author_id.email)
-        else:
-            email_from = msg.email_from
+        if not email_from:
+            if msg.author_id and msg.author_id.user_ids and msg.author_id.user_ids[0].alias_domain and msg.author_id.user_ids[0].alias_name:
+                email_from = '%s <%s@%s>' % (msg.author_id.name, msg.author_id.user_ids[0].alias_name, msg.author_id.user_ids[0].alias_domain)
+            elif msg.author_id:
+                email_from = '%s <%s>' % (msg.author_id.name, msg.author_id.email)
+            else:
+                email_from = msg.email_from
 
         references = False
         if msg.parent_id:
