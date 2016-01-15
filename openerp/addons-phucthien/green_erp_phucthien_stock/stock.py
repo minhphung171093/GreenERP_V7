@@ -2027,8 +2027,8 @@ class trahang_chokho(osv.osv):
     
     def _trangthai(self, cr, uid, ids, name, arg, context=None):
         res = {}
-        qty = 0
         for guihang in self.browse(cr,uid,ids):
+            qty = 0
             for line in guihang.trahang_chokho_line:
                 qty += line.qty_conlai
             if qty == 0:

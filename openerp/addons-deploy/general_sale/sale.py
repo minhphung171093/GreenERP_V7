@@ -126,7 +126,7 @@ class sale_order(osv.osv):
                         val['state'] = 'manual'
                         break
         #Phuoc: tinh toan the tich cac san pham trong picking line de dua vao loai thung cho phu hop
-#         self._prepare_dong_goi(cr, uid, picking_id, picking_obj, context=context)
+        self._prepare_dong_goi(cr, uid, picking_id, picking_obj, context=context)
         
         order.write(val)
         return True
