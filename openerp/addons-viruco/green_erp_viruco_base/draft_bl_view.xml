@@ -78,6 +78,7 @@
                     		<field name="country_id"/>
                     		<field name="freight"/>
                     		<field name="customs_declaration" string = "Customs Declaration Number" />
+                    		<field name="stock_ids" widget="many2many_tags" invisible='1'/>
 	                    </group>
 	                    </group>
 	                    <group>

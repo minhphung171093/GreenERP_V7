@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+<!--  ========================= Tách phiếu giao hàng ================= -->     
+         <record id="tach_phieu_form_view" model="ir.ui.view">
+            <field name="name">tach.phieu.form.view</field>
+            <field name="model">tach.phieu</field>
+            <field name="arch" type="xml">
+                <form string="Tách phiếu giao hàng" version="7.0">
+                <sheet>
+                	<group >
+                		<field name = "picking_id" invisible='1'/>
+                	<notebook>
+                	<page string="Tách phiếu ">
+                		<field name = "name_lines">
+                		<tree editable="top" create="false" >
+                		<field name="name"/>
+                		<field name="sl"/>
+                		<field name = "move_lines_id" invisible='1'/>
+                		</tree>
+                		</field>
+                	</page>
+                	</notebook>
+                    </group>
+                </sheet>
+	                <footer>
+                        <button string="Tách" type="object" name="bt_tach" class="oe_link"/>
+                        or
+                        <button string="Huỷ bỏ" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_tach_phieu_form_view" model="ir.actions.act_window">
+            <field name="name">Tách phiếu giao hàng</field>
+            <field name="res_model">tach.phieu</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="tach_phieu_form_view"/>
+        </record>
+        
+	     
+   </data>
+</openerp>
+        
+        

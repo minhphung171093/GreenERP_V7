@@ -61,7 +61,9 @@ class draft_bl(osv.osv):
         'customs_declaration': fields.char('Customs Declaration', size=1024),
         'shipping_line_id': fields.many2one('shipping.line','Shipping line'),
         'forwarder_line_id': fields.many2one('forwarder.line','Forwarder line'),
+        'stock_picking_id': fields.many2one('stock.picking','Phiếu xuất'),
         'mean_transport': fields.char('Means of Transport', size=1024),
+        'stock_ids':fields.many2many('stock.picking','kho_chungtu_ref','chung_tu_id','stock_id','Kho' ),
         'state': fields.selection([
             ('moi_tao', 'Mới tạo'),
             ('da_duyet', 'Xác nhận'),
@@ -81,15 +83,26 @@ class draft_bl(osv.osv):
         hopdong_obj = self.pool.get('hop.dong')
         if 'hopdong_id' in vals:
             hop_dong = hopdong_obj.browse(cr,uid,vals['hopdong_id'])
-            if hop_dong.state == 'thuc_hien':
-                hopdong_obj.write(cr,uid,[vals['hopdong_id']],{
-                                                               'state': 'thuc_hien_xongchungtu',
-                                                               })
-            if hop_dong.state == 'giaohang_chochungtu':
-                hopdong_obj.write(cr,uid,[vals['hopdong_id']],{
-                                                               'state': 'giaohang_xongchungtu',
-                                                               })
+            sql = '''
+                select id from stock_picking where state != 'done' and id in(select picking_id from stock_move where hop_dong_ban_id = %s)
+            '''%(vals['hopdong_id'])
+            cr.execute(sql)
+            picking_ids = [row[0] for row in cr.fetchall()]
+            vals.update({
+                         'stock_ids': [(6,0,picking_ids)]
+                         })
         return super(draft_bl, self).create(cr, uid, vals, context)    
+
+    def write(self, cr, uid, ids, vals, context=None):
+        new_write = super(draft_bl, self).write(cr, uid,ids, vals, context)  
+        for line in self.browse(cr,uid,ids):
+#             if 'stock_ids' in vals and vals['stock_ids']:
+            if 'state' in vals and vals['state']:
+                if vals['state'] == 'da_duyet':
+                    if line.stock_ids:
+                        hopdong_ban = self.pool.get('hop.dong').browse(cr,uid,line.hopdong_id.id)
+                        self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'thuc_hien_xongchungtu'})
+        return new_write
     
     def bt_wizard(self, cr, uid, ids, context=None):
         res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
@@ -110,13 +123,35 @@ class draft_bl(osv.osv):
                 }
 
     def xac_nhan(self, cr, uid, ids, context=None):
+        
         return self.write(cr, uid, ids, {'state': 'da_duyet'})
     
     def hoan_tat(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids, {'state': 'hoan_tat'})
     
     def huy_bo(self, cr, uid, ids, context=None):
-        return self.write(cr, uid, ids, {'state': 'huy_bo'})    
+        return self.write(cr, uid, ids, {'state': 'huy_bo'})   
+    
+#     def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
+#         if context is None:
+#             context = {}
+#         if context.get('search_chung_tu'):
+#             picking = self.pool.get('stock.picking').browse(cr,uid,context.get('picking_id'))
+#             hopdong_ids=[]
+#             for move in picking.move_lines:
+#                 sql = '''
+#                 select id from draft_bl
+#                 where state in ('hoan_tat') and hopdong_id = %s 
+#                 and id not in (select chung_tu_id from stock_picking where chung_tu_id is not null)
+#                 '''%(move.hop_dong_ban_id.id)
+#                 cr.execute(sql)
+#                 hopdong_ids = [row[0] for row in cr.fetchall()]
+#             args += [('id','in',hopdong_ids)]
+#         return super(draft_bl, self).search(cr, uid, args, offset=offset, limit=limit, order=order, context=context, count=count)
+#     
+#     def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
+#         ids = self.search(cr, user, args, context=context, limit=limit)
+#         return self.name_get(cr, user, ids, context=context)     
 draft_bl()
 
 class draft_bl_line(osv.osv):

@@ -328,6 +328,7 @@
 	                	<button name="print_denghi_xuatkho" string="In Đề nghị xuất kho" type="object" class="oe_highlight"/>
 	                	<button name="print_denghi_xuathang" string="In Đề nghị xuất hàng" type="object" class="oe_highlight"/>
 	                	<button name="bt_reset" string="Phân bổ lại" state="assigned,confirmed,draft" type="object" class="oe_highlight"/>
+	                	<button name="bt_tach_phieu" string="Tách phiếu" state="assigned,confirmed,draft" type="object" class="oe_highlight"/>
 	                </header>
 	                <sheet>
 	                    <h1>
@@ -375,6 +376,13 @@
 	                                </group>
 	                            </group>
 	                        </page>
+	                        <page string = "Chứng từ xuất khẩu">
+		                        <group >
+				                    <group >
+				                    	<field name="chung_tu_ids" nolabel='1'/>
+				                    </group>
+		                    	</group>
+	                    	</page>
 	                    </notebook>
 	                </sheet>
 	                <div class="oe_chatter">

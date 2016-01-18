@@ -31,6 +31,7 @@
             'security/viruco_base_security.xml',
             'security/ir.model.access.csv',
             'wizard/print_report.xml',
+            'wizard/tach_phieu.xml',
             'report/don_ban_hang_view.xml',
             'report/don_mua_hang_view.xml',
             'report/draft_bl_report_view.xml',
