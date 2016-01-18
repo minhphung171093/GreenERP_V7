@@ -7,7 +7,7 @@
 			<field name="name">draft.bl.tree</field>
 			<field name="model">draft.bl</field>
 			<field name="arch" type="xml">
-				<tree string="Draft BL">
+				<tree string="Chứng từ xuất khẩu">
 					<field name="name"/>
 					<field name="hopdong_id"/>
 					<field name="date"/>
@@ -16,6 +16,7 @@
 					<field name="port_of_loading"/>
 					<field name="port_of_charge"/>
 	                <field name="diadiem_nhanhang" string = "Place of delivery"/>
+	                <field name="state"/>
 				</tree>
 			</field>
 		</record>
@@ -24,13 +25,14 @@
             <field name="name">draft.bl.select</field>
             <field name="model">draft.bl</field>
             <field name="arch" type="xml">
-                <search string="Search Draft BL">
+                <search string="Search Chứng từ xuất khẩu">
                     <field name="name"/>
                     <field name="hopdong_id"/>
                     <field name="notify_party_id"/>
                     <field name="bl_no"/>
                     <group expand="0" string="Group By...">
                         <filter string="Contract" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'hopdong_id'}"/>
+                        <filter string="Status" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
                     </group>
                </search>
             </field>
@@ -40,9 +42,13 @@
             <field name="name">draft.bl.form</field>
             <field name="model">draft.bl</field>
             <field name="arch" type="xml">
-	            <form string="Draft BL" version="7.0">
+	            <form string="Chứng từ xuất khẩu" version="7.0">
 					<header>
-						<!--<button name="print_draft_bl" string="Print Draft BL" type="object" class="oe_highlight"/>
+						<field name="state" widget="statusbar" statusbar_visible="moi_tao,da_duyet,hoan_tat,huy_bo"/>
+						<button name="xac_nhan" string="Xác nhận" states="moi_tao" type="object" class="oe_highlight"/>
+						<button name="hoan_tat" string="Hoàn tất" states="da_duyet" type="object" class="oe_highlight"/>
+						<button name="huy_bo" string="Huỷ" states="moi_tao,da_duyet,hoan_tat" type="object" class="oe_highlight"/>
+						<!--<button name="print_draft_bl" string="Print Chứng từ xuất khẩu" type="object" class="oe_highlight"/>
 						<button name="bt_wizard" string="In" type="object" class="oe_highlight"/>-->
 					</header>
 	            	<sheet>
@@ -50,7 +56,7 @@
 	                    <group>
 	                    	<field name="hopdong_id" domain="[('type','=','hd_ngoai'),('state','not in',('moi_tao','da_duyet','da_ky','het_han'))]" on_change = "onchange_hopdong_id(hopdong_id)" context="{'form_view_ref':'green_erp_viruco_base.hop_dong_ngoai_form_view'}"/>
 	                        <field name="date"/>
-	                        <field name="bl_no" required = '0'/>
+	                        <field name="bl_no"/>
 	                    </group>
 	                    <group>
 	                    	<field name="name" string="Booking No."/>
@@ -78,7 +84,7 @@
 	                    	<field name="note"/>
 						</group>
 						<notebook>
-							<page string="Draft BL Line" >
+							<page string="Chứng từ xuất khẩu Line" >
 								<field name="draft_bl_line" context="{'default_hopdong_id':hopdong_id}">
 									<tree>
 	                                    <field name="ocean_vessel" />
@@ -91,7 +97,7 @@
 										<group col='4' colspan='2'>
 					                    	<field name="ocean_vessel" />
 					                    	<field name="hopdong_line_id" domain="[('hopdong_id','=',parent.hopdong_id)]" attrs="{'invisible':[('option','in',['seal_no',False])]}"/>
-					                    	<field name="container_no_seal" attrs="{'invisible':[('option','in',['product',False])]}"/>
+					                    	<field name="container_no_seal" on_change = "onchange_container_no(container_no_seal)"  attrs="{'invisible':[('option','in',['product',False])]}"/>
 					                    	<!--<field name="picking_id" context="{'search_picking_out':1, 'hopdong_id':parent.hopdong_id}"/>-->
 		                                    <field name="etd_date"/>
 		                                    <field name="eta_date"/>
@@ -103,7 +109,7 @@
 											<page string="Description of Goods" attrs="{'invisible':[('option','in',['seal_no',False])]}">
 												<field name="seal_descript_line">
 													<tree editable = 'bottom'>
-					                                    <field name="container_no_seal" />
+					                                    <field name="container_no_seal" on_change = "onchange_container(container_no_seal)" />
 					                                    <field name="packages_qty" string = 'Number of Packages'/>
 					                                    <field name="packages_id" string = 'Kind of Packages' />
 					                                    <field name="packages_weight" string = 'Package Weight (Kgs)' />
@@ -137,7 +143,7 @@
 		
         
         <record id="action_draft_bl" model="ir.actions.act_window">
-            <field name="name">Draft BL</field>
+            <field name="name">Chứng từ xuất khẩu</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">draft.bl</field>
             <field name="view_type">form</field>

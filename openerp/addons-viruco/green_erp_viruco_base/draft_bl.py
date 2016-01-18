@@ -55,16 +55,23 @@ class draft_bl(osv.osv):
         'note':fields.text('Note'),
         'meansurement':fields.char('Meansurement'),  
         'freight':fields.selection([('prepaid', 'Prepaid'),('collect', 'Collect')], 'Freight'),
-        'bl_no':fields.char('B/L No',required=True),  
+        'bl_no':fields.char('B/L No'),  
         'draft_bl_line': fields.one2many('draft.bl.line','draft_bl_id','Line'),
         'country_id': fields.many2one('res.country','The Country Of Origin'),
         'customs_declaration': fields.char('Customs Declaration', size=1024),
         'shipping_line_id': fields.many2one('shipping.line','Shipping line'),
         'forwarder_line_id': fields.many2one('forwarder.line','Forwarder line'),
         'mean_transport': fields.char('Means of Transport', size=1024),
+        'state': fields.selection([
+            ('moi_tao', 'Mới tạo'),
+            ('da_duyet', 'Xác nhận'),
+            ('hoan_tat', 'Hoàn tất'),
+            ('huy_bo', 'Hủy bỏ'),
+            ], 'Trạng thái',readonly=True, states={'moi_tao': [('readonly', False)]}),
     }
     
     _defaults = {
+        'state':'moi_tao',
         'date': time.strftime('%Y-%m-%d'),
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'draft.bl', context=c),
     }
@@ -101,7 +108,15 @@ class draft_bl(osv.osv):
                     'type': 'ir.actions.act_window',
                     'target': 'new',
                 }
+
+    def xac_nhan(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {'state': 'da_duyet'})
     
+    def hoan_tat(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {'state': 'hoan_tat'})
+    
+    def huy_bo(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {'state': 'huy_bo'})    
 draft_bl()
 
 class draft_bl_line(osv.osv):
@@ -133,6 +148,20 @@ class draft_bl_line(osv.osv):
                         + (record['product_id'] and record['product_id'][1] or '')
             res.append((record['id'], name))
         return res
+
+    def onchange_container_no(self, cr, uid, ids,container_no_seal=False,context=None):
+        vals = {}
+        warning = {}
+        if container_no_seal:
+            a = container_no_seal.split('/')
+            if len(a)==2 and len(a[0])!=11:
+                vals.update({'container_no_seal': ''})
+                warning = {
+                    'title': _('Cảnh báo!'),
+                    'message' : _('Container No hiện đang chưa đúng (cần có đủ 7 ký tự số) !')
+                }
+                        
+        return {'warning': warning,'value':vals}
     
 draft_bl_line()
 
@@ -153,6 +182,28 @@ class description_line(osv.osv):
         'gross_weight':fields.float('Gross Weight'),
         'hopdong_line_id': fields.many2one('hopdong.line', 'Product', ondelete='cascade', select=True),
     }
+
+#     def create(self, cr, uid, vals, context=None):
+# #         new_id = super(draft_bl, self).create(cr, uid, vals, context)
+#         hopdong_obj = self.pool.get('hop.dong')
+#         if 'container_no_seal' in vals:
+#             a = vals['container_no_seal'].split('/')
+#             if len(a)==2 and len(a[0])==11:
+#                 raise osv.except_osv(_('Cảnh báo!'), _('Số Container hiện chưa đúng!'))
+#         return super(description_line, self).create(cr, uid, vals, context)    
+
+    def onchange_container(self, cr, uid, ids,container_no_seal=False,context=None):
+        vals = {}
+        warning = {}
+        if container_no_seal:
+            a = container_no_seal.split('/')
+            if len(a)==2 and len(a[0])!=11:
+                warning = {
+                    'title': _('Cảnh báo!'),
+                    'message' : _('Container No hiện đang chưa đúng (cần có đủ 7 ký tự, số) !')
+                }
+                        
+        return {'warning': warning}
     
 description_line()
 

@@ -191,18 +191,15 @@
 			<field name="arch" type="xml">
 				<tree string="Hợp đồng ngoại" colors="gray:state== 'huy_bo';red:(date_payment_canhbao and (date_payment_canhbao &lt;= current_date))">
 					<field name="name"/>
-					<field name="company_id" string="Company"/>
 					<field name="partner_id" string="Partner"/>
 					<field name="tu_ngay"/>
 					<field name="den_ngay"/>
-					<field name="ngay_nhanhang"/>
-					<field name="port_of_loading"/>
-					<field name="port_of_charge"/>
-					<field name="amount_total"/>
+					<field name="ngay_nhanhang" string = "Shipping Time"/>
+					<field name="amount_total" sum="Total Amount"/>
 					<field name="ngay_canhbao" invisible="1"/>
 					<field name="date_payment_canhbao" invisible="1"/>
 					<field name="type" invisible="1"/>
-					<field name="date_payment" />
+					<field name="date_payment" string="LC/TT Date Receive" />
 					<field name="user_id" string="User"/>
 					<field name="state"/>
 				</tree>
