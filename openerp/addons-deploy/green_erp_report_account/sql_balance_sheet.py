@@ -110,6 +110,11 @@ class sql_balance_sheet(osv.osv):
         return True
     
     def fin_balance_data(self, cr):
+        sql = '''
+            DROP TYPE IF EXISTS fin_balance_data CASCADE;
+            commit;
+        '''
+        cr.execute(sql)
         cr.execute("select exists (select 1 from pg_type where typname = 'fin_balance_data')")
         res = cr.fetchone()
         if res and res[0]:
@@ -134,6 +139,11 @@ class sql_balance_sheet(osv.osv):
         return True
     
     def fin_profit_loss_data(self, cr):
+        sql = '''
+            DROP TYPE IF EXISTS fin_profit_loss_data CASCADE;
+            commit;
+        '''
+        cr.execute(sql)
         cr.execute("select exists (select 1 from pg_proc where proname = 'fin_profit_loss_data')")
         res = cr.fetchone()
         if res and res[0]:

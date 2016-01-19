@@ -29,6 +29,11 @@ class sql_profit_loss(osv.osv):
         return True
     
     def fin_profit_loss_data(self, cr):
+        sql = '''
+            DROP TYPE IF EXISTS fin_profit_loss_data CASCADE;
+            commit;
+        '''
+        cr.execute(sql)
         cr.execute("select exists (select 1 from pg_type where typname = 'fin_profit_loss_data')")
         res = cr.fetchone()
         if res and res[0]:
