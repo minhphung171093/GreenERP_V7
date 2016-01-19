@@ -176,8 +176,8 @@
                 		</group>
                 		<notebook>
 							<page string = "Thông tin chi tiết">
-								<field name="chitiet_loaivat" nolabel='1' >
-									<tree editable='bottom'>
+								<field name="chitiet_loaivat" nolabel='1'>
+									<tree editable='bottom' delete = 'false'>
 										<field name="name" />
 										<field name="tiem_phong" />
 									</tree>
