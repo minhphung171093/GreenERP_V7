@@ -41,7 +41,7 @@ class congno_vacine_review_line(osv.osv):
     _columns = {
         'congno_vacine_id':fields.many2one('congno.vacine.review','Report In',ondelete='cascade'),
         'stt': fields.char('STT', size=1024),
-        'ngay_xuat': fields.date('NGÀY XUẤT'),
+        'ngay_xuat': fields.char('NGÀY XUẤT'),
         'ma_kh':fields.char('MÃ KH'),
         'so_hd':fields.char('SỐ HĐ'),
         'khach_hang':fields.char('KHÁCH HÀNG'),

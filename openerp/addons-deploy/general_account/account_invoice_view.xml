@@ -459,7 +459,7 @@
                         </group>
                         <group>
                         	<field name="shop_id"/>
-                            <field name="date_invoice"/>
+                            <field name="date_invoice" string = "Ngày xuất hóa đơn"/>
                             <field name="internal_number" invisible="1"/>
                             <field name="journal_id" groups="account.group_account_user"
                                 on_change="onchange_journal_id(journal_id, context)" widget="selection"
