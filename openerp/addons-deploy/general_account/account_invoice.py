@@ -280,12 +280,12 @@ class account_invoice(osv.osv):
                                      store={
                                                 'account.invoice':(lambda self, cr, uid, ids, c={}: ids, ['state'], 10),
                                             }),
-        'trang_thai_dc':fields.function(_trangthai, string='Trạng thái',
-                                      type='selection', selection=[('draft','Nháp'),
-                                                                   ('paid','Chờ thanh toán')],
-                                     store={
-                                                'account.invoice':(lambda self, cr, uid, ids, c={}: ids, ['state'], 10),
-                                            }),
+#         'trang_thai_dc':fields.function(_trangthai, string='Trạng thái',
+#                                       type='selection', selection=[('draft','Nháp'),
+#                                                                    ('paid','Chờ thanh toán')],
+#                                      store={
+#                                                 'account.invoice':(lambda self, cr, uid, ids, c={}: ids, ['state'], 10),
+#                                             }),
 #         'supplier_invoice_number': fields.char('Supplier Invoice Number', size=64, help="The reference of this invoice as provided by the supplier.", readonly=True, states={'draft':[('readonly',False)]}),
     }
     _defaults = {
