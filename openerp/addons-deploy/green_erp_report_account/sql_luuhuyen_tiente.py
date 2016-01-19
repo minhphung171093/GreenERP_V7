@@ -89,6 +89,11 @@ class sql_luuhuyen_tiente(osv.osv):
         return True
 
     def fin_luuhuyen_tiente_tructiep_data(self, cr):
+        sql = '''
+            DROP TYPE IF EXISTS fin_luuhuyen_tiente_tructiep_data CASCADE;
+            commit;
+        '''
+        cr.execute(sql)
         cr.execute("select exists (select 1 from pg_type where typname = 'fin_luuhuyen_tiente_tructiep_data')")
         res = cr.fetchone()
         if res and res[0]:

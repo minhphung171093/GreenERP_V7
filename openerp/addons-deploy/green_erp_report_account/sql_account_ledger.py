@@ -42,7 +42,7 @@ class sql_account_ledger(osv.osv):
         DROP FUNCTION IF EXISTS fin_ledger_report(date, date, integer, boolean, integer, int[]) CASCADE;
         commit;
         CREATE OR REPLACE FUNCTION fin_ledger_report(date, date, integer, boolean, integer, int[])
-          RETURNS SETOF fin_general_data AS
+          RETURNS SETOF fin_general1_data AS
         $BODY$
             /*    Lay so dau ky    */
                 select 0 as seq, null::date as gl_date, null::date as doc_date,
@@ -154,14 +154,19 @@ class sql_account_ledger(osv.osv):
         return True
     
     def fin_general_data(self,cr):
-        cr.execute("select exists (select 1 from pg_type where typname = 'fin_general_data')")
+        sql = '''
+            DROP TYPE IF EXISTS fin_general1_data CASCADE;
+            commit;
+        '''
+        cr.execute(sql)
+        cr.execute("select exists (select 1 from pg_type where typname = 'fin_general1_data')")
         res = cr.fetchone()
         if res and res[0]:
-            cr.execute('''delete from pg_type where typname = 'fin_general_data';
-                            delete from pg_class where relname='fin_general_data';
+            cr.execute('''delete from pg_type where typname = 'fin_general1_data';
+                            delete from pg_class where relname='fin_general1_data';
                             commit;''')
         sql = '''
-        CREATE TYPE fin_general_data AS
+        CREATE TYPE fin_general1_data AS
            (seq integer,
             gl_date date,
             doc_date date,
@@ -172,7 +177,7 @@ class sql_account_ledger(osv.osv):
             amount_dr numeric,
             amount_cr numeric,
             line_type integer);
-        ALTER TYPE fin_general_data
+        ALTER TYPE fin_general1_data
           OWNER TO openerp;
         '''
         cr.execute(sql)
