@@ -197,7 +197,6 @@
                 </xpath>
                 
                 
-                
                 <xpath expr="//field[@name='date_invoice']" position="after">
                 	<field name="ngay_nhap" attrs="{'invisible':[('type', '!=', 'out_refund')]}" on_change = "onchange_ngay_nhap(ngay_nhap)"/>
                 	<field name="ngay_xuat" attrs="{'invisible':[('type', '!=', 'out_refund')]}"/>
@@ -387,7 +386,7 @@
             <field name="name">account.invoice.dc.tree</field>
             <field name="model">account.invoice</field>
             <field name="arch" type="xml">
-                <tree colors="blue:state == 'draft';gray:state in ('cancel','paid');red:payment_state== False" string="Invoice">
+                <tree colors="blue:state == 'draft';gray:state in ('cancel','paid')" string="Invoice">
                     <field name="partner_id" groups="base.group_user"/>
                     <field name="ngay_nhap"/>
                     <field name="ngay_xuat"/>
@@ -406,8 +405,7 @@
                     <field name="amount_untaxed" sum="Untaxed Amount"/>
                     <field name="amount_tax" sum="Tax Amount"/>
                     <field name="amount_total" sum="Total Amount"/>
-                    <field name="trang_thai_dc"/>
-                    <field name="state" invisible = '1'/>
+                    <field name="state"/>
                     <field name="date_invoice" invisible = '1'/>
                 </tree>
             </field>
@@ -419,20 +417,21 @@
             <field name="arch" type="xml">
                 <form string="Invoice" version="7.0">
                 <header>
-                    <button name="account.action_invoice_sent" type="object" string="Send by Email" attrs="{'invisible':['|',('sent','=',True), ('state', '!=', 'open')]}" class="oe_highlight" groups="base.group_user"/>
+                    <!--<button name="account.action_invoice_sent" type="object" string="Send by Email" attrs="{'invisible':['|',('sent','=',True), ('state', '!=', 'open')]}" class="oe_highlight" groups="base.group_user"/>
                     <button name="account.invoice_print" string="Print" type="object" attrs="{'invisible':['|',('sent','=',True), ('state', '!=', 'open')]}" class="oe_highlight" groups="base.group_user"/>
                     <button name="account.action_invoice_sent" type="object" string="Send by Email" attrs="{'invisible':['|',('sent','=',False), ('state', '!=', 'open')]}" groups="base.group_user"/>
-                    <button name="account.invoice_print" string="Print Invoice" type="object" attrs="{'invisible':['|',('sent','=',False), ('state', '!=', 'open')]}" groups="base.group_user"/>
+                    <button name="account.invoice_print" string="Print Invoice" type="object" attrs="{'invisible':['|',('sent','=',False), ('state', '!=', 'open')]}" groups="base.group_user"/>-->
                     <button name="invoice_open" states="draft" string="Validate" class="oe_highlight" groups="base.group_user"/>
                     <button name="invoice_open" states="proforma2" string="Validate" groups="base.group_user"/>
                     <button name="invoice_proforma2" states="draft" string="PRO-FORMA" groups="account.group_proforma_invoices"/>
                     <button name="%(account.action_account_invoice_refund)d" type='action' string='Refund Invoice' states='open,proforma2,paid' groups="base.group_user"/>
+                    <button name="invoice_pay_customer" type="object" string="Thanh toán"
+                        attrs="{'invisible': [('state','!=','open')]}" class="oe_highlight" groups="base.group_user"/>
                     <button name="invoice_cancel" states="draft,proforma2,open" string="Cancel Invoice" groups="base.group_no_one"/>
                     <button name="action_cancel_draft" states="cancel" string="Reset to Draft" type="object" groups="base.group_user"/>
                     <button name='%(account.action_account_state_open)d' type='action' string='Re-Open' groups="account.group_account_invoice" attrs="{'invisible':['|', ('state','&lt;&gt;','paid'), ('reconciled', '=', True)]}" help="This button only appears when the state of the invoice is 'paid' (showing that it has been fully reconciled) and auto-computed boolean 'reconciled' is False (depicting that it's not the case anymore). In other words, the invoice has been dereconciled and it does not fit anymore the 'paid' state. You should press this button to re-open it and let it continue its normal process after having resolved the eventual exceptions it may have created."/>
                     <!--button name="%(account.account_invoices)d" string="Print Invoice" type="action" states="open,paid,proforma,sale,proforma2"/-->
-                    <field name="state" widget="statusbar" nolabel="1" statusbar_visible="draft,open,paid" statusbar_colors='{"proforma":"blue","proforma2":"blue"}' invisible = '1'/>
-                	<field name="trang_thai_dc" widget="statusbar" nolabel="1" statusbar_visible="draft,open,paid" statusbar_colors='{"proforma":"blue","proforma2":"blue"}'/>
+                    <field name="state" widget="statusbar" nolabel="1" statusbar_visible="draft,open,paid" statusbar_colors='{"proforma":"blue","proforma2":"blue"}' invisible = '0'/>
                 </header>
                 <sheet string="Invoice">
                     <h1>

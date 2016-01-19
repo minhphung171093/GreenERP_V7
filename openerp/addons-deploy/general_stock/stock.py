@@ -2881,11 +2881,11 @@ class account_invoice(osv.osv):
                             update account_invoice set state = 'paid' where id = %s
                         '''%(invoice_obj.id)
                         cr.execute(sql)
-                    if invoice_obj.invoice_dieuchinh == True and invoice_obj.type == 'out_invoice' and invoice_obj.rel_invoice_id:
-                        sql = '''
-                            update account_invoice set state = 'paid' where id = %s
-                        '''%(invoice_obj.id)
-                        cr.execute(sql)
+#                     if invoice_obj.invoice_dieuchinh == True and invoice_obj.type == 'out_invoice' and invoice_obj.rel_invoice_id:
+#                         sql = '''
+#                             update account_invoice set state = 'paid' where id = %s
+#                         '''%(invoice_obj.id)
+#                         cr.execute(sql)
         return True
     
 account_invoice()
