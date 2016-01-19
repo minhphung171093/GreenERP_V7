@@ -42,7 +42,7 @@ class sql_account_ledger(osv.osv):
         DROP FUNCTION IF EXISTS fin_ledger_report(date, date, integer, boolean, integer, int[]) CASCADE;
         commit;
         CREATE OR REPLACE FUNCTION fin_ledger_report(date, date, integer, boolean, integer, int[])
-          RETURNS SETOF fin_general_data AS
+          RETURNS SETOF fin_general1_data AS
         $BODY$
             /*    Lay so dau ky    */
                 select 0 as seq, null::date as gl_date, null::date as doc_date,
