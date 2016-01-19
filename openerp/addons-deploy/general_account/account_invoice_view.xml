@@ -450,7 +450,7 @@
                                 groups="base.group_user" context="{'search_default_customer':1, 'show_address': 1}"
                                 options='{"always_reload": True}'
                                 domain="[('customer', '=', True)]"/>
-                            <field name="rel_invoice_id"/>
+                            <field name="rel_invoice_id" string = "Hóa đơn gốc"/>
                             <field name="fiscal_position" widget="selection" invisible="1"/>
                             <field name="reference"/>
                             <field name="reference_number"/>
