@@ -97,6 +97,9 @@ class congno_vacine(osv.osv_memory):
             vc_cate_ids = self.pool.get('product.category').search(self.cr, self.uid, [('parent_id','child_of',vc_cate_ids)])
             vc_cate_ids = str(vc_cate_ids).replace('[', '(')
             vc_cate_ids = str(vc_cate_ids).replace(']', ')')
+            account_ids = self.pool.get('account.account').search(self.cr,self.uid,[('code', '=', '64189')])
+            account_ids = str(account_ids).replace('[', '(')
+            account_ids = str(account_ids).replace(']', ')')
     #         period_start = period_obj.browse(self.cr,self.uid,period_id[0]).date_start
     #         period_stop = period_obj.browse(self.cr,self.uid,period_id[0]).date_stop
             cus_ids = []
@@ -108,9 +111,9 @@ class congno_vacine(osv.osv_memory):
                             from product_product,product_template 
                             where product_template.categ_id in %s
                             and product_product.product_tmpl_id = product_template.id) and invoice_id in 
-                                (select id from account_invoice where date_invoice < '%s' and type ='out_invoice' and state in ('open','paid')))
+                                (select id from account_invoice where date_invoice < '%s' and type ='out_invoice' and account_id not in %s and state in ('open','paid')))
                             order by date_invoice
-                '''%(vc_cate_ids,date_from)
+                '''%(vc_cate_ids,date_from,account_ids)
                 self.cr.execute(sql)   
                 inv_truoc_ids = [r[0] for r in self.cr.fetchall()]
                 
@@ -119,9 +122,9 @@ class congno_vacine(osv.osv_memory):
                                 from product_product,product_template 
                                 where product_template.categ_id in %s
                                 and product_product.product_tmpl_id = product_template.id) and invoice_id in 
-                                    (select id from account_invoice where date_invoice between '%s' and '%s' and type ='out_invoice' and state in ('open','paid')))
+                                    (select id from account_invoice where date_invoice between '%s' and '%s' and type ='out_invoice' and account_id not in %s and state in ('open','paid')))
                                 order by date_invoice
-                '''%(vc_cate_ids,date_from, date_to)
+                '''%(vc_cate_ids,date_from, date_to,account_ids)
                 self.cr.execute(sql)   
                 inv_ids = [r[0] for r in self.cr.fetchall()]
             else:
@@ -140,10 +143,10 @@ class congno_vacine(osv.osv_memory):
                                     from product_product,product_template 
                                     where product_template.categ_id in %s
                                     and product_product.product_tmpl_id = product_template.id) and invoice_id in 
-                                        (select id from account_invoice where date_invoice < '%s' and type ='out_invoice' and state in ('open','paid')))
+                                        (select id from account_invoice where date_invoice < '%s' and type ='out_invoice' and account_id not in %s and state in ('open','paid')))
                                     and partner_id in %s
                                     order by date_invoice
-                    '''%(vc_cate_ids,date_from,cus_ids)
+                    '''%(vc_cate_ids,date_from,account_ids,cus_ids)
                     self.cr.execute(sql)   
                     inv_truoc_ids = [r[0] for r in self.cr.fetchall()] 
                     
@@ -152,10 +155,10 @@ class congno_vacine(osv.osv_memory):
                                     from product_product,product_template 
                                     where product_template.categ_id in %s
                                     and product_product.product_tmpl_id = product_template.id) and invoice_id in 
-                                        (select id from account_invoice where date_invoice between '%s' and '%s' and type ='out_invoice' and state in ('open','paid')))
+                                        (select id from account_invoice where date_invoice between '%s' and '%s' and type ='out_invoice' and account_id not in %s and state in ('open','paid')))
                                     and partner_id in %s
                                     order by date_invoice
-                    '''%(vc_cate_ids,date_from,date_to,cus_ids)
+                    '''%(vc_cate_ids,date_from,date_to,account_ids,cus_ids)
                     self.cr.execute(sql)   
                     inv_ids = [r[0] for r in self.cr.fetchall()] 
                     
@@ -168,6 +171,8 @@ class congno_vacine(osv.osv_memory):
                     ngay_tt = ''
                     so_ngay_no = 0
                     thuc_thu = 0
+                    da_tra = 0
+                    nodk = 0
                     sql = ''' 
                         select ai.amount_total as amount_total, date_invoice, reference_number, rp.name as cus, rp.id as cus_id, rp.internal_code as code from account_invoice ai, res_partner rp 
                             where ai.partner_id = rp.id and ai.id = %s 
@@ -175,7 +180,7 @@ class congno_vacine(osv.osv_memory):
                     '''%(inv)
                     self.cr.execute(sql) 
                     inv_id = self.cr.dictfetchone()
-                    nodk = inv_id and inv_id['amount_total'] or 0
+                    amount_total = inv_id and inv_id['amount_total'] or 0
                     tdv_name = self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).user_id and self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).user_id.name or ''
                     kv = self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).state_id and self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).state_id.name or ''
                     sql='''
@@ -186,6 +191,8 @@ class congno_vacine(osv.osv_memory):
                     hang_sx = self.cr.fetchone() or False
                     invoice_id = self.pool.get('account.invoice').browse(self.cr,self.uid,inv)
                     for pay in invoice_id.payment_ids:
+                        if pay.date < date_from:
+                            da_tra += pay.credit
                         if pay.date >= date_from and pay.date <= date_to:
                             if pay.journal_id.code == '11':
                                 tien_mat += pay.credit
@@ -198,8 +205,9 @@ class congno_vacine(osv.osv_memory):
                             if pay.date:
                                 ngay_tt +=  convert_date(o,pay.date) + ', '
                     thuc_thu = tien_mat+acb+exim+agr
+                    nodk = amount_total - da_tra    
                     tong_ck = nodk-thuc_thu
-                    if nodk != 0:
+                    if nodk > 0:
                         res.append({'cus_name': inv_id['cus'],
                                     'dia_chi': inv_id['cus_id'] and display_address(o,inv_id['cus_id']) or '',
                                     'ngay_xuat': convert_date(o,inv_id['date_invoice']) or False,
@@ -236,16 +244,6 @@ class congno_vacine(osv.osv_memory):
                     self.cr.execute(sql) 
                     inv_id = self.cr.dictfetchone()
                     
-                    sql = '''
-                        select case when sum(residual)!=0 then sum(residual) else 0 end residual from account_invoice where partner_id = %s
-                        and id in (select distinct invoice_id from account_invoice_line where product_id in (select product_product.id
-                        from product_product,product_template 
-                        where product_template.categ_id in %s
-                        and product_product.product_tmpl_id = product_template.id) and invoice_id in 
-                            (select id from account_invoice where date_invoice < '%s' and type ='out_invoice' and state in ('open')))
-                    '''%(inv_id['cus_id'],vc_cate_ids,date_from)
-                    self.cr.execute(sql) 
-                    nodk = self.cr.fetchone()[0]
                     invoice_id = invoice_obj.browse(self.cr,self.uid,inv)
 #                     nock = nodk + (invoice_id.residual and invoice_id.residual or 0)
                     tdv_name = self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).user_id and self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).user_id.name or ''
@@ -413,6 +411,9 @@ class congno_mypham(osv.osv_memory):
             mp_cate_ids = self.pool.get('product.category').search(self.cr, self.uid, [('parent_id','child_of',mp_cate_ids)])
             mp_cate_ids = str(mp_cate_ids).replace('[', '(')
             mp_cate_ids = str(mp_cate_ids).replace(']', ')')
+            account_ids = self.pool.get('account.account').search(self.cr,self.uid,[('code', '=', '64189')])
+            account_ids = str(account_ids).replace('[', '(')
+            account_ids = str(account_ids).replace(']', ')')
     #         period_start = period_obj.browse(self.cr,self.uid,period_id[0]).date_start
     #         period_stop = period_obj.browse(self.cr,self.uid,period_id[0]).date_stop
             cus_ids = []
@@ -424,9 +425,9 @@ class congno_mypham(osv.osv_memory):
                             from product_product,product_template 
                             where product_template.categ_id in %s 
                             and product_product.product_tmpl_id = product_template.id) and invoice_id in 
-                                (select id from account_invoice where date_invoice < '%s' and type ='out_invoice' and state in ('open','paid')))
+                                (select id from account_invoice where date_invoice < '%s' and type ='out_invoice' and account_id not in %s and state in ('open','paid')))
                             order by date_invoice
-                '''%(mp_cate_ids,date_from)
+                '''%(mp_cate_ids,date_from,account_ids)
                 self.cr.execute(sql)   
                 inv_truoc_ids = [r[0] for r in self.cr.fetchall()]
                 
@@ -435,9 +436,9 @@ class congno_mypham(osv.osv_memory):
                                 from product_product,product_template 
                                 where product_template.categ_id in %s 
                                 and product_product.product_tmpl_id = product_template.id) and invoice_id in 
-                                    (select id from account_invoice where date_invoice between '%s' and '%s' and type ='out_invoice' and state in ('open','paid')))
+                                    (select id from account_invoice where date_invoice between '%s' and '%s' and type ='out_invoice' and account_id not in %s and state in ('open','paid')))
                                 order by date_invoice
-                '''%(mp_cate_ids,date_from, date_to)
+                '''%(mp_cate_ids,date_from, date_to,account_ids)
                 self.cr.execute(sql)   
                 inv_ids = [r[0] for r in self.cr.fetchall()]
             else:
@@ -456,10 +457,10 @@ class congno_mypham(osv.osv_memory):
                                     from product_product,product_template 
                                     where product_template.categ_id in %s 
                                     and product_product.product_tmpl_id = product_template.id) and invoice_id in 
-                                        (select id from account_invoice where date_invoice < '%s' and type ='out_invoice' and state in ('open','paid')))
+                                        (select id from account_invoice where date_invoice < '%s' and type ='out_invoice' and account_id not in %s and state in ('open','paid')))
                                     and partner_id in %s
                                     order by date_invoice
-                    '''%(mp_cate_ids,date_from,cus_ids)
+                    '''%(mp_cate_ids,date_from,account_ids,cus_ids)
                     self.cr.execute(sql)   
                     inv_truoc_ids = [r[0] for r in self.cr.fetchall()] 
                     
@@ -468,10 +469,10 @@ class congno_mypham(osv.osv_memory):
                                     from product_product,product_template 
                                     where product_template.categ_id in %s
                                     and product_product.product_tmpl_id = product_template.id) and invoice_id in 
-                                        (select id from account_invoice where date_invoice between '%s' and '%s' and type ='out_invoice' and state in ('open','paid')))
+                                        (select id from account_invoice where date_invoice between '%s' and '%s' and type ='out_invoice' and account_id not in %s and state in ('open','paid')))
                                     and partner_id in %s
                                     order by date_invoice
-                    '''%(mp_cate_ids,date_from,date_to,cus_ids)
+                    '''%(mp_cate_ids,date_from,date_to,account_ids,cus_ids)
                     self.cr.execute(sql)   
                     inv_ids = [r[0] for r in self.cr.fetchall()] 
                     
@@ -484,6 +485,8 @@ class congno_mypham(osv.osv_memory):
                     ngay_tt = ''
                     so_ngay_no = 0
                     thuc_thu = 0
+                    da_tra = 0
+                    nodk = 0
                     sql = ''' 
                         select ai.amount_total as amount_total, date_invoice, reference_number, rp.name as cus, rp.id as cus_id, rp.internal_code as code from account_invoice ai, res_partner rp 
                             where ai.partner_id = rp.id and ai.id = %s 
@@ -491,7 +494,7 @@ class congno_mypham(osv.osv_memory):
                     '''%(inv)
                     self.cr.execute(sql) 
                     inv_id = self.cr.dictfetchone()
-                    nodk = inv_id and inv_id['amount_total'] or 0
+                    amount_total = inv_id and inv_id['amount_total'] or 0
                     tdv_name = self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).user_id and self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).user_id.name or ''
                     kv = self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).state_id and self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).state_id.name or ''
                     sql='''
@@ -502,6 +505,8 @@ class congno_mypham(osv.osv_memory):
                     hang_sx = self.cr.fetchone() or False
                     invoice_id = self.pool.get('account.invoice').browse(self.cr,self.uid,inv)
                     for pay in invoice_id.payment_ids:
+                        if pay.date < date_from:
+                            da_tra += pay.credit
                         if pay.date >= date_from and pay.date <= date_to:
                             if pay.journal_id.code == '11':
                                 tien_mat += pay.credit
@@ -514,9 +519,9 @@ class congno_mypham(osv.osv_memory):
                             if pay.date:
                                 ngay_tt +=  convert_date(o,pay.date) + ', '
                     thuc_thu = tien_mat+acb+exim+agr
-                        
+                    nodk = amount_total - da_tra      
                     tong_ck = nodk-thuc_thu
-                    if nodk != 0:
+                    if nodk > 0:
                         res.append({'cus_name': inv_id['cus'],
                                     'dia_chi': inv_id['cus_id'] and display_address(o,inv_id['cus_id']) or '',
                                     'ngay_xuat': convert_date(o,inv_id['date_invoice']) or False,
@@ -553,16 +558,6 @@ class congno_mypham(osv.osv_memory):
                     self.cr.execute(sql) 
                     inv_id = self.cr.dictfetchone()
                     
-                    sql = '''
-                        select case when sum(residual)!=0 then sum(residual) else 0 end residual from account_invoice where partner_id = %s
-                        and id in (select distinct invoice_id from account_invoice_line where product_id in (select product_product.id
-                        from product_product,product_template 
-                        where product_template.categ_id in %s
-                        and product_product.product_tmpl_id = product_template.id) and invoice_id in 
-                            (select id from account_invoice where date_invoice < '%s' and type ='out_invoice' and state in ('open')))
-                    '''%(inv_id['cus_id'],mp_cate_ids,date_from)
-                    self.cr.execute(sql) 
-                    nodk = self.cr.fetchone()[0]
                     invoice_id = invoice_obj.browse(self.cr,self.uid,inv)
 #                     nock = nodk + (invoice_id.residual and invoice_id.residual or 0)
                     tdv_name = self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).user_id and self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).user_id.name or ''
@@ -726,6 +721,9 @@ class congno_duocpham(osv.osv_memory):
             dp_cate_ids = self.pool.get('product.category').search(self.cr, self.uid, [('parent_id','child_of',dp_cate_ids)])
             dp_cate_ids = str(dp_cate_ids).replace('[', '(')
             dp_cate_ids = str(dp_cate_ids).replace(']', ')')
+            account_ids = self.pool.get('account.account').search(self.cr,self.uid,[('code', '=', '64189')])
+            account_ids = str(account_ids).replace('[', '(')
+            account_ids = str(account_ids).replace(']', ')')
     #         period_start = period_obj.browse(self.cr,self.uid,period_id[0]).date_start
     #         period_stop = period_obj.browse(self.cr,self.uid,period_id[0]).date_stop
             cus_ids = []
@@ -737,9 +735,9 @@ class congno_duocpham(osv.osv_memory):
                             from product_product,product_template 
                             where product_template.categ_id in %s
                             and product_product.product_tmpl_id = product_template.id) and invoice_id in 
-                                (select id from account_invoice where date_invoice < '%s' and type ='out_invoice' and state in ('open','paid')))
+                                (select id from account_invoice where date_invoice < '%s' and type ='out_invoice' and account_id not in %s and state in ('open','paid')))
                             order by date_invoice
-                '''%(dp_cate_ids,date_from)
+                '''%(dp_cate_ids,date_from,account_ids)
                 self.cr.execute(sql)   
                 inv_truoc_ids = [r[0] for r in self.cr.fetchall()]
                 
@@ -748,9 +746,9 @@ class congno_duocpham(osv.osv_memory):
                                 from product_product,product_template 
                                 where product_template.categ_id in %s
                                 and product_product.product_tmpl_id = product_template.id) and invoice_id in 
-                                    (select id from account_invoice where date_invoice between '%s' and '%s' and type ='out_invoice' and state in ('open','paid')))
+                                    (select id from account_invoice where date_invoice between '%s' and '%s' and type ='out_invoice' and account_id not in %s and state in ('open','paid')))
                                 order by date_invoice
-                '''%(dp_cate_ids,date_from, date_to)
+                '''%(dp_cate_ids,date_from, date_to,account_ids)
                 self.cr.execute(sql)   
                 inv_ids = [r[0] for r in self.cr.fetchall()]
             else:
@@ -769,10 +767,10 @@ class congno_duocpham(osv.osv_memory):
                                     from product_product,product_template 
                                     where product_template.categ_id in %s
                                     and product_product.product_tmpl_id = product_template.id) and invoice_id in 
-                                        (select id from account_invoice where date_invoice < '%s' and type ='out_invoice' and state in ('open','paid')))
+                                        (select id from account_invoice where date_invoice < '%s' and type ='out_invoice' and account_id not in %s and state in ('open','paid')))
                                     and partner_id in %s
                                     order by date_invoice
-                    '''%(dp_cate_ids,date_from,cus_ids)
+                    '''%(dp_cate_ids,date_from,account_ids,cus_ids)
                     self.cr.execute(sql)   
                     inv_truoc_ids = [r[0] for r in self.cr.fetchall()] 
                     
@@ -781,10 +779,10 @@ class congno_duocpham(osv.osv_memory):
                                     from product_product,product_template 
                                     where product_template.categ_id in %s
                                     and product_product.product_tmpl_id = product_template.id) and invoice_id in 
-                                        (select id from account_invoice where date_invoice between '%s' and '%s' and type ='out_invoice' and state in ('open','paid')))
+                                        (select id from account_invoice where date_invoice between '%s' and '%s' and type ='out_invoice' and account_id not in %s and state in ('open','paid')))
                                     and partner_id in %s
                                     order by date_invoice
-                    '''%(dp_cate_ids,date_from,date_to,cus_ids)
+                    '''%(dp_cate_ids,date_from,date_to,account_ids,cus_ids)
                     self.cr.execute(sql)   
                     inv_ids = [r[0] for r in self.cr.fetchall()] 
                     
@@ -797,6 +795,8 @@ class congno_duocpham(osv.osv_memory):
                     ngay_tt = ''
                     so_ngay_no = 0
                     thuc_thu = 0
+                    da_tra = 0
+                    nodk = 0
                     sql = ''' 
                         select ai.amount_total as amount_total, date_invoice, reference_number, rp.name as cus, rp.id as cus_id, rp.internal_code as code from account_invoice ai, res_partner rp 
                             where ai.partner_id = rp.id and ai.id = %s 
@@ -804,7 +804,7 @@ class congno_duocpham(osv.osv_memory):
                     '''%(inv)
                     self.cr.execute(sql) 
                     inv_id = self.cr.dictfetchone()
-                    nodk = inv_id and inv_id['amount_total'] or 0
+                    amount_total = inv_id and inv_id['amount_total'] or 0
                     tdv_name = self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).user_id and self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).user_id.name or ''
                     kv = self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).state_id and self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).state_id.name or ''
                     sql='''
@@ -815,6 +815,8 @@ class congno_duocpham(osv.osv_memory):
                     hang_sx = self.cr.fetchone() or False
                     invoice_id = self.pool.get('account.invoice').browse(self.cr,self.uid,inv)
                     for pay in invoice_id.payment_ids:
+                        if pay.date < date_from:
+                            da_tra += pay.credit
                         if pay.date >= date_from and pay.date <= date_to:
                             if pay.journal_id.code == '11':
                                 tien_mat += pay.credit
@@ -827,9 +829,9 @@ class congno_duocpham(osv.osv_memory):
                             if pay.date:
                                 ngay_tt +=  convert_date(o,pay.date) + ', '
                     thuc_thu = tien_mat+acb+exim+agr
-                        
+                    nodk = amount_total - da_tra        
                     tong_ck = nodk-thuc_thu
-                    if nodk != 0:
+                    if nodk > 0:
                         res.append({'cus_name': inv_id['cus'],
                                     'dia_chi': inv_id['cus_id'] and display_address(o,inv_id['cus_id']) or '',
                                     'ngay_xuat': convert_date(o,inv_id['date_invoice']) or False,
@@ -866,16 +868,6 @@ class congno_duocpham(osv.osv_memory):
                     self.cr.execute(sql) 
                     inv_id = self.cr.dictfetchone()
                     
-                    sql = '''
-                        select case when sum(residual)!=0 then sum(residual) else 0 end residual from account_invoice where partner_id = %s
-                        and id in (select distinct invoice_id from account_invoice_line where product_id in (select product_product.id
-                        from product_product,product_template 
-                        where product_template.categ_id in %s 
-                        and product_product.product_tmpl_id = product_template.id) and invoice_id in 
-                            (select id from account_invoice where date_invoice < '%s' and type ='out_invoice' and state in ('open')))
-                    '''%(inv_id['cus_id'],dp_cate_ids,date_from)
-                    self.cr.execute(sql) 
-                    nodk = self.cr.fetchone()[0]
                     invoice_id = invoice_obj.browse(self.cr,self.uid,inv)
 #                     nock = nodk + (invoice_id.residual and invoice_id.residual or 0)
                     tdv_name = self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).user_id and self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).user_id.name or ''
