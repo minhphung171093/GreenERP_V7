@@ -238,25 +238,38 @@
           				<header>
           					<button name="bt_create_sp_canhtranh" string="Tạo sản phẩm cạnh tranh" class="oe_highlight" type="object"/>
           				</header>
-          				
+          				<div class='oe_green_erp_scroll' >
           				<field name = "danhsach_canhtranh_ids" >
           					<tree editable='top'>
           						<field name="name" />
 								<field name="product_id" />
 								<field name="qty"/>
 								<field name="qty_con_lai"/>
+								<field name="gia"/>
+								<field name="chinhsach"/>
+								<field name="ghichu"/>
                                 <field name="sanpham_canhtranh1_id"/>
                                 <field name="soluong_canhtranh1"/>
                                 <field name="soluong_canhtranh1_conlai"/>
+                                <field name="gia_canhtranh1"/>
+								<field name="chinhsach_canhtranh1"/>
+								<field name="ghichu_canhtranh1"/>
                                 <field name="sanpham_canhtranh2_id"/>
                                 <field name="soluong_canhtranh2"/>
                                 <field name="soluong_canhtranh2_conlai"/>
+                                <field name="gia_canhtranh2"/>
+								<field name="chinhsach_canhtranh2"/>
+								<field name="ghichu_canhtranh2"/>
                                 <field name="sanpham_canhtranh3_id"/>
                                 <field name="soluong_canhtranh3"/>
                                 <field name="soluong_canhtranh3_conlai"/>
+                                <field name="gia_canhtranh3"/>
+								<field name="chinhsach_canhtranh3"/>
+								<field name="ghichu_canhtranh3"/>
               <!--                  <button name="bt_edit_sp_canhtranh" string="Edit" icon="gtk-go-up" type="object" class="oe_highlight"/>   -->
                             </tree>
           				</field>
+          				</div>
 	                </page>
             	</xpath>
             	<!--<xpath expr="//field[@name='credit_limit']" position="after">
@@ -566,11 +579,45 @@
                		<field name="partner_id"/>
                     <field name="state"/>
                     <field name="gan_cho" invisible='1'/>
+                    <field name="gui_tre_lct" invisible='1'/>
+                </tree>
+            </field>
+        </record>
+        
+        <record model='ir.ui.view' id='view_remind_work_tre_lct_tree'>
+            <field name="name">remind.work.tre.lct.tree</field>
+            <field name="model">remind.work</field>
+            <field name="arch" type="xml">
+                <tree string="Nhắc nhở công việc" create = 'false' edit = 'false' delete = 'false'>
+                    <field name="name"/>
+                    <field name="bo_phan_id"/>
+                    <field name="user_ids" widget="many2many_tags"/>
+                    <field name="situation_id"/>
+                    <field name="date_start"/>
+                    <field name="date_end"/>
+                    <field name="noidung_chinh_id"/>
+               		<field name="partner_id"/>
+                    <field name="state"/>
+                    <field name="gan_cho" invisible='1'/>
+                    <field name="gui_tre_lct" invisible='1'/>
                 </tree>
             </field>
         </record>
         
         <record model="ir.ui.view" id="remind_work_calendar_view">
+        <field name="name">Nhắc nhở công việc</field>
+        <field name="model">remind.work</field>
+        <field name="priority" eval="2"/>
+        <field name="arch" type="xml">
+            <calendar string="Nhắc nhở công việc" date_start="date_start" date_stop="date_end" color="gan_cho">
+                <field name="name"/>
+                <field name="gan_cho"/>
+                <field name="state"/>
+            </calendar>
+        </field>
+    </record>
+    
+    <record model="ir.ui.view" id="remind_work_calendar_tre_lct_view">
         <field name="name">Nhắc nhở công việc</field>
         <field name="model">remind.work</field>
         <field name="priority" eval="2"/>
@@ -602,6 +649,47 @@
 			                    <field name="user_ids" widget="many2many_tags"/>
 			                    <field name="noidung_chinh_id"/>
 			                    <field name="situation_id"/>
+			                    <field name="gui_tre_lct" invisible='1'/>
+		                    </group>
+		                    <group>
+			                    <field name="date_start" on_change = "onchange_ngay_canh_bao(date_start, thoigian_dukien)"/>
+			                    <field name="date_end"/>
+               					<field name="partner_id"/>
+               					<field name="lydo_huy"/>
+               					<field name="thoigian_dukien" on_change = "onchange_ngay_canh_bao(date_start, thoigian_dukien)"/>
+               					<field name="email_start_date" invisible = '1'/>
+               					<field name="email_end_date" invisible = '1'/>
+		                    </group>
+                    	</group>
+	                    <group>
+	                   		<field name="note"/>
+	                    </group>
+	                </sheet>
+	                <div class="oe_chatter">
+	                    <field name="message_follower_ids" widget="mail_followers"/>
+	                    <field name="message_ids" widget="mail_thread"/>
+                	</div>
+                </form>
+            </field>
+        </record>
+        
+        <record model='ir.ui.view' id='view_remind_work_tre_lct_form'>
+            <field name="name">remind.work.tre.lct.form</field>
+            <field name="model">remind.work</field>
+            <field name="arch" type="xml">
+                <form string="Nhắc nhở công việc" version="7.0" create = 'false' edit = 'false' delete = 'false'>
+	                <header>
+	                    <field name="state" widget="statusbar" nolabel="1" statusbar_visible="open,done"/>
+	                </header>
+	                <sheet>
+	                	<group>
+		                	<group>
+			                    <field name="name"/>
+			                    <field name="bo_phan_id" on_change = "onchange_bo_phan_id(bo_phan_id, user_ids)"/>
+			                    <field name="user_ids" widget="many2many_tags"/>
+			                    <field name="noidung_chinh_id"/>
+			                    <field name="situation_id"/>
+			                    <field name="gui_tre_lct" invisible='1'/>
 		                    </group>
 		                    <group>
 			                    <field name="date_start" on_change = "onchange_ngay_canh_bao(date_start, thoigian_dukien)"/>
@@ -626,40 +714,105 @@
         </record>
         
         <record id="view_remind_work_filter" model="ir.ui.view">
-        <field name="name">Nhắc nhở công việc</field>
-        <field name="model">remind.work</field>
-        <field name="arch" type="xml">
-            <search string="Nhắc nhở công việc">
-               <field name="name"/>
-               <field name="date_start"/>
-               <field name="date_end"/>
-               <field name="user_ids"/>
-               <field name="gan_cho"/>
-               <field name="noidung_chinh_id"/>
-               <field name="partner_id"/>
-               <separator/>
-               <filter icon="terp-gtk-go-back-rtl" string="Open" name="open" domain="[('state','=','open')]"/>
-               <filter icon="terp-gtk-go-back-rtl" string="Done" name="done" domain="[('state','=','done')]"/>
-               <filter icon="terp-gtk-go-back-rtl" string="Cancel" name="cancel" domain="[('state','=','cancel')]"/>
-               <separator/>
-               <group expand="0" string="Group By...">
-                   <filter string="Gán cho" icon="terp-partner" domain="[]" context="{'group_by':'gan_cho'}"/>
-                   <filter string="Khách hàng" icon="terp-partner" domain="[]" context="{'group_by':'partner_id'}"/>
-                   <filter string="Nội dung chính" icon="terp-partner" domain="[]" context="{'group_by':'noidung_chinh_id'}"/>
-                   <filter string="Trạng thái" icon="terp-go-month" domain="[]" context="{'group_by':'state'}"/>
-               </group>
-           </search>
-        </field>
+	        <field name="name">Nhắc nhở công việc</field>
+	        <field name="model">remind.work</field>
+	        <field name="arch" type="xml">
+	            <search string="Nhắc nhở công việc">
+	               <field name="name"/>
+	               <field name="date_start"/>
+	               <field name="date_end"/>
+	               <field name="user_ids"/>
+	               <field name="gan_cho"/>
+	               <field name="noidung_chinh_id"/>
+	               <field name="partner_id"/>
+	               <separator/>
+	               <filter icon="terp-gtk-go-back-rtl" string="Open" name="open" domain="[('state','=','open')]"/>
+	               <filter icon="terp-gtk-go-back-rtl" string="Done" name="done" domain="[('state','=','done')]"/>
+	               <filter icon="terp-gtk-go-back-rtl" string="Cancel" name="cancel" domain="[('state','=','cancel')]"/>
+	               <separator/>
+	               <group expand="0" string="Group By...">
+	                   <filter string="Gán cho" icon="terp-partner" domain="[]" context="{'group_by':'gan_cho'}"/>
+	                   <filter string="Khách hàng" icon="terp-partner" domain="[]" context="{'group_by':'partner_id'}"/>
+	                   <filter string="Nội dung chính" icon="terp-partner" domain="[]" context="{'group_by':'noidung_chinh_id'}"/>
+	                   <filter string="Trạng thái" icon="terp-go-month" domain="[]" context="{'group_by':'state'}"/>
+	               </group>
+	           </search>
+	        </field>
+    </record>
+    
+    <record id="view_remind_work_tre_lct_filter" model="ir.ui.view">
+	        <field name="name">Nhắc nhở công việc</field>
+	        <field name="model">remind.work</field>
+	        <field name="arch" type="xml">
+	            <search string="Nhắc nhở công việc">
+	               <field name="name"/>
+	               <field name="date_start"/>
+	               <field name="date_end"/>
+	               <field name="user_ids"/>
+	               <field name="gan_cho"/>
+	               <field name="noidung_chinh_id"/>
+	               <field name="partner_id"/>
+	               <field name="create_uid"/>
+	               <separator/>
+	               <filter icon="terp-gtk-go-back-rtl" string="Open" name="open" domain="[('state','=','open')]"/>
+	               <filter icon="terp-gtk-go-back-rtl" string="Done" name="done" domain="[('state','=','done')]"/>
+	               <filter icon="terp-gtk-go-back-rtl" string="Cancel" name="cancel" domain="[('state','=','cancel')]"/>
+	               <separator/>
+	               <group expand="0" string="Group By...">
+	                   <filter string="Nhân viên" name = "nhan_vien" icon="terp-partner" domain="[]" context="{'group_by':'create_uid'}"/>
+	                   <filter string="Khách hàng" icon="terp-partner" domain="[]" context="{'group_by':'partner_id'}"/>
+	                   <filter string="Nội dung chính" icon="terp-partner" domain="[]" context="{'group_by':'noidung_chinh_id'}"/>
+	                   <filter string="Trạng thái" icon="terp-go-month" domain="[]" context="{'group_by':'state'}"/>
+	               </group>
+	           </search>
+	        </field>
     </record>
       
    	<record model="ir.actions.act_window" id="action_remind_work">
-        <field name="name">Nhắc nhở công việc</field>
+        <field name="name">Kế hoạch công tác</field>
         <field name="res_model">remind.work</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form,calendar</field>
-        <field name="view_id" ref="view_remind_work_tree"/>
         <field name="context">{"search_default_user_ids":uid}</field>
         <field name="search_view_id" ref="view_remind_work_filter"/>
+    </record>
+    
+    <record id="action_remind_work1" model="ir.actions.act_window.view">
+        <field eval="1" name="sequence"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_remind_work_tree"/>
+        <field name="act_window_id" ref="action_remind_work"/>
+    </record>
+        
+    <record id="action_remind_work2" model="ir.actions.act_window.view">
+        <field eval="2" name="sequence"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_remind_work_form"/>
+        <field name="act_window_id" ref="action_remind_work"/>
+    </record>
+    
+    <record model="ir.actions.act_window" id="action_remind_work_tre_lct">
+        <field name="name">Kế hoạch công tác (lịch trễ)</field>
+        <field name="res_model">remind.work</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,calendar</field>
+        <field name="context">{"search_default_nhan_vien":1}</field>
+        <field name="domain">[('gui_tre_lct','!=',False)]</field>
+        <field name="search_view_id" ref="view_remind_work_tre_lct_filter"/>
+    </record>
+    
+    <record id="action_remind_work_tre_lct1" model="ir.actions.act_window.view">
+        <field eval="3" name="sequence"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_remind_work_tre_lct_tree"/>
+        <field name="act_window_id" ref="action_remind_work_tre_lct"/>
+    </record>
+        
+    <record id="action_remind_work_tre_lct2" model="ir.actions.act_window.view">
+        <field eval="4" name="sequence"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_remind_work_tre_lct_form"/>
+        <field name="act_window_id" ref="action_remind_work_tre_lct"/>
     </record>
     
     <record model='ir.ui.view' id='view_bo_phan_tree'>
@@ -895,15 +1048,37 @@
 							<field name="product_id" string = "Sản phẩm"/>
 							<field name="qty" string = "Số lượng"/>
 							<field name="qty_con_lai" string = "Số lượng còn lại"/>
+							<field name="gia"/>
+							<field name="chinhsach"/>
+							<field name="ghichu"/>
+							<group>
+							</group>
+							<newline/>
                             <field name="sanpham_canhtranh1_id" string = "Sản phẩm cạnh tranh 1"/>
                             <field name="soluong_canhtranh1" string = "Số lượng cạnh tranh 1"/>
                             <field name="soluong_canhtranh1_conlai" string = "Số lượng cạnh tranh còn lại 1"/>
+                            <field name="gia_canhtranh1"/>
+							<field name="chinhsach_canhtranh1"/>
+							<field name="ghichu_canhtranh1"/>
+							<group>
+							</group>
+							<newline/>
                             <field name="sanpham_canhtranh2_id" string = "Sản phẩm cạnh tranh 2"/>
                             <field name="soluong_canhtranh2" string = "Số lượng cạnh tranh 2"/>
                             <field name="soluong_canhtranh2_conlai" string = "Số lượng cạnh tranh còn lại 2"/>
+                            <field name="gia_canhtranh2"/>
+							<field name="chinhsach_canhtranh2"/>
+							<field name="ghichu_canhtranh2"/>
+							<group>
+							</group>
+							<newline/>
                             <field name="sanpham_canhtranh3_id" string = "Sản phẩm cạnh tranh 3"/>
                             <field name="soluong_canhtranh3" string = "Số lượng cạnh tranh 3"/>
                             <field name="soluong_canhtranh3_conlai" string = "Số lượng cạnh tranh còn lại 3"/>
+                            <field name="gia_canhtranh3"/>
+							<field name="chinhsach_canhtranh3"/>
+							<field name="ghichu_canhtranh3"/>
+							<newline/>
 	                    </group>
 						<footer>
 	                        <button string="Lưu" type="object" name="bt_save"/>

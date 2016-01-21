@@ -1168,25 +1168,40 @@ class remind_work(osv.osv):
             res[line.id] = name
         return res
     
+    def _get_gui_tre_lct(self, cr, uid, ids, name, arg, context=None):        
+        res = {}          
+        for line in self.browse(cr, uid, ids):
+            if line.date_start:
+                a=datetime.datetime.strptime(line.date_start,'%Y-%m-%d %H:%M:%S')+ timedelta(hours=7)
+                b=datetime.datetime.strptime(line.create_date,'%Y-%m-%d %H:%M:%S')+ timedelta(hours=7)
+                if (a-b).days < 14:
+                    res[line.id] = True
+                else:
+                    res[line.id] = False            
+        return res
+    
     _columns = {
-        'name': fields.char('Chủ đề', required=True,readonly=True, states={'draft': [('readonly', False)]}),
-        'date_start': fields.datetime('Thời gian bắt đầu',readonly=True, states={'draft': [('readonly', False)]}),
-        'date_end': fields.datetime('Thời gian kết thúc',readonly=True, states={'draft': [('readonly', False)]}),
-        'situation_id': fields.many2one('remind.work.situation', 'Tình trạng công việc',readonly=True, states={'draft': [('readonly', False)]}),
-        'note':fields.text('Nội dung',readonly=True, states={'draft': [('readonly', False)]}),
+        'name': fields.char('Chủ đề', required=True,readonly=True, states={'draft': [('readonly', False)], 'open': [('readonly', False)]}),
+        'date_start': fields.datetime('Thời gian bắt đầu',readonly=True, states={'draft': [('readonly', False)], 'open': [('readonly', False)]}),
+        'date_end': fields.datetime('Thời gian kết thúc',readonly=True, states={'draft': [('readonly', False)], 'open': [('readonly', False)]}),
+        'situation_id': fields.many2one('remind.work.situation', 'Tình trạng công việc',readonly=True, states={'draft': [('readonly', False)], 'open': [('readonly', False)]}),
+        'note':fields.text('Nội dung',readonly=True, states={'draft': [('readonly', False)], 'open': [('readonly', False)]}),
         'state': fields.selection([ ('draft', 'Mới tạo'),
                                     ('open', 'Đang thực hiện'),
                                     ('cancel', 'Hủy bỏ'),
-                                    ('done', 'Hoàn thành'),],string='Trạng thái',readonly=True, states={'draft': [('readonly', False)]}),
-        'noidung_chinh_id': fields.many2one('noi.dung.chinh', 'Nội dung chính', required=True,readonly=True, states={'draft': [('readonly', False)]}),
-        'partner_id': fields.many2one('res.partner', 'Khách hàng',readonly=True, states={'draft': [('readonly', False)]}),
-        'lydo_huy':fields.char('Lý do hủy'),
+                                    ('done', 'Hoàn thành'),],string='Trạng thái',readonly=True, states={'draft': [('readonly', False)], 'open': [('readonly', False)]}),
+        'noidung_chinh_id': fields.many2one('noi.dung.chinh', 'Nội dung chính', required=True,readonly=True, states={'draft': [('readonly', False)], 'open': [('readonly', False)]}),
+        'partner_id': fields.many2one('res.partner', 'Khách hàng',readonly=True, states={'draft': [('readonly', False)], 'open': [('readonly', False)]}),
+        'lydo_huy':fields.char('Lý do hủy',readonly=True,states={'draft': [('readonly', False)], 'open': [('readonly', False)]}),
         'user_ids': fields.many2many('res.users','remind_work_users_ref','remind_work_id','user_id', 'Gán cho',required=True,readonly=True, states={'draft': [('readonly', False)], 'open': [('readonly', False)]}),
         'gan_cho': fields.function(_get_gancho,type='char', string='Gán cho'),
-        'thoigian_dukien': fields.integer('Số ngày cảnh báo'),
+        'thoigian_dukien': fields.integer('Số ngày cảnh báo', readonly=True,states={'draft': [('readonly', False)], 'open': [('readonly', False)]}),
         'email_start_date': fields.date('Ngay bat dau canh bao'),
         'email_end_date': fields.date('Ngay ket thuc canh bao'),
-        'bo_phan_id': fields.many2one('bo.phan', 'Bộ phận', states={'draft': [('readonly', False)]}),
+        'bo_phan_id': fields.many2one('bo.phan', 'Bộ phận', readonly=True,states={'draft': [('readonly', False)], 'open': [('readonly', False)]}),
+        'gui_tre_lct': fields.function(_get_gui_tre_lct,type='boolean', string='Gửi trễ lịch công tác', store = True),
+        'create_date': fields.datetime('Created Date',readonly = True),
+        'create_uid': fields.many2one('res.users','Created By',ondelete='restrict',readonly = True),
     }
     _defaults = {
         'date_start': fields.datetime.now,
@@ -1333,7 +1348,7 @@ class danhsach_canhtranh(osv.osv):
     _name = "danhsach.canhtranh"
     _columns = {
                 'name':fields.date('Ngày',required=True),
-                'product_id': fields.many2one('product.product', 'Product'),
+                'product_id': fields.many2one('product.product', 'Sản phẩm'),
                 'qty':fields.integer('SL'),
                 'qty_con_lai':fields.integer('SL còn lại'),
                 'sanpham_canhtranh1_id': fields.many2one('sanpham.canhtranh','SPCT1'),
@@ -1346,6 +1361,20 @@ class danhsach_canhtranh(osv.osv):
                 'soluong_canhtranh3':fields.integer('SLCT3'),
                 'soluong_canhtranh3_conlai':fields.integer('SLCTCL3'),
                 'partner_id': fields.many2one('res.partner','Khách hàng',required = True),
+                'gia': fields.float('Giá'),
+                'gia_canhtranh1': fields.float('Giá cạnh tranh 1'),
+                'gia_canhtranh2': fields.float('Giá cạnh tranh 2'),
+                'gia_canhtranh3': fields.float('Giá cạnh tranh 3'),
+                
+                'chinhsach': fields.float('Chính sách'),
+                'chinhsach_canhtranh1': fields.float('Chính sách cạnh tranh 1'),
+                'chinhsach_canhtranh2': fields.float('Chính sách cạnh tranh 2'),
+                'chinhsach_canhtranh3': fields.float('Chính sách cạnh tranh 3'),
+                
+                'ghichu': fields.char('Ghi chú', size = 1024),
+                'ghichu_canhtranh1': fields.char('Ghi chú cạnh tranh 1', size = 1024),
+                'ghichu_canhtranh2': fields.char('Ghi chú cạnh tranh 2', size = 1024),
+                'ghichu_canhtranh3': fields.char('Ghi chú cạnh tranh 3', size = 1024),
                 }
     def bt_save(self, cr, uid, ids, context=None):
         return True

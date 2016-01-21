@@ -62,7 +62,7 @@
             				<label for="den_ngay" class = 'oe_inline'/>
             				<field name="den_ngay" class = 'oe_inline'/>
             			</div>
-	                <group>
+	                	<div class='oe_green_erp_scroll' >
 		                	<field name="doanhthu_banhang_review_line" nolabel='1'>
 		                		<tree create="false" edit="false" delete="false">          
 		                			<field name="ngay_hd"/>
@@ -81,7 +81,7 @@
 		                			<field name="ti_le"/>
 		                		</tree>
 		                	</field>
-	                </group> 
+		                </div>
 			       </sheet>       	                	
 	            </form>
 	        </field>

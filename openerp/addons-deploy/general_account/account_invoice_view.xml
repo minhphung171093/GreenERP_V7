@@ -388,9 +388,8 @@
             <field name="arch" type="xml">
                 <tree colors="blue:state == 'draft';gray:state in ('cancel','paid')" string="Invoice">
                     <field name="partner_id" groups="base.group_user"/>
-                    <field name="ngay_nhap"/>
-                    <field name="ngay_xuat"/>
-                    <field name="number" invisible="1"/>
+                    <field name="date_invoice" string = "Ngày xuất hóa đơn"/>
+                    <field name="rel_invoice_id" string = "Hóa đơn gốc"/>
                     <field name="reference"/>
                     <field name="reference_number"/>
                     <field name="name" invisible="1"/>
@@ -406,7 +405,6 @@
                     <field name="amount_tax" sum="Tax Amount"/>
                     <field name="amount_total" sum="Total Amount"/>
                     <field name="state"/>
-                    <field name="date_invoice" invisible = '1'/>
                 </tree>
             </field>
         </record>
@@ -625,14 +623,14 @@
         </record>
         
          <record id="action_invoice_dieuchinh_form" model="ir.actions.act_window.view">
-            <field eval="2" name="sequence"/>
+            <field eval="10" name="sequence"/>
             <field name="view_mode">form</field>
             <field name="view_id" ref="invoice_dieuchinh_form"/>
             <field name="act_window_id" ref="action_invoice_dieuchinh"/>
         </record>
         
         <record id="action_invoice_dieuchinh_tree" model="ir.actions.act_window.view">
-            <field eval="1" name="sequence"/>
+            <field eval="9" name="sequence"/>
             <field name="view_mode">tree</field>
              <field name="view_id" ref="invoice_dc_tree"/>
             <field name="act_window_id" ref="action_invoice_dieuchinh"/>
