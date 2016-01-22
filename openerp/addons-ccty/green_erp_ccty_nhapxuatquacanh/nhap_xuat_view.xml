@@ -405,7 +405,7 @@
 													<field name="ct_loai_id" domain="[('loai_id','=',parent.loai_id)]" options="{'create': false, 'create_edit': false}"/>
 													<field name="vacxin_id" context="{'search_vacxin_id':True, 'loai_id': parent.loai_id}" options="{'create': false, 'create_edit': false}"/>
 													<field name="ngay_tiem" />
-													<field name="so_luong" string = 'Số lượng' sum = 'Total'/>
+													<field name="so_luong" string='Số lượng'/>
 												</tree>
 											</field>
 										</page>

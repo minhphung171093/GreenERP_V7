@@ -96,7 +96,7 @@ class loai_vat(osv.osv):
         'ma_loai': fields.char('Mã loài',size = 50),
         'name': fields.char('Tên loài',size = 50, required = True),
         'thuoc_loai': fields.selection((('dv_thuong','Động vật thường'), ('dv_hoangda','Động vật hoang dã'), ('thuy_san','Thủy sản')),'Thuộc'),
-        'thoi_gian': fields.integer('thời gian nuôi (tháng)'),
+        'thoi_gian': fields.float('thời gian nuôi (tháng)'),
         'chitiet_loaivat':fields.one2many('chi.tiet.loai.vat','loai_id','Chi tiet'),
 #         'chitiet_loaibenh':fields.one2many('chi.tiet.loai.benh','loai_id','Chi tiet'),
         'chitiet_loai_vaccine':fields.one2many('chi.tiet.loai.vacxin','loai_id','Chi tiet'),
