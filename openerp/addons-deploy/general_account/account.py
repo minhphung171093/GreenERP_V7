@@ -374,6 +374,25 @@ class account_move(osv.osv):
         where date_document IS NULL
         ''')
         
+    def button_validate(self, cursor, user, ids, context=None):
+        for move in self.browse(cursor, user, ids, context=context):
+            # check that all accounts have the same topmost ancestor
+            top_common = None
+            for line in move.line_id:
+                account = line.account_id
+                top_account = account
+                while top_account.parent_id:
+                    top_account = top_account.parent_id
+                if not top_common:
+                    top_common = top_account
+                elif top_account.id != top_common.id:
+                    raise osv.except_osv(_('Error!'),
+                                         _('You cannot validate this journal entry because account "%s" does not belong to chart of accounts "%s".') % (account.name, top_common.name))
+            expense_ids = self.pool.get('hr.expense.expense').search(cursor, user, [('account_move_id', '=', move.id)], context=context)
+            if expense_ids:
+                self.pool.get('hr.expense.expense').write(cursor, user, expense_ids, {'state': 'paid'}, context=context)
+        return self.post(cursor, user, ids, context=context)
+        
 account_move()
 
 views_account_move_line = {'search':'view_account_move_line_filter',

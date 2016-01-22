@@ -334,24 +334,86 @@ dm_congtacphi_line()
 class hr_holidays(osv.osv):
     _inherit = "hr.holidays"
     
+    def send_mail(self, cr, uid, lead_email, msg_id,context=None):
+        mail_message_pool = self.pool.get('mail.message')
+        mail_mail = self.pool.get('mail.mail')
+        msg = mail_message_pool.browse(cr, SUPERUSER_ID, msg_id, context=context)
+        body_html = msg.body
+        mail_server_obj = self.pool.get('ir.mail_server')
+        mail_server_ids = mail_server_obj.search(cr, 1, [], limit=1)
+        email_from = False
+        if mail_server_ids:
+            email_from = mail_server_obj.browse(cr, 1, mail_server_ids[0]).smtp_user
+        # email_from: partner-user alias or partner email or mail.message email_from
+        if not email_from:
+            if msg.author_id and msg.author_id.user_ids and msg.author_id.user_ids[0].alias_domain and msg.author_id.user_ids[0].alias_name:
+                email_from = '%s <%s@%s>' % (msg.author_id.name, msg.author_id.user_ids[0].alias_name, msg.author_id.user_ids[0].alias_domain)
+            elif msg.author_id:
+                email_from = '%s <%s>' % (msg.author_id.name, msg.author_id.email)
+            else:
+                email_from = msg.email_from
+
+        references = False
+        if msg.parent_id:
+            references = msg.parent_id.message_id
+
+        mail_values = {
+            'mail_message_id': msg.id,
+            'auto_delete': True,
+            'body_html': body_html,
+            'email_from': email_from,
+            'email_to' : lead_email,
+            'references': references,
+        }
+        email_notif_id = mail_mail.create(cr, uid, mail_values, context=context)
+        try:
+             mail_mail.send(cr, uid, [email_notif_id], context=context)
+        except Exception:
+            a = 1
+        return True
+    
     def create(self, cr, uid, vals, context=None):
+        new_id = super(hr_holidays, self).create(cr, uid, vals, context=context)
         if 'date_from' in vals:
             datetime_now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             if (vals['date_from'] < datetime_now):
                 raise osv.except_osv(_('Warning!'),_('Thời gian bắt đầu không được nhỏ hơn thời gian hiện tại'))
-        return super(hr_holidays, self).create(cr, uid, vals, context=context)
+            
+#             partner = user.partner_id
+#             partner.signup_prepare()
+        if 'holiday_type' in vals:
+            if vals['holiday_type']=='employee':
+                employee = self.pool.get('hr.employee').browse(cr,uid,vals['employee_id'])
+                if 'date_from' in vals:
+                    date_from_vn = datetime.datetime.strptime(vals['date_from'],'%Y-%m-%d %H:%M:%S')+ timedelta(hours=7)
+                    date_from_vn = date_from_vn.strftime('%d-%m-%Y %H:%M:%S')
+                    date_to_vn = datetime.datetime.strptime(vals['date_to'],'%Y-%m-%d %H:%M:%S')+ timedelta(hours=7) 
+                    date_to_vn = date_to_vn.strftime('%d-%m-%Y %H:%M:%S') 
+                    body = '''<p><b>Nội dung:</b><br/>Nhân viên %s xin nghỉ phép từ ngày %s đến ngày %s với lý do %s.</p>
+                    '''%(employee.name, date_from_vn, date_to_vn, vals['name'])
+                    if body:
+                        post_values = {
+                            'subject': 'Xin nghỉ phép - %s'%(vals['name']),
+                            'body': body,
+                            'partner_ids': [],
+                            }
+                        lead_email = employee.parent_id.user_id.email
+                        msg_id = self.message_post(cr, uid, [new_id], type='comment', subtype=False, context=context, **post_values)
+                        self.send_mail(cr, uid, lead_email, msg_id, context)
+                else:
+                    body = '''<p><b>Nội dung:</b><br/>Nhân viên %s xin nghỉ phép %s ngày với lý do %s</p>
+                    '''%(employee.name, vals['number_of_days_temp'], vals['name'])
+                    if body:
+                        post_values = {
+                            'subject': 'Xin nghỉ phép - %s'%(vals['name']),
+                            'body': body,
+                            'partner_ids': [],
+                            }
+                        lead_email = employee.parent_id.user_id.email
+                        msg_id = self.message_post(cr, uid, [new_id], type='comment', subtype=False, context=context, **post_values)
+                        self.send_mail(cr, uid, lead_email, msg_id, context)
+        return new_id
     
-#     def _check_date_from(self, cr, uid, ids, context=None):
-#         for hr in self.browse(cr, uid, ids, context=context):
-#             datetime_now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-#             if hr.date_from < datetime_now:
-#                 raise osv.except_osv(_('Warning!'),_('Thời gian bắt đầu không được nhỏ hơn thời gian hiện tại'))
-#                 return False
-#         return True
-#     _constraints = [
-#         (_check_date_from, 'Identical Data', []),
-#     ]   
-
 hr_holidays()  
 
     

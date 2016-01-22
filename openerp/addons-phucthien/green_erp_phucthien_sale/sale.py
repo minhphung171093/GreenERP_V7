@@ -1277,13 +1277,19 @@ class remind_work(osv.osv):
         mail_mail = self.pool.get('mail.mail')
         msg = mail_message_pool.browse(cr, SUPERUSER_ID, msg_id, context=context)
         body_html = msg.body
+        mail_server_obj = self.pool.get('ir.mail_server')
+        mail_server_ids = mail_server_obj.search(cr, 1, [], limit=1)
+        email_from = False
+        if mail_server_ids:
+            email_from = mail_server_obj.browse(cr, 1, mail_server_ids[0]).smtp_user
         # email_from: partner-user alias or partner email or mail.message email_from
-        if msg.author_id and msg.author_id.user_ids and msg.author_id.user_ids[0].alias_domain and msg.author_id.user_ids[0].alias_name:
-            email_from = '%s <%s@%s>' % (msg.author_id.name, msg.author_id.user_ids[0].alias_name, msg.author_id.user_ids[0].alias_domain)
-        elif msg.author_id:
-            email_from = '%s <%s>' % (msg.author_id.name, msg.author_id.email)
-        else:
-            email_from = msg.email_from
+        if not email_from:
+            if msg.author_id and msg.author_id.user_ids and msg.author_id.user_ids[0].alias_domain and msg.author_id.user_ids[0].alias_name:
+                email_from = '%s <%s@%s>' % (msg.author_id.name, msg.author_id.user_ids[0].alias_name, msg.author_id.user_ids[0].alias_domain)
+            elif msg.author_id:
+                email_from = '%s <%s>' % (msg.author_id.name, msg.author_id.email)
+            else:
+                email_from = msg.email_from
 
         references = False
         if msg.parent_id:
@@ -1303,6 +1309,35 @@ class remind_work(osv.osv):
         except Exception:
             a = 1
         return True
+    
+    def create(self, cr, uid, vals, context=None):
+        new_id = super(remind_work, self).create(cr, uid, vals, context=context)
+        remind = self.browse(cr,uid,new_id)
+        if remind.user_ids:
+            users = [r.id for r in remind.user_ids]
+            for user_id in users:
+                user = self.pool.get('res.users').browse(cr, uid, user_id)
+                date_start_vn = datetime.datetime.strptime(remind.date_start,'%Y-%m-%d %H:%M:%S')+ timedelta(hours=7)
+                date_start_vn = date_start_vn.strftime('%d-%m-%Y %H:%M:%S')
+                date_end_vn = datetime.datetime.strptime(remind.date_end,'%Y-%m-%d %H:%M:%S')+ timedelta(hours=7) 
+                date_end_vn = date_end_vn.strftime('%d-%m-%Y %H:%M:%S') 
+                body = '''<p><b>THÔNG BÁO:</b><br/>Kế hoạch công tác mới được tạo ra có thời gian từ ngày %s đến ngày %s.<br/>
+                <b>Nội dung chính: </b> %s.<br/>
+                <b>Tình trạng công việc: </b> %s.<br/> 
+                <b>Khách hàng: </b> %s.<br/> 
+                <b>Chi tiết nội dung:</b> <br/>%s</p>
+                '''%(date_start_vn, date_end_vn, remind.noidung_chinh_id.name,remind.situation_id and remind.situation_id.name or '',remind.partner_id and remind.partner_id.name or '',remind.note)
+                if body:
+                    post_values = {
+                        'subject': remind.name,
+                        'body': body,
+                        'partner_ids': [],
+                        }
+                    if user_id != uid:
+                        lead_email = user.email
+                        msg_id = self.message_post(cr, uid, [new_id], type='comment', subtype=False, context=context, **post_values)
+                        self.send_mail(cr, uid, lead_email, msg_id, context)
+        return new_id
     
     def send_mail_for_remind_work(self, cr, uid, context=None):
         sql = '''
