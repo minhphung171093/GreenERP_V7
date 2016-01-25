@@ -86,11 +86,10 @@ class Parser(report_sxw.rml_parse):
         address = ''
         if order.partner_id:
             if order.partner_id.street:
-                for line in order.partner_id.street:
-                    if line.type =='default':
-                        address = line.street
-                        if line.state_id:                
-                            address += line.state_id and ', ' + line.state_id.name or ''
+                if order.partner_id.type =='default':
+                    address = order.partner_id.street
+                    if order.partner_id.state_id:                
+                        address += order.partner_id.state_id and ', ' + order.partner_id.state_id.name or ''
         return address
     
     

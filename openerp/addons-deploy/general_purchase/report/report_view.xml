@@ -10,7 +10,7 @@
         
         <!-- Create new template Purchase Order -->
     	<record id="purchase_order" model="ir.actions.report.xml">
-	        <field name="name">Purchase Order</field>
+	        <field name="name">Purchase Order 1</field>
 	        <field name="type">ir.actions.report.xml</field>
 	        <field name="model">purchase.order</field>
 	        <field name="report_name">purchase_order</field>
