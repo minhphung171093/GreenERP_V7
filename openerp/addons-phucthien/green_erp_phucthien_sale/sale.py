@@ -1313,15 +1313,19 @@ class remind_work(osv.osv):
     def create(self, cr, uid, vals, context=None):
         new_id = super(remind_work, self).create(cr, uid, vals, context=context)
         remind = self.browse(cr,uid,new_id)
+        date_start_vn = ''
+        date_end_vn = ''
         if remind.user_ids:
             users = [r.id for r in remind.user_ids]
             for user_id in users:
                 user = self.pool.get('res.users').browse(cr, uid, user_id)
-                date_start_vn = datetime.datetime.strptime(remind.date_start,'%Y-%m-%d %H:%M:%S')+ timedelta(hours=7)
-                date_start_vn = date_start_vn.strftime('%d-%m-%Y %H:%M:%S')
-                date_end_vn = datetime.datetime.strptime(remind.date_end,'%Y-%m-%d %H:%M:%S')+ timedelta(hours=7) 
-                date_end_vn = date_end_vn.strftime('%d-%m-%Y %H:%M:%S') 
-                body = '''<p><b>THÔNG BÁO:</b><br/>Kế hoạch công tác mới được tạo ra có thời gian từ ngày %s đến ngày %s.<br/>
+                if remind.date_start:
+                    date_start_vn = datetime.datetime.strptime(remind.date_start,'%Y-%m-%d %H:%M:%S')+ timedelta(hours=7)
+                    date_start_vn = date_start_vn.strftime('%d-%m-%Y %H:%M:%S')
+                if remind.date_end:
+                    date_end_vn = datetime.datetime.strptime(remind.date_end,'%Y-%m-%d %H:%M:%S')+ timedelta(hours=7) 
+                    date_end_vn = date_end_vn.strftime('%d-%m-%Y %H:%M:%S') 
+                body = '''<p><b> THÔNG BÁO:</b><br/>Kế hoạch công tác mới được tạo ra có thời gian từ ngày %s đến ngày %s.<br/>
                 <b>Nội dung chính: </b> %s.<br/>
                 <b>Tình trạng công việc: </b> %s.<br/> 
                 <b>Khách hàng: </b> %s.<br/> 
