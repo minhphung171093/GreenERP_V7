@@ -32,8 +32,16 @@ class Parser(report_sxw.rml_parse):
             'get_quantity':self.get_quantity,
             'get_warehouse_address':self.get_warehouse_address,
             'get_user_create':self.get_user_create,
-            'get_partner_code':self.get_partner_code
+            'get_partner_code':self.get_partner_code,
+            'convert_f_amount': self.convert_f_amount,
         })
+        
+    def convert_f_amount(self, amount):
+        a = format(amount,',')
+        b = a.split('.')
+        if len(b)==2 and len(b[1])==1:
+            a+='0'
+        return a.replace(',',' ')
     
     def get_partner_code(self,partner_id):
         partner_name = False
