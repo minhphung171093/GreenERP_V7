@@ -272,18 +272,18 @@ work_summary()
 class work_summary_line(osv.osv_memory):
     _name = "work.summary.line"
     
-#     def _get_hours(self, cr, uid, context=None):
+    def _get_hours(self, cr, uid, context=None):
 #         quick_check = context.get('quick_check',False)
-#         hours = 0
+        hours = 0
 #         if not quick_check:
-#             attendances_times_obj = self.pool.get('attendances.time')
-#             list_attendances_id =  max(attendances_times_obj.search(cr,uid,[('user_id','=',uid)]))
-#             date_now_d = datetime.datetime.now() + timedelta(hours=7)
-#             line = attendances_times_obj.browse(cr, uid, list_attendances_id)
-#             date = datetime.datetime.strptime(line.name, '%Y-%m-%d %H:%M:%S') + timedelta(hours=7)
-#             total = self.pool.get('user.overview')._sum_total(cr, uid, uid, date, date_now_d, context)
-#             hours = float(total)
-#         return hours/3600
+        attendances_times_obj = self.pool.get('attendances.time')
+        list_attendances_id =  max(attendances_times_obj.search(cr,uid,[('user_id','=',uid)]))
+        date_now_d = datetime.datetime.now() + timedelta(hours=7)
+        line = attendances_times_obj.browse(cr, uid, list_attendances_id)
+        date = datetime.datetime.strptime(line.name, '%Y-%m-%d %H:%M:%S') + timedelta(hours=7)
+        total = self.pool.get('user.overview')._sum_total(cr, uid, uid, date, date_now_d, context)
+        hours = float(total)
+        return hours/3600
     
     _columns = {
         'name': fields.char('Work summary', size=128),
