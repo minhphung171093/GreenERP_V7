@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
+    	
+        
     	<record id="view_quotation_tree_inherit" model="ir.ui.view">
             <field name="name">sale.order.tree.inherit</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_quotation_tree"/>
             <field name="priority">4</field>
             <field name="arch" type="xml">
-            	<xpath expr="//field[@name='state']" position="after">
+            	<xpath expr="//field[@name='state']" position="replace">
+            		<field name="state" invisible='1'/>
+            		<field name="trang_thai"/>
           			<field name='sale_reason_peding_ids' widget='many2many_tags'/>
           			<field name='huy_ids' widget='many2many_tags'/>
             	</xpath>
@@ -26,6 +30,7 @@
             	<xpath expr="//field[@name='user_id']" position="after">
           			<field name="chiu_trach_nhiem_id"/>
           			<field name="product_id_rel"/>
+          			<field name="trang_thai"/>
             	</xpath>
                 <xpath expr="//group/filter[@string='Status']" position="replace">
                     <filter string="Trạng thái" domain="[]" context="{'group_by':'trang_thai'}"/>

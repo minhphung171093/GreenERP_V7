@@ -1209,12 +1209,12 @@ class remind_work(osv.osv):
         'user_ids': lambda self,cr,uid,ctx: [(6,0,[uid])],
     }
     
-    def create(self, cr, uid, vals, context=None):
-        if 'date_start' in vals:
-            datetime_now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            if (vals['date_start'] < datetime_now):
-                raise osv.except_osv(_('Warning!'),_('Thời gian bắt đầu không được nhỏ hơn thời gian hiện tại'))
-        return super(remind_work, self).create(cr, uid, vals, context=context)
+#     def create(self, cr, uid, vals, context=None):
+#         if 'date_start' in vals:
+#             datetime_now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+#             if (vals['date_start'] < datetime_now):
+#                 raise osv.except_osv(_('Warning!'),_('Thời gian bắt đầu không được nhỏ hơn thời gian hiện tại'))
+#         return super(remind_work, self).create(cr, uid, vals, context=context)
     
 #     def _check_date_start(self, cr, uid, ids, context=None):
 #         for work in self.browse(cr, uid, ids, context=context):
@@ -1315,6 +1315,10 @@ class remind_work(osv.osv):
         remind = self.browse(cr,uid,new_id)
         date_start_vn = ''
         date_end_vn = ''
+        if 'date_start' in vals:
+            datetime_now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            if (vals['date_start'] < datetime_now):
+                raise osv.except_osv(_('Warning!'),_('Thời gian bắt đầu không được nhỏ hơn thời gian hiện tại'))
         if remind.user_ids:
             users = [r.id for r in remind.user_ids]
             for user_id in users:
@@ -1339,7 +1343,7 @@ class remind_work(osv.osv):
                         }
                     if user_id != uid:
                         lead_email = user.email
-                        msg_id = self.message_post(cr, uid, [new_id], type='comment', subtype=False, context=context, **post_values)
+                        msg_id = self.pool.get('res.partner').message_post(cr, uid, [user.partner_id.id], type='comment', subtype=False, context=context, **post_values)
                         self.send_mail(cr, uid, lead_email, msg_id, context)
         return new_id
     
