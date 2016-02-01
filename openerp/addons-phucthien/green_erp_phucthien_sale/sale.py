@@ -1156,6 +1156,7 @@ bo_phan()
 class remind_work(osv.osv):
     _name = "remind.work"
     _inherit = ['mail.thread']
+    _order = 'date_start desc'
     
     def _get_gancho(self, cr, uid, ids, field_name, arg, context=None):
         res = {}
