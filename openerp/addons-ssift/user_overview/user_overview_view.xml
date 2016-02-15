@@ -60,7 +60,8 @@
             		
             		<h2>
             			<label string="My Checking 2" groups="project.group_project_manager"/>
-            		</h2>		                
+            		</h2>
+            		<button name="bt_print_list_checking2" string="Print as .xls" type="object" class="oe_highlight"/>          
 	                <group groups="project.group_project_manager">
 	                    <group col="2">	                    
                             <field name="checking_tasks2" nolabel="1" context="{'active_id':active_id}">

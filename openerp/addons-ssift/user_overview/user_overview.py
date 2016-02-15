@@ -353,7 +353,18 @@ class user_overview(osv.osv):
                                             })
         
         return True
-          
+    
+    def bt_print_list_checking2(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        this = self.browse(cr, uid, ids[0])
+        task_ids = [t.id for t in this.checking_tasks2]
+        datas = {'ids': context.get('active_ids', task_ids),'active_ids':task_ids}
+        datas['model'] = 'project.task'
+        datas['form'] = self.read(cr, uid, ids)[0]
+        datas['form'].update({'active_ids':task_ids})
+        return {'type': 'ir.actions.report.xml', 'report_name': 'print_list_checking2_report', 'datas': datas}
+    
 user_overview()
 
 class project(osv.osv):

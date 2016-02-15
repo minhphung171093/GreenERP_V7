@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+	
+    	<record id="print_list_checking2_report" model="ir.actions.report.xml">
+	        <field name="name">print_list_checking2_report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">project.task</field>
+	        <field name="report_name">print_list_checking2_report</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">user_overview/report/checking2_report.py</field>
+	        <field name="report_rml">user_overview/report/checking2_report.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record> 
+    	   
+    	<report 
+			auto="False" 
+			menu="False"
+			id="print_list_checking2_report" 
+			model="project.task" 
+			name="print_list_checking2_report"
+	        string="List Checking 2"
+	        rml="user_overview/report/checking2_report.ods"/> 	
+	        
+	        
+	</data>
+</openerp>

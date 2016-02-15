@@ -30,6 +30,7 @@
     'data': [
                 'security/project_security.xml',
             'wizard/work_summary_view.xml',
+            'report/checking2_view.xml',
              'user_overview_view.xml',
              'security/ir.model.access.csv',
              'manager_overview_view.xml',
