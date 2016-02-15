@@ -383,7 +383,7 @@ class project(osv.osv):
     def set_done(self, cr, uid, ids, context=None):
         task_obj = self.pool.get('project.task')
         
-        task_working_ids = task_obj.search(cr,uid,[('stage_id.state','=','open'),('flag','=',False)])
+        task_working_ids = task_obj.search(cr,uid,[('stage_id.state','=','open'),('flag','=',False),('project_id','in',ids)])
         user_overview_obj = self.pool.get('user.overview')
         attendances_time_obj = self.pool.get('attendances.time')
         if task_working_ids:
