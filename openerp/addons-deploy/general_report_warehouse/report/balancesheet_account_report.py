@@ -306,7 +306,7 @@ class Parser(report_sxw.rml_parse):
                                         'xuat_sl': line['xuattk_qty'] or 0.0,
                                         'xuat_gt': line['xuattk_val'] or 0.0,
                                         'ton_cuoi_sl': line['end_onhand_qty'] or 0.0,
-                                        'ton_cuoi_gt': line['end_val'] or 0.0,
+                                        'ton_cuoi_gt': line['end_onhand_qty'] and line['end_val'] or 0.0,
                                         })
                 
                     total_ton_dau_sl += line['start_onhand_qty']
@@ -1032,7 +1032,7 @@ class Parser(report_sxw.rml_parse):
                    'xuattk_qty':i['xuattk_qty'] or 0.0,
                    'xuattk_val':i['xuattk_val'] or 0.0,
                    'end_onhand_qty':i['end_onhand_qty'] or 0.0,
-                   'end_val':i['end_val'] or 0.0
+                   'end_val':i['end_onhand_qty'] and i['end_val'] or 0.0
                    })
         return res
     

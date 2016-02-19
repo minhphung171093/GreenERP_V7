@@ -10,7 +10,7 @@ import pooler
 from osv import osv
 from tools.translate import _
 import random
-from datetime import datetime
+from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 DATE_FORMAT = "%Y-%m-%d"
@@ -175,8 +175,9 @@ class Parser(report_sxw.rml_parse):
                 where id = %s
             '''%(self.prod_lot_id)
         self.cr.execute(sql)
-        for item in  self.cr.dictfetchall():
-            return item['life_date']
+        for item in self.cr.dictfetchall():
+            life_date = datetime.strptime(item['life_date'], DATETIME_FORMAT) + timedelta(hours=7)
+            return life_date
         return False
     
     
@@ -184,6 +185,7 @@ class Parser(report_sxw.rml_parse):
         if not date:
             date = time.strftime('%Y-%m-%d')
         else:
+            date = str(date)
             date = date[:10]
         date = datetime.strptime(date, DATE_FORMAT)
         return date.strftime('%m/%Y')
