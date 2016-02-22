@@ -234,78 +234,84 @@ class hr_expense_line(osv.osv):
             cr.execute(sql)
             amount = cr.fetchone()
             dinhmuc_cl = amount and amount[0] or 0
-            ma_dm = amount and amount[1] or 0
+            ma_dm = amount and amount[1] or False
             tu_ngay = amount and amount[2] or ''
             den_ngay = amount and amount[3] or ''
             dinhmuc_bd = amount and amount[4] or 0
             employee_id = amount and amount[5] or False
-            sql = '''
-                select id from dm_congtacphi_line where dinhmuc_id = %s and expense_id = %s
-            '''%(ma_dm, line.expense_id.id)
-            cr.execute(sql)
-            line_ids = [row[0] for row in cr.fetchall()]
-            sql = '''
-                select case when sum(unit_amount*unit_quantity)!=0 then sum(unit_amount*unit_quantity) else 0 end tong
-                from hr_expense_line where date_value between '%s' and '%s' and expense_id in (select id from hr_expense_expense 
-                where employee_id = %s)
-            '''%(tu_ngay, den_ngay, employee_id)
-            cr.execute(sql)
-            tong = cr.dictfetchone()['tong']
-#             con_lai = dinhmuc_bd - tong
-            if line_ids:
-                tam = 0
-                total = 0
-                dm_line = self.pool.get('dm.congtacphi.line').browse(cr,uid,line_ids[0])
-                if 'unit_amount' in vals and 'unit_quantity' in vals:
-                    total = vals['unit_amount']*vals['unit_quantity']
-                if 'unit_amount' in vals:
-                    total = vals['unit_amount']*line.unit_quantity
-                if 'unit_quantity' in vals:
-                    total = vals['unit_quantity']*line.unit_amount
-                if line.total_amount > total:
-                    tam = line.total_amount - total
-                    cl = dm_line.dm_conlai + tam
-                    con_lai = dinhmuc_cl + tam
-                if line.total_amount < total:
-                    tam = total - line.total_amount
-                    cl = dm_line.dm_conlai - tam
-                    con_lai = dinhmuc_cl - tam
-                self.pool.get('dm.congtacphi.line').write(cr,uid,line_ids,{
-                                                                           'dm_conlai': cl,
-                                                                           })
-                
+            line_ids = []
+            if ma_dm:
                 sql = '''
-                    update dinhmuc_congtacphi set con_lai = %s where id = %s
-                '''%(con_lai, ma_dm)
+                    select id from dm_congtacphi_line where dinhmuc_id = %s and expense_id = %s
+                '''%(ma_dm, line.expense_id.id)
                 cr.execute(sql)
-            else:
-                dm_truoc_cl = 0
-                sql = '''
-                    select con_lai,id from dinhmuc_congtacphi where name = %s and den_ngay < '%s' and con_lai < 0 limit 1
-                '''%(line.expense_id.employee_id.id, tu_ngay)
-                cr.execute(sql)
-                dm_truoc = cr.fetchone()
-                dinhmuc_truoc_cl = dm_truoc and dm_truoc[0] or 0
-                ma_dm_truoc = dm_truoc and dm_truoc[1] or False
-                if ma_dm_truoc:
-                    dm_truoc_cl = dinhmuc_truoc_cl
+                line_ids = [row[0] for row in cr.fetchall()]
+                if tu_ngay and den_ngay:
+                    sql = '''
+                        select case when sum(unit_amount*unit_quantity)!=0 then sum(unit_amount*unit_quantity) else 0 end tong
+                        from hr_expense_line where date_value between '%s' and '%s' and expense_id in (select id from hr_expense_expense 
+                        where employee_id = %s)
+                    '''%(tu_ngay, den_ngay, employee_id)
+                    cr.execute(sql)
+                    tong = cr.dictfetchone()['tong']
+                else:
+                    tong = 0
+    #             con_lai = dinhmuc_bd - tong
+                if line_ids:
+                    tam = 0
+                    total = 0
+                    dm_line = self.pool.get('dm.congtacphi.line').browse(cr,uid,line_ids[0])
+                    if 'unit_amount' in vals and 'unit_quantity' in vals:
+                        total = vals['unit_amount']*vals['unit_quantity']
+                    if 'unit_amount' in vals:
+                        total = vals['unit_amount']*line.unit_quantity
+                    if 'unit_quantity' in vals:
+                        total = vals['unit_quantity']*line.unit_amount
+                    if line.total_amount > total:
+                        tam = line.total_amount - total
+                        cl = dm_line.dm_conlai + tam
+                        con_lai = dinhmuc_cl + tam
+                    if line.total_amount < total:
+                        tam = total - line.total_amount
+                        cl = dm_line.dm_conlai - tam
+                        con_lai = dinhmuc_cl - tam
+                    self.pool.get('dm.congtacphi.line').write(cr,uid,line_ids,{
+                                                                               'dm_conlai': cl,
+                                                                               })
+                    
                     sql = '''
                         update dinhmuc_congtacphi set con_lai = %s where id = %s
-                    '''%(0, ma_dm_truoc)
+                    '''%(con_lai, ma_dm)
                     cr.execute(sql)
-                con_lai = dinhmuc_cl - line.total_amount + dm_truoc_cl
-                self.pool.get('dm.congtacphi.line').create(cr,uid,{
-                                                                   'expense_id': line.expense_id.id,
-                                                                   'dinhmuc_id': ma_dm,
-                                                                   'tu_ngay': tu_ngay,
-                                                                   'den_ngay': den_ngay,
-                                                                   'dm_bandau': dinhmuc_bd,
-                                                                   'dm_conlai': con_lai,
-                                                                   })
-                sql = '''
-                    update dinhmuc_congtacphi set con_lai = %s where id = %s
-                '''%(con_lai, ma_dm)
-                cr.execute(sql)
+                else:
+                    dm_truoc_cl = 0
+                    if tu_ngay:
+                        sql = '''
+                            select con_lai,id from dinhmuc_congtacphi where name = %s and den_ngay < '%s' and con_lai < 0 limit 1
+                        '''%(line.expense_id.employee_id.id, tu_ngay)
+                        cr.execute(sql)
+                        dm_truoc = cr.fetchone()
+                        dinhmuc_truoc_cl = dm_truoc and dm_truoc[0] or 0
+                        ma_dm_truoc = dm_truoc and dm_truoc[1] or False
+                        if ma_dm_truoc:
+                            dm_truoc_cl = dinhmuc_truoc_cl
+                            sql = '''
+                                update dinhmuc_congtacphi set con_lai = %s where id = %s
+                            '''%(0, ma_dm_truoc)
+                            cr.execute(sql)
+                        con_lai = dinhmuc_cl - line.total_amount + dm_truoc_cl
+                        self.pool.get('dm.congtacphi.line').create(cr,uid,{
+                                                                           'expense_id': line.expense_id.id,
+                                                                           'dinhmuc_id': ma_dm,
+                                                                           'tu_ngay': tu_ngay,
+                                                                           'den_ngay': den_ngay,
+                                                                           'dm_bandau': dinhmuc_bd,
+                                                                           'dm_conlai': con_lai,
+                                                                           })
+                        sql = '''
+                            update dinhmuc_congtacphi set con_lai = %s where id = %s
+                        '''%(con_lai, ma_dm)
+                        cr.execute(sql)
         return super(hr_expense_line, self).write(cr, uid,ids, vals, context)
     
 hr_expense_line()
