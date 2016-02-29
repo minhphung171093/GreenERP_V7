@@ -1906,10 +1906,10 @@ class dm_thietbi(osv.osv):
         return res
     
     _columns = {
-        'dia_diem': fields.selection([('van_phong', 'Văn phòng'),('kho_lanh', 'Kho lạnh')],'Địa điểm', required=True),
+        'dia_diem': fields.selection([('van_phong', 'Văn phòng'),('kho_lanh', 'Kho lạnh')],'Địa điểm'),
         'name': fields.char('Mã hiệu', size = 64, required = True),
         'ten': fields.char('Tên thiết bị', size = 64, required = True),
-        'kich_thuoc':fields.char('Kích thước', size = 64, required = True),
+        'kich_thuoc':fields.char('Kích thước', size = 64),
         'ngay_mua': fields.date('Ngày mua'),
         'so_luong': fields.integer('Số lượng'),
         'chi_phi': fields.float('Chi phí'),

@@ -12,6 +12,7 @@
                    'hr_view.xml',
                    'hr_contract_view.xml',
                    'hr_payroll_view.xml',
+                   'hr_expense_workflow.xml',
                    'report/report_view.xml',
                    'wizard/hr_wizard.xml',
                    

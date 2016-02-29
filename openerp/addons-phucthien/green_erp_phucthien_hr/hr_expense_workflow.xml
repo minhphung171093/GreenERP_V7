@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!-- Workflow definition -->
+
+        
+
+        <record id="hr_expense.t7" model="workflow.transition">
+            <field name="act_from" ref="hr_expense.act_confirm"/>
+            <field name="act_to" ref="hr_expense.act_draft"/>
+            <field name="signal">draft</field>
+            <field name="group_id" ref="base.group_user"/>
+        </record>
+        
+
+    </data>
+</openerp>

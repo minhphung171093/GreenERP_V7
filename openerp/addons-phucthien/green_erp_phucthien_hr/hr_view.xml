@@ -136,10 +136,43 @@
 	                </page>
             	</xpath>
             	
-            	<xpath expr="//button[@name='validate']" position="attributes">
-            		<attribute name='groups'>base.group_hr_manager</attribute>
+            	<xpath expr="//field[@name='state']" position="attributes">
+                	<attribute name="invisible">1</attribute>
+                </xpath>
+          		<xpath expr="//field[@name='state']" position="before">
+                	<field name="trang_thai" widget="statusbar" statusbar_visible="draft,confirm,giamdoc_duyet,accepted,done,paid"/>
+                </xpath>
+                
+                <xpath expr="//button[@name='validate']" position="replace">
+            		<button name="validate" attrs="{'invisible':[('trang_thai','!=','giamdoc_duyet')]}" string="Approve" type="workflow" groups="general_base.group_giamdoc" class="oe_highlight"/>
+            	</xpath>
+            	
+            	<xpath expr="//button[@name='confirm']" position="after">
+            		<button name="bt_cho_nhansu_duyet" attrs="{'invisible':[('trang_thai','!=','confirm')]}" string="Chấp thuận" type="object" class="oe_highlight" groups="base.group_hr_manager"/>
+            	</xpath>
+            	
+            	<xpath expr="//button[@name='refuse']" position="replace">
+            		<button name="refuse" attrs="{'invisible':[('trang_thai','not in',['giamdoc_duyet','confirm','accepted'])]}" string="Refuse" type="workflow" groups="base.group_hr_user" />
+            	</xpath>
+            	
+            	<xpath expr="//button[@name='draft']" position="replace">
+            		<button name="draft" attrs="{'invisible':[('trang_thai','not in',['giamdoc_duyet','confirm','accepted'])]}" string="Set to Draft" type="workflow" groups="base.group_user" />
             	</xpath>
             </field>
+        </record>
+        
+        <record id="view_expenses_tree_inherit" model="ir.ui.view">
+            <field name="name">view.expenses.form.inherit</field>
+            <field name="model">hr.expense.expense</field>
+            <field name="inherit_id" ref="hr_expense.view_expenses_tree"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//field[@name='state']" position="after">
+            		<field name="trang_thai"/>
+            	</xpath>
+            	<xpath expr="//field[@name='state']" position="attributes">
+            		<attribute name="invisible">1</attribute>
+            	</xpath>
+           </field>
         </record>
         
         <record id="view_hr_expense_filter_inherit" model="ir.ui.view">

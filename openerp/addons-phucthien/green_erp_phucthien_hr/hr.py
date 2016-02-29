@@ -318,10 +318,45 @@ hr_expense_line()
 
 class hr_expense_expense(osv.osv):
     _inherit = "hr.expense.expense"
-
+    def _trangthai(self, cr, uid, ids, name, arg, context=None):
+        res = {}
+        for tt in self.browse(cr,uid,ids):
+            if tt.state == 'draft':
+                res[tt.id] = 'draft'
+            elif tt.state == 'cancelled':
+                res[tt.id]='cancelled'
+            elif tt.state == 'confirm':
+                res[tt.id]='confirm'
+            elif tt.state == 'accepted':
+                res[tt.id]='accepted'
+            elif tt.state == 'paid':
+                res[tt.id]='paid'
+            elif tt.state == 'done':
+                res[tt.id]='done'
+            else:
+                res[tt.id]='giamdoc_duyet'
+        return res
     _columns = {
         'dm_congtacphi_line': fields.one2many('dm.congtacphi.line', 'expense_id', 'Expense Lines', readonly=True, states={'draft':[('readonly',False)]} ),
+        'trang_thai':fields.function(_trangthai, string='Trạng thái',
+                                      type='selection', selection=[('draft', 'Mới'),
+                                                            ('cancelled', 'Bị từ chối'),
+                                                            ('confirm', 'Chờ nhân sự duyệt'),
+                                                            ('giamdoc_duyet', 'Chờ giám đốc duyệt'),
+                                                            ('accepted', 'Phê duyệt'),
+                                                            ('done', 'Chờ kế toán duyệt'),
+                                                            ('paid', 'Đã thanh toán')],
+                                     store={
+                                                'hr.expense.expense':(lambda self, cr, uid, ids, c={}: ids, ['state'], 10),
+                                            }),  
         }
+    
+    def bt_cho_nhansu_duyet(self, cr, uid, ids, context=None):
+        sql = '''
+            update hr_expense_expense set trang_thai = 'giamdoc_duyet' where id = %s
+        '''%(ids[0])
+        cr.execute(sql)
+        return True
 hr_expense_expense() 
 
 class dm_congtacphi_line(osv.osv):
