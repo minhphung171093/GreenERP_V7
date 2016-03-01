@@ -36,8 +36,8 @@ class danhsach_canhtranh_wizard(osv.osv_memory):
     }
     
     _defaults = {
-        'date_from': time.strftime('%Y-%m-%d'),
-        'date_to': time.strftime('%Y-%m-%d'),
+        'date_from': lambda *a: time.strftime('%Y-%m-%d'),
+        'date_to': lambda *a: time.strftime('%Y-%m-%d'),
     }
     
     def print_report(self, cr, uid, ids, context=None):

@@ -34,7 +34,7 @@ class stock_partial_move_line(osv.osv_memory):
      }
     _defaults = {
             'solo':'/',
-            'life_date':time.strftime('%Y-%m-%d'),
+            'life_date':lambda *a: time.strftime('%Y-%m-%d'),
     }
 stock_partial_move_line()
 

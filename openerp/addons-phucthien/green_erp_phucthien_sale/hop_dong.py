@@ -112,7 +112,7 @@ class hop_dong(osv.osv):
     
     _defaults = {
         'type': 'thau',
-        'tu_ngay': time.strftime('%Y-%m-%d'),
+        'tu_ngay': lambda *a: time.strftime('%Y-%m-%d'),
         'state': 'moi_tao',
     }
     

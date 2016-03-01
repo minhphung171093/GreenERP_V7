@@ -32,7 +32,7 @@ class purchase_line_approve(osv.osv_memory):
     }
     
     _defaults = {
-        'date': time.strftime('%Y-%m-%d'),
+        'date': lambda *a: time.strftime('%Y-%m-%d'),
     }
     
     def make_purchase(self, cr, uid, ids, context=None):

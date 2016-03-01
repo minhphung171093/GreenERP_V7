@@ -72,7 +72,7 @@ class Parser(report_sxw.rml_parse):
     
     def get_vietname_date(self, date):
         if not date:
-            date = time.strftime(DATE_FORMAT)
+            date = lambda *a: time.strftime(DATE_FORMAT)
         date = datetime.strptime(date, DATE_FORMAT)
         return date.strftime('%d/%m/%Y')
     

@@ -43,8 +43,8 @@ class depreciation_asset(osv.osv_memory):
         
     _defaults = {
         'times': 'periods',
-        'date_start': time.strftime('%Y-%m-%d'),
-        'date_end': time.strftime('%Y-%m-%d'),        
+        'date_start': lambda *a: time.strftime('%Y-%m-%d'),
+        'date_end': lambda *a: time.strftime('%Y-%m-%d'),        
         'period_id_start': lambda self, cr, uid, c: self.pool.get('account.period').find(cr, uid, dt=time.strftime('%Y-%m-%d'))[0],
         'period_id_end': lambda self, cr, uid, c: self.pool.get('account.period').find(cr, uid, dt=time.strftime('%Y-%m-%d'))[0],        
         'fiscalyear_start': _get_fiscalyear,
@@ -74,8 +74,8 @@ class list_of_asset(osv.osv_memory):
      }
         
     _defaults = {
-        'date_start': time.strftime('%Y-%m-%d'),
-        'date_end': time.strftime('%Y-%m-%d'),
+        'date_start': lambda *a: time.strftime('%Y-%m-%d'),
+        'date_end': lambda *a: time.strftime('%Y-%m-%d'),
         
         'asset_type': 'asset', 
         }
@@ -123,8 +123,8 @@ class expense_allocation(osv.osv_memory):
         
     _defaults = {
         'times': 'periods',
-        'date_start': time.strftime('%Y-%m-%d'),
-        'date_end': time.strftime('%Y-%m-%d'),        
+        'date_start': lambda *a: time.strftime('%Y-%m-%d'),
+        'date_end': lambda *a: time.strftime('%Y-%m-%d'),        
         'period_id_start': lambda self, cr, uid, c: self.pool.get('account.period').find(cr, uid, dt=time.strftime('%Y-%m-%d'))[0],
         'period_id_end': lambda self, cr, uid, c: self.pool.get('account.period').find(cr, uid, dt=time.strftime('%Y-%m-%d'))[0],        
         'fiscalyear_start': _get_fiscalyear,

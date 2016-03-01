@@ -458,7 +458,7 @@ class pos_order_line(osv.osv):
     
     _default = {
         'check_flag':False,
-        'date': time.strftime('%Y-%m-%d'),
+        'date': lambda *a: time.strftime('%Y-%m-%d'),
         #'date': fields.date.context_today,
     }
     

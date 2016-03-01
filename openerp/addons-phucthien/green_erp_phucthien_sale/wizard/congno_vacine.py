@@ -46,8 +46,8 @@ class congno_vacine(osv.osv_memory):
     }
      
     _defaults = {
-        'date_from': time.strftime('%Y-%m-01'),
-        'date_to': time.strftime('%Y-%m-%d'),
+        'date_from': lambda *a: time.strftime('%Y-%m-01'),
+        'date_to': lambda *a: time.strftime('%Y-%m-%d'),
         'user_id': lambda self,cr, uid, ctx: [(6,0,[uid])],
         
     }
@@ -363,8 +363,8 @@ class congno_mypham(osv.osv_memory):
     }
      
     _defaults = {
-        'date_from': time.strftime('%Y-%m-01'),
-        'date_to': time.strftime('%Y-%m-%d'),
+        'date_from': lambda *a: time.strftime('%Y-%m-01'),
+        'date_to': lambda *a: time.strftime('%Y-%m-%d'),
         'user_ids': lambda self,cr, uid, ctx: [(6,0,[uid])],
     }
      
@@ -673,8 +673,8 @@ class congno_duocpham(osv.osv_memory):
     }
      
     _defaults = {
-        'date_from': time.strftime('%Y-%m-01'),
-        'date_to': time.strftime('%Y-%m-%d'),
+        'date_from': lambda *a: time.strftime('%Y-%m-01'),
+        'date_to': lambda *a: time.strftime('%Y-%m-%d'),
         'user_ids': lambda self,cr, uid, ctx: [(6,0,[uid])],
     }
      

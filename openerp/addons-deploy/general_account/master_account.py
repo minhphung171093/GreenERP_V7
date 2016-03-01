@@ -40,7 +40,7 @@ class invoice_book(osv.osv):
     
     _defaults = {
         'sohoadon': 1,
-        'ngaymuaso': time.strftime('%Y-%m-%d'),
+        'ngaymuaso': lambda *a: time.strftime('%Y-%m-%d'),
     }
     
 invoice_book()

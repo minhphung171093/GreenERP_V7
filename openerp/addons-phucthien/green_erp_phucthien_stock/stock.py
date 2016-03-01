@@ -1682,7 +1682,7 @@ class ve_sinh_kho(osv.osv):
         return vals
     
     _defaults = {
-        'name': time.strftime('%Y-%m-%d'),
+        'name': lambda *a: time.strftime('%Y-%m-%d'),
         'user_id': lambda self, cr, uid, c:uid,
         'vesinhkho_line': _get_vesinhkho_line,
         'state': 'draft',
@@ -1735,7 +1735,7 @@ class ve_sinh_thangmay(osv.osv):
     }
     
     _defaults = {
-        'name': time.strftime('%Y-%m-%d'),
+        'name': lambda *a: time.strftime('%Y-%m-%d'),
         'user_id': lambda self, cr, uid, c:uid,
         'state': 'draft',
     }
@@ -1761,7 +1761,7 @@ class phongchong_moi_mot(osv.osv):
     }
     
     _defaults = {
-        'name': time.strftime('%Y-%m-%d'),
+        'name': lambda *a: time.strftime('%Y-%m-%d'),
         'user_id': lambda self, cr, uid, c:uid,
     }
     
@@ -1808,7 +1808,7 @@ class nhap_dulieu_donghang(osv.osv):
     }
     
     _defaults = {
-        'ngay': time.strftime('%Y-%m-%d'),
+        'ngay': lambda *a: time.strftime('%Y-%m-%d'),
         'state': 'moi_tao',
     }
     
@@ -2155,7 +2155,7 @@ class giaohang_line(osv.osv):
         'state_receive':fields.selection([('draft','Tạo mới'),('da_gui','Đã gửi'),('da_nhan','Đã nhận')],'Trạng thái',required=True),
     }
     _defaults = {
-        'date': time.strftime('%Y-%m-%d'),
+        'date': lambda *a: time.strftime('%Y-%m-%d'),
         'state_receive':'draft',
                  }
     

@@ -15,8 +15,8 @@ class danhsach_vesinh_thangmay(osv.osv_memory):
         
     }
     _defaults = {
-        'tu_ngay': time.strftime('%Y-%m-%d'),
-        'den_ngay': time.strftime('%Y-%m-%d'),
+        'tu_ngay': lambda *a: time.strftime('%Y-%m-01'),
+        'den_ngay': lambda *a: time.strftime('%Y-%m-%d'),
     }
     
     def print_report(self, cr, uid, ids, context=None):
