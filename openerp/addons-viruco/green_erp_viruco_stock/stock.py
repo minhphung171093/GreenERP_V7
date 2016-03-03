@@ -330,42 +330,30 @@ class stock_picking(osv.osv):
         for line in self.browse(cr,uid,ids):
             if line.type == 'out':
                 if 'state' in vals and vals['state']:
-#                     if line.backorder_id:
-#                         phieu_cha = self.browse(cr,uid,line.backorder_id.id)
-#                         for move in line.move_lines:
-#                             hopdong_ban = self.pool.get('hop.dong').browse(cr,uid,move.hop_dong_ban_id.id)
-#                         if phieu_cha.state == 'done' and vals['state'] == 'done':
-#                             self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'giaohang_xongchungtu'})
-#                         elif phieu_cha.state == 'done' and vals['state'] != 'done':
-#                             if not vals['chung_tu_ids']:
-#                                 raise osv.except_osv(_('Cảnh báo!'), _('Cần có chứng từ trước khi chuyển hàng !'))
-#                             else:
-#                                 self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'thuc_hien_xongchungtu'})
-#                     else:
                     if vals['state'] == 'done':
                         if not line.chung_tu_ids:
                             raise osv.except_osv(_('Cảnh báo!'), _('Cần có chứng từ trước khi chuyển hàng !'))
-                        else:
-                            qty = 0
-                            for move in line.move_lines:
-                                qty += move.product_qty
-                                hopdong_ban = self.pool.get('hop.dong').browse(cr,uid,move.hop_dong_ban_id.id)
-                                sql = '''
-                                    select case when sum(product_qty)!=0 then sum(product_qty) else 0 end move_qty from stock_move
-                                    where hop_dong_ban_id = %s and picking_id in (select id from stock_picking where state = 'done') 
-                                '''%(hopdong_ban.id)
-                                cr.execute(sql)
-                                move_qty = cr.dictfetchone()['move_qty']
-                                sql = '''
-                                    select case when sum(product_qty)!=0 then sum(product_qty) else 0 end hd_qty from hopdong_line
-                                    where hopdong_id = %s
-                                '''%(hopdong_ban.id)
-                                cr.execute(sql)
-                                hd_qty = cr.dictfetchone()['hd_qty']
-                            if (move_qty+qty) == hd_qty:
-                                self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'giaohang_xongchungtu'})
-                            else:
-                                self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'thuc_hien_xongchungtu'})
+#                         else:
+#                             qty = 0
+#                             for move in line.move_lines:
+#                                 qty += move.product_qty
+#                                 hopdong_ban = self.pool.get('hop.dong').browse(cr,uid,move.hop_dong_ban_id.id)
+#                                 sql = '''
+#                                     select case when sum(product_qty)!=0 then sum(product_qty) else 0 end move_qty from stock_move
+#                                     where hop_dong_ban_id = %s and picking_id in (select id from stock_picking where state = 'done') 
+#                                 '''%(hopdong_ban.id)
+#                                 cr.execute(sql)
+#                                 move_qty = cr.dictfetchone()['move_qty']
+#                                 sql = '''
+#                                     select case when sum(product_qty)!=0 then sum(product_qty) else 0 end hd_qty from hopdong_line
+#                                     where hopdong_id = %s
+#                                 '''%(hopdong_ban.id)
+#                                 cr.execute(sql)
+#                                 hd_qty = cr.dictfetchone()['hd_qty']
+#                             if (move_qty+qty) == hd_qty:
+#                                 self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'giaohang_xongchungtu'})
+#                             else:
+#                                 self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'thuc_hien_xongchungtu'})
         return super(stock_picking, self).write(cr, uid,ids, vals, context)    
     
     def action_invoice_create(self, cr, uid, ids, journal_id=False,group=False, type='out_invoice', context=None):
@@ -1147,27 +1135,27 @@ class stock_picking_out(osv.osv):
         new_id = super(osv.osv, self).create(cr, user, vals, context)
         return new_id
 
-    def write(self, cr, uid, ids, vals, context=None):
-        for line in self.browse(cr,uid,ids):
-            if line.type == 'out':
-                if 'state' in vals and vals['state']:
-                    if line.backorder_id:
-                        phieu_cha = self.browse(cr,uid,line.backorder_id.id)
-                        for move in line.move_lines:
-                            hopdong_ban = self.pool.get('hop.dong').browse(cr,uid,move.hop_dong_ban_id.id)
-                        if phieu_cha.state == 'done' and vals['state'] == 'done':
-                            self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'giaohang_xongchungtu'})
-                        elif phieu_cha.state == 'done' and vals['state'] != 'done':
-                            if not vals['chung_tu_ids']:
-                                raise osv.except_osv(_('Cảnh báo!'), _('Cần có chứng từ trước khi chuyển hàng !'))
-                            else:
-                                self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'thuc_hien_xongchungtu'})
-                    else:
-                        if vals['state'] == 'done':
-                            for move in line.move_lines:
-                                hopdong_ban = self.pool.get('hop.dong').browse(cr,uid,move.hop_dong_ban_id.id)
-                                self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'giaohang_xongchungtu'})
-        return super(stock_picking, self).write(cr, uid,ids, vals, context)   
+#     def write(self, cr, uid, ids, vals, context=None):
+#         for line in self.browse(cr,uid,ids):
+#             if line.type == 'out':
+#                 if 'state' in vals and vals['state']:
+#                     if line.backorder_id:
+#                         phieu_cha = self.browse(cr,uid,line.backorder_id.id)
+#                         for move in line.move_lines:
+#                             hopdong_ban = self.pool.get('hop.dong').browse(cr,uid,move.hop_dong_ban_id.id)
+#                         if phieu_cha.state == 'done' and vals['state'] == 'done':
+#                             self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'giaohang_xongchungtu'})
+#                         elif phieu_cha.state == 'done' and vals['state'] != 'done':
+#                             if not vals['chung_tu_ids']:
+#                                 raise osv.except_osv(_('Cảnh báo!'), _('Cần có chứng từ trước khi chuyển hàng !'))
+#                             else:
+#                                 self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'thuc_hien_xongchungtu'})
+#                     else:
+#                         if vals['state'] == 'done':
+#                             for move in line.move_lines:
+#                                 hopdong_ban = self.pool.get('hop.dong').browse(cr,uid,move.hop_dong_ban_id.id)
+#                                 self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'giaohang_xongchungtu'})
+#         return super(stock_picking, self).write(cr, uid,ids, vals, context)   
     
     def print_denghi_xuatkho(self, cr, uid, ids, context=None):
         hopdong = self.browse(cr, uid, ids[0])

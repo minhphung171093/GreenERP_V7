@@ -201,6 +201,7 @@
 					<field name="type" invisible="1"/>
 					<field name="date_payment" string="LC/TT Date Receive" />
 					<field name="user_id" string="User"/>
+					<field name="user_chungtu_id"/>
 					<field name="state"/>
 				</tree>
 			</field>
@@ -240,6 +241,7 @@
 							<field name="sale_person_id" />
 	                    	<field name="currency_id" string="Currency"/>
 	                    	<field name="user_id" string="User"/>
+	                    	<field name="user_chungtu_id" readonly = '1'/>
 	                    	<field name="create_theodoi_hopdong" invisible = '1'/>
 	                    	<field name="pricelist_id" invisible = '1'/>
 	                    	<field name="date_dbh" invisible = '1' />
