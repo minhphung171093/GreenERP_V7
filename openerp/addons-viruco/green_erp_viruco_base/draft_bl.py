@@ -74,7 +74,7 @@ class draft_bl(osv.osv):
     
     _defaults = {
         'state':'moi_tao',
-        'date': time.strftime('%Y-%m-%d'),
+        'date': lambda *a: time.strftime('%Y-%m-%d'),
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'draft.bl', context=c),
     }
     
@@ -171,7 +171,26 @@ class draft_bl_line(osv.osv):
         'option':fields.selection([('product', 'Product'),('seal_no', 'Container No/Seal No')], 'Option'),
         'seal_descript_line': fields.one2many('description.line','seal_line_id','Line'),
         'hopdong_id':fields.many2one('hop.dong','Contract'),
+        'line_number': fields.integer('Line Number'),
     }
+    
+    def onchange_option(self, cr, uid, ids, option=False, line_number=False):
+        vals = {}
+        mang = []
+        if option and line_number:
+            if option=='product':
+                qc_donggoi_ids = self.pool.get('quycach.donggoi').search(cr,uid,[('name','like','HÀNG RỜI')])
+                for i in range(0,line_number):
+                    mang.append({
+                                 'packages_qty':600,
+                                 'packages_id':qc_donggoi_ids and qc_donggoi_ids[0] or False,
+                                 'packages_weight':'33.33',
+                                 'net_weight':20,
+                                 'gross_weight':20,
+                                 })
+                vals = {'seal_descript_line':mang,
+                    }
+        return {'value': vals} 
     
     def name_get(self, cr, uid, ids, context=None):
         if not len(ids):

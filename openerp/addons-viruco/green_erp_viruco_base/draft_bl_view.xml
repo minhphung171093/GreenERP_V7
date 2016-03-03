@@ -103,7 +103,8 @@
 		                                    <field name="etd_date"/>
 		                                    <field name="eta_date"/>
 		                                    <field name="cuoc_tau"/>
-		                                    <field name="option"/>
+		                                    <field name="option" on_change = "onchange_option(option,line_number)"/>
+		                                    <field name="line_number" on_change = "onchange_option(option,line_number)" attrs="{'invisible':[('option','!=','product')]}"/>
 		                                    <field name="hopdong_id" invisible="1"/>
 					                    </group>
 					                    <notebook>

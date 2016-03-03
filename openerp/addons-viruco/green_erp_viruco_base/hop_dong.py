@@ -322,7 +322,7 @@ class hop_dong(osv.osv):
     _defaults = {
         'flag':False,
         'type': 'hd_noi',
-        'tu_ngay': time.strftime('%Y-%m-%d'),
+        'tu_ngay': lambda *a: time.strftime('%Y-%m-%d'),
         'state': 'moi_tao',
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'hop.dong', context=c),
         'currency_company_id': lambda self, cr, uid, c: self.pool.get('res.users').browse(cr, uid, uid).company_id.currency_id.id,
@@ -929,7 +929,7 @@ class don_ban_hang(osv.osv):
     
     _defaults = {
         'name':'/',
-        'ngay': time.strftime('%Y-%m-%d'),
+        'ngay': lambda *a: time.strftime('%Y-%m-%d'),
         'state': 'moi_tao',
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'hop.dong', context=c),
         'currency_company_id': lambda self, cr, uid, c: self.pool.get('res.users').browse(cr, uid, uid).company_id.currency_id.id,
@@ -1237,7 +1237,7 @@ class don_mua_hang(osv.osv):
     
     _defaults = {
         'name':'/',
-        'ngay': time.strftime('%Y-%m-%d'),
+        'ngay': lambda *a: time.strftime('%Y-%m-%d'),
         'state': 'moi_tao',
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'hop.dong', context=c),
         'currency_company_id': lambda self, cr, uid, c: self.pool.get('res.users').browse(cr, uid, uid).company_id.currency_id.id,
