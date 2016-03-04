@@ -244,7 +244,7 @@ class hop_dong(osv.osv):
         'partner_id': fields.many2one('res.partner','Khách hàng',required = True,readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'hopdong_line': fields.one2many('hopdong.line','hopdong_id','Line',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'hopdong_hoahong_line': fields.one2many('hopdong.hoahong.line','hopdong_hh_id','Line',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
-        'banggia_id': fields.many2one('bang.gia', 'Bảng giá', required=True, readonly=True, states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'banggia_id': fields.many2one('bang.gia', 'Bảng giá', readonly=True, states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'pricelist_id': fields.many2one('product.pricelist', 'Bảng giá',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'currency_id': fields.related('pricelist_id', 'currency_id', type="many2one", relation="res.currency", string="Đơn vị tiền tệ", readonly=True),
         'donbanhang_id': fields.many2one('don.ban.hang', 'Đơn bán hàng',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
@@ -591,13 +591,14 @@ class hop_dong(osv.osv):
                 order_line.append((0,0,val_line))
             vals = {
                 'name':dmh.name,
-                'partner_id': dmh.partner_id.id,
-                'pricelist_id': dmh.pricelist_id.id,
-                'banggia_id': dmh.banggia_id.id,
+                'partner_id': dmh.partner_id and dmh.partner_id.id or False,
+                'pricelist_id': dmh.pricelist_id and dmh.pricelist_id.id or False,
+                'banggia_id': dmh.banggia_id and dmh.banggia_id.id or False,
                 'tu_ngay': dmh.ngay,
                 'hopdong_line': order_line,
                 'currency_id':dmh.banggia_id and dmh.banggia_id.currency_id.id or False,
             }
+            print vals
         return {'value': vals}
 
 #     def onchange_payment_term_id(self, cr, uid, ids, dk_thanhtoan_id=False, context=None):

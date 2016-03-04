@@ -17,6 +17,7 @@ from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FO
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from green_erp_viruco_base.report import amount_to_text_en
+
 class Parser(report_sxw.rml_parse):
         
     def __init__(self, cr, uid, name, context):
@@ -49,6 +50,7 @@ class Parser(report_sxw.rml_parse):
             'get_date_name': self.get_date_name,
             'get_prepaid': self.get_prepaid,
             'get_packing_list': self.get_packing_list,
+            'get_etd_date': self.get_etd_date,
         })
     
 #     def get_master_data(self):
@@ -271,8 +273,19 @@ class Parser(report_sxw.rml_parse):
                 }
         
     def get_date_name(self,date):
-        date_name = date and (date[8:10] + ' ' + self.get_month_name(int(date[5:7])) +'. '+ date[:4]) or ''
-        return date_name
+        if date:
+            date_name = date and (date[8:10] + ' ' + self.get_month_name(int(date[5:7])) +'. '+ date[:4]) or ''
+            return date_name
+        else:
+            return ''
+    
+    def get_etd_date(self,o):
+        if o.draft_bl_line:
+            line = o.draft_bl_line[0]
+            return line.etd_date
+        else:
+            return ''
+        
     
     def get_prepaid(self,hd_id):
         amount = 0.0
