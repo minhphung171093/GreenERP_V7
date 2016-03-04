@@ -15,7 +15,6 @@
 					<field name="ngay_nhanhang"/>
 					<field name="amount_total"/>
 					<field name="type" invisible="1"/>
-					<field name="ngay_canhbao" invisible="1"/>
 					<field name="state"/>
 				</tree>
 			</field>
@@ -189,17 +188,16 @@
 			<field name="name">hop.dong.ngoai.tree</field>
 			<field name="model">hop.dong</field>
 			<field name="arch" type="xml">
-				<tree string="Hợp đồng ngoại" colors="gray:state== 'huy_bo';red:(date_payment_canhbao and (date_payment_canhbao &lt;= current_date))">
+				<tree string="Hợp đồng ngoại" colors="gray:state== 'huy_bo';red:(ngay_canhbao and (ngay_canhbao &lt;= current_date))">
 					<field name="name"/>
 					<field name="partner_id" string="Partner"/>
-					<field name="tu_ngay"/>
-					<field name="den_ngay"/>
+					<field name="tu_ngay" string = "Sign date" />
+					<field name="den_ngay" string = "Validity date" />
 					<field name="ngay_nhanhang" string = "Shipping Time"/>
 					<field name="amount_total" sum="Total Amount"/>
-					<field name="ngay_canhbao" invisible="1"/>
-					<field name="date_payment_canhbao" invisible="1"/>
 					<field name="type" invisible="1"/>
-					<field name="date_payment" string="LC/TT Date Receive" />
+					<field name="ngay_canhbao" invisible="1"/>
+					<field name="sale_person_id" />
 					<field name="user_id" string="User"/>
 					<field name="state"/>
 				</tree>
@@ -247,8 +245,8 @@
 						<notebook>
 							<page string="Information">
 								<group col='4' colspan='2'>
-									<field name="tu_ngay" string = "Date From"/>
-									<field name="den_ngay" string = "Date To"/>
+									<field name="tu_ngay" string = "Sign date"/>
+									<field name="den_ngay" string = "Validity date"/>
 									<field name="port_of_loading" />
 									<field name="port_of_charge" />
 									<field name="diadiem_nhanhang" string="Place of delivery"/>
@@ -316,8 +314,7 @@
 							<group>
 								<field name="dk_giaohang_id" string = "Delivery Term"/>
 								<field name="incoterm_id"/>
-								<field name="dk_thanhtoan_id" string = "Payment Term" on_change="onchange_payment_term_id(dk_thanhtoan_id)" />
-								<field name="date_payment" string = "Payment Date" attrs="{'invisible': [('flag', '=',False)]}" />
+								<field name="dk_thanhtoan_id" string = "Payment Term" />
 								<field name="flag" invisible='1'/>
 							</group>
 								<field name="phuongthuc_thanhtoan" nolabel='1'/>
@@ -819,7 +816,7 @@
 	            <form string="Proforma Invoice" version="7.0">
 					<header>
 						<button name="print_donbanhang" string="In Proforma Invoice" type="object" class="oe_highlight"/>
-						<button name="duyet" string="Duyệt" states="moi_tao" type="object" class="oe_highlight"/>
+						<button name="duyet" string="Xác nhận" states="moi_tao" type="object" class="oe_highlight"/>
 						<button name="huy_bo" string="Huỷ bỏ" type="object" states="moi_tao,da_duyet" class="oe_highlight"/>
 						<field name="state" widget="statusbar" statusbar_visible="moi_tao,da_duyet,het_han,huy_bo"/>
 					</header>

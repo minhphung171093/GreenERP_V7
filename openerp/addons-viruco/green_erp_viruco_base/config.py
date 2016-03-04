@@ -195,11 +195,15 @@ class dk_thanhtoan(osv.osv):
     _columns = {
         'name':fields.char('Name',size=1024,required=True),
         'description': fields.text('Description'),
+        'dat_coc': fields.float('Giá trị đặt cọc'),
         'loai': fields.selection([
             ('lc', 'LC'),
             ('dp', 'DP'),
             ], 'Loại',required=True),
     }
+    _defaults={
+        'dat_coc':0.0,
+               }
     
 dk_thanhtoan()
 

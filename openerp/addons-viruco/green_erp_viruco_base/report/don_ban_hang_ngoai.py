@@ -12,6 +12,9 @@ from openerp.tools.translate import _
 import random
 DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 DATE_FORMAT = "%Y-%m-%d"
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT, float_compare
 from datetime import datetime, timedelta
@@ -32,6 +35,7 @@ class Parser(report_sxw.rml_parse):
             'get_soluong':self.get_soluong,
             'convert_date': self.convert_date,
             'get_transhipment': self.get_transhipment,
+            'get_dia_chi':self.get_dia_chi,
         })
     
     def get_transhipment(self, transhipment):
@@ -99,4 +103,19 @@ class Parser(report_sxw.rml_parse):
                 'tax': val,
                 'total': val+val1,
                 }
+    def get_dia_chi(self, street, street2, state_id, zip, country_id):
+        address = ''
+        if street:
+            address += street + ', '
+        if street2:
+            address += street2 + ', '
+        if state_id:
+            state = self.pool.get('res.country.state').browse(self.cr,self.uid,state_id)
+            address += state.name + ', ' 
+        if zip:
+            address += zip + ', '
+        if country_id:
+            country = self.pool.get('res.country').browse(self.cr,self.uid,country_id)
+            address += country.name  
+        return address
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

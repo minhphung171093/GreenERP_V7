@@ -584,6 +584,7 @@
 				<tree string="Điều kiện thanh toán">
 					<field name="name"/>
 					<field name="loai"/>
+					<field name="dat_coc"/>
 					<field name="description"/>
 				</tree>
 			</field>
@@ -608,6 +609,7 @@
 	            		<group>
 		                	<field name="name"/>
 		                	<field name="loai"/>
+		                	<field name="dat_coc"/>
 							<field name="description"/>
 						</group>
 		         	</sheet>

@@ -227,7 +227,7 @@ class Parser(report_sxw.rml_parse):
                 seal_no = ''
                 pack_weight = ''
                 for seal in line.seal_descript_line:
-                    seal_no = seal.container_no_seal and (seal.container_no_seal + '\n') or ''
+                    seal_no += seal.container_no_seal and (seal.container_no_seal + '\n') or ''
                     pack_weight = seal.packages_weight or ''
                 res.append({ 'product': line.hopdong_line_id and line.hopdong_line_id.product_id and line.hopdong_line_id.product_id.eng_name or '',
                             'package': package['sum'],
@@ -275,14 +275,15 @@ class Parser(report_sxw.rml_parse):
         return date_name
     
     def get_prepaid(self,hd_id):
-        amount = 0
+        amount = 0.0
         if hd_id:
-            sql = '''
-                select amount from account_voucher where hop_dong_id = %s and state ='posted' order by date asc
-            '''%(hd_id)
-            self.cr.execute(sql)
-            amounts = self.cr.fetchall()
-            amount = amounts and amounts[0] or 0
+#             sql = '''
+#                 select amount from account_voucher where hop_dong_id = %s and state ='posted' order by date asc
+#             '''%(hd_id)
+#             self.cr.execute(sql)
+#             amounts = self.cr.fetchall()
+#             amount = amounts and amounts[0] or 0
+            amount = hd_id.dk_thanhtoan_id.dat_coc * self.amount
         return amount
     
     def get_packing_list(self,o):
