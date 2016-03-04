@@ -304,11 +304,10 @@ class hop_dong(osv.osv):
             ('da_duyet', 'Đã duyệt'),
             ('da_ky', 'Đã ký hợp đồng'),
             ('het_han', 'Hết hiệu lực'),
-            ('thuc_hien', 'Đang chờ giao hàng(chờ chứng từ)'),
-            ('thuc_hien_xongchungtu', 'Đang chờ giao hàng(xong chứng từ)'),
-            ('giaohang_chochungtu', 'Đã giao hàng(chờ chứng từ)'),
-            ('giaohang_xongchungtu', 'Đã giao hàng(xong chứng từ)'),
-            ('thanh_toan', 'Đã thanh toán'),
+            ('thuc_hien', 'Đã có hiệu lực'),
+            ('lam_chungtu', 'Đang làm chứng từ'),
+            ('xong_chungtu', 'Chứng từ hoàn tất'),
+            ('thanh_toan', 'Hoàn tất'),
             ('huy_bo', 'Hủy bỏ'),
             ], 'Trạng thái',readonly=True, states={'moi_tao': [('readonly', False)]}),
         'ngay_canhbao': fields.function(_get_ngay_canhbao, type='date', string='Ngày cảnh báo'),
@@ -319,12 +318,13 @@ class hop_dong(osv.osv):
         'flag':fields.boolean('C/O'),
 #         'trang_thai':fields.char('Trạng thái',size=1024,readonly=True),
         'date_dbh':fields.date('Ngày ban hang',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'user_chungtu_id': fields.many2one('res.users','Người làm chứng từ'),
     }
     
     _defaults = {
         'flag':False,
         'type': 'hd_noi',
-        'tu_ngay': time.strftime('%Y-%m-%d'),
+        'tu_ngay': lambda *a: time.strftime('%Y-%m-%d'),
         'state': 'moi_tao',
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'hop.dong', context=c),
         'currency_company_id': lambda self, cr, uid, c: self.pool.get('res.users').browse(cr, uid, uid).company_id.currency_id.id,
@@ -931,7 +931,7 @@ class don_ban_hang(osv.osv):
     
     _defaults = {
         'name':'/',
-        'ngay': time.strftime('%Y-%m-%d'),
+        'ngay': lambda *a: time.strftime('%Y-%m-%d'),
         'state': 'moi_tao',
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'hop.dong', context=c),
         'currency_company_id': lambda self, cr, uid, c: self.pool.get('res.users').browse(cr, uid, uid).company_id.currency_id.id,
@@ -1246,7 +1246,7 @@ class don_mua_hang(osv.osv):
     
     _defaults = {
         'name':'/',
-        'ngay': time.strftime('%Y-%m-%d'),
+        'ngay': lambda *a: time.strftime('%Y-%m-%d'),
         'state': 'moi_tao',
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'hop.dong', context=c),
         'currency_company_id': lambda self, cr, uid, c: self.pool.get('res.users').browse(cr, uid, uid).company_id.currency_id.id,

@@ -137,7 +137,7 @@ class phuluc_hop_dong(osv.osv):
             }
     _defaults = {
         'type': 'hd_noi',
-        'tu_ngay': time.strftime('%Y-%m-%d'),
+        'tu_ngay': lambda *a: time.strftime('%Y-%m-%d'),
         'state': 'moi_tao',
     }
 phuluc_hop_dong()

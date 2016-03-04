@@ -54,7 +54,7 @@
 	            	<sheet>
 	            	<group >
 	                    <group>
-	                    	<field name="hopdong_id" domain="[('type','=','hd_ngoai'),('state','not in',('moi_tao','da_duyet','da_ky','het_han'))]" on_change = "onchange_hopdong_id(hopdong_id)" context="{'form_view_ref':'green_erp_viruco_base.hop_dong_ngoai_form_view'}"/>
+	                    	<field name="hopdong_id" domain="[('type','=','hd_ngoai'),('state','in',('thuc_hien','lam_chungtu'))]" on_change = "onchange_hopdong_id(hopdong_id)" context="{'form_view_ref':'green_erp_viruco_base.hop_dong_ngoai_form_view'}"/>
 	                        <field name="date"/>
 	                        <field name="bl_no"/>
 	                    </group>
@@ -69,6 +69,7 @@
                     		<field name="consignee_text" string = "2nd Consignee" />
                     		<field name="notify_party_id" domain="[('customer','=',True)]" string = "1st Notify Party" />
                     		<field name="consignee_text" string = "2nd Notify Party" />
+                    		<field name="user_id"/>
 	                    </group>
 	                    <group>
                     		<field name="mean_transport"/>
@@ -103,7 +104,8 @@
 		                                    <field name="etd_date"/>
 		                                    <field name="eta_date"/>
 		                                    <field name="cuoc_tau"/>
-		                                    <field name="option"/>
+		                                    <field name="option" on_change = "onchange_option(option,line_number)"/>
+		                                    <field name="line_number" on_change = "onchange_option(option,line_number)" attrs="{'invisible':[('option','!=','product')]}"/>
 		                                    <field name="hopdong_id" invisible="1"/>
 					                    </group>
 					                    <notebook>

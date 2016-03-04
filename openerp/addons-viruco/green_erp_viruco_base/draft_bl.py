@@ -16,6 +16,8 @@ import codecs
 class draft_bl(osv.osv):
     _name = "draft.bl"
     
+    def _get_user(self, cr, uid, ids, context=None):
+        return uid
     def onchange_hopdong_id(self, cr, uid, ids, hopdong_id=False, context=None):
         vals = {}
         draft_bl_line = []
@@ -70,11 +72,13 @@ class draft_bl(osv.osv):
             ('hoan_tat', 'Hoàn tất'),
             ('huy_bo', 'Hủy bỏ'),
             ], 'Trạng thái',readonly=True, states={'moi_tao': [('readonly', False)]}),
+        'user_id': fields.many2one('res.users','Người thực hiện'),
     }
     
     _defaults = {
         'state':'moi_tao',
-        'date': time.strftime('%Y-%m-%d'),
+        'user_id': _get_user,
+        'date': lambda *a: time.strftime('%Y-%m-%d'),
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'draft.bl', context=c),
     }
     
@@ -99,9 +103,20 @@ class draft_bl(osv.osv):
 #             if 'stock_ids' in vals and vals['stock_ids']:
             if 'state' in vals and vals['state']:
                 if vals['state'] == 'da_duyet':
-                    if line.stock_ids:
-                        hopdong_ban = self.pool.get('hop.dong').browse(cr,uid,line.hopdong_id.id)
-                        self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'thuc_hien_xongchungtu'})
+#                     if line.stock_ids:
+                    hopdong_ban = self.pool.get('hop.dong').browse(cr,uid,line.hopdong_id.id)
+                    self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'lam_chungtu'})
+                if vals['state'] == 'hoan_tat':
+                    hopdong_ban = self.pool.get('hop.dong').browse(cr,uid,line.hopdong_id.id)
+                    self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'xong_chungtu'})
+            sql = '''
+                update hop_dong set user_chungtu_id = %s where id = %s
+            '''%(uid,line.hopdong_id.id)
+            cr.execute(sql)
+        sql = '''
+            update draft_bl set user_id = %s where id = %s
+        '''%(uid,ids[0])
+        cr.execute(sql)
         return new_write
     
     def bt_wizard(self, cr, uid, ids, context=None):
@@ -171,7 +186,26 @@ class draft_bl_line(osv.osv):
         'option':fields.selection([('product', 'Product'),('seal_no', 'Container No/Seal No')], 'Option'),
         'seal_descript_line': fields.one2many('description.line','seal_line_id','Line'),
         'hopdong_id':fields.many2one('hop.dong','Contract'),
+        'line_number': fields.integer('Line Number'),
     }
+    
+    def onchange_option(self, cr, uid, ids, option=False, line_number=False):
+        vals = {}
+        mang = []
+        if option and line_number:
+            if option=='product':
+                qc_donggoi_ids = self.pool.get('quycach.donggoi').search(cr,uid,[('name','like','HÀNG RỜI')])
+                for i in range(0,line_number):
+                    mang.append({
+                                 'packages_qty':600,
+                                 'packages_id':qc_donggoi_ids and qc_donggoi_ids[0] or False,
+                                 'packages_weight':'33.33',
+                                 'net_weight':20,
+                                 'gross_weight':20,
+                                 })
+                vals = {'seal_descript_line':mang,
+                    }
+        return {'value': vals} 
     
     def name_get(self, cr, uid, ids, context=None):
         if not len(ids):

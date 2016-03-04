@@ -23,7 +23,7 @@ class wizard_regularize(osv.osv_memory):
     
 	_defaults = {
 		'balance_calc': lambda *a: 'period',
-		'date_move': time.strftime('%Y-%m-%d'),
+		'date_move': lambda *a: time.strftime('%Y-%m-%d'),
 		'period_id': lambda self, cr, uid, c: self.pool.get('account.period').find(cr, uid, dt=time.strftime('%Y-%m-%d'))[0],
     }
     

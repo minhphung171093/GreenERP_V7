@@ -233,8 +233,8 @@ class bang_gia(osv.osv):
     }
     
     _defaults = {
-        'date_start': time.strftime('%Y-%m-%d'),
-        'date_end': time.strftime('%Y-%m-%d'),
+        'date_start': lambda *a: time.strftime('%Y-%m-%d'),
+        'date_end': lambda *a: time.strftime('%Y-%m-%d'),
         'state': 'moi_tao',
     }
     
