@@ -290,13 +290,8 @@ class Parser(report_sxw.rml_parse):
     def get_prepaid(self,hd_id):
         amount = 0.0
         if hd_id:
-#             sql = '''
-#                 select amount from account_voucher where hop_dong_id = %s and state ='posted' order by date asc
-#             '''%(hd_id)
-#             self.cr.execute(sql)
-#             amounts = self.cr.fetchall()
-#             amount = amounts and amounts[0] or 0
-            amount = hd_id.dk_thanhtoan_id.dat_coc * self.amount
+            if hd_id.dk_thanhtoan_id:
+                amount = hd_id.dk_thanhtoan_id.dat_coc * self.amount
         return amount
     
     def get_packing_list(self,o):
