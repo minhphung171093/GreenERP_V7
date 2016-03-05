@@ -54,8 +54,8 @@ class account_voucher(osv.osv):
                 if line.hop_dong_id and line.amount:
                     sql = '''
                         select case when sum(amount)!=0 then sum(amount) else 0 end amount from account_voucher
-                        where state = 'posted' and hop_dong_id = %s and type='payment'
-                    '''%(line.hop_dong_id.id)
+                        where state = 'posted' and hop_dong_id = %s and type='payment' and id != %s
+                    '''%(line.hop_dong_id.id,line.id)
                     cr.execute(sql)
                     amount_sum = cr.dictfetchone()['amount']
                     hop_dong = self.pool.get('hop.dong').browse(cr,uid,line.hop_dong_id.id)
