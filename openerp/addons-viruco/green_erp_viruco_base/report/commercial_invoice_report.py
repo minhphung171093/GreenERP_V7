@@ -51,6 +51,7 @@ class Parser(report_sxw.rml_parse):
             'get_prepaid': self.get_prepaid,
             'get_packing_list': self.get_packing_list,
             'get_etd_date': self.get_etd_date,
+            'get_cong': self.get_cong,
         })
     
 #     def get_master_data(self):
@@ -285,6 +286,16 @@ class Parser(report_sxw.rml_parse):
             return line.etd_date
         else:
             return ''
+        
+    def get_cong(self,o):
+        if o.draft_bl_line:
+            line = o.draft_bl_line[0]
+            if line.option == 'product':
+                return line.line_number
+            else:
+                return 1
+        else:
+            return 0
         
     
     def get_prepaid(self,hd_id):
