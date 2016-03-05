@@ -108,18 +108,6 @@ class hop_dong(osv.osv):
             else:
                 res[line.id] = False            
         return res
-#     def _get_date_payment_canhbao(self, cr, uid, ids, fields, arg, context=None):
-#         res = {}
-#         for line in self.browse(cr, uid, ids):
-#             canh_bao = 1
-#             if line.date_payment:
-#                 date_payment_canhbao = datetime.strptime(line.date_payment,'%Y-%m-%d') + timedelta(days=canh_bao)
-#                 res[line.id]=date_payment_canhbao.strftime('%Y-%m-%d')
-#                 if line.state in ('moi_tao','da_duyet','da_ky'):
-#                     self.write(cr,uid,[line.id],{'state':'het_han'})
-#             else:
-#                 res[line.id]=False
-#         return res    
     def _get_ngay_canhbao(self, cr, uid, ids, fields, arg, context=None):
         res = {}
         for line in self.browse(cr, uid, ids):
@@ -312,7 +300,6 @@ class hop_dong(osv.osv):
             ], 'Trạng thái',readonly=True, states={'moi_tao': [('readonly', False)]}),
         'ngay_canhbao': fields.function(_get_ngay_canhbao, type='date', string='Ngày cảnh báo'),
 #         'date_payment':fields.date('Ngày thanh toán',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
-#         'date_payment_canhbao': fields.function(_get_date_payment_canhbao, type='date', string='Ngày cảnh báo'),
         'theodoi_hopdong_line': fields.one2many('theodoi.hopdong.line','hopdong_id','Line',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'create_theodoi_hopdong': fields.function(_get_create_theodoi_hopdong, type='char', string='create_theodoi_hopdong'),
         'flag':fields.boolean('C/O'),
