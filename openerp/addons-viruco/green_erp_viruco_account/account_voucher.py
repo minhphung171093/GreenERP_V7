@@ -197,6 +197,10 @@ class account_voucher(osv.osv):
                         hop_dong = self.pool.get('hop.dong').browse(cr,uid,line.hop_dong_id.id)
                         if amount >= hop_dong.amount_total:
                             self.pool.get('hop.dong').write(cr,uid,[line.hop_dong_id.id],{'state':'thanh_toan'}) 
+                        sql = '''
+                            INSERT INTO cac_dot_thanh_toan_ref VALUES (%s, %s);
+                        '''%(line.id, line.id)
+                        cr.execute(sql)
         return new_id
     
     def onchange_partner_id(self, cr, uid, ids, partner_id, journal_id, amount, currency_id, ttype, date, hop_dong_id=False, context=None):
