@@ -201,6 +201,23 @@ class account_voucher(osv.osv):
                             INSERT INTO cac_dot_thanh_toan_ref VALUES (%s, %s);
                         '''%(line.id, line.id)
                         cr.execute(sql)
+            if line.type == 'payment':
+                if 'state' in vals and vals['state']:
+                    if vals['state'] == 'posted':
+                        sql = '''
+                            select case when sum(amount)!=0 then sum(amount) else 0 end amount from account_voucher
+                            where state = 'posted' and hop_dong_id = %s
+                        '''%(line.hop_dong_id.id)
+                        cr.execute(sql)
+                        amount = cr.dictfetchone()['amount']
+                        hop_dong = self.pool.get('hop.dong').browse(cr,uid,line.hop_dong_id.id)
+                        if amount >= hop_dong.amount_total:
+                            self.pool.get('hop.dong').write(cr,uid,[line.hop_dong_id.id],{'state':'thanh_toan'}) 
+                        sql = '''
+                            INSERT INTO cac_dot_thanh_toan_ref VALUES (%s, %s);
+                        '''%(line.id, line.id)
+                        cr.execute(sql)
+                
         return new_id
     
     def onchange_partner_id(self, cr, uid, ids, partner_id, journal_id, amount, currency_id, ttype, date, hop_dong_id=False, context=None):
