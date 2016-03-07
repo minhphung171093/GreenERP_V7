@@ -1197,7 +1197,7 @@ class don_mua_hang(osv.osv):
         'company_id': fields.many2one('res.company','Công ty',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
         'partner_id': fields.many2one('res.partner','Nhà cung cấp',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
         'don_mua_hang_line': fields.one2many('don.mua.hang.line','donmuahang_id','Line',readonly=True, states={'moi_tao': [('readonly', False)]}),
-        'banggia_id': fields.many2one('bang.gia', 'Bảng giá', required=True, readonly=True, states={'moi_tao': [('readonly', False)]}),        
+        'banggia_id': fields.many2one('bang.gia', 'Bảng giá', readonly=True, states={'moi_tao': [('readonly', False)]}),        
         'pricelist_id': fields.many2one('product.pricelist', 'Bảng giá', readonly=True, states={'moi_tao': [('readonly', False)]}, help="Pricelist for current sales order."),
         'currency_id': fields.related('pricelist_id', 'currency_id', type="many2one", relation="res.currency", string="Đơn vị tiền tệ", readonly=True),
         'currency_company_id': fields.many2one('res.currency', 'Currency'),
