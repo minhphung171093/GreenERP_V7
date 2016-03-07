@@ -850,7 +850,7 @@ class don_ban_hang(osv.osv):
         'partner_id': fields.many2one('res.partner','Khách hàng',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
         'don_ban_hang_line': fields.one2many('don.ban.hang.line','donbanhang_id','Line',readonly=True, states={'moi_tao': [('readonly', False)]}),
         'pricelist_id': fields.many2one('product.pricelist', 'Bảng giá', readonly=True, states={'moi_tao': [('readonly', False)]}, help="Pricelist for current sales order."),
-        'banggia_id': fields.many2one('bang.gia', 'Bảng giá', required=True, readonly=True, states={'moi_tao': [('readonly', False)]}, help="Pricelist for current sales order."),        
+        'banggia_id': fields.many2one('bang.gia', 'Bảng giá', readonly=True, states={'moi_tao': [('readonly', False)]}, help="Pricelist for current sales order."),        
         'currency_id': fields.related('banggia_id', 'currency_id', type="many2one", relation="res.currency", string="Đơn vị tiền tệ", readonly=True),
         'currency_company_id': fields.many2one('res.currency', 'Currency'),
         'user_id':fields.many2one('res.users','Người đề nghị',readonly=True,states={'moi_tao': [('readonly', False)]}),
