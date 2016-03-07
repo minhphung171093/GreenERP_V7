@@ -112,6 +112,14 @@ class dieukien_giaohang(osv.osv):
     
 dieukien_giaohang()
 
+class chat_luong(osv.osv):
+    _name = 'chat.luong'
+    _columns = {
+        'name':fields.text('Chất lượng',size=1024,required=True),
+    }
+    
+chat_luong()
+
 
 class hinhthuc_giaohang(osv.osv):
     _name = 'hinhthuc.giaohang'

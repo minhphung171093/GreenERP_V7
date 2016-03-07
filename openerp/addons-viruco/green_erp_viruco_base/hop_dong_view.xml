@@ -452,7 +452,10 @@
 									<field name="ngay_nhanhang" />
 									<field name="diadiem_nhanhang" required='1'/>
 									<field name="thongbao_nhanhang" />
+									<newline/>
+									<button name="bt_list_chatluong" string="Chất lượng" type="object" class="oe_highlight"/>
 									<field name="chat_luong" />
+									
 								</group>
 							</page>
 							<page string="Thông tin mặt hàng" >

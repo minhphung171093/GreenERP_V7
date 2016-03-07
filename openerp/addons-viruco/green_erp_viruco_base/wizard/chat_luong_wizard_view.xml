@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+<!--  ========================= Chất lượng ================= -->     
+         <record id="chat_luong_wizard_form_view" model="ir.ui.view">
+            <field name="name">chat.luong.wizard.form.view</field>
+            <field name="model">chat.luong.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Chất lượng" version="7.0">
+                <sheet>
+                	<group >
+                		<field name = "chat_luong_id" required = '1'/>
+                		<field name = "hopdong_id" invisible='1'/>
+                    </group>
+                </sheet>
+	                <footer>
+                        <button string="OK" type="object" name="bt_ok" class="oe_link"/>
+                        or
+                        <button string="Huỷ bỏ" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_chat_luong_wizard_form_view" model="ir.actions.act_window">
+            <field name="name">Chất lượng</field>
+            <field name="res_model">chat.luong.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="chat_luong_wizard_form_view"/>
+        </record>
+        
+	     
+   </data>
+</openerp>
+        
+        

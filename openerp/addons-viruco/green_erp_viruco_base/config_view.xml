@@ -191,6 +191,42 @@
             <field name="domain">[]</field>
         </record>
         
+<!--Chat luong-->
+		
+		<record id="chat_luong_tree_view" model="ir.ui.view">
+			<field name="name">chat.luong.tree</field>
+			<field name="model">chat.luong</field>
+			<field name="arch" type="xml">
+				<tree string="Chất lượng">
+					<field name="name"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="chat_luong_form_view" model="ir.ui.view">
+			<field name="name">chat.luong.form</field>
+			<field name="model">chat.luong</field>
+            <field name="arch" type="xml">
+	            <form string="Chất lượng" version="7.0">
+	            	<sheet>
+	            		<group>
+		                	<field name="name"/>
+						</group>
+		         	</sheet>
+		         </form>
+			</field>
+		</record>
+          
+		<record id="action_chat_luong" model="ir.actions.act_window">
+            <field name="name">Chất lượng</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">chat.luong</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="chat_luong_tree_view"/>
+            <field name="domain">[]</field>
+        </record>
+        
 <!--Chat luong san pham -->     
         <record id="chatluong_sanpham_tree_view" model="ir.ui.view">
 			<field name="name">chatluong.sanpham.tree</field>
