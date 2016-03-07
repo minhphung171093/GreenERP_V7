@@ -314,7 +314,7 @@ class Parser(report_sxw.rml_parse):
         amount = 0.0
         if hd_id:
             if hd_id.dk_thanhtoan_id:
-                amount = hd_id.dk_thanhtoan_id.dat_coc * self.amount
+                amount = (hd_id.dk_thanhtoan_id.dat_coc * self.amount)/200
         return amount
     
     def get_packing_list(self,o):
