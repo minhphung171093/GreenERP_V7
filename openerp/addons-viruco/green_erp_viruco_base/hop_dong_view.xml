@@ -60,6 +60,8 @@
 	                    	<field name="currency_company_id" invisible='1'/>
 	                    </group>
 	                    <group col='4' colspan='2'>
+	                    	<field name="so_tham_chieu" /> 
+	                    	</newline>
 	                    	<field name="donbanhang_id" on_change="onchange_donbanhang_id(donbanhang_id)" required='1' domain="[('type','=','dbh_noi'),('state','=','da_duyet')]"/>
 	                    	<field name="user_id"/>
 	                    	<field name="company_id" context="{'show_address': 1}"/>
@@ -232,7 +234,7 @@
 	                    </group>
 	                    <group col='4' colspan='2'>
 	                    	<field name="donbanhang_id" on_change="onchange_donbanhang_id(donbanhang_id)" required='1' domain="[('type','=','dbh_ngoai'),('state','=','da_duyet')]"/>
-	                    	<newline/>
+	                    	<field name="so_tham_chieu" /> 
 	                    	<field name="company_id" string="Company" context="{'show_address': 1}"/>
 	                    	<field name="partner_id" string="Partner"  context="{'show_address': 1}" domain="[('customer','=',True)]"/>
 							<field name="banggia_id" on_change="onchange_banggia_id(banggia_id,type,currency_id)" context="{'search_banggia_ban_ngoai_id': 1,'ngay':date_dbh,'currency_company_id':currency_company_id}" />
@@ -687,6 +689,7 @@
 	                    	<field name="company_id" context="{'show_address': 1}" invisible='1'/>
 	                    	<field name="type" invisible='1'/>
 	                    	<field name="currency_company_id" invisible='1'/>
+	                    	<field name="so_tham_chieu" /> 
 	                    </group>
 	                    <group col='4' colspan='2'>
 	                    	<field name="partner_id" on_change="onchange_partner_id(partner_id)" context="{'show_address': 1}" domain="[('customer','=',True)]"/>
@@ -834,6 +837,7 @@
 	                    	<field name="company_id" string="Company" context="{'show_address': 1}" invisible='1'/>
 	                    	<field name="type" invisible='1'/>
 	                    	<field name="currency_company_id" invisible='1'/>
+	                    	<field name="so_tham_chieu" /> 
 	                    </group>
 	                    <group col='4' colspan='2'>
 	                    	<field name="partner_id" on_change="onchange_partner_id(partner_id)" string="Partner" context="{'show_address': 1}" domain="[('customer','=',True)]"/>

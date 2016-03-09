@@ -207,6 +207,7 @@ class hop_dong(osv.osv):
         return res    
     _columns = {
         'name':fields.char('Số', size = 1024,required = True,readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'so_tham_chieu':fields.char('Số tham chiếu', size = 1024,readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'user_id':fields.many2one('res.users','Người đề nghị',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'type':fields.selection([('hd_noi','Hợp đồng nội'),('hd_ngoai','Hợp đồng ngoại'),('hd_mua_trongnuoc','Hợp đồng mua trong nước'),('hd_mua_nhapkhau','Hợp đồng mua nhập khẩu')],'Loại hợp đồng' ,required=True,readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'sale_person_id':fields.many2one('res.users','Sale Person',states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
@@ -570,6 +571,7 @@ class hop_dong(osv.osv):
                 'phuongthuc_thanhtoan':(dbh.note or '')+'\n'+ (property and property.value or ''),
                 'sale_person_id': dbh.sale_person_id and dbh.sale_person_id.id or False,
                 'date_dbh':dbh.ngay,
+                'so_tham_chieu':dbh.so_tham_chieu,
             }
         return {'value': vals}
     
@@ -852,6 +854,7 @@ class don_ban_hang(osv.osv):
 
     _columns = {
         'name':fields.char('Số', size = 1024,required = True,readonly=True,states={'moi_tao': [('readonly', False)]}),
+        'so_tham_chieu':fields.char('Số tham chiếu', size = 1024,readonly=True,states={'moi_tao': [('readonly', False)]}),
         'type':fields.selection([('dbh_noi','Đơn bán hàng nội'),('dbh_ngoai','Đơn bán hàng ngoại')],'Loại đơn bán hàng'),
         'ngay':fields.date('Ngày',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
         'company_id': fields.many2one('res.company','Công ty',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
