@@ -61,7 +61,7 @@
 	                    </group>
 	                    <group col='4' colspan='2'>
 	                    	<field name="so_tham_chieu" /> 
-	                    	</newline>
+	                    	<newline/>
 	                    	<field name="donbanhang_id" on_change="onchange_donbanhang_id(donbanhang_id)" required='1' domain="[('type','=','dbh_noi'),('state','=','da_duyet')]"/>
 	                    	<field name="user_id"/>
 	                    	<field name="company_id" context="{'show_address': 1}"/>
