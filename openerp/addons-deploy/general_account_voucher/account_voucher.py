@@ -83,6 +83,7 @@ class account_voucher_batch(osv.osv):
             'shop_id': fields.many2one('sale.shop', 'Shop', required=True, states={'draft':[('readonly',False)]}),
             'description': fields.text('Description', required=True),
             'date': fields.date('Date', required=True, readonly=True, states={'draft':[('readonly',False)]}),
+            'date_document': fields.date('Ngày hóa đơn', required=True, readonly=True, states={'draft':[('readonly',False)]}),
             'assign_user': fields.char('Assign User', size = 128, required = True, readonly=True, states={'draft':[('readonly',False)]},),
             'journal_id':fields.many2one('account.journal', 'Journal', required=True, readonly=True, states={'draft':[('readonly',False)]}),
             'voucher_lines': fields.one2many('account.voucher', 'batch_id', 'Voucher lines', required=True, readonly=True, states={'draft':[('readonly',False)]}),
@@ -286,6 +287,7 @@ class account_voucher(osv.osv):
             'dien_giai': fields.char('Diễn giải', sie=1024),
             
             'amount': fields.integer('Total', required=True, readonly=True, states={'draft':[('readonly',False)]}),
+            'untax_amount': fields.integer('Giá trị trước thuế', required=True, readonly=True, states={'draft':[('readonly',False)]}),
         }
     
     def _get_assign_user(self, cr, uid, context=None):
@@ -357,6 +359,7 @@ class account_voucher(osv.osv):
             line_ids = []
         res = {
             'amount': False,
+            'untax_amount': False,
         }
         voucher_total = 0.0
 
@@ -370,6 +373,7 @@ class account_voucher(osv.osv):
 
         res.update({
             'amount': total or voucher_total,
+            'untax_amount': voucher_total,
         })
         return {
             'value': res
@@ -467,52 +471,54 @@ class account_voucher(osv.osv):
         if context.get('phieuthu_chi',False):
             for id in ids: 
                 amount_val = self.compute_tax_pt(cr, uid, id, context)
-                cr.execute('update account_voucher set amount=%s, tax_amount=%s',(amount_val['amount'],amount_val['tax_amount'],))
+                untax_amount = amount_val['amount']-amount_val['tax_amount'] or 0
+                cr.execute('update account_voucher set amount=%s, tax_amount=%s, untax_amount=%s',(amount_val['amount'],amount_val['tax_amount'],untax_amount,))
         return new_id
     
-#     def onchange_price(self, cr, uid, ids, line_ids, tax_id, partner_id=False, context=None):
-#         context = context or {}
-# #         tax_pool = self.pool.get('account.tax')
-# #         partner_pool = self.pool.get('res.partner')
-# #         position_pool = self.pool.get('account.fiscal.position')
-#         line_pool = self.pool.get('account.voucher.line')
-#         res = {
-#             'tax_amount': False,
-#             'amount': False,
-#         }
-#         voucher_total = 0.0
-# 
-#         line_ids = resolve_o2m_operations(cr, uid, line_pool, line_ids, ["tax_amount","amount"], context)
-# 
-#         total_tax = 0.0
-#         for line in line_ids:
-#             line_amount = 0.0
-#             line_amount = line.get('amount',0.0)
-# 
-# #             if tax_id:
-# #                 tax = [tax_pool.browse(cr, uid, tax_id, context=context)]
-# #                 if partner_id:
-# #                     partner = partner_pool.browse(cr, uid, partner_id, context=context) or False
-# #                     taxes = position_pool.map_tax(cr, uid, partner and partner.property_account_position or False, tax)
-# #                     tax = tax_pool.browse(cr, uid, taxes, context=context)
-# # 
-# #                 if not tax[0].price_include:
-# #                     for tax_line in tax_pool.compute_all(cr, uid, tax, line_amount, 1).get('taxes', []):
-# #                         total_tax += tax_line.get('amount')
-#             #Thanh: Change the way of getting Tax Amount
-#             total_tax += line.get('tax_amount',0.0)
-#             #Thanh: Change the way of getting Tax Amount
-# 
-#             voucher_total += line_amount
-#         total = voucher_total
-# 
-#         res.update({
-#             'amount': total or voucher_total,
-#             'tax_amount': total_tax
-#         })
-#         return {
-#             'value': res
-#         }
+    def onchange_price(self, cr, uid, ids, line_ids, tax_id, partner_id=False, context=None):
+        context = context or {}
+        tax_pool = self.pool.get('account.tax')
+        partner_pool = self.pool.get('res.partner')
+        position_pool = self.pool.get('account.fiscal.position')
+        line_pool = self.pool.get('account.voucher.line')
+        if not line_ids:
+            line_ids = []
+        res = {
+            'tax_amount': False,
+            'amount': False,
+            'untax_amount': False,
+        }
+        voucher_total = 0.0
+
+        line_ids = resolve_o2m_operations(cr, uid, line_pool, line_ids, ["amount"], context)
+
+        total_tax = 0.0
+        for line in line_ids:
+            line_amount = 0.0
+            line_amount = line.get('amount',0.0)
+
+            if tax_id:
+                tax = [tax_pool.browse(cr, uid, tax_id, context=context)]
+                if partner_id:
+                    partner = partner_pool.browse(cr, uid, partner_id, context=context) or False
+                    taxes = position_pool.map_tax(cr, uid, partner and partner.property_account_position or False, tax)
+                    tax = tax_pool.browse(cr, uid, taxes, context=context)
+
+                if not tax[0].price_include:
+                    for tax_line in tax_pool.compute_all(cr, uid, tax, line_amount, 1).get('taxes', []):
+                        total_tax += tax_line.get('amount')
+
+            voucher_total += line_amount
+        total = voucher_total + total_tax
+
+        res.update({
+            'amount': total or voucher_total,
+            'tax_amount': total_tax,
+            'untax_amount': voucher_total
+        })
+        return {
+            'value': res
+        }
         
     def account_move_get(self, cr, uid, voucher_id, context=None):
         seq_obj = self.pool.get('ir.sequence')

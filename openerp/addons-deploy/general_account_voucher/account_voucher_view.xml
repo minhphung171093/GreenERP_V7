@@ -26,11 +26,17 @@
         <field name="model">account.voucher</field>
         <field name="inherit_id" ref="account_voucher.view_voucher_tree"/>
         <field name="arch" type="xml">
+        	<xpath expr="//field[@name='date']" position="attributes">
+        		<attribute name="string">Ngày hoạch toán</attribute>
+        	</xpath>
+        	<xpath expr="//field[@name='number']" position="attributes">
+        		<attribute name="invisible">1</attribute>
+        	</xpath>
         	<xpath expr="//field[@name='date']" position="before">
         		<field name="shop_id"/>
         	</xpath>
         	<xpath expr="//field[@name='date']" position="after">
-        		<field name="date_document"/>
+        		<field name="date_document" string="Ngày hóa đơn"/>
         	</xpath>
         	<xpath expr="//field[@name='reference']" position="before">
         		<!--<field name="number_register"/>-->
@@ -44,6 +50,7 @@
         	<xpath expr="//field[@name='amount']" position="before">
             	<field name="tax_id"/>
             	<field name="tax_amount"/>
+            	<field name="untax_amount"/>
     		</xpath>
         </field>
     	</record>
@@ -154,7 +161,7 @@
         		<attribute name="domain"></attribute>
         	</xpath>
         	<xpath expr="//field[@name='date']" position="after">
-        		<field name="date_document"/>
+        		<field name="date_document" string="Ngày hóa đơn"/>
         	</xpath>
         	<xpath expr="//field[@name='reference']" position="before">
         		<!--<field name="number_register"/>-->
@@ -163,6 +170,7 @@
         		<field name="reference_number" string="Số hóa đơn"/>
         		<field name="name"/>
         		<field name="unshow_financial_report"/>
+        		<field name="untax_amount" invisible='1'/>
         	</xpath>
         	<xpath expr="//field[@name='journal_id']" position="replace">
         		<field name="journal_id"
@@ -391,7 +399,8 @@
                         </group>
                         <group>
                         	<field name="shop_id"/>
-                            <field name="date"/>
+                            <field name="date" string="Ngày hoạch toán"/>
+                            <field name="date_document"/>
                             <field name="assign_user"/>
                         </group>
                     </group>
@@ -404,7 +413,7 @@
                             	'default_account_id':account_id,
                             	'default_shop_id':shop_id,
                             	'default_date':date,
-                            	'default_date_document':date,
+                            	'default_date_document':date_document,
                             	'default_company_bank_id': company_bank_id,
                             	'default_partner_bank_id': partner_bank_id,
                             	'default_narration':description,
@@ -412,7 +421,7 @@
                             	<tree colors="blue:state == 'draft';gray:state == 'cancel';red:audit" string="Voucher lines">
 				                    <field name="date"/>
 				                    <field name="date_document"/>
-				                    <field name="number"/>
+				                    <field name="number" invisible = '1'/>
 				                    <!--<field name="number_register"/>-->
 				                    <field name="reference"/>
 				                    <field name="reference_number"/>
