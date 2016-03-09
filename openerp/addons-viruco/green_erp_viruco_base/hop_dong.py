@@ -1360,7 +1360,7 @@ class don_mua_hang(osv.osv):
                                         'pricelist_id':product_pricelist_id,
                                         'name': 'Bảng giá mua' 
                                         })
-                        vals['pricelist_id']=pricelist_id
+                        product_pricelist_ids=[pricelist_id]
                     vals['pricelist_id']=product_pricelist_ids[0]
             if (vals['type']=='dmh_nhapkhau'):
                 currency_ids = currency_obj.search(cr,uid,[('name','=','USD')])
@@ -1375,7 +1375,7 @@ class don_mua_hang(osv.osv):
                                         'pricelist_id':product_pricelist_id,
                                         'name': 'Bảng giá mua' 
                                         })
-                        vals['pricelist_id']=pricelist_id
+                        product_pricelist_ids=[pricelist_id]
                     vals['pricelist_id']=product_pricelist_ids[0]
         new_id = super(don_mua_hang, self).create(cr, uid, vals, context=context)    
         return new_id
