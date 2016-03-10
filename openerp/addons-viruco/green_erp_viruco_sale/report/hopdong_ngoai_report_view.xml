@@ -7,10 +7,10 @@
 	        <field name="model">hop.dong</field>
 	        <field name="report_name">Hợp Đồng Ngoại</field>
 	        <field name="report_type">aeroo</field>
-	        <field name="in_format">oo-odt</field>
-	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-doc'),('compatible_types','=','oo-odt')]"/>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
 	        <field name="parser_loc">green_erp_viruco_sale/report/hopdong_ngoai_report.py</field>
-	        <field name="report_rml">green_erp_viruco_sale/report/hopdong_ngoai_report.odt</field>
+	        <field name="report_rml">green_erp_viruco_sale/report/hopdong_ngoai_report.ods</field>
 	        <field name="parser_state">loc</field>
 	        <field name="tml_source">file</field>
 	        <field name="attachment_use" eval="0"/>
@@ -24,6 +24,6 @@
 			model="hop.dong" 
 			name="hopdong_ngoai_report"
 	        string="In Hợp Đồng Ngoại"
-	        rml="green_erp_viruco_sale/report/hopdong_ngoai_report.odt"/> 	
+	        rml="green_erp_viruco_sale/report/hopdong_ngoai_report.ods"/> 	
 	</data>
 </openerp>
