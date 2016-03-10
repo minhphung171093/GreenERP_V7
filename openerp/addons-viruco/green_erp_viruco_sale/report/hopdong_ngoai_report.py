@@ -35,7 +35,16 @@ class Parser(report_sxw.rml_parse):
             'convert_date': self.convert_date,
             'get_tong': self.get_tong,
             'get_transhipment': self.get_transhipment,
-#             'convert_amount':self.convert_amount,
+            'get_so_phuluc': self.get_so_phuluc,
+            'get_price_hh': self.get_price_hh,
+            'get_tax_hh': self.get_tax_hh,
+            'get_ngaynhan_lc': self.get_ngaynhan_lc,
+            'get_thanhtoan': self.get_thanhtoan,
+            'get_journal': self.get_journal,
+            'get_giaohang': self.get_giaohang,
+            'get_delivery_order': self.get_delivery_order,
+            'get_cang_den': self.get_cang_den,
+            'convert_theodoi_date': self.convert_theodoi_date,
         })
         
     def get_transhipment(self, transhipment):
@@ -51,6 +60,12 @@ class Parser(report_sxw.rml_parse):
             date = time.strftime(DATE_FORMAT)
         date = datetime.strptime(date, DATE_FORMAT)
         return date.strftime('%d-%b-%y')
+    
+    def convert_theodoi_date(self, date):
+        if not date:
+            return ''
+        date = datetime.strptime(date[0:10], DATE_FORMAT)
+        return date.strftime('%d-%m-%Y')
         
     def convert_f_amount(self, amount):
         a = format(amount,',')
@@ -85,5 +100,108 @@ class Parser(report_sxw.rml_parse):
             'dongia': dongia,
             'thanhtien': thanhtien,    
         }
+    def get_delivery_order(self, picking_id):
+        if picking_id:
+            nguon_hang = ''
+            picking = self.pool.get('stock.picking').browse(self.cr,self.uid,picking_id)
+            for line in picking.move_lines:
+                if len(picking.move_lines) == 1:
+                    nguon_hang = line.hop_dong_mua_id.name
+                else:
+                    nguon_hang = line.hop_dong_mua_id.name + ' - '
+            return {
+                    'pt_giaohang': picking.pt_giaohang,
+                    'ngay_xuat_kho': picking.date_done,
+                    'nguon_hang': nguon_hang,
+                    }
+        else:
+            return {
+                    'pt_giaohang': '',
+                    'ngay_xuat_kho': '',
+                    'nguon_hang': '',
+                    }
+            
+    def get_cang_den(self,bl_id):
+        bl = self.pool.get('draft.bl').browse(self.cr,self.uid,bl_id)
+        return bl.port_of_charge.name or ''
+        
+    def get_giaohang(self, hopdong_id):
+        bl_ids = []
+        sql = '''
+            select draft_bl_id, picking_id, etd_date, eta_date, cuoc_tau from draft_bl_line where draft_bl_id in (select id from draft_bl where hopdong_id = %s)
+        '''%(hopdong_id)
+        self.cr.execute(sql)
+        bl_ids = self.cr.dictfetchall()
+        return bl_ids
+        
+    def get_thanhtoan(self, hopdong_id):
+        account_voucher_ids = []
+        sql = '''
+            select amount, date, journal_id from account_voucher where type = 'receipt' and hop_dong_id = %s and state = 'posted'
+            order by id
+        '''%(hopdong_id)
+        self.cr.execute(sql)
+        account_voucher_ids = self.cr.dictfetchall()
+        return account_voucher_ids
+    
+    def get_journal(self, journal_id):
+        if journal_id:
+            journal = self.pool.get('account.journal').browse(self.cr,self.uid,journal_id)
+            return journal.name
+        else:
+            return ''
+            
+        
+    def get_ngaynhan_lc(self, hopdong_id):
+        hop_dong = self.pool.get('hop.dong').browse(self.cr,self.uid,hopdong_id)
+        if hop_dong.dk_thanhtoan_id.loai == 'lc':
+            sql = '''
+                select id from account_voucher where type = 'receipt' and hop_dong_id = %s and state = 'posted'
+                order by id
+            '''%(hopdong_id)
+            self.cr.execute(sql)
+            account_voucher_ids = [r[0] for r in self.cr.fetchall()]
+            if account_voucher_ids:
+                account = self.pool.get('account.voucher').browse(self.cr,self.uid,account_voucher_ids[0])
+                return account.date
+            else:
+                return ''
+        else:
+            return ''
+             
+    def get_so_phuluc(self, hop_dong_id):
+        so_phuluc = ''
+        tu_ngay = ''
+        sql = '''
+            select name, tu_ngay from phuluc_hop_dong where type = 'hd_ngoai' and hop_dong_id = %s
+        '''%(hop_dong_id)
+        self.cr.execute(sql)
+        phuluc_ids = self.cr.dictfetchall()
+        if phuluc_ids:
+            for phuluc in phuluc_ids:
+                so_phuluc += phuluc['name'] + ' '
+                tu_ngay += phuluc['tu_ngay'] + ' '
+        return {
+                'so_phuluc': so_phuluc,
+                'tu_ngay': tu_ngay,
+                }
+    
+    def get_price_hh(self,product_id,hop_dong_id): 
+        price_unit = 0.0
+        sql = '''
+            select price_unit from hopdong_hoahong_line where hopdong_hh_id = %s and product_id = %s
+        '''%(hop_dong_id,product_id)
+        self.cr.execute(sql)
+        price_unit = self.cr.dictfetchone()['price_unit']
+        return price_unit
+    
+    def get_tax_hh(self,o):
+        line = o.hopdong_hoahong_line[0]
+        return line.tax_hh
+        
+        
+        
+    
+    
         
         

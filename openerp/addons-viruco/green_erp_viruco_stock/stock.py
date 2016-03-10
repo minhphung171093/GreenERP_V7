@@ -327,7 +327,22 @@ class stock_picking(osv.osv):
         return new_id
 
     def write(self, cr, uid, ids, vals, context=None):
+        new_write=super(stock_picking, self).write(cr, uid,ids, vals, context)   
         for line in self.browse(cr,uid,ids):
+            sql = '''
+                update stock_move set date = '%s' where picking_id = %s
+            '''%(line.date, line.id)
+            cr.execute(sql)
+            
+            sql = '''
+                update stock_move set location_dest_id = %s where picking_id = %s
+            '''%(line.location_dest_id.id, line.id)
+            cr.execute(sql)
+            
+            sql = '''
+                update stock_move set location_id = %s where picking_id = %s
+            '''%(line.location_id.id, line.id)
+            cr.execute(sql)
             if line.type == 'out':
                 if 'state' in vals and vals['state']:
                     if vals['state'] == 'done':
@@ -354,7 +369,7 @@ class stock_picking(osv.osv):
 #                                 self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'giaohang_xongchungtu'})
 #                             else:
 #                                 self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'thuc_hien_xongchungtu'})
-        return super(stock_picking, self).write(cr, uid,ids, vals, context)    
+        return new_write
     
     def action_invoice_create(self, cr, uid, ids, journal_id=False,group=False, type='out_invoice', context=None):
         """ Creates invoice based on the invoice state selected for picking.
@@ -962,6 +977,24 @@ class stock_picking_in(osv.osv):
                 
         new_id = super(osv.osv, self).create(cr, user, vals, context)
         return new_id
+    def write(self, cr, uid, ids, vals, context=None):
+        new_write=super(stock_picking_in, self).write(cr, uid,ids, vals, context)
+        for line in self.browse(cr,uid,ids):
+            sql = '''
+                update stock_move set date = '%s' where picking_id = %s
+            '''%(line.date, line.id)
+            cr.execute(sql)
+            
+            sql = '''
+                update stock_move set location_dest_id = %s where picking_id = %s
+            '''%(line.location_dest_id.id, line.id)
+            cr.execute(sql)
+            
+            sql = '''
+                update stock_move set location_id = %s where picking_id = %s
+            '''%(line.location_id.id, line.id)
+            cr.execute(sql)
+        return new_write
     
 stock_picking_in()
 class stock_picking_out(osv.osv):
@@ -1134,6 +1167,25 @@ class stock_picking_out(osv.osv):
                 vals['name'] = self.pool.get('ir.sequence').get(cr, user, 'stock.picking.out') or '/'
         new_id = super(osv.osv, self).create(cr, user, vals, context)
         return new_id
+    
+    def write(self, cr, uid, ids, vals, context=None):
+        new_write=super(stock_picking_out, self).write(cr, uid,ids, vals, context)
+        for line in self.browse(cr,uid,ids):
+            sql = '''
+                update stock_move set date = '%s' where picking_id = %s
+            '''%(line.date, line.id)
+            cr.execute(sql)
+            
+            sql = '''
+                update stock_move set location_dest_id = %s where picking_id = %s
+            '''%(line.location_dest_id.id, line.id)
+            cr.execute(sql)
+            
+            sql = '''
+                update stock_move set location_id = %s where picking_id = %s
+            '''%(line.location_id.id, line.id)
+            cr.execute(sql)
+        return new_write
 
 #     def write(self, cr, uid, ids, vals, context=None):
 #         for line in self.browse(cr,uid,ids):
