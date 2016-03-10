@@ -160,7 +160,7 @@ class Parser(report_sxw.rml_parse):
                 where (ngay between '%s' and '%s') and state = 'done' and product_id = %s and daily_id in %s
             '''%(date_from,date_to,menhgia.id,dl_ids)
             self.cr.execute(sql)
-            tong_sai_kythuat = self.cr.dictfetchone()['tong']
+            tong_sai_kythuat += self.cr.dictfetchone()['tong']
             sql='''
                 select case when sum(coalesce(sl_2_d,0)+coalesce(sl_2_c,0)+coalesce(sl_2_dc,0)+coalesce(sl_2_18,0))!=0 
                             then sum(coalesce(sl_2_d,0)+coalesce(sl_2_c,0)+coalesce(sl_2_dc,0)+coalesce(sl_2_18,0)) else 0 end sluong_2,
@@ -271,7 +271,7 @@ class Parser(report_sxw.rml_parse):
                 where (ngay between '%s' and '%s') and state = 'done' and product_id = %s 
             '''%(date_from,date_to,menhgia.id)
             self.cr.execute(sql)
-            tong_sai_kythuat = self.cr.dictfetchone()['tong']
+            tong_sai_kythuat += self.cr.dictfetchone()['tong']
 
             sql='''
                 select case when sum(coalesce(sl_2_d,0)+coalesce(sl_2_c,0)+coalesce(sl_2_dc,0)+coalesce(sl_2_18,0))!=0 
