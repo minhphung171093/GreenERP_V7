@@ -441,7 +441,7 @@ class hop_dong(osv.osv):
         elif hopdong.type=='hd_mua_nhapkhau':
             return {
                 'type': 'ir.actions.report.xml',
-                'report_name': 'hopdong_mua_report',
+                'report_name': 'hopdong_mua_nhapkhau_report',
 #                 'datas': datas,
 #                 'nodestroy' : True
             }

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
 	<data>
-    	<record id="hopdong_mua_report" model="ir.actions.report.xml">
-	        <field name="name">hopdong_mua_report</field>
+    	<record id="hopdong_mua_nhapkhau_report" model="ir.actions.report.xml">
+	        <field name="name">hopdong_mua_nhapkhau_report</field>
 	        <field name="type">ir.actions.report.xml</field>
 	        <field name="model">hop.dong</field>
-	        <field name="report_name">Hợp Đồng Mua</field>
+	        <field name="report_name">Sale Contract</field>
 	        <field name="report_type">aeroo</field>
-	        <field name="in_format">oo-odt</field>
-	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-doc'),('compatible_types','=','oo-odt')]"/>
-	        <field name="parser_loc">green_erp_viruco_sale/report/hopdong_mua_report.py</field>
-	        <field name="report_rml">green_erp_viruco_sale/report/hopdong_mua_report.odt</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">green_erp_viruco_sale/report/hopdong_mua_nhapkhau_report.py</field>
+	        <field name="report_rml">green_erp_viruco_sale/report/hopdong_mua_nhapkhau_report.ods</field>
 	        <field name="parser_state">loc</field>
 	        <field name="tml_source">file</field>
 	        <field name="attachment_use" eval="0"/>
@@ -20,10 +20,10 @@
     	<report 
 			auto="False" 
 			menu="False"
-			id="hopdong_mua_report" 
+			id="hopdong_mua_nhapkhau_report" 
 			model="hop.dong" 
-			name="hopdong_mua_report"
-	        string="In Hợp Đồng Mua"
-	        rml="green_erp_viruco_sale/report/hopdong_mua_report.odt"/> 	
+			name="hopdong_mua_nhapkhau_report"
+	        string="Print Sale  Contract"
+	        rml="green_erp_viruco_sale/report/hopdong_mua_nhapkhau_report.ods"/> 	
 	</data>
 </openerp>

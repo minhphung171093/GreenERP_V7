@@ -561,7 +561,7 @@
 	                    	<field name="currency_company_id" invisible='1'/>
 	                    </group>
 	                    <group col='4' colspan='2'>
-	                    	<field name="donmuahang_id" string="Purchase" context="{'search_donmuahang':1,'donmuahang_id':donmuahang_id}" on_change="onchange_donmuahang_id(donmuahang_id)" required='1' domain="[('type','=','dmh_nhapkhau'),('state','=','da_duyet')]"/>
+	                    	<field name="donmuahang_id" invisible='1' string="Purchase" context="{'search_donmuahang':1,'donmuahang_id':donmuahang_id}" on_change="onchange_donmuahang_id(donmuahang_id)" required='0' domain="[('type','=','dmh_nhapkhau'),('state','=','da_duyet')]"/>
 	                    	<newline/>
 	                    	<field name="company_id" string="Company" context="{'show_address': 1}"/>
 	                    	<field name="partner_id" string="Supplier" context="{'show_address': 1,'default_supplier':1,'default_customer':0}" domain="[('supplier','=',True)]"/>
@@ -572,7 +572,7 @@
 	                    	<field name="date_dbh" invisible = '1'/>
 						</group>
 						<notebook>
-							<page string="Thông tin chung">
+							<page string="Information">
 								<group col='4' colspan='2'>
 									<field name="tu_ngay" string="Sign date"/>
 									<field name="den_ngay" string="Validity date" />
@@ -585,7 +585,7 @@
 									<field name="chat_luong" string="Quality" />
 								</group>
 							</page>
-							<page string="Thông tin mặt hàng" >
+							<page string="Product Line" >
 								<field name="hopdong_line">
 									<tree editable='top'>
 	                                    <field name="product_id" on_change="onchange_product_id(product_id, parent.type, context)"/>
@@ -613,7 +613,12 @@
 	                            <div class="oe_clear"/>
 							</page>
 							<page string="Payment Terms">
+								<group>
+									<field name="incoterm_id" string="Incoterm"/>
+									<field name="dk_thanhtoan_id" string="Payment term" />
+								</group>
 								<field name="phuongthuc_thanhtoan" nolabel='1'/>
+								
 							</page>
 						</notebook>
 		         	</sheet>

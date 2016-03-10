@@ -38,7 +38,7 @@ class Parser(report_sxw.rml_parse):
             'get_nganhang': self.get_nganhang,
             'convert_amount':self.convert_amount,
             'convert_mst':self.convert_mst,
-        
+            'get_tong':self.get_tong,
         })
  
     def convert_mst(self, mst):
@@ -46,6 +46,20 @@ class Parser(report_sxw.rml_parse):
         for line in mst:
             a+=line+' '
         return a
+
+    def get_tong(self, o):
+        qty = 0
+        dongia = 0
+        thanhtien = 0
+        for line in o.hopdong_line:
+            qty+=line.product_qty
+            dongia += line.price_unit
+            thanhtien += line.price_subtotal
+        return {
+            'qty': qty,
+            'dongia': dongia,
+            'thanhtien': thanhtien,    
+        }
         
     def convert_date(self, date):
         if not date:

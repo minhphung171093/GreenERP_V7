@@ -26,4 +26,5 @@
 import hopdong_noi_report
 import hopdong_mua_report
 import hopdong_ngoai_report
+import hopdong_mua_nhapkhau_report
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
