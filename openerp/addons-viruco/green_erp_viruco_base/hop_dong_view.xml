@@ -452,7 +452,7 @@
 									<field name="tu_ngay" />
 									<field name="den_ngay" />
 									<field name="ngay_nhanhang" />
-									<field name="diadiem_nhanhang" required='1'/>
+									<field name="location_dest_id" required='1' domain="[('usage','=','internal')]"/>
 									<field name="thongbao_nhanhang" />
 									<newline/>
 									<button name="bt_list_chatluong" string="Chất lượng" type="object" class="oe_highlight"/>
@@ -578,7 +578,7 @@
 									<field name="tu_ngay" />
 									<field name="den_ngay" />
 									<field name="ngay_nhanhang" />
-									<field name="diadiem_nhanhang" />
+									<field name="location_dest_id" domain="[('usage','=','internal')]"/>
 									<field name="thongbao_nhanhang" />
 									<field name="chat_luong" />
 								</group>
