@@ -5,4 +5,5 @@
 ##############################################################################
 import print_report
 import tach_phieu
+import chat_luong_wizard
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

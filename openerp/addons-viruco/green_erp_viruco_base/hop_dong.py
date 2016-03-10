@@ -207,6 +207,7 @@ class hop_dong(osv.osv):
         return res    
     _columns = {
         'name':fields.char('Số', size = 1024,required = True,readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'so_tham_chieu':fields.char('Số tham chiếu', size = 1024,readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'user_id':fields.many2one('res.users','Người đề nghị',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'type':fields.selection([('hd_noi','Hợp đồng nội'),('hd_ngoai','Hợp đồng ngoại'),('hd_mua_trongnuoc','Hợp đồng mua trong nước'),('hd_mua_nhapkhau','Hợp đồng mua nhập khẩu')],'Loại hợp đồng' ,required=True,readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'sale_person_id':fields.many2one('res.users','Sale Person',states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
@@ -214,6 +215,7 @@ class hop_dong(osv.osv):
         'den_ngay':fields.date('Đến ngày',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'ngay_nhanhang':fields.char('Ngày nhận hàng', size=1024),
         'diadiem_nhanhang':fields.many2one('place.of.delivery', 'Địa điểm nhận hàng',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'location_dest_id':fields.many2one('stock.location', 'Địa điểm nhận hàng',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
 #         'diadiem_nhanhang':fields.many2one('place.of.delivery', 'Địa điểm nhận hàng',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'port_of_loading':fields.many2one('port.of.loading', 'Port of loading',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'port_of_charge':fields.many2one('port.of.discharge', 'Port of discharge',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
@@ -221,7 +223,6 @@ class hop_dong(osv.osv):
         'partial_shipment':fields.boolean('Partial shipment',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'transshipment':fields.selection([('allowed','Allowed'),('not_allowed','Not Allowed')],'Transshipment', states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'thongbao_nhanhang':fields.char('Thông báo nhận hàng',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
-        'chat_luong':fields.text('Chất lượng',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'destinaltion':fields.many2one('res.country','Country',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'arbitration_id': fields.many2one('sale.arbitration','Arbitration',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
 #         'phucluc_hd':fields.text('Phụ lục Hợp đồng'),
@@ -250,38 +251,38 @@ class hop_dong(osv.osv):
         'ngaygui_chungtugoc':fields.date('Ngày gửi chứng từ gốc'),
         'dk_giaohang_id': fields.many2one('dieukien.giaohang', 'Điều kiện giao hàng',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'dk_thanhtoan_id': fields.many2one('dk.thanhtoan', 'Điều kiện thanh toán',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
-        'amount_untaxed': fields.function(_amount_all, digits=(16,0), string='Cộng',
+        'amount_untaxed': fields.function(_amount_all, digits=(16,2), string='Cộng',
             store={
                 'hop.dong': (lambda self, cr, uid, ids, c={}: ids, ['hopdong_line'], 10),
                 'hopdong.line': (_get_order, ['price_unit', 'tax_id', 'product_qty'], 10),
             },
             multi='sums', help="The amount without tax.", track_visibility='always'),
-        'amount_tax': fields.function(_amount_all, digits=(16,0), string='Thuế GTGT',
+        'amount_tax': fields.function(_amount_all, digits=(16,2), string='Thuế GTGT',
             store={
                 'hop.dong': (lambda self, cr, uid, ids, c={}: ids, ['hopdong_line'], 10),
                 'hopdong.line': (_get_order, ['price_unit', 'tax_id', 'product_qty'], 10),
             },
             multi='sums', help="The tax amount."),
-        'amount_total': fields.function(_amount_all, digits=(16,0), string='Tổng cộng',
+        'amount_total': fields.function(_amount_all, digits=(16,2), string='Tổng cộng',
             store={
                 'hop.dong': (lambda self, cr, uid, ids, c={}: ids, ['hopdong_line'], 10),
                 'hopdong.line': (_get_order, ['price_unit', 'tax_id', 'product_qty'], 10),
             },
             multi='sums', help="The total amount."),
                 
-        'amount_untaxed_hh': fields.function(_amount_all_hh, digits=(16,0), string='Cộng',
+        'amount_untaxed_hh': fields.function(_amount_all_hh, digits=(16,2), string='Cộng',
             store={
                 'hop.dong': (lambda self, cr, uid, ids, c={}: ids, ['hopdong_hoahong_line'], 10),
                 'hopdong.hoahong.line': (_get_order_hh, ['price_unit', 'tax_id', 'product_qty'], 10),
             },
             multi='sums', help="The amount without tax.", track_visibility='always'),
-        'amount_tax_hh': fields.function(_amount_all_hh,digits=(16,0), string='Thuế GTGT',
+        'amount_tax_hh': fields.function(_amount_all_hh,digits=(16,2), string='Thuế GTGT',
             store={
                 'hop.dong': (lambda self, cr, uid, ids, c={}: ids, ['hopdong_hoahong_line'], 10),
                 'hopdong.hoahong.line': (_get_order_hh, ['price_unit', 'tax_id', 'product_qty'], 10),
             },
             multi='sums', help="The tax amount."),
-        'amount_total_hh': fields.function(_amount_all_hh,digits=(16,0), string='Tổng cộng',
+        'amount_total_hh': fields.function(_amount_all_hh,digits=(16,2), string='Tổng cộng',
             store={
                 'hop.dong': (lambda self, cr, uid, ids, c={}: ids, ['hopdong_hoahong_line'], 10),
                 'hopdong.hoahong.line': (_get_order_hh, ['price_unit', 'tax_id', 'product_qty'], 10),
@@ -306,6 +307,7 @@ class hop_dong(osv.osv):
 #         'trang_thai':fields.char('Trạng thái',size=1024,readonly=True),
         'date_dbh':fields.date('Ngày ban hang',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'user_chungtu_id': fields.many2one('res.users','Người làm chứng từ'),
+        'chat_luong': fields.text('Chất lượng'),
     }
     
     _defaults = {
@@ -317,8 +319,23 @@ class hop_dong(osv.osv):
         'currency_company_id': lambda self, cr, uid, c: self.pool.get('res.users').browse(cr, uid, uid).company_id.currency_id.id,
         'user_id': lambda self, cr, uid, context=None: uid,
         'thongbao_nhanhang':'Bên B thông báo cho bên A trước  ngày',
-        'chat_luong':u'Hàng rời đóng bành 33.33kgs, cân đủ, không cong queo,không sống điểm, không ẩm mốc , không lẫn tạp chất, kéo ra có độ đàn hồi không rách. Hàng đóng bao PE có nhiệt dộ nóng chảy ≤ 109\u2103, hàn kín miệng bao. Hàng không tem.'
     }
+    
+    def bt_list_chatluong(self, cr, uid, ids, context=None): 
+        self.write(cr,uid,ids,{
+                               'chat_luong': False,
+                               })
+        res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'green_erp_viruco_base', 'chat_luong_wizard_form_view')
+        return {
+                            'name': 'Chất lượng',
+                            'view_type': 'form',
+                            'view_mode': 'form',
+                            'view_id': res[1],
+                            'res_model': 'chat.luong.wizard',
+                            'target': 'new',
+                            'context': {'default_message':'Chất lượng', 'default_hopdong_id':ids[0]},
+                            'type': 'ir.actions.act_window',
+                        }
     
     def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
         if context is None:
@@ -555,6 +572,7 @@ class hop_dong(osv.osv):
                 'phuongthuc_thanhtoan':(dbh.note or '')+'\n'+ (property and property.value or ''),
                 'sale_person_id': dbh.sale_person_id and dbh.sale_person_id.id or False,
                 'date_dbh':dbh.ngay,
+                'so_tham_chieu':dbh.so_tham_chieu,
             }
         return {'value': vals}
     
@@ -675,11 +693,11 @@ class hopdong_hoahong_line(osv.osv):
         'hopdong_dh_id': fields.many2one('don.ban.hang', 'Đơn bán hàng', ondelete='cascade', select=True),
         'product_id': fields.many2one('product.product', 'Product', domain=[('sale_ok', '=', True)], change_default=True,),
         'product_uom': fields.many2one('product.uom', 'Đơn vị tính'),
-        'product_qty': fields.float('Số lượng',  digits=(16,0)),
-        'price_unit': fields.float('Đơn giá',  digits=(16,0)),
+        'product_qty': fields.float('Số lượng',  digits=(16,2)),
+        'price_unit': fields.float('Đơn giá',  digits=(16,2)),
         'tax_id': fields.many2many('account.tax', 'hopdong_hh_order_tax', 'hopdong_hh_id', 'tax_id', 'Taxes'),
-        'tax_hh': fields.float('Thuế hoa hồng (%)', digits=(16,0)),
-        'price_subtotal': fields.function(_amount_line, string='Subtotal',  digits=(16,0)),
+        'tax_hh': fields.float('Thuế hoa hồng (%)', digits=(16,2)),
+        'price_subtotal': fields.function(_amount_line, string='Subtotal',  digits=(16,2)),
     }
     
     def onchange_product_id(self, cr, uid, ids,product_id=False, context=None):
@@ -729,14 +747,14 @@ class hopdong_line(osv.osv):
         'product_id': fields.many2one('product.product', 'Product', domain=[('sale_ok', '=', True)], change_default=True,),
         'name':fields.char('Name',size=1024,required=True),
         'product_uom': fields.many2one('product.uom', 'Đơn vị tính'),
-        'product_qty': fields.float('Số lượng', digits=(16,0)),
-        'price_unit': fields.float('Đơn giá', digits=(16,0)),
+        'product_qty': fields.float('Số lượng', digits=(16,2)),
+        'price_unit': fields.float('Đơn giá', digits=(16,2)),
         'tax_id': fields.many2many('account.tax', 'hopdong_order_tax', 'hopdong_id', 'tax_id', 'Taxes'),
-        'price_subtotal': fields.function(_amount_line, string='Subtotal', digits=(16,0)),
+        'price_subtotal': fields.function(_amount_line, string='Subtotal', digits=(16,2)),
         'chatluong_id':fields.many2one('chatluong.sanpham','Chất lượng'),
         'quycach_donggoi_id':fields.many2one('quycach.donggoi','Quy cách đóng gói'),
         'quycach_baobi_id':fields.many2one('quycach.baobi','Quy cách bao bì'),        
-        'sotien_giam': fields.float('Số tiền giảm',digits=(16,0)),
+        'sotien_giam': fields.float('Số tiền giảm',digits=(16,2)),
         'hopdong_giam_id': fields.many2one('hop.dong', 'Hợp đồng'),
         'origin': fields.char('Origin', size = 1024),
     }
@@ -837,6 +855,7 @@ class don_ban_hang(osv.osv):
 
     _columns = {
         'name':fields.char('Số', size = 1024,required = True,readonly=True,states={'moi_tao': [('readonly', False)]}),
+        'so_tham_chieu':fields.char('Số tham chiếu', size = 1024,readonly=True,states={'moi_tao': [('readonly', False)]}),
         'type':fields.selection([('dbh_noi','Đơn bán hàng nội'),('dbh_ngoai','Đơn bán hàng ngoại')],'Loại đơn bán hàng'),
         'ngay':fields.date('Ngày',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
         'company_id': fields.many2one('res.company','Công ty',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
@@ -861,38 +880,38 @@ class don_ban_hang(osv.osv):
         'payment_term': fields.many2one('account.payment.term', 'Payment Term'),
         'incoterm_id': fields.many2one('hd.incoterm', 'Incoterm'),
         'donhang_hoahong_line': fields.one2many('hopdong.hoahong.line','hopdong_dh_id','Line',readonly=True, states={'moi_tao': [('readonly', False)]}),
-        'amount_untaxed': fields.function(_amount_all,  digits=(16,0), string='Cộng',
+        'amount_untaxed': fields.function(_amount_all,  digits=(16,2), string='Cộng',
             store={
                 'don.ban.hang': (lambda self, cr, uid, ids, c={}: ids, ['don_ban_hang_line'], 10),
                 'don.ban.hang.line': (_get_order, ['price_unit', 'tax_id', 'product_qty'], 10),
             },
             multi='sums', help="The amount without tax.", track_visibility='always'),
-        'amount_tax': fields.function(_amount_all, digits=(16,0), string='Thuế GTGT',
+        'amount_tax': fields.function(_amount_all, digits=(16,2), string='Thuế GTGT',
             store={
                 'don.ban.hang': (lambda self, cr, uid, ids, c={}: ids, ['don_ban_hang_line'], 10),
                 'don.ban.hang.line': (_get_order, ['price_unit', 'tax_id', 'product_qty'], 10),
             },
             multi='sums', help="The tax amount."),
-        'amount_total': fields.function(_amount_all, digits=(16,0), string='Tổng cộng',
+        'amount_total': fields.function(_amount_all, digits=(16,2), string='Tổng cộng',
             store={
                 'don.ban.hang': (lambda self, cr, uid, ids, c={}: ids, ['don_ban_hang_line'], 10),
                 'don.ban.hang.line': (_get_order, ['price_unit', 'tax_id', 'product_qty'], 10),
             },
             multi='sums', help="The total amount."),
                 
-        'amount_untaxed_hh': fields.function(_amount_all_hh, digits=(16,0), string='Cộng',
+        'amount_untaxed_hh': fields.function(_amount_all_hh, digits=(16,2), string='Cộng',
             store={
                 'don.ban.hang': (lambda self, cr, uid, ids, c={}: ids, ['donhang_hoahong_line'], 10),
                 'hopdong.hoahong.line': (_get_order_dh, ['price_unit', 'tax_id', 'product_qty'], 10),
             },
             multi='sum_hh', help="The amount without tax.", track_visibility='always'),
-        'amount_tax_hh': fields.function(_amount_all_hh, digits=(16,0), string='Thuế GTGT',
+        'amount_tax_hh': fields.function(_amount_all_hh, digits=(16,2), string='Thuế GTGT',
             store={
                 'don.ban.hang': (lambda self, cr, uid, ids, c={}: ids, ['donhang_hoahong_line'], 10),
                 'hopdong.hoahong.line': (_get_order_dh, ['price_unit', 'tax_id', 'product_qty'], 10),
             },
             multi='sum_hh', help="The tax amount."),
-        'amount_total_hh': fields.function(_amount_all_hh, digits=(16,0), string='Tổng cộng',
+        'amount_total_hh': fields.function(_amount_all_hh, digits=(16,2), string='Tổng cộng',
             store={
                 'don.ban.hang': (lambda self, cr, uid, ids, c={}: ids, ['donhang_hoahong_line'], 10),
                 'hopdong.hoahong.line': (_get_order_dh, ['price_unit', 'tax_id', 'product_qty'], 10),
@@ -1069,10 +1088,10 @@ class don_ban_hang_line(osv.osv):
         'product_id': fields.many2one('product.product', 'Product', domain=[('sale_ok', '=', True)], change_default=True,),
         'name':fields.char('Name',size=1024,required=True),
         'product_uom': fields.many2one('product.uom', 'Đơn vị tính'),
-        'product_qty': fields.float('Số lượng', digits=(16,0)),
-        'price_unit': fields.float('Đơn giá', digits=(16,0)),
+        'product_qty': fields.float('Số lượng', digits=(16,2)),
+        'price_unit': fields.float('Đơn giá', digits=(16,2)),
         'tax_id': fields.many2many('account.tax', 'don_ban_hang_line_tax_ref', 'don_ban_hang_line_id', 'tax_id', 'Thuế'),
-        'price_subtotal': fields.function(_amount_line, string='Thành tiền',digits=(16,0)),
+        'price_subtotal': fields.function(_amount_line, string='Thành tiền',digits=(16,2)),
         'chatluong_id':fields.many2one('chatluong.sanpham','Chất lượng'),
         'quycach_donggoi_id':fields.many2one('quycach.donggoi','Quy cách đóng gói'),
         'quycach_baobi_id':fields.many2one('quycach.baobi','Quy cách bao bì'),
@@ -1206,19 +1225,19 @@ class don_mua_hang(osv.osv):
         'nguoi_gioithieu_id':fields.many2one('res.partner','Người giới thiệu',readonly=True,states={'moi_tao': [('readonly', False)]}),
         'dieukien_giaohang_id':fields.many2one('dieukien.giaohang','Điều kiện giao hàng'),
         'payment_term': fields.many2one('account.payment.term', 'Payment Term'),
-        'amount_untaxed': fields.function(_amount_all, digits=(16,0), string='Cộng',
+        'amount_untaxed': fields.function(_amount_all, digits=(16,2), string='Cộng',
             store={
                 'don.mua.hang': (lambda self, cr, uid, ids, c={}: ids, ['don_mua_hang_line'], 10),
                 'don.mua.hang.line': (_get_order, ['price_unit', 'tax_id', 'product_qty'], 10),
             },
             multi='sums', help="The amount without tax.", track_visibility='always'),
-        'amount_tax': fields.function(_amount_all, digits=(16,0), string='Thuế GTGT',
+        'amount_tax': fields.function(_amount_all, digits=(16,2), string='Thuế GTGT',
             store={
                 'don.mua.hang': (lambda self, cr, uid, ids, c={}: ids, ['don_mua_hang_line'], 10),
                 'don.mua.hang.line': (_get_order, ['price_unit', 'tax_id', 'product_qty'], 10),
             },
             multi='sums', help="The tax amount."),
-        'amount_total': fields.function(_amount_all, digits=(16,0), string='Tổng cộng',
+        'amount_total': fields.function(_amount_all, digits=(16,2), string='Tổng cộng',
             store={
                 'don.mua.hang': (lambda self, cr, uid, ids, c={}: ids, ['don_mua_hang_line'], 10),
                 'don.mua.hang.line': (_get_order, ['price_unit', 'tax_id', 'product_qty'], 10),
@@ -1342,7 +1361,7 @@ class don_mua_hang(osv.osv):
                                         'pricelist_id':product_pricelist_id,
                                         'name': 'Bảng giá mua' 
                                         })
-                        vals['pricelist_id']=pricelist_id
+                        product_pricelist_ids=[pricelist_id]
                     vals['pricelist_id']=product_pricelist_ids[0]
             if (vals['type']=='dmh_nhapkhau'):
                 currency_ids = currency_obj.search(cr,uid,[('name','=','USD')])
@@ -1357,7 +1376,7 @@ class don_mua_hang(osv.osv):
                                         'pricelist_id':product_pricelist_id,
                                         'name': 'Bảng giá mua' 
                                         })
-                        vals['pricelist_id']=pricelist_id
+                        product_pricelist_ids=[pricelist_id]
                     vals['pricelist_id']=product_pricelist_ids[0]
         new_id = super(don_mua_hang, self).create(cr, uid, vals, context=context)    
         return new_id
@@ -1382,10 +1401,10 @@ class don_mua_hang_line(osv.osv):
         'product_id': fields.many2one('product.product', 'Product', domain=[('sale_ok', '=', True)], change_default=True,),
         'name':fields.char('Name',size=1024,required=True),
         'product_uom': fields.many2one('product.uom', 'Đơn vị tính'),
-        'product_qty': fields.float('Số lượng', digits=(16,0)),
-        'price_unit': fields.float('Đơn giá', digits=(16,0)),
+        'product_qty': fields.float('Số lượng', digits=(16,2)),
+        'price_unit': fields.float('Đơn giá', digits=(16,2)),
         'tax_id': fields.many2many('account.tax', 'don_mua_hang_line_tax_ref', 'don_mua_hang_line_id', 'tax_id', 'Thuế'),
-        'price_subtotal': fields.function(_amount_line, string='Thành tiền', digits=(16,0)),
+        'price_subtotal': fields.function(_amount_line, string='Thành tiền', digits=(16,2)),
         'chatluong_id':fields.many2one('chatluong.sanpham','Chất lượng'),
         'quycach_donggoi_id':fields.many2one('quycach.donggoi','Quy cách đóng gói'),
         'quycach_baobi_id':fields.many2one('quycach.baobi','Quy cách bao bì'),
