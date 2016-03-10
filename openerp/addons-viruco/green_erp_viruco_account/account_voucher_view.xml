@@ -190,7 +190,7 @@
 	        <field name="model">hop.dong</field>
 	        <field name="inherit_id" ref="green_erp_viruco_base.hop_dong_mua_nhapkhau_form_view"/>
 	        <field name="arch" type="xml">
-	        	<xpath expr="//page[@string='Phương thức thanh toán']" position="after">
+	        	<xpath expr="//page[@string='Payment Terms']" position="after">
 	        		<page string="Thanh toán nhà cung cấp">
 						<field name="thanh_toan_ncc_line" context = "{'default_type': 'payment', 'tree_view_ref':'account_voucher.view_voucher_tree','form_view_ref':'account_voucher.view_vendor_payment_form'}"/>
 					</page>

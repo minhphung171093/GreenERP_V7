@@ -524,15 +524,14 @@
 			<field name="model">hop.dong</field>
 			<field name="arch" type="xml">
 				<tree string="Hợp đồng mua nhập khẩu" colors="gray:state== 'huy_bo';red:state== 'het_han'">
-					<field name="name"/>
-					<field name="company_id"/>
-					<field name="partner_id" string='Nhà cung cấp'/>
-					<field name="tu_ngay"/>
-					<field name="den_ngay"/>
-					<field name="ngay_nhanhang"/>
-					<field name="amount_total"/>
+					<field name="name" string="No."/>
+					<field name="partner_id" string='Supplier'/>
+					<field name="tu_ngay" string = "Sign date"/>
+					<field name="den_ngay" string = "Validity date"/>
+					<field name="ngay_nhanhang" string= "Shipment time"/>
+					<field name="amount_total" string="Amount"/>
 					<field name="type" invisible="1"/>
-					<field name="state"/>
+					<field name="state" string="Status"/>
 				</tree>
 			</field>
 		</record>
@@ -553,7 +552,7 @@
 					</header>
 	            	<sheet>
 	                    <h1>
-	                    	<label string="Số"/>
+	                    	<label string="No."/>
 	                        <field name="name" class="oe_inline" nolabel="1" />
 	                        <button name="bt_list_phieunhap" string="Danh Sách Phiếu Nhập" type="object" class="oe_highlight, oe_inline, oe_right"/>
 	                    </h1>
@@ -562,25 +561,28 @@
 	                    	<field name="currency_company_id" invisible='1'/>
 	                    </group>
 	                    <group col='4' colspan='2'>
-	                    	<field name="donmuahang_id" context="{'search_donmuahang':1,'donmuahang_id':donmuahang_id}" on_change="onchange_donmuahang_id(donmuahang_id)" required='1' domain="[('type','=','dmh_nhapkhau'),('state','=','da_duyet')]"/>
+	                    	<field name="donmuahang_id" string="Purchase" context="{'search_donmuahang':1,'donmuahang_id':donmuahang_id}" on_change="onchange_donmuahang_id(donmuahang_id)" required='1' domain="[('type','=','dmh_nhapkhau'),('state','=','da_duyet')]"/>
 	                    	<newline/>
-	                    	<field name="company_id" context="{'show_address': 1}"/>
-	                    	<field name="partner_id"  context="{'show_address': 1,'default_supplier':1,'default_customer':0}" string='Nhà cung cấp' domain="[('supplier','=',True)]"/>
+	                    	<field name="company_id" string="Company" context="{'show_address': 1}"/>
+	                    	<field name="partner_id" string="Supplier" context="{'show_address': 1,'default_supplier':1,'default_customer':0}" domain="[('supplier','=',True)]"/>
 	                    	<field name="banggia_id"  on_change="onchange_banggia_id(banggia_id,type,currency_id)" context="{'search_banggia_mua_ngoai_id': 1,'ngay':date_dbh,'currency_company_id':currency_company_id}" invisible = "1" required = "0" />
-	                    	<field name="user_id"/>
-	                    	<field name="currency_id"/>
+	                    	<field name="user_id" string="User" />
+	                    	<field name="currency_id" string="Currency" />
 	                    	<field name="pricelist_id" invisible = '1'/>
 	                    	<field name="date_dbh" invisible = '1'/>
 						</group>
 						<notebook>
 							<page string="Thông tin chung">
 								<group col='4' colspan='2'>
-									<field name="tu_ngay" />
-									<field name="den_ngay" />
-									<field name="ngay_nhanhang" />
-									<field name="location_dest_id" domain="[('usage','=','internal')]"/>
-									<field name="thongbao_nhanhang" />
-									<field name="chat_luong" />
+									<field name="tu_ngay" string="Sign date"/>
+									<field name="den_ngay" string="Validity date" />
+									<field name="ngay_nhanhang" string="Shipment time"/>
+									<field name="location_dest_id" string="Delivery terms" domain="[('usage','=','internal')]"/>
+									<field name="thongbao_nhanhang" invisible='1' />
+									<newline/>
+									<button name="bt_list_chatluong" string="Quality" type="object" class="oe_highlight"/>
+									<newline/>
+									<field name="chat_luong" string="Quality" />
 								</group>
 							</page>
 							<page string="Thông tin mặt hàng" >
@@ -588,18 +590,19 @@
 									<tree editable='top'>
 	                                    <field name="product_id" on_change="onchange_product_id(product_id, parent.type, context)"/>
 	                                    <field name="name"/>
-	                                    <field name="quycach_donggoi_id"  />
-	                                    <field name="quycach_baobi_id"  />
-	                                    <field name="product_uom"/>
-	                                    <field name="product_qty"/>
-	                                    <field name="price_unit"/>
-	                                    <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','sale')]"/>
-	                                    <field name="price_subtotal"/>
+	                                    <field name="chatluong_id" string="Quality" />
+	                                    <field name="quycach_donggoi_id" string="Packing" />
+	                                    <field name="quycach_baobi_id" string="Packaging Spec" />
+	                                    <field name="product_uom" string="Unit" />
+	                                    <field name="product_qty" string="Quantity" />
+	                                    <field name="price_unit" string="Unit price" />
+	                                    <field name="tax_id" string="Taxes" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','sale')]"/>
+	                                    <field name="price_subtotal" string="Sub Total" />
 									</tree>
 								</field>
 								<group class="oe_subtotal_footer oe_right" colspan="2" name="hopdong_total">
-	                                <field name="amount_untaxed" widget='monetary' options="{'currency_field': 'currency_id'}"/>
-	                                <field name="amount_tax" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+	                                <field name="amount_untaxed" string="Untaxed" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+	                                <field name="amount_tax" string="Tax" widget='monetary' options="{'currency_field': 'currency_id'}"/>
 	                                <div class="oe_subtotal_footer_separator oe_inline">
 	                                    <label for="amount_total" />
 	                                    <button name="button_dummy"
@@ -609,7 +612,7 @@
 	                            </group>
 	                            <div class="oe_clear"/>
 							</page>
-							<page string="Phương thức thanh toán">
+							<page string="Payment Terms">
 								<field name="phuongthuc_thanhtoan" nolabel='1'/>
 							</page>
 						</notebook>
@@ -1070,11 +1073,11 @@
 			<field name="model">don.mua.hang</field>
 			<field name="arch" type="xml">
 				<tree string="Đơn mua hàng nhập khẩu">
-					<field name="name"/>
-					<field name="partner_id"/>
-					<field name="ngay"/>
-					<field name="amount_total"/>
-					<field name="state"/>
+					<field name="name" string="No."/>
+					<field name="partner_id" string="Supplier"/>
+					<field name="ngay" string="Date"/>
+					<field name="amount_total" string="Amount"/>
+					<field name="state" string="Status"/>
 					<field name="type" invisible='1'/>
 				</tree>
 			</field>
@@ -1094,7 +1097,7 @@
 					</header>
 	            	<sheet>
 	                    <h1>
-	                    	<label string="Số"/>
+	                    	<label string="No."/>
 	                        <field name="name" class="oe_inline" nolabel="1" />
 	                    </h1>
 	                    <group>
@@ -1102,16 +1105,16 @@
 	                    	<field name="currency_company_id" invisible='1'/>
 	                    </group>
 	                    <group col='4' colspan='2'>
-	                    	<field name="company_id" context="{'show_address': 1}"/>
-	                    	<field name="partner_id" context="{'show_address': 1}" domain="[('customer','=',True)]"/>
-	                    	<field name="ngay"/>
+	                    	<field name="company_id" string="Company" context="{'show_address': 1}"/>
+	                    	<field name="partner_id" string="Supplier" context="{'show_address': 1}" domain="[('customer','=',True)]"/>
+	                    	<field name="ngay" string = "date"/>
 	                    	<field name="banggia_id"  on_change="onchange_banggia_mua_id(banggia_id,ngay)" context="{'search_banggia_mua_ngoai_id': 1,'ngay':ngay,'currency_company_id':currency_company_id}" invisible = "1" required = "0" />
-	                    	<field name="currency_id"/>
-	                    	<field name="user_id"/>
+	                    	<field name="currency_id" string="Currency"/>
+	                    	<field name="user_id" string="User"/>
 	                    	<field name="pricelist_id" invisible = '1'/>
 						</group>
 						<notebook>
-							<page string="Thông tin mặt hàng" >
+							<page string="Information" >
 								<field name="don_mua_hang_line">
 									<tree editable='top'>
 	                                    <field name="product_id" on_change="onchange_product_id(parent.ngay,parent.partner_id,parent.banggia_id,product_id,chatluong_id,quycach_donggoi_id,parent.type, context)"/>
@@ -1119,16 +1122,16 @@
 	                                    <field name="chatluong_id" string="Quality" on_change="onchange_product_id(parent.ngay,parent.partner_id,parent.banggia_id,product_id,chatluong_id,quycach_donggoi_id,parent.type, context)" />
 	                                    <field name="quycach_donggoi_id" string="Packing" on_change="onchange_product_id(parent.ngay,parent.partner_id,parent.banggia_id,product_id,chatluong_id,quycach_donggoi_id,parent.type, context)" />
 	                                    <field name="quycach_baobi_id" string="Packaging Spec" />
-	                                    <field name="product_uom"/>
-	                                    <field name="product_qty"/>
-	                                    <field name="price_unit"/>
-	                                    <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]"/>
-	                                    <field name="price_subtotal"/>
+	                                    <field name="product_uom" string="Unit"/>
+	                                    <field name="product_qty" string="Quantity"/>
+	                                    <field name="price_unit" string="Unit Price"/>
+	                                    <field name="tax_id" string="Taxes" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]"/>
+	                                    <field name="price_subtotal" string="Sub Total"/>
 									</tree>
 								</field>
 								<group class="oe_subtotal_footer oe_right" colspan="2" name="hopdong_total">
-	                                <field name="amount_untaxed" widget='monetary' options="{'currency_field': 'currency_id'}"/>
-	                                <field name="amount_tax" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+	                                <field name="amount_untaxed" string="Untaxed" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+	                                <field name="amount_tax" string="Tax" widget='monetary' options="{'currency_field': 'currency_id'}"/>
 	                                <div class="oe_subtotal_footer_separator oe_inline">
 	                                    <label for="amount_total" />
 	                                    <button name="button_dummy"
