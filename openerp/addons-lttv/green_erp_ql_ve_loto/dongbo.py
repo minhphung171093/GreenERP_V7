@@ -387,7 +387,7 @@ class dongbo_daily_trungthuong(osv.osv):
             if line.sl_2_18_trung:
                 slan_trung = line.sl_2_18_trung
                 sluong_trung = line.sl_2_18
-                thanhtien = (40000*gt_menhgia)
+                thanhtien = (39000*gt_menhgia)
                 vals.append({
                     'name': (line.so_dt_2_18),
                     'product_id': ve_loto.product_id.id,
@@ -441,7 +441,7 @@ class dongbo_daily_trungthuong(osv.osv):
             if line.sl_3_7_trung:
                 slan_trung = line.sl_3_7_trung
                 sluong_trung = line.sl_3_7
-                thanhtien = (700000*gt_menhgia)
+                thanhtien = (715000*gt_menhgia)
                 vals.append({
                     'name': (line.so_dt_3_7),
                     'product_id': ve_loto.product_id.id,
@@ -454,7 +454,7 @@ class dongbo_daily_trungthuong(osv.osv):
             if line.sl_3_17_trung:
                 slan_trung = line.sl_3_17_trung
                 sluong_trung = line.sl_3_17
-                thanhtien = (300000*gt_menhgia)
+                thanhtien = (295000*gt_menhgia)
                 vals.append({
                     'name': (line.so_dt_3_17),
                     'product_id': ve_loto.product_id.id,

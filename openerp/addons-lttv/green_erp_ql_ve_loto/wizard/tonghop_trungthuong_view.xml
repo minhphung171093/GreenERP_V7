@@ -9,7 +9,7 @@
                     <group colspan='4'>
                     	<field name='date'/>
                     </group>
-                    <group string="Đai Dien Phong Ve So Tu Chon">
+                    <group string="Đai Diện Phòng Vé Số Tự Chọn">
 	                    <group>
 	                    	<field name='ddphongve_1'/>
 	                    	<field name='ddphongve_2'/>
@@ -19,7 +19,7 @@
 	                    	<field name='cv_ddphongve_2'/>
                     	</group>
                     </group>
-                    <group string="Đai Dien Phong Tra Thuong">
+                    <group string="Đai Diện Phòng Trả Thưởng">
 	                    <group>
 	                    	<field name='ddphong_trathuong_1'/>
 	                    	<field name='ddphong_trathuong_2'/>

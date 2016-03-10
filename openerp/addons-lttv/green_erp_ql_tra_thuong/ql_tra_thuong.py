@@ -110,7 +110,7 @@ class tra_thuong_line(osv.osv):
             if line.loai=='2_so' and line.giai=='dau_cuoi':
                 res[line.id] = 350000*gt_menhgia
             if line.loai=='2_so' and line.giai=='18_lo':
-                res[line.id] = 40000*gt_menhgia
+                res[line.id] = 39000*gt_menhgia
             if line.loai=='3_so' and line.giai=='dau':
                 res[line.id] = 5000000*gt_menhgia
             if line.loai=='3_so' and line.giai=='cuoi':
@@ -118,9 +118,9 @@ class tra_thuong_line(osv.osv):
             if line.loai=='3_so' and line.giai=='dau_cuoi':
                 res[line.id] = 2500000*gt_menhgia
             if line.loai=='3_so' and line.giai=='7_lo':
-                res[line.id] = 700000*gt_menhgia
+                res[line.id] = 715000*gt_menhgia
             if line.loai=='3_so' and line.giai=='17_lo':
-                res[line.id] = 300000*gt_menhgia
+                res[line.id] = 295000*gt_menhgia
             if line.loai=='4_so' and line.giai=='16_lo':
                 res[line.id] = 2000000*gt_menhgia
         return res
@@ -407,7 +407,7 @@ class tra_thuong_thucte_line(osv.osv):
             if line.loai=='2_so' and line.giai=='dau_cuoi':
                 res[line.id] = 350000*gt_menhgia
             if line.loai=='2_so' and line.giai=='18_lo':
-                res[line.id] = 40000*gt_menhgia
+                res[line.id] = 39000*gt_menhgia
             if line.loai=='3_so' and line.giai=='dau':
                 res[line.id] = 5000000*gt_menhgia
             if line.loai=='3_so' and line.giai=='cuoi':
@@ -415,9 +415,9 @@ class tra_thuong_thucte_line(osv.osv):
             if line.loai=='3_so' and line.giai=='dau_cuoi':
                 res[line.id] = 2500000*gt_menhgia
             if line.loai=='3_so' and line.giai=='7_lo':
-                res[line.id] = 700000*gt_menhgia
+                res[line.id] = 715000*gt_menhgia
             if line.loai=='3_so' and line.giai=='17_lo':
-                res[line.id] = 300000*gt_menhgia
+                res[line.id] = 295000*gt_menhgia
             if line.loai=='4_so' and line.giai=='16_lo':
                 res[line.id] = 2000000*gt_menhgia
         return res

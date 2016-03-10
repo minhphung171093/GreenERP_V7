@@ -209,7 +209,7 @@ class Parser(report_sxw.rml_parse):
             if line.sl_2_18_trung:
                 slan_trung = line.sl_2_18_trung
                 sluong_trung = line.sl_2_18
-                thanhtien = slan_trung*sluong_trung*(40000*gt_menhgia)
+                thanhtien = slan_trung*sluong_trung*(39000*gt_menhgia)
                 
                 tong_sl_2_18 += slan_trung*sluong_trung
                 tong_tien_2_18 += thanhtien
@@ -338,7 +338,7 @@ class Parser(report_sxw.rml_parse):
             if line.sl_3_7_trung:
                 slan_trung = line.sl_3_7_trung
                 sluong_trung = line.sl_3_7
-                thanhtien = slan_trung*sluong_trung*(700000*gt_menhgia)
+                thanhtien = slan_trung*sluong_trung*(715000*gt_menhgia)
                 
                 tong_sl_3_7 += slan_trung*sluong_trung
                 tong_tien_3_7 += thanhtien
@@ -370,7 +370,7 @@ class Parser(report_sxw.rml_parse):
             if line.sl_3_17_trung:
                 slan_trung = line.sl_3_17_trung
                 sluong_trung = line.sl_3_17
-                thanhtien = slan_trung*sluong_trung*(300000*gt_menhgia)
+                thanhtien = slan_trung*sluong_trung*(295000*gt_menhgia)
                 
                 tong_sl_3_17 += slan_trung*sluong_trung
                 tong_tien_3_17 += thanhtien
