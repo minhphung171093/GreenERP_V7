@@ -89,7 +89,7 @@
 							<page string="Chứng từ xuất khẩu Line" >
 								<field name="draft_bl_line" context="{'default_hopdong_id':hopdong_id}">
 									<tree>
-	                                    <field name="ocean_vessel" />
+	                                    <field name="ocean_vessel" invisible='1'/>
 	                                    <field name="etd_date"/>
 	                                    <field name="eta_date"/>
 	                                    <field name="cuoc_tau"/>
