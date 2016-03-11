@@ -28,8 +28,8 @@ class Parser(report_sxw.rml_parse):
         super(Parser, self).__init__(cr, uid, name, context=context)
         pool = pooler.get_pool(self.cr.dbname)
         self.localcontext.update({
-            'get_thue':self.get_thue,
-            'get_tong':self.get_tong,
+#             'get_thue':self.get_thue,
+#             'get_tong':self.get_tong,
             'convert':self.convert,
             'convert_f_amount':self.convert_f_amount,
             'get_soluong':self.get_soluong,
@@ -72,11 +72,11 @@ class Parser(report_sxw.rml_parse):
             val += c.get('amount', 0.0)
         return val
     
-    def get_thue(self,order,line):
-        cur_obj = self.pool.get('res.currency')
-        cur = order.pricelist_id.currency_id
-        val = self._amount_line_tax(self.cr, self.uid, line)
-        return val
+#     def get_thue(self,order,line):
+#         cur_obj = self.pool.get('res.currency')
+#         cur = order.pricelist_id.currency_id
+#         val = self._amount_line_tax(self.cr, self.uid, line)
+#         return val
     
     def get_soluong(self,order):
         cur_obj = self.pool.get('res.currency')
@@ -88,21 +88,21 @@ class Parser(report_sxw.rml_parse):
         return {
                 'product_qty': val,
                 }
-    
-    def get_tong(self,order):
-        cur_obj = self.pool.get('res.currency')
-        cur = order.pricelist_id.currency_id
-        val = 0
-        val1 = 0
-        for line in order.don_ban_hang_line:
-            val += self._amount_line_tax(self.cr, self.uid, line)
-            val1 += line.price_subtotal
+     
+#     def get_tong(self,order):
+#         cur_obj = self.pool.get('res.currency')
+#         cur = order.pricelist_id.currency_id
+#         val = 0
+#         val1 = 0
+#         for line in order.don_ban_hang_line:
+#             val += self._amount_line_tax(self.cr, self.uid, line)
+#             val1 += line.price_subtotal
 #         tax = cur_obj.round(self.cr, self.uid, cur, val)
 #         total = cur_obj.round(self.cr, self.uid, cur, val1)
-        return {
-                'tax': val,
-                'total': val+val1,
-                }
+#         return {
+#                 'tax': val,
+#                 'total': val+val1,
+#                 }
     def get_dia_chi(self, street, street2, state_id, zip, country_id):
         address = ''
         if street:

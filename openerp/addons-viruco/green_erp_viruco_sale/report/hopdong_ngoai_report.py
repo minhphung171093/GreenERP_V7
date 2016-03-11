@@ -45,7 +45,22 @@ class Parser(report_sxw.rml_parse):
             'get_delivery_order': self.get_delivery_order,
             'get_cang_den': self.get_cang_den,
             'convert_theodoi_date': self.convert_theodoi_date,
+            'convert_dbh_date': self.convert_dbh_date,
+            'get_dia_chi': self.get_dia_chi,
+            'get_soluong': self.get_soluong,
+            
         })
+        
+    def get_soluong(self,order):
+        cur_obj = self.pool.get('res.currency')
+        cur = order.pricelist_id.currency_id
+        val = 0
+        for line in order.don_ban_hang_line:
+            val += line.product_qty
+#         product_qty = cur_obj.round(self.cr, self.uid, cur, val)
+        return {
+                'product_qty': val,
+                }
         
     def get_transhipment(self, transhipment):
         tam = ''
@@ -54,6 +69,27 @@ class Parser(report_sxw.rml_parse):
         if transhipment == 'not_allowed':
             tam = 'Not Allowed'
         return tam
+    
+    def get_dia_chi(self, street, street2, state_id, zip, country_id):
+        address = ''
+        if street:
+            address += street + ', '
+        if street2:
+            address += street2 + ', '
+        if state_id:
+            state = self.pool.get('res.country.state').browse(self.cr,self.uid,state_id)
+            address += state.name + ', ' 
+        if zip:
+            address += zip + ', '
+        if country_id:
+            country = self.pool.get('res.country').browse(self.cr,self.uid,country_id)
+            address += country.name  
+        return address
+    
+    def convert_dbh_date(self, date):
+        if date:
+            date = datetime.strptime(date, DATE_FORMAT)
+            return date.strftime('%d/%m/%Y')
         
     def convert_date(self, date):
         if not date:
