@@ -225,7 +225,7 @@ class Parser(report_sxw.rml_parse):
     def get_price_hh(self,product_id,hop_dong_id): 
         price_unit = 0.0
         sql = '''
-            select price_unit from hopdong_hoahong_line where hopdong_hh_id = %s and product_id = %s
+            select case when price_unit!=0 then price_unit else 0 end price_unit from hopdong_hoahong_line where hopdong_hh_id = %s and product_id = %s
         '''%(hop_dong_id,product_id)
         self.cr.execute(sql)
         price_unit = self.cr.dictfetchone()['price_unit']
