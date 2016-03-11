@@ -210,7 +210,7 @@ class draft_bl_line(osv.osv):
         'hopdong_id':fields.many2one('hop.dong','Contract'),
         'line_number': fields.integer('Line Number'),
         'customs_declaration': fields.char('Customs Declaration', size=1024),
-        'date_customs_declaration': fields.char('Date Customs Declaration', size=1024),
+        'date_customs_declaration': fields.date('Date Customs Declaration'),
     }
     
     def onchange_option(self, cr, uid, ids, option=False, line_number=False):
