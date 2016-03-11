@@ -77,7 +77,7 @@ def vietnam_number(val):
             ret = _convert_nnn(l) + ' ' + denom[didx]
             if r > 0:
                 if r/10 > 0:
-                    ret = ret + u',  ' + vietnam_number(r)
+                    ret = ret + u'  ' + vietnam_number(r)
                 if r/10 == 0:
                     ret = ret + u' và lẻ ' + vietnam_number(r)
             return ret
