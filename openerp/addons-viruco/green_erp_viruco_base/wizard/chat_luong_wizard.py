@@ -12,7 +12,7 @@ import decimal_precision as dp
 from tools.translate import _
 
 
-class chat_luong_wizard(osv.osv):
+class chat_luong_wizard(osv.osv_memory):
     _name = "chat.luong.wizard"    
      
     _columns = {
