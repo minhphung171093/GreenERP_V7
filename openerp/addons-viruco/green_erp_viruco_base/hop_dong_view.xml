@@ -576,7 +576,7 @@
 								<group col='4' colspan='2'>
 									<field name="tu_ngay" string="Sign date"/>
 									<field name="den_ngay" string="Validity date" />
-									<field name="ngay_nhanhang" string="Shipment time"/>
+									<field name="ngay_nhanhang" required = '1' string="Shipment time"/>
 									<field name="location_dest_id" string="Delivery terms" domain="[('usage','=','internal')]"/>
 									<field name="thongbao_nhanhang" invisible='1' />
 									<newline/>

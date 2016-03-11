@@ -78,14 +78,22 @@ class Parser(report_sxw.rml_parse):
         a = format(int(amount),',')
         a = a.replace(',','.')
         return a   
-    
+
     def convert(self, amount):
-        amount_text = amount_to_text_vn.amount_to_text(amount, 'vn')
+        amount_text = amount_to_text_en.amount_to_text(amount, 'en', 'Dollars')
         if amount_text and len(amount_text)>1:
             amount = amount_text[1:]
             head = amount_text[:1]
             amount_text = head.upper()+amount
         return amount_text
+    
+#     def convert(self, amount):
+#         amount_text = amount_to_text_vn.amount_to_text(amount, 'vn')
+#         if amount_text and len(amount_text)>1:
+#             amount = amount_text[1:]
+#             head = amount_text[:1]
+#             amount_text = head.upper()+amount
+#         return amount_text
     
     def get_tax(self,o):
         tax = 0
