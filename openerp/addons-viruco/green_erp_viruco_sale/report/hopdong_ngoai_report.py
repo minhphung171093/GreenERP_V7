@@ -228,7 +228,8 @@ class Parser(report_sxw.rml_parse):
             select case when price_unit!=0 then price_unit else 0 end price_unit from hopdong_hoahong_line where hopdong_hh_id = %s and product_id = %s
         '''%(hop_dong_id,product_id)
         self.cr.execute(sql)
-        price_unit = self.cr.dictfetchone()['price_unit']
+        p = self.cr.dictfetchone()
+        price_unit = p and p['price_unit'] or 0
         return price_unit
     
     def get_tax_hh(self,o):
