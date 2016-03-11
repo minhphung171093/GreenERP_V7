@@ -84,7 +84,6 @@
                     		<field name="diadiem_nhanhang" string = "Place of delivery"/>
                     		<field name="country_id"/>
                     		<field name="freight"/>
-                    		<field name="customs_declaration" string = "Customs Declaration Number" />
                     		<field name="stock_ids" widget="many2many_tags" invisible='1'/>
 	                    </group>
 	                    </group>
@@ -96,9 +95,8 @@
 								<field name="draft_bl_line" context="{'default_hopdong_id':hopdong_id}">
 									<tree>
 	                                    <field name="ocean_vessel" invisible='1'/>
-	                                    <field name="etd_date"/>
-	                                    <field name="eta_date"/>
-	                                    <field name="cuoc_tau"/>
+	                                    <field name="customs_declaration"/>
+	                                    <field name="date_customs_declaration"/>
 	                                    <field name="hopdong_line_id"/>
 	                                   	<field name="hopdong_id" invisible="1"/>
 									</tree>
