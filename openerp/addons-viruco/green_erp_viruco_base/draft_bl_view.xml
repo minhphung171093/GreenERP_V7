@@ -10,7 +10,6 @@
 				<tree string="Chứng từ xuất khẩu">
 					<field name="name"/>
 					<field name="hopdong_id"/>
-					<field name="partner_id"/>
 					<field name="net_weight"/>
 					<field name="etd_date"/>
 					<field name="eta_date"/>
