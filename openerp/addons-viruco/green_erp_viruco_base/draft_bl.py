@@ -56,7 +56,7 @@ class draft_bl(osv.osv):
     _columns = {
         'name':fields.char('Booking No', size = 1024,required = True),
         'hopdong_id':fields.many2one('hop.dong','Contract',required = True),
-#         'partner_id':fields.related('hopdong_id', 'partner_id', relation='res.partner', string='Buyer'),
+        'partner_id':fields.related('hopdong_id', 'partner_id', relation='res.partner', string='Buyer'),
         'net_weight': fields.function(_get_net_weight, type='float', string='Net Weight'),
         'date':fields.date('Date',required=True),
         
