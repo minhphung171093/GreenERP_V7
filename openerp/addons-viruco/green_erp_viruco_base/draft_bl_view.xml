@@ -54,7 +54,7 @@
 	            	<sheet>
 	            	<group >
 	                    <group>
-	                    	<field name="hopdong_id" domain="[('type','=','hd_ngoai'),('state','in',('thuc_hien','lam_chungtu'))]" on_change = "onchange_hopdong_id(hopdong_id)" context="{'form_view_ref':'green_erp_viruco_base.hop_dong_ngoai_form_view'}"/>
+	                    	<field name="hopdong_id" domain="[('type','=','hd_ngoai'),('state','in',('thuc_hien','lam_chungtu','xong_chungtu'))]" on_change = "onchange_hopdong_id(hopdong_id)" context="{'form_view_ref':'green_erp_viruco_base.hop_dong_ngoai_form_view'}"/>
 	                        <field name="date"/>
 	                        <field name="bl_no"/>
 	                    </group>
