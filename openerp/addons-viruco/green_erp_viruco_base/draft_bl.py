@@ -39,10 +39,32 @@ class draft_bl(osv.osv):
             }
         return {'value': vals}
     
+    def _get_net_weight(self, cr, uid, ids, field_name, arg, context=None):
+        res = {}
+        for bl in self.browse(cr, uid, ids, context=context):
+            net_weight = 0
+            for bl_line in bl.draft_bl_line:
+                if bl_line.option=='product':
+                    for line in bl_line.seal_descript_line:
+                        net_weight += line.net_weight
+                if bl_line.option=='seal_no':
+                    for line in bl_line.description_line:
+                        net_weight += line.net_weight
+            res[bl.id] = net_weight
+        return res
+            
     _columns = {
         'name':fields.char('Booking No', size = 1024,required = True),
         'hopdong_id':fields.many2one('hop.dong','Contract',required = True),
+        'partner_id':fields.related('hopdong_id', 'partner_id', relation='res.partner', string='Buyer'),
+        'net_weight': fields.function(_get_net_weight, type='float', string='Net Weight'),
         'date':fields.date('Date',required=True),
+        
+        'etd_date':fields.date('ETD'),
+        'eta_date':fields.date('ETA'),
+        
+        'cuoc_tau': fields.float('Freight Cost'),
+        
         'company_id': fields.many2one('res.company','Company',required = True),
         'notify_party_id': fields.many2one('res.partner','Notify Party',required=True),
         'notify_party_text':fields.char('2nd Notify Party'),
@@ -187,6 +209,8 @@ class draft_bl_line(osv.osv):
         'seal_descript_line': fields.one2many('description.line','seal_line_id','Line'),
         'hopdong_id':fields.many2one('hop.dong','Contract'),
         'line_number': fields.integer('Line Number'),
+        'customs_declaration': fields.char('Customs Declaration', size=1024),
+        'date_customs_declaration': fields.char('Date Customs Declaration', size=1024),
     }
     
     def onchange_option(self, cr, uid, ids, option=False, line_number=False):

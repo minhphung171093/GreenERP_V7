@@ -10,12 +10,15 @@
 				<tree string="Chứng từ xuất khẩu">
 					<field name="name"/>
 					<field name="hopdong_id"/>
-					<field name="date"/>
-					<field name="notify_party_id"/>
-					<field name="bl_no"/>
-					<field name="port_of_loading"/>
+					<field name="partner_id"/>
+					<field name="net_weight"/>
+					<field name="etd_date"/>
+					<field name="eta_date"/>
 					<field name="port_of_charge"/>
-	                <field name="diadiem_nhanhang" string = "Place of delivery"/>
+					<field name="forwarder_line_id" />
+            		<field name="shipping_line_id" />
+	                <field name="cuoc_tau"/>
+	                <field name="bl_no"/>
 	                <field name="state"/>
 				</tree>
 			</field>
@@ -57,11 +60,14 @@
 	                    	<field name="hopdong_id" domain="[('type','=','hd_ngoai'),('state','in',('thuc_hien','lam_chungtu','xong_chungtu'))]" on_change = "onchange_hopdong_id(hopdong_id)" context="{'form_view_ref':'green_erp_viruco_base.hop_dong_ngoai_form_view'}"/>
 	                        <field name="date"/>
 	                        <field name="bl_no"/>
+	                        <field name="etd_date"/>
+	                        <field name="cuoc_tau"/>
 	                    </group>
 	                    <group>
 	                    	<field name="name" string="Booking No."/>
                     		<field name="shipping_line_id" />
-                    		<field name="forwarder_line_id" />	      
+                    		<field name="forwarder_line_id" />
+							<field name="eta_date"/>   
                     	</group>              	
 	                    <group>
                     		<field name="company_id" string = "Shipper"/>
@@ -99,10 +105,10 @@
 									<form version = "7.0">
 										<group col='4' colspan='2'>
 					                    	<!--<field name="picking_id" context="{'search_picking_out':1, 'hopdong_id':parent.hopdong_id}"/>-->
-		                                    <field name="etd_date"/>
-		                                    <field name="eta_date"/>
 		                                    <field name="option" on_change = "onchange_option(option,line_number)"/>
-		                                    <field name="cuoc_tau"/>
+		                                    <newline/>
+		                                    <field name="customs_declaration"/>
+		                                    <field name="date_customs_declaration"/>
 		                                    <field name="hopdong_line_id" domain="[('hopdong_id','=',parent.hopdong_id)]" attrs="{'invisible':[('option','in',['seal_no',False])],'required':[('option','in',['product'])]}" />
 		                                    <field name="container_no_seal" on_change = "onchange_container_no(container_no_seal)"  attrs="{'invisible':[('option','in',['product',False])]}"/>
 		                                    <field name="line_number" on_change = "onchange_option(option,line_number)" attrs="{'invisible':[('option','!=','product')]}"/>
