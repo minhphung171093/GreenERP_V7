@@ -191,8 +191,8 @@
 			<field name="model">hop.dong</field>
 			<field name="arch" type="xml">
 				<tree string="Hợp đồng ngoại" colors="gray:state== 'huy_bo';red:(ngay_canhbao and (ngay_canhbao &lt;= current_date))">
-					<field name="name"/>
-					<field name="partner_id" string="Partner"/>
+					<field name="name" string="No."/>
+					<field name="partner_id" string="Buyer"/>
 					<field name="tu_ngay" string = "Sign date" />
 					<field name="den_ngay" string = "Validity date" />
 					<field name="ngay_nhanhang" string = "Shipping Time"/>
@@ -236,7 +236,7 @@
 	                    	<field name="donbanhang_id" on_change="onchange_donbanhang_id(donbanhang_id)" required='1' domain="[('type','=','dbh_ngoai'),('state','=','da_duyet')]"/>
 	                    	<field name="so_tham_chieu" /> 
 	                    	<field name="company_id" string="Company" context="{'show_address': 1}"/>
-	                    	<field name="partner_id" string="Partner"  context="{'show_address': 1}" domain="[('customer','=',True)]"/>
+	                    	<field name="partner_id" string="Buyer"  context="{'show_address': 1}" domain="[('customer','=',True)]"/>
 							<field name="banggia_id" on_change="onchange_banggia_id(banggia_id,type,currency_id)" context="{'search_banggia_ban_ngoai_id': 1,'ngay':date_dbh,'currency_company_id':currency_company_id}" />
 							<field name="sale_person_id" />
 	                    	<field name="currency_id" string="Currency"/>
@@ -802,8 +802,8 @@
 			<field name="model">don.ban.hang</field>
 			<field name="arch" type="xml">
 				<tree string="Sales CONFIRMATION">
-					<field name="name" string="Name"/>
-					<field name="partner_id" string="Partner"/>
+					<field name="name" string="Contract"/>
+					<field name="partner_id" string="Buyer"/>
 					<field name="ngay" string="Date"/>
 					<field name="amount_total" string="Amount Total"/>
 					<field name="state" string="State"/>
@@ -816,8 +816,8 @@
             <field name="model">don.ban.hang</field>
             <field name="arch" type="xml">
                 <search string="Sales CONFIRMATION">
-                    <field name="name"/>
-                    <field name="partner_id"/>
+                    <field name="name" string="Contract"/>
+                    <field name="partner_id" string="Buyer" />
                     <group expand="0" string="Group By...">
                         <filter string="Status" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
                     </group>
@@ -848,7 +848,7 @@
 	                    	<field name="so_tham_chieu" /> 
 	                    </group>
 	                    <group col='4' colspan='2'>
-	                    	<field name="partner_id" on_change="onchange_partner_id(partner_id)" string="Partner" context="{'show_address': 1}" domain="[('customer','=',True)]"/>
+	                    	<field name="partner_id" on_change="onchange_partner_id(partner_id)" string="Buyer" context="{'show_address': 1}" domain="[('customer','=',True)]"/>
 	                    	<field name="ngay" string="Date"/>
 	                    	<field name="banggia_id" context="{'search_banggia_ban_ngoai_id': 1,'ngay':ngay,'currency_company_id':currency_company_id}" />
 	                    	<field name="sale_person_id" /> 

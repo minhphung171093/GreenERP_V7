@@ -8,7 +8,7 @@
 			<field name="model">draft.bl</field>
 			<field name="arch" type="xml">
 				<tree string="Chứng từ xuất khẩu">
-					<field name="name"/>
+					
 					<field name="hopdong_id"/>
 					<field name="partner_id"/>
 					<field name="net_weight"/>
@@ -72,9 +72,9 @@
 	                    <group>
                     		<field name="company_id" string = "Shipper"/>
                     		<field name="consignee_id" string = "1st Consignee" />
-                    		<field name="consignee_text" string = "2nd Consignee" />
+                    		<field name="consignee_text" string = "2nd Consignee" invisible='1' />
                     		<field name="notify_party_id" domain="[('customer','=',True)]" string = "1st Notify Party" />
-                    		<field name="consignee_text" string = "2nd Notify Party" />
+                    		<field name="consignee_text" string = "2nd Notify Party" invisible='1' />
                     		<field name="user_id"/>
 	                    </group>
 	                    <group>

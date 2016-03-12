@@ -115,8 +115,9 @@ class hop_dong(osv.osv):
             if line.den_ngay:
                 ngay_canhbao = datetime.strptime(line.den_ngay,'%Y-%m-%d') + timedelta(days=-canh_bao)
                 res[line.id]=ngay_canhbao.strftime('%Y-%m-%d')
-                if line.state in ('moi_tao','da_duyet','da_ky'):
-                    self.write(cr,uid,[line.id],{'state':'het_han'})                
+                if ngay_canhbao:
+                    if line.state in ('moi_tao','da_duyet','da_ky'):
+                        self.write(cr,uid,[line.id],{'state':'het_han'})                
             else:
                 res[line.id]=False
         return res    
