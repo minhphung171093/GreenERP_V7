@@ -66,39 +66,85 @@ class Parser(report_sxw.rml_parse):
         chua_nhan = wizard_data['chua_nhan']
         tu_ngay = wizard_data['tu_ngay']
         den_ngay = wizard_data['den_ngay']
-        sql ='''
-            select sp.name as so_phieuxuat,sp.ngay_gui, rp.name as ten_kh,    
-                sum(spp.sl_nhietke_conlai) as sl_nhietke_conlai,
-                case when sp.ngay_nhan is not null then 'Da nhan' else 'Chua nhan' end as bb_giaonhan
-            from stock_picking_packaging spp
-            left join stock_picking sp on sp.id = spp.picking_id
-            left join res_partner rp ON sp.partner_id = rp.id
-            where sp.ngay_gui >= '%s' and (sp.ngay_nhan is null or sp.ngay_nhan <= '%s')
-        ''' %(tu_ngay, den_ngay)
-        if partner_id:
+        if self.uid != 1:
+            sql ='''
+                select sp.name as so_phieuxuat,sp.ngay_gui, rp.name as ten_kh, rpu.name as tdv, rcs.name as tinh,   
+                    sum(spp.sl_nhietke_conlai) as sl_nhietke_conlai,
+                    case when sp.ngay_nhan is not null then 'Da nhan' else 'Chua nhan' end as bb_giaonhan
+                from stock_picking_packaging spp
+                left join stock_picking sp on sp.id = spp.picking_id
+                left join res_partner rp ON sp.partner_id = rp.id
+                left join res_users ru ON rp.user_id = ru.id
+                left join res_partner rpu ON ru.partner_id = rpu.id
+                left join res_country_state rcs ON rp.state_id = rcs.id
+                where sp.ngay_gui >= '%s' and (sp.ngay_nhan is null or sp.ngay_nhan <= '%s') and rp.user_id = %s
+            ''' %(tu_ngay, den_ngay, self.uid)
+            if partner_id:
+                sql+='''
+                    and rp.id = %s 
+                '''%(partner_id[0])
+            if da_nhan:
+                sql+='''
+                    and sp.ngay_nhan is not null
+                '''
+            if chua_nhan:
+                sql+='''
+                    and sp.ngay_nhan is null
+                '''    
             sql+='''
-                and rp.id = %s 
-            '''%(partner_id[0])
-        if da_nhan:
+                 group by sp.name,sp.ngay_gui, rp.name,rpu.name,rcs.name,case when sp.ngay_nhan is not null then 'Da nhan' else 'Chua nhan' end
+                order by sp.name
+                '''
+            self.cr.execute(sql)
+            for line in self.cr.dictfetchall():
+                res.append({
+                            'so_phieuxuat': line['so_phieuxuat'],
+                            'ten_kh':line['ten_kh'],
+                            'ngay_gui':self.get_vietname_date(line['ngay_gui']),
+                            'sl_nhietke_conlai':line['sl_nhietke_conlai'],
+                            'bb_giaonhan':line['bb_giaonhan'],
+                            'tdv':line['tdv'], 
+                            'tinh':line['tinh'], 
+                        })
+        else:
+            sql ='''
+                select sp.name as so_phieuxuat,sp.ngay_gui, rp.name as ten_kh, rpu.name as tdv, rcs.name as tinh,   
+                    sum(spp.sl_nhietke_conlai) as sl_nhietke_conlai,
+                    case when sp.ngay_nhan is not null then 'Da nhan' else 'Chua nhan' end as bb_giaonhan
+                from stock_picking_packaging spp
+                left join stock_picking sp on sp.id = spp.picking_id
+                left join res_partner rp ON sp.partner_id = rp.id
+                left join res_users ru ON rp.user_id = ru.id
+                left join res_partner rpu ON ru.partner_id = rpu.id
+                left join res_country_state rcs ON rp.state_id = rcs.id
+                where sp.ngay_gui >= '%s' and (sp.ngay_nhan is null or sp.ngay_nhan <= '%s')
+            ''' %(tu_ngay, den_ngay)
+            if partner_id:
+                sql+='''
+                    and rp.id = %s 
+                '''%(partner_id[0])
+            if da_nhan:
+                sql+='''
+                    and sp.ngay_nhan is not null
+                '''
+            if chua_nhan:
+                sql+='''
+                    and sp.ngay_nhan is null
+                '''    
             sql+='''
-                and sp.ngay_nhan is not null
-            '''
-        if chua_nhan:
-            sql+='''
-                and sp.ngay_nhan is null
-            '''    
-        sql+='''
-             group by sp.name,sp.ngay_gui, rp.name,case when sp.ngay_nhan is not null then 'Da nhan' else 'Chua nhan' end
-            order by sp.name
-            '''
-        self.cr.execute(sql)
-        for line in self.cr.dictfetchall():
-            res.append({
-                        'so_phieuxuat': line['so_phieuxuat'],
-                        'ten_kh':line['ten_kh'],
-                        'ngay_gui':self.get_vietname_date(line['ngay_gui']),
-                        'sl_nhietke_conlai':line['sl_nhietke_conlai'],
-                        'bb_giaonhan':line['bb_giaonhan'],
-                    })
+                 group by sp.name,sp.ngay_gui, rp.name,rpu.name,rcs.name,case when sp.ngay_nhan is not null then 'Da nhan' else 'Chua nhan' end
+                order by sp.name
+                '''
+            self.cr.execute(sql)
+            for line in self.cr.dictfetchall():
+                res.append({
+                            'so_phieuxuat': line['so_phieuxuat'],
+                            'ten_kh':line['ten_kh'],
+                            'ngay_gui':self.get_vietname_date(line['ngay_gui']),
+                            'sl_nhietke_conlai':line['sl_nhietke_conlai'],
+                            'bb_giaonhan':line['bb_giaonhan'],
+                            'tdv':line['tdv'], 
+                            'tinh':line['tinh'], 
+                        })
         return res
     

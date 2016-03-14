@@ -240,6 +240,7 @@ class stock_picking_out(osv.osv):
     _defaults = {
                  'flag': False,
                  'state_receive':'draft',
+                 'date': lambda *a: time.strftime('%Y-%m-%d %H:%M:%S'),
                  }
     
     def tao_hoa_don(self, cr, uid,ids, context=None):
@@ -553,6 +554,7 @@ class stock_picking_in(osv.osv):
             type='boolean'),
     }
     _defaults = {
+                 'date': lambda *a: time.strftime('%Y-%m-%d %H:%M:%S'),
                  'flag': False,
                  }
     
@@ -813,6 +815,7 @@ class stock_picking(osv.osv):
     _defaults = {
                  'flag': False,
                  'state_receive':'draft',
+                 'date': lambda *a: time.strftime('%Y-%m-%d %H:%M:%S'),
                  }
     
     def xem_phieu_xu_ly(self, cr, uid, ids, context=None):
@@ -2079,22 +2082,22 @@ class trahang_chokho(osv.osv):
                                        'move_id': gh_line.move_id and gh_line.move_id.id or False,
                                        }))
                 
-            for thung in guihang.picking_id.picking_packaging_line:
-                ct_thung_line.append((0,0,{
-                                       'loai_thung_id': thung.loai_thung_id and thung.loai_thung_id.id or False,
-                                       'sl_thung': thung.sl_thung,
-                                       'chi_phi_thung': thung.chi_phi_thung,
-                                       'sl_da': thung.sl_da,
-                                       'chi_phi_da': thung.chi_phi_da,
-                                       'sl_nhietke': thung.sl_nhietke,
-                                       'chi_phi_nhiet_ke': thung.chi_phi_nhiet_ke,
-                                       'chi_phi_gui_hang': thung.chi_phi_gui_hang,
-                                       'chiphi_vanchuyen': thung.chiphi_vanchuyen,
-                                       'employee_id': thung.employee_id and thung.employee_id.id or False,
-                                       'nhietdo_packaging_di': thung.nhietdo_packaging_di,
-                                       'nhietdo_packaging_den': thung.nhietdo_packaging_den,
-                                       'packaging_id': thung.id and thung.id or False,
-                                       }))
+#             for thung in guihang.picking_id.picking_packaging_line:
+#                 ct_thung_line.append((0,0,{
+#                                        'loai_thung_id': thung.loai_thung_id and thung.loai_thung_id.id or False,
+#                                        'sl_thung': thung.sl_thung,
+#                                        'chi_phi_thung': thung.chi_phi_thung,
+#                                        'sl_da': thung.sl_da,
+#                                        'chi_phi_da': thung.chi_phi_da,
+#                                        'sl_nhietke': thung.sl_nhietke,
+#                                        'chi_phi_nhiet_ke': thung.chi_phi_nhiet_ke,
+#                                        'chi_phi_gui_hang': thung.chi_phi_gui_hang,
+#                                        'chiphi_vanchuyen': thung.chiphi_vanchuyen,
+#                                        'employee_id': thung.employee_id and thung.employee_id.id or False,
+#                                        'nhietdo_packaging_di': thung.nhietdo_packaging_di,
+#                                        'nhietdo_packaging_den': thung.nhietdo_packaging_den,
+#                                        'packaging_id': thung.id and thung.id or False,
+#                                        }))
             return {
                     'name': 'Giao Hàng',
                     'view_type': 'form',
@@ -2105,7 +2108,7 @@ class trahang_chokho(osv.osv):
                     'context': {
                         'default_trahang_id': guihang.id,
                         'default_ct_giaohang_line': ct_giaohang_line,
-                        'default_ct_thung_line': ct_thung_line,
+#                         'default_ct_thung_line': ct_thung_line,
                             },
                     'type': 'ir.actions.act_window',
                     'target': 'new',
@@ -2144,7 +2147,6 @@ trahang_chokho_line()
 
 class giaohang_line(osv.osv):
     _name = "giaohang.line"
-    
     _columns = {
         'trahang_id': fields.many2one('trahang.chokho', 'Tra Hang Hoa', ondelete = 'cascade'),
         'date': fields.date('Ngày lấy hàng'),
@@ -2166,6 +2168,88 @@ class giaohang_line(osv.osv):
         return self.write(cr, uid, ids, {'ngay_nhan':datetime.now().strftime('%Y-%m-%d'),'state_receive':'da_nhan'})
     
     def bt_save(self, cr, uid, ids, context=None):
+        total_the_tich = 0.0
+        tam = 0.0 
+        for line in self.browse(cr, uid, ids):
+            sql = '''
+                delete from ct_thung_line where giaohang_id = %s
+            '''%(line.id)
+            cr.execute(sql)
+            for giaohang in line.ct_giaohang_line:
+                total_the_tich += giaohang.product_qty*giaohang.product_id.the_tich
+            tam = total_the_tich - tam
+            while tam > 0:
+                sql = '''
+                    select id, the_tich
+                    from loai_thung where the_tich <= %s 
+                    order by the_tich desc limit 1
+                '''%(tam)
+                cr.execute(sql)
+                the_tich = cr.fetchone()
+                if the_tich:
+                    tt_thung = the_tich and the_tich[1] or 0
+                    loai_thung_ids = self.pool.get('ct.thung.line').search(cr,uid,[('giaohang_id', '=', line.id), ('loai_thung_id', '=', the_tich[0])])
+                    if loai_thung_ids:
+                        sl += 1
+                        oc_loaithung = self.pool.get('ct.thung.line').onchange_loai_thung_id(cr,uid,[],the_tich[0],sl,context)
+                        self.pool.get('ct.thung.line').write(cr,uid,[dong_goi_id],{
+                                                                                'giaohang_id': line.id,
+                                                                                'loai_thung_id': the_tich[0],
+                                                                                'sl_thung': sl,
+                                                                                'chi_phi_thung': oc_loaithung['value']['chi_phi_thung'],
+                                                                                'sl_da': oc_loaithung['value']['sl_da'],
+                                                                                'chi_phi_da': oc_loaithung['value']['chi_phi_da'],
+                                                                                'chi_phi_nhiet_ke': oc_loaithung['value']['chi_phi_nhiet_ke'],
+                                                                                })
+                    else:
+                        sl = 1
+                        oc_loaithung = self.pool.get('ct.thung.line').onchange_loai_thung_id(cr,uid,[],the_tich[0],sl,context)
+                        dong_goi_id = self.pool.get('ct.thung.line').create(cr,uid,{
+                                                                                'giaohang_id': line.id,
+                                                                                'loai_thung_id': the_tich[0],
+                                                                                'sl_thung': sl,
+                                                                                'chi_phi_thung': oc_loaithung['value']['chi_phi_thung'],
+                                                                                'sl_da': oc_loaithung['value']['sl_da'],
+                                                                                'chi_phi_da': oc_loaithung['value']['chi_phi_da'],
+                                                                                'chi_phi_nhiet_ke': oc_loaithung['value']['chi_phi_nhiet_ke'],
+                                                                                })
+                        
+                    
+                else:
+                    sql = '''
+                        select id, the_tich
+                        from loai_thung
+                        order by the_tich limit 1
+                    '''
+                    cr.execute(sql)
+                    the_tich = cr.fetchone()
+                    tt_thung = the_tich and the_tich[1] or 0
+                    loai_thung_ids = self.pool.get('ct.thung.line').search(cr,uid,[('giaohang_id', '=', line.id), ('loai_thung_id', '=', the_tich[0])])
+                    if loai_thung_ids:
+                        sl += 1
+                        oc_loaithung = self.pool.get('ct.thung.line').onchange_loai_thung_id(cr,uid,[],the_tich[0],sl,context)
+                        self.pool.get('ct.thung.line').write(cr,uid,[dong_goi_id],{
+                                                                                'giaohang_id': line.id,
+                                                                                'loai_thung_id': the_tich[0],
+                                                                                'sl_thung': sl,
+                                                                                'chi_phi_thung': oc_loaithung['value']['chi_phi_thung'],
+                                                                                'sl_da': oc_loaithung['value']['sl_da'],
+                                                                                'chi_phi_da': oc_loaithung['value']['chi_phi_da'],
+                                                                                'chi_phi_nhiet_ke': oc_loaithung['value']['chi_phi_nhiet_ke'],
+                                                                                })
+                    else:
+                        sl = 1
+                        oc_loaithung = self.pool.get('ct.thung.line').onchange_loai_thung_id(cr,uid,[],the_tich[0],sl,context)
+                        dong_goi_id = self.pool.get('ct.thung.line').create(cr,uid,{
+                                                                                'giaohang_id': line.id,
+                                                                                'loai_thung_id': the_tich[0],
+                                                                                'sl_thung': sl,
+                                                                                'chi_phi_thung': oc_loaithung['value']['chi_phi_thung'],
+                                                                                'sl_da': oc_loaithung['value']['sl_da'],
+                                                                                'chi_phi_da': oc_loaithung['value']['chi_phi_da'],
+                                                                                'chi_phi_nhiet_ke': oc_loaithung['value']['chi_phi_nhiet_ke'],
+                                                                                })
+                tam = tam - tt_thung
         return {'type': 'ir.actions.act_window_close'}
     
     def bt_print_bbgn(self, cr, uid, ids, context=None):
@@ -2234,6 +2318,25 @@ class ct_thung_line(osv.osv):
         'nhietdo_packaging_den': fields.char('Nhiệt độ đến', size = 64),
         'packaging_id': fields.many2one('stock.picking.packaging', 'packaging'),
     }
+    
+    def onchange_loai_thung_id(self, cr, uid, ids,loai_thung_id=False,sl_thung=0, context=None):
+        res = {'value':{
+                        'chi_phi_thung':False,
+                        'sl_da':False,
+                        'chi_phi_da':False,
+                        'chi_phi_nhiet_ke': False,
+                      }
+               }
+        if loai_thung_id:
+            loai_thung = self.pool.get('loai.thung').browse(cr, uid, loai_thung_id)
+            res['value'].update({
+                                'chi_phi_thung':loai_thung.chi_phi_thung*sl_thung,
+                                'sl_da':loai_thung.sl_da*sl_thung,
+                                'chi_phi_da':loai_thung.chi_phi_da*sl_thung,
+                                'chi_phi_nhiet_ke': loai_thung.chi_phi_nhiet_ke*sl_thung,
+                                })
+            
+        return res
     
 ct_thung_line()
 

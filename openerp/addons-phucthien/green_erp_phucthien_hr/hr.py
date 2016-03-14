@@ -318,6 +318,7 @@ hr_expense_line()
 
 class hr_expense_expense(osv.osv):
     _inherit = "hr.expense.expense"
+    _order = "id desc"
     def _trangthai(self, cr, uid, ids, name, arg, context=None):
         res = {}
         for tt in self.browse(cr,uid,ids):

@@ -50,6 +50,8 @@ sale_order_rule()
 
 class sale_order(osv.osv):
     _inherit = "sale.order"
+    
+    _order = "id desc"
 
     def _trangthai(self, cr, uid, ids, name, arg, context=None):
         res = {}
@@ -891,7 +893,8 @@ stock_picking_out()
 
 class res_partner(osv.osv):
     _inherit = "res.partner"
-    
+    def _get_user(self,cr,uid,context=None):
+        return uid
     def _get_gp_gan_hh(self, cr, uid, ids, name, arg, context=None):        
         res = {}          
         for line in self.browse(cr, uid, ids):
@@ -966,6 +969,9 @@ class res_partner(osv.osv):
         'so_ngay_no_ids':fields.one2many('so.ngay.no','partner_id','Số ngày nợ theo sản phẩm'),
         'danhsach_canhtranh_ids':fields.one2many('danhsach.canhtranh','partner_id','Danh sách sản phẩm cạnh tranh'),
     }
+    _defaults = {
+        'user_id': _get_user,       
+                 }
     
     def bt_create_sp_canhtranh(self, cr, uid, ids, context=None):
         res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
@@ -1203,6 +1209,9 @@ class remind_work(osv.osv):
         'gui_tre_lct': fields.function(_get_gui_tre_lct,type='boolean', string='Gửi trễ lịch công tác', store = True),
         'create_date': fields.datetime('Created Date',readonly = True),
         'create_uid': fields.many2one('res.users','Created By',ondelete='restrict',readonly = True),
+        'noidung_lamviec':fields.text('Nội dung làm việc',readonly=True, states={'draft': [('readonly', False)], 'open': [('readonly', False)]}),
+        'ket_qua':fields.text('Kết quả',readonly=True, states={'draft': [('readonly', False)], 'open': [('readonly', False)]}),
+        'huong_giai_quyet':fields.text('Hướng giải quyết',readonly=True, states={'draft': [('readonly', False)], 'open': [('readonly', False)]}),
     }
     _defaults = {
         'date_start': fields.datetime.now,
@@ -1334,8 +1343,11 @@ class remind_work(osv.osv):
                 <b>Nội dung chính: </b> %s.<br/>
                 <b>Tình trạng công việc: </b> %s.<br/> 
                 <b>Khách hàng: </b> %s.<br/> 
-                <b>Chi tiết nội dung:</b> <br/>%s</p>
-                '''%(date_start_vn, date_end_vn, remind.noidung_chinh_id.name,remind.situation_id and remind.situation_id.name or '',remind.partner_id and remind.partner_id.name or '',remind.note)
+                <b>Nội dung:</b> <br/>%s</p><br/>
+                <b>Nội dung làm việc:</b> <br/>%s</p><br/>
+                <b>Kết quả:</b> <br/>%s</p><br/>
+                <b>Hướng giải quyết:</b> <br/>%s</p><br/>
+                '''%(date_start_vn, date_end_vn, remind.noidung_chinh_id.name,remind.situation_id and remind.situation_id.name or '',remind.partner_id and remind.partner_id.name or '',remind.note or '',remind.noidung_lamviec or '',remind.ket_qua or '',remind.huong_giai_quyet or '')
                 if body:
                     post_values = {
                         'subject': remind.name,

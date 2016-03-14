@@ -668,6 +668,9 @@
                     	</group>
 	                    <group>
 	                   		<field name="note"/>
+	                   		<field name="noidung_lamviec"/>
+	                   		<field name="ket_qua"/>
+	                   		<field name="huong_giai_quyet"/>
 	                    </group>
 	                </sheet>
 	                <div class="oe_chatter">
