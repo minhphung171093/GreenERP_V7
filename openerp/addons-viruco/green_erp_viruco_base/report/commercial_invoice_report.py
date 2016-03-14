@@ -240,12 +240,14 @@ class Parser(report_sxw.rml_parse):
                 self.package += package['sum']
                 self.amount += total
                 seal_no = ''
+                product = ''
                 pack_weight = ''
                 for seal in line.seal_descript_line:
                     seal_no += seal.container_no_seal and (seal.container_no_seal + '/') 
                     seal_no += '/' + seal.seal_no and (seal.seal_no + '\n') or ''
                     pack_weight = seal.packages_weight or ''
-                res.append({ 'product': line.hopdong_line_id and line.hopdong_line_id.product_id and line.hopdong_line_id.product_id.default_code or '' + line.hopdong_line_id and line.hopdong_line_id.product_id and line.hopdong_line_id.product_id.default_code or '',
+                    product = line.hopdong_line_id and line.hopdong_line_id.product_id and line.hopdong_line_id.product_id.eng_name + line.hopdong_line_id.product_id.default_code or '' 
+                res.append({ 'product': product,
                             'package': package['sum'],
                             'net_weight': round(net_weight,2),
                             'gross_weight': round(gross_weight,2),
