@@ -2,21 +2,21 @@
 <openerp>
     <data>
     	<menuitem id="hop_dong" name="Hợp đồng" sequence="0"/>
-	    	<menuitem id="menu_hopdong_ban" parent="green_erp_viruco_base.hop_dong" name="Hợp Đồng Bán" sequence="10"/>
+	    	<menuitem id="menu_hopdong_ban" parent="green_erp_viruco_base.hop_dong" name="Hợp Đồng Bán" sequence="10" groups="group_viruco_kinhdoanh"/>
 	        	<menuitem id="menu_action_hop_dong_noi" action="action_hop_dong_noi" name="Hợp đồng nội" parent="menu_hopdong_ban" sequence="0"/>
 				<menuitem id="menu_action_hop_dong_ngoai" action="action_hop_dong_ngoai" name="Hợp đồng ngoại" parent="menu_hopdong_ban" sequence="1"/>
 	        	<menuitem id="menu_action_draft_bl" action="action_draft_bl" name="Chứng từ xuất khẩu" parent="green_erp_viruco_base.menu_hopdong_ban" sequence="3"/>
-	        <menuitem id="menu_phuluc_hopdong_ban" parent="green_erp_viruco_base.hop_dong" name="Phụ lục hợp Đồng Bán" sequence="15"/>
+	        <menuitem id="menu_phuluc_hopdong_ban" parent="green_erp_viruco_base.hop_dong" name="Phụ lục hợp Đồng Bán" sequence="15" groups="group_viruco_kinhdoanh" />
 		        <menuitem id="menu_action_phuluc_hop_dong_noi" action="action_phuluc_hop_dong_noi" name="Phụ lục hợp đồng nội" parent="menu_phuluc_hopdong_ban" sequence="0"/>
 				<menuitem id="menu_action_phuluc_hop_dong_ngoai" action="action_phuluc_hop_dong_ngoai" name="Phụ lục hợp đồng ngoại" parent="menu_phuluc_hopdong_ban" sequence="1"/>
 	        <menuitem id="menu_hopdong_mua" parent="green_erp_viruco_base.hop_dong" name="Hợp Đồng Mua" sequence="20"/>
-				<menuitem id="menu_action_hop_dong_mua_trongnuoc" action="action_hop_dong_mua_trongnuoc" name="Hợp đồng mua trong nước" parent="menu_hopdong_mua" sequence="2"/>
-				<menuitem id="menu_action_hop_dong_mua_nhapkhau" action="action_hop_dong_mua_nhapkhau" name="Hợp đồng mua nhập khẩu" parent="menu_hopdong_mua" sequence="3"/>
+				<menuitem id="menu_action_hop_dong_mua_trongnuoc" action="action_hop_dong_mua_trongnuoc" name="Hợp đồng mua trong nước" parent="menu_hopdong_mua" sequence="2" groups="group_viruco_thumua"/>
+				<menuitem id="menu_action_hop_dong_mua_nhapkhau" action="action_hop_dong_mua_nhapkhau" name="Hợp đồng mua nhập khẩu" parent="menu_hopdong_mua" sequence="3" groups="group_viruco_thumua,group_viruco_mua_nhapkhau" />
 	        <menuitem id="menu_phuluc_hopdong_mua" parent="green_erp_viruco_base.hop_dong" name="Phụ lục hợp Đồng Mua" sequence="25"/>
-				<menuitem id="menu_action_phuluc_hop_dong_mua_trongnuoc" action="action_phuluc_hop_dong_mua_trongnuoc" name="Phụ lục HĐ mua trong nước" parent="menu_phuluc_hopdong_mua" sequence="2"/>
-				<menuitem id="menu_action_phuluc_hop_dong_mua_nhapkhau" action="action_phuluc_hop_dong_mua_nhapkhau" name="Phụ lục HĐ mua nhập khẩu" parent="menu_phuluc_hopdong_mua" sequence="3"/>
-			<menuitem id="menu_theo_doi_hop_dong" parent="green_erp_viruco_base.hop_dong" name="Báo cáo theo dõi hợp đồng" sequence="30"/>
-				<menuitem id="menu_action_theo_doi_hop_dong_form" action="action_theo_doi_hop_dong_form" name="Theo dõi hợp đồng" parent="menu_theo_doi_hop_dong" sequence="1"/>
+				<menuitem id="menu_action_phuluc_hop_dong_mua_trongnuoc" action="action_phuluc_hop_dong_mua_trongnuoc" name="Phụ lục HĐ mua trong nước" parent="menu_phuluc_hopdong_mua" sequence="2" groups="group_viruco_thumua" />
+				<menuitem id="menu_action_phuluc_hop_dong_mua_nhapkhau" action="action_phuluc_hop_dong_mua_nhapkhau" name="Phụ lục HĐ mua nhập khẩu" parent="menu_phuluc_hopdong_mua" sequence="3" groups="group_viruco_thumua,group_viruco_mua_nhapkhau" />
+			<menuitem id="menu_theo_doi_hop_dong" parent="green_erp_viruco_base.hop_dong" name="Báo cáo theo dõi hợp đồng" sequence="30" groups="group_viruco_kinhdoanh" />
+				<menuitem id="menu_action_theo_doi_hop_dong_form" action="action_theo_doi_hop_dong_form" name="Theo dõi hợp đồng" parent="menu_theo_doi_hop_dong" sequence="1" />
     		
     	<menuitem id="menu_quantri"
 			name="Quản trị"

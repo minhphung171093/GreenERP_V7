@@ -286,7 +286,7 @@
 							<page string="Product line" >
 								<field name="hopdong_line">
 									<tree editable='top'>
-	                                    <field name="product_id" string="Product" on_change="onchange_product_id(product_id, parent.type, context)"/>
+	                                    <field name="product_id" options="{'create': false, 'create_edit': false}" string="Product" on_change="onchange_product_id(product_id, parent.type, context)"/>
 	                                    <field name="name" string="Name" />
 	                                    <field name="origin" />
 	                                    <field name="chatluong_id" string="Quality"/>
@@ -463,7 +463,7 @@
 							<page string="Thông tin mặt hàng" >
 								<field name="hopdong_line">
 									<tree editable='top'>
-	                                    <field name="product_id" on_change="onchange_product_id(product_id, parent.type, context)"/>
+	                                    <field name="product_id" options="{'create': false, 'create_edit': false}" on_change="onchange_product_id(product_id, parent.type, context)"/>
 	                                    <field name="name"/>
 	                                    <field name="quycach_donggoi_id"  />
 	                                    <field name="quycach_baobi_id"  />
@@ -588,7 +588,7 @@
 							<page string="Product Line" >
 								<field name="hopdong_line">
 									<tree editable='top'>
-	                                    <field name="product_id" on_change="onchange_product_id(product_id, parent.type, context)"/>
+	                                    <field name="product_id" options="{'create': false, 'create_edit': false}" on_change="onchange_product_id(product_id, parent.type, context)"/>
 	                                    <field name="name"/>
 	                                    <field name="chatluong_id" string="Quality" />
 	                                    <field name="quycach_donggoi_id" string="Packing" />
@@ -850,7 +850,7 @@
 	                    <group col='4' colspan='2'>
 	                    	<field name="partner_id" on_change="onchange_partner_id(partner_id)" string="Buyer" context="{'show_address': 1}" domain="[('customer','=',True)]"/>
 	                    	<field name="ngay" string="Date"/>
-	                    	<field name="banggia_id" context="{'search_banggia_ban_ngoai_id': 1,'ngay':ngay,'currency_company_id':currency_company_id}" />
+	                    	<field name="banggia_id" options="{'create': false, 'create_edit': false}" required='1' context="{'search_banggia_ban_ngoai_id': 1,'ngay':ngay,'currency_company_id':currency_company_id}" />
 	                    	<field name="sale_person_id" /> 
 	                    	<field name="currency_id" string="Currency"/>
 	                    	<field name="user_id" string="User"/>
@@ -878,7 +878,7 @@
 							<page string="Product Line" >
 								<field name="don_ban_hang_line" on_change="onchange_don_ban_hang_line(don_ban_hang_line,donhang_hoahong_line)">
 									<tree editable='top'>
-	                                    <field name="product_id" string="Product" on_change="onchange_product_id(product_qty,parent.ngay,parent.partner_id,parent.banggia_id,product_id,chatluong_id,quycach_donggoi_id,parent.type,context)"/>
+	                                    <field name="product_id" options="{'create': false, 'create_edit': false}" string="Product" on_change="onchange_product_id(product_qty,parent.ngay,parent.partner_id,parent.banggia_id,product_id,chatluong_id,quycach_donggoi_id,parent.type,context)"/>
 	                                    <field name="name" string="Name"/>
 	                                    <field name="origin"/>
 	                                    <field name="chatluong_id" string="Quality" context = "{'ten_ngoai':1}" on_change="onchange_product_id(product_qty,parent.ngay,parent.partner_id,parent.banggia_id,product_id,chatluong_id,quycach_donggoi_id,parent.type,context)" />
@@ -1019,7 +1019,7 @@
 							<page string="Thông tin mặt hàng" >
 								<field name="don_mua_hang_line">
 									<tree editable='top'>
-	                                    <field name="product_id" on_change="onchange_product_id(parent.ngay,parent.partner_id,parent.banggia_id,product_id,chatluong_id,quycach_donggoi_id,parent.type, context)"/>
+	                                    <field name="product_id" options="{'create': false, 'create_edit': false}" on_change="onchange_product_id(parent.ngay,parent.partner_id,parent.banggia_id,product_id,chatluong_id,quycach_donggoi_id,parent.type, context)"/>
 	                                    <field name="name"/>
 	                                    <field name="chatluong_id" on_change="onchange_product_id(parent.ngay,parent.partner_id,parent.banggia_id,product_id,chatluong_id,quycach_donggoi_id,parent.type, context)" />
 	                                    <field name="quycach_donggoi_id" on_change="onchange_product_id(parent.ngay,parent.partner_id,parent.banggia_id,product_id,chatluong_id,quycach_donggoi_id,parent.type, context)" />
