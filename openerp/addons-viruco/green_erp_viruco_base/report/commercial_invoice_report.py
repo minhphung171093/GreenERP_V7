@@ -212,8 +212,8 @@ class Parser(report_sxw.rml_parse):
     def get_the_tich(self,o): 
         tt = 0
         for line in o.draft_bl_line:
-            if line_number:
-                tt = line.number * 25
+            if line.line_number:
+                tt = line.line_number * 25
         return tt
     
     def get_packages_weight(self,line1): 
