@@ -335,7 +335,7 @@ class Parser(report_sxw.rml_parse):
                             'gross_weight': '',
                             })
                 for detail in line.seal_descript_line:
-                    res.append({ 'product': detail.container_no_seal or '',
+                    res.append({ 'product': detail.container_no_seal or '' + '/' + detail.seal_no or '',
                             'package': detail.packages_qty and round(detail.packages_qty) or 0,
                             'form': detail.packages_weight,
                             'net_weight': detail.net_weight and round(detail.net_weight,2) or 0,
@@ -344,7 +344,7 @@ class Parser(report_sxw.rml_parse):
                     self.pack = detail.packages_id.name or ''
                     self.pack_weight = self.get_packages_weight(detail.packages_weight)
             if line.option and line.option == 'seal_no':
-                res.append({ 'product': line.container_no_seal or '',
+                res.append({ 'product': line.container_no_seal or '' + '/' + detail.seal_no or '',
                             'package': '',
                             'form': '',
                             'net_weight': '',
