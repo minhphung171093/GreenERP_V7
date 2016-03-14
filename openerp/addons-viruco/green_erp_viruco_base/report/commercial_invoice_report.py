@@ -57,6 +57,7 @@ class Parser(report_sxw.rml_parse):
             'get_cong': self.get_cong,
             'get_freight':self.get_freight,
             'get_bl_no':self.get_bl_no,
+            'get_the_tich':self.get_the_tich,
         })
     
 #     def get_master_data(self):
@@ -207,6 +208,13 @@ class Parser(report_sxw.rml_parse):
         for line in o.draft_bl_line:
             bl_no = line.bl_no or ''
         return bl_no
+    
+    def get_the_tich(self,o): 
+        tt = 0
+        for line in o.draft_bl_line:
+            if line_number:
+                tt = line.number * 25
+        return tt
     
     def get_packages_weight(self,line1): 
         line2 = ''
