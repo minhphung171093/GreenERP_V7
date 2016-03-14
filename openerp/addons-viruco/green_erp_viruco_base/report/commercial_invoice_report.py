@@ -56,6 +56,7 @@ class Parser(report_sxw.rml_parse):
             'get_etd_date': self.get_etd_date,
             'get_cong': self.get_cong,
             'get_freight':self.get_freight,
+            'get_bl_no':self.get_bl_no,
         })
     
 #     def get_master_data(self):
@@ -199,6 +200,12 @@ class Parser(report_sxw.rml_parse):
         for line in o.draft_bl_line:
             ocean += line.ocean_vessel + ', 'or ''
         ocean = ocean and ocean[:-2] or ''
+        return ocean
+
+    def get_bl_no(self,o): 
+        bl_no = ''
+        for line in o.draft_bl_line:
+            bl_no += line.bl_no or ''
         return ocean
     
     def get_packages_weight(self,line1): 
