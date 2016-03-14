@@ -206,7 +206,7 @@ class Parser(report_sxw.rml_parse):
         bl_no = ''
         for line in o.draft_bl_line:
             bl_no = line.bl_no or ''
-        return ocean
+        return bl_no
     
     def get_packages_weight(self,line1): 
         line2 = ''
