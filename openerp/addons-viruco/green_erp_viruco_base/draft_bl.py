@@ -204,13 +204,25 @@ class draft_bl_line(osv.osv):
         'description_line': fields.one2many('description.line','draft_bl_line_id','Line'),
         'product_id': fields.many2one('product.product', 'Product', domain=[('sale_ok', '=', True)]),
         'hopdong_line_id': fields.many2one('hopdong.line', 'Product', ondelete='cascade', select=True),
-        'container_no_seal':fields.char('Container No/Seal No'),
+        'container_no_seal':fields.char('Container No'),
+        'seal_no':fields.char('Seal No'),
         'option':fields.selection([('product', 'Product'),('seal_no', 'Container No/Seal No')], 'Option'),
         'seal_descript_line': fields.one2many('description.line','seal_line_id','Line'),
         'hopdong_id':fields.many2one('hop.dong','Contract'),
         'line_number': fields.integer('Line Number'),
         'customs_declaration': fields.char('Customs Declaration', size=1024),
         'date_customs_declaration': fields.date('Date Customs Declaration'),
+        'thanhtoan':fields.boolean('Thanh toán'),
+        'ngay_thanhtoan':fields.date('Ngày thanh toán'),
+        'dagui_nganhang':fields.boolean('Đã gửi ngân hàng'),
+        'ngaygui_nganhang':fields.date('Ngày gửi ngân hàng'),
+        'dagui_hopdong':fields.boolean('Đã gửi hợp đồng'),
+        'ngaygui_hopdong':fields.date('Ngày gửi hợp đồng'),
+        'dagui_hoadon':fields.boolean('Đã gửi hóa đơn'),
+        'ngaygui_hoadon':fields.date('Ngày gửi hóa đơn'),
+        'dagui_chungtugoc':fields.boolean('Đã gửi chứng từ gốc'),
+        'ngaygui_chungtugoc':fields.date('Ngày gửi chứng từ gốc'),
+        'bl_no':fields.char('B/L No'),
     }
     
     def onchange_option(self, cr, uid, ids, option=False, line_number=False):
@@ -246,8 +258,9 @@ class draft_bl_line(osv.osv):
         vals = {}
         warning = {}
         if container_no_seal:
-            a = container_no_seal.split('/')
-            if len(a)==2 and len(a[0])!=11:
+#             a = container_no_seal.split('/')
+#             if len(a)==2 and len(a[0])!=11:
+            if len(container_no_seal)!=11:
                 vals.update({'container_no_seal': ''})
                 warning = {
                     'title': _('Cảnh báo!'),
@@ -266,6 +279,7 @@ class description_line(osv.osv):
         'draft_bl_line_id': fields.many2one('draft.bl.line', 'Draft bl line', ondelete='cascade', select=True), 
         'seal_line_id': fields.many2one('draft.bl.line', 'Seal Draft bl line', ondelete='cascade', select=True),
         'container_no_seal':fields.char('Container No/Seal No'),
+        'seal_no':fields.char('Seal No'),
         'packages_qty': fields.float('Packages Qty'),
         'packages_id':fields.many2one('quycach.donggoi','Packages'),
         'product_uom': fields.many2one('product.uom', ''),
@@ -289,14 +303,15 @@ class description_line(osv.osv):
         vals = {}
         warning = {}
         if container_no_seal:
-            a = container_no_seal.split('/')
-            if len(a)==2 and len(a[0])!=11:
+#             a = container_no_seal.split('/')
+            if len(container_no_seal)!=11:
+                vals.update({'container_no_seal': ''})
                 warning = {
                     'title': _('Cảnh báo!'),
-                    'message' : _('Container No hiện đang chưa đúng (cần có đủ 7 ký tự, số) !')
+                    'message' : _('Container No không đúng (cần đủ 11 ký tự ) !')
                 }
                         
-        return {'warning': warning}
+        return {'warning': warning,'value':vals}
     
 description_line()
 

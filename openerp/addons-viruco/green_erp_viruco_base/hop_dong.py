@@ -93,32 +93,18 @@ class hop_dong(osv.osv):
             result[line.hopdong_hh_id.id] = True
         return result.keys()
     
-    def _get_hd_gan_hh(self, cr, uid, ids, name, arg, context=None):        
-        res = {}          
-        for line in self.browse(cr, uid, ids):
-            if line.den_ngay:
-                result = False     
-                b = datetime.now()
-                a = line.den_ngay
-                temp = datetime(int(a[0:4]),int(a[5:7]),int(a[8:10]))
-                kq = temp - b
-                if kq.days <= 15:
-                    result = True
-                res[line.id] = result
-            else:
-                res[line.id] = False            
-        return res
     def _get_ngay_canhbao(self, cr, uid, ids, fields, arg, context=None):
         res = {}
         for line in self.browse(cr, uid, ids):
-            canh_bao = 1
-            if line.den_ngay:
-                ngay_canhbao = datetime.strptime(line.den_ngay,'%Y-%m-%d') + timedelta(days=-canh_bao)
-                res[line.id]=ngay_canhbao.strftime('%Y-%m-%d')
-                if ngay_canhbao:
-                    if line.state in ('moi_tao','da_duyet','da_ky'):
-                        self.write(cr,uid,[line.id],{'state':'het_han'})                
-            else:
+#             canh_bao = 1
+#             if line.den_ngay:
+#                 ngay_canhbao = datetime.strptime(line.den_ngay,'%Y-%m-%d') + timedelta(days=-canh_bao)
+#                 res[line.id]=ngay_canhbao.strftime('%Y-%m-%d')
+#                 if ngay_canhbao:
+#                     if line.state in ('moi_tao','da_duyet','da_ky'):
+#                         self.write(cr,uid,[line.id],{'state':'het_han'})                
+#             else:
+#                 res[line.id]=False
                 res[line.id]=False
         return res    
     
@@ -355,6 +341,16 @@ class hop_dong(osv.osv):
             name = context.get('name')
             hd_ids = self.search(cr, uid, [('name','like',name)])
             args += [('id','in',hd_ids)]
+        if context.get('search_chungtu_hopdong_id'):
+            chungtu_hopdong_ids = []
+            sql = '''
+                select id from hop_dong
+                    where type = 'hd_ngoai' and state in ('thuc_hien','da_ky','lam_chungtu','xong_chungtu') 
+                    and user_chungtu_id = %s
+            '''%(uid)
+            cr.execute(sql)
+            chungtu_hopdong_ids = [row[0] for row in cr.fetchall()]
+            args += [('id','in',chungtu_hopdong_ids)]        
         return super(hop_dong, self).search(cr, uid, args, offset=offset, limit=limit, order=order, context=context, count=count)
     
     def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
