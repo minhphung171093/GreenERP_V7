@@ -35,25 +35,26 @@ denom = ( '',
           'Sexdecillion', 'Septendecillion', 'Octodecillion', 'Novemdecillion', 'Vigintillion' )
 
 # convert a value < 100 to English.
-def _convert_nn(val):
-    if val < 20:
+to_ini = 0
+def _convert_nn(val,to_ini=None):
+    if val>0 and val <= 9 and to_ini == 0:
         return to_19[val]
+    if val>0 and val <= 9 and to_ini != 0:
+        return u'lẻ ' + to_19[val]
+    if (val > 9 and val < 20) or val==0:
+        return  to_19[val]
     for (dcap, dval) in ((k, 20 + (10 * v)) for (v, k) in enumerate(tens)):
         if dval + 10 > val:
             if val % 10:
+                a = u'lăm'
                 if to_19[val % 10] == u'một':
                     a = u'mốt'
                 else:
                     a = to_19[val % 10]
-                    if (val/10 > 0) and to_19[val % 10] == u'năm':
-                        a = u'lăm'
                 return dcap + ' ' + a
             return dcap
 
-# convert a value < 1000 to english, special cased because it is the level that kicks 
-# off the < 100 special case.  The rest are more general.  This also allows you to
-# get strings in the form of 'forty-five hundred' if called directly.
-def _convert_nnn(val):
+def _convert_nnn(val,to_ini=None):
     word = ''
     (mod, rem) = (val % 100, val // 100)
     if rem > 0:
@@ -61,35 +62,42 @@ def _convert_nnn(val):
         if mod > 0:
             word = word + ' '
     if mod > 0:
-        word = word + _convert_nn(mod)
+        word = word + _convert_nn(mod,to_ini)
     return word
 
-def vietnam_number(val):
+to_ini =0
+def vietnam_number(val,to_ini=None):
+    if to_ini == None:
+        to_ini = 0
+     
     if val < 100:
         return _convert_nn(val)
     if val < 1000:
-        return _convert_nnn(val)
+         return _convert_nnn(val)
     for (didx, dval) in ((v - 1, 1000 ** v) for v in range(len(denom))):
         if dval > val:
             mod = 1000 ** didx
             l = val // mod
             r = val - (l * mod)
-            ret = _convert_nnn(l) + ' ' + denom[didx]
-            if r > 0:
-                if r/10 > 0:
-                    ret = ret + u'  ' + vietnam_number(r)
-                if r/10 == 0:
-                    ret = ret + u' và lẻ ' + vietnam_number(r)
+            if to_ini == 0:
+                ret = _convert_nnn(l,to_ini) + ' ' + denom[didx]
+                to_ini = 1
+            else:
+                ret = _convert_nnn(l,to_ini) + ' ' + denom[didx]
+            if len(str(val)) == len(str(l)) + len(str(r)):
+                if r > 0:
+                    ret = ret + ' ' + vietnam_number(r,to_ini)
+            else:
+                if r > 0:
+                    ret = ret + ' không trăm ' + vietnam_number(r,to_ini)
             return ret
 
 def amount_to_text(number):
     number = '%.2f' % number
     list = str(number).split('.')
     start_word = vietnam_number(int(list[0]))
-#    end_word = vietnam_number(int(list[1]))
-#    cents_number = int(list[1])
-#    final_result = start_word + u' phẩy ' + end_word + ' ' + u'VNĐ'
-    final_result = start_word + u' đồng'
+    final_result = start_word[0].upper()+ start_word[1:] + u' đồng'
+    final_result = final_result.split('/')[0] + '.'
     return final_result
 
 
@@ -107,7 +115,7 @@ def amount_to_text(nbr, lang='vn'):
     Example:
         1654: thousands six cent cinquante-quatre.
     """
-#     import netsvc
+    import netsvc
 #    if nbr > 10000000:
 #        netsvc.Logger().notifyChannel('translate', netsvc.LOG_WARNING, _("Number too large '%d', can not translate it"))
 #        return str(nbr)
