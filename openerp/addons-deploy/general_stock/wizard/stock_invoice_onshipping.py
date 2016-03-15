@@ -20,8 +20,12 @@
 ##############################################################################
 
 from openerp.osv import fields, osv
-
+import time
 from openerp.tools.translate import _
+from datetime import datetime, timedelta
+from datetime import date
+DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
+DATE_FORMAT = "%Y-%m-%d"
 
 class stock_invoice_onshipping(osv.osv_memory):
     _inherit = "stock.invoice.onshipping"
@@ -30,11 +34,13 @@ class stock_invoice_onshipping(osv.osv_memory):
         'multi_invoice': fields.boolean('Multi Invoice'),
         'move_ids' : fields.one2many('stock.invoice.line.onshipping', 'wizard_id','Product Moves'),
         'so_hd': fields.char('Số hóa đơn', size=1024),
+        'invoice_date': fields.date('Invoiced date'),
     }
 
     _defaults = {
         'multi_invoice':False,
-        'invoiced':True
+        'invoiced':True,
+        'invoice_date': lambda *a: time.strftime('%Y-%m-%d'),
     }
     
     # kiet them 

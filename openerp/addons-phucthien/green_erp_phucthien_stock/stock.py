@@ -2003,7 +2003,7 @@ class dutru_hanghoa_line(osv.osv):
         'uom_id': fields.many2one('product.uom', 'ĐƠN VỊ TÍNH'),
         'sl_trungbinh': fields.float('SỐ LƯỢNG TRUNG BÌNH BÁN RA/TUẦN'),
         'sl_tonkho': fields.float('SỐ LƯỢNG TỒN KHO'),
-        'sl_dutru': fields.float('SỐ LƯỢNG DỰ TRÙ', digits=(16,0)),
+        'sl_dutru': fields.float('SỐ LƯỢNG DỰ TRÙ'),
         'ngay_dexuat': fields.date('ĐỀ XUẤT NGÀY NHẬP HÀNG'),
         'price_unit': fields.float('GIÁ'),
         'thanh_tien': fields.float('THÀNH TIỀN'),
