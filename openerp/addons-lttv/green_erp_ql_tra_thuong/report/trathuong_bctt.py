@@ -70,11 +70,23 @@ class Parser(report_sxw.rml_parse):
         date_to = wizard_data['date_to']
         menhgia_ids=False
         if menhgia=='1':
-            menhgia_ids = menhgia_obj.search(self.cr, self.uid, [('menh_gia','=',True),('name','in',['Mệnh giá 10.000 đồng','MG-10.000']),('default_code','in',['Mệnh giá 10.000 đồng','MG-10.000'])])
+            sql = '''
+                select id from product_product where default_code='MG-10.000'
+            '''
+            self.cr.execute(sql)
+            menhgia_ids = [r[0] for r in self.cr.fetchall()]
         if menhgia=='2':
-            menhgia_ids = menhgia_obj.search(self.cr, self.uid, [('menh_gia','=',True),('name','in',['Mệnh giá 20.000 đồng','MG-20.000']),('default_code','in',['Mệnh giá 20.000 đồng','MG-20.000'])])
+            sql = '''
+                select id from product_product where default_code='MG-20.000'
+            '''
+            self.cr.execute(sql)
+            menhgia_ids = [r[0] for r in self.cr.fetchall()]
         if menhgia=='5':
-            menhgia_ids = menhgia_obj.search(self.cr, self.uid, [('menh_gia','=',True),('name','in',['Mệnh giá 50.000 đồng','MG-50.000']),('default_code','in',['Mệnh giá 50.000 đồng','MG-50.000'])])
+            sql = '''
+                select id from product_product where default_code='MG-50.000'
+            '''
+            self.cr.execute(sql)
+            menhgia_ids = [r[0] for r in self.cr.fetchall()]
         if menhgia_ids:
             sql = '''
                 select id from tra_thuong_thucte_line
@@ -121,14 +133,24 @@ class Parser(report_sxw.rml_parse):
         date_from = wizard_data['date_from']
         date_to = wizard_data['date_to']
         menhgia_ids=False
-        print menhgia
         if menhgia=='1':
-            menhgia_ids = menhgia_obj.search(self.cr, self.uid, [('menh_gia','=',True),('name','in',['Mệnh giá 10.000 đồng','MG-10.000']),('default_code','in',['Mệnh giá 10.000 đồng','MG-10.000'])])
-            print menhgia_ids
+            sql = '''
+                select id from product_product where default_code='MG-10.000'
+            '''
+            self.cr.execute(sql)
+            menhgia_ids = [r[0] for r in self.cr.fetchall()]
         if menhgia=='2':
-            menhgia_ids = menhgia_obj.search(self.cr, self.uid, [('menh_gia','=',True),('name','in',['Mệnh giá 20.000 đồng','MG-20.000']),('default_code','in',['Mệnh giá 20.000 đồng','MG-20.000'])])
+            sql = '''
+                select id from product_product where default_code='MG-20.000'
+            '''
+            self.cr.execute(sql)
+            menhgia_ids = [r[0] for r in self.cr.fetchall()]
         if menhgia=='5':
-            menhgia_ids = menhgia_obj.search(self.cr, self.uid, [('menh_gia','=',True),('name','in',['Mệnh giá 50.000 đồng','MG-50.000']),('default_code','in',['Mệnh giá 50.000 đồng','MG-50.000'])])
+            sql = '''
+                select id from product_product where default_code='MG-50.000'
+            '''
+            self.cr.execute(sql)
+            menhgia_ids = [r[0] for r in self.cr.fetchall()]
         if menhgia_ids:
             sql = '''
                 select id from tra_thuong_thucte_line
@@ -140,7 +162,6 @@ class Parser(report_sxw.rml_parse):
             for tt in tt_tt_obj.browse(self.cr, self.uid, tt_tt_ids):
                 soluong += tt.sl_trung
                 giatri += tt.tong
-                print soluong, giatri
         return {
             'soluong': soluong,
             'giatri': giatri,
