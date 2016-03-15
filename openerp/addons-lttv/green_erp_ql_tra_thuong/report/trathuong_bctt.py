@@ -123,6 +123,7 @@ class Parser(report_sxw.rml_parse):
         menhgia_ids=False
         if menhgia=='1':
             menhgia_ids = menhgia_obj.search(self.cr, self.uid, [('menh_gia','=',True),('name','in',['Mệnh giá 10.000 đồng','MG-10.000']),('default_code','in',['Mệnh giá 10.000 đồng','MG-10.000'])])
+            print menhgia_ids
         if menhgia=='2':
             menhgia_ids = menhgia_obj.search(self.cr, self.uid, [('menh_gia','=',True),('name','in',['Mệnh giá 20.000 đồng','MG-20.000']),('default_code','in',['Mệnh giá 20.000 đồng','MG-20.000'])])
         if menhgia=='5':
@@ -138,6 +139,7 @@ class Parser(report_sxw.rml_parse):
             for tt in tt_tt_obj.browse(self.cr, self.uid, tt_tt_ids):
                 soluong += tt.sl_trung
                 giatri += tt.tong
+                print soluong, giatri
         return {
             'soluong': soluong,
             'giatri': giatri,
