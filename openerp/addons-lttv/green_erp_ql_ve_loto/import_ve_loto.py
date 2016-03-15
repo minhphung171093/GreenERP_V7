@@ -30,7 +30,7 @@ class import_ve_loto(osv.osv):
     _defaults = {
         'file_name': 'danh_sach_ve_loto.xls',
         'state':'draft',
-        'date': time.strftime('%Y-%m-%d'),    
+        'date': lambda *a: time.strftime('%Y-%m-%d'),    
     }
     
     def get_vietname_date(self, date):

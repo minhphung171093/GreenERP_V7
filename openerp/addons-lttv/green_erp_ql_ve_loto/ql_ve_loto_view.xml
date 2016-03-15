@@ -86,6 +86,7 @@
                 <form string="Kết quả xổ số" version="7.0">
                 	<header>
                         <button name="validate_winning" type="object" states="new" string="Validate Winning" class="oe_highlight"/>
+                        <button name="bt_dovelai" type="object" states="validate" string="Dò vé lại" class="oe_highlight"/>
 	                    <field name="state" widget="statusbar" statusbar_visible="new,validate" statusbar_colors='{"new":"blue","validate":"blue"}'/>
 	                </header>
 	                <sheet string="Kết quả xổ số">

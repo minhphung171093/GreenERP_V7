@@ -32,7 +32,7 @@ class chinhsua_trathuong(osv.osv_memory):
     }
     
     _defaults = {
-        'date': time.strftime('%Y-%m-%d'),
+        'date': lambda *a: time.strftime('%Y-%m-%d'),
     }
     
     def chinhsua(self, cr, uid, ids, context=None):

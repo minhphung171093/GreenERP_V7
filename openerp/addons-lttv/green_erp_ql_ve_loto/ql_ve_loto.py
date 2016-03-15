@@ -176,12 +176,14 @@ dai_duthuong()
 
 class ketqua_xoso(osv.osv):
     _name = "ketqua.xoso"
+    _order = "name desc"
     
     def default_get(self, cr, uid, fields, context=None):
         res = super(ketqua_xoso, self).default_get(cr, uid, fields, context=context)
         vals = []
         
         for i in range(1,19):
+            dm_7_so = False
             if i==1:
                 name = 'Giải 8'
                 ma = '01'
@@ -203,24 +205,31 @@ class ketqua_xoso(osv.osv):
             elif i==7:
                 name = 'Giải 4.1'
                 ma = '07'
+                dm_7_so = True
             elif i==8:
                 name = 'Giải 4.2'
                 ma = '08'
+                dm_7_so = True
             elif i==9:
                 name = 'Giải 4.3'
                 ma = '09'
+                dm_7_so = True
             elif i==10:
                 name = 'Giải 4.4'
                 ma = '10'
+                dm_7_so = True
             elif i==11:
                 name = 'Giải 4.5'
                 ma = '11'
+                dm_7_so = True
             elif i==12:
                 name = 'Giải 4.6'
                 ma = '12'
+                dm_7_so = True
             elif i==13:
                 name = 'Giải 4.7'
                 ma = '13'
+                dm_7_so = True
             elif i==14:
                 name = 'Giải 3.1'
                 ma = '14'
@@ -239,6 +248,7 @@ class ketqua_xoso(osv.osv):
             line_vals = {
                 'name': name,
                 'ma': ma,
+                'dm_7_so': dm_7_so,
                   }
             vals.append((0,0,line_vals))
         res.update({
@@ -346,6 +356,25 @@ class ketqua_xoso(osv.osv):
                             ve_loto_line_obj.write(cr, uid, [line.id], {'sl_4_16_trung':sl_4_16_trung})
                         ve_loto_obj.write(cr, uid, [veloto.id], {'state':'done'})
         return self.write(cr, uid, ids, {'state':'validate'})
+    
+    def bt_dovelai(self, cr, uid, ids, context=None):
+        ve_loto_obj = self.pool.get('ve.loto')
+        dongbo_trungthuong_obj = self.pool.get('dongbo.daily.trungthuong')
+        ve_loto_line_obj = self.pool.get('ve.loto.line')
+        for xoso in self.browse(cr, uid, ids):
+            dongbo_trungthuong_ids = dongbo_trungthuong_obj.search(cr, uid, [('ket_qua_id','=',xoso.id),('state','=','done')])
+            if dongbo_trungthuong_ids:
+                raise osv.except_osv(_('Cảnh báo!'),_('Không thể nhập lại kết quả vì đã đồng bộ dữ liệu cho trả thưởng!'))
+            ve_loto_ids = ve_loto_obj.search(cr, uid, [('ngay','=',xoso.name),('state','=','validate'),('parent_id','=',False)])
+            if ve_loto_ids:
+                ve_loto_ids = str(ve_loto_ids).replace('[', '(')
+                ve_loto_ids = str(ve_loto_ids).replace(']', ')')
+                sql = '''
+                    update ve_loto_line set sl_2_d_trung=0, sl_2_c_trung=0, sl_2_dc_trung=0, sl_3_d_trung=0, sl_3_c_trung=0,
+                        sl_3_dc_trung=0, sl_3_7_trung=0, sl_3_17_trung=0, sl_4_16_trung=0 where ve_loto_id in %s
+                '''%(ve_loto_ids)
+                cr.execute(sql)
+        return self.write(cr, uid, ids, {'state':'new'})
     
 ketqua_xoso()
 

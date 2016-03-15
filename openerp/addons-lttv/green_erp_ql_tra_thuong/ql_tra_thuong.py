@@ -299,7 +299,7 @@ class tra_thuong_thucte(osv.osv):
     
     _defaults = {
         'state': 'new',
-        'ngay_tra_thuong': time.strftime('%Y-%m-%d'),
+        'ngay_tra_thuong': lambda *a: time.strftime('%Y-%m-%d'),
     }
     
     def _get_number_of_days(self, date_from, date_to):

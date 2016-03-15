@@ -27,7 +27,7 @@ class doanhthu_xoso_tuchon(osv.osv_memory):
     }
     
     _defaults = {
-        'date': time.strftime('%Y-%m-%d'),
+        'date': lambda *a: time.strftime('%Y-%m-%d'),
         }
     
     def print_report(self, cr, uid, ids, context=None):
