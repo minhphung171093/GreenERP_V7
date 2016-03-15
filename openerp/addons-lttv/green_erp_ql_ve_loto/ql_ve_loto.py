@@ -382,6 +382,10 @@ class ketqua_xoso(osv.osv):
                         sl_3_dc_trung=0, sl_3_7_trung=0, sl_3_17_trung=0, sl_4_16_trung=0 where ve_loto_id in %s
                 '''%(ve_loto_ids)
                 cr.execute(sql)
+                sql = '''
+                    update ve_loto set state='new' where id in %s
+                '''%(ve_loto_ids)
+                cr.execute(sql)
         return self.write(cr, uid, ids, {'state':'new'})
     
 ketqua_xoso()
