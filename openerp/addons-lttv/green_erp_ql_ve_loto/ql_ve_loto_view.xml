@@ -92,10 +92,10 @@
 	                <sheet string="Kết quả xổ số">
 	                    <group>
 		                    <group>
-		                        <field name="name"/>
+		                        <field name="name" on_change="onchange_ngay(name)"/>
 		                    </group>
 		                    <group>
-		                        <field name="dai_duthuong_id"/>
+		                        <field name="dai_duthuong_id" required='1'/>
 		                    </group>
 	                    </group>
 	                    <group>

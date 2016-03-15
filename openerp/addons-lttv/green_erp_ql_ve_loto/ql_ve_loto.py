@@ -295,6 +295,14 @@ class ketqua_xoso(osv.osv):
         'dai_duthuong_id': _get_default_dai_duthuong,
     }
     
+    def onchange_ngay(self, cr, uid, ids, name=False, context=None):
+        vals = {}
+        if name:
+            date = datetime.datetime.strptime(name,'%Y-%m-%d').toordinal()
+            dai_dt_ids = self.pool.get('dai.duthuong').search(cr, uid, [('thu','=',str(date%7))])
+            vals = {'dai_duthuong_id': dai_dt_ids and dai_dt_ids[0] or False}
+        return {'value': vals}
+    
     def validate_winning(self, cr, uid, ids, context=None):
         ve_loto_obj = self.pool.get('ve.loto')
         ve_loto_line_obj = self.pool.get('ve.loto.line')
