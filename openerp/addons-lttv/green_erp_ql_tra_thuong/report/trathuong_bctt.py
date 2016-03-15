@@ -69,13 +69,11 @@ class Parser(report_sxw.rml_parse):
         date_from = wizard_data['date_from']
         date_to = wizard_data['date_to']
         menhgia_ids=False
-        if menhgia==5000:
-            menhgia_ids = menhgia_obj.search(self.cr, self.uid, [('menh_gia','=',True),('name','in',['Mệnh giá 5.000 đồng','MG-05.000']),('default_code','in',['Mệnh giá 5.000 đồng','MG-05.000'])])
-        if menhgia==10000:
+        if menhgia=='1':
             menhgia_ids = menhgia_obj.search(self.cr, self.uid, [('menh_gia','=',True),('name','in',['Mệnh giá 10.000 đồng','MG-10.000']),('default_code','in',['Mệnh giá 10.000 đồng','MG-10.000'])])
-        if menhgia==20000:
+        if menhgia=='2':
             menhgia_ids = menhgia_obj.search(self.cr, self.uid, [('menh_gia','=',True),('name','in',['Mệnh giá 20.000 đồng','MG-20.000']),('default_code','in',['Mệnh giá 20.000 đồng','MG-20.000'])])
-        if menhgia==50000:
+        if menhgia=='5':
             menhgia_ids = menhgia_obj.search(self.cr, self.uid, [('menh_gia','=',True),('name','in',['Mệnh giá 50.000 đồng','MG-50.000']),('default_code','in',['Mệnh giá 50.000 đồng','MG-50.000'])])
         if menhgia_ids:
             sql = '''
@@ -123,13 +121,11 @@ class Parser(report_sxw.rml_parse):
         date_from = wizard_data['date_from']
         date_to = wizard_data['date_to']
         menhgia_ids=False
-        if menhgia==5000:
-            menhgia_ids = menhgia_obj.search(self.cr, self.uid, [('menh_gia','=',True),('name','in',['Mệnh giá 5.000 đồng','MG-05.000']),('default_code','in',['Mệnh giá 5.000 đồng','MG-05.000'])])
-        if menhgia==10000:
+        if menhgia=='1':
             menhgia_ids = menhgia_obj.search(self.cr, self.uid, [('menh_gia','=',True),('name','in',['Mệnh giá 10.000 đồng','MG-10.000']),('default_code','in',['Mệnh giá 10.000 đồng','MG-10.000'])])
-        if menhgia==20000:
+        if menhgia=='2':
             menhgia_ids = menhgia_obj.search(self.cr, self.uid, [('menh_gia','=',True),('name','in',['Mệnh giá 20.000 đồng','MG-20.000']),('default_code','in',['Mệnh giá 20.000 đồng','MG-20.000'])])
-        if menhgia==50000:
+        if menhgia=='5':
             menhgia_ids = menhgia_obj.search(self.cr, self.uid, [('menh_gia','=',True),('name','in',['Mệnh giá 50.000 đồng','MG-50.000']),('default_code','in',['Mệnh giá 50.000 đồng','MG-50.000'])])
         if menhgia_ids:
             sql = '''
