@@ -387,7 +387,7 @@ class ketqua_xoso(osv.osv):
                 '''%(ve_loto_ids)
                 cr.execute(sql)
                 sql = '''
-                    delete dongbo_daily_trungthuong from where ket_qua_id=%s
+                    delete from dongbo_daily_trungthuong where ket_qua_id=%s
                 '''%(xoso.id)
                 cr.execute(sql)
         return self.write(cr, uid, ids, {'state':'new'})
