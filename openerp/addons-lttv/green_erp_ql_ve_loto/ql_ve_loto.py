@@ -386,6 +386,10 @@ class ketqua_xoso(osv.osv):
                     update ve_loto set state='new' where id in %s;
                 '''%(ve_loto_ids)
                 cr.execute(sql)
+                sql = '''
+                    delete dongbo_daily_trungthuong from where ket_qua_id=%s
+                '''%(xoso.id)
+                cr.execute(sql)
         return self.write(cr, uid, ids, {'state':'new'})
     
 ketqua_xoso()
