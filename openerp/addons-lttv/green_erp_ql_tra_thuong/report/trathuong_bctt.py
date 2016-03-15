@@ -69,14 +69,24 @@ class Parser(report_sxw.rml_parse):
         date_from = wizard_data['date_from']
         date_to = wizard_data['date_to']
         menhgia_ids=False
-        if menhgia==5000:
-            menhgia_ids = menhgia_obj.search(self.cr, self.uid, [('menh_gia','=',True),('name','in',['Mệnh giá 5.000 đồng','MG-05.000']),('default_code','in',['Mệnh giá 5.000 đồng','MG-05.000'])])
-        if menhgia==10000:
-            menhgia_ids = menhgia_obj.search(self.cr, self.uid, [('menh_gia','=',True),('name','in',['Mệnh giá 10.000 đồng','MG-10.000']),('default_code','in',['Mệnh giá 10.000 đồng','MG-10.000'])])
-        if menhgia==20000:
-            menhgia_ids = menhgia_obj.search(self.cr, self.uid, [('menh_gia','=',True),('name','in',['Mệnh giá 20.000 đồng','MG-20.000']),('default_code','in',['Mệnh giá 20.000 đồng','MG-20.000'])])
-        if menhgia==50000:
-            menhgia_ids = menhgia_obj.search(self.cr, self.uid, [('menh_gia','=',True),('name','in',['Mệnh giá 50.000 đồng','MG-50.000']),('default_code','in',['Mệnh giá 50.000 đồng','MG-50.000'])])
+        if menhgia=='1':
+            sql = '''
+                select id from product_product where default_code='MG-10.000'
+            '''
+            self.cr.execute(sql)
+            menhgia_ids = [r[0] for r in self.cr.fetchall()]
+        if menhgia=='2':
+            sql = '''
+                select id from product_product where default_code='MG-20.000'
+            '''
+            self.cr.execute(sql)
+            menhgia_ids = [r[0] for r in self.cr.fetchall()]
+        if menhgia=='5':
+            sql = '''
+                select id from product_product where default_code='MG-50.000'
+            '''
+            self.cr.execute(sql)
+            menhgia_ids = [r[0] for r in self.cr.fetchall()]
         if menhgia_ids:
             sql = '''
                 select id from tra_thuong_thucte_line
@@ -123,14 +133,24 @@ class Parser(report_sxw.rml_parse):
         date_from = wizard_data['date_from']
         date_to = wizard_data['date_to']
         menhgia_ids=False
-        if menhgia==5000:
-            menhgia_ids = menhgia_obj.search(self.cr, self.uid, [('menh_gia','=',True),('name','in',['Mệnh giá 5.000 đồng','MG-05.000']),('default_code','in',['Mệnh giá 5.000 đồng','MG-05.000'])])
-        if menhgia==10000:
-            menhgia_ids = menhgia_obj.search(self.cr, self.uid, [('menh_gia','=',True),('name','in',['Mệnh giá 10.000 đồng','MG-10.000']),('default_code','in',['Mệnh giá 10.000 đồng','MG-10.000'])])
-        if menhgia==20000:
-            menhgia_ids = menhgia_obj.search(self.cr, self.uid, [('menh_gia','=',True),('name','in',['Mệnh giá 20.000 đồng','MG-20.000']),('default_code','in',['Mệnh giá 20.000 đồng','MG-20.000'])])
-        if menhgia==50000:
-            menhgia_ids = menhgia_obj.search(self.cr, self.uid, [('menh_gia','=',True),('name','in',['Mệnh giá 50.000 đồng','MG-50.000']),('default_code','in',['Mệnh giá 50.000 đồng','MG-50.000'])])
+        if menhgia=='1':
+            sql = '''
+                select id from product_product where default_code='MG-10.000'
+            '''
+            self.cr.execute(sql)
+            menhgia_ids = [r[0] for r in self.cr.fetchall()]
+        if menhgia=='2':
+            sql = '''
+                select id from product_product where default_code='MG-20.000'
+            '''
+            self.cr.execute(sql)
+            menhgia_ids = [r[0] for r in self.cr.fetchall()]
+        if menhgia=='5':
+            sql = '''
+                select id from product_product where default_code='MG-50.000'
+            '''
+            self.cr.execute(sql)
+            menhgia_ids = [r[0] for r in self.cr.fetchall()]
         if menhgia_ids:
             sql = '''
                 select id from tra_thuong_thucte_line
