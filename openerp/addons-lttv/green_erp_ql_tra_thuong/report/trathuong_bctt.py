@@ -121,6 +121,7 @@ class Parser(report_sxw.rml_parse):
         date_from = wizard_data['date_from']
         date_to = wizard_data['date_to']
         menhgia_ids=False
+        print menhgia
         if menhgia=='1':
             menhgia_ids = menhgia_obj.search(self.cr, self.uid, [('menh_gia','=',True),('name','in',['Mệnh giá 10.000 đồng','MG-10.000']),('default_code','in',['Mệnh giá 10.000 đồng','MG-10.000'])])
             print menhgia_ids
