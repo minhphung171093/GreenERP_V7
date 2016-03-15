@@ -15,7 +15,7 @@
                 		<field name="ma_daily" attrs="{'invisible':[('supplier','!=',False)], 'required':[('supplier','=',False)]}"/>
                 		<field name="parent_id" attrs="{'invisible':[('supplier','!=',False)]}"/>
                 		<field name="dai_ly" attrs="{'invisible':[('supplier','!=',False)], 'required':[('supplier','=',False)]}"/>
-                		<field name="account_tra_thuong_id" domain="[('type','!=','view')]" attrs="{'invisible':[('supplier','!=',False)], 'required':[('supplier','=',False)]}"/>
+                		<!--<field name="account_tra_thuong_id" domain="[('type','!=','view')]" attrs="{'invisible':[('supplier','!=',False)], 'required':[('supplier','=',False)]}"/>-->
                     </xpath>
                 </data>
             </field>
@@ -95,7 +95,7 @@
 		                        <field name="name" on_change="onchange_ngay(name)"/>
 		                    </group>
 		                    <group>
-		                        <field name="dai_duthuong_id" required='1'/>
+		                        <field name="dai_duthuong_id" readonly='1'/>
 		                    </group>
 	                    </group>
 	                    <group>
@@ -119,6 +119,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="ketqua_xoso_tree"/>
+            <field name="context">{'readonly_by_pass': True}</field>
         </record>
         
         <menuitem name="Vé Loto" id="menu_ve_loto" parent="ql_ve_loto" sequence="10" groups="group_ql_ve_loto"/>

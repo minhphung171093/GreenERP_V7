@@ -250,16 +250,15 @@ class tra_thuong_thucte(osv.osv):
                 
                 line_vals.append((0,0,vals))
             account_id = voucher_batch_obj.onchange_journal(cr, uid, [], trathuong.journal_id.id)['value']['account_id']
-            voucher_batch_obj.create(cr, uid, {
-                'journal_id': trathuong.journal_id.id,
-                'account_id': account_id,
-                'date': date_now,
-                'assign_user': trathuong.nguoi_nhan_thuong,
-                'voucher_lines': line_vals,
-                'description': 'Chi trả thưởng vé LTTC',
-                'trathuong_thucte_id': trathuong.id,
-            })
-#                 voucher_id = voucher.create(cr, uid, vals)
+#             voucher_batch_obj.create(cr, uid, {
+#                 'journal_id': trathuong.journal_id.id,
+#                 'account_id': account_id,
+#                 'date': date_now,
+#                 'assign_user': trathuong.nguoi_nhan_thuong,
+#                 'voucher_lines': line_vals,
+#                 'description': 'Chi trả thưởng vé LTTC',
+#                 'trathuong_thucte_id': trathuong.id,
+#             })
         return self.write(cr, uid, ids, {'state':'done'})
     
     def _amount_tong(self, cr, uid, ids, field_name, arg, context=None):
@@ -294,7 +293,7 @@ class tra_thuong_thucte(osv.osv):
                 'tra.thuong.thucte.line': (_get_line, ['giai','loai','product_id','sl_trung', 'slan_trung','tong_trung', 'tong_tien'], 20),
             },
             ),
-        'state': fields.selection([('new','Mới tạo'),('done','Đã tạo phiếu chi')],'Trạng thái'),
+        'state': fields.selection([('new','Mới tạo'),('done','Đã trả')],'Trạng thái'),
     }
     
     _defaults = {

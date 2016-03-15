@@ -302,7 +302,7 @@
 			                        <field name="loai" on_change="onchange_product(product_id,name,loai,giai,parent.ngay,sl_trung)"/>
 			                        <field name="giai" on_change="onchange_product(product_id,name,loai,giai,parent.ngay,sl_trung)"/>
 			                        <field name="sl_trung" on_change="onchange_product(product_id,name,loai,giai,parent.ngay,sl_trung)"/>
-			                        <field name="slan_trung"/>
+			                        <field name="slan_trung" readonly='1'/>
 			                        <field name="tong_tien"/>
 			                        <field name="tong"/>
 	                        	</tree>
@@ -326,7 +326,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="tra_thuong_thucte_tree"/>
-            <field name="context">{'search_default_moitao':1}</field>
+            <field name="context">{'search_default_moitao':1,'readonly_by_pass': True}</field>
         </record>
         
         <menuitem action="action_tra_thuong_thucte" id="menu_action_tra_thuong_thucte" parent="menu_tra_thuong" sequence="30"/>

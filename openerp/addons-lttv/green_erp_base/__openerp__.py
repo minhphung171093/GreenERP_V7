@@ -26,7 +26,7 @@
     'sequence': 1,
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',
-    'depends': ['web','report_aeroo','report_aeroo_ooo'],
+    'depends': ['web','green_erp_readonly_bypass','report_aeroo','report_aeroo_ooo'],
     'data': [
         'ir_ui_menu_view.xml',
         'res_users_view.xml',
