@@ -75,7 +75,7 @@
                     		<field name="consignee_text" string = "2nd Consignee" invisible='1' />
                     		<field name="notify_party_id" domain="[('customer','=',True)]" string = "1st Notify Party" />
                     		<field name="consignee_text" string = "2nd Notify Party" invisible='1' />
-                    		<field name="user_id"/>
+                    		<field name="user_id" readonly='1'/>
 	                    </group>
 	                    <group>
                     		<field name="mean_transport"/>
