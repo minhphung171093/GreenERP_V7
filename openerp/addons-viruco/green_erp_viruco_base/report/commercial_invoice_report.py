@@ -274,14 +274,15 @@ class Parser(report_sxw.rml_parse):
                             'pack_weight': self.get_packages_weight(pack_weight),
                             })
             elif line.option and line.option == 'seal_no':
+                product = ''
                 for seal in line.description_line:
                     total = (seal.net_weight or 0) * (seal.hopdong_line_id and seal.hopdong_line_id.price_unit or 0)
                     self.gross_weight += seal.gross_weight or 0
                     self.net_weight += seal.net_weight or 0
                     self.package += seal.packages_qty or 0
                     self.amount += total
-                    
-                    res.append({ 'product': seal.hopdong_line_id and seal.hopdong_line_id.product_id and seal.hopdong_line_id.product_id.eng_name + ' '+ line.hopdong_line_id.product_id.default_code or '',
+#                     product=
+                    res.append({ 'product': seal.hopdong_line_id and seal.hopdong_line_id.product_id and seal.hopdong_line_id.product_id.eng_name + ' '+ seal.hopdong_line_id.product_id.default_code or '',
                                 'package': seal.packages_qty or 0,
                                 'strpack': str(seal.packages_qty and round(seal.packages_qty) or 0) +' '+ (seal.packages_id and seal.packages_id.name or ''),
                                 'net_weight': seal.net_weight and round(seal.net_weight,2) or 0,
