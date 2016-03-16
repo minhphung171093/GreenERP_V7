@@ -283,10 +283,10 @@ class Parser(report_sxw.rml_parse):
                     self.amount += total
                     product += seal.hopdong_line_id.product_id.default_code and (seal.hopdong_line_id.product_id.default_code + '\n') or ''
                 res.append({ 'product': product,
-                            'package': seal.packages_qty or 0,
+                            'package': self.package or 0,
                             'strpack': str(seal.packages_qty and round(seal.packages_qty) or 0) +' '+ (seal.packages_id and seal.packages_id.name or ''),
-                            'net_weight': seal.net_weight and round(seal.net_weight,2) or 0,
-                            'gross_weight': seal.gross_weight and round(seal.gross_weight,2) or 0,
+                            'net_weight': self.net_weight,
+                            'gross_weight': self.gross_weight,
                             'price': seal.hopdong_line_id and seal.hopdong_line_id.price_unit or 0,
                             'amount': total,
                             'seal_no': line.container_no_seal + '/' + line.seal_no or '',
