@@ -362,7 +362,7 @@ class Parser(report_sxw.rml_parse):
                     self.pack = detail.packages_id.name or ''
                     self.pack_weight = self.get_packages_weight(detail.packages_weight)
             if line.option and line.option == 'seal_no':
-                res.append({ 'product': line.container_no_seal + '/' + detail.seal_no or '',
+                res.append({ 'product': line.container_no_seal + '/' + line.seal_no or '',
                             'package': '',
                             'form': '',
                             'net_weight': '',
