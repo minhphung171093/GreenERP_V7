@@ -295,7 +295,7 @@ class Parser(report_sxw.rml_parse):
                                 'seal_no': line.container_no_seal + '/' + line.seal_no or '',
                                 'packages_name': seal.packages_id.name or '',
                                 'pack_weight': self.get_packages_weight(seal.packages_weight),
-                                'test': '',
+                                'draft_bl': '',
                                 'invoice_thue': 'invoice_thue',
                                 })
                 res.append({ 'product': product_total,
@@ -308,7 +308,7 @@ class Parser(report_sxw.rml_parse):
                                 'seal_no': line.container_no_seal + '/' + line.seal_no or '',
                                 'packages_name': seal.packages_id.name or '',
                                 'pack_weight': self.get_packages_weight(seal.packages_weight),
-                                'test': 'test',
+                                'draft_bl': 'draft_bl',
                                 'invoice_thue': ''
                                 })
         return res
