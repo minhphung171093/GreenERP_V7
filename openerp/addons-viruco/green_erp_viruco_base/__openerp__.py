@@ -26,7 +26,7 @@
     'sequence': 1,
     'author': 'nguyentoanit@gmail.com',
     'website' : 'http://incomtech.com/',
-    'depends': ['green_erp_viruco_menu','web','base','purchase','sale','sale_stock','product','properties','report_aeroo','report_aeroo_ooo','stock','account','green_erp_readonly_bypass'],
+    'depends': ['green_erp_viruco_menu','web','base','purchase','sale','sale_stock','product','properties','report_aeroo','report_aeroo_ooo','stock','account','green_erp_readonly_bypass','web_m2x_options'],
     'data': [
             'security/viruco_base_security.xml',
             'security/ir.model.access.csv',
