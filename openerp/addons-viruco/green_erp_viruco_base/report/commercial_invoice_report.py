@@ -272,7 +272,8 @@ class Parser(report_sxw.rml_parse):
                             'seal_no': seal_no,
                             'packages_name': package['name'],
                             'pack_weight': self.get_packages_weight(pack_weight),
-                            'test': '',
+                            'draft_bl': 'draft_bl',
+                            'invoice_thue': 'invoice_thue'
                             })
             elif line.option and line.option == 'seal_no':
                 product_total = ''
@@ -294,11 +295,12 @@ class Parser(report_sxw.rml_parse):
                                 'seal_no': line.container_no_seal + '/' + line.seal_no or '',
                                 'packages_name': seal.packages_id.name or '',
                                 'pack_weight': self.get_packages_weight(seal.packages_weight),
-                                'test': 'test',
+                                'test': '',
+                                'invoice_thue': 'invoice_thue',
                                 })
                 res.append({ 'product': product_total,
                                 'package': self.package or 0,
-                                'strpack': str(seal.packages_qty and round(seal.packages_qty) or 0) +' '+ (seal.packages_id and seal.packages_id.name or ''),
+                                'strpack': self.package or 0,
                                 'net_weight': self.net_weight or 0,
                                 'gross_weight': self.gross_weight or 0,
                                 'price': seal.hopdong_line_id and seal.hopdong_line_id.price_unit or 0,
@@ -306,7 +308,8 @@ class Parser(report_sxw.rml_parse):
                                 'seal_no': line.container_no_seal + '/' + line.seal_no or '',
                                 'packages_name': seal.packages_id.name or '',
                                 'pack_weight': self.get_packages_weight(seal.packages_weight),
-                                'test': '',
+                                'test': 'test',
+                                'invoice_thue': ''
                                 })
         return res
     
