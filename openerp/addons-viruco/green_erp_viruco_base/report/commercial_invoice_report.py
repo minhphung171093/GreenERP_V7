@@ -374,7 +374,7 @@ class Parser(report_sxw.rml_parse):
                             'gross_weight': '',
                             })
                 for detail in line.description_line:
-                    res.append({ 'product': detail.hopdong_line_id and detail.hopdong_line_id.product_id and detail.hopdong_line_id.product_id.eng_name + line.hopdong_line_id.product_id.default_code or '',
+                    res.append({ 'product': detail.hopdong_line_id and detail.hopdong_line_id.product_id and detail.hopdong_line_id.product_id.eng_name + ' '+ detail.hopdong_line_id.product_id.default_code or '',
                             'package': detail.packages_qty and round(detail.packages_qty) or 0,
                             'form': detail.packages_weight,
                             'net_weight': detail.net_weight and round(detail.net_weight,2) or 0,
