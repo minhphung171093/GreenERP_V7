@@ -346,7 +346,7 @@ class hop_dong(osv.osv):
             sql = '''
                 select id from hop_dong
                     where type = 'hd_ngoai' and state in ('thuc_hien','da_ky','lam_chungtu','xong_chungtu') 
-                    and user_chungtu_id = %s
+                    and user_id = %s
             '''%(uid)
             cr.execute(sql)
             chungtu_hopdong_ids = [row[0] for row in cr.fetchall()]

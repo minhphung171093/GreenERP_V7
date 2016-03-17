@@ -33,6 +33,7 @@
                     <field name="hopdong_id"/>
                     <field name="notify_party_id"/>
                     <field name="bl_no"/>
+                    <field name="user_id"/>
                     <group expand="0" string="Group By...">
                         <filter string="Contract" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'hopdong_id'}"/>
                         <filter string="Status" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
@@ -75,7 +76,7 @@
                     		<field name="consignee_text" string = "2nd Consignee" invisible='1' />
                     		<field name="notify_party_id" domain="[('customer','=',True)]" string = "1st Notify Party" />
                     		<field name="consignee_text" string = "2nd Notify Party" invisible='1' />
-                    		<field name="user_id" readonly='1'/>
+                    		<field name="user_id" on_change="onchange_user_id(user_id,hopdong_id)" options="{'create': false, 'create_edit': false}"/>
 	                    </group>
 	                    <group>
                     		<field name="mean_transport"/>
@@ -181,7 +182,7 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="draft_bl_tree_view"/>
             <field name="domain">[]</field>
-            <field name="context">{}</field>
+            <field name="context">{'search_default_user_id:uid'}</field>
         </record>
     	
     </data>

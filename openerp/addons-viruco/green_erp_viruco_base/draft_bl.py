@@ -99,10 +99,19 @@ class draft_bl(osv.osv):
     
     _defaults = {
         'state':'moi_tao',
-        'user_id': _get_user,
+#         'user_id': _get_user,
         'date': lambda *a: time.strftime('%Y-%m-%d'),
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'draft.bl', context=c),
     }
+    
+    def onchange_user_id(self, cr, uid, ids,user_id=False,hopdong_id=False,context=None):
+        vals = {}
+        if user_id and hopdong_id:
+            sql = '''
+                update hop_dong set user_chungtu_id = %s where id = %s
+            '''%(user_id,hopdong_id)
+            cr.execute(sql)
+        return {'value':vals}
     
     def create(self, cr, uid, vals, context=None):
 #         new_id = super(draft_bl, self).create(cr, uid, vals, context)
