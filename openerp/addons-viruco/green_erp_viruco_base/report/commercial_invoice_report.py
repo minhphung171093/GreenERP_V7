@@ -258,8 +258,8 @@ class Parser(report_sxw.rml_parse):
                 product = ''
                 pack_weight = ''
                 for seal in line.seal_descript_line:
-                    seal_no += seal.container_no_seal and (seal.container_no_seal + '/') 
-                    seal_no += '/' + seal.seal_no and (seal.seal_no + '\n') or ''
+#                     seal_no += seal.container_no_seal and (seal.container_no_seal + '/') 
+#                     seal_no += '/' + seal.seal_no and (seal.seal_no + '\n') or ''
                     pack_weight = seal.packages_weight or ''
                     product = line.hopdong_line_id and line.hopdong_line_id.product_id and line.hopdong_line_id.product_id.eng_name + ' ' + line.hopdong_line_id.product_id.default_code or '' 
                 res.append({ 'product': product,
@@ -273,7 +273,7 @@ class Parser(report_sxw.rml_parse):
                             'packages_name': package['name'],
                             'pack_weight': self.get_packages_weight(pack_weight),
                             'draft_bl': 'draft_bl',
-                            'invoice_thue': 'invoice_thue'
+                            'invoice_thue': 'invoice_thue',
                             })
             elif line.option and line.option == 'seal_no':
                 product_total = ''
@@ -309,7 +309,7 @@ class Parser(report_sxw.rml_parse):
                                 'packages_name': seal.packages_id.name or '',
                                 'pack_weight': self.get_packages_weight(seal.packages_weight),
                                 'draft_bl': 'draft_bl',
-                                'invoice_thue': ''
+                                'invoice_thue': '',
                                 })
         return res
     
