@@ -262,7 +262,7 @@ class Parser(report_sxw.rml_parse):
                     seal_no += '/' + seal.seal_no and (seal.seal_no + '\n') or ''
                     pack_weight = seal.packages_weight or ''
                     product = line.hopdong_line_id and line.hopdong_line_id.product_id and line.hopdong_line_id.product_id.eng_name + ' ' + line.hopdong_line_id.product_id.default_code or '' 
-                res.append({ 'product': product,
+                res.append({ 'product_name': product,
                             'package': package['sum'],
                             'net_weight': round(net_weight,2),
                             'gross_weight': round(gross_weight,2),
@@ -287,7 +287,7 @@ class Parser(report_sxw.rml_parse):
                     self.amount += total
                     product = seal.hopdong_line_id.product_id.default_code or ''
                     product_total += seal.hopdong_line_id.product_id.default_code and (seal.hopdong_line_id.product_id.default_code + '\n') or ''
-                    res.append({ 'product': product,
+                    res.append({'product_name': product,
                                 'package': seal.packages_qty or 0,
                                 'strpack': str(seal.packages_qty and round(seal.packages_qty) or 0) +' '+ (seal.packages_id and seal.packages_id.name or ''),
                                 'net_weight': seal.net_weight and round(seal.net_weight,2) or 0,
@@ -302,7 +302,7 @@ class Parser(report_sxw.rml_parse):
                                 'product': '',
                                 'seal_no': 'seal_no',
                                 })
-                res.append({ 'product': product_total,
+                res.append({ 'product_name': product_total,
                                 'package': self.package or 0,
                                 'strpack': self.package or 0,
                                 'net_weight': self.net_weight or 0,
