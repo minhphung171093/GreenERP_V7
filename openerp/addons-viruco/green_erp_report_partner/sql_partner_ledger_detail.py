@@ -43,6 +43,11 @@ class sql_partner_ledger_detail(osv.osv):
         return True
     
     def fin_gen_liability_data(self,cr):
+        sql = '''
+            DROP TYPE IF EXISTS fin_gen_liability_data CASCADE;
+            commit;
+        '''
+        cr.execute(sql)
         cr.execute("select exists (select 1 from pg_type where typname = 'fin_gen_liability_data')")
         res = cr.fetchone()
         if res and res[0]:

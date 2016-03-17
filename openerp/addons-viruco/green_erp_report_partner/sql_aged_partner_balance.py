@@ -42,14 +42,19 @@ class sql_aged_partner_balance(osv.osv):
         return True
     
     def fin_partner_aging_data(self,cr):
-        cr.execute("select exists (select 1 from pg_type where typname = 'fin_partner_aging_data')")
+        sql = '''
+            DROP TYPE IF EXISTS fin_partner_aging_data2 CASCADE;
+            commit;
+        '''
+        cr.execute(sql)
+        cr.execute("select exists (select 1 from pg_type where typname = 'fin_partner_aging_data2')")
         res = cr.fetchone()
         if res and res[0]:
-            cr.execute('''delete from pg_type where typname = 'fin_partner_aging_data';
-                            delete from pg_class where relname='fin_partner_aging_data';
+            cr.execute('''delete from pg_type where typname = 'fin_partner_aging_data2';
+                            delete from pg_class where relname='fin_partner_aging_data2';
                             commit;''')
         sql = '''
-        CREATE TYPE fin_partner_aging_data AS
+        CREATE TYPE fin_partner_aging_data2 AS
            (seq integer,
             partner_code character varying(20),
             partner_name character varying(120),
@@ -64,7 +69,7 @@ class sql_aged_partner_balance(osv.osv):
             residual_180 numeric,
             residual_else numeric,
             aging_day integer);
-        ALTER TYPE fin_partner_aging_data
+        ALTER TYPE fin_partner_aging_data2
           OWNER TO openerp;
         '''
         cr.execute(sql)
@@ -76,11 +81,11 @@ class sql_aged_partner_balance(osv.osv):
         commit;
 
         CREATE OR REPLACE FUNCTION fin_partner_aging_report(date, integer, integer, boolean)
-          RETURNS SETOF fin_partner_aging_data AS
+          RETURNS SETOF fin_partner_aging_data2 AS
         $BODY$
         DECLARE
             rec_age        record;
-            age_data    fin_partner_aging_data%ROWTYPE;
+            age_data    fin_partner_aging_data2%ROWTYPE;
             line_no        int;
             days        int;
             type        int;
