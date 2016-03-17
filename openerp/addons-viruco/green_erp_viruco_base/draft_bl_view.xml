@@ -183,7 +183,7 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="draft_bl_tree_view"/>
             <field name="domain">[]</field>
-            <field name="context">{"search_default_user_chungtu_id":uid}</field>
+            <field name="context">{"search_default_user_id":uid}</field>
         </record>
     	
     </data>
