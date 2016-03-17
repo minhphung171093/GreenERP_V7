@@ -241,7 +241,7 @@
 							<field name="sale_person_id" />
 	                    	<field name="currency_id" string="Currency"/>
 	                    	<field name="user_id" string="User"/>
-	                    	<field name="user_chungtu_id" readonly = '0' required='1'/>
+	                    	<field name="user_chungtu_id" readonly = '0'/>
 	                    	<field name="create_theodoi_hopdong" invisible = '1'/>
 	                    	<field name="pricelist_id" invisible = '1'/>
 	                    	<field name="date_dbh" invisible = '1' />
