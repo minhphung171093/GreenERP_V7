@@ -111,7 +111,7 @@
 		                                    <field name="hopdong_line_id" domain="[('hopdong_id','=',parent.hopdong_id)]" attrs="{'invisible':[('option','in',['seal_no',False])],'required':[('option','in',['product'])]}" />
 		                                    <field name="container_no_seal" on_change = "onchange_container_no(container_no_seal)"  attrs="{'invisible':[('option','in',['product',False])]}"/>
 		                                    <field name="seal_no" attrs="{'invisible':[('option','in',['product',False])]}"/>
-		                                    <field name="line_number" on_change = "onchange_option(option,line_number)" attrs="{'invisible':[('option','!=','product'),'required':[('option','=','product')]}"/>
+		                                    <field name="line_number" on_change = "onchange_option(option,line_number)" attrs="{'invisible':[('option','!=','product')],'required':[('option','=','product')]}"/>
 		                                    <field name="hopdong_id" invisible="1"/>
 					                    </group>
 					                    <group col='4' colspan='2'>
