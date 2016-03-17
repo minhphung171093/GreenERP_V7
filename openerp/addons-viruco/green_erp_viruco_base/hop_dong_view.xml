@@ -834,6 +834,7 @@
 						<button name="print_donbanhang" string="In Proforma Invoice" type="object" class="oe_highlight"/>
 						<button name="duyet" string="Xác nhận" states="moi_tao" type="object" class="oe_highlight"/>
 						<button name="huy_bo" string="Huỷ bỏ" type="object" states="moi_tao,da_duyet" class="oe_highlight"/>
+						<button name="set_to_draft" string="Quay lại mới tạo" states="huy_bo" type="object" class="oe_highlight"/>
 						<field name="state" widget="statusbar" statusbar_visible="moi_tao,da_duyet,het_han,huy_bo"/>
 					</header>
 	            	<sheet>

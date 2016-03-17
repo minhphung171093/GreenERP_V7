@@ -944,7 +944,8 @@ class don_ban_hang(osv.osv):
     
     def duyet(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids, {'state': 'da_duyet'})
-    
+    def set_to_draft(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {'state': 'moi_tao'})    
     def onchange_pricelist_id(self, cr, uid, ids, pricelist_id, order_lines, context=None):
         context = context or {}
         if not pricelist_id:
