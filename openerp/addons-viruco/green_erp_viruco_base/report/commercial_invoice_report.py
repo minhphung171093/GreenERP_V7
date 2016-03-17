@@ -258,8 +258,8 @@ class Parser(report_sxw.rml_parse):
                 product = ''
                 pack_weight = ''
                 for seal in line.seal_descript_line:
-#                     seal_no += seal.container_no_seal and (seal.container_no_seal + '/') 
-#                     seal_no += '/' + seal.seal_no and (seal.seal_no + '\n') or ''
+                    seal_no += seal.container_no_seal and (seal.container_no_seal + '/') 
+                    seal_no += '/' + seal.seal_no and (seal.seal_no + '\n') or ''
                     pack_weight = seal.packages_weight or ''
                     product = line.hopdong_line_id and line.hopdong_line_id.product_id and line.hopdong_line_id.product_id.eng_name + ' ' + line.hopdong_line_id.product_id.default_code or '' 
                 res.append({ 'product': product,
@@ -274,6 +274,8 @@ class Parser(report_sxw.rml_parse):
                             'pack_weight': self.get_packages_weight(pack_weight),
                             'draft_bl': 'draft_bl',
                             'invoice_thue': 'invoice_thue',
+                            'product': 'product',
+                            'seal_no': '',
                             })
             elif line.option and line.option == 'seal_no':
                 product_total = ''
@@ -297,6 +299,8 @@ class Parser(report_sxw.rml_parse):
                                 'pack_weight': self.get_packages_weight(seal.packages_weight),
                                 'draft_bl': '',
                                 'invoice_thue': 'invoice_thue',
+                                'product': '',
+                                'seal_no': 'seal_no',
                                 })
                 res.append({ 'product': product_total,
                                 'package': self.package or 0,
@@ -310,6 +314,8 @@ class Parser(report_sxw.rml_parse):
                                 'pack_weight': self.get_packages_weight(seal.packages_weight),
                                 'draft_bl': 'draft_bl',
                                 'invoice_thue': '',
+                                'product': '',
+                                'seal_no': 'seal_no',
                                 })
         return res
     
