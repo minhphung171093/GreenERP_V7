@@ -145,10 +145,10 @@ class draft_bl(osv.osv):
                 update hop_dong set user_chungtu_id = %s where id = %s
             '''%(uid,line.hopdong_id.id)
             cr.execute(sql)
-        sql = '''
-            update draft_bl set user_id = %s where id = %s
-        '''%(uid,ids[0])
-        cr.execute(sql)
+#         sql = '''
+#             update draft_bl set user_id = %s where id = %s
+#         '''%(uid,ids[0])
+#         cr.execute(sql)
         return new_write
     
     def bt_wizard(self, cr, uid, ids, context=None):
