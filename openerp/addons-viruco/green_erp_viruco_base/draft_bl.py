@@ -95,7 +95,7 @@ class draft_bl(osv.osv):
             ('huy_bo', 'Hủy bỏ'),
             ], 'Trạng thái',readonly=True, states={'moi_tao': [('readonly', False)]}),
         'user_id': fields.many2one('res.users','Người thực hiện'),
-        'user_chungtu_id': fields.many2one('res.users','Người thực hiện'),
+#         'user_chungtu_id': fields.many2one('res.users','Người thực hiện'),
     }
     
     _defaults = {
@@ -105,12 +105,12 @@ class draft_bl(osv.osv):
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'draft.bl', context=c),
     }
     
-    def onchange_user_chungtu_id(self, cr, uid, ids,user_chungtu_id=False,hopdong_id=False,context=None):
+    def onchange_user_id(self, cr, uid, ids,user_id=False,hopdong_id=False,context=None):
         vals = {}
-        if user_chungtu_id and hopdong_id:
+        if user_id and hopdong_id:
             sql = '''
                 update hop_dong set user_chungtu_id = %s where id = %s
-            '''%(user_chungtu_id,hopdong_id)
+            '''%(user_id,hopdong_id)
             cr.execute(sql)
         return {'value':vals}
     
