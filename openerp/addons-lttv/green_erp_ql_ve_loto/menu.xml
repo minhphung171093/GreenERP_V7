@@ -81,6 +81,9 @@
 			<field name="active" eval="False"/>
 		</record>
 		
+		<record model="ir.ui.menu" id="green_erp_base.admin">
+			<field name="group_id" eval="[(6,0,[ref(group_ql_ve_loto_man)])]"/>
+		</record>
 		
     </data>
 </openerp>
