@@ -26,4 +26,5 @@ import import_ve_loto
 import dongbo
 import sale
 import purchase
+import stock
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

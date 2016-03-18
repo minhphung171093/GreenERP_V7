@@ -183,6 +183,32 @@ class Parser(report_sxw.rml_parse):
                    'end_val':i['end_val'] or 0.0
                    })
         return res
+    
+    def get_line_by_product(self,ky_ve):
+        res =[]
+#         wizard_data = self.localcontext['data']['form']
+#         menh_gia_ids = wizard_data['menh_gia_ids']
+#         for line in menh_gia_ids:
+#             cr.execute('''
+#                         select case when sum(foo.product_qty)>0 then sum(foo.product_qty) else 0 end ton_sl from
+#                             (select case when sum(foo.product_qty)>0 then sum(foo.product_qty) else 0 end ton_sl
+#                             
+#                             
+#                             
+#                             
+#                             
+#                             st.product_qty
+#                                 from stock_move st
+#                                 where st.state='done' and st.product_id=%s and st.location_dest_id = %s and prodlot_id = %s
+#                                 and st.picking_id not in %s
+#                             union all
+#                             select st.product_qty*-1
+#                                 from stock_move st
+#                                 where st.state='done' and st.product_id=%s and st.location_id = %s and prodlot_id = %s
+#                                 and st.picking_id not in %s
+#                             )foo
+#                         ''',(move_line['product_id'],picking.location_id.id,move_line['prodlot_id'] or 'null',tuple(ids),move_line['product_id'],picking.location_id.id,move_line['prodlot_id'] or 'null',tuple(ids)),)
+        return res
         
     
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
