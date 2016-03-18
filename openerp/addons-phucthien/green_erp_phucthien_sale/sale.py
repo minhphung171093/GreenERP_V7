@@ -166,7 +166,11 @@ class sale_order(osv.osv):
                                                 'account.invoice': (_get_account_invoice, ['state'], 10),
                                                 'sale.order':(lambda self, cr, uid, ids, c={}: ids, ['state'], 10),
                                             }),
+        'sp_khuyen_mai': fields.boolean('San pham khuyen mai'),
     }
+    _defaults = {
+              'sp_khuyen_mai': False,   
+                 }
     
     def onchange_partner_id(self, cr, uid, ids, part, context=None):
         val=[]

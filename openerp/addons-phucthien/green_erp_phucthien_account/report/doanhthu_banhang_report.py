@@ -54,6 +54,7 @@ class Parser(report_sxw.rml_parse):
             'get_tong_thue': self.get_tong_thue,
             'get_tong_giavon': self.get_tong_giavon,
             'convert_date_yyyymmdd': self.convert_date_yyyymmdd,
+            'get_km': self.get_km,
         })
     def convert_date(self, date):
         if date:
@@ -115,7 +116,7 @@ class Parser(report_sxw.rml_parse):
             select ail.id as id,ai.partner_id as partner_id,ai.date_invoice as ngay_hd,ai.reference_number as so_hd,rp.internal_code as ma_kh,rp.name as ten_kh,pp.default_code as ma_sp,
                 pp.name_template as ten_sp,pu.name as dvt,spl.name as so_lo,spl.life_date as han_dung,ail.quantity as so_luong,ail.price_unit as gia_ban,
                 ail.price_unit*ail.quantity as dt_truocthue,at.amount_tax as tien_thue,(ail.price_unit*ail.quantity)+at.amount_tax as dt_sauthue,pt.standard_price as gia_von,
-                sl.name as loc_name,mp.name as nsx,aa.code as so_tk,aa.name as ten_tk,kv.name as khu_vuc, rurp.name as nvbh,rp.gsk_code as gsk_code
+                sl.name as loc_name,mp.name as nsx,aa.code as so_tk, aa.name as ten_tk, kv.name as khu_vuc, rurp.name as nvbh, rp.gsk_code as gsk_code, so.sp_khuyen_mai as sp_khuyen_mai
                 from account_invoice_line ail
                     left join account_invoice ai on ail.invoice_id=ai.id
                     left join res_partner rp on ail.partner_id=rp.id
@@ -139,6 +140,8 @@ class Parser(report_sxw.rml_parse):
                     left join manufacturer_product mp on pp.manufacturer_product_id = mp.id
                     left join account_account aa on ai.account_id = aa.id
                     left join kv_benh_vien kv on kv.id=rp.kv_benh_vien
+                    left join sale_order_line sol on sol.id=sm.sale_line_id
+                    left join sale_order so on so.id=sol.order_id
                 where ai.date_invoice between '%s' and '%s' and ai.state!='cancel' and ai.type='out_invoice' 
         '''%(date_from,date_to)
         if partner_ids:
@@ -802,6 +805,12 @@ class Parser(report_sxw.rml_parse):
         if address:
             address = address[:-3]
         return address
+    
+    def get_km(self, sp_khuyen_mai):
+        if sp_khuyen_mai==True:
+            return 'CÓ'
+        else: 
+            return ''
     
     def get_kho(self,invoice_line_id):
         sql = '''

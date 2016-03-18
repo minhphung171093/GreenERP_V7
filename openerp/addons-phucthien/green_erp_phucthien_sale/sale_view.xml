@@ -110,6 +110,7 @@
             	</xpath>
 		     	<xpath expr="//field[@name='partner_id']" position="after">
                 	<field name="dia_chi_kh" />
+                	<field name="sp_khuyen_mai" invisible = '1'/>
                 </xpath>
                 <xpath expr="//field[@name='partner_shipping_id']" position="replace">
                 	<field name="partner_shipping_id" invisible='1' groups="sale.group_delivery_invoice_address" context="{'default_type':'delivery'}"/>
@@ -1097,5 +1098,54 @@
 		         </form>
 			</field>
 		</record> 
+		
+		<record id="action_sale_order_hang_km" model="ir.actions.act_window">
+            <field name="name">Đơn bán hàng khuyến mãi</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('sp_khuyen_mai','=',True)]</field>
+            <field name="context">{'default_sp_khuyen_mai':True,'readonly_by_pass': True}</field>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_sale_order_hang_km1">
+            <field name="sequence" eval="3"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_order_tree_inherit"/>
+            <field name="act_window_id" ref="action_sale_order_hang_km"/>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_sale_order_hang_km2">
+            <field name="sequence" eval="4"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_order_form_inherit"/>
+            <field name="act_window_id" ref="action_sale_order_hang_km"/>
+        </record>
+        
+        <menuitem id="menu_action_sale_order_hang_km"
+    		action="action_sale_order_hang_km"
+    		name="Đơn bán hàng khuyến mãi"
+    		parent="base.menu_sales"
+    		groups="base.group_sale_salesman_all_leads" 
+    		sequence="6"/>
+    		
+    	<record id="sale.action_orders" model="ir.actions.act_window">
+            <field name="name">Sales Orders</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar,graph</field>
+            <field name="search_view_id" ref="sale.view_sales_order_filter"/>
+            <field name="context">{'default_sp_khuyen_mai':False}</field>
+            <field name="domain">[('state','not in',('draft','sent','cancel')), ('sp_khuyen_mai','=',False)]</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a quotation that can be converted into a sales
+                order.
+              </p><p>
+                OpenERP will help you efficiently handle the complete sales flow:
+                quotation, sales order, delivery, invoicing and payment.
+              </p>
+            </field>
+        </record>
     </data>
 </openerp>
