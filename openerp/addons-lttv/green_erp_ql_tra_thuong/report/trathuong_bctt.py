@@ -71,19 +71,19 @@ class Parser(report_sxw.rml_parse):
         menhgia_ids=False
         if menhgia=='1':
             sql = '''
-                select id from product_product where default_code='MG-10.000'
+                select id from product_product where default_code='MG-10.000d'
             '''
             self.cr.execute(sql)
             menhgia_ids = [r[0] for r in self.cr.fetchall()]
         if menhgia=='2':
             sql = '''
-                select id from product_product where default_code='MG-20.000'
+                select id from product_product where default_code='MG-20.000d'
             '''
             self.cr.execute(sql)
             menhgia_ids = [r[0] for r in self.cr.fetchall()]
         if menhgia=='5':
             sql = '''
-                select id from product_product where default_code='MG-50.000'
+                select id from product_product where default_code='MG-50.000d'
             '''
             self.cr.execute(sql)
             menhgia_ids = [r[0] for r in self.cr.fetchall()]
@@ -135,19 +135,19 @@ class Parser(report_sxw.rml_parse):
         menhgia_ids=False
         if menhgia=='1':
             sql = '''
-                select id from product_product where default_code='MG-10.000'
+                select id from product_product where default_code='MG-10.000d'
             '''
             self.cr.execute(sql)
             menhgia_ids = [r[0] for r in self.cr.fetchall()]
         if menhgia=='2':
             sql = '''
-                select id from product_product where default_code='MG-20.000'
+                select id from product_product where default_code='MG-20.000d'
             '''
             self.cr.execute(sql)
             menhgia_ids = [r[0] for r in self.cr.fetchall()]
         if menhgia=='5':
             sql = '''
-                select id from product_product where default_code='MG-50.000'
+                select id from product_product where default_code='MG-50.000d'
             '''
             self.cr.execute(sql)
             menhgia_ids = [r[0] for r in self.cr.fetchall()]

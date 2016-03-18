@@ -83,13 +83,13 @@ class import_ve_loto(osv.osv):
                 if menh_gia == '-':
                     raise osv.except_osv(_('Cảnh báo!'),_('Dòng %s: Mệnh giá không đúng!')%(row+1))
                 if menh_gia==0:
-                    menh_gia_ids = self.pool.get('product.product').search(cr, uid, [('menh_gia','=',True),('default_code','=','MG-05.000')])
+                    menh_gia_ids = self.pool.get('product.product').search(cr, uid, [('menh_gia','=',True),('default_code','=','MG-05.000d')])
                 elif menh_gia==1:
-                    menh_gia_ids = self.pool.get('product.product').search(cr, uid, [('menh_gia','=',True),('default_code','=','MG-10.000')])
+                    menh_gia_ids = self.pool.get('product.product').search(cr, uid, [('menh_gia','=',True),('default_code','=','MG-10.000d')])
                 elif menh_gia==2:
-                    menh_gia_ids = self.pool.get('product.product').search(cr, uid, [('menh_gia','=',True),('default_code','=','MG-20.000')])
+                    menh_gia_ids = self.pool.get('product.product').search(cr, uid, [('menh_gia','=',True),('default_code','=','MG-20.000d')])
                 elif menh_gia==3:
-                    menh_gia_ids = self.pool.get('product.product').search(cr, uid, [('menh_gia','=',True),('default_code','=','MG-50.000')])
+                    menh_gia_ids = self.pool.get('product.product').search(cr, uid, [('menh_gia','=',True),('default_code','=','MG-50.000d')])
                 else:
                     menh_gia_ids = []
                 sophieu = sh.cell(row, 4).value
