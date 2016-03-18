@@ -238,6 +238,7 @@ class chan_nuoi(osv.osv):
         'an_toan_dich':fields.boolean('Cơ sở An toàn dịch'),
         'du_dk_thu_y':fields.boolean('Đủ điều kiện vệ sinh thú y'),
         'tieu_chuan_khac':fields.boolean('Tiêu chuẩn khác'),
+        'active':fields.boolean('Active'),
         'dien_tich_chuong':fields.char('Diện tích chuồng trại'),
         'mo_ta':fields.text('Mô tả'),
                 }
@@ -249,6 +250,7 @@ class chan_nuoi(osv.osv):
         'tieu_chuan_global':False,
         'tieu_chuan_khac':False,
         'du_dk_thu_y':False,
+        'active':True,
         
                  }
     
@@ -263,6 +265,10 @@ class chan_nuoi(osv.osv):
     _constraints = [
         (_check_ma_ho, 'Identical Data', []),
     ]   
+
+    def bt_active(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {'active':False})  
+
     def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
         if context is None:
             context = {}

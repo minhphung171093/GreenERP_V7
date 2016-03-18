@@ -261,6 +261,7 @@
                     <field name="trang_thai_id" options="{'create': false, 'create_edit': false}"/>
                     <field name="hien_an" invisible = '1'/>
                     <field name="chinh_sua_rel" invisible = '1'/>
+                    <field name="active" invisible = '1'/>
                 </tree>
             </field>
         </record>
@@ -273,6 +274,7 @@
                 <form string="Hộ chăn nuôi" version="7.0">
                 	<header>
 	            		<button name="bt_duyet" attrs="{'invisible': [('hien_an', '!=', True)]}" string="Duyệt" type="object" class="oe_highlight" />
+	            		<button name="bt_active" string="Ngừng quản lý CS chăn nuôi" type="object" class="oe_highlight" />
 	            		
 	                    <field name="trang_thai_id" widget="statusbar"/>
 	            	</header> 
@@ -286,6 +288,7 @@
 		                    <field name="company_id" options="{'create': false, 'create_edit': false}" />
 		                    <field name="hien_an" invisible = '1'/>
 		                    <field name="chinh_sua_rel" invisible = '1' />
+		                    <field name="active" invisible = '1'/>
                 		</group>
                 		<group col="4"  string="Địa chỉ">
 							<field name="so_nha" />                    
@@ -332,6 +335,7 @@
             <field name="view_mode">tree,form</field>
             <field eval="False" name="view_id" ref="chan_nuoi_tree"/>
             <field name="search_view_id" ref="chan_nuoi_search"/>
+            <field name="domain">[('active','=',True)]</field>
         </record>
 
         					
