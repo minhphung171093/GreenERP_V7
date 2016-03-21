@@ -204,4 +204,18 @@ class Parser(report_sxw.rml_parse):
                    })
         return res
     
+    def get_line_by_product(self,dai_ly_id):
+        res=[]
+        wizard_data = self.localcontext['data']['form']
+        menh_gia_ids = wizard_data['menh_gia_ids']
+        sql = '''
+            select id from res_partner where id =%s or parent_id=%s
+        '''%(dai_ly_id,dai_ly_id)
+        self.cr.execute(sql)
+        dl_ids = [row[0] for row in self.cr.fetchall()]
+        for line in menh_gia_ids:
+            ddd
+            
+        return res
+    
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

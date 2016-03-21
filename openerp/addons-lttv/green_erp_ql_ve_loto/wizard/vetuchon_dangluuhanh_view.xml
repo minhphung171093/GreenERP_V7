@@ -8,7 +8,9 @@
             <field name="arch" type="xml">
                 <form string="Vé tự chọn đang lưu hành" version="7.0">
                     <group colspan='4'>
-                    	<field name='date'/>
+                    	<field name='date_from'/>
+                    	<field name='date_to'/>
+                    	<field name='date' invisible="1"/>
                     </group>
                     <group>
 	                    <group string="Đại lý">

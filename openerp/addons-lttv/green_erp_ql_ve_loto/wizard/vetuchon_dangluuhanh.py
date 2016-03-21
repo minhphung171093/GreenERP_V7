@@ -23,11 +23,15 @@ class vetuchon_dangluuhanh(osv.osv_memory):
     _columns = {
         'dai_ly_ids': fields.many2many('res.partner','vedangluuhanh_partner_ref','vedangluuhanh_id','partner_id','Đại lý',domain="[('dai_ly','=',True),('parent_id','=',False)]", required=True),
         'menh_gia_ids': fields.many2many('product.product','vedangluuhanh_product_ref','vedangluuhanh_id','product_id','Mệnh giá',domain="[('menh_gia','=',True)]", required=True),
-        'date': fields.date('Ngày', required=True),
+        'date': fields.date('Ngày'),
+        'date_from': fields.date('Ngày Bắt đầu', required=True),
+        'date_to': fields.date('Ngày kết thúc', required=True),
     }
     
     _defaults = {
         'date': lambda *a: time.strftime('%Y-%m-%d'),
+        'date_from': lambda *a: time.strftime('%Y-%m-01'),
+        'date_to': lambda *a: str(datetime.now() + relativedelta(months=+1, day=1, days=-1))[:10]
         }
     
     def print_report(self, cr, uid, ids, context=None):
