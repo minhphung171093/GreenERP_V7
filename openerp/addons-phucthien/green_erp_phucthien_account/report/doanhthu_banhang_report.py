@@ -116,7 +116,8 @@ class Parser(report_sxw.rml_parse):
             select ail.id as id,ai.partner_id as partner_id,ai.date_invoice as ngay_hd,ai.reference_number as so_hd,rp.internal_code as ma_kh,rp.name as ten_kh,pp.default_code as ma_sp,
                 pp.name_template as ten_sp,pu.name as dvt,spl.name as so_lo,spl.life_date as han_dung,ail.quantity as so_luong,ail.price_unit as gia_ban,
                 ail.price_unit*ail.quantity as dt_truocthue,at.amount_tax as tien_thue,(ail.price_unit*ail.quantity)+at.amount_tax as dt_sauthue,pt.standard_price as gia_von,
-                sl.name as loc_name,mp.name as nsx,aa.code as so_tk, aa.name as ten_tk, kv.name as khu_vuc, rurp.name as nvbh, rp.gsk_code as gsk_code, so.sp_khuyen_mai as sp_khuyen_mai
+                sl.name as loc_name,mp.name as nsx,aa.code as so_tk, aa.name as ten_tk, kv.name as khu_vuc, rurp.name as nvbh, rp.gsk_code as gsk_code, so.sp_khuyen_mai as sp_khuyen_mai,
+                ai.type as type, ai.supplier_invoice_number as so_hd_tra
                 from account_invoice_line ail
                     left join account_invoice ai on ail.invoice_id=ai.id
                     left join res_partner rp on ail.partner_id=rp.id
@@ -142,7 +143,7 @@ class Parser(report_sxw.rml_parse):
                     left join kv_benh_vien kv on kv.id=rp.kv_benh_vien
                     left join sale_order_line sol on sol.id=sm.sale_line_id
                     left join sale_order so on so.id=sol.order_id
-                where ai.date_invoice between '%s' and '%s' and ai.state!='cancel' and ai.type='out_invoice' 
+                where ai.date_invoice between '%s' and '%s' and ai.state!='cancel' and ai.type in ('out_invoice','in_refund') 
         '''%(date_from,date_to)
         if partner_ids:
             partner_ids = str(partner_ids).replace('[', '(')
