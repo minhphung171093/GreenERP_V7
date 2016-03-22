@@ -39,13 +39,11 @@ class stock_picking(osv.osv):
 #             sql = '''
 #                 update stock_move set date = (select date(timezone('UTC',date)) from stock_picking where id =%s) where picking_id=%s
 #             '''%(new_write,new_write)
-            picking_ids = str(ids)
-            picking_ids = picking_ids.replace('[', '(')
-            picking_ids = picking_ids.replace(']', ')')
-            sql = '''
-                update stock_move set date = (select date from stock_picking where id in %s) where picking_id in %s
-            '''%(picking_ids,picking_ids)
-            cr.execute(sql)
+            for id in ids:
+                sql = '''
+                    update stock_move set date = (select date from stock_picking where id = %s) where picking_id = %s
+                '''%(id,id)
+                cr.execute(sql)
         else:
             new_write = super(stock_picking, self).write(cr, uid,ids, vals, context)
         return new_write
@@ -59,13 +57,11 @@ class stock_picking_in(osv.osv):
 #             sql = '''
 #                 update stock_move set date = (select date(timezone('UTC',date)) from stock_picking where id =%s) where picking_id=%s
 #             '''%(new_write,new_write)
-            picking_ids = str(ids)
-            picking_ids = picking_ids.replace('[', '(')
-            picking_ids = picking_ids.replace(']', ')')
-            sql = '''
-                update stock_move set date = (select date from stock_picking where id in %s) where picking_id in %s
-            '''%(picking_ids,picking_ids)
-            cr.execute(sql)
+            for id in ids:
+                sql = '''
+                    update stock_move set date = (select date from stock_picking where id = %s) where picking_id = %s
+                '''%(id,id)
+                cr.execute(sql)
         else:
             new_write = super(stock_picking_in, self).write(cr, uid,ids, vals, context)
         return new_write
@@ -79,13 +75,11 @@ class stock_picking_out(osv.osv):
 #             sql = '''
 #                 update stock_move set date = (select date(timezone('UTC',date)) from stock_picking where id =%s) where picking_id=%s
 #             '''%(new_write,new_write)
-            picking_ids = str(ids)
-            picking_ids = picking_ids.replace('[', '(')
-            picking_ids = picking_ids.replace(']', ')')
-            sql = '''
-                update stock_move set date = (select date from stock_picking where id in %s) where picking_id in %s
-            '''%(picking_ids,picking_ids)
-            cr.execute(sql)
+            for id in ids:
+                sql = '''
+                    update stock_move set date = (select date from stock_picking where id = %s) where picking_id = %s
+                '''%(id,id)
+                cr.execute(sql)
         else:
             new_write = super(stock_picking_out, self).write(cr, uid,ids, vals, context)
         return new_write

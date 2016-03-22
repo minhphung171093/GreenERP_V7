@@ -140,7 +140,7 @@ class Parser(report_sxw.rml_parse):
                     'sluong_trung': sluong_trung,
                     'so_phieu': line.ve_loto_id.sophieu,
                     'dai_ly': line.ve_loto_id.daily_id.name,
-                    'thanhtien': format(thanhtien, ','),
+                    'thanhtien': format(thanhtien, ',').split('.')[0],
                     })
             if line.sl_2_c_trung:
                 slan_trung = line.sl_2_c_trung
@@ -172,7 +172,7 @@ class Parser(report_sxw.rml_parse):
                     'sluong_trung': sluong_trung,
                     'so_phieu': line.ve_loto_id.sophieu,
                     'dai_ly': line.ve_loto_id.daily_id.name,
-                    'thanhtien': format(thanhtien, ','),
+                    'thanhtien': format(thanhtien, ',').split('.')[0],
                     })
             if line.sl_2_dc_trung:
                 slan_trung = line.sl_2_dc_trung
@@ -204,7 +204,7 @@ class Parser(report_sxw.rml_parse):
                     'sluong_trung': sluong_trung,
                     'so_phieu': line.ve_loto_id.sophieu,
                     'dai_ly': line.ve_loto_id.daily_id.name,
-                    'thanhtien': format(thanhtien, ','),
+                    'thanhtien': format(thanhtien, ',').split('.')[0],
                     })
             if line.sl_2_18_trung:
                 slan_trung = line.sl_2_18_trung
@@ -236,7 +236,7 @@ class Parser(report_sxw.rml_parse):
                     'sluong_trung': sluong_trung,
                     'so_phieu': line.ve_loto_id.sophieu,
                     'dai_ly': line.ve_loto_id.daily_id.name,
-                    'thanhtien': format(thanhtien, ','),
+                    'thanhtien': format(thanhtien, ',').split('.')[0],
                     })
             # 3 so
             if line.sl_3_d_trung:
@@ -269,7 +269,7 @@ class Parser(report_sxw.rml_parse):
                     'sluong_trung': sluong_trung,
                     'so_phieu': line.ve_loto_id.sophieu,
                     'dai_ly': line.ve_loto_id.daily_id.name,
-                    'thanhtien': format(thanhtien, ','),
+                    'thanhtien': format(thanhtien, ',').split('.')[0],
                     })
             if line.sl_3_c_trung:
                 slan_trung = line.sl_3_c_trung
@@ -301,7 +301,7 @@ class Parser(report_sxw.rml_parse):
                     'sluong_trung': sluong_trung,
                     'so_phieu': line.ve_loto_id.sophieu,
                     'dai_ly': line.ve_loto_id.daily_id.name,
-                    'thanhtien': format(thanhtien, ','),
+                    'thanhtien': format(thanhtien, ',').split('.')[0],
                     })
             if line.sl_3_dc_trung:
                 slan_trung = line.sl_3_dc_trung
@@ -333,7 +333,7 @@ class Parser(report_sxw.rml_parse):
                     'sluong_trung': sluong_trung,
                     'so_phieu': line.ve_loto_id.sophieu,
                     'dai_ly': line.ve_loto_id.daily_id.name,
-                    'thanhtien': format(thanhtien, ','),
+                    'thanhtien': format(thanhtien, ',').split('.')[0],
                     })
             if line.sl_3_7_trung:
                 slan_trung = line.sl_3_7_trung
@@ -365,7 +365,7 @@ class Parser(report_sxw.rml_parse):
                     'sluong_trung': sluong_trung,
                     'so_phieu': line.ve_loto_id.sophieu,
                     'dai_ly': line.ve_loto_id.daily_id.name,
-                    'thanhtien': format(thanhtien, ','),
+                    'thanhtien': format(thanhtien, ',').split('.')[0],
                     })
             if line.sl_3_17_trung:
                 slan_trung = line.sl_3_17_trung
@@ -397,7 +397,7 @@ class Parser(report_sxw.rml_parse):
                     'sluong_trung': sluong_trung,
                     'so_phieu': line.ve_loto_id.sophieu,
                     'dai_ly': line.ve_loto_id.daily_id.name,
-                    'thanhtien': format(thanhtien, ','),
+                    'thanhtien': format(thanhtien, ',').split('.')[0],
                     })
             
             # 4 so
@@ -431,38 +431,38 @@ class Parser(report_sxw.rml_parse):
                     'sluong_trung': sluong_trung,
                     'so_phieu': line.ve_loto_id.sophieu,
                     'dai_ly': line.ve_loto_id.daily_id.name,
-                    'thanhtien': format(thanhtien, ','),
+                    'thanhtien': format(thanhtien, ',').split('.')[0],
                     })
         res['tong'] = {
-            'tong_sl_2_d': format(tong_sl_2_d, ','),
-            'tong_tien_2_d': format(tong_tien_2_d, ','),
-            'tong_sl_2_c': format(tong_sl_2_c, ','),
-            'tong_tien_2_c': format(tong_tien_2_c, ','),
-            'tong_sl_2_dc': format(tong_sl_2_dc, ','),
-            'tong_tien_2_dc': format(tong_tien_2_dc, ','),
-            'tong_sl_2_18': format(tong_sl_2_18, ','),
-            'tong_tien_2_18': format(tong_tien_2_18, ','),
-            'tong_sl_2': format(tong_sl_2, ','),
-            'tong_tien_2': format(tong_tien_2, ','),
-            'tong_sl_3_d': format(tong_sl_3_d, ','),
-            'tong_tien_3_d': format(tong_tien_3_d, ','),
-            'tong_sl_3_c': format(tong_sl_3_c, ','),
-            'tong_tien_3_c': format(tong_tien_3_c, ','),
-            'tong_sl_3_dc': format(tong_sl_3_dc, ','),
-            'tong_tien_3_dc': format(tong_tien_3_dc, ','),
-            'tong_sl_3_7': format(tong_sl_3_7, ','),
-            'tong_tien_3_7': format(tong_tien_3_7, ','),
-            'tong_sl_3_17': format(tong_sl_3_17, ','),
-            'tong_tien_3_17': format(tong_tien_3_17, ','),
-            'tong_sl_3': format(tong_sl_3, ','),
-            'tong_tien_3': format(tong_tien_3, ','),
-            'tong_sl_4_16': format(tong_sl_4_16, ','),
-            'tong_tien_4_16': format(tong_tien_4_16, ','),
-            'tong_sl_4': format(tong_sl_4, ','),
-            'tong_tien_4': format(tong_tien_4, ','),
-            'tong_slan_trung': format(tong_slan_trung, ','),
-            'tong_sluong_trung': format(tong_sluong_trung, ','),
-            'tong_thanhtien': format(tong_thanhtien, ','),
+            'tong_sl_2_d': format(tong_sl_2_d, ',').split('.')[0],
+            'tong_tien_2_d': format(tong_tien_2_d, ',').split('.')[0],
+            'tong_sl_2_c': format(tong_sl_2_c, ',').split('.')[0],
+            'tong_tien_2_c': format(tong_tien_2_c, ',').split('.')[0],
+            'tong_sl_2_dc': format(tong_sl_2_dc, ',').split('.')[0],
+            'tong_tien_2_dc': format(tong_tien_2_dc, ',').split('.')[0],
+            'tong_sl_2_18': format(tong_sl_2_18, ',').split('.')[0],
+            'tong_tien_2_18': format(tong_tien_2_18, ',').split('.')[0],
+            'tong_sl_2': format(tong_sl_2, ',').split('.')[0],
+            'tong_tien_2': format(tong_tien_2, ',').split('.')[0],
+            'tong_sl_3_d': format(tong_sl_3_d, ',').split('.')[0],
+            'tong_tien_3_d': format(tong_tien_3_d, ',').split('.')[0],
+            'tong_sl_3_c': format(tong_sl_3_c, ',').split('.')[0],
+            'tong_tien_3_c': format(tong_tien_3_c, ',').split('.')[0],
+            'tong_sl_3_dc': format(tong_sl_3_dc, ',').split('.')[0],
+            'tong_tien_3_dc': format(tong_tien_3_dc, ',').split('.')[0],
+            'tong_sl_3_7': format(tong_sl_3_7, ',').split('.')[0],
+            'tong_tien_3_7': format(tong_tien_3_7, ',').split('.')[0],
+            'tong_sl_3_17': format(tong_sl_3_17, ',').split('.')[0],
+            'tong_tien_3_17': format(tong_tien_3_17, ',').split('.')[0],
+            'tong_sl_3': format(tong_sl_3, ',').split('.')[0],
+            'tong_tien_3': format(tong_tien_3, ',').split('.')[0],
+            'tong_sl_4_16': format(tong_sl_4_16, ',').split('.')[0],
+            'tong_tien_4_16': format(tong_tien_4_16, ',').split('.')[0],
+            'tong_sl_4': format(tong_sl_4, ',').split('.')[0],
+            'tong_tien_4': format(tong_tien_4, ',').split('.')[0],
+            'tong_slan_trung': format(tong_slan_trung, ',').split('.')[0],
+            'tong_sluong_trung': format(tong_sluong_trung, ',').split('.')[0],
+            'tong_thanhtien': format(tong_thanhtien, ',').split('.')[0],
         }
         return res
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
