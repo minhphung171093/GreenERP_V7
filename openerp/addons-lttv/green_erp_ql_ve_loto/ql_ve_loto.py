@@ -474,7 +474,7 @@ class ve_loto(osv.osv):
             for line in loto.ve_loto_2_line:
                 soluong += line.sl_2_d + line.sl_2_c + line.sl_2_dc + line.sl_2_18 + line.sl_3_d + line.sl_3_c + line.sl_3_dc + line.sl_3_7 + line.sl_3_17 + line.sl_4_16 
             res[loto.id]['tong_cong'] = soluong
-            res[loto.id]['thanh_tien'] = soluong*loto.product_id.list_price
+            res[loto.id]['thanh_tien'] = soluong*int(loto.product_id.list_price)
         return res
     
     _columns = {

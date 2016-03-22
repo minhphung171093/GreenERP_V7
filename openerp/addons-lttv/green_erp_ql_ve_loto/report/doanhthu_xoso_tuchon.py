@@ -123,7 +123,7 @@ class Parser(report_sxw.rml_parse):
         loto_line_obj = self.pool.get('ve.loto.line')
         ve_loto_ids = ve_loto_obj.search(self.cr, self.uid, [('ngay','=',date),('state','=','done'),('product_id','=',menhgia.id)])
         loto_line_ids = loto_line_obj.search(self.cr, self.uid, [('ve_loto_id','in',ve_loto_ids)])
-        gt_menhgia = menhgia.list_price/10000
+        gt_menhgia = int(menhgia.list_price)/10000
         for line in loto_line_obj.browse(self.cr, self.uid, loto_line_ids):
             # 2 so
             if line.sl_2_d_trung:
@@ -232,7 +232,7 @@ class Parser(report_sxw.rml_parse):
                 ve = self.cr.dictfetchone()['tong']
                 if ve:
                     tongve += ve
-                    tongcong += menhgia.list_price*ve
+                    tongcong += int(menhgia.list_price)*ve
         return {
                 'tongve': format(tongve, ',').split('.')[0],
                 'tongcong': format(tongcong, ',').split('.')[0],
@@ -288,7 +288,7 @@ class Parser(report_sxw.rml_parse):
                 ve = self.cr.dictfetchone()['tong']
                 if ve:
                     tongve += ve
-                    tongcong += menhgia.list_price*ve
+                    tongcong += int(menhgia.list_price)*ve
         return {
                 'tongve': format(tongve, ',').split('.')[0],
                 'tongcong': format(tongcong, ',').split('.')[0],

@@ -87,8 +87,8 @@ class Parser(report_sxw.rml_parse):
         ve_loto_ids = ve_loto_obj.search(self.cr, self.uid, [('ngay','>=',date_from),('ngay','<=',date_to),('state','=','done')])
         
         for loto in ve_loto_obj.browse(self.cr, self.uid, ve_loto_ids):
-            gt_menhgia = loto.product_id.list_price/10000
-            menhgia = loto.product_id.list_price
+            gt_menhgia = int(loto.product_id.list_price)/10000
+            menhgia = int(loto.product_id.list_price)
             for line in loto.ve_loto_2_line:
                 # 2 so
                 tong_dt_2_d += line.sl_2_d*menhgia

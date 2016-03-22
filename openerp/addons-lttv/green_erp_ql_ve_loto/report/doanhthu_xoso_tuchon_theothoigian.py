@@ -55,7 +55,7 @@ class Parser(report_sxw.rml_parse):
     def get_chitiet(self,date_from,date_to,menhgia):
         tong_ve = 0
         tong_thanhtien = 0
-        gt_menhgia = menhgia.list_price/10000
+        gt_menhgia = int(menhgia.list_price)/10000
         sql = '''
             select sl_2_d_trung,sl_2_d,sl_2_c_trung,sl_2_c,sl_2_dc_trung,sl_2_dc,sl_2_18_trung,sl_2_18,sl_3_d_trung,sl_3_d,sl_3_c_trung,sl_3_c,sl_3_dc_trung,sl_3_dc,
                     sl_3_7_trung,sl_3_7,sl_3_17_trung,sl_3_17,sl_4_16_trung,sl_4_16
@@ -187,7 +187,7 @@ class Parser(report_sxw.rml_parse):
                 ve = self.cr.dictfetchone()['tong']
                 if ve:
                     tongve += ve
-                    tongcong += menhgia.list_price*ve
+                    tongcong += int(menhgia.list_price)*ve
         return {
                 'tongve': format(tongve, ',').split('.')[0],
                 'tongcong': format(tongcong, ',').split('.')[0],
@@ -275,7 +275,7 @@ class Parser(report_sxw.rml_parse):
                 ve = self.cr.dictfetchone()['tong']
                 if ve:
                     tongve += ve
-                    tongcong += menhgia.list_price*ve
+                    tongcong += int(menhgia.list_price)*ve
         return {
                 'tongve': format(tongve, ',').split('.')[0],
                 'tongcong': format(tongcong, ',').split('.')[0],
