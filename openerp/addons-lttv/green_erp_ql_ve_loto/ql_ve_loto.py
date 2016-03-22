@@ -47,13 +47,15 @@ class res_partner(osv.osv):
         for record in self.browse(cr, uid, ids, context=context):
             name = record.name
             if record.parent_id and not record.is_company:
-                name = "[%s] %s, %s" % (record.ma_daily,record.parent_name, name)
+                name = "%s, %s" % (record.parent_name, name)
             if context.get('show_address'):
                 name = name + "\n" + self._display_address(cr, uid, record, without_company=True, context=context)
                 name = name.replace('\n\n','\n')
                 name = name.replace('\n\n','\n')
             if context.get('show_email') and record.email:
                 name = "%s <%s>" % (name, record.email)
+            if record.ma_daily:
+                name += '[%s] '%(record.ma_daily)
             res.append((record.id, name))
         return res
     
