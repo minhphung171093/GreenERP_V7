@@ -59,6 +59,19 @@ class res_partner(osv.osv):
             res.append((record.id, name))
         return res
     
+    def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
+        if not args:
+            args = []
+        if context is None:
+            context = {}
+        if not name:
+            ids = self.search(cr, user, args, limit=limit, context=context)
+        else:
+            ids = self.search(cr, user, [('name',operator,name)] + args, limit=limit, context=context)
+            if not ids:
+                ids = self.search(cr, user, [('ma_daily',operator,name)] + args, limit=limit, context=context)
+        return self.name_get(cr, user, ids, context=context)
+    
 res_partner()
 
 class product_product(osv.osv):
