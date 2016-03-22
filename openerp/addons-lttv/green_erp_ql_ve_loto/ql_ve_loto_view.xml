@@ -21,6 +21,19 @@
             </field>
         </record>
         
+        <record id="loto_view_partner_tree" model="ir.ui.view">
+            <field name="name">res.partner.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_tree"/>
+            <field name="arch" type="xml">
+            	<data>
+                	<xpath expr="//field[@name='name']" position="before">
+                		<field name="ma_daily" attrs="{'invisible':[('supplier','!=',False)], 'required':[('supplier','=',False)]}"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+        
         <record id="action_daily" model="ir.actions.act_window">
             <field name="name">Đại lý</field>
             <field name="res_model">res.partner</field>

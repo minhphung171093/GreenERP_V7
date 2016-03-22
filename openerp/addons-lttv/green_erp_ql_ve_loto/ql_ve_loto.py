@@ -12,7 +12,7 @@ from openerp.tools.translate import _
 
 class res_partner(osv.osv):
     _inherit = "res.partner"
-    
+    _order = 'ma_daily'
     def _get_child_ids(self, cr, uid, ids, field_name, arg, context=None):
         result = {}
         for record in self.browse(cr, uid, ids, context=context):
@@ -37,6 +37,25 @@ class res_partner(osv.osv):
         if context.get('order_by_ma_daily'):
             order = 'ma_daily'
         return super(res_partner, self).search(cr, uid, args, offset, limit, order, context, count)
+    
+    def name_get(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        if isinstance(ids, (int, long)):
+            ids = [ids]
+        res = []
+        for record in self.browse(cr, uid, ids, context=context):
+            name = record.name
+            if record.parent_id and not record.is_company:
+                name = "[%s] %s, %s" % (record.ma_daily,record.parent_name, name)
+            if context.get('show_address'):
+                name = name + "\n" + self._display_address(cr, uid, record, without_company=True, context=context)
+                name = name.replace('\n\n','\n')
+                name = name.replace('\n\n','\n')
+            if context.get('show_email') and record.email:
+                name = "%s <%s>" % (name, record.email)
+            res.append((record.id, name))
+        return res
     
 res_partner()
 
