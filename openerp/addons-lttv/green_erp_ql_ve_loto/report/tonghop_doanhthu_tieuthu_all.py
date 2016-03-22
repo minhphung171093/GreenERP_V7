@@ -67,12 +67,12 @@ class Parser(report_sxw.rml_parse):
         tongve = sluong_2 + sluong_3 + sluong_4
         thanhtien = tongve*menhgia.list_price
         return {
-                'sl_2': format(sluong_2,','),
-                'sl_3': format(sluong_3,','),
-                'sl_4': format(sluong_4,','),
-                'tong_ve': format(tongve,','),
-                'thanhtien': format(thanhtien,','),
-                'tong_sai_kythuat': format(tong_sai_kythuat,','),
+                'sl_2': format(sluong_2,',').split('.')[0],
+                'sl_3': format(sluong_3,',').split('.')[0],
+                'sl_4': format(sluong_4,',').split('.')[0],
+                'tong_ve': format(tongve,',').split('.')[0],
+                'thanhtien': format(thanhtien,',').split('.')[0],
+                'tong_sai_kythuat': format(tong_sai_kythuat,',').split('.')[0],
                 }
 
     def get_tong(self, dl):
@@ -104,12 +104,12 @@ class Parser(report_sxw.rml_parse):
             tongve += sluong_2 + sluong_3 + sluong_4
             thanhtien += (sluong_2 + sluong_3 + sluong_4)*menhgia.list_price
         return {
-                'sl_2': format(sl_2,','),
-                'sl_3': format(sl_3,','),
-                'sl_4': format(sl_4,','),
-                'tong_ve': format(tongve,','),
-                'thanhtien': format(thanhtien,','),
-                'tong_sai_kythuat': format(tong_sai_kythuat,','),
+                'sl_2': format(sl_2,',').split('.')[0],
+                'sl_3': format(sl_3,',').split('.')[0],
+                'sl_4': format(sl_4,',').split('.')[0],
+                'tong_ve': format(tongve,',').split('.')[0],
+                'thanhtien': format(thanhtien,',').split('.')[0],
+                'tong_sai_kythuat': format(tong_sai_kythuat,',').split('.')[0],
                 }
 
     def get_line_tong(self, menhgia):
@@ -130,12 +130,12 @@ class Parser(report_sxw.rml_parse):
         tongve = sl_2 + sl_3 + sl_4
         thanhtien = tongve*menhgia.list_price
         return {
-                'sl_2': format(sl_2,','),
-                'sl_3': format(sl_2,','),
-                'sl_4': format(sl_2,','),
-                'tong_ve': format(tongve,','),
-                'thanhtien': format(thanhtien,','),
-                'tong_sai_kythuat': format(tong_sai_kythuat,','),
+                'sl_2': format(sl_2,',').split('.')[0],
+                'sl_3': format(sl_2,',').split('.')[0],
+                'sl_4': format(sl_2,',').split('.')[0],
+                'tong_ve': format(tongve,',').split('.')[0],
+                'thanhtien': format(thanhtien,',').split('.')[0],
+                'tong_sai_kythuat': format(tong_sai_kythuat,',').split('.')[0],
                 }
         
     def get_line_tong_all(self):
@@ -167,10 +167,10 @@ class Parser(report_sxw.rml_parse):
             tongve += sluong_2 + sluong_3 + sluong_4
             thanhtien += (sluong_2 + sluong_3 + sluong_4)*menhgia.list_price
         return {
-                'sl_2': format(sl_2,','),
-                'sl_3': format(sl_3,','),
-                'sl_4': format(sl_4,','),
-                'tong_ve': format(tongve,','),
-                'thanhtien': format(thanhtien,','),
-                'tong_sai_kythuat': format(tong_sai_kythuat,','),
+                'sl_2': format(sl_2,',').split('.')[0],
+                'sl_3': format(sl_3,',').split('.')[0],
+                'sl_4': format(sl_4,',').split('.')[0],
+                'tong_ve': format(tongve,',').split('.')[0],
+                'thanhtien': format(thanhtien,',').split('.')[0],
+                'tong_sai_kythuat': format(tong_sai_kythuat,',').split('.')[0],
                 }

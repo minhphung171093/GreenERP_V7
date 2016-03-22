@@ -140,7 +140,7 @@ class Parser(report_sxw.rml_parse):
                     'sluong_trung': sluong_trung,
                     'so_phieu': line.ve_loto_id.sophieu,
                     'dai_ly': line.ve_loto_id.daily_id.name,
-                    'thanhtien': format(thanhtien, ','),
+                    'thanhtien': format(thanhtien, ',').split('.')[0],
                     })
             if line.sl_2_c_trung:
                 slan_trung = line.sl_2_c_trung
@@ -172,7 +172,7 @@ class Parser(report_sxw.rml_parse):
                     'sluong_trung': sluong_trung,
                     'so_phieu': line.ve_loto_id.sophieu,
                     'dai_ly': line.ve_loto_id.daily_id.name,
-                    'thanhtien': format(thanhtien, ','),
+                    'thanhtien': format(thanhtien, ',').split('.')[0],
                     })
             if line.sl_2_dc_trung:
                 slan_trung = line.sl_2_dc_trung
@@ -204,7 +204,7 @@ class Parser(report_sxw.rml_parse):
                     'sluong_trung': sluong_trung,
                     'so_phieu': line.ve_loto_id.sophieu,
                     'dai_ly': line.ve_loto_id.daily_id.name,
-                    'thanhtien': format(thanhtien, ','),
+                    'thanhtien': format(thanhtien, ',').split('.')[0],
                     })
             if line.sl_2_18_trung:
                 slan_trung = line.sl_2_18_trung
@@ -236,7 +236,7 @@ class Parser(report_sxw.rml_parse):
                     'sluong_trung': sluong_trung,
                     'so_phieu': line.ve_loto_id.sophieu,
                     'dai_ly': line.ve_loto_id.daily_id.name,
-                    'thanhtien': format(thanhtien, ','),
+                    'thanhtien': format(thanhtien, ',').split('.')[0],
                     })
             # 3 so
             if line.sl_3_d_trung:
@@ -269,7 +269,7 @@ class Parser(report_sxw.rml_parse):
                     'sluong_trung': sluong_trung,
                     'so_phieu': line.ve_loto_id.sophieu,
                     'dai_ly': line.ve_loto_id.daily_id.name,
-                    'thanhtien': format(thanhtien, ','),
+                    'thanhtien': format(thanhtien, ',').split('.')[0],
                     })
             if line.sl_3_c_trung:
                 slan_trung = line.sl_3_c_trung
@@ -301,7 +301,7 @@ class Parser(report_sxw.rml_parse):
                     'sluong_trung': sluong_trung,
                     'so_phieu': line.ve_loto_id.sophieu,
                     'dai_ly': line.ve_loto_id.daily_id.name,
-                    'thanhtien': format(thanhtien, ','),
+                    'thanhtien': format(thanhtien, ',').split('.')[0],
                     })
             if line.sl_3_dc_trung:
                 slan_trung = line.sl_3_dc_trung
@@ -333,7 +333,7 @@ class Parser(report_sxw.rml_parse):
                     'sluong_trung': sluong_trung,
                     'so_phieu': line.ve_loto_id.sophieu,
                     'dai_ly': line.ve_loto_id.daily_id.name,
-                    'thanhtien': format(thanhtien, ','),
+                    'thanhtien': format(thanhtien, ',').split('.')[0],
                     })
             if line.sl_3_7_trung:
                 slan_trung = line.sl_3_7_trung
@@ -365,7 +365,7 @@ class Parser(report_sxw.rml_parse):
                     'sluong_trung': sluong_trung,
                     'so_phieu': line.ve_loto_id.sophieu,
                     'dai_ly': line.ve_loto_id.daily_id.name,
-                    'thanhtien': format(thanhtien, ','),
+                    'thanhtien': format(thanhtien, ',').split('.')[0],
                     })
             if line.sl_3_17_trung:
                 slan_trung = line.sl_3_17_trung
@@ -397,7 +397,7 @@ class Parser(report_sxw.rml_parse):
                     'sluong_trung': sluong_trung,
                     'so_phieu': line.ve_loto_id.sophieu,
                     'dai_ly': line.ve_loto_id.daily_id.name,
-                    'thanhtien': format(thanhtien, ','),
+                    'thanhtien': format(thanhtien, ',').split('.')[0],
                     })
             
             # 4 so
@@ -431,7 +431,7 @@ class Parser(report_sxw.rml_parse):
                     'sluong_trung': sluong_trung,
                     'so_phieu': line.ve_loto_id.sophieu,
                     'dai_ly': line.ve_loto_id.daily_id.name,
-                    'thanhtien': format(thanhtien, ','),
+                    'thanhtien': format(thanhtien, ',').split('.')[0],
                     })
         res['tong'] = {
             'tong_sl_2_d': format(tong_sl_2_d, ',').split('.')[0],
