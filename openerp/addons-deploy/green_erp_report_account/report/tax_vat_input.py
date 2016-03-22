@@ -49,6 +49,8 @@ class Parser(report_sxw.rml_parse):
             'get_total_amount':self.get_total_amount,
             'get_sum_amount':self.get_sum_amount,
             'get_sum_amount_tax':self.get_sum_amount_tax,
+            'get_no_line_tax': self.get_no_line_tax,
+            'get_tax': self.get_tax,
         })
     
     def get_company(self, company_id):
@@ -76,6 +78,16 @@ class Parser(report_sxw.rml_parse):
             return 1
         else:
             return period_id
+        
+    def get_tax(self):
+        values ={}
+        wizard_data = self.localcontext['data']['form']
+        tax_id = wizard_data['tax_id']
+        if tax_id:
+            tax = self.pool.get('account.tax').browse(self.cr,self.uid,tax_id[0])
+            return tax.amount
+        else:
+            return ''
     
     def get_header(self):
         wizard_data = self.localcontext['data']['form']
@@ -139,43 +151,45 @@ class Parser(report_sxw.rml_parse):
         self.sum_amount = self.sum_amount + self.amount
         return self.amount
     
-    def get_line_tax_0(self):
+    def get_no_line_tax(self):
         res = []
         self.amount = 0
         self.amount_tax = 0
         if self.shop_ids:
             sql='''
                  SELECT agi.reference,agi.supplier_invoice_number,agi.date_invoice,rp.name partner_name,rp.vat vat_code,agi.amount_untaxed,agi.amount_tax,
+                 pt.name as product,
                  SUM(CASE WHEN agi.type ='in_invoice' then agil.price_subtotal else agil.price_subtotal * (-1) end) as price_subtotal,                        
                  SUM(CASE WHEN agi.type ='in_invoice' then agil.price_subtotal *0.05 else agil.price_subtotal *0 end) as price_tax  
                 FROM account_invoice agi 
                 inner join account_invoice_line agil on agi.id = agil.invoice_id 
                 inner join res_partner rp on rp.id = agi.partner_id  
-                inner join account_invoice_line_tax agilt on agil.id = agilt.invoice_line_id
-                inner join account_tax atx on atx.id = agilt.tax_id 
+                inner join product_product pp on pp.id = agil.product_id 
+                inner join product_template pt on pt.id = pp.product_tmpl_id 
                 WHERE agi.state in ('open','paid')
-                AND atx.amount = 0
+                AND agil.id not in (select invoice_line_id from account_invoice_line_tax)
                 AND agi.date_invoice between '%s' and '%s'
                 AND agi.shop_id in (%s)
                 AND agi.type in ('in_invoice','in_refund')
-                GROUP BY agi.reference,agi.supplier_invoice_number,agi.date_invoice,rp.name,rp.vat,agi.amount_untaxed,agi.amount_tax
+                GROUP BY agi.reference,agi.supplier_invoice_number,agi.date_invoice,rp.name,rp.vat,agi.amount_untaxed,agi.amount_tax,pt.name
                 ORDER BY date_invoice
             '''%(self.start_date,self.end_date,self.shop_ids)
         else:
             sql='''
                  SELECT agi.reference,agi.supplier_invoice_number,agi.date_invoice,rp.name partner_name,rp.vat vat_code,agi.amount_untaxed,agi.amount_tax,
+                 pt.name as product,
                  SUM(CASE WHEN agi.type ='in_invoice' then agil.price_subtotal else agil.price_subtotal * (-1) end) as price_subtotal,                        
                  SUM(CASE WHEN agi.type ='in_invoice' then agil.price_subtotal *0.05 else agil.price_subtotal *0 end) as price_tax  
                 FROM account_invoice agi 
                 inner join account_invoice_line agil on agi.id = agil.invoice_id 
                 inner join res_partner rp on rp.id = agi.partner_id  
-                inner join account_invoice_line_tax agilt on agil.id = agilt.invoice_line_id
-                inner join account_tax atx on atx.id = agilt.tax_id 
+                inner join product_product pp on pp.id = agil.product_id 
+                inner join product_template pt on pt.id = pp.product_tmpl_id 
                 WHERE agi.state in ('open','paid')
-                AND atx.amount = 0
+                AND agil.id not in (select invoice_line_id from account_invoice_line_tax)
                 AND agi.date_invoice between '%s' and '%s'
                 AND agi.type in ('in_invoice','in_refund')
-                GROUP BY agi.reference,agi.supplier_invoice_number,agi.date_invoice,rp.name,rp.vat,agi.amount_untaxed,agi.amount_tax
+                GROUP BY agi.reference,agi.supplier_invoice_number,agi.date_invoice,rp.name,rp.vat,agi.amount_untaxed,agi.amount_tax,pt.name
                 ORDER BY date_invoice
             '''%(self.start_date,self.end_date)
         self.cr.execute(sql)
@@ -186,11 +200,79 @@ class Parser(report_sxw.rml_parse):
                  'date_invoice':self.get_vietname_date(line['date_invoice']),
                  'partner_name':line['partner_name'],
                  'vat_code':line['vat_code'] or '',
-                 'price_subtotal':line['amount_untaxed'] or '' ,
-                 'amount_tax': line['amount_tax'],
+#                  'price_subtotal': line['type']=='out_refund' and -line['amount_untaxed'] or line['amount_untaxed'],
+                 'price_subtotal': line['price_subtotal'],
+#                  'amount_tax': line['type']=='out_refund' and -line['amount_tax'] or line['amount_tax'],
+                 'amount_tax': 0,
+                 'tax': '',
+                 'product': line['product']
                  })
-            self.amount += line['amount_untaxed']
-            self.amount_tax += line['amount_tax']
+            self.amount += line['price_subtotal']
+            self.amount_tax += 0
+        return res
+    
+    def get_line_tax_0(self):
+        res = []
+        self.amount = 0
+        self.amount_tax = 0
+        if self.shop_ids:
+            sql='''
+                 SELECT agi.reference,agi.supplier_invoice_number,agi.date_invoice,rp.name partner_name,rp.vat vat_code,agi.amount_untaxed,agi.amount_tax,
+                 atx.amount*100 as tax,pt.name as product,
+                 SUM(CASE WHEN agi.type ='in_invoice' then agil.price_subtotal else agil.price_subtotal * (-1) end) as price_subtotal,                        
+                 SUM(CASE WHEN agi.type ='in_invoice' then agil.price_subtotal *0 else agil.price_subtotal *0 end) as price_tax  
+                FROM account_invoice agi 
+                inner join account_invoice_line agil on agi.id = agil.invoice_id 
+                inner join res_partner rp on rp.id = agi.partner_id  
+                inner join account_invoice_line_tax agilt on agil.id = agilt.invoice_line_id
+                inner join account_tax atx on atx.id = agilt.tax_id 
+                inner join product_product pp on pp.id = agil.product_id 
+                inner join product_template pt on pt.id = pp.product_tmpl_id
+                WHERE agi.state in ('open','paid')
+                AND atx.amount = 0
+                AND agi.date_invoice between '%s' and '%s'
+                AND agi.shop_id in (%s)
+                AND agi.type in ('in_invoice','in_refund')
+                GROUP BY agi.reference,agi.supplier_invoice_number,agi.date_invoice,rp.name,rp.vat,agi.amount_untaxed,agi.amount_tax,atx.amount,pt.name
+                ORDER BY date_invoice
+            '''%(self.start_date,self.end_date,self.shop_ids)
+        else:
+            sql='''
+                 SELECT agi.reference,agi.supplier_invoice_number,agi.date_invoice,rp.name partner_name,rp.vat vat_code,agi.amount_untaxed,agi.amount_tax,
+                 atx.amount*100 as tax,pt.name as product,
+                 SUM(CASE WHEN agi.type ='in_invoice' then agil.price_subtotal else agil.price_subtotal * (-1) end) as price_subtotal,                        
+                 SUM(CASE WHEN agi.type ='in_invoice' then agil.price_subtotal *0 else agil.price_subtotal *0 end) as price_tax  
+                FROM account_invoice agi 
+                inner join account_invoice_line agil on agi.id = agil.invoice_id 
+                inner join res_partner rp on rp.id = agi.partner_id  
+                inner join account_invoice_line_tax agilt on agil.id = agilt.invoice_line_id
+                inner join account_tax atx on atx.id = agilt.tax_id 
+                inner join product_product pp on pp.id = agil.product_id 
+                inner join product_template pt on pt.id = pp.product_tmpl_id 
+                WHERE agi.state in ('open','paid')
+                AND atx.amount = 0
+                AND agi.date_invoice between '%s' and '%s'
+                AND agi.type in ('in_invoice','in_refund')
+                GROUP BY agi.reference,agi.supplier_invoice_number,agi.date_invoice,rp.name,rp.vat,agi.amount_untaxed,agi.amount_tax,atx.amount,pt.name
+                ORDER BY date_invoice
+            '''%(self.start_date,self.end_date)
+        self.cr.execute(sql)
+        for line in self.cr.dictfetchall():
+            res.append({
+                 'reference':line['reference'] or '',
+                 'number':line['supplier_invoice_number'] or '',
+                 'date_invoice':self.get_vietname_date(line['date_invoice']),
+                 'partner_name':line['partner_name'],
+                 'vat_code':line['vat_code'] or '',
+#                  'price_subtotal': line['type']=='out_refund' and -line['amount_untaxed'] or line['amount_untaxed'],
+                 'price_subtotal': line['price_subtotal'],
+#                  'amount_tax': line['type']=='out_refund' and -line['amount_tax'] or line['amount_tax'],
+                 'amount_tax': line['price_tax'],
+                 'tax': line['tax'] and str(int(line['tax']))+'%' or '',
+                 'product': line['product'],
+                 })
+            self.amount += line['price_subtotal']
+            self.amount_tax += line['price_tax']
         return res
     
     def get_line_tax_5(self):
@@ -200,6 +282,7 @@ class Parser(report_sxw.rml_parse):
         if self.shop_ids:
             sql='''
                     SELECT agi.reference,agi.supplier_invoice_number,agi.date_invoice,rp.name partner_name,rp.vat vat_code,agi.amount_untaxed,agi.amount_tax,
+                    atx.amount*100 as tax,pt.name as product,
                      SUM(CASE WHEN agi.type ='in_invoice' then agil.price_subtotal else agil.price_subtotal * (-1) end) as price_subtotal,                        
                      SUM(CASE WHEN agi.type ='in_invoice' then agil.price_subtotal *0.05 else agil.price_subtotal *0.05 * (-1) end) as price_tax  
                     FROM account_invoice agi 
@@ -207,17 +290,20 @@ class Parser(report_sxw.rml_parse):
                     inner join res_partner rp on rp.id = agi.partner_id  
                     inner join account_invoice_line_tax agilt on agil.id = agilt.invoice_line_id
                     inner join account_tax atx on atx.id = agilt.tax_id 
+                    inner join product_product pp on pp.id = agil.product_id 
+                    inner join product_template pt on pt.id = pp.product_tmpl_id 
                     WHERE agi.state in ('open','paid')
                     AND atx.amount = 0.05
                     AND agi.date_invoice between '%s' and '%s'
                     AND agi.shop_id in (%s)
                     AND agi.type in ('in_invoice','in_refund')
-                    GROUP BY agi.reference,agi.supplier_invoice_number,agi.date_invoice,rp.name,rp.vat,agi.amount_untaxed,agi.amount_tax
+                    GROUP BY agi.reference,agi.supplier_invoice_number,agi.date_invoice,rp.name,rp.vat,agi.amount_untaxed,agi.amount_tax,atx.amount,pt.name
                     ORDER BY date_invoice
             '''%(self.start_date,self.end_date,self.shop_ids)
         else:
             sql='''
                     SELECT agi.reference,agi.supplier_invoice_number,agi.date_invoice,rp.name partner_name,rp.vat vat_code,agi.amount_untaxed,agi.amount_tax,
+                    atx.amount*100 as tax,pt.name as product,
                      SUM(CASE WHEN agi.type ='in_invoice' then agil.price_subtotal else agil.price_subtotal * (-1) end) as price_subtotal,                        
                      SUM(CASE WHEN agi.type ='in_invoice' then agil.price_subtotal *0.05 else agil.price_subtotal *0.05 * (-1) end) as price_tax  
                     FROM account_invoice agi 
@@ -225,11 +311,13 @@ class Parser(report_sxw.rml_parse):
                     inner join res_partner rp on rp.id = agi.partner_id  
                     inner join account_invoice_line_tax agilt on agil.id = agilt.invoice_line_id
                     inner join account_tax atx on atx.id = agilt.tax_id 
+                    inner join product_product pp on pp.id = agil.product_id 
+                    inner join product_template pt on pt.id = pp.product_tmpl_id
                     WHERE agi.state in ('open','paid')
                     AND atx.amount = 0.05
                     AND agi.date_invoice between '%s' and '%s'
                     AND agi.type in ('in_invoice','in_refund')
-                    GROUP BY agi.reference,agi.supplier_invoice_number,agi.date_invoice,rp.name,rp.vat,agi.amount_untaxed,agi.amount_tax
+                    GROUP BY agi.reference,agi.supplier_invoice_number,agi.date_invoice,rp.name,rp.vat,agi.amount_untaxed,agi.amount_tax,atx.amount,pt.name
                     ORDER BY date_invoice
             '''%(self.start_date,self.end_date)
         self.cr.execute(sql)
@@ -240,11 +328,15 @@ class Parser(report_sxw.rml_parse):
                  'date_invoice':self.get_vietname_date(line['date_invoice']),
                  'partner_name':line['partner_name'],
                  'vat_code':line['vat_code'] or '',
-                 'price_subtotal': line['amount_untaxed'] or '',
-                 'amount_tax': line['amount_tax'],
+#                  'price_subtotal': line['type']=='out_refund' and -line['amount_untaxed'] or line['amount_untaxed'],
+                 'price_subtotal': line['price_subtotal'],
+#                  'amount_tax': line['type']=='out_refund' and -line['amount_tax'] or line['amount_tax'],
+                 'amount_tax': line['price_tax'],
+                 'tax': line['tax'] and str(int(line['tax']))+'%' or '',
+                 'product': line['product'],
                  })
-            self.amount += line['amount_untaxed']
-            self.amount_tax += line['amount_tax']
+            self.amount += line['price_subtotal']
+            self.amount_tax += line['price_tax']
         return res
     
     def get_line_tax_10(self):
@@ -254,36 +346,42 @@ class Parser(report_sxw.rml_parse):
         if self.shop_ids:
             sql='''
                     SELECT agi.reference,agi.supplier_invoice_number,agi.date_invoice,rp.name partner_name,rp.vat vat_code,agi.amount_untaxed,agi.amount_tax,
+                    atx.amount*100 as tax,pt.name as product, 
                      SUM(CASE WHEN agi.type ='in_invoice' then agil.price_subtotal else agil.price_subtotal * (-1) end) as price_subtotal,                        
-                     SUM(CASE WHEN agi.type ='in_invoice' then agil.price_subtotal *0.05 else agil.price_subtotal *0.1 * (-1) end) as price_tax  
+                     SUM(CASE WHEN agi.type ='in_invoice' then agil.price_subtotal *0.1 else agil.price_subtotal *0.1 * (-1) end) as price_tax  
                     FROM account_invoice agi 
                     inner join account_invoice_line agil on agi.id = agil.invoice_id 
                     inner join res_partner rp on rp.id = agi.partner_id  
                     inner join account_invoice_line_tax agilt on agil.id = agilt.invoice_line_id
                     inner join account_tax atx on atx.id = agilt.tax_id 
+                    inner join product_product pp on pp.id = agil.product_id 
+                    inner join product_template pt on pt.id = pp.product_tmpl_id 
                     WHERE agi.state in ('open','paid')
                     AND atx.amount = 0.1
                     AND agi.date_invoice between '%s' and '%s'
                     AND agi.shop_id in (%s)
                     AND agi.type in ('in_invoice','in_refund')
-                    GROUP BY agi.reference,agi.supplier_invoice_number,agi.date_invoice,rp.name,rp.vat,agi.amount_untaxed,agi.amount_tax
+                    GROUP BY agi.reference,agi.supplier_invoice_number,agi.date_invoice,rp.name,rp.vat,agi.amount_untaxed,agi.amount_tax,atx.amount,pt.name
                     ORDER BY date_invoice
             '''%(self.start_date,self.end_date,self.shop_ids)
         else:
             sql='''
                     SELECT agi.reference,agi.supplier_invoice_number,agi.date_invoice,rp.name partner_name,rp.vat vat_code,agi.amount_untaxed,agi.amount_tax,
+                    atx.amount*100 as tax,pt.name as product, 
                      SUM(CASE WHEN agi.type ='in_invoice' then agil.price_subtotal else agil.price_subtotal * (-1) end) as price_subtotal,                        
-                     SUM(CASE WHEN agi.type ='in_invoice' then agil.price_subtotal *0.05 else agil.price_subtotal *0.1 * (-1) end) as price_tax  
+                     SUM(CASE WHEN agi.type ='in_invoice' then agil.price_subtotal *0.1 else agil.price_subtotal *0.1 * (-1) end) as price_tax  
                     FROM account_invoice agi 
                     inner join account_invoice_line agil on agi.id = agil.invoice_id 
                     inner join res_partner rp on rp.id = agi.partner_id  
                     inner join account_invoice_line_tax agilt on agil.id = agilt.invoice_line_id
                     inner join account_tax atx on atx.id = agilt.tax_id 
+                    inner join product_product pp on pp.id = agil.product_id 
+                    inner join product_template pt on pt.id = pp.product_tmpl_id 
                     WHERE agi.state in ('open','paid')
                     AND atx.amount = 0.1
                     AND agi.date_invoice between '%s' and '%s'
                     AND agi.type in ('in_invoice','in_refund')
-                    GROUP BY agi.reference,agi.supplier_invoice_number,agi.date_invoice,rp.name,rp.vat,agi.amount_untaxed,agi.amount_tax
+                    GROUP BY agi.reference,agi.supplier_invoice_number,agi.date_invoice,rp.name,rp.vat,agi.amount_untaxed,agi.amount_tax,atx.amount,pt.name
                     ORDER BY date_invoice
             '''%(self.start_date,self.end_date)
         self.cr.execute(sql)
@@ -294,11 +392,15 @@ class Parser(report_sxw.rml_parse):
                  'date_invoice':self.get_vietname_date(line['date_invoice']),
                  'partner_name':line['partner_name'],
                  'vat_code':line['vat_code'] or '',
-                 'price_subtotal':line['amount_untaxed'] or '' ,
-                 'amount_tax': line['amount_tax'],
+#                  'price_subtotal': line['type']=='out_refund' and -line['amount_untaxed'] or line['amount_untaxed'],
+                 'price_subtotal': line['price_subtotal'],
+#                  'amount_tax': line['type']=='out_refund' and -line['amount_tax'] or line['amount_tax'],
+                 'amount_tax': line['price_tax'],
+                 'tax': line['tax'] and str(int(line['tax']))+'%' or '',
+                 'product': line['product'],
                  })
-            self.amount += line['amount_untaxed']
-            self.amount_tax += line['amount_tax']
+            self.amount += line['price_subtotal']
+            self.amount_tax += line['price_tax']
         return res
     
         

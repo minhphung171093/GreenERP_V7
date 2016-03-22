@@ -39,7 +39,7 @@ class report_account_in_out_tax(osv.osv_memory):
         'filter_type': fields.selection([
             ('1', 'Hợp lệ'),
             ('2','Tất cả')], 'Hiển thị', required=True ),
-        
+        'tax_id': fields.many2one('account.tax', 'Thuế'),
      }
     
     def _get_company(self, cr, uid, context=None):

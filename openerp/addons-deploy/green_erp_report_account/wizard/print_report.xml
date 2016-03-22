@@ -18,7 +18,7 @@
                 		<field name="fiscalyear_stop" domain="[('company_id','=',company_id)]" attrs="{'invisible':[('times', 'in', ['dates','periods'])], 'required':[('times','not in', ['dates','periods'])]}"/>
                 		<field name="date_start" attrs="{'invisible':[('times', 'in', ['periods','years'])],'required':[('times','not in', ['periods','years'])]}"/>
                 		<field name="date_end" attrs="{'invisible':[('times', 'in', ['periods','years'])],'required':[('times','not in', ['periods','years'])] }"/>
-                		
+                		<field name="tax_id" domain="[('parent_id','=',False),('type_tax_use','!=','sale')]"/>
                     </group>
                     <group col="4" colspan="2">
                     	<field name="shop_ids" widget="many2many_tags"/>
@@ -60,6 +60,7 @@
                 		<field name="fiscalyear_stop" domain="[('company_id','=',company_id)]" attrs="{'invisible':[('times', 'in', ['dates','periods'])], 'required':[('times','not in', ['dates','periods'])]}"/>
                 		<field name="date_start" attrs="{'invisible':[('times', 'in', ['periods','years'])],'required':[('times','not in', ['periods','years'])]}"/>
                 		<field name="date_end" attrs="{'invisible':[('times', 'in', ['periods','years'])],'required':[('times','not in', ['periods','years'])] }"/>
+                    	<field name="tax_id" domain="[('parent_id','=',False),('type_tax_use','!=','purchase')]"/>
                     </group>
                       <group col="4" colspan="2">
                     	<field name="shop_ids" widget="many2many_tags"/>
