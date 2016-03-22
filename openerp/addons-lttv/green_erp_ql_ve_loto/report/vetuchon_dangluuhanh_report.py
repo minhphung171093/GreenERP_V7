@@ -214,7 +214,7 @@ class Parser(report_sxw.rml_parse):
         self.cr.execute(sql)
         dl_ids = [row[0] for row in self.cr.fetchall()]
         for line in menh_gia_ids:
-            ddd
+            ff
             
         return res
     
