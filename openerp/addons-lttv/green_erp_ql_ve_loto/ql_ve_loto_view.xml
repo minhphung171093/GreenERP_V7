@@ -35,6 +35,20 @@
             </field>
         </record>
         
+         <record id="loto_res_partner_kanban_view" model="ir.ui.view">
+            <field name="name">res.partner.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.res_partner_kanban_view"/>
+            <field name="arch" type="xml">
+            	<data>
+                	<xpath expr="//field[@name='name']" position="before">
+                		<field name="ma_daily" attrs="{'invisible':[('supplier','!=',False)], 'required':[('supplier','=',False)]}"/>
+                		<field name="supplier" invisible="1"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+        
         <record id="action_daily" model="ir.actions.act_window">
             <field name="name">Đại lý</field>
             <field name="res_model">res.partner</field>
