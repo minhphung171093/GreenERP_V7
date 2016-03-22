@@ -139,7 +139,14 @@ class product_product(osv.osv):
     
 product_product()
 
-
+class product_template(osv.osv):
+    _inherit = "product.template"
+    
+    _columns = {
+        'list_price': fields.float('Sale Price', digits=(16,7), help="Base price to compute the customer price. Sometimes called the catalog price."),
+    }
+    
+product_template()
 
 class dai_duthuong(osv.osv):
     _name = "dai.duthuong"
