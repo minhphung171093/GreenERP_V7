@@ -216,11 +216,11 @@ class Parser(report_sxw.rml_parse):
                         (select product_qty from stock_move where product_id = %s and date between '%s' and '%s' and state='done' and picking_id in (select id from stock_picking where type='out')) xuat_trong_ky,
                         (select product_qty from stock_move where product_id = %s and state='done' and date < '%s' and picking_id in (select id from stock_picking where type='in')) cuoi_ky
                             from stock_move where product_id = %s
-                        union all
+                        union
                         select product_id,(select product_qty*-1 from stock_move where product_id = %s and state='done' and date < '%s' and picking_id in (select id from stock_picking where type='out')) dau_ky,
                         0 as nhan_trong_ky,
                         0 as xuat_trong_ky,
-                        (select product_qty from stock_move where product_id = %s and state='done' and date < '%s' and picking_id in (select id from stock_picking where type='out')) cuoi_ky
+                        (select product_qty*-1 from stock_move where product_id = %s and state='done' and date < '%s' and picking_id in (select id from stock_picking where type='out')) cuoi_ky
                             from stock_move where product_id = %s) ky, product_product pp ,product_template pt
                     where pp.id = ky.product_id and pp.product_tmpl_id=pt.id and pp.id = %s
                     group by name,pt.list_price
