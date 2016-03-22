@@ -29,6 +29,7 @@
             	<data>
                 	<xpath expr="//field[@name='name']" position="before">
                 		<field name="ma_daily" attrs="{'invisible':[('supplier','!=',False)], 'required':[('supplier','=',False)]}"/>
+                		<field name="supplier" invisible="1"/>
                     </xpath>
                 </data>
             </field>
