@@ -55,7 +55,7 @@ class res_partner(osv.osv):
             if context.get('show_email') and record.email:
                 name = "%s <%s>" % (name, record.email)
             if record.ma_daily:
-                name += '[%s] '%(record.ma_daily)
+                name = '[%s] '%(record.ma_daily) + name
             res.append((record.id, name))
         return res
     
