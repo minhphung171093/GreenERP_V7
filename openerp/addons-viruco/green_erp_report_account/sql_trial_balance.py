@@ -244,6 +244,11 @@ class sql_trial_balance(osv.osv):
         return True  
     
     def fin_trial_balance_data(self,cr):
+        sql = '''
+            DROP TYPE IF EXISTS fin_trial_balance_data CASCADE;
+            commit;
+        '''
+        cr.execute(sql)
         cr.execute("select exists (select 1 from pg_type where typname = 'fin_trial_balance_data')")
         res = cr.fetchone()
         if res and res[0]:

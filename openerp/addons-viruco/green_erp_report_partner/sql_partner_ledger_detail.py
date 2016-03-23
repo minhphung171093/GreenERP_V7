@@ -22,7 +22,7 @@ class sql_partner_ledger_detail(osv.osv):
         sql ='''
             select sum(begin_dr) begin_dr,sum(begin_cr) begin_cr,sum(period_dr) period_dr,
             sum(period_cr) period_cr,sum(end_dr) end_dr,sum(end_cr) end_cr 
-            from fin_gen_liability_data('%s','%s',%s);
+            from fin_gen_liability_data2('%s','%s',%s);
         '''%(start_date, end_date, account_id)
         cr.execute(sql)
         
@@ -31,7 +31,7 @@ class sql_partner_ledger_detail(osv.osv):
     
     def get_line(self, cr, start_date, end_date, account_id):
         sql ='''
-            select* from fin_gen_liability_data('%s','%s',%s);
+            select* from fin_gen_liability_data2('%s','%s',%s);
         '''%(start_date, end_date, account_id)
         cr.execute(sql)
         return cr.dictfetchall()
@@ -43,14 +43,19 @@ class sql_partner_ledger_detail(osv.osv):
         return True
     
     def fin_gen_liability_data(self,cr):
-        cr.execute("select exists (select 1 from pg_type where typname = 'fin_gen_liability_data')")
+        sql = '''
+            DROP TYPE IF EXISTS fin_gen_liability_data2 CASCADE;
+            commit;
+        '''
+        cr.execute(sql)
+        cr.execute("select exists (select 1 from pg_type where typname = 'fin_gen_liability_data2')")
         res = cr.fetchone()
         if res and res[0]:
-            cr.execute('''delete from pg_type where typname = 'fin_gen_liability_data';
-                            delete from pg_class where relname='fin_gen_liability_data';
+            cr.execute('''delete from pg_type where typname = 'fin_gen_liability_data2';
+                            delete from pg_class where relname='fin_gen_liability_data2';
                             commit;''')
         sql = '''
-        CREATE TYPE fin_gen_liability_data AS
+        CREATE TYPE fin_gen_liability_data2 AS
            (seq integer,
             partner_code character varying(20),
             partner_name character varying(120),
@@ -60,7 +65,7 @@ class sql_partner_ledger_detail(osv.osv):
             period_cr numeric,
             end_dr numeric,
             end_cr numeric);
-        ALTER TYPE fin_gen_liability_data
+        ALTER TYPE fin_gen_liability_data2
           OWNER TO openerp;
         '''
         cr.execute(sql)
@@ -68,15 +73,15 @@ class sql_partner_ledger_detail(osv.osv):
     
     def fin_liability_data(self,cr):
         sql = '''
-        DROP FUNCTION IF EXISTS fin_gen_liability_data(date, date, integer) CASCADE;
+        DROP FUNCTION IF EXISTS fin_gen_liability_data2(date, date, integer) CASCADE;
         commit;
         
-        CREATE OR REPLACE FUNCTION fin_gen_liability_data(date, date, integer)
-          RETURNS SETOF fin_gen_liability_data AS
+        CREATE OR REPLACE FUNCTION fin_gen_liability_data2(date, date, integer)
+          RETURNS SETOF fin_gen_liability_data2 AS
         $BODY$
         DECLARE
             rec_data    record;
-            lia_data    fin_gen_liability_data%ROWTYPE;
+            lia_data    fin_gen_liability_data2%ROWTYPE;
             line_no        int;
             beg_amount    numeric;
             end_amount    numeric;
@@ -163,7 +168,7 @@ class sql_partner_ledger_detail(osv.osv):
           LANGUAGE plpgsql VOLATILE
           COST 100
           ROWS 1000;
-        ALTER FUNCTION fin_gen_liability_data(date, date, integer)
+        ALTER FUNCTION fin_gen_liability_data2(date, date, integer)
           OWNER TO openerp;
         '''
         cr.execute(sql)
