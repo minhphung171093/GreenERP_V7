@@ -77,7 +77,7 @@ class Parser(report_sxw.rml_parse):
                 sluong_3 += lotoline.sl_3_d + lotoline.sl_3_c + lotoline.sl_3_dc + lotoline.sl_3_7 + lotoline.sl_3_17
                 sluong_4 += lotoline.sl_4_16
         tongve = sluong_2 + sluong_3 + sluong_4
-        thanhtien = tongve*menhgia.list_price
+        thanhtien = tongve*int(menhgia.list_price)
         return {
                 'sl_2': format(sluong_2,','),
                 'sl_3': format(sluong_3,','),
@@ -118,7 +118,7 @@ class Parser(report_sxw.rml_parse):
             sl_3 += sluong_3
             sl_4 += sluong_4
             tongve += sluong_2 + sluong_3 + sluong_4
-            thanhtien += (sluong_2 + sluong_3 + sluong_4)*menhgia.list_price
+            thanhtien += (sluong_2 + sluong_3 + sluong_4)*int(menhgia.list_price)
         return {
                 'sl_2': format(sl_2,','),
                 'sl_3': format(sl_3,','),
@@ -145,7 +145,7 @@ class Parser(report_sxw.rml_parse):
                 sl_3 += lotoline.sl_3_d + lotoline.sl_3_c + lotoline.sl_3_dc + lotoline.sl_3_7 + lotoline.sl_3_17
                 sl_4 += lotoline.sl_4_16
         tongve = sl_2 + sl_3 + sl_4
-        thanhtien = tongve*menhgia.list_price
+        thanhtien = tongve*int(menhgia.list_price)
         return {
                 'sl_2': format(sl_2,','),
                 'sl_3': format(sl_3,','),
@@ -183,7 +183,7 @@ class Parser(report_sxw.rml_parse):
             sl_3 += sluong_3
             sl_4 += sluong_4
             tongve += sluong_2 + sluong_3 + sluong_4
-            thanhtien += (sluong_2 + sluong_3 + sluong_4)*menhgia.list_price
+            thanhtien += (sluong_2 + sluong_3 + sluong_4)*int(menhgia.list_price)
         return {
                 'sl_2': format(sl_2,','),
                 'sl_3': format(sl_3,','),

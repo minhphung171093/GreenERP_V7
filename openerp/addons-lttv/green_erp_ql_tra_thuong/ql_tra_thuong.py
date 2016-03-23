@@ -102,7 +102,7 @@ class tra_thuong_line(osv.osv):
         if context is None:
             context = {}
         for line in self.browse(cr, uid, ids, context=context):
-            gt_menhgia = line.product_id.list_price/10000
+            gt_menhgia = int(line.product_id.list_price)/10000
             if line.loai=='2_so' and line.giai=='dau':
                 res[line.id] = 700000*gt_menhgia
             if line.loai=='2_so' and line.giai=='cuoi':
@@ -398,7 +398,7 @@ class tra_thuong_thucte_line(osv.osv):
         if context is None:
             context = {}
         for line in self.browse(cr, uid, ids, context=context):
-            gt_menhgia = line.product_id.list_price/10000
+            gt_menhgia = int(line.product_id.list_price)/10000
             if line.loai=='2_so' and line.giai=='dau':
                 res[line.id] = 700000*gt_menhgia
             if line.loai=='2_so' and line.giai=='cuoi':

@@ -88,7 +88,7 @@ class Parser(report_sxw.rml_parse):
         date_from = wizard_data['date_from']
         date_to = wizard_data['date_to']
         sql='''
-                select pp.id as product_id,pt.list_price as menhgia from product_product pp
+                select pp.id as product_id,pt.list_price::int as menhgia from product_product pp
                     left join product_template pt on pp.product_tmpl_id=pt.id
          
                     where pp.id in (select product_id from ve_loto where (ngay between '%s' and '%s') and state = 'done' )

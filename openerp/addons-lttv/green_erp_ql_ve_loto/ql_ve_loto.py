@@ -139,7 +139,14 @@ class product_product(osv.osv):
     
 product_product()
 
-
+class product_template(osv.osv):
+    _inherit = "product.template"
+    
+    _columns = {
+        'list_price': fields.float('Sale Price', digits=(16,7), help="Base price to compute the customer price. Sometimes called the catalog price."),
+    }
+    
+product_template()
 
 class dai_duthuong(osv.osv):
     _name = "dai.duthuong"
@@ -467,7 +474,7 @@ class ve_loto(osv.osv):
             for line in loto.ve_loto_2_line:
                 soluong += line.sl_2_d + line.sl_2_c + line.sl_2_dc + line.sl_2_18 + line.sl_3_d + line.sl_3_c + line.sl_3_dc + line.sl_3_7 + line.sl_3_17 + line.sl_4_16 
             res[loto.id]['tong_cong'] = soluong
-            res[loto.id]['thanh_tien'] = soluong*loto.product_id.list_price
+            res[loto.id]['thanh_tien'] = soluong*int(loto.product_id.list_price)
         return res
     
     _columns = {
@@ -556,7 +563,7 @@ class ve_loto(osv.osv):
                 'state': 'waiting',
                   }
             lichsu_dongbo_obj.create(cr, uid, vals, context)
-        super(ve_loto, self).unlink(cr, uid, [line.id], context=context)
+        super(ve_loto, self).unlink(cr, uid, ids, context=context)
         return True
     
 ve_loto()

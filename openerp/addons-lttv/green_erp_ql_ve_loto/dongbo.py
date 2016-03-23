@@ -344,7 +344,7 @@ class dongbo_daily_trungthuong(osv.osv):
         vals = []
         for line in ve_loto.ve_loto_2_line:
             #2 so
-            gt_menhgia = ve_loto.product_id.list_price/10000
+            gt_menhgia = int(ve_loto.product_id.list_price)/10000
             if line.sl_2_d_trung:
                 slan_trung = line.sl_2_d_trung
                 sluong_trung = line.sl_2_d
