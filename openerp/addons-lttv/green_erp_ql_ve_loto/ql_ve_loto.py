@@ -563,7 +563,7 @@ class ve_loto(osv.osv):
                 'state': 'waiting',
                   }
             lichsu_dongbo_obj.create(cr, uid, vals, context)
-        super(ve_loto, self).unlink(cr, uid, [line.id], context=context)
+        super(ve_loto, self).unlink(cr, uid, ids, context=context)
         return True
     
 ve_loto()
