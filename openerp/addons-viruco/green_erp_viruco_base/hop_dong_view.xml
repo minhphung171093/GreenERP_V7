@@ -171,6 +171,7 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="hop_dong_noi_tree_view"/>
             <field name="domain">[('type','=','hd_noi')]</field>
+            <field name="search_view_id" ref="view_hop_dong_filter"/>
             <field name="context">{'default_type':'hd_noi','readonly_by_pass': True}</field>
         </record>
         <record model="ir.actions.act_window.view" id="action_hop_dong_noi1">
@@ -185,7 +186,30 @@
             <field name="view_id" ref="hop_dong_noi_form_view"/>
             <field name="act_window_id" ref="action_hop_dong_noi"/>
         </record>
-        
+
+		<record id="view_hop_dong_ngoai_filter" model="ir.ui.view">
+            <field name="name">hop.dong.ngoai.filter</field>
+            <field name="model">hop.dong</field>
+            <field name="arch" type="xml">
+                <search string="Search Hợp đồng">
+                    <field name="name"/>
+                    <field name="state"/>
+                    <field name="partner_id"/>
+                    <field name="sale_person_id"/>
+                    <field name="user_id"/>
+                    <field name="user_chungtu_id"/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Status" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
+                        <filter string="Number" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'name'}"/>
+                        <filter string="Buyer" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'partner_id'}"/>
+                        <filter string="Sale person" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'sale_person_id'}"/>
+                        <filter string="User" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'user_id'}"/>
+                        <filter string="Người làm CT" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'user_chungtu_id'}"/>
+                    </group>
+               </search>
+            </field>
+        </record>
+                
         <record id="hop_dong_ngoai_tree_view" model="ir.ui.view">
 			<field name="name">hop.dong.ngoai.tree</field>
 			<field name="model">hop.dong</field>
@@ -377,7 +401,7 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="hop_dong_ngoai_tree_view"/>
             <field name="domain">[('type','=','hd_ngoai')]</field>
-            <field name="search_view_id" ref="view_hop_dong_filter"/>
+            <field name="search_view_id" ref="view_hop_dong_ngoai_filter"/>
             <field name="context">{'default_type':'hd_ngoai','readonly_by_pass': True}</field>
         </record>
         <record model="ir.actions.act_window.view" id="action_hop_dong_ngoai1">
