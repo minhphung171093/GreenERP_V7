@@ -206,9 +206,9 @@ class Parser(report_sxw.rml_parse):
         date_to = wizard_data['date_to']
         for line in menh_gia_ids:
             sql = '''
-                    select pt.name as name,case when sum(ky.dau_ky)>0 then sum(ky.dau_ky) else 0 end dau_ky, case when sum(ky.dau_ky)>0 then sum(ky.dau_ky)*pt.list_price else 0 end tien_dau_ky,
-                        case when sum(ky.nhan_trong_ky)>0 then sum(ky.nhan_trong_ky) else 0 end nhan_trong_ky, case when sum(ky.nhan_trong_ky)>0 then sum(ky.nhan_trong_ky)*pt.list_price else 0 end tien_nhan_trong_ky,
-                        case when sum(ky.xuat_trong_ky)>0 then sum(ky.xuat_trong_ky) else 0 end xuat_trong_ky, case when sum(ky.xuat_trong_ky)>0 then sum(ky.xuat_trong_ky)*pt.list_price else 0 end tien_xuat_trong_ky,
+                    select pt.name as name,case when sum(ky.dau_ky)>0 then sum(ky.dau_ky) else 0 end dau_ky, case when sum(ky.dau_ky)>0 then sum(ky.dau_ky)*pt.list_price::int else 0 end tien_dau_ky,
+                        case when sum(ky.nhan_trong_ky)>0 then sum(ky.nhan_trong_ky) else 0 end nhan_trong_ky, case when sum(ky.nhan_trong_ky)>0 then sum(ky.nhan_trong_ky)*pt.list_price::int else 0 end tien_nhan_trong_ky,
+                        case when sum(ky.xuat_trong_ky)>0 then sum(ky.xuat_trong_ky) else 0 end xuat_trong_ky, case when sum(ky.xuat_trong_ky)>0 then sum(ky.xuat_trong_ky)*pt.list_price::int else 0 end tien_xuat_trong_ky,
                         case when sum(ky.cuoi_ky)>0 then sum(ky.cuoi_ky) else 0 end cuoi_ky, case when sum(ky.cuoi_ky)>0 then sum(ky.cuoi_ky)*pt.list_price else 0 end tien_cuoi_ky
                     from
                         (select product_id,(select product_qty from stock_move where product_id = %s and state='done' and date < '%s' and picking_id in (select id from stock_picking where type='in')) dau_ky,
