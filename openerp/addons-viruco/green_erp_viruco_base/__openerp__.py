@@ -33,6 +33,7 @@
             'wizard/print_report.xml',
             'wizard/tach_phieu.xml',
             'wizard/chat_luong_wizard_view.xml',
+            'wizard/hdsd_view.xml',
             'report/don_ban_hang_view.xml',
             'report/don_mua_hang_view.xml',
             'report/draft_bl_report_view.xml',

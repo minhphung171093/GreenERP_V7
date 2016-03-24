@@ -40,6 +40,7 @@ class account_voucher(osv.osv):
         'unshow_financial_report':fields.boolean('Không khai báo thuế'),
         'ly_do':fields.text('Lý do', states={'draft':[('readonly',False)]}),
         'so_thanhtoan': fields.char('Số', size=32, states={'draft':[('readonly',False)]}),
+        
     }
 
     def _get_shop_id(self, cr, uid, context=None):

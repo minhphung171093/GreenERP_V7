@@ -95,6 +95,7 @@ class draft_bl(osv.osv):
             ('huy_bo', 'Hủy bỏ'),
             ], 'Trạng thái',readonly=True, states={'moi_tao': [('readonly', False)]}),
         'user_id': fields.many2one('res.users','Người thực hiện'),
+        'buyer_thue':fields.many2one('res.partner','Form E'),
 #         'user_chungtu_id': fields.many2one('res.users','Người thực hiện'),
     }
     

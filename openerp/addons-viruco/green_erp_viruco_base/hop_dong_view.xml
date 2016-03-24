@@ -214,8 +214,9 @@
 			<field name="name">hop.dong.ngoai.tree</field>
 			<field name="model">hop.dong</field>
 			<field name="arch" type="xml">
-				<tree string="Hợp đồng ngoại" colors="gray:state== 'huy_bo';red:(ngay_canhbao and (ngay_canhbao &lt;= current_date))">
+				<tree string="Hợp đồng ngoại" colors="gray:state== 'thanh_toan';red:(ngay_canhbao and (ngay_canhbao &lt;= current_date))">
 					<field name="name" string="No."/>
+					<field name="so_tham_chieu" string="Ref."/>
 					<field name="partner_id" string="Buyer"/>
 					<field name="tu_ngay" string = "Sign date" />
 					<field name="den_ngay" string = "Validity date" />
@@ -258,7 +259,7 @@
 	                    </group>
 	                    <group col='4' colspan='2'>
 	                    	<field name="donbanhang_id" on_change="onchange_donbanhang_id(donbanhang_id)" required='1' domain="[('type','=','dbh_ngoai'),('state','=','da_duyet')]"/>
-	                    	<field name="so_tham_chieu" /> 
+	                    	<field name="so_tham_chieu" string="Ref." /> 
 	                    	<field name="company_id" string="Company" context="{'show_address': 1}"/>
 	                    	<field name="partner_id" string="Buyer"  context="{'show_address': 1}" domain="[('customer','=',True)]"/>
 							<field name="banggia_id" on_change="onchange_banggia_id(banggia_id,type,currency_id)" context="{'search_banggia_ban_ngoai_id': 1,'ngay':date_dbh,'currency_company_id':currency_company_id}" />

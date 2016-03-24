@@ -21,6 +21,12 @@
                     <field name="nha_moigioi"/>
             		<field name="donvi_vanchuyen"/>
                 </xpath>
+            	<xpath expr="//page[@string='Internal Notes']/field[@name='comment']" position="before">
+            		<group>
+	                    <field name="nguoi_daidien"/>
+	            		<field name="chuc_vu"/>
+            		</group>
+                </xpath>
             </field>
         </record>
         

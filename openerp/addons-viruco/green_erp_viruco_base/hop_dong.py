@@ -455,7 +455,22 @@ class hop_dong(osv.osv):
             'type': 'ir.actions.report.xml',
             'report_name': 'theodoi_hopdong_ngoai_report',
         }
-    
+#     def bt_dinhkem(self, cr, uid, ids, context=None):
+#         name_lines=[]
+#         res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
+#                                         'green_erp_viruco_base', 'huongdan_sudung_form')
+#         return {
+#                     'name': 'Đính kèm hợp đồng',
+#                     'view_type': 'form',
+#                     'view_mode': 'form',
+#                     'view_id': res[1],
+#                     'res_model': 'huongdan.sudung',
+#                     'domain': [],
+#                     'context': {},
+# 
+#                     'type': 'ir.actions.act_window',
+#                     'target': 'new',
+#                 }    
     def het_han(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids, {'state': 'het_han'})
     

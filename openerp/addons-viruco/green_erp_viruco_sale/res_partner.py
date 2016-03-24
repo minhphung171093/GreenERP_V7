@@ -24,6 +24,8 @@ class res_partner(osv.osv):
         'donvi_vanchuyen':fields.boolean('Đơn vị vận chuyển'),
         'is_giaodichtructiep':fields.boolean('Giao dịch trực tiếp'),
         'nha_moigioi_id':fields.many2one('res.partner','Nhà môi giới'),
+        'nguoi_daidien':fields.char('Người đại diện', size=1024),
+        'chuc_vu':fields.char('Chức vụ', size=1024),
     }
     
     def _construct_constraint_msg(self, cr, uid, ids, context=None):
@@ -58,7 +60,20 @@ class res_partner(osv.osv):
         return True
     
     _constraints = [(check_vat, _construct_constraint_msg, ["vat"])]
-    
+    def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
+        if context is None:
+            context = {}
+        if context.get('search_buyer_form_e'):
+            buyer_ids = []
+            sql = '''
+                select id from res_partner
+                    where ma_kh LIKE '%DAL'
+            '''
+            cr.execute(sql)
+            buyer_ids = [row[0] for row in cr.fetchall()]
+            args += [('id','in',buyer_ids)]        
+        return super(res_partner, self).search(cr, uid, args, offset=offset, limit=limit, order=order, context=context, count=count)
+        
     def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
         if args is None:
             args = []
