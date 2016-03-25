@@ -364,18 +364,19 @@ class Parser(report_sxw.rml_parse):
         res = []
         for line in o.draft_bl_line:
             if line.option and line.option == 'product':
+                res.append({ 'product': 'CONTAINER NO. / SEAL NO.',
+                            'package': '',
+                            'form': '',
+                            'net_weight': '',
+                            'gross_weight': '',
+                            })                
                 res.append({ 'product': line.hopdong_line_id and line.hopdong_line_id.product_id and line.hopdong_line_id.product_id.eng_name + ' ' + line.hopdong_line_id.product_id.default_code or '',
                             'package': '',
                             'form': '',
                             'net_weight': '',
                             'gross_weight': '',
                             })
-                res.append({ 'product': 'CONTAINER NO. / SEAL NO.',
-                            'package': '',
-                            'form': '',
-                            'net_weight': '',
-                            'gross_weight': '',
-                            })
+
                 for detail in line.seal_descript_line:
                     res.append({ 'product': detail.container_no_seal + '/' + detail.seal_no or '',
                             'package': detail.packages_qty and round(detail.packages_qty) or 0,
