@@ -14,3 +14,4 @@ import tonghop_trungthuong_theongay
 import tonghop_trungthuong_theodl
 import tonghop_doanhthu_tieuthu_theothoigian
 import veban_theolo_theongay
+import stock_partial_picking

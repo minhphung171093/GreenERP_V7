@@ -85,4 +85,12 @@ class stock_picking_out(osv.osv):
         return new_write
 stock_picking_out()
 
+class stock_move(osv.osv):
+    _inherit = 'stock.move'
+    _columns = {
+        'daily_id': fields.many2one('res.partner','Đại lý',states={'done': [('readonly', True)]}),
+        }
+    
+stock_move()
+
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

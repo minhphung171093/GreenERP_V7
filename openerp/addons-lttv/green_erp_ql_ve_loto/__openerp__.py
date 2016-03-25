@@ -28,7 +28,7 @@
     'sequence': 1,
     'description': """
     """,
-    'depends': ['green_erp_base','green_erp_ql_tra_thuong','product','sale','purchase','account_accountant','report_aeroo','report_aeroo_ooo'],
+    'depends': ['green_erp_base','green_erp_ql_tra_thuong','product','sale','purchase','account_accountant','report_aeroo','report_aeroo_ooo','stock'],
     'data': [
         'security/ql_ve_loto_security.xml',
         'security/ir.model.access.csv',
@@ -62,6 +62,7 @@
         'wizard/tonghop_trungthuong_theodl_view.xml',
         'wizard/tonghop_doanhthu_tieuthu_theothoigian_view.xml',
         'wizard/veban_theolo_theongay_view.xml',
+        'wizard/stock_partial_picking_view.xml',
         'ql_ve_loto_schedule.xml',
         'purchase_view.xml',
         'stock_view.xml',
