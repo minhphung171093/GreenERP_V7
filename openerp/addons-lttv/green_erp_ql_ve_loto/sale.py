@@ -38,6 +38,37 @@ class sale_order(osv.osv):
         ir_values.set_default(cr, SUPERUSER_ID, 'sale.order', 'order_policy', 'picking')
         return True
     
+    def onchange_dl_loto(self, cr, uid, ids,partner_id, pricelist_id, date_order,fiscal_position,context=None):
+        vals = {}
+        res = []
+        results = self.onchange_partner_id(cr,uid,ids,partner_id,context)['value']
+        if ids:
+            cr.execute('delete from sale_order_line where order_id in (%s)',(ids),)
+        if partner_id:
+            partner_ids = self.pool.get('res.partner').search(cr, uid, [('parent_id','=',partner_id)], context=context)
+            for partner in  partner_ids:
+                menhgia_ids = self.pool.get('product.product').search(cr, uid, [('menh_gia','=',True)], context=context)
+                for menhgia in menhgia_ids:
+                    rs = self.pool.get('sale.order.line').product_id_change(cr, uid, ids, pricelist_id, menhgia, 1, False, False, False, False, partner_id, False, True, date_order, fiscal_position, False, context)
+                    vals=rs['value']
+                    vals.update({
+                                 'daily_id': partner,
+                                 'product_id': menhgia,
+                                 'state': 'draft',
+                                 'product_uom_qty': 1,
+                                 })
+                    res.append((0,0,vals))
+            results.update({ 'order_line': res})
+            
+        return {'value': results}
+    
 sale_order()
 
+class sale_order_line(osv.osv):
+    _inherit = 'sale.order.line'
+    _columns = {
+        'daily_id': fields.many2one('res.partner','Đại lý',domain="[('dai_ly','=',True)]",states={'draft':[('readonly',False)]}),
+        }
+    
+sale_order_line()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -14,10 +14,26 @@
                     <xpath expr="//field[@name='client_order_ref']" position="attributes">
                 		<attribute name='invisible'>1</attribute>
                     </xpath>
+                    <xpath expr="//field[@name='partner_id']" position="attributes">
+                		<attribute name='on_change'>onchange_dl_loto(partner_id, pricelist_id, date_order, fiscal_position)</attribute>
+                		<attribute name='domain'>[('parent_id','=',False)]</attribute>
+                    </xpath>
+                    
+                    <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="before">
+                		<field name="daily_id" domain="[('parent_id','=',parent.partner_id)]"/>
+                    </xpath>
+                    
+                    <xpath expr="//button[@name='print_quotation']" position="replace">
+                    </xpath>
+                    <xpath expr="//button[@name='action_quotation_send']" position="replace">
+                    </xpath>
+                    <xpath expr="//button[@name='print_quotation']" position="replace">
+                    </xpath>
+                    <xpath expr="//button[@name='action_quotation_send']" position="replace">
+                    </xpath>
                 </data>
             </field>
         </record>
-        
 
     </data>
 </openerp>
