@@ -129,7 +129,7 @@ class account_voucher_batch(osv.osv):
     _defaults = {
         'state': 'draft',
         'date': lambda *a: time.strftime('%Y-%m-%d'),
-        'assign_user':_get_assign_user,
+#         'assign_user':_get_assign_user,
         'company_id': lambda self,cr,uid,c: self.pool.get('res.company')._company_default_get(cr, uid, 'account.voucher.batch',context=c),
         #get Bank and Cash Journal firstly
         'journal_id':_get_journal,
@@ -327,7 +327,7 @@ class account_voucher(osv.osv):
         return user.context_shop_id.id or False
     
     _defaults = {
-        'assign_user':_get_assign_user,
+#         'assign_user':_get_assign_user,
         
         #get Bank and Cash Journal firstly
         'journal_id':_get_journal,
