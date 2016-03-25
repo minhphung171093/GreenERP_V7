@@ -85,5 +85,15 @@
 			<field name="groups_id" eval="[(6,0,[ref('group_ql_ve_loto_man')])]"/>
 		</record>
 		
+		<menuitem name="Báo cáo" id="menu_kho_baocao" parent="stock.menu_stock_root" sequence="2"/>
+			
+			<menuitem id="menu_stock_action_vetuchon_dangluuhanh_report"
+				action="action_vetuchon_dangluuhanh_report"
+				parent="menu_kho_baocao" sequence="10"/>
+		
+			<menuitem id="menu_stock_action_tonghop_vetuchon_tonkho_report"
+				action="action_tonghop_vetuchon_tonkho_report"
+				parent="menu_kho_baocao" sequence="20"/>
+		
     </data>
 </openerp>
