@@ -207,7 +207,7 @@
                 </xpath> 
                 
                 <xpath expr="//field[@name='state']" position="before">
-                	<field name="trang_thai" widget="statusbar" statusbar_visible="draft,paid" attrs="{'invisible':[('type', '!=', 'out_refund')]}"/>
+                	<field name="trang_thai" widget="statusbar" statusbar_visible="draft,paid,cancel" attrs="{'invisible':[('type', '!=', 'out_refund')]}"/>
                 </xpath>
                 
                 <xpath expr="//field[@name='state']" position="attributes">

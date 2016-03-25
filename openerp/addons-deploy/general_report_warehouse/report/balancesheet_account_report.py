@@ -211,9 +211,7 @@ class Parser(report_sxw.rml_parse):
                             else 0.0
                             end xuattk_qty,
                     
-                            case when loc1.usage != 'internal' and loc2.usage = 'internal' and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
-                            then round(stm.price_unit * stm.product_qty)
-                            else 0.0 end nhaptk_val,
+                            
                             
                             case when loc1.usage = 'internal' and loc2.usage != 'internal' and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
                             then 1*(stm.price_unit * stm.product_qty)
@@ -749,7 +747,6 @@ class Parser(report_sxw.rml_parse):
                     round(sum(end_val)) end_val
                     From
                     (
-                    
                     SELECT
                             stm.product_id,stm.product_uom,    
                             case when loc1.usage != 'internal' and loc2.usage = 'internal' and date(timezone('UTC',stm.date::timestamp)) < '%(start_date)s'
@@ -759,104 +756,161 @@ class Parser(report_sxw.rml_parse):
                             then -1*stm.primary_qty 
                             else 0.0 end
                             end start_onhand_qty,
-                            
+                             
                             case when loc1.usage != 'internal' and loc2.usage = 'internal' and date(timezone('UTC',stm.date::timestamp)) < '%(start_date)s'
-                            then (stm.price_unit * stm.product_qty)
+                            then round(stm.price_unit * stm.product_qty)
                             else
                             case when loc1.usage = 'internal' and loc2.usage != 'internal' and date(timezone('UTC',stm.date::timestamp)) < '%(start_date)s'
-                            then -1*(stm.price_unit * stm.product_qty)
+                            then -1*round(stm.price_unit * stm.product_qty)
                             else 0.0 end
                             end start_val,
-                            
+                             
                             case when loc1.usage != 'internal' and loc2.usage = 'internal' and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
+                            and ai.state in ('open','paid')
                             then stm.primary_qty
                             else 0.0 end nhaptk_qty,
-                            
+                             
                             case when loc1.usage = 'internal' and loc2.usage != 'internal' and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
+                            and ai.state in ('open','paid')
                             then 1*stm.primary_qty 
                             else 0.0
                             end xuattk_qty,
-                    
+                     
                             case when loc1.usage != 'internal' and loc2.usage = 'internal' and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
+                            and ai.state in ('open','paid')
                             then round(stm.price_unit * stm.product_qty)
                             else 0.0 end nhaptk_val,
-                            
+                             
                             case when loc1.usage = 'internal' and loc2.usage != 'internal' and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
-                            then 1*(stm.price_unit * stm.product_qty)
+                            and ai.state in ('open','paid')
+                            then 1*round(stm.price_unit * stm.product_qty)
                             else 0.0
                             end xuattk_val,        
-                             
+                              
                             case when loc1.usage != 'internal' and loc2.usage = 'internal' and date(timezone('UTC',stm.date::timestamp)) <= '%(end_date)s'
+                            and ai.state in ('open','paid')
                             then stm.primary_qty
                             else
                             case when loc1.usage = 'internal' and loc2.usage != 'internal' and date(timezone('UTC',stm.date::timestamp)) <= '%(end_date)s'
+                            and ai.state in ('open','paid')
                             then -1*stm.primary_qty 
                             else 0.0 end
                             end end_onhand_qty,
-                            
+                             
                             case when loc1.usage != 'internal' and loc2.usage = 'internal' and date(timezone('UTC',stm.date::timestamp)) <= '%(end_date)s'
+                            and ai.state in ('open','paid')
                             then round(stm.price_unit * stm.product_qty)
                             else
                             case when loc1.usage = 'internal' and loc2.usage != 'internal' and date(timezone('UTC',stm.date::timestamp)) <= '%(end_date)s'
-                            then -1*(stm.price_unit * stm.product_qty)
+                            and ai.state in ('open','paid')
+                            then -1*round(stm.price_unit * stm.product_qty)
                             else 0.0 end
                             end end_val            
                         FROM stock_move stm 
                             join stock_location loc1 on stm.location_id=loc1.id
                             join stock_location loc2 on stm.location_dest_id=loc2.id
-                        WHERE stm.state= 'done' and (stm.picking_id is not null or stm.id in (select move_id from stock_inventory_move_rel)) and loc2.id!='%(cus_stock)s'
-                    
+                            left join account_invoice_line ail on ail.source_id=stm.id
+                            left join account_invoice ai on ai.id=ail.invoice_id
+                        WHERE stm.state= 'done' and stm.id in (select move_id from stock_inventory_move_rel)
+                        
+                        
                     UNION ALL
                     
                     SELECT
                         stm.product_id,stm.product_uom,    
-                        case when loc1.usage != 'internal' and loc2.usage = 'internal' and date(timezone('UTC',stm.date::timestamp)) < '%(start_date)s'
+                        case when ai.type in ('in_invoice','out_refund') and rel_invoice_id is null 
+                        and date(timezone('UTC',stm.date::timestamp)) < '%(start_date)s'
                         then ail.quantity
                         else
-                        case when loc1.usage = 'internal' and loc2.usage != 'internal' and date(timezone('UTC',stm.date::timestamp)) < '%(start_date)s'
+                        case when ai.type in ('out_refund') and rel_invoice_id is not null 
+                        and date(timezone('UTC',ai.ngay_nhap::timestamp)) < '%(start_date)s'
+                        then ail.quantity
+                        else
+                        case when ai.type in ('out_invoice','in_refund') and rel_invoice_id is null 
+                        and date(timezone('UTC',stm.date::timestamp)) < '%(start_date)s'
                         then -1*ail.quantity 
-                        else 0.0 end
+                        else
+                        case when ai.type in ('out_invoice') and rel_invoice_id is not null 
+                        and date(timezone('UTC',ai.date_invoice::timestamp)) < '%(start_date)s'
+                        then -1*ail.quantity 
+                        else 0.0 end end end
                         end start_onhand_qty,
                         
-                        case when loc1.usage != 'internal' and loc2.usage = 'internal' and date(timezone('UTC',stm.date::timestamp)) < '%(start_date)s'
-                        then (stm.price_unit * ail.quantity)
+                        case when ai.type in ('in_invoice','out_refund') and rel_invoice_id is null 
+                        and date(timezone('UTC',stm.date::timestamp)) < '%(start_date)s'
+                        then round(stm.price_unit * ail.quantity)
                         else
-                        case when loc1.usage = 'internal' and loc2.usage != 'internal' and date(timezone('UTC',stm.date::timestamp)) < '%(start_date)s'
-                        then -1*(stm.price_unit * ail.quantity)
-                        else 0.0 end
+                        case when ai.type in ('out_refund') and rel_invoice_id is not null 
+                        and date(timezone('UTC',ai.ngay_nhap::timestamp)) < '%(start_date)s'
+                        then round(stm.price_unit * ail.quantity)
+                        else
+                        case when ai.type in ('out_invoice','in_refund')
+                        and date(timezone('UTC',stm.date::timestamp)) < '%(start_date)s'
+                        then -1*round(stm.price_unit * ail.quantity)
+                        else
+                        case when ai.type in ('out_invoice') and rel_invoice_id is not null 
+                        and date(timezone('UTC',ai.date_invoice::timestamp)) < '%(start_date)s'
+                        then -1*round(stm.price_unit * ail.quantity)
+                        else 0.0 end end end
                         end start_val,
                         
-                        case when loc1.usage != 'internal' and loc2.usage = 'internal' and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
+                        case when ai.type in ('in_invoice','out_refund') and rel_invoice_id is null 
+                        and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
                         then ail.quantity
-                        else 0.0 end nhaptk_qty,
+                        else 
+                        case when ai.type = 'out_refund' and rel_invoice_id is not null 
+                        and date(timezone('UTC',ai.ngay_nhap::timestamp)) between '%(start_date)s' and '%(end_date)s' 
+                        then ail.quantity
+                        else 0 end
+                        end nhaptk_qty,
                         
-                        case when loc1.usage = 'internal' and loc2.usage != 'internal' and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
+                        case when ai.type in ('out_invoice','in_refund') and rel_invoice_id is null 
+                        and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
                         then 1*ail.quantity 
-                        else 0.0
+                        else
+                        case when ai.type in ('out_invoice') and rel_invoice_id is not null 
+                        and date(timezone('UTC',ai.date_invoice::timestamp)) between '%(start_date)s' and '%(end_date)s'
+                        then 1*ail.quantity 
+                        else 0.0 end
                         end xuattk_qty,
                 
-                        case when loc1.usage != 'internal' and loc2.usage = 'internal' and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
+                        case when ai.type in ('in_invoice','out_refund') and rel_invoice_id is null 
+                        and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
                         then round(stm.price_unit * ail.quantity)
-                        else 0.0 end nhaptk_val,
+                        else 
+                        case when ai.type = 'out_refund' and rel_invoice_id is not null 
+                        and date(timezone('UTC',ai.ngay_nhap::timestamp)) between '%(start_date)s' and '%(end_date)s' 
+                        then round(stm.price_unit * ail.quantity)
+                        else 0.0 end
+                        end nhaptk_val,
                         
-                        case when loc1.usage = 'internal' and loc2.usage != 'internal' and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
-                        then 1*(stm.price_unit * ail.quantity)
-                        else 0.0
+                        case when ai.type in ('out_invoice','in_refund') and rel_invoice_id is null 
+                        and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
+                        then 1*round(stm.price_unit * ail.quantity)
+                        else
+                        case when ai.type in ('out_invoice') and rel_invoice_id is not null 
+                        and date(timezone('UTC',ai.date_invoice::timestamp)) between '%(start_date)s' and '%(end_date)s'
+                        then 1*round(stm.price_unit * ail.quantity)
+                        else 0.0 end
                         end xuattk_val,        
                          
-                        case when loc1.usage != 'internal' and loc2.usage = 'internal' and date(timezone('UTC',stm.date::timestamp)) <= '%(end_date)s'
+                        case when date(timezone('UTC',stm.date::timestamp)) <= '%(end_date)s'
+                        and ai.type in ('in_invoice','out_refund')
                         then ail.quantity
                         else
-                        case when loc1.usage = 'internal' and loc2.usage != 'internal' and date(timezone('UTC',stm.date::timestamp)) <= '%(end_date)s'
+                        case when date(timezone('UTC',stm.date::timestamp)) <= '%(end_date)s'
+                        and ai.type in ('out_invoice','in_refund')
                         then -1*ail.quantity
                         else 0.0 end
                         end end_onhand_qty,
                         
-                        case when loc1.usage != 'internal' and loc2.usage = 'internal' and date(timezone('UTC',stm.date::timestamp)) <= '%(end_date)s'
+                        case when date(timezone('UTC',stm.date::timestamp)) <= '%(end_date)s'
+                        and ai.type in ('in_invoice','out_refund')
                         then round(stm.price_unit * ail.quantity)
                         else
-                        case when loc1.usage = 'internal' and loc2.usage != 'internal' and date(timezone('UTC',stm.date::timestamp)) <= '%(end_date)s'
-                        then -1*(stm.price_unit * ail.quantity)
+                        case when date(timezone('UTC',stm.date::timestamp)) <= '%(end_date)s'
+                        and ai.type in ('out_invoice','in_refund')
+                        then -1*round(stm.price_unit * ail.quantity)
                         else 0.0 end
                         end end_val            
                     FROM stock_move stm 
@@ -864,8 +918,8 @@ class Parser(report_sxw.rml_parse):
                         left join stock_location loc2 on stm.location_dest_id=loc2.id
                         left join account_invoice_line ail on ail.source_id=stm.id
                         left join account_invoice ai on ai.id=ail.invoice_id
-                    WHERE stm.state= 'done' and (stm.picking_id is not null or stm.id in (select move_id from stock_inventory_move_rel))  
-                    and ail.source_id is not null and ai.state in ('open','paid') and loc2.id='%(cus_stock)s'
+                    WHERE stm.state= 'done' and stm.picking_id is not null  
+                    and ail.source_id is not null and ai.state in ('open','paid')
                      )foo
                      
                      
@@ -883,239 +937,6 @@ class Parser(report_sxw.rml_parse):
                   'cus_stock':location_id,
                   })
                
-            else:
-                sql ='''  
-                SELECT pp.id,pp.default_code,pp.name_template,sum(start_onhand_qty) start_onhand_qty, sum(start_val) start_val, 
-                    sum(nhaptk_qty) nhaptk_qty, sum(nhaptk_val) nhaptk_val,
-                    sum(xuattk_qty) xuattk_qty, sum(xuattk_val) xuattk_val,    
-                    sum(end_onhand_qty) end_onhand_qty,
-                    sum(end_val) end_val
-                    From
-                    (SELECT  
-                        stm.product_id,stm.product_uom,    
-                        case when loc1.id != '%(location_id)s' and loc2.id = '%(location_id)s' and date(timezone('UTC',stm.date::timestamp)) < '%(start_date)s'
-                        then stm.primary_qty
-                        else
-                        case when loc1.id = '%(location_id)s' and loc2.id != '%(location_id)s' and date(timezone('UTC',stm.date::timestamp)) < '%(start_date)s'
-                        then -1*stm.primary_qty 
-                        else 0.0 end
-                        end start_onhand_qty,
-                        
-                        case when loc1.id != '%(location_id)s' and loc2.id = '%(location_id)s' and date(timezone('UTC',stm.date::timestamp)) < '%(start_date)s'
-                        then (round(stm.price_unit * stm.product_qty))
-                        else
-                        case when loc1.id = '%(location_id)s' and loc2.id != '%(location_id)s' and date(timezone('UTC',stm.date::timestamp)) < '%(start_date)s'
-                        then -1*(round(stm.price_unit * stm.product_qty))
-                        else 0.0 end
-                        end start_val,
-                        
-                        case when loc1.id != '%(location_id)s' and loc2.id = '%(location_id)s' and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
-                        then stm.primary_qty
-                        else 0.0 end nhaptk_qty,
-                        
-                        case when loc1.id = '%(location_id)s' and loc2.id != '%(location_id)s' and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
-                        then 1*stm.primary_qty 
-                        else 0.0
-                        end xuattk_qty,
-                
-                        case when loc1.id != '%(location_id)s' and loc2.id = '%(location_id)s' and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
-                        then (round(stm.price_unit * stm.product_qty))
-                        else 0.0 end nhaptk_val,
-                        
-                        case when loc1.id = '%(location_id)s' and loc2.id != '%(location_id)s' and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
-                        then 1*(round(stm.price_unit * stm.product_qty))
-                        else 0.0
-                        end xuattk_val,        
-                         
-                        case when loc1.id != '%(location_id)s' and loc2.id = '%(location_id)s' and date(timezone('UTC',stm.date::timestamp)) <= '%(end_date)s'
-                        then stm.primary_qty
-                        else
-                        case when loc1.id = '%(location_id)s' and loc2.id != '%(location_id)s' and date(timezone('UTC',stm.date::timestamp)) <= '%(end_date)s'
-                        then -1*stm.primary_qty 
-                        else 0.0 end
-                        end end_onhand_qty,
-                        
-                        case when loc1.id != '%(location_id)s' and loc2.id = '%(location_id)s' and date(timezone('UTC',stm.date::timestamp)) <= '%(end_date)s'
-                        then (round(stm.price_unit * stm.product_qty))
-                        else
-                        case when loc1.id = '%(location_id)s' and loc2.id != '%(location_id)s' and date(timezone('UTC',stm.date::timestamp)) <= '%(end_date)s'
-                        then -1*(round(stm.price_unit * stm.product_qty))
-                        else 0.0 end
-                        end end_val            
-                    FROM stock_move stm 
-                        join stock_location loc1 on stm.location_id=loc1.id
-                        join stock_location loc2 on stm.location_dest_id=loc2.id
-                    WHERE stm.state= 'done'    )foo
-                    inner join product_product pp on foo.product_id = pp.id
-                    inner join product_uom pu on foo.product_uom = pu.id
-                    WHERE (pp.id in (select product_id  from product_shop_rel where shop_id in('%(shop_ids)s'))
-                           or pp.id not in (select product_id  from product_shop_rel))
-                    group by pp.default_code,pp.name_template,pp.id
-                    order by pp.default_code,pp.name_template,pp.id
-                '''%({
-                  'start_date': self.start_date,
-                  'end_date': self.date_end,
-                  'shop_ids':self.shop_ids,
-                  'location_id':self.location_id
-                  })
-        else:
-            if not self.location_id:
-                sql ='''  
-                SELECT pp.id,pp.default_code,pp.name_template,sum(start_onhand_qty) start_onhand_qty, sum(start_val) start_val, 
-                    sum(nhaptk_qty) nhaptk_qty, sum(nhaptk_val) nhaptk_val,
-                    sum(xuattk_qty) xuattk_qty, sum(xuattk_val) xuattk_val,    
-                    sum(end_onhand_qty) end_onhand_qty,
-                    sum(end_val) end_val
-                    From
-                    (SELECT
-                        stm.product_id,stm.product_uom,    
-                        case when loc1.usage != 'internal' and loc2.usage = 'internal' and date(timezone('UTC',stm.date::timestamp)) < '%(start_date)s'
-                        then stm.primary_qty
-                        else
-                        case when loc1.usage = 'internal' and loc2.usage != 'internal' and date(timezone('UTC',stm.date::timestamp)) < '%(start_date)s'
-                        then -1*stm.primary_qty 
-                        else 0.0 end
-                        end start_onhand_qty,
-                        
-                        case when loc1.usage != 'internal' and loc2.usage = 'internal' and date(timezone('UTC',stm.date::timestamp)) < '%(start_date)s'
-                        then (stm.price_unit * stm.product_qty)
-                        else
-                        case when loc1.usage = 'internal' and loc2.usage != 'internal' and date(timezone('UTC',stm.date::timestamp)) < '%(start_date)s'
-                        then -1*(stm.price_unit * stm.product_qty)
-                        else 0.0 end
-                        end start_val,
-                        
-                        case when loc1.usage != 'internal' and loc2.usage = 'internal' and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
-                        then stm.primary_qty
-                        else 0.0 end nhaptk_qty,
-                        
-                        case when loc1.usage = 'internal' and loc2.usage != 'internal' and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
-                        then 1*stm.primary_qty 
-                        else 0.0
-                        end xuattk_qty,
-                
-                        case when loc1.usage != 'internal' and loc2.usage = 'internal' and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
-                        then (stm.price_unit * stm.product_qty)
-                        else 0.0 end nhaptk_val,
-                        
-                        case when loc1.usage = 'internal' and loc2.usage != 'internal' and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
-                        then 1*(stm.price_unit * stm.product_qty)
-                        else 0.0
-                        end xuattk_val,        
-                         
-                        case when loc1.usage != 'internal' and loc2.usage = 'internal' and date(timezone('UTC',stm.date::timestamp)) <= '%(end_date)s'
-                        then stm.primary_qty
-                        else
-                        case when loc1.usage = 'internal' and loc2.usage != 'internal' and date(timezone('UTC',stm.date::timestamp)) <= '%(end_date)s'
-                        then -1*stm.primary_qty 
-                        else 0.0 end
-                        end end_onhand_qty,
-                        
-                        case when loc1.usage != 'internal' and loc2.usage = 'internal' and date(timezone('UTC',stm.date::timestamp)) <= '%(end_date)s'
-                        then (stm.price_unit * stm.product_qty)
-                        else
-                        case when loc1.usage = 'internal' and loc2.usage != 'internal' and date(timezone('UTC',stm.date::timestamp)) <= '%(end_date)s'
-                        then -1*(stm.price_unit * stm.product_qty)
-                        else 0.0 end
-                        end end_val            
-                    FROM stock_move stm 
-                        join stock_location loc1 on stm.location_id=loc1.id
-                        join stock_location loc2 on stm.location_dest_id=loc2.id
-                    WHERE stm.state= 'done'    )foo
-                    inner join product_product pp on foo.product_id = pp.id
-                    inner join product_uom pu on foo.product_uom = pu.id
-                    WHERE (pp.id in (select product_id  from product_shop_rel where shop_id in('%(shop_ids)s'))
-                           or pp.id not in (select product_id  from product_shop_rel))
-                    group by pp.default_code,pp.name_template,pp.id
-                    order by pp.default_code,pp.name_template,pp.id
-                
-                '''%({
-                  'start_date': self.start_date,
-                  'end_date': self.date_end,
-                  'shop_ids':self.shop_ids
-                  })
-            else:
-                sql ='''  
-                SELECT pp.id,pp.default_code,pp.name_template,sum(start_onhand_qty) start_onhand_qty, sum(start_val) start_val, 
-                    sum(nhaptk_qty) nhaptk_qty, sum(nhaptk_val) nhaptk_val,
-                    sum(xuattk_qty) xuattk_qty, sum(xuattk_val) xuattk_val,    
-                    sum(end_onhand_qty) end_onhand_qty,
-                    sum(end_val) end_val
-                    From
-                    (SELECT  lcation_id
-                        stm.product_id,stm.product_uom,    
-                        case when loc1.id != '%(location_id)s' and loc2.id = '%(location_id)s' and date(timezone('UTC',stm.date::timestamp)) < '%(start_date)s'
-                        then stm.primary_qty
-                        else
-                        case when loc1.id = '%(location_id)s' and loc2.id != '%(lcalocation_idtion_id)s' and date(timezone('UTC',stm.date::timestamp)) < '%(start_date)s'
-                        then -1*stm.primary_qty 
-                        else 0.0 end
-                        end start_onhand_qty,
-                        
-                        case when loc1.id != '%(location_id)s' and loc2.id = '%(location_id)s' and date(timezone('UTC',stm.date::timestamp)) < '%(start_date)s'
-                        then (stm.price_unit * stm.product_qty)
-                        else
-                        case when loc1.id = '%(location_id)s' and loc2.id != '%(location_id)s' and date(timezone('UTC',stm.date::timestamp)) < '%(start_date)s'
-                        then -1*(stm.price_unit * stm.product_qty)
-                        else 0.0 end
-                        end start_val,
-                        
-                        case when loc1.id != '%(location_id)s' and loc2.id = '%(location_id)s' and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
-                        then stm.primary_qty
-                        else 0.0 end nhaptk_qty,
-                        
-                        case when loc1.id = '%(location_id)s' and loc2.id != '%(location_id)s' and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
-                        then 1*stm.primary_qty 
-                        else 0.0
-                        end xuattk_qty,
-                
-                        case when loc1.id != '%(location_id)s' and loc2.id = '%(location_id)s' and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
-                        then (stm.price_unit * stm.product_qty)
-                        else 0.0 end nhaptk_val,
-                        
-                        case when loc1.id = '%(location_id)s' and loc2.id != '%(location_id)s' and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
-                        then 1*(stm.price_unit * stm.product_qty)
-                        else 0.0
-                        end xuattk_val,        
-                         
-                        case when loc1.id != '%(location_id)s' and loc2.id = '%(location_id)s' and date(timezone('UTC',stm.date::timestamp)) <= '%(end_date)s'
-                        then stm.primary_qty
-                        else
-                        case when loc1.id = '%(location_id)s' and loc2.id != '%(location_id)s' and date(timezone('UTC',stm.date::timestamp)) <= '%(end_date)s'
-                        then -1*stm.primary_qty 
-                        else 0.0 end
-                        end end_onhand_qty,
-                        
-                        case when loc1.id != '%(location_id)s' and loc2.id = '%(location_id)s' and date(timezone('UTC',stm.date::timestamp)) <= '%(end_date)s'
-                        then (stm.price_unit * stm.product_qty)
-                        else
-                        case when loc1.id = '%(location_id)s' and loc2.id != '%(location_id)s' and date(timezone('UTC',stm.date::timestamp)) <= '%(end_date)s'
-                        then -1*(stm.price_unit * stm.product_qty)
-                        else 0.0 end
-                        end end_val            
-                    FROM stock_move stm 
-                        join stock_location loc1 on stm.location_id=loc1.id
-                        join stock_location loc2 on stm.location_dest_id=loc2.id
-                    WHERE stm.state= 'done'
-                        and stm.location_id = %s or stm.location_dest_id = %s)foo
-                    inner join product_product pp on foo.product_id = pp.id
-                    inner join product_uom pu on foo.product_uom = pu.id
-                    inner join  (
-                            SELECT pt.id from  product_template pt inner join product_category pc on pt.categ_id = pc.id
-                                where pc.id in '%(categ_id)s'
-                    )categ on pp.product_tmpl_id = categ.id
-                    WHERE (pp.id in (select product_id  from product_shop_rel where shop_id in(%s))
-                           or pp.id not in (select product_id  from product_shop_rel))
-                    group by pp.default_code,pp.name_template,pp.id
-                    order by pp.default_code,pp.name_template,pp.id
-                
-                 '''%({
-                      'start_date': self.start_date,
-                      'end_date': self.date_end,
-                      'shop_ids':self.shop_ids,
-                      'categ_id':self.category_ids,
-                      'location_id':self.location_id
-                  })
             
         self.cr.execute(sql)
         res =[]
@@ -1124,38 +945,40 @@ class Parser(report_sxw.rml_parse):
             self.total_nhap_val = self.total_nhap_val +(i['nhaptk_val'] or 0.0)
             self.total_xuat_val = self.total_xuat_val +(i['xuattk_val'] or 0.0)
             self.total_end_val = self.total_end_val +(i['end_val'] or 0.0)
+#             sql ='''
+#                 SELECT sum(ail.quantity) as qty_hoantien, sum(ail.quantity*sm.price_unit) as total_hoantien
+#                     FROM
+#                         account_invoice_line ail left join account_invoice ai on ail.invoice_id = ai.id
+#                         left join stock_move sm on ail.source_id = sm.id
+#                     WHERE 
+#                         ail.product_id = %s and ai.type = 'out_refund'
+#                         and date(timezone('UTC',ai.ngay_nhap)) between '%s' and '%s'
+#                         and ai.trang_thai in ('paid')
+#             '''%(i['id'],self.start_date,self.date_end)
+#             self.cr.execute(sql)
+#             nhap_ht_res = self.cr.fetchone()
+#             i['nhaptk_qty'] += nhap_ht_res and nhap_ht_res[0] or 0
+#             i['nhaptk_val'] += nhap_ht_res and nhap_ht_res[1] or 0
             
-            sql ='''
-                SELECT sum(ail.quantity) as qty_hoantien, sum(ail.quantity*sm.price_unit) as total_hoantien
-                    FROM
-                        account_invoice_line ail left join account_invoice ai on ail.invoice_id = ai.id
-                        left join stock_move sm on ail.source_id = sm.id
-                    WHERE 
-                        ail.product_id = %s and ai.type = 'out_refund'
-                        and date(timezone('UTC',ai.date_invoice)) between '%s' and '%s'
-                        and ai.state not in ('draft','cancel')
-            '''%(i['id'],self.start_date,self.date_end)
-            self.cr.execute(sql)
-            nhap_ht_res = self.cr.fetchone()
-            i['nhaptk_qty'] += nhap_ht_res and nhap_ht_res[0] or 0
-            i['nhaptk_val'] += nhap_ht_res and nhap_ht_res[1] or 0
+#             sql ='''
+#                 SELECT sum(ail.quantity) qty_dieuchinh, sum(ail.quantity*sm.price_unit) as total_dieuchinh
+#                     FROM
+#                         account_invoice_line ail left join account_invoice ai on ail.invoice_id = ai.id
+#                         left join stock_move sm on ail.source_id = sm.id 
+#                     WHERE 
+#                         ail.product_id = %s and ai.type = 'out_invoice'
+#                         and ai.rel_invoice_id is not null
+#                         and date(timezone('UTC',ai.date_invoice)) between '%s' and '%s'
+#                         and ai.state not in ('draft','cancel')
+#             '''%(i['id'],self.start_date,self.date_end)
+#             self.cr.execute(sql)
+#             xuat_dc_res = self.cr.fetchone()
+#             i['xuattk_qty'] += xuat_dc_res and xuat_dc_res[0] or 0
+#             i['xuattk_val'] += xuat_dc_res and xuat_dc_res[1] or 0
             
-            sql ='''
-                SELECT sum(ail.quantity) qty_dieuchinh, sum(ail.quantity*sm.price_unit) as total_dieuchinh
-                    FROM
-                        account_invoice_line ail left join account_invoice ai on ail.invoice_id = ai.id
-                        left join stock_move sm on ail.source_id = sm.id 
-                    WHERE 
-                        ail.product_id = %s and ai.type = 'out_invoice'
-                        and ai.rel_invoice_id is not null
-                        and date(timezone('UTC',ai.date_invoice)) between '%s' and '%s'
-                        and ai.state not in ('draft','cancel')
-            '''%(i['id'],self.start_date,self.date_end)
-            self.cr.execute(sql)
-            xuat_dc_res = self.cr.fetchone()
-            i['xuattk_qty'] += xuat_dc_res and xuat_dc_res[0] or 0
-            i['xuattk_val'] += xuat_dc_res and xuat_dc_res[1] or 0
             
+            end_onhand_qty = i['start_onhand_qty']+i['nhaptk_qty']-i['xuattk_qty']
+            end_val = i['start_val']+i['nhaptk_val']-i['xuattk_val']
             res.append(
                    {
                    'default_code':i['default_code'], 
@@ -1166,8 +989,8 @@ class Parser(report_sxw.rml_parse):
                    'nhaptk_val':i['nhaptk_val'] or 0.0,
                    'xuattk_qty':i['xuattk_qty'] or 0.0,
                    'xuattk_val':i['xuattk_val'] or 0.0,
-                   'end_onhand_qty':i['end_onhand_qty'] or 0.0,
-                   'end_val':i['end_onhand_qty'] and i['end_val'] or 0.0
+                   'end_onhand_qty':end_onhand_qty or 0.0,
+                   'end_val':end_onhand_qty and end_val or 0.0
                    })
         return res
     

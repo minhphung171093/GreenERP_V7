@@ -201,6 +201,8 @@ class account_invoice(osv.osv):
         for tt in self.browse(cr,uid,ids):
             if tt.state == 'draft':
                 res[tt.id] = 'draft'
+            elif tt.state == 'cancel':
+                res[tt.id] = 'cancel'
             else:
                 res[tt.id]='paid'
         return res
@@ -276,10 +278,9 @@ class account_invoice(osv.osv):
          'ngay_nhap': fields.date('Ngày nhập', readonly=True, states={'draft':[('readonly',False)]}),
          'trang_thai':fields.function(_trangthai, string='Trạng thái',
                                       type='selection', selection=[('draft','Nháp'),
-                                                                   ('paid','Đã nhập hàng về')],
-                                     store={
-                                                'account.invoice':(lambda self, cr, uid, ids, c={}: ids, ['state'], 10),
-                                            }),
+                                                                   ('paid','Đã nhập hàng về'),
+                                                                   ('cancel','Hủy bỏ')],
+                                     ),
 #         'trang_thai_dc':fields.function(_trangthai, string='Trạng thái',
 #                                       type='selection', selection=[('draft','Nháp'),
 #                                                                    ('paid','Chờ thanh toán')],
