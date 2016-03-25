@@ -370,12 +370,7 @@ class Parser(report_sxw.rml_parse):
                             'net_weight': '',
                             'gross_weight': '',
                             })                
-                res.append({ 'product': line.hopdong_line_id and line.hopdong_line_id.product_id and line.hopdong_line_id.product_id.eng_name + ' ' + line.hopdong_line_id.product_id.default_code or '',
-                            'package': '',
-                            'form': '',
-                            'net_weight': '',
-                            'gross_weight': '',
-                            })
+
 
                 for detail in line.seal_descript_line:
                     res.append({ 'product': detail.container_no_seal + '/' + detail.seal_no or '',
@@ -386,6 +381,12 @@ class Parser(report_sxw.rml_parse):
                             })
                     self.pack = detail.packages_id.name or ''
                     self.pack_weight = self.get_packages_weight(detail.packages_weight)
+                res.append({ 'product': line.hopdong_line_id and line.hopdong_line_id.product_id and line.hopdong_line_id.product_id.eng_name + ' ' + line.hopdong_line_id.product_id.default_code or '',
+                            'package': '',
+                            'form': '',
+                            'net_weight': '',
+                            'gross_weight': '',
+                            })                
             if line.option and line.option == 'seal_no':
                 res.append({ 'product': line.container_no_seal + '/' + line.seal_no or '',
                             'package': '',
@@ -393,12 +394,7 @@ class Parser(report_sxw.rml_parse):
                             'net_weight': '',
                             'gross_weight': '',
                             })
-                res.append({ 'product': 'Product',
-                            'package': '',
-                            'form': '',
-                            'net_weight': '',
-                            'gross_weight': '',
-                            })
+
                 for detail in line.description_line:
                     res.append({ 'product': detail.hopdong_line_id and detail.hopdong_line_id.product_id and detail.hopdong_line_id.product_id.eng_name + ' '+ detail.hopdong_line_id.product_id.default_code or '',
                             'package': detail.packages_qty and round(detail.packages_qty) or 0,
@@ -408,6 +404,12 @@ class Parser(report_sxw.rml_parse):
                             })
                     self.pack = detail.packages_id.name or ''
                     self.pack_weight = self.get_packages_weight(detail.packages_weight)
+                res.append({ 'product': 'Product',
+                            'package': '',
+                            'form': '',
+                            'net_weight': '',
+                            'gross_weight': '',
+                            })
             
         return res
         
