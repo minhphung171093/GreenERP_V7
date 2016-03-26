@@ -185,6 +185,7 @@
                     <field name="product_uos_qty" groups="product.group_uos"/>
                     <field name="product_uos" groups="product.group_uos"/>
                     <field name="hop_dong_mua_id" domain="[('type','in',['hd_mua_trongnuoc','hd_mua_nhapkhau'])]"/>
+                    <field name="product_thaythe_id" />
                     <field name="hop_dong_ban_id" readonly='1' domain="[('type','in',['hd_noi','hd_ngoai'])]"/>
                     <field name="picking_in_id" domain="[('purchase_id.hop_dong_id','=',hop_dong_mua_id)]"/>
                     <field name="ghichu" />
@@ -268,6 +269,7 @@
                                 <field name="quycach_baobi_id" />
 			            		<field name="quycach_donggoi_id" />
 			            		<field name="hop_dong_mua_id" domain="[('type','in',['hd_mua_trongnuoc','hd_mua_nhapkhau'])]"/>
+			            		<field name="product_thaythe_id" />
 			            		<field name="hop_dong_ban_id" readonly='1' domain="[('type','in',['hd_noi','hd_ngoai'])]"/>
 			            		<field name="picking_in_id" domain="[('type','=','in'),('purchase_id.hop_dong_id','=',hop_dong_mua_id)]"/>
 			            		<field name="ghichu" />

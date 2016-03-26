@@ -22,6 +22,7 @@ class product_product(osv.osv):
         'quycach_baobi_id':fields.many2one('quycach.baobi','Quy cách bao bì'),
         'nha_sanxuat_id':fields.many2one('nha.sanxuat','Nhà sản xuất'),
         'nuoc_sanxuat_id':fields.many2one('res.country','Nước sản xuất'),
+        'sp_thaythe_ids':fields.many2many('product.product', 'sp_thay_the_ref', 'parent_id', 'product_id','Sản phẩm thay thế'),
     }
     
 product_product()

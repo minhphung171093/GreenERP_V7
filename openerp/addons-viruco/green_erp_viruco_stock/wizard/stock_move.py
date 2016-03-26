@@ -46,13 +46,22 @@ class split_hop_dong(osv.osv_memory):
             '''
             cr.execute(sql)
             location_ids = [r[0] for r in cr.fetchall()]
+            sql = '''
+                select product_id from sp_thay_the_ref where parent_id = %s
+            '''%(move.product_id.id)
+            cr.execute(sql)
+            product_ids = [r[0] for r in cr.fetchall()]       
+            product_ids +=[move.product_id.id]
+            product_ids = str(product_ids)
+            product_ids = product_ids.replace('[', '(')
+            product_ids = product_ids.replace(']', ')')
             for location_id in location_ids:
                 sql = '''
-                    select hop_dong_mua_id,picking_id,sum(product_qty) as product_qty,price_unit
-                        from stock_move where state='done' and product_id=%s and location_id!=location_dest_id and location_dest_id=%s and hop_dong_mua_id is not null
+                    select hop_dong_mua_id,picking_id,sum(product_qty) as product_qty,price_unit,product_id
+                        from stock_move where state='done' and product_id in %s and location_id!=location_dest_id and location_dest_id=%s and hop_dong_mua_id is not null
                         and picking_id in (select id from stock_picking where return != 'customer')
-                        group by hop_dong_mua_id,picking_id,price_unit
-                '''%(move.product_id.id,location_id)
+                        group by hop_dong_mua_id,picking_id,price_unit,product_id
+                '''%(product_ids,location_id)
                 cr.execute(sql)
                 lines = cr.dictfetchall()
                 for line in lines:
@@ -93,6 +102,7 @@ class split_hop_dong(osv.osv_memory):
                             'ngay_nhaphang': picking.date_done,
                             'don_gia': line['price_unit'],
                             'quantity_ton': line['product_qty']-product_qty_out-product_qty_return_to_sup+product_qty_return_from_cus,
+                            'product_id':line['product_id'],
                         }))
             res.update({'line_ids': chitiet_tonkho_line,'move_id': context['active_id']})
         return res
@@ -264,6 +274,7 @@ class split_hop_dong_line(osv.osv_memory):
         'ngay_nhaphang': fields.datetime('Ngày nhập hàng'),
         'don_gia': fields.float('Đơn giá'),
         'partner_id': fields.many2one('res.partner','Nhà cung cấp'),
+        'product_id': fields.many2one('product.product','Sản phẩm'),
     }
     _defaults = {
         'quantity': 1.0,

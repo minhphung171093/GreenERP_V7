@@ -343,11 +343,11 @@ class stock_picking(osv.osv):
                 update stock_move set location_id = %s where picking_id = %s
             '''%(line.location_id.id, line.id)
             cr.execute(sql)
-            if line.type == 'out':
-                if 'state' in vals and vals['state']:
-                    if vals['state'] == 'done':
-                        if not line.chung_tu_ids:
-                            raise osv.except_osv(_('Cảnh báo!'), _('Cần có chứng từ trước khi chuyển hàng !'))
+#             if line.type == 'out':
+#                 if 'state' in vals and vals['state']:
+#                     if vals['state'] == 'done':
+#                         if not line.chung_tu_ids:
+#                             raise osv.except_osv(_('Cảnh báo!'), _('Cần có chứng từ trước khi chuyển hàng !'))
 #                         else:
 #                             qty = 0
 #                             for move in line.move_lines:
@@ -1334,6 +1334,7 @@ class stock_move(osv.osv):
                     res[line.id]['primary_qty'] = line.product_qty
         return res
     _columns = {
+        'product_thaythe_id':fields.many2one('product.product','Sản phẩm thay thế'),
         'chatluong_id':fields.many2one('chatluong.sanpham','Chất lượng'),
         'quycach_baobi_id':fields.many2one('quycach.baobi','Quy cách bao bì'),
         'quycach_donggoi_id':fields.many2one('quycach.donggoi','Quy cách đóng gói'),

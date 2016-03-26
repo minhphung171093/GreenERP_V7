@@ -25,6 +25,7 @@
 		                    	<field name="is_choose"/>
 		                    	<field name="location_id" readonly='1' domain="[('usage','=','internal')]"/>
 		                        <field name="hd_mua_id" readonly='1' domain="[('type','in',['hd_mua_trongnuoc','hd_mua_nhapkhau'])]"/>
+		                        <field name="product_id" readonly='1'/>
 		                        <field name="picking_in_id" readonly='1' domain="[('type','=','in'),('purchase_id.hop_dong_id','=',hd_mua_id)]"/>
 		                        <field name="partner_id" readonly='1'/>
 		                        <field name="ngay_nhaphang" readonly='1'/>
