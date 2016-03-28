@@ -22,6 +22,8 @@ class hop_dong(osv.osv):
         res = super(hop_dong, self).default_get(cr, uid, fields, context=context)
         if context.get('default_type')=='hd_ngoai':
             property = self.pool.get('admin.property')._get_project_property_by_name(cr, uid, 'properties_payment_terms')
+        elif context.get('default_type')=='hd_mua_nhapkhau':
+            property = self.pool.get('admin.property')._get_project_property_by_name(cr, uid, 'properties_pttt_mua_ngoai')
         else:
             property = self.pool.get('admin.property')._get_project_property_by_name(cr, uid, 'properties_phuongthucthanhtoan')
         res.update({'phuongthuc_thanhtoan':property and property.value or False})
