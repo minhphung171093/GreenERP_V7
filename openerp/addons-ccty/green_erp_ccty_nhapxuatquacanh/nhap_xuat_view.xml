@@ -354,11 +354,25 @@
             <field name="act_window_id" ref="action_xuat_canh_giasuc"/>
         </record>
         
+        <record id="chan_nuoi_search_inherit" model="ir.ui.view">
+            <field name="name">chan.nuoi.search.inherit</field>
+            <field name="model">chan.nuoi</field>
+            <field name="inherit_id" ref="green_erp_ccty_base.chan_nuoi_search"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//field[@name='loai_ho_id']" position="after">
+            		<field name="loai_id_rel"/>
+            	</xpath>
+            </field>
+        </record>
+        
         <record id="chan_nuoi_inherit_form" model="ir.ui.view">
             <field name="name">chan.nuoi.inherit.form</field>
             <field name="model">chan.nuoi</field>
             <field name="inherit_id" ref="green_erp_ccty_base.chan_nuoi_form"/>
             <field name="arch" type="xml">
+            	<xpath expr="//field[@name='lng']" position="after">
+            		<field name="loai_id_rel"/>
+            	</xpath>
             	<xpath expr="//page[@string='Thông tin khác']" position="after">
 					<page string = "Nhập động vật(hiện có)">
 						<field name="nhap_dongvat_line" context="{'default_ngay_cap':ngay_cap, 'default_ngay_kiem_tra':ngay_cap, 'default_quan_huyen_id':quan_huyen_id, 'default_phuong_xa_id':phuong_xa_id, 'default_khu_pho_id':khu_pho_id, 'default_loai':'nhap', 'default_company_id':company_id, 'default_loai_ho_id':loai_ho_id}">

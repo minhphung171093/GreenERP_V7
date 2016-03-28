@@ -604,7 +604,10 @@ class chan_nuoi(osv.osv):
     _inherit = "chan.nuoi"
     _columns = {
          'nhap_dongvat_line': fields.one2many('nhap.xuat.canh.giasuc','chan_nuoi_id','Chi tiet'),
+         'loai_id_rel': fields.related('nhap_dongvat_line', 'loai_id', type="many2one", relation="loai.vat",
+                string="Loài"),
                 }
+                
 chan_nuoi()
 
 class chi_tiet_loai_nhap_xuat(osv.osv):
