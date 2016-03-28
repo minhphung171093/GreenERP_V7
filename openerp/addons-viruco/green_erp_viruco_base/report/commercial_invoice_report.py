@@ -151,7 +151,10 @@ class Parser(report_sxw.rml_parse):
             consignee = 'To Order'
         return consignee
     def get_buyer(self,draft_bl):
-        res ={}
+        res ={
+              'kh':'',
+              'dc':'',
+              }
         khach_hang = ''
         dia_chi = ''
         if draft_bl.buyer_thue:            
