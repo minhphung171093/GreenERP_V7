@@ -163,10 +163,11 @@ class Parser(report_sxw.rml_parse):
         else:
             khach_hang = draft_bl.hopdong_id and draft_bl.hopdong_id.partner_id and draft_bl.hopdong_id.partner_id.name or ''
             dia_chi= draft_bl.hopdong_id and draft_bl.hopdong_id.partner_id and self.display_address(draft_bl.hopdong_id.partner_id) or ''
-        return res.update({
+        res.update({
                    'kh':khach_hang,
                    'dc':dia_chi,
-                   })    
+                   }) 
+        return res   
     def sum_net_weight(self,line):
         sum = 0
         for product in line.seal_descript_line:
