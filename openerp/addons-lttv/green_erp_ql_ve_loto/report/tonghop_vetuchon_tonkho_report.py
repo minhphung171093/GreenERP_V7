@@ -72,16 +72,16 @@ class Parser(report_sxw.rml_parse):
                         case when sum(ky.xuat_trong_ky)>0 then sum(ky.xuat_trong_ky) else 0 end xuat_trong_ky, case when sum(ky.xuat_trong_ky)>0 then sum(ky.xuat_trong_ky)*pt.list_price::int else 0 end tien_xuat_trong_ky,
                         case when sum(ky.cuoi_ky)>0 then sum(ky.cuoi_ky) else 0 end cuoi_ky, case when sum(ky.cuoi_ky)>0 then sum(ky.cuoi_ky)*pt.list_price else 0 end tien_cuoi_ky
                     from
-                        (select product_id,(select case when sum(product_qty)>0 then sum(product_qty) else 0 end sl from stock_move where product_id = %s and state='done' and date < '%s' and picking_id in (select id from stock_picking where type='in')) dau_ky,
-                        (select case when sum(product_qty)>0 then sum(product_qty) else 0 end sl from stock_move where product_id = %s and date between '%s' and '%s' and state='done' and picking_id in (select id from stock_picking where type='in')) nhan_trong_ky,
-                        (select case when sum(product_qty)>0 then sum(product_qty) else 0 end sl from stock_move where product_id = %s and date between '%s' and '%s' and state='done' and picking_id in (select id from stock_picking where type='out')) xuat_trong_ky,
-                        (select case when sum(product_qty)>0 then sum(product_qty) else 0 end sl from stock_move where product_id = %s and state='done' and date < '%s' and picking_id in (select id from stock_picking where type='in')) cuoi_ky
+                        (select product_id,(select case when sum(product_qty)>0 then sum(product_qty) else 0 end sl from stock_move where product_id = %s and state='done' and date(timezone('UTC',date)) < '%s' and picking_id in (select id from stock_picking where type='in')) dau_ky,
+                        (select case when sum(product_qty)>0 then sum(product_qty) else 0 end sl from stock_move where product_id = %s and date(timezone('UTC',date)) between '%s' and '%s' and state='done' and picking_id in (select id from stock_picking where type='in')) nhan_trong_ky,
+                        (select case when sum(product_qty)>0 then sum(product_qty) else 0 end sl from stock_move where product_id = %s and date(timezone('UTC',date)) between '%s' and '%s' and state='done' and picking_id in (select id from stock_picking where type='out')) xuat_trong_ky,
+                        (select case when sum(product_qty)>0 then sum(product_qty) else 0 end sl from stock_move where product_id = %s and state='done' and date(timezone('UTC',date)) < '%s' and picking_id in (select id from stock_picking where type='in')) cuoi_ky
                             from stock_move where product_id = %s
                         union
-                        select product_id,(select case when sum(product_qty)>0 then sum(product_qty)*-1 else 0 end sl from stock_move where product_id = %s and state='done' and date < '%s' and picking_id in (select id from stock_picking where type='out')) dau_ky,
+                        select product_id,(select case when sum(product_qty)>0 then sum(product_qty)*-1 else 0 end sl from stock_move where product_id = %s and state='done' and date(timezone('UTC',date)) < '%s' and picking_id in (select id from stock_picking where type='out')) dau_ky,
                         0 as nhan_trong_ky,
                         0 as xuat_trong_ky,
-                        (select case when sum(product_qty)>0 then sum(product_qty)*-1 else 0 end sl from stock_move where product_id = %s and state='done' and date < '%s' and picking_id in (select id from stock_picking where type='out')) cuoi_ky
+                        (select case when sum(product_qty)>0 then sum(product_qty)*-1 else 0 end sl from stock_move where product_id = %s and state='done' and date(timezone('UTC',date)) < '%s' and picking_id in (select id from stock_picking where type='out')) cuoi_ky
                             from stock_move where product_id = %s) ky, product_product pp ,product_template pt
                     where pp.id = ky.product_id and pp.product_tmpl_id=pt.id and pp.id = %s
                     group by name,pt.list_price
