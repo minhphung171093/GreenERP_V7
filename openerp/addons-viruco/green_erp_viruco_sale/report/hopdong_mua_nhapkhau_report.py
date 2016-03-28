@@ -107,14 +107,28 @@ class Parser(report_sxw.rml_parse):
         return property and property.value or False
     
     def get_nganhang(self,o):
-        rs = ''
+        rs = {
+              'acc_number':'',
+              'bank_name':'',
+              }
         if o.partner_id and o.partner_id.bank_ids:
             bank = o.partner_id.bank_ids[0]
             if bank.acc_number:
                 acc_number=bank.acc_number
                 bank_name=bank.bank_name
-        return {
-                'acc_number':acc_number,
-                'bank_name':bank_name,
-                }
+            rs.update({'acc_number':acc_number,
+                       'bank_name':bank_name,})
+        return rs
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
     
