@@ -34,6 +34,9 @@ class Parser(report_sxw.rml_parse):
     
     def get_line(self,picking_id):
         res = []
+        rs10 = ''
+        rs20 = ''
+        rs50 = ''
         sql='''
             select distinct daily_id from stock_move where picking_id = %s 
         '''%(picking_id)
@@ -42,11 +45,11 @@ class Parser(report_sxw.rml_parse):
         for line in daily_ids:
             sql='''
                 select ma_daily, name, (select case when sum(product_qty)>0 then sum(product_qty) else 0 end product_qty from stock_move where picking_id = %(picking_id)s and 
-                            product_id = (select id from product_product where name_template like '%(mg10)s') and daily_id = %(daily_id)s) qty_10,
+                            product_id = (select id from product_product where default_code like '%(mg10)s') and daily_id = %(daily_id)s) qty_10,
                             (select case when sum(product_qty)>0 then sum(product_qty) else 0 end product_qty from stock_move where picking_id = %(picking_id)s and 
-                            product_id = (select id from product_product where name_template like '%(mg20)s') and daily_id = %(daily_id)s) qty_20,
+                            product_id = (select id from product_product where default_code like '%(mg20)s') and daily_id = %(daily_id)s) qty_20,
                             (select case when sum(product_qty)>0 then sum(product_qty) else 0 end product_qty from stock_move where picking_id = %(picking_id)s and 
-                            product_id = (select id from product_product where name_template like '%(mg50)s') and daily_id = %(daily_id)s) qty_50
+                            product_id = (select id from product_product where default_code like '%(mg50)s') and daily_id = %(daily_id)s) qty_50
                 from res_partner where id = %(daily_id)s
             '''%{
                  'mg10':'%10.000%',
@@ -57,6 +60,42 @@ class Parser(report_sxw.rml_parse):
                  }
             self.cr.execute(sql)
             rs = self.cr.dictfetchone()
+            sql='''
+                select lot.name as series_10 from stock_production_lot lot, stock_move sm where sm.prodlot_id = lot.id and sm.product_id = (select id from product_product where default_code like '%(mg10)s')
+                and daily_id = %(daily_id)s and picking_id = %(picking_id)s
+            '''%{
+                 'picking_id': picking_id,
+                 'daily_id': line,
+                 'mg10':'%10.000%',
+                 }
+            self.cr.execute(sql)
+            for ve10 in self.cr.fetchall():
+                rs10 += ve10 and ve10[0] + '; ' or ''
+                
+            sql='''
+                select lot.name as series_20 from stock_production_lot lot, stock_move sm where sm.prodlot_id = lot.id and sm.product_id = (select id from product_product where default_code like '%(mg20)s')
+                and daily_id = %(daily_id)s and picking_id = %(picking_id)s
+            '''%{
+                 'picking_id': picking_id,
+                 'daily_id': line,
+                 'mg20':'%20.000%',
+                 }
+            self.cr.execute(sql)
+            for ve20 in self.cr.fetchall():
+                rs20 += ve20 and ve20[0] + '; ' or ''
+                
+            sql='''
+                select lot.name as series_50 from stock_production_lot lot, stock_move sm where sm.prodlot_id = lot.id and sm.product_id = (select id from product_product where default_code like '%(mg50)s')
+                and daily_id = %(daily_id)s and picking_id = %(picking_id)s
+            '''%{
+                 'picking_id': picking_id,
+                 'daily_id': line,
+                 'mg50':'%50.000%',
+                 }
+            self.cr.execute(sql)
+            for ve50 in self.cr.fetchall():
+                rs50 += ve20 and ve50[0] + '; ' or ''
+            
             if rs:
                 self.total_10 += rs['qty_10']
                 self.total_20 += rs['qty_20']
@@ -67,6 +106,9 @@ class Parser(report_sxw.rml_parse):
                             'qty_10':rs['qty_10'],
                             'qty_20':rs['qty_20'],
                             'qty_50':rs['qty_50'],
+                            'rs10': rs10 and rs10[:-2] or '',
+                            'rs20': rs20 and rs20[:-2] or '',
+                            'rs50': rs50 and rs50[:-2] or '',
                             })
         return res
     
