@@ -110,8 +110,9 @@ class Parser(report_sxw.rml_parse):
         rs = ''
         if o.partner_id and o.partner_id.bank_ids:
             bank = o.partner_id.bank_ids[0]
-            acc_number=bank.acc_number
-            bank_name=bank.bank_name
+            if bank.acc_number:
+                acc_number=bank.acc_number
+                bank_name=bank.bank_name
         return {
                 'acc_number':acc_number,
                 'bank_name':bank_name,
