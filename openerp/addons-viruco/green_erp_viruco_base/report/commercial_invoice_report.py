@@ -58,6 +58,7 @@ class Parser(report_sxw.rml_parse):
             'get_freight':self.get_freight,
             'get_bl_no':self.get_bl_no,
             'get_the_tich':self.get_the_tich,
+            'get_buyer':self.get_buyer,
         })
     
 #     def get_master_data(self):
@@ -101,7 +102,7 @@ class Parser(report_sxw.rml_parse):
 #         return res
     
     def convert(self, amount):
-        amount_text = amount_to_text_en.amount_to_text(amount, 'en', 'Dollars')
+        amount_text = amount_to_text_en.amount_to_text(amount, 'en', '')
         if amount_text and len(amount_text)>1:
             amount = amount_text[1:]
             head = amount_text[:1]
@@ -149,7 +150,18 @@ class Parser(report_sxw.rml_parse):
         else:
             consignee = 'To Order'
         return consignee
-    
+    def get_buyer(self,draft_bl):
+        res =[]
+        if draft_bl.buyer_thue:            
+            khach_hang = draft_bl.buyer_thue and draft_bl.buyer_thue.name or ''
+            dia_chi= draft_bl.buyer_thue and display_address(draft_bl.buyer_thue) or ''
+        else:
+            khach_hang = draft_bl.hopdong_id and draft_bl.hopdong_id.partner_id and draft_bl.hopdong_id.partner_id.name or ''
+            dia_chi= draft_bl.hopdong_id and draft_bl.hopdong_id.partner_id and display_address(draft_bl.hopdong_id.partner_id) or ''
+        return res.append({
+                   'kh':khach_hang,
+                   'dc':dia_chi,
+                   })    
     def sum_net_weight(self,line):
         sum = 0
         for product in line.seal_descript_line:

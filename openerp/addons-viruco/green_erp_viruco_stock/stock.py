@@ -723,7 +723,7 @@ class stock_picking(osv.osv):
         for guihang in self.browse(cr,uid,ids):
             for line in guihang.move_lines:
                 name_lines.append((0,0,{
-                                       'name': line.product_id.name,
+                                       'name': line.product_id.id,
                                        'move_lines_id':line.id,
                                        }))
 
@@ -1266,7 +1266,7 @@ class stock_picking_out(osv.osv):
         for guihang in self.browse(cr,uid,ids):
             for line in guihang.move_lines:
                 name_lines.append((0,0,{
-                                       'name': line.product_id.name,
+                                       'name': line.product_id.id,
                                        'move_lines_id':line.id,
                                        }))
 

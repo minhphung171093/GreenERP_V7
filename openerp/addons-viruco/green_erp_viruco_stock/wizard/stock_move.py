@@ -69,27 +69,27 @@ class split_hop_dong(osv.osv_memory):
                     sql = '''
                         select case when sum(product_qty)!=0 then sum(product_qty) else 0 end product_qty_out
                             from stock_move
-                            where state!='cancel' and product_id=%s and location_id!=location_dest_id and location_id=%s and picking_in_id=%s and hop_dong_mua_id=%s and id!=%s
-                    '''%(move.product_id.id,location_id,line['picking_id'],line['hop_dong_mua_id'],move.id)
+                            where state!='cancel' and product_id in %s and location_id!=location_dest_id and location_id=%s and picking_in_id=%s and hop_dong_mua_id=%s and id!=%s
+                    '''%(product_ids,location_id,line['picking_id'],line['hop_dong_mua_id'],move.id)
                     cr.execute(sql)
                     product_qty_out = cr.fetchone()[0]
                     sql = '''
                         select case when sum(product_qty)!=0 then sum(product_qty) else 0 end product_qty_return
                             from stock_move
-                            where state!='cancel' and product_id=%s and location_id!=location_dest_id and location_id=%s and hop_dong_mua_id=%s
+                            where state!='cancel' and product_id in %s and location_id!=location_dest_id and location_id=%s and hop_dong_mua_id=%s
                             and picking_id in (select id from stock_picking where return = 'supplier' and type = 'out' and origin = '%s')
-                    '''%(move.product_id.id,location_id,line['hop_dong_mua_id'], picking.name)
+                    '''%(product_ids,location_id,line['hop_dong_mua_id'], picking.name)
                     cr.execute(sql)
                     product_qty_return_to_sup = cr.fetchone()[0]
                     
                     sql = '''
                         select case when sum(product_qty)!=0 then sum(product_qty) else 0 end product_qty_return
                             from stock_move
-                            where state ='done' and product_id=%s and location_id!=location_dest_id and location_dest_id=%s and hop_dong_mua_id=%s
+                            where state ='done' and product_id in %s and location_id!=location_dest_id and location_dest_id=%s and hop_dong_mua_id=%s
                             and picking_id in (select id from stock_picking where return = 'customer' and type = 'in' and origin in (
                             select name from stock_picking where id in (select picking_id from stock_move where hop_dong_mua_id=%s
-                            and picking_in_id = %s and product_id = %s and location_id = %s)))
-                    '''%(move.product_id.id,location_id,line['hop_dong_mua_id'], line['hop_dong_mua_id'],line['picking_id'],move.product_id.id,location_id)
+                            and picking_in_id = %s and product_id in %s and location_id = %s)))
+                    '''%(product_ids,location_id,line['hop_dong_mua_id'], line['hop_dong_mua_id'],line['picking_id'],product_ids,location_id)
                     cr.execute(sql)
                     product_qty_return_from_cus = cr.fetchone()[0]
                     if line['product_qty']-product_qty_out-product_qty_return_to_sup+product_qty_return_from_cus>0:

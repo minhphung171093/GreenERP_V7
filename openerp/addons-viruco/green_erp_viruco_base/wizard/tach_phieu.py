@@ -51,7 +51,7 @@ class sp_tach_phieu(osv.osv):
      
     _columns = {
         'tach_phieu_id':fields.many2one('tach.phieu','Tách sp'),
-        'name':fields.char('Sản phẩm', readonly = True),
+        'name':fields.many2one('product.product','Sản phẩm', readonly = True),
         'sl':fields.float('Số lượng', required = True),
         'move_lines_id':fields.many2one('stock.move','stock move'),
      }
