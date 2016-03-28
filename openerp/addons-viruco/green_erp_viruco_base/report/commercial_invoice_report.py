@@ -154,10 +154,10 @@ class Parser(report_sxw.rml_parse):
         res =[]
         if draft_bl.buyer_thue:            
             khach_hang = draft_bl.buyer_thue and draft_bl.buyer_thue.name or ''
-            dia_chi= draft_bl.buyer_thue and display_address(draft_bl.buyer_thue) or ''
+            dia_chi= draft_bl.buyer_thue and self.display_address(draft_bl.buyer_thue) or ''
         else:
             khach_hang = draft_bl.hopdong_id and draft_bl.hopdong_id.partner_id and draft_bl.hopdong_id.partner_id.name or ''
-            dia_chi= draft_bl.hopdong_id and draft_bl.hopdong_id.partner_id and display_address(draft_bl.hopdong_id.partner_id) or ''
+            dia_chi= draft_bl.hopdong_id and draft_bl.hopdong_id.partner_id and self.display_address(draft_bl.hopdong_id.partner_id) or ''
         return res.append({
                    'kh':khach_hang,
                    'dc':dia_chi,
