@@ -419,7 +419,7 @@ class ketqua_xoso(osv.osv):
                 ve_loto_ids = str(ve_loto_ids).replace('[', '(')
                 ve_loto_ids = str(ve_loto_ids).replace(']', ')')
                 sql = '''
-                    update ve_loto_line set sl_2_d_trung=0, sl_2_c_trung=0, sl_2_dc_trung=0, sl_3_d_trung=0, sl_3_c_trung=0,
+                    update ve_loto_line set sl_2_d_trung=0, sl_2_c_trung=0, sl_2_dc_trung=0, sl_2_18_trung=0, sl_3_d_trung=0, sl_3_c_trung=0,
                         sl_3_dc_trung=0, sl_3_7_trung=0, sl_3_17_trung=0, sl_4_16_trung=0 where ve_loto_id in %s;
                 '''%(ve_loto_ids)
                 cr.execute(sql)
