@@ -14,10 +14,10 @@
         		parent="menu_tra_thuong_baocao" sequence="15"
         		/>
         	
-        	<menuitem id="menu_action_action_trathuong_theongay"
+        	<!--<menuitem id="menu_action_action_trathuong_theongay"
         		action="action_trathuong_theongay"
         		parent="menu_tra_thuong_baocao" sequence="20"
-        		/>
+        		/>-->
         		
         	<menuitem id="menu_action_trathuong_vetrungthuong"
         		action="action_trathuong_vetrungthuong"

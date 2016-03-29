@@ -84,127 +84,6 @@ class Parser(report_sxw.rml_parse):
     def get_tong_ve_luuhanh(self):
         return self.tong_ve_luuhanh
     
-#     def get_line_by_product(self,ky_ve,dai_ly_id):
-#         wizard_data = self.localcontext['data']['form']
-#         menh_gia_ids = wizard_data['menh_gia_ids']
-#         res =[]
-#         if ky_ve:
-#             self.cr.execute('''  
-#             SELECT pp.name_template,pp.id,
-#                 sum(ton_dauky) ton_dauky,
-#                 sum(nhan_trongky) nhan_trongky
-#                 From
-#                 (SELECT
-#                     stm.product_id,    
-#                     
-#                     case when loc1.usage = 'internal' and loc2.usage != 'internal' and stm.date < %s
-#                     then 1*stm.product_qty 
-#                     else 0.0
-#                     end ton_dauky,
-#                     
-#                     case when loc1.usage = 'internal' and loc2.usage != 'internal' and stm.date between %s and %s
-#                     then 1*stm.product_qty 
-#                     else 0.0
-#                     end nhan_trongky
-#                     
-#                 FROM stock_move stm 
-#                     join stock_location loc1 on stm.location_id=loc1.id
-#                     join stock_location loc2 on stm.location_dest_id=loc2.id
-#                 WHERE stm.state= 'done' and stm.partner_id in (select id from res_partner where id = %s or parent_id = %s)   )foo
-#                 inner join product_product pp on foo.product_id = pp.id
-#                 WHERE (pp.id in %s)
-#                 group by pp.name_template,pp.id
-#                 order by pp.id
-#             ''' ,(ky_ve.start_date,ky_ve.start_date,ky_ve.end_date,dai_ly_id,dai_ly_id,
-#                   tuple(menh_gia_ids),))
-#             for i in self.cr.dictfetchall():
-#                 sql = '''
-#                     select sum(tong_cong) tong_cong
-#                     from ve_loto
-#                     where ky_ve_id = %s
-#                         and state='done'
-#                         and daily_id in (select id from res_partner where id = %s or parent_id = %s)
-#                         and product_id = %s
-#                     '''%(ky_ve.id,dai_ly_id,dai_ly_id,i['id'])
-#                 self.cr.execute(sql)
-#                 line = self.cr.dictfetchone()
-#                 ve_cuoiky = (i['ton_dauky'] or 0.0)+(i['nhan_trongky'] or 0.0)-(line['tong_cong'] or 0.0)
-#                 tien_cuoiky = ve_cuoiky*self.pool.get('product.product').browse(self.cr, self.uid, i['id']).standard_price
-#                 self.tong_ve_cuoiky += tien_cuoiky
-#                 
-#                 res.append({
-#                     'name_template':i['name_template'],
-#                     'ton_dauky':i['ton_dauky'] or 0.0,
-#                    'nhan_trongky':i['nhan_trongky'] or 0.0,
-#                    've_trongky': line['tong_cong'] or 0.0,
-#                    've_cuoiky': ve_cuoiky,
-#                    'tien_cuoiky': tien_cuoiky,
-#                    })
-#         return res
-        
-#     def get_tong(self,ky_ve):
-#         wizard_data = self.localcontext['data']['form']
-#         menh_gia_ids = wizard_data['menh_gia_ids']
-#         dai_ly_ids = wizard_data['dai_ly_ids']
-#         res =[]
-#         if ky_ve:
-#             self.cr.execute('''  
-#             SELECT pp.name_template,pp.id,
-#                 sum(ton_dauky) ton_dauky,
-#                 sum(nhan_trongky) nhan_trongky
-#                 From
-#                 (SELECT
-#                     stm.product_id,    
-#                     
-#                     case when loc1.usage = 'internal' and loc2.usage != 'internal' and stm.date < %s
-#                     then 1*stm.product_qty 
-#                     else 0.0
-#                     end ton_dauky,
-#                     
-#                     case when loc1.usage = 'internal' and loc2.usage != 'internal' and stm.date between %s and %s
-#                     then 1*stm.product_qty 
-#                     else 0.0
-#                     end nhan_trongky
-#                     
-#                 FROM stock_move stm 
-#                     join stock_location loc1 on stm.location_id=loc1.id
-#                     join stock_location loc2 on stm.location_dest_id=loc2.id
-#                 WHERE stm.state= 'done' and stm.partner_id in (select id from res_partner where id in %s or parent_id in %s)   )foo
-#                 inner join product_product pp on foo.product_id = pp.id
-#                 WHERE (pp.id in %s)
-#                 group by pp.name_template,pp.id
-#                 order by pp.id
-#             ''',(ky_ve.start_date,ky_ve.start_date,ky_ve.end_date,tuple(dai_ly_ids),tuple(dai_ly_ids),
-#                   tuple(menh_gia_ids),))
-#             for i in self.cr.dictfetchall():
-#                 self.cr.execute('''
-#                     select sum(tong_cong) tong_cong
-#                     from ve_loto
-#                     where ngay between %s and %s
-#                         and state='done'
-#                         and daily_id in (select id from res_partner where id in %s or parent_id in %s)
-#                         and product_id = %s
-#                     ''',(ky_ve.start_date,ky_ve.end_date,tuple(dai_ly_ids),tuple(dai_ly_ids),i['id'],))
-#                 line = self.cr.dictfetchone()
-#                 ve_cuoiky = (i['ton_dauky'] or 0.0)+(i['nhan_trongky'] or 0.0)-(line['tong_cong'] or 0.0)
-#                 tien_cuoiky = ve_cuoiky*self.pool.get('product.product').browse(self.cr, self.uid, i['id']).standard_price
-#                 self.tong_ve_cuoiky += tien_cuoiky
-#                 
-#                 self.tong_ve_tondauky += (i['ton_dauky'] or 0.0)
-#                 self.tong_ve_nhantrongky += (i['nhan_trongky'] or 0.0)
-#                 self.tong_ve_bantrongky += (line['tong_cong'] or 0.0)
-#                 self.tong_ve_luuhanh += ve_cuoiky
-#                 self.tong_tien += tien_cuoiky
-#                 
-#                 res.append({
-#                     'name_template':i['name_template'],
-#                     'ton_dauky':i['ton_dauky'] or 0.0,
-#                    'nhan_trongky':i['nhan_trongky'] or 0.0,
-#                    've_trongky': line['tong_cong'] or 0.0,
-#                    've_cuoiky': ve_cuoiky,
-#                    'tien_cuoiky': tien_cuoiky,
-#                    })
-#         return res
     def get_date_from(self):
         wizard_data = self.localcontext['data']['form']
         date = datetime.strptime(wizard_data['date_from'], DATE_FORMAT)
@@ -236,17 +115,17 @@ class Parser(report_sxw.rml_parse):
         for line in menh_gia_ids:
             sql='''
                 select name, ((select case when sum(product_qty)!=0 then sum(product_qty) else 0 end sl from stock_move where picking_id in (select id from stock_picking where type='out') and product_id = %(product_id)s
-                        and date<'%(date_from)s' and partner_id in %(dl_ids)s) - (select case when sum(tong_cong)!=0 then sum(tong_cong) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay<'%(date_from)s' and state='done' and daily_id in %(dl_ids)s)
+                        and date(timezone('UTC',date))<'%(date_from)s' and partner_id in %(dl_ids)s and state='done') - (select case when sum(tong_cong)!=0 then sum(tong_cong) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay<'%(date_from)s' and state='done' and daily_id in %(dl_ids)s)
                                     - (select case when sum(tong_sai_kythuat)!=0 then sum(tong_sai_kythuat) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay<'%(date_from)s' and state='done' and daily_id in %(dl_ids)s)) dau_ky,
                         (select case when sum(product_qty)!=0 then sum(product_qty) else 0 end sl from stock_move where picking_id in (select id from stock_picking where type='out') and product_id = %(product_id)s
-                        and date between '%(date_from)s' and '%(date_to)s' and partner_id in %(dl_ids)s) nhan_trg_ky,
+                        and date(timezone('UTC',date)) between '%(date_from)s' and '%(date_to)s' and partner_id in %(dl_ids)s and state='done') nhan_trg_ky,
                         (select case when sum(tong_cong)!=0 then sum(tong_cong) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay between '%(date_from)s' and '%(date_to)s' and state='done' and daily_id in %(dl_ids)s) ban_trg_ky, 
                         (select case when sum(tong_sai_kythuat)!=0 then sum(tong_sai_kythuat) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay between '%(date_from)s' and '%(date_to)s' and state='done' and daily_id in %(dl_ids)s) sai_trg_ky,
                         ((select case when sum(product_qty)!=0 then sum(product_qty) else 0 end sl from stock_move where picking_id in (select id from stock_picking where type='out') and product_id = %(product_id)s
-                        and date<='%(date_to)s' and partner_id in %(dl_ids)s) - (select case when sum(tong_cong)!=0 then sum(tong_cong) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay<='%(date_to)s' and state='done' and daily_id in %(dl_ids)s)
+                        and date(timezone('UTC',date))<='%(date_to)s' and partner_id in %(dl_ids)s and state='done') - (select case when sum(tong_cong)!=0 then sum(tong_cong) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay<='%(date_to)s' and state='done' and daily_id in %(dl_ids)s)
                                     - (select case when sum(tong_sai_kythuat)!=0 then sum(tong_sai_kythuat) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay<='%(date_to)s' and state='done' and daily_id in %(dl_ids)s)) luu_hanh_cuoi_ky,
                         (((select case when sum(product_qty)!=0 then sum(product_qty) else 0 end sl from stock_move where picking_id in (select id from stock_picking where type='out') and product_id = %(product_id)s
-                        and date<='%(date_to)s' and partner_id in %(dl_ids)s) - (select case when sum(tong_cong)!=0 then sum(tong_cong) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay<='%(date_to)s' and state='done' and daily_id in %(dl_ids)s)
+                        and date(timezone('UTC',date))<='%(date_to)s' and partner_id in %(dl_ids)s) - (select case when sum(tong_cong)!=0 then sum(tong_cong) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay<='%(date_to)s' and state='done' and daily_id in %(dl_ids)s)
                                     - (select case when sum(tong_sai_kythuat)!=0 then sum(tong_sai_kythuat) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay<='%(date_to)s' and state='done' and daily_id in %(dl_ids)s))*list_price::int) tien_cuoi_ky
                 from product_product pp, product_template pt
                 where pp.product_tmpl_id=pt.id and pp.id=%(product_id)s
@@ -256,7 +135,6 @@ class Parser(report_sxw.rml_parse):
                  'dl_ids': dl_ids,
                  'date_to': date_to,
             }
-                 #line,date_from,dl_ids,line,date_from,dl_ids,line,date_from,dl_ids,line,date_from,date_to,dl_ids,line,date_from,date_to,dl_ids,line,date_from,date_to,dl_ids,line,date_to,dl_ids,line,date_to,dl_ids,line,date_to,dl_ids,line,date_to,dl_ids,line,date_to,dl_ids)
             self.cr.execute(sql)
             rs = self.cr.dictfetchone()
             if rs:
@@ -289,37 +167,20 @@ class Parser(report_sxw.rml_parse):
         dl_ids = [row[0] for row in self.cr.fetchall()]
         dl_ids = str(dl_ids).replace('[','(')
         dl_ids = str(dl_ids).replace(']',')')
-#         sql='''
-#             select name, ((select sum(product_qty) from stock_move where picking_id in (select id from stock_picking where type='out') and product_id = %s
-#                     and date<'%s' and partner_id in %s) - (select sum(tong_cong) from ve_loto where product_id=%s and ngay<'%s' and state='done' and partner_id in %s)
-#                                 - (select sum(tong_sai_kythuat) from ve_loto where product_id=%s and ngay<'%s' and state='done' and partner_id in %s)) dau_ky,
-#                     (select sum(product_qty) from stock_move where picking_id in (select id from stock_picking where type='out') and product_id = %s
-#                     and date between '%s' and '%s' and partner_id in %s) nhan_trg_ky,
-#                     (select sum(tong_cong) from ve_loto where product_id=%s and ngay between '%s' and '%s' and state='done' and partner_id in %s) ban_trg_ky, 
-#                     (select sum(tong_sai_kythuat) from ve_loto where product_id=%s and ngay between '%s' and '%s' and state='done' and partner_id in %s) sai_trg_ky,
-#                     ((select sum(product_qty) from stock_move where picking_id in (select id from stock_picking where type='out') and product_id = %s
-#                     and date<='%s' and partner_id in %s) - (select sum(tong_cong) from ve_loto where product_id=%s and ngay<='%s' and state='done' and partner_id in %s)
-#                                 - (select sum(tong_sai_kythuat) from ve_loto where product_id=%s and ngay<='%s' and state='done' and partner_id in %s)) luu_hanh_cuoi_ky,
-#                     (((select sum(product_qty) from stock_move where picking_id in (select id from stock_picking where type='out') and product_id = %s
-#                     and date<='%s' and partner_id in %s) - (select sum(tong_cong) from ve_loto where product_id=%s and ngay<='%s' and state='done' and partner_id in %s)
-#                                 - (select sum(tong_sai_kythuat) from ve_loto where product_id=%s and ngay<='%s' and state='done' and partner_id in %s))*list_price::int) tien_cuoi_ky
-#             from product_product pp, product_template pt
-#             where pp.product_tmpl_id=pt.id and pp.id=%s
-#         '''%(menh_gia_id,date_from,dl_ids,menh_gia_id,date_from,dl_ids,menh_gia_id,date_from,dl_ids,menh_gia_id,date_from,date_to,dl_ids,menh_gia_id,date_from,date_to,dl_ids,menh_gia_id,date_from,date_to,dl_ids,menh_gia_id,date_to,dl_ids,menh_gia_id,date_to,dl_ids,menh_gia_id,date_to,dl_ids,menh_gia_id,date_to,dl_ids,menh_gia_id,date_to,dl_ids,menh_gia_id)
         
         sql='''
                 select name, ((select case when sum(product_qty)!=0 then sum(product_qty) else 0 end sl from stock_move where picking_id in (select id from stock_picking where type='out') and product_id = %(product_id)s
-                        and date<'%(date_from)s' and partner_id in %(dl_ids)s) - (select case when sum(tong_cong)!=0 then sum(tong_cong) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay<'%(date_from)s' and state='done' and daily_id in %(dl_ids)s)
+                        and date(timezone('UTC',date))<'%(date_from)s' and partner_id in %(dl_ids)s and state='done') - (select case when sum(tong_cong)!=0 then sum(tong_cong) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay<'%(date_from)s' and state='done' and daily_id in %(dl_ids)s)
                                     - (select case when sum(tong_sai_kythuat)!=0 then sum(tong_sai_kythuat) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay<'%(date_from)s' and state='done' and daily_id in %(dl_ids)s)) dau_ky,
                         (select case when sum(product_qty)!=0 then sum(product_qty) else 0 end sl  from stock_move where picking_id in (select id from stock_picking where type='out') and product_id = %(product_id)s
-                        and date between '%(date_from)s' and '%(date_to)s' and partner_id in %(dl_ids)s) nhan_trg_ky,
+                        and date(timezone('UTC',date)) between '%(date_from)s' and '%(date_to)s' and partner_id in %(dl_ids)s and state='done') nhan_trg_ky,
                         (select case when sum(tong_cong)!=0 then sum(tong_cong) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay between '%(date_from)s' and '%(date_to)s' and state='done' and daily_id in %(dl_ids)s) ban_trg_ky, 
                         (select case when sum(tong_sai_kythuat)!=0 then sum(tong_sai_kythuat) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay between '%(date_from)s' and '%(date_to)s' and state='done' and daily_id in %(dl_ids)s) sai_trg_ky,
                         ((select case when sum(product_qty)!=0 then sum(product_qty) else 0 end sl  from stock_move where picking_id in (select id from stock_picking where type='out') and product_id = %(product_id)s
-                        and date<='%(date_to)s' and partner_id in %(dl_ids)s) - (select case when sum(tong_cong)!=0 then sum(tong_cong) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay<='%(date_to)s' and state='done' and daily_id in %(dl_ids)s)
+                        and date(timezone('UTC',date))<='%(date_to)s' and partner_id in %(dl_ids)s and state='done') - (select case when sum(tong_cong)!=0 then sum(tong_cong) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay<='%(date_to)s' and state='done' and daily_id in %(dl_ids)s)
                                     - (select case when sum(tong_sai_kythuat)!=0 then sum(tong_sai_kythuat) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay<='%(date_to)s' and state='done' and daily_id in %(dl_ids)s)) luu_hanh_cuoi_ky,
                         (((select case when sum(product_qty)!=0 then sum(product_qty) else 0 end sl  from stock_move where picking_id in (select id from stock_picking where type='out') and product_id = %(product_id)s
-                        and date<='%(date_to)s' and partner_id in %(dl_ids)s) - (select case when sum(tong_cong)!=0 then sum(tong_cong) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay<='%(date_to)s' and state='done' and daily_id in %(dl_ids)s)
+                        and date(timezone('UTC',date))<='%(date_to)s' and partner_id in %(dl_ids)s and state='done') - (select case when sum(tong_cong)!=0 then sum(tong_cong) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay<='%(date_to)s' and state='done' and daily_id in %(dl_ids)s)
                                     - (select case when sum(tong_sai_kythuat)!=0 then sum(tong_sai_kythuat) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay<='%(date_to)s' and state='done' and daily_id in %(dl_ids)s))*list_price::int) tien_cuoi_ky
                 from product_product pp, product_template pt
                 where pp.product_tmpl_id=pt.id and pp.id=%(product_id)s
