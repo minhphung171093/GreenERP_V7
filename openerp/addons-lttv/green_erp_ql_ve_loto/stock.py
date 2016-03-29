@@ -29,6 +29,7 @@ import openerp.modules
 from openerp.osv import fields, osv
 from openerp.tools.translate import _
 from openerp import SUPERUSER_ID
+from openerp import netsvc
 
 class stock_picking(osv.osv):
     _inherit = "stock.picking"
@@ -47,6 +48,29 @@ class stock_picking(osv.osv):
         else:
             new_write = super(stock_picking, self).write(cr, uid,ids, vals, context)
         return new_write
+    
+    def action_revert_done(self, cr, uid, ids, context=None):
+        move_ids = []
+        invoice_ids = []
+        if not len(ids):
+            return False        
+        for picking in self.browse(cr, uid, ids, context):
+            for line in picking.move_lines:
+                line.write({'state': 'draft'})
+            self.write(cr, uid, [picking.id], {'state': 'draft'})
+            if picking.invoice_state == 'invoiced':
+                self.write(cr, uid, [picking.id],
+                           {'invoice_state': '2binvoiced'})
+            wf_service = netsvc.LocalService("workflow")
+            # Deleting the existing instance of workflow
+            wf_service.trg_delete(uid, 'stock.picking', picking.id, cr)
+            wf_service.trg_create(uid, 'stock.picking', picking.id, cr)
+        for (id, name) in self.name_get(cr, uid, ids):
+            message = _(
+                "The stock picking '%s' has been set in draft state."
+                ) % (name,)
+            self.log(cr, uid, id, message)
+        return True
 stock_picking()
 
 class stock_picking_in(osv.osv):
@@ -65,6 +89,29 @@ class stock_picking_in(osv.osv):
         else:
             new_write = super(stock_picking_in, self).write(cr, uid,ids, vals, context)
         return new_write
+    
+    def action_revert_done(self, cr, uid, ids, context=None):
+        move_ids = []
+        invoice_ids = []
+        if not len(ids):
+            return False        
+        for picking in self.browse(cr, uid, ids, context):
+            for line in picking.move_lines:
+                line.write({'state': 'draft'})
+            self.write(cr, uid, [picking.id], {'state': 'draft'})
+            if picking.invoice_state == 'invoiced':
+                self.write(cr, uid, [picking.id],
+                           {'invoice_state': '2binvoiced'})
+            wf_service = netsvc.LocalService("workflow")
+            # Deleting the existing instance of workflow
+            wf_service.trg_delete(uid, 'stock.picking', picking.id, cr)
+            wf_service.trg_create(uid, 'stock.picking', picking.id, cr)
+        for (id, name) in self.name_get(cr, uid, ids):
+            message = _(
+                "The stock picking '%s' has been set in draft state."
+                ) % (name,)
+            self.log(cr, uid, id, message)
+        return True
 stock_picking_in()
 
 class stock_picking_out(osv.osv):
@@ -83,6 +130,29 @@ class stock_picking_out(osv.osv):
         else:
             new_write = super(stock_picking_out, self).write(cr, uid,ids, vals, context)
         return new_write
+    
+    def action_revert_done(self, cr, uid, ids, context=None):
+        move_ids = []
+        invoice_ids = []
+        if not len(ids):
+            return False        
+        for picking in self.browse(cr, uid, ids, context):
+            for line in picking.move_lines:
+                line.write({'state': 'draft'})
+            self.write(cr, uid, [picking.id], {'state': 'draft'})
+            if picking.invoice_state == 'invoiced':
+                self.write(cr, uid, [picking.id],
+                           {'invoice_state': '2binvoiced'})
+            wf_service = netsvc.LocalService("workflow")
+            # Deleting the existing instance of workflow
+            wf_service.trg_delete(uid, 'stock.picking', picking.id, cr)
+            wf_service.trg_create(uid, 'stock.picking', picking.id, cr)
+        for (id, name) in self.name_get(cr, uid, ids):
+            message = _(
+                "The stock picking '%s' has been set in draft state."
+                ) % (name,)
+            self.log(cr, uid, id, message)
+        return True
 stock_picking_out()
 
 class stock_move(osv.osv):

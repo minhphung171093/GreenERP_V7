@@ -215,6 +215,7 @@
 	                    <button name="force_assign" states="confirmed" string="Force Availability" type="object" class="oe_highlight" groups="base.group_user"/>
 	                    <button name="action_process" states="assigned" string="Receive" type="object" class="oe_highlight"/>
 	                    <button name="button_cancel" states="assigned,confirmed,draft" string="Cancel Transfer" groups="base.group_user"/>
+	                    <button name="action_revert_done" states="cancel,done" string="Reopen" type="object" groups="base.group_user"/>
 	                    <field name="state" widget="statusbar" statusbar_visible="draft,assigned,done" statusbar_colors='{"shipping_except":"red","invoice_except":"red","waiting_date":"blue"}'/>
 	                </header>
 	                <sheet>
@@ -361,6 +362,7 @@
 	                        <button name="force_assign" states="confirmed" string="Force Availability" type="object" groups="base.group_user"/>
 	                        <button name="action_confirm" states="draft" string="Confirm" type="object" groups="base.group_user"/>
 	                        <button name="cancel_assign" states="assigned" string="Cancel Availability" type="object" groups="base.group_user"/>
+	                        <button name="action_revert_done" states="cancel,done" string="Reopen" type="object" groups="base.group_user"/>
 	                        <field name="state" widget="statusbar" statusbar_visible="draft,assigned,done"/>
 	                </header>
 	                <group>
@@ -493,6 +495,7 @@
 	                    <button name="force_assign" states="confirmed" string="Force Availability" type="object" class="oe_highlight" groups="base.group_user"/>
 	                    <button name="action_process" states="assigned" string="Deliver" type="object" class="oe_highlight"/>
 	                    <button name="button_cancel" states="assigned,confirmed,draft" string="Cancel Transfer" groups="base.group_user"/>
+	                    <button name="action_revert_done" states="cancel,done" string="Reopen" type="object" groups="base.group_user"/>
 	                    <field name="state" nolabel="1" readonly="1" widget="statusbar" statusbar_visible="draft,confirmed,assigned,done" statusbar_colors='{"auto":"blue", "confirmed":"blue"}'/>
 	                </header>
 	                <sheet>
