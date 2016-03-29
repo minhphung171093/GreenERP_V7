@@ -379,8 +379,8 @@ class tra_thuong_thucte(osv.osv):
                 
                 sql = '''
                     select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_datra from tra_thuong_thucte_line where product_id = %s and name='%s' and loai='%s' and giai='%s' and
-                        trathuong_id in (select id from tra_thuong_thucte where ngay = '%s' and state='done' and id!=%s)
-                '''%(trathuong['product_id'], trathuong['name'], trathuong['loai'], trathuong['giai'], ngay,tra_truong.id)
+                        trathuong_id in (select id from tra_thuong_thucte where ngay = '%s' and state='done' and id!=%s and daily_id =%s)
+                '''%(trathuong['product_id'], trathuong['name'], trathuong['loai'], trathuong['giai'], ngay,tra_truong.id, tra_truong.daily_id.id)
                 cr.execute(sql)
                 sl_datra = cr.dictfetchone()['sl_datra']
                 if sl_phaitra - sl_datra < trathuong['sl_trung']:
