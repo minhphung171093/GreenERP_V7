@@ -34,15 +34,15 @@ class Parser(report_sxw.rml_parse):
     
     def get_line(self,picking_id):
         res = []
-        rs10 = ''
-        rs20 = ''
-        rs50 = ''
         sql='''
             select distinct daily_id from stock_move where picking_id = %s 
         '''%(picking_id)
         self.cr.execute(sql)
         daily_ids = [r[0] for r in self.cr.fetchall()]
         for line in daily_ids:
+            rs10 = ''
+            rs20 = ''
+            rs50 = ''
             sql='''
                 select ma_daily, name, (select case when sum(product_qty)>0 then sum(product_qty) else 0 end product_qty from stock_move where picking_id = %(picking_id)s and 
                             product_id = (select id from product_product where default_code like '%(mg10)s') and daily_id = %(daily_id)s) qty_10,
