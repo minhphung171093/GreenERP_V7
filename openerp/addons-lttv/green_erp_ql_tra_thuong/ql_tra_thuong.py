@@ -190,8 +190,8 @@ class tra_thuong_thucte(osv.osv):
             for trath in trathuong_line:
                 sql = '''
                     select slan_trung,case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung from tra_thuong_line where product_id = %s and name='%s' and loai='%s' and giai='%s' and
-                        trathuong_id in (select id from tra_thuong where ngay = '%s' and parent_id is null and daily_id=%s) group by slan_trung
-                '''%(trath['product_id'], trath['name'], trath['loai'], trath['giai'], ngay, tra_truong.daily_id.id)
+                        trathuong_id in (select id from tra_thuong where ngay = '%s' and parent_id is null) group by slan_trung
+                '''%(trath['product_id'], trath['name'], trath['loai'], trath['giai'], ngay)
                 cr.execute(sql)
                 test = cr.dictfetchone()
                 if not test:
@@ -203,53 +203,53 @@ class tra_thuong_thucte(osv.osv):
                 
                 sql = '''
                     select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_datra from tra_thuong_thucte_line where product_id = %s and name='%s' and loai='%s' and giai='%s' and
-                        trathuong_id in (select id from tra_thuong_thucte where ngay = '%s' and state='done' and daily_id=%s)
-                '''%(trath['product_id'], trath['name'], trath['loai'], trath['giai'], ngay, tra_truong.daily_id.id)
+                        trathuong_id in (select id from tra_thuong_thucte where ngay = '%s' and state='done')
+                '''%(trath['product_id'], trath['name'], trath['loai'], trath['giai'], ngay)
                 cr.execute(sql)
                 sl_datra = cr.dictfetchone()['sl_datra']
                 if sl_phaitra - sl_datra < trath['sl_trung']:
                     raise osv.except_osv(_('Cảnh báo!'),_('''Số lượng nhập lớn hơn số lượng cần trả thưởng còn lại ngày "%s"!\n
                                         Số lượng còn lại: %s''')%(ngay[8:10]+'-'+ngay[5:7]+'-'+ngay[:4],sl_phaitra - sl_datra))
             
-            line_vals = []
-            for line in trathuong.tra_thuong_line:
-                voucher_context = {
-                    'payment_expected_currency': user.company_id.currency_id.id,
-                    'default_partner_id': self.pool.get('res.partner')._find_accounting_partner(trathuong.daily_id).id,
-                    'default_amount': line.tong,
-#                     'default_reference': inv.name,
-                    'close_after_process': True,
-#                     'invoice_type': inv.type,
-#                     'invoice_id': inv.id,
-                    'default_type': 'payment',
-                    'type': 'payment',
-                }
-                vals = voucher.default_get(cr, uid, fields_list, context=voucher_context)
-                res = voucher.onchange_journal(cr, uid, [], trathuong.journal_id.id, 
-                                               False, False, trathuong.daily_id.id, 
-                                               date_now, 
-                                               line.tong, 
-                                               vals['type'], vals['company_id'], context=voucher_context)
-                vals = dict(vals.items() + res['value'].items())
-#                 line_cr_ids = []
-#                 line_dr_ids = []
-#                 for line_cr in vals['line_cr_ids']:
-#                     line_cr_ids.append((0,0,line_cr))
-#                 for line_dr in vals['line_dr_ids']:
-#                     line_dr_ids.append((0,0,line_dr))
-#                 vals['line_cr_ids'] = line_cr_ids
-#                 vals['line_dr_ids'] = line_dr_ids
-                
-                vals['line_dr_ids'] = [(0,0,{
-                                             'account_id':trathuong.daily_id.account_tra_thuong_id.id,
-                                             'name': 'Chi trả thưởng vé LTTC '+line.name,
-                                             'amount': line.tong,
-                                     })]
-                vals.update({'journal_id':trathuong.journal_id.id,
-                             'assign_user': trathuong.nguoi_nhan_thuong,})
-                
-                line_vals.append((0,0,vals))
-            account_id = voucher_batch_obj.onchange_journal(cr, uid, [], trathuong.journal_id.id)['value']['account_id']
+#             line_vals = []
+#             for line in trathuong.tra_thuong_line:
+#                 voucher_context = {
+#                     'payment_expected_currency': user.company_id.currency_id.id,
+#                     'default_partner_id': self.pool.get('res.partner')._find_accounting_partner(trathuong.daily_id).id,
+#                     'default_amount': line.tong,
+# #                     'default_reference': inv.name,
+#                     'close_after_process': True,
+# #                     'invoice_type': inv.type,
+# #                     'invoice_id': inv.id,
+#                     'default_type': 'payment',
+#                     'type': 'payment',
+#                 }
+#                 vals = voucher.default_get(cr, uid, fields_list, context=voucher_context)
+#                 res = voucher.onchange_journal(cr, uid, [], trathuong.journal_id.id, 
+#                                                False, False, trathuong.daily_id.id, 
+#                                                date_now, 
+#                                                line.tong, 
+#                                                vals['type'], vals['company_id'], context=voucher_context)
+#                 vals = dict(vals.items() + res['value'].items())
+# #                 line_cr_ids = []
+# #                 line_dr_ids = []
+# #                 for line_cr in vals['line_cr_ids']:
+# #                     line_cr_ids.append((0,0,line_cr))
+# #                 for line_dr in vals['line_dr_ids']:
+# #                     line_dr_ids.append((0,0,line_dr))
+# #                 vals['line_cr_ids'] = line_cr_ids
+# #                 vals['line_dr_ids'] = line_dr_ids
+#                 
+#                 vals['line_dr_ids'] = [(0,0,{
+#                                              'account_id':trathuong.daily_id.account_tra_thuong_id.id,
+#                                              'name': 'Chi trả thưởng vé LTTC '+line.name,
+#                                              'amount': line.tong,
+#                                      })]
+#                 vals.update({'journal_id':trathuong.journal_id.id,
+#                              'assign_user': trathuong.nguoi_nhan_thuong,})
+#                 
+#                 line_vals.append((0,0,vals))
+#             account_id = voucher_batch_obj.onchange_journal(cr, uid, [], trathuong.journal_id.id)['value']['account_id']
 #             voucher_batch_obj.create(cr, uid, {
 #                 'journal_id': trathuong.journal_id.id,
 #                 'account_id': account_id,
@@ -279,9 +279,9 @@ class tra_thuong_thucte(osv.osv):
         return result.keys()
     
     _columns = {
-        'daily_id': fields.many2one('res.partner','Đại lý',domain="[('dai_ly','=',True)]",required=True,states={'done':[('readonly',True)]}),
+        'daily_id': fields.many2one('res.partner','Đại lý',domain="[('dai_ly','=',True)]",required=False,states={'done':[('readonly',True)]}),
         'nguoi_nhan_thuong': fields.char('Người nhận thưởng', size=1024, required=True,states={'done':[('readonly',True)]}),
-        'journal_id': fields.many2one('account.journal','Phương thức thanh toán', required=True,states={'done':[('readonly',True)]}),
+        'journal_id': fields.many2one('account.journal','Phương thức thanh toán', required=False,states={'done':[('readonly',True)]}),
         'ngay': fields.date('Ngày xổ số', required=True,states={'done':[('readonly',True)]}),
         'ngay_tra_thuong': fields.date('Ngày trả thưởng', required=True,states={'done':[('readonly',True)]}),
         'tra_thuong_line': fields.one2many('tra.thuong.thucte.line','trathuong_id','Line',states={'done':[('readonly',True)]}),
@@ -329,8 +329,8 @@ class tra_thuong_thucte(osv.osv):
         for trathuong in trathuong_line:
             sql = '''
                 select slan_trung,case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung from tra_thuong_line where product_id = %s and name='%s' and loai='%s' and giai='%s' and
-                    trathuong_id in (select id from tra_thuong where ngay = '%s' and parent_id is null and daily_id=%s) group by slan_trung
-            '''%(trathuong['product_id'], trathuong['name'], trathuong['loai'], trathuong['giai'], ngay, tra_truong.daily_id.id)
+                    trathuong_id in (select id from tra_thuong where ngay = '%s' and parent_id is null) group by slan_trung
+            '''%(trathuong['product_id'], trathuong['name'], trathuong['loai'], trathuong['giai'], ngay)
             cr.execute(sql)
             test = cr.dictfetchone()
             if not test:
@@ -342,8 +342,8 @@ class tra_thuong_thucte(osv.osv):
             
             sql = '''
                 select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_datra from tra_thuong_thucte_line where product_id = %s and name='%s' and loai='%s' and giai='%s' and
-                    trathuong_id in (select id from tra_thuong_thucte where ngay = '%s' and state='done' and daily_id=%s)
-            '''%(trathuong['product_id'], trathuong['name'], trathuong['loai'], trathuong['giai'], ngay, tra_truong.daily_id.id)
+                    trathuong_id in (select id from tra_thuong_thucte where ngay = '%s' and state='done')
+            '''%(trathuong['product_id'], trathuong['name'], trathuong['loai'], trathuong['giai'], ngay)
             cr.execute(sql)
             sl_datra = cr.dictfetchone()['sl_datra']
             if sl_phaitra - sl_datra < trathuong['sl_trung']:
@@ -366,8 +366,8 @@ class tra_thuong_thucte(osv.osv):
             for trathuong in trathuong_line:
                 sql = '''
                     select slan_trung,case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung from tra_thuong_line where product_id = %s and name='%s' and loai='%s' and giai='%s' and
-                        trathuong_id in (select id from tra_thuong where ngay = '%s' and parent_id is null and daily_id =%s) group by slan_trung
-                '''%(trathuong['product_id'], trathuong['name'], trathuong['loai'], trathuong['giai'], ngay, tra_truong.daily_id.id)
+                        trathuong_id in (select id from tra_thuong where ngay = '%s' and parent_id is null) group by slan_trung
+                '''%(trathuong['product_id'], trathuong['name'], trathuong['loai'], trathuong['giai'], ngay)
                 cr.execute(sql)
                 test = cr.dictfetchone()
                 if not test:
@@ -379,8 +379,8 @@ class tra_thuong_thucte(osv.osv):
                 
                 sql = '''
                     select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_datra from tra_thuong_thucte_line where product_id = %s and name='%s' and loai='%s' and giai='%s' and
-                        trathuong_id in (select id from tra_thuong_thucte where ngay = '%s' and state='done' and id!=%s and daily_id =%s)
-                '''%(trathuong['product_id'], trathuong['name'], trathuong['loai'], trathuong['giai'], ngay,tra_truong.id, tra_truong.daily_id.id)
+                        trathuong_id in (select id from tra_thuong_thucte where ngay = '%s' and state='done' and id!=%s)
+                '''%(trathuong['product_id'], trathuong['name'], trathuong['loai'], trathuong['giai'], ngay,tra_truong.id)
                 cr.execute(sql)
                 sl_datra = cr.dictfetchone()['sl_datra']
                 if sl_phaitra - sl_datra < trathuong['sl_trung']:
