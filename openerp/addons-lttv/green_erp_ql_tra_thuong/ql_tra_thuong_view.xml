@@ -330,7 +330,6 @@
         </record>
         
         <menuitem action="action_tra_thuong_thucte" id="menu_action_tra_thuong_thucte" parent="menu_tra_thuong" sequence="30"/>
-        
     </data>
 </openerp>
 

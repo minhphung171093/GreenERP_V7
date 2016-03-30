@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- Bao cao quyết toán vé ngày -->
+        <record id="quyet_toan_ve_ngay_tree" model="ir.ui.view">
+            <field name="name">quyet.toan.ve.ngay.tree</field>
+            <field name="model">quyet.toan.ve.ngay</field>
+            <field name="arch" type="xml">
+                <tree string="Quyết toán vé ngày">
+                	<field name="product_id"/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="co_chi" invisible='1'/>
+                </tree>
+            </field>
+        </record>
+    	
+		<record id="quyet_toan_ve_ngay_form" model="ir.ui.view">
+            <field name="name">quyet.toan.ve.ngay.form</field>
+            <field name="model">quyet.toan.ve.ngay</field>
+            <field name="arch" type="xml">
+                <form string="Quyết toán vé ngày" version="7.0">
+                	<header>
+	                </header>
+	                <sheet string="Quyết toán vé ngày">
+	                    <group col='4' conspan='2'>
+		                        <field name="product_id"/>
+		                        <newline/>
+		                        <field name="date_from"/>
+		                        <field name="date_to"/>
+		                        <field name="co_chi" invisible='1'/>
+	                    </group>
+	                </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_quyet_toan_ve_ngay" model="ir.actions.act_window">
+            <field name="name">Quyết toán vé ngày (chi 0,2%)</field>
+            <field name="res_model">quyet.toan.ve.ngay</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="quyet_toan_ve_ngay_tree"/>
+            <field name="context">{'default_co_chi':1}</field>
+            <field name="domain">[('co_chi','=',True)]</field>
+        </record>
+        
+        <record id="action_quyet_toan_ve_ngay1" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="quyet_toan_ve_ngay_tree"/>
+            <field name="act_window_id" ref="action_quyet_toan_ve_ngay"/>
+        </record>
+        <record id="action_quyet_toan_ve_ngay2" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="quyet_toan_ve_ngay_form"/>
+            <field name="act_window_id" ref="action_quyet_toan_ve_ngay"/>
+        </record>
+        
+        <menuitem action="action_quyet_toan_ve_ngay" id="menu_action_quyet_toan_ve_ngay" parent="green_erp_ql_tra_thuong.menu_tra_thuong" sequence="36"/>
+        
+        <record id="action_quyet_toan_ve_ngay_khongchi" model="ir.actions.act_window">
+            <field name="name">Quyết toán vé ngày (không chi 0,2%)</field>
+            <field name="res_model">quyet.toan.ve.ngay</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="quyet_toan_ve_ngay_tree"/>
+            <field name="context">{'default_co_chi':0}</field>
+            <field name="domain">[('co_chi','=',False)]</field>
+        </record>
+        
+        <record id="action_quyet_toan_ve_ngay_khongchi1" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="quyet_toan_ve_ngay_tree"/>
+            <field name="act_window_id" ref="action_quyet_toan_ve_ngay_khongchi"/>
+        </record>
+        <record id="action_quyet_toan_ve_ngay_khongchi2" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="quyet_toan_ve_ngay_form"/>
+            <field name="act_window_id" ref="action_quyet_toan_ve_ngay_khongchi"/>
+        </record>
+        
+        <menuitem action="action_quyet_toan_ve_ngay_khongchi" id="menu_action_quyet_toan_ve_ngay_khongchi" parent="green_erp_ql_tra_thuong.menu_tra_thuong" sequence="40"/>
+        
+    </data>
+</openerp>
+

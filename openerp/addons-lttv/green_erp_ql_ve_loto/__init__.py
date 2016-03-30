@@ -27,4 +27,5 @@ import dongbo
 import sale
 import purchase
 import stock
+import ql_tra_thuong
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

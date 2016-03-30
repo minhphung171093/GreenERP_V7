@@ -489,6 +489,3 @@ class tra_thuong_thucte_line(osv.osv):
     }
     
 tra_thuong_thucte_line()
-
-
-

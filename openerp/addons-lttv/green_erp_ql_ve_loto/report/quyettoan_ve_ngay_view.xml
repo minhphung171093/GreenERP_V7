@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+    	<record id="quyettoan_ve_ngay_report" model="ir.actions.report.xml">
+	        <field name="name">quyettoan_ve_ngay_report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">quyet.toan.ve.ngay</field>
+	        <field name="report_name">Quyết toán vé ngày</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">green_erp_ql_ve_loto/report/quyettoan_ve_ngay.py</field>
+	        <field name="report_rml">green_erp_ql_ve_loto/report/quyettoan_ve_ngay.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record> 
+    	   
+    	<report 
+			auto="False" 
+			menu="True"
+			id="quyettoan_ve_ngay_report" 
+			model="quyet.toan.ve.ngay" 
+			name="quyettoan_ve_ngay_report"
+	        string="Quyết toán vé ngày"
+	        rml="green_erp_ql_ve_loto/report/quyettoan_ve_ngay.ods"/> 	
+	</data>
+</openerp>
