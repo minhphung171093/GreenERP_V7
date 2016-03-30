@@ -604,7 +604,7 @@
             <field name="arch" type="xml">
                 <form string="Vé ế" version="7.0">
                 	<header>
-                		<button name="bt_datra" string="Đã trả" type="object" class="oe_highlight"/>
+                		<button name="bt_datra" string="Đã trả" type="object" states="new" class="oe_highlight"/>
 	                    <field name="state" widget="statusbar" statusbar_visible="new"/>
 	                </header>
 	                <sheet string="Vé ế">
@@ -651,8 +651,8 @@
             <field name="act_window_id" ref="action_ve_e"/>
         </record>
         
-        <menuitem name="Vé ế" id="menu_ve_e" parent="stock.menu_stock_root" sequence="5"/>
-        <menuitem action="action_ve_e" id="menu_action_ve_e" parent="menu_ve_e" sequence="1"/>
+        <!--<menuitem name="Vé ế" id="menu_ve_e" parent="stock.menu_stock_root" sequence="5"/>-->
+        <menuitem action="action_ve_e" id="menu_action_ve_e" parent="stock.menu_stock_warehouse_mgmt" sequence="5"/>
 
     </data>
 </openerp>
