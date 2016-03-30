@@ -163,4 +163,25 @@ class stock_move(osv.osv):
     
 stock_move()
 
+class ve_e(osv.osv):
+    _name = "ve.e"
+    _columns = {
+        'name': fields.many2one('res.partner','Đại lý',domain="[('dai_ly','=',True)]",states={'done':[('readonly',True)]}),
+        'state': fields.selection([('new','Mới tạo'),('done','Đã nhận')],'Trạng thái'),
+        'ngay': fields.date('Ngày trả',states={'done':[('readonly',True)]}),
+        've_e_line': fields.one2many('ve.e.line','ve_e_id','Line',states={'done':[('readonly',True)]}),
+    }
+    
+    def bt_datra(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {'state':'done'})
+ve_e()
+
+class ve_e_line(osv.osv):
+    _name = "ve.e.line"
+    _columns = {
+        'product_id': fields.many2one('product.product','Mệnh giá',domain="[('menh_gia','=',True)]",required=True),
+        'sl': fields.integer('Số lượng'),
+        've_e_id': fields.many2one('ve.e','Vé é',ondelete='cascade'),
+    }
+ve_e_line()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

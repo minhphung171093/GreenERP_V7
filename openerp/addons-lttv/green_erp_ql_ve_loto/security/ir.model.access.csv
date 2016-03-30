@@ -19,3 +19,5 @@ access_res_company,res_company,base.model_res_company,group_ql_ve_loto,1,1,1,1
 access_lichsu_dongbo,lichsu_dongbo,model_lichsu_dongbo,group_ql_ve_loto,1,1,1,1
 access_dongbo_veloto,dongbo_veloto,model_dongbo_veloto,group_ql_ve_loto,1,1,1,1
 access_dongbo_daily_trungthuong,dongbo_daily_trungthuong,model_dongbo_daily_trungthuong,group_ql_ve_loto,1,1,1,1
+access_ve_e,ve_e,model_ve_e,stock.group_stock_manager,1,1,1,1
+access_ve_e_line,ve_e_line,model_ve_e_line,stock.group_stock_manager,1,1,1,1

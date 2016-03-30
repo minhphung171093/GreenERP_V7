@@ -121,7 +121,6 @@ class Parser(report_sxw.rml_parse):
         return res
     
     def get_date(self):
-        date = time.strftime('%Y-%m-%d'),
-        rs =str(date)[2:12]
-        return rs
+        date = time.strftime('%Y-%m-%d')
+        return date
     

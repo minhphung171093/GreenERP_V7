@@ -584,6 +584,75 @@
 		    <record model="ir.ui.menu" id="stock.menu_action_picking_tree">
 				<field name="active" eval="False"/>
 			</record>
+			
+	<!-- Vé é -->
+	<record id="ve_e_tree" model="ir.ui.view">
+            <field name="name">ve.e.tree</field>
+            <field name="model">ve.e</field>
+            <field name="arch" type="xml">
+                <tree string="Vé ế">
+                    <field name="name"/>
+                    <field name="ngay"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+    	
+		<record id="ve_e_form" model="ir.ui.view">
+            <field name="name">ve.e.form</field>
+            <field name="model">ve.e</field>
+            <field name="arch" type="xml">
+                <form string="Vé ế" version="7.0">
+                	<header>
+                		<button name="bt_datra" string="Đã trả" type="object" class="oe_highlight"/>
+	                    <field name="state" widget="statusbar" statusbar_visible="new"/>
+	                </header>
+	                <sheet string="Vé ế">
+	                    <group>
+		                    <group>
+		                        <field name="name" required='1'/>
+		                        <field name="ngay" required='1'/>
+		                    </group>
+	                    </group>
+	                    <notebook>
+	                    	<page string="Chi tiết trả vé ế">
+			                    <group>
+			                        <field name="ve_e_line" nolabel='1'>
+			                        	<tree editable='bottom'>
+			                        		<field name="product_id"/>
+					                        <field name="sl" required='1'/>
+			                        	</tree>
+			                        </field>
+			                    </group>
+		                    </page>
+	                    </notebook>
+	                </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_ve_e" model="ir.actions.act_window">
+            <field name="name">Vé ế</field>
+            <field name="res_model">ve.e</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="ve_e_tree"/>
+        </record>
+        <record id="action_ve_e1" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="ve_e_tree"/>
+            <field name="act_window_id" ref="action_ve_e"/>
+        </record>
+        <record id="action_ve_e2" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="ve_e_form"/>
+            <field name="act_window_id" ref="action_ve_e"/>
+        </record>
+        
+        <menuitem name="Vé ế" id="menu_ve_e" parent="stock.menu_stock_root" sequence="5"/>
+        <menuitem action="action_ve_e" id="menu_action_ve_e" parent="menu_ve_e" sequence="1"/>
 
     </data>
 </openerp>

@@ -30,6 +30,7 @@ class Parser(report_sxw.rml_parse):
         self.total_sai_ky = 0.0
         self.total_lh_cuoi = 0.0
         self.total_tien_cuoi = 0.0
+        self.total_ve_e = 0.0
         self.localcontext.update({
             'get_date':self.get_date,
             'get_date_from':self.get_date_from,
@@ -116,16 +117,20 @@ class Parser(report_sxw.rml_parse):
             sql='''
                 select name, ((select case when sum(product_qty)!=0 then sum(product_qty) else 0 end sl from stock_move where picking_id in (select id from stock_picking where type='out') and product_id = %(product_id)s
                         and date(timezone('UTC',date))<'%(date_from)s' and partner_id in %(dl_ids)s and state='done') - (select case when sum(tong_cong)!=0 then sum(tong_cong) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay<'%(date_from)s' and state='done' and daily_id in %(dl_ids)s)
+                                    - (select case when sum(sl)!=0 then sum(sl) else 0 end sl from ve_e_line where product_id=%(product_id)s and ve_e_id in (select id from ve_e where ngay<'%(date_from)s' and state='done' and name in %(dl_ids)s))
                                     - (select case when sum(tong_sai_kythuat)!=0 then sum(tong_sai_kythuat) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay<'%(date_from)s' and state='done' and daily_id in %(dl_ids)s)) dau_ky,
                         (select case when sum(product_qty)!=0 then sum(product_qty) else 0 end sl from stock_move where picking_id in (select id from stock_picking where type='out') and product_id = %(product_id)s
                         and date(timezone('UTC',date)) between '%(date_from)s' and '%(date_to)s' and partner_id in %(dl_ids)s and state='done') nhan_trg_ky,
                         (select case when sum(tong_cong)!=0 then sum(tong_cong) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay between '%(date_from)s' and '%(date_to)s' and state='done' and daily_id in %(dl_ids)s) ban_trg_ky, 
                         (select case when sum(tong_sai_kythuat)!=0 then sum(tong_sai_kythuat) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay between '%(date_from)s' and '%(date_to)s' and state='done' and daily_id in %(dl_ids)s) sai_trg_ky,
+                        (select case when sum(sl)!=0 then sum(sl) else 0 end sl from ve_e_line where product_id=%(product_id)s and ve_e_id in (select id from ve_e where ngay between '%(date_from)s' and '%(date_to)s' and state='done' and name in %(dl_ids)s)) e_trg_ky,
                         ((select case when sum(product_qty)!=0 then sum(product_qty) else 0 end sl from stock_move where picking_id in (select id from stock_picking where type='out') and product_id = %(product_id)s
                         and date(timezone('UTC',date))<='%(date_to)s' and partner_id in %(dl_ids)s and state='done') - (select case when sum(tong_cong)!=0 then sum(tong_cong) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay<='%(date_to)s' and state='done' and daily_id in %(dl_ids)s)
+                                    - (select case when sum(sl)!=0 then sum(sl) else 0 end sl from ve_e_line where product_id=%(product_id)s and ve_e_id in (select id from ve_e where ngay between '%(date_from)s' and '%(date_to)s' and state='done' and name in %(dl_ids)s))
                                     - (select case when sum(tong_sai_kythuat)!=0 then sum(tong_sai_kythuat) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay<='%(date_to)s' and state='done' and daily_id in %(dl_ids)s)) luu_hanh_cuoi_ky,
                         (((select case when sum(product_qty)!=0 then sum(product_qty) else 0 end sl from stock_move where picking_id in (select id from stock_picking where type='out') and product_id = %(product_id)s
                         and date(timezone('UTC',date))<='%(date_to)s' and partner_id in %(dl_ids)s) - (select case when sum(tong_cong)!=0 then sum(tong_cong) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay<='%(date_to)s' and state='done' and daily_id in %(dl_ids)s)
+                                    - (select case when sum(sl)!=0 then sum(sl) else 0 end sl from ve_e_line where product_id=%(product_id)s and ve_e_id in (select id from ve_e where ngay between '%(date_from)s' and '%(date_to)s' and state='done' and name in %(dl_ids)s))
                                     - (select case when sum(tong_sai_kythuat)!=0 then sum(tong_sai_kythuat) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay<='%(date_to)s' and state='done' and daily_id in %(dl_ids)s))*list_price::int) tien_cuoi_ky
                 from product_product pp, product_template pt
                 where pp.product_tmpl_id=pt.id and pp.id=%(product_id)s
@@ -144,6 +149,7 @@ class Parser(report_sxw.rml_parse):
                             'nhan_trg_ky':rs['nhan_trg_ky'],
                             'ban_trg_ky':rs['ban_trg_ky'],
                             'sai_trg_ky':rs['sai_trg_ky'],
+                            'e_trg_ky':rs['e_trg_ky'],
                             'luu_hanh_cuoi_ky':rs['luu_hanh_cuoi_ky'],
                             'tien_cuoi_ky':rs['tien_cuoi_ky'],
                             })
@@ -171,16 +177,19 @@ class Parser(report_sxw.rml_parse):
         sql='''
                 select name, ((select case when sum(product_qty)!=0 then sum(product_qty) else 0 end sl from stock_move where picking_id in (select id from stock_picking where type='out') and product_id = %(product_id)s
                         and date(timezone('UTC',date))<'%(date_from)s' and partner_id in %(dl_ids)s and state='done') - (select case when sum(tong_cong)!=0 then sum(tong_cong) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay<'%(date_from)s' and state='done' and daily_id in %(dl_ids)s)
+                                    - - (select case when sum(sl)!=0 then sum(sl) else 0 end sl from ve_e_line where product_id=%(product_id)s and ve_e_id in (select id from ve_e where ngay<'%(date_from)s' and state='done' and name in %(dl_ids)s))
                                     - (select case when sum(tong_sai_kythuat)!=0 then sum(tong_sai_kythuat) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay<'%(date_from)s' and state='done' and daily_id in %(dl_ids)s)) dau_ky,
                         (select case when sum(product_qty)!=0 then sum(product_qty) else 0 end sl  from stock_move where picking_id in (select id from stock_picking where type='out') and product_id = %(product_id)s
                         and date(timezone('UTC',date)) between '%(date_from)s' and '%(date_to)s' and partner_id in %(dl_ids)s and state='done') nhan_trg_ky,
                         (select case when sum(tong_cong)!=0 then sum(tong_cong) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay between '%(date_from)s' and '%(date_to)s' and state='done' and daily_id in %(dl_ids)s) ban_trg_ky, 
                         (select case when sum(tong_sai_kythuat)!=0 then sum(tong_sai_kythuat) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay between '%(date_from)s' and '%(date_to)s' and state='done' and daily_id in %(dl_ids)s) sai_trg_ky,
+                        (select case when sum(sl)!=0 then sum(sl) else 0 end sl from ve_e_line where product_id=%(product_id)s and ve_e_id in (select id from ve_e where ngay between '%(date_from)s' and '%(date_to)s' and state='done' and name in %(dl_ids)s)) e_trg_ky,
                         ((select case when sum(product_qty)!=0 then sum(product_qty) else 0 end sl  from stock_move where picking_id in (select id from stock_picking where type='out') and product_id = %(product_id)s
                         and date(timezone('UTC',date))<='%(date_to)s' and partner_id in %(dl_ids)s and state='done') - (select case when sum(tong_cong)!=0 then sum(tong_cong) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay<='%(date_to)s' and state='done' and daily_id in %(dl_ids)s)
                                     - (select case when sum(tong_sai_kythuat)!=0 then sum(tong_sai_kythuat) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay<='%(date_to)s' and state='done' and daily_id in %(dl_ids)s)) luu_hanh_cuoi_ky,
                         (((select case when sum(product_qty)!=0 then sum(product_qty) else 0 end sl  from stock_move where picking_id in (select id from stock_picking where type='out') and product_id = %(product_id)s
                         and date(timezone('UTC',date))<='%(date_to)s' and partner_id in %(dl_ids)s and state='done') - (select case when sum(tong_cong)!=0 then sum(tong_cong) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay<='%(date_to)s' and state='done' and daily_id in %(dl_ids)s)
+                                    - (select case when sum(sl)!=0 then sum(sl) else 0 end sl from ve_e_line where product_id=%(product_id)s and ve_e_id in (select id from ve_e where ngay between '%(date_from)s' and '%(date_to)s' and state='done' and name in %(dl_ids)s))
                                     - (select case when sum(tong_sai_kythuat)!=0 then sum(tong_sai_kythuat) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay<='%(date_to)s' and state='done' and daily_id in %(dl_ids)s))*list_price::int) tien_cuoi_ky
                 from product_product pp, product_template pt
                 where pp.product_tmpl_id=pt.id and pp.id=%(product_id)s
@@ -199,6 +208,7 @@ class Parser(report_sxw.rml_parse):
                         'nhan_trg_ky':rs['nhan_trg_ky'],
                         'ban_trg_ky':rs['ban_trg_ky'],
                         'sai_trg_ky':rs['sai_trg_ky'],
+                        'e_trg_ky':rs['e_trg_ky'],
                         'luu_hanh_cuoi_ky':rs['luu_hanh_cuoi_ky'],
                         'tien_cuoi_ky':rs['tien_cuoi_ky'],
                         })
@@ -208,6 +218,7 @@ class Parser(report_sxw.rml_parse):
             self.total_sai_ky += rs['sai_trg_ky'] or 0.0
             self.total_lh_cuoi += rs['luu_hanh_cuoi_ky'] or 0.0
             self.total_tien_cuoi += rs['tien_cuoi_ky'] or 0.0
+            self.total_ve_e += rs['e_trg_ky'] or 0.0
         return res
     
     def get_tong_tien(self):
@@ -215,6 +226,7 @@ class Parser(report_sxw.rml_parse):
                 'nhan_trg_ky':self.total_nhan_ky,
                 'ban_trg_ky':self.total_ban_ky,
                 'sai_trg_ky':self.total_sai_ky,
+                'e_trg_ky':self.total_ve_e,
                 'luu_hanh_cuoi_ky':self.total_lh_cuoi,
                 'tien_cuoi_ky':self.total_tien_cuoi,}]
         return res
