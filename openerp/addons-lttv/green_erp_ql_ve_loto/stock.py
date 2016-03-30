@@ -172,6 +172,10 @@ class ve_e(osv.osv):
         've_e_line': fields.one2many('ve.e.line','ve_e_id','Line',states={'done':[('readonly',True)]}),
     }
     
+    _defaults = {
+                 'state':'new',
+                 } 
+    
     def bt_datra(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids, {'state':'done'})
 ve_e()
