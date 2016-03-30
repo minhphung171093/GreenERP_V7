@@ -30,6 +30,7 @@ from openerp.osv import fields, osv
 from openerp.tools.translate import _
 from openerp import SUPERUSER_ID
 from openerp import netsvc
+import time
 
 class stock_picking(osv.osv):
     _inherit = "stock.picking"
