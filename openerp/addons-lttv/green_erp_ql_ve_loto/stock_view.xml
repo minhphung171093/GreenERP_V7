@@ -632,7 +632,7 @@
         </record>
         
         <record id="action_ve_e" model="ir.actions.act_window">
-            <field name="name">Vé ế</field>
+            <field name="name">Nhập kho vé ế</field>
             <field name="res_model">ve.e</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
