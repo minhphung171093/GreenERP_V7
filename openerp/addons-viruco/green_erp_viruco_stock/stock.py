@@ -1243,12 +1243,14 @@ class stock_picking_out(osv.osv):
         if phanbo_ids:
             for line in phanbo_ids:
                 move_ids = self.pool.get('stock.move').search(cr,uid,[('sale_line_id','=',line['id'])])
+                sale_line = self.pool.get('sale.order.line').browse(cr,uid,line['id'])
                 sql = '''
                     select sum(product_qty) as qty_von from stock_move where sale_line_id = %s and sale_line_id is not null
                 '''%(line['id'])
                 cr.execute(sql)
                 qty_von = cr.dictfetchone()['qty_von']
                 self.pool.get('stock.move').write(cr,uid,[move_ids[0]],{
+                                                                        'product_id': sale_line.product_id.id,
                                                                         'product_qty': qty_von,
                                                                         'hop_dong_mua_id': False,
                                                                         'picking_in_id': False,
@@ -1334,7 +1336,7 @@ class stock_move(osv.osv):
                     res[line.id]['primary_qty'] = line.product_qty
         return res
     _columns = {
-        'product_thaythe_id':fields.many2one('product.product','Sản phẩm thay thế'),
+        'product_thaythe_id':fields.many2one('product.product','Thay thế cho sản phẩm'),
         'chatluong_id':fields.many2one('chatluong.sanpham','Chất lượng'),
         'quycach_baobi_id':fields.many2one('quycach.baobi','Quy cách bao bì'),
         'quycach_donggoi_id':fields.many2one('quycach.donggoi','Quy cách đóng gói'),

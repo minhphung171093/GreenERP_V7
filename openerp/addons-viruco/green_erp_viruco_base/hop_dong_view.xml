@@ -373,19 +373,25 @@
 	                            <div class="oe_clear"/>
 							</page>
 							<page string="Theo dõi hợp đồng" >
+							<div class='oe_green_erp_scroll'>
 								<field name="theodoi_hopdong_line">
 									<tree editable='top'>
 	                                    <field name="name" />
 	                                    <field name="freight" />
-	                                    <field name="shipping_line_id" />
-	                                    <field name="forwarder_line_id" />
+	                                    <field name="shipping_line_id"/>
+	                                    <field name="forwarder_line_id"/>
 	                                    <field name="log_in_charge" />
 	                                    <field name="doc_in_charge" />
-	                                    <field name="seal_no" />
+	                                    <field name="etd" />
 	                                    <field name="bl_no" />
 	                                    <field name="dhl_no" />
+	                                    <field name="container_no_seal" />
+	                                    <field name="seal_no" />
+	                                    <field name="product_id" />
+	                                    <field name="gross_weight" />
 									</tree>
 								</field>
+							</div>
 							</page>
 						</notebook>
 		         	</sheet>
