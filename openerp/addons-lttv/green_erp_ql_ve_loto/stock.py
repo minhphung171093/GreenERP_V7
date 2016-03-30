@@ -168,12 +168,13 @@ class ve_e(osv.osv):
     _columns = {
         'name': fields.many2one('res.partner','Đại lý',domain="[('dai_ly','=',True)]",states={'done':[('readonly',True)]}),
         'state': fields.selection([('new','Mới tạo'),('done','Đã nhận')],'Trạng thái'),
-        'ngay': fields.date('Ngày trả',states={'done':[('readonly',True)]}),
+        'ngay': fields.date('Ngày nhận',states={'done':[('readonly',True)]}),
         've_e_line': fields.one2many('ve.e.line','ve_e_id','Line',states={'done':[('readonly',True)]}),
     }
     
     _defaults = {
                  'state':'new',
+                 'ngay':  lambda *a: time.strftime('%Y-%m-%d'),
                  } 
     
     def bt_datra(self, cr, uid, ids, context=None):
