@@ -28,7 +28,7 @@
             <field name="target">new</field>
         </record>
         
-        <menuitem name="Doanh thu tiêu thụ" id="menu_action_view_tonghop_doanhthu_tieuthu_report" action="action_view_tonghop_doanhthu_tieuthu_report" parent="menu_baocao" sequence="30" groups="group_ql_ve_loto_man"/>
+        <menuitem name="Doanh thu tiêu thụ" id="menu_action_view_tonghop_doanhthu_tieuthu_report" action="action_view_tonghop_doanhthu_tieuthu_report" parent="menu_baocao" sequence="30" groups="group_pp_ve_loto,group_ql_ve_loto_man"/>
         
     </data>
 </openerp>

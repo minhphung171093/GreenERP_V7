@@ -9,16 +9,23 @@
 	    </record>
 	
 	    <record id="group_ql_ve_loto" model="res.groups">
-	        <field name="name">Người dùng vé loto</field>
+	        <field name="name">Nhân viên vé loto</field>
 	        <field name="category_id" ref="module_category_ql_ve_loto"/>
 	        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
 	        <field name="comment">the user will have access to his own data</field>
 	    </record>
-		
-		<record id="group_ql_ve_loto_man" model="res.groups">
-	        <field name="name">Quản lý vé loto</field>
+	    
+	    <record id="group_pp_ve_loto" model="res.groups">
+	        <field name="name">Phó phòng vé loto</field>
 	        <field name="category_id" ref="module_category_ql_ve_loto"/>
 	        <field name="implied_ids" eval="[(4, ref('group_ql_ve_loto'))]"/>
+	        <field name="comment">the user will have access to his own data</field>
+	    </record>
+		
+		<record id="group_ql_ve_loto_man" model="res.groups">
+	        <field name="name">Trưởng phòng vé loto</field>
+	        <field name="category_id" ref="module_category_ql_ve_loto"/>
+	        <field name="implied_ids" eval="[(4, ref('group_pp_ve_loto'))]"/>
 	        <field name="comment">the user will have access to his own data</field>
 	    </record>
 		
