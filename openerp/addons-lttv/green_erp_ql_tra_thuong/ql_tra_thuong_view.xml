@@ -285,7 +285,7 @@
 	                <sheet string="Trả thưởng">
 	                    <group>
 		                    <group>
-		                        <field name="daily_id"/>
+		                        <field name="daily_id" domain="[('parent_id','=',False),('dai_ly','=',True)]"/>
 		                        <field name="nguoi_nhan_thuong"/>
 		                        <field name="journal_id" invisible='1' domain="[('type','in',['cash','bank'])]"/>
 		                    </group>

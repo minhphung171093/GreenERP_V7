@@ -429,7 +429,7 @@ class tra_thuong_thucte_line(osv.osv):
             res[line.id] = line.sl_trung * line.slan_trung * line.tong_tien
         return res
     
-    def onchange_product(self, cr, uid, ids, product_id=False,name=False,loai=False,giai=False,ngay=False,sl_trung=False,daily_id=False):
+    def onchange_product(self, cr, uid, ids, product_id=False,name=False,loai=False,giai=False,ngay=False,sl_trung=False,daily_id=False, context=None):
         res = {}
         warning = {}
         sl_chuatra = 0
@@ -437,8 +437,8 @@ class tra_thuong_thucte_line(osv.osv):
         if product_id and name and loai and giai and ngay:
             sql = '''
                 select slan_trung,case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung from tra_thuong_line where product_id = %s and name='%s' and loai='%s' and giai='%s' and
-                    trathuong_id in (select id from tra_thuong where ngay = '%s' and parent_id is null and daily_id = %s) group by slan_trung
-            '''%(product_id, name, loai, giai, ngay, daily_id)
+                    trathuong_id in (select id from tra_thuong where ngay = '%s' and parent_id is null) group by slan_trung
+            '''%(product_id, name, loai, giai, ngay)
             cr.execute(sql)
             test = cr.dictfetchone()
             if not test:
@@ -456,8 +456,8 @@ class tra_thuong_thucte_line(osv.osv):
             
             sql = '''
                 select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_datra from tra_thuong_thucte_line where product_id = %s and name='%s' and loai='%s' and giai='%s' and
-                    trathuong_id in (select id from tra_thuong_thucte where ngay = '%s' and state='done' and daily_id = %s)
-            '''%(product_id, name, loai, giai, ngay, daily_id)
+                    trathuong_id in (select id from tra_thuong_thucte where ngay = '%s' and state='done')
+            '''%(product_id, name, loai, giai, ngay)
             cr.execute(sql)
             sl_datra = cr.dictfetchone()['sl_datra']
             res = {'sl_trung':sl_phaitra - sl_datra,'slan_trung':slan_trung}
