@@ -239,7 +239,6 @@
                     <field name="daily_id"/>
                     <field name="ngay"/>
                     <field name="nguoi_nhan_thuong"/>
-                    <field name="journal_id"/>
                     <field name="ngay_tra_thuong"/>
                     <field name="state"/>
                     <filter icon="terp-go-year" string="Mới tạo" name="moitao" domain="[('state','=','new')]" />
@@ -247,7 +246,6 @@
                     <group expand="0" string="Group By...">
                         <filter name="group_daily_id" string="Theo đại lý" icon="terp-personal" domain="[]" context="{'group_by':'daily_id'}"/>
                         <filter name="group_nguoi_nhan_thuong" string="Theo người nhận thưởng" icon="terp-personal" domain="[]" context="{'group_by':'nguoi_nhan_thuong'}"/>
-                        <filter name="group_journal_id" string="Theo phương thức thanh toán" icon="terp-personal" domain="[]" context="{'group_by':'journal_id'}"/>
                         <filter name="group_thang_xs" string="Theo tháng xổ số" icon="terp-personal" domain="[]" context="{'group_by':'ngay'}"/>
                         <filter name="group_thang_nt" string="Theo tháng nhận thưởng" icon="terp-personal" domain="[]" context="{'group_by':'ngay_tra_thuong'}"/>
                         <filter name="group_state" string="Theo trạng thái" icon="terp-personal" domain="[]" context="{'group_by':'state'}"/>
@@ -263,7 +261,6 @@
                 <tree string="Trả thưởng thực tế">
                     <field name="daily_id"/>
                     <field name="nguoi_nhan_thuong"/>
-                    <field name="journal_id"/>
                     <field name="ngay"/>
                     <field name="ngay_tra_thuong"/>
                     <field name="state"/>

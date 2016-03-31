@@ -263,7 +263,7 @@ class quyet_toan_ve_ngay(osv.osv):
     
     def get_lines(self, cr, product_id, date_from, date_to, co_chi):
         res = []
-        seq = 0
+        seq = -1
         if co_chi:
             sql = '''
                 select tttt.ngay as ngay_mo_so, kqxs.dai_duthuong_id as dai_duthuong
@@ -284,13 +284,13 @@ class quyet_toan_ve_ngay(osv.osv):
             '''%(date_from, date_to,product_id)
         cr.execute(sql)
         for seq_tt,line in enumerate(cr.dictfetchall()):
-            seq += seq_tt
+            seq += 1
             seq_n = seq
             res.append({
                 'ngay_mo_so': line['ngay_mo_so'],
+                'ngay_mo_thuong': line['ngay_mo_so'],
                 'dai_duthuong_id': line['dai_duthuong'],
             })
-            
             # 2 so
             sql = '''
                 select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung,
@@ -357,7 +357,7 @@ class quyet_toan_ve_ngay(osv.osv):
             for s_2_dc,loai_2_dc in enumerate(cr.dictfetchall()):
                 if seq_n+s_2_dc > seq:
                     seq += 1
-                    res.append({})
+                    res.append({'ngay_mo_thuong': line['ngay_mo_so']})
                 res[seq_n+s_2_dc]['sl_2_dc'] = loai_2_dc['sl_trung']
                 res[seq_n+s_2_dc]['slan_2_dc'] = loai_2_dc['slan_trung']
                 res[seq_n+s_2_dc]['st_2_dc'] = loai_2_dc['so_tien']
@@ -383,7 +383,7 @@ class quyet_toan_ve_ngay(osv.osv):
             for s_2_18,loai_2_18 in enumerate(cr.dictfetchall()):
                 if seq_n+s_2_18 > seq:
                     seq += 1
-                    res.append({})
+                    res.append({'ngay_mo_thuong': line['ngay_mo_so']})
                 res[seq_n+s_2_18]['sl_2_18'] = loai_2_18['sl_trung']
                 res[seq_n+s_2_18]['slan_2_18'] = loai_2_18['slan_trung']
                 res[seq_n+s_2_18]['st_2_18'] = loai_2_18['so_tien']
@@ -454,7 +454,7 @@ class quyet_toan_ve_ngay(osv.osv):
             for s_3_dc,loai_3_dc in enumerate(cr.dictfetchall()):
                 if seq_n+s_3_dc > seq:
                     seq += 1
-                    res.append({})
+                    res.append({'ngay_mo_thuong': line['ngay_mo_so']})
                 res[seq_n+s_3_dc]['sl_3_dc'] = loai_3_dc['sl_trung']
                 res[seq_n+s_3_dc]['slan_3_dc'] = loai_3_dc['slan_trung']
                 res[seq_n+s_3_dc]['st_3_dc'] = loai_3_dc['so_tien']
@@ -480,7 +480,7 @@ class quyet_toan_ve_ngay(osv.osv):
             for s_3_7,loai_3_7 in enumerate(cr.dictfetchall()):
                 if seq_n+s_3_7 > seq:
                     seq += 1
-                    res.append({})
+                    res.append({'ngay_mo_thuong': line['ngay_mo_so']})
                 res[seq_n+s_3_7]['sl_3_7'] = loai_3_7['sl_trung']
                 res[seq_n+s_3_7]['slan_3_7'] = loai_3_7['slan_trung']
                 res[seq_n+s_3_7]['st_3_7'] = loai_3_7['so_tien']
@@ -506,7 +506,7 @@ class quyet_toan_ve_ngay(osv.osv):
             for s_3_17,loai_3_17 in enumerate(cr.dictfetchall()):
                 if seq_n+s_3_17 > seq:
                     seq += 1
-                    res.append({})
+                    res.append({'ngay_mo_thuong': line['ngay_mo_so']})
                 res[seq_n+s_3_17]['sl_3_17'] = loai_3_17['sl_trung']
                 res[seq_n+s_3_17]['slan_3_17'] = loai_3_17['slan_trung']
                 res[seq_n+s_3_17]['st_3_17'] = loai_3_17['so_tien']
@@ -533,7 +533,7 @@ class quyet_toan_ve_ngay(osv.osv):
             for s_4_16,loai_4_16 in enumerate(cr.dictfetchall()):
                 if seq_n+s_4_16 > seq:
                     seq += 1
-                    res.append({})
+                    res.append({'ngay_mo_thuong': line['ngay_mo_so']})
                 res[seq_n+s_4_16]['sl_4_16'] = loai_4_16['sl_trung']
                 res[seq_n+s_4_16]['slan_4_16'] = loai_4_16['slan_trung']
                 res[seq_n+s_4_16]['st_4_16'] = loai_4_16['so_tien']
@@ -584,6 +584,7 @@ class quyet_toan_ve_ngay_line(osv.osv):
     _columns = {
         'quyettoan_id': fields.many2one('quyet.toan.ve.ngay','Quyết toán vé ngày',ondelete='cascade'),
         'ngay_mo_so': fields.date('Ngày mở số'),
+        'ngay_mo_thuong': fields.date('Ngày mở thưởng'),
         'dai_duthuong_id': fields.many2one('dai.duthuong', 'Đài dự thưởng'),
         'sl_2_d': fields.float('SL', digits=(16,0)),
         'st_2_d': fields.float('SL', digits=(16,0)),
