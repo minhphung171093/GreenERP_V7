@@ -245,6 +245,7 @@
 						<button name="ky_hd" string="Ký hợp đồng" states="da_duyet" type="object" class="oe_highlight"/>
 						<button name="huy_hd_ngoai" string="Hủy bỏ" type="object" states="moi_tao,da_duyet,het_han,thuc_hien" class="oe_highlight"/>
 						<button name="set_to_draft" string="Quay về mới tạo" states="huy_bo" type="object" class="oe_highlight"/>
+						<button name="bt_theodoi_hopdong" string="Theo dõi HĐ" type="object" class="oe_highlight"/>
 						<field name="state" widget="statusbar" statusbar_visible="moi_tao,da_duyet,da_ky,het_han,huy_bo"/>
 					</header>
 	            	<sheet>
@@ -267,7 +268,6 @@
 	                    	<field name="currency_id" string="Currency"/>
 	                    	<field name="user_id" string="User"/>
 	                    	<field name="user_chungtu_id" readonly = '1'/>
-	                    	<field name="create_theodoi_hopdong" invisible = '1'/>
 	                    	<field name="pricelist_id" invisible = '1'/>
 	                    	<field name="date_dbh" invisible = '1' />
 						</group>
