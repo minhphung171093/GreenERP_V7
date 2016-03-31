@@ -94,7 +94,7 @@ class Parser(report_sxw.rml_parse):
                  }
             self.cr.execute(sql)
             for ve50 in self.cr.fetchall():
-                rs50 += ve20 and ve50[0] + '; ' or ''
+                rs50 += ve50 and ve50[0] + '; ' or ''
             
             if rs:
                 self.total_10 += rs['qty_10']
