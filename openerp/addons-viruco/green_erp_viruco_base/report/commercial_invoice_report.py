@@ -407,13 +407,6 @@ class Parser(report_sxw.rml_parse):
                             })                
             if line.option and line.option == 'seal_no':
                 if len(line.description_line) > 1:
-                    res.append({ 'product': line.container_no_seal + '/' + line.seal_no or '',
-                                'package': '',
-                                'form': '',
-                                'net_weight': '',
-                                'gross_weight': '',
-                                })
-    
                     for detail in line.description_line:
                         res.append({ 'product': detail.hopdong_line_id and detail.hopdong_line_id.product_id and detail.hopdong_line_id.product_id.eng_name + ' '+ detail.hopdong_line_id.product_id.default_code or '',
                                 'package': detail.packages_qty and round(detail.packages_qty) or 0,
@@ -423,9 +416,16 @@ class Parser(report_sxw.rml_parse):
                                 })
                         self.pack = detail.packages_id.name or ''
                         self.pack_weight = self.get_packages_weight(detail.packages_weight)
+                    res.append({ 'product': 'CONTAINER NO. / SEAL NO.'+ '\n'+ line.container_no_seal + '/' + line.seal_no or '',
+                                'package': '',
+                                'form': '',
+                                'net_weight': '',
+                                'gross_weight': '',
+                                })
+    
                 if len(line.description_line) == 1:
                     detail = line.description_line[0]
-                    res.append({ 'product': line.container_no_seal + '/' + line.seal_no or '',
+                    res.append({ 'product': 'CONTAINER NO. / SEAL NO.'+ '\n'+ line.container_no_seal + '/' + line.seal_no or '',
                                 'package': detail.packages_qty and round(detail.packages_qty) or 0,
                                 'form': detail.packages_weight,
                                 'net_weight': detail.net_weight and round(detail.net_weight,2) or 0,
