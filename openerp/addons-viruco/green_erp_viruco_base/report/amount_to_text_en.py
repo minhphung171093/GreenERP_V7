@@ -81,11 +81,13 @@ def amount_to_text(number, currency):
     end_word = english_number(int(list[1]))
     cents_number = int(list[1])
     cents_name = (cents_number > 1) and 'Cent' or 'Cents'
-    only_name = (cents_number == 0) and 'Only' or 'Only'
-    if cents_name:
+#     only_name = (cents_number == 0) and 'Only' or 'Only'
+    if end_word!='Zero':
         final_result = start_word.title() +' '+units_name+' and ' + str.lower(end_word) +' '+str.lower(cents_name)
-    if only_name:
-        final_result = start_word.title() +' '+units_name+' '+str.lower(only_name)
+    else:
+        final_result = start_word.title() +' '+units_name+' Only'
+#     if only_name:
+#         final_result = start_word.title() +' '+units_name+' '+str.lower(only_name)
     return final_result
 
 
