@@ -142,10 +142,10 @@ class draft_bl(osv.osv):
                 if vals['state'] == 'hoan_tat':
                     hopdong_ban = self.pool.get('hop.dong').browse(cr,uid,line.hopdong_id.id)
                     self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'xong_chungtu'})
-            sql = '''
-                update hop_dong set user_chungtu_id = %s where id = %s
-            '''%(uid,line.hopdong_id.id)
-            cr.execute(sql)
+#             sql = '''
+#                 update hop_dong set user_chungtu_id = %s where id = %s
+#             '''%(uid,line.hopdong_id.id)
+#             cr.execute(sql)
 #         sql = '''
 #             update draft_bl set user_id = %s where id = %s
 #         '''%(uid,ids[0])
