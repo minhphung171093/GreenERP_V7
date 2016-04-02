@@ -247,7 +247,7 @@ class Parser(report_sxw.rml_parse):
                 
         for nqt in self.get_so_nqt(): #'so ngay quyet toan, co ham roi'
             sql='''
-            
+                
             '''
             'sql lay slan, soluong, sotien cua loai 2 so 18 lo group by theo so lan'
             for slan_nqt in self.cr.dictfetchall():

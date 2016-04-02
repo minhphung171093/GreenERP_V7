@@ -246,9 +246,7 @@ class Parser(report_sxw.rml_parse):
                 if seq_n+s_2_dc > seq and (loai_2_dc['sl_trung']!=0 or loai_2_dc['slan_trung']!=0 or loai_2_dc['so_tien']!=0):
                     seq += 1
                     res.append({
-                        'ngay_mo_so': '',
-                        'ngay_mo_thuong': line['ngay_mo_so'],
-                        'dai_duthuong_id': '',
+                        'ngay_tra_thuong': '',
                         
                         'sl_2_d': 0,
                         'st_2_d': 0,
@@ -306,9 +304,7 @@ class Parser(report_sxw.rml_parse):
                 if seq_n+s_2_18 > seq and (loai_2_18['sl_trung']!=0 or loai_2_18['slan_trung']!=0 or loai_2_18['so_tien']!=0):
                     seq += 1
                     res.append({
-                        'ngay_mo_so': '',
-                        'ngay_mo_thuong': line['ngay_mo_so'],
-                        'dai_duthuong_id': '',
+                        'ngay_tra_thuong': '',
                         
                         'sl_2_d': 0,
                         'st_2_d': 0,
@@ -403,9 +399,7 @@ class Parser(report_sxw.rml_parse):
                 if seq_n+s_3_dc > seq and (loai_3_dc['sl_trung']!=0 or loai_3_dc['slan_trung']!=0 or loai_3_dc['so_tien']!=0):
                     seq += 1
                     res.append({
-                        'ngay_mo_so': '',
-                        'ngay_mo_thuong': line['ngay_mo_so'],
-                        'dai_duthuong_id': '',
+                        'ngay_tra_thuong': '',
                         
                         'sl_2_d': 0,
                         'st_2_d': 0,
@@ -463,9 +457,7 @@ class Parser(report_sxw.rml_parse):
                 if seq_n+s_3_7 > seq and (loai_3_7['sl_trung']!=0 or loai_3_7['slan_trung']!=0 or loai_3_7['so_tien']!=0):
                     seq += 1
                     res.append({
-                        'ngay_mo_so': '',
-                        'ngay_mo_thuong': line['ngay_mo_so'],
-                        'dai_duthuong_id': '',
+                        'ngay_tra_thuong': '',
                         
                         'sl_2_d': 0,
                         'st_2_d': 0,
@@ -523,9 +515,7 @@ class Parser(report_sxw.rml_parse):
                 if seq_n+s_3_17 > seq and (loai_3_17['sl_trung']!=0 or loai_3_17['slan_trung']!=0 or loai_3_17['so_tien']!=0):
                     seq += 1
                     res.append({
-                        'ngay_mo_so': '',
-                        'ngay_mo_thuong': line['ngay_mo_so'],
-                        'dai_duthuong_id': '',
+                        'ngay_tra_thuong': '',
                         
                         'sl_2_d': 0,
                         'st_2_d': 0,
@@ -584,9 +574,7 @@ class Parser(report_sxw.rml_parse):
                 if seq_n+s_4_16 > seq and (loai_4_16['sl_trung']!=0 or loai_4_16['slan_trung']!=0 or loai_4_16['so_tien']!=0):
                     seq += 1
                     res.append({
-                        'ngay_mo_so': '',
-                        'ngay_mo_thuong': line['ngay_mo_so'],
-                        'dai_duthuong_id': '',
+                        'ngay_tra_thuong': '',
                         
                         'sl_2_d': 0,
                         'st_2_d': 0,
