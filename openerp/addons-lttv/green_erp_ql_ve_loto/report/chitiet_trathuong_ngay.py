@@ -24,31 +24,31 @@ class Parser(report_sxw.rml_parse):
     def __init__(self, cr, uid, name, context):
         super(Parser, self).__init__(cr, uid, name, context=context)
         pool = pooler.get_pool(self.cr.dbname)
-        self.sl_2_d_tong = 0,
-        self.st_2_d_tong = 0,
-        self.sl_2_c_tong = 0,
-        self.st_2_c_tong = 0,
-        self.sl_2_dc_tong = 0,
-        self.st_2_dc_tong = 0,
-        self.sl_2_18_tong = 0,
-        self.st_2_18_tong = 0,
+        self.sl_2_d_tong = 0
+        self.st_2_d_tong = 0
+        self.sl_2_c_tong = 0
+        self.st_2_c_tong = 0
+        self.sl_2_dc_tong = 0
+        self.st_2_dc_tong = 0
+        self.sl_2_18_tong = 0
+        self.st_2_18_tong = 0
         
-        self.sl_3_d_tong = 0,
-        self.st_3_d_tong = 0,
-        self.sl_3_c_tong = 0,
-        self.st_3_c_tong = 0,
-        self.sl_3_dc_tong = 0,
-        self.st_3_dc_tong = 0,
-        self.sl_3_7_tong = 0,
-        self.st_3_7_tong = 0,
-        self.sl_3_17_tong = 0,
-        self.st_3_17_tong = 0,
+        self.sl_3_d_tong = 0
+        self.st_3_d_tong = 0
+        self.sl_3_c_tong = 0
+        self.st_3_c_tong = 0
+        self.sl_3_dc_tong = 0
+        self.st_3_dc_tong = 0
+        self.sl_3_7_tong = 0
+        self.st_3_7_tong = 0
+        self.sl_3_17_tong = 0
+        self.st_3_17_tong = 0
         
-        self.sl_4_16_tong = 0,
-        self.st_4_16_tong = 0,
+        self.sl_4_16_tong = 0
+        self.st_4_16_tong = 0
         
-        self.sl_tong = 0,
-        self.st_tong = 0,
+        self.sl_tong = 0
+        self.st_tong = 0
         self.localcontext.update({
             'get_vietname_date': self.get_vietname_date,
             'convert': self.convert,
@@ -92,31 +92,6 @@ class Parser(report_sxw.rml_parse):
             'sl_tong' :self.sl_tong,
             'st_tong' :self.st_tong,
         }
-        self.sl_2_d_tong = 0,
-        self.st_2_d_tong = 0,
-        self.sl_2_c_tong = 0,
-        self.st_2_c_tong = 0,
-        self.sl_2_dc_tong = 0,
-        self.st_2_dc_tong = 0,
-        self.sl_2_18_tong = 0,
-        self.st_2_18_tong = 0,
-        
-        self.sl_3_d_tong = 0,
-        self.st_3_d_tong = 0,
-        self.sl_3_c_tong = 0,
-        self.st_3_c_tong = 0,
-        self.sl_3_dc_tong = 0,
-        self.st_3_dc_tong = 0,
-        self.sl_3_7_tong = 0,
-        self.st_3_7_tong = 0,
-        self.sl_3_17_tong = 0,
-        self.st_3_17_tong = 0,
-        
-        self.sl_4_16_tong = 0,
-        self.st_4_16_tong = 0,
-        
-        self.sl_tong = 0,
-        self.st_tong = 0,
         return [vals]
         
     def get_lines(self):
@@ -252,6 +227,7 @@ class Parser(report_sxw.rml_parse):
                     
                     from tra_thuong_thucte_line where loai='2_so' and giai='dau_cuoi' and product_id=%s
                         and trathuong_id in (select id from tra_thuong_thucte where ngay='%s' and ngay_tra_thuong = '%s' and state='done') 
+                    group by slan_trung 
             '''%(product_id, line['ngay_mo_so'], date)
             cr.execute(sql)
             for s_2_dc,loai_2_dc in enumerate(cr.dictfetchall()):
