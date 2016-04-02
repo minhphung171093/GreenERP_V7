@@ -17,3 +17,4 @@ import veban_theolo_theongay
 import stock_partial_picking
 import quyettoan_ve_thang
 import bangke_chitiet_hethan
+import chitiet_trathuong_ngay
