@@ -2,11 +2,11 @@
 <openerp>
     <data>
     
-        <record id="view_bangke_chitiet_hethan_report" model="ir.ui.view">
-            <field name="name">bangke.chitiet.hethan.report</field>
-            <field name="model">bangke.chitiet.hethan</field>
+        <record id="view_chitiet_trathuong_ngay_report" model="ir.ui.view">
+            <field name="name">chitiet.trathuong.ngay.report</field>
+            <field name="model">chitiet.trathuong.ngay</field>
             <field name="arch" type="xml">
-                <form string="Bảng kê chi tiết hết hạn" version="7.0">
+                <form string="Chi tiết trả thưởng ngày" version="7.0">
                     <group col='4' colspan='2'>
                     	<field name='product_id'/>
                     	<field name='date'/>
@@ -20,16 +20,16 @@
             </field>
         </record>
         
-        <record id="action_view_bangke_chitiet_hethan_report" model="ir.actions.act_window">
-            <field name="name">Bảng kê chi tiết hết hạn</field>
+        <record id="action_view_chitiet_trathuong_ngay_report" model="ir.actions.act_window">
+            <field name="name">Chi tiết trả thưởng ngày</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="res_model">bangke.chitiet.hethan</field>
+            <field name="res_model">chitiet.trathuong.ngay</field>
             <field name="view_type">form</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
         </record>
         
-        <menuitem name="Bảng kê chi tiết hết hạn" id="menu_action_view_bangke_chitiet_hethan_report" action="action_view_bangke_chitiet_hethan_report" parent="green_erp_ql_tra_thuong.menu_tra_thuong_baocao" sequence="35"/>
+        <menuitem name="Chi tiết trả thưởng ngày" id="menu_action_view_chitiet_trathuong_ngay_report" action="action_view_chitiet_trathuong_ngay_report" parent="green_erp_ql_tra_thuong.menu_tra_thuong_baocao" sequence="35"/>
         
     </data>
 </openerp>

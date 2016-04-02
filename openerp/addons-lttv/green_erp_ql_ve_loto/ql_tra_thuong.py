@@ -355,7 +355,7 @@ class quyet_toan_ve_ngay(osv.osv):
                 '''
             cr.execute(sql)
             for s_2_dc,loai_2_dc in enumerate(cr.dictfetchall()):
-                if seq_n+s_2_dc > seq:
+                if seq_n+s_2_dc > seq and (loai_2_dc['sl_trung']!=0 or loai_2_dc['slan_trung']!=0 or loai_2_dc['so_tien']!=0):
                     seq += 1
                     res.append({'ngay_mo_thuong': line['ngay_mo_so']})
                 res[seq_n+s_2_dc]['sl_2_dc'] = loai_2_dc['sl_trung']
@@ -381,7 +381,7 @@ class quyet_toan_ve_ngay(osv.osv):
                 '''
             cr.execute(sql)
             for s_2_18,loai_2_18 in enumerate(cr.dictfetchall()):
-                if seq_n+s_2_18 > seq:
+                if seq_n+s_2_18 > seq and (loai_2_18['sl_trung']!=0 or loai_2_18['slan_trung']!=0 or loai_2_18['so_tien']!=0):
                     seq += 1
                     res.append({'ngay_mo_thuong': line['ngay_mo_so']})
                 res[seq_n+s_2_18]['sl_2_18'] = loai_2_18['sl_trung']
@@ -452,7 +452,7 @@ class quyet_toan_ve_ngay(osv.osv):
                 '''
             cr.execute(sql)
             for s_3_dc,loai_3_dc in enumerate(cr.dictfetchall()):
-                if seq_n+s_3_dc > seq:
+                if seq_n+s_3_dc > seq and (loai_3_dc['sl_trung']!=0 or loai_3_dc['slan_trung']!=0 or loai_3_dc['so_tien']!=0):
                     seq += 1
                     res.append({'ngay_mo_thuong': line['ngay_mo_so']})
                 res[seq_n+s_3_dc]['sl_3_dc'] = loai_3_dc['sl_trung']
@@ -478,7 +478,7 @@ class quyet_toan_ve_ngay(osv.osv):
                 '''
             cr.execute(sql)
             for s_3_7,loai_3_7 in enumerate(cr.dictfetchall()):
-                if seq_n+s_3_7 > seq:
+                if seq_n+s_3_7 > seq and (loai_3_7['sl_trung']!=0 or loai_3_7['slan_trung']!=0 or loai_3_7['so_tien']!=0):
                     seq += 1
                     res.append({'ngay_mo_thuong': line['ngay_mo_so']})
                 res[seq_n+s_3_7]['sl_3_7'] = loai_3_7['sl_trung']
@@ -504,7 +504,7 @@ class quyet_toan_ve_ngay(osv.osv):
                 '''
             cr.execute(sql)
             for s_3_17,loai_3_17 in enumerate(cr.dictfetchall()):
-                if seq_n+s_3_17 > seq:
+                if seq_n+s_3_17 > seq and (loai_3_17['sl_trung']!=0 or loai_3_17['slan_trung']!=0 or loai_3_17['so_tien']!=0):
                     seq += 1
                     res.append({'ngay_mo_thuong': line['ngay_mo_so']})
                 res[seq_n+s_3_17]['sl_3_17'] = loai_3_17['sl_trung']
@@ -531,7 +531,7 @@ class quyet_toan_ve_ngay(osv.osv):
                 '''
             cr.execute(sql)
             for s_4_16,loai_4_16 in enumerate(cr.dictfetchall()):
-                if seq_n+s_4_16 > seq:
+                if seq_n+s_4_16 > seq and (loai_4_16['sl_trung']!=0 or loai_4_16['slan_trung']!=0 or loai_4_16['so_tien']!=0):
                     seq += 1
                     res.append({'ngay_mo_thuong': line['ngay_mo_so']})
                 res[seq_n+s_4_16]['sl_4_16'] = loai_4_16['sl_trung']
@@ -539,7 +539,7 @@ class quyet_toan_ve_ngay(osv.osv):
                 res[seq_n+s_4_16]['st_4_16'] = loai_4_16['so_tien']
                 
         return res
-    
+
     def create(self, cr, uid, vals, context=None):
         value = self.get_lines(cr, vals['product_id'], vals['date_from'], vals['date_to'], vals['co_chi'])
         quyettoan_line = []
