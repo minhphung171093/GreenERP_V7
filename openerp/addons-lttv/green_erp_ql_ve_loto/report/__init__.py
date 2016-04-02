@@ -21,3 +21,4 @@ import bangke_chitiet_hethan
 import chitiet_trathuong_ngay
 import chitiet_chi_uyquyen
 import tonghop_chi_uyquyen
+import tonghop_chi_uyquyen_all
