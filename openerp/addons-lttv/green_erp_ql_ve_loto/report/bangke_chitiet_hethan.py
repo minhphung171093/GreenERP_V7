@@ -222,7 +222,7 @@ class Parser(report_sxw.rml_parse):
                     where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
                      
                     group by slan_2_18
-                    order by asc
+                    order by slan_2_18 asc
             '''%(date,product[0])
         self.cr.execute(sql)
          #'so lan trung can phai group by so lan lai va order by tang dan'
