@@ -5,7 +5,7 @@
 	        <field name="name">chitiet_chi_uyquyen_report</field>
 	        <field name="type">ir.actions.report.xml</field>
 	        <field name="model">chitiet.chi.uyquyen</field>
-	        <field name="report_name">Chi tiết chi ủy quyền</field>
+	        <field name="report_name">Thẻ chi tiết chi ủy quyền</field>
 	        <field name="report_type">aeroo</field>
 	        <field name="in_format">oo-ods</field>
 	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
@@ -22,7 +22,7 @@
 			id="chitiet_chi_uyquyen_report" 
 			model="chitiet.chi.uyquyen" 
 			name="chitiet_chi_uyquyen_report"
-	        string="Chi tiết chi ủy quyền"
+	        string="Thẻ chi tiết chi ủy quyền"
 	        rml="green_erp_ql_ve_loto/report/chitiet_chi_uyquyen.ods"/> 	
 	</data>
 </openerp>

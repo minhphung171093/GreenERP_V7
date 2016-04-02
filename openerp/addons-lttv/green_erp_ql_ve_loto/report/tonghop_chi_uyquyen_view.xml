@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+    	<record id="tonghop_chi_uyquyen_report" model="ir.actions.report.xml">
+	        <field name="name">tonghop_chi_uyquyen_report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">tonghop.chi.uyquyen</field>
+	        <field name="report_name">Bảng tổng hợp chi ủy quyền</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">green_erp_ql_ve_loto/report/tonghop_chi_uyquyen.py</field>
+	        <field name="report_rml">green_erp_ql_ve_loto/report/tonghop_chi_uyquyen.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record> 
+    	   
+    	<report 
+			auto="False" 
+			menu="True"
+			id="tonghop_chi_uyquyen_report" 
+			model="tonghop.chi.uyquyen" 
+			name="tonghop_chi_uyquyen_report"
+	        string="Bảng tổng hợp chi ủy quyền"
+	        rml="green_erp_ql_ve_loto/report/tonghop_chi_uyquyen.ods"/> 	
+	</data>
+</openerp>
