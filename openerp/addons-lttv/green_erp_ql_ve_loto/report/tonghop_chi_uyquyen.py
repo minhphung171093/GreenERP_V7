@@ -146,7 +146,7 @@ class Parser(report_sxw.rml_parse):
             select rp.id as daily_id, rp.name as ho_ten
                 from tra_thuong_thucte tttt
                 left join res_partner rp on rp.id=tttt.daily_id
-                where tttt.state='done' and tttt.ngay_tra_thuong between '%s' and '%s' and tttt.id in (select trathuong_id from tra_thuong_thucte_line where product_id=%s)
+                where tttt.daily_id is not null and tttt.state='done' and tttt.ngay_tra_thuong between '%s' and '%s' and tttt.id in (select trathuong_id from tra_thuong_thucte_line where product_id=%s)
                 group by rp.id, rp.name
                 order by rp.id
         '''%(date_from, date_to,product_id)
