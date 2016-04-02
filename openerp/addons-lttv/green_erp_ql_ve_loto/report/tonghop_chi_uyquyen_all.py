@@ -32,7 +32,15 @@ class Parser(report_sxw.rml_parse):
             'get_date_from': self.get_date_from,
             'get_date_to': self.get_date_to,
             'get_line_tong': self.get_line_tong,
+            'convert_amount': self.convert_amount,
+            
         })
+        
+    def convert_amount(self, amount):
+        if not amount:
+            amount = 0.0
+        amount = format(amount, ',').split('.')[0]
+        return amount.replace(',','.')
         
     def get_line_tong(self):
         wizard_data = self.localcontext['data']['form']
@@ -58,7 +66,7 @@ class Parser(report_sxw.rml_parse):
             self.cr.execute(sql)
             so_tien = self.cr.fetchone()[0]
             res[0][menhgia.id] = so_tien
-            res[0][tong_cong] += so_tien
+            res[0]['tong_cong'] += so_tien
         return res
     
     def get_lines(self):
@@ -99,7 +107,7 @@ class Parser(report_sxw.rml_parse):
                 self.cr.execute(sql)
                 so_tien = self.cr.fetchone()[0]
                 res[seq][menhgia.id] = so_tien
-                res[seq][tong_cong] += so_tien
+                res[seq]['tong_cong'] += so_tien
         return res
     
     def get_vietname_date(self, date):
