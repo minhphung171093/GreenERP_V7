@@ -28,7 +28,7 @@ class Parser(report_sxw.rml_parse):
             'get_vietname_date': self.get_vietname_date,
             'convert': self.convert,
             'get_gt_menhgia': self.get_gt_menhgia,
-            'get_lines': self.get_lines,
+            'get_so_nqt': self.get_so_nqt,
             'get_name_menhgia': self.get_name_menhgia,
             'get_ddt_name': self.get_ddt_name,
             'get_2_dc': self.get_2_dc,
@@ -39,7 +39,7 @@ class Parser(report_sxw.rml_parse):
         dai_duthuong = self.pool.get('dai.duthuong').browse(self.cr, self.uid, dai_duthuong_id)
         return dai_duthuong.name
         
-    def get_lines(self):
+    def get_so_nqt(self):
         wizard_data = self.localcontext['data']['form']
         date = wizard_data['date']
         product = wizard_data['product_id']
@@ -208,6 +208,8 @@ class Parser(report_sxw.rml_parse):
 #                 res[seq_n+seq_2_18]['slan_tong'] = line_2_18['slan_2_18']
 #                 res[seq_n+seq_2_18]['st_tong'] += line_2_18['st_2_18']
 #             seq = -1
+        wizard_data = self.localcontext['data']['form']
+        date = wizard_data['date']
         res = []
         slan_dict = {}
         sql = '''
@@ -220,9 +222,11 @@ class Parser(report_sxw.rml_parse):
                     where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
                      
                     group by slan_2_18
+                    order by asc
             '''%(date,product[0])
         self.cr.execute(sql)
-        for seq,slan in enumarate('so lan trung can phai group by so lan lai va order by tang dan'):
+         #'so lan trung can phai group by so lan lai va order by tang dan'
+        for seq,slan in enumerate(self.cr.dictfetchall()):
             slan_dict[slan] = seq
             if seq==0:
                 res.append({
@@ -238,10 +242,13 @@ class Parser(report_sxw.rml_parse):
                     'slan': slan,
                     'st_tong': 0, 
                 })
-            for nqt in ('so ngay quyet toan, co ham roi'):
+            for nqt in self.get_so_nqt(): #('so ngay quyet toan, co ham roi'):
                 res[nqt['date_to']] = 0
                 
-        for nqt in ('so ngay quyet toan, co ham roi'):
+        for nqt in self.get_so_nqt(): #'so ngay quyet toan, co ham roi'
+            sql='''
+            
+            '''
             'sql lay slan, soluong, sotien cua loai 2 so 18 lo group by theo so lan'
             for slan_nqt in self.cr.dictfetchall():
                 res[slan_dict[slan_nqt['slan']]][nqt['date_to']] += slan_nqt['soluong']
