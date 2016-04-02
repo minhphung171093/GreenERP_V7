@@ -77,6 +77,20 @@ doanhthu_banhang_review_line()
 class doanhthu_banhang(osv.osv_memory):
     _name = 'doanhthu.banhang'
     
+    def get_categ_vaccine(self,cr,uid,context):
+        if uid == 24:
+            sql = '''
+                select id from product_category where code = 'VC'
+            '''
+            cr.execute(sql)
+            vaccine_ids = [row[0] for row in cr.fetchall()]
+            return vaccine_ids
+        else:
+            return False
+        
+    def get_uid(self,cr,uid,context):
+        return uid
+    
     _columns = {
         'partner_ids': fields.many2many('res.partner','doanhthubanhang_partner_ref','dtbh_id','partner_id', 'Khách hàng'),
         'users_ids': fields.many2many('res.users','doanhthubanhang_users_ref','dtbh_id','users_id', 'Nhân viên bán hàng'),
@@ -88,11 +102,14 @@ class doanhthu_banhang(osv.osv_memory):
         'date_to': fields.date('Đến ngày',required=True),
         'khu_vuc_ids': fields.many2many('kv.benh.vien','doanhthubanhang_khu_vuc_bv_ref','dtbh_id','khu_vuc_id', 'Khu vực'),
         'tinh_ids': fields.many2many('res.country.state','doanhthubanhang_country_state_ref','dtbh_id','state_id', 'Tỉnh'),
+        'user_id': fields.many2one('res.users', 'User'),
     }
     
     _defaults = {
         'date_from': lambda *a: time.strftime('%Y-%m-%d'),
         'date_to': lambda *a: time.strftime('%Y-%m-%d'),
+        'categ_ids': get_categ_vaccine,
+        'user_id': get_uid,
     }
     
     def print_report(self, cr, uid, ids, context=None):

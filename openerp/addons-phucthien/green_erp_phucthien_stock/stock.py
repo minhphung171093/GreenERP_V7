@@ -84,7 +84,7 @@ class stock_picking_out(osv.osv):
         """
         res = {}
         for id in ids:
-            res[id] = {'min_date': False, 'max_date': False}
+            res[id] = {'min_date':False, 'max_date': False}
         if not ids:
             return res
         cr.execute("""select
@@ -98,16 +98,7 @@ class stock_picking_out(osv.osv):
             group by
                 picking_id""",(tuple(ids),))
         for pick, dt1, dt2 in cr.fetchall():
-            print 'PHUOC'
-            print pick
-            sql = '''
-                select create_date from stock_picking where id = %s
-            '''%(pick)
-            cr.execute(sql)
-            min_date = cr.fetchone()[0]
-            min_date += timedelta(hours=7)
-            print min_date
-            res[pick]['min_date'] = min_date
+            res[pick]['min_date'] = dt1
             res[pick]['max_date'] = dt2
         return res
     
@@ -411,7 +402,7 @@ class stock_picking_in(osv.osv):
         """
         res = {}
         for id in ids:
-            res[id] = {'min_date': False, 'max_date': False}
+            res[id] = {'min_date':False, 'max_date': False}
         if not ids:
             return res
         cr.execute("""select
@@ -425,13 +416,7 @@ class stock_picking_in(osv.osv):
             group by
                 picking_id""",(tuple(ids),))
         for pick, dt1, dt2 in cr.fetchall():
-            sql = '''
-                select create_date from stock_picking where id = %s
-            '''%(pick)
-            cr.execute(sql)
-            min_date = cr.fetchone()[0]
-            min_date += timedelta(hours=7)
-            res[pick]['min_date'] = min_date
+            res[pick]['min_date'] = dt1
             res[pick]['max_date'] = dt2
         return res
     
@@ -668,7 +653,7 @@ class stock_picking(osv.osv):
         """
         res = {}
         for id in ids:
-            res[id] = {'min_date': False, 'max_date': False}
+            res[id] = {'min_date':False, 'max_date': False}
         if not ids:
             return res
         cr.execute("""select
@@ -681,16 +666,8 @@ class stock_picking(osv.osv):
                 picking_id IN %s
             group by
                 picking_id""",(tuple(ids),))
-        
         for pick, dt1, dt2 in cr.fetchall():
-            sql = '''
-                select create_date from stock_picking where id = %s
-            '''%(pick)
-            cr.execute(sql)
-            min_date = cr.fetchone()[0]
-            min_date += timedelta(hours=7)
-            print min_date
-            res[pick]['min_date'] = min_date
+            res[pick]['min_date'] = dt1
             res[pick]['max_date'] = dt2
         return res
     def _kiemtra_trahang(self, cr, uid, ids, name, args, context=None):

@@ -19,3 +19,5 @@ access_phucthien_stock_19,giaohang_line,model_giaohang_line,stock.group_stock_us
 access_phucthien_stock_20,ct_giaohang_line,model_ct_giaohang_line,stock.group_stock_user,True,True,True,True
 access_phucthien_stock_21,so_hoadon_dauvao,model_so_hoadon_dauvao,base.group_user,True,True,True,True
 access_phucthien_stock_22,ct.thung.line,model_ct_thung_line,base.group_user,True,True,True,True
+access_phucthien_stock_23,dulieu.donghang.review,model_dulieu_donghang_review,base.group_user,True,True,True,True
+access_phucthien_stock_24,dulieu.donghang.review.line,model_dulieu_donghang_review_line,base.group_user,True,True,True,True

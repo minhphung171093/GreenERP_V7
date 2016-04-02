@@ -11,7 +11,7 @@
 	                    <group col='4' colspan='2'>
 	                    	<field name="date_from"/>
 	                        <field name="date_to"/>
-	                        <field name="categ_ids" widget="many2many_tags"/>
+	                        <field name="categ_ids" widget="many2many_tags" attrs="{'readonly':[('user_id','=',24)]}"/>
 	                        <field name="loc_ids" widget="many2many_tags"/>
 	                        <field name="nsx_ids" widget="many2many_tags"/>
 	                        <field name="khu_vuc_ids" widget="many2many_tags"/>
@@ -19,6 +19,7 @@
 	                        <field name="users_ids" widget="many2many_tags" context="{'search_nhanvien_id':True,'uid':uid}"/>
 	                        <field name="partner_ids" domain="[('customer','=',True)]" colspan='4'/>
 	                        <field name="product_ids" colspan='4'/>
+	                        <field name="user_id" invisible = '1'/>
 	                    </group>
 	                </sheet>
                     <footer>

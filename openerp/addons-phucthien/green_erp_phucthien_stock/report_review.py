@@ -46,6 +46,8 @@ class dulieu_donghang_review_line(osv.osv):
         'khach_hang':fields.char('Tên Khách Hàng'),
         'sl_nhietke':fields.char('Số Lượng Nhiệt Kế Còn Lại'),
         'bb_giaonhan':fields.char('Biên Bản Giao Nhận'),
+        'tdv':fields.char('Trình dược viên'),
+        'tinh':fields.char('Tỉnh'),
         }
 dulieu_donghang_review_line()
 

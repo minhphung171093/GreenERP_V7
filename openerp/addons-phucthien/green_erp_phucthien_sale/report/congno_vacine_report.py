@@ -114,7 +114,7 @@ class Parser(report_sxw.rml_parse):
                             from product_product,product_template 
                             where product_template.categ_id in %s 
                             and product_product.product_tmpl_id = product_template.id) and invoice_id in 
-                                (select id from account_invoice where date_invoice < '%s' and type ='out_invoice' and account_id not in %s and state in ('open','paid')))
+                                (select id from account_invoice where date_invoice < '%s' and ((type ='out_invoice' and account_id not in %s) or (type ='in_refund')) and state in ('open','paid')))
                             order by date_invoice
             '''%(vc_cate_ids,date_from,account_ids)
             self.cr.execute(sql)   
@@ -125,7 +125,7 @@ class Parser(report_sxw.rml_parse):
                             from product_product,product_template 
                             where product_template.categ_id in %s
                             and product_product.product_tmpl_id = product_template.id) and invoice_id in 
-                                (select id from account_invoice where date_invoice between '%s' and '%s' and type ='out_invoice' and account_id not in %s and state in ('open','paid')))
+                                (select id from account_invoice where date_invoice between '%s' and '%s' and ((type ='out_invoice' and account_id not in %s) or (type ='in_refund')) and state in ('open','paid')))
                             order by date_invoice
             '''%(vc_cate_ids,date_from, date_to, account_ids)
             self.cr.execute(sql)   
@@ -146,7 +146,7 @@ class Parser(report_sxw.rml_parse):
                                 from product_product,product_template 
                                 where product_template.categ_id in %s 
                                 and product_product.product_tmpl_id = product_template.id) and invoice_id in 
-                                    (select id from account_invoice where date_invoice < '%s' and type ='out_invoice' and account_id not in %s and state in ('open','paid')))
+                                    (select id from account_invoice where date_invoice < '%s' and ((type ='out_invoice' and account_id not in %s) or (type ='in_refund')) and state in ('open','paid')))
                                 and partner_id in %s
                                 order by date_invoice
                 '''%(vc_cate_ids,date_from,account_ids,cus_ids)
@@ -158,7 +158,7 @@ class Parser(report_sxw.rml_parse):
                                 from product_product,product_template 
                                 where product_template.categ_id in %s
                                 and product_product.product_tmpl_id = product_template.id) and invoice_id in 
-                                    (select id from account_invoice where date_invoice between '%s' and '%s' and type ='out_invoice' and account_id not in %s and state in ('open','paid')))
+                                    (select id from account_invoice where date_invoice between '%s' and '%s' and ((type ='out_invoice' and account_id not in %s) or (type ='in_refund')) and state in ('open','paid')))
                                 and partner_id in %s
                                 order by date_invoice
                 '''%(vc_cate_ids,date_from,date_to,account_ids,cus_ids)
@@ -176,7 +176,7 @@ class Parser(report_sxw.rml_parse):
                 da_tra = 0
                 nodk = 0
                 sql = ''' 
-                    select ai.amount_total as amount_total, date_invoice, reference_number, rp.name as cus, rp.id as cus_id, rp.internal_code as code from account_invoice ai, res_partner rp 
+                    select ai.amount_total as amount_total, date_invoice, reference_number, supplier_invoice_number, rp.name as cus, rp.id as cus_id, rp.internal_code as code from account_invoice ai, res_partner rp 
                         where ai.partner_id = rp.id and ai.id = %s 
                         
                 '''%(inv)
@@ -220,7 +220,7 @@ class Parser(report_sxw.rml_parse):
                                 'dia_chi': inv_id['cus_id'] and self.display_address(inv_id['cus_id']) or '',
                                 'ngay_xuat': inv_id['date_invoice'] and self.convert_date(inv_id['date_invoice']) or '',
                                 'date_invoice':inv_id['date_invoice'],
-                                'reference_number':inv_id['reference_number'],
+                                'reference_number':inv_id['reference_number'] or inv_id['supplier_invoice_number'],
                                 'internal_code':inv_id['code'],
                                 'nodk': nodk,
                                 'phatsinh':0,
@@ -247,7 +247,7 @@ class Parser(report_sxw.rml_parse):
                 tong_ck = 0
                 thuc_thu = 0
                 sql = ''' 
-                    select ai.residual as residual, date_invoice, reference_number, amount_total, rp.name as cus, rp.id as cus_id, rp.internal_code as code from account_invoice ai, res_partner rp 
+                    select ai.residual as residual, date_invoice, reference_number, supplier_invoice_number, amount_total, rp.name as cus, rp.id as cus_id, rp.internal_code as code from account_invoice ai, res_partner rp 
                         where ai.partner_id = rp.id and ai.id = %s 
                         
                 '''%(inv)
@@ -294,7 +294,7 @@ class Parser(report_sxw.rml_parse):
                             'dia_chi': inv_id['cus_id'] and self.display_address(inv_id['cus_id']) or '',
                             'ngay_xuat': inv_id['date_invoice'] and self.convert_date(inv_id['date_invoice']) or '',
                             'date_invoice':inv_id['date_invoice'],
-                            'reference_number':inv_id['reference_number'],
+                            'reference_number':inv_id['reference_number'] or inv_id['supplier_invoice_number'],
                             'internal_code':inv_id['code'],
                             'nodk': 0,
                             'phatsinh':float(inv_id['amount_total']),

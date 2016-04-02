@@ -67,45 +67,128 @@ class Parser(report_sxw.rml_parse):
         tu_ngay = wizard_data['tu_ngay']
         den_ngay = wizard_data['den_ngay']
         if self.uid != 1:
-            sql ='''
-                select sp.name as so_phieuxuat,sp.ngay_gui, rp.name as ten_kh, rpu.name as tdv, rcs.name as tinh,   
-                    sum(spp.sl_nhietke_conlai) as sl_nhietke_conlai,
-                    case when sp.ngay_nhan is not null then 'Da nhan' else 'Chua nhan' end as bb_giaonhan
-                from stock_picking_packaging spp
-                left join stock_picking sp on sp.id = spp.picking_id
-                left join res_partner rp ON sp.partner_id = rp.id
-                left join res_users ru ON rp.user_id = ru.id
-                left join res_partner rpu ON ru.partner_id = rpu.id
-                left join res_country_state rcs ON rp.state_id = rcs.id
-                where sp.ngay_gui >= '%s' and (sp.ngay_nhan is null or sp.ngay_nhan <= '%s') and rp.user_id = %s
-            ''' %(tu_ngay, den_ngay, self.uid)
-            if partner_id:
+            if self.uid != 24:
+                sql ='''
+                    select sp.name as so_phieuxuat,sp.ngay_gui, rp.name as ten_kh, rpu.name as tdv, rcs.name as tinh,   
+                        sum(spp.sl_nhietke_conlai) as sl_nhietke_conlai,
+                        case when sp.ngay_nhan is not null then 'Da nhan' else 'Chua nhan' end as bb_giaonhan
+                    from stock_picking_packaging spp
+                    left join stock_picking sp on sp.id = spp.picking_id
+                    left join res_partner rp ON sp.partner_id = rp.id
+                    left join res_users ru ON rp.user_id = ru.id
+                    left join res_partner rpu ON ru.partner_id = rpu.id
+                    left join res_country_state rcs ON rp.state_id = rcs.id
+                    where sp.ngay_gui >= '%s' and (sp.ngay_nhan is null or sp.ngay_nhan <= '%s') and rp.user_id = %s
+                ''' %(tu_ngay, den_ngay, self.uid)
+                if partner_id:
+                    sql+='''
+                        and rp.id = %s 
+                    '''%(partner_id[0])
+                if da_nhan:
+                    sql+='''
+                        and sp.ngay_nhan is not null
+                    '''
+                if chua_nhan:
+                    sql+='''
+                        and sp.ngay_nhan is null
+                    '''    
                 sql+='''
-                    and rp.id = %s 
-                '''%(partner_id[0])
-            if da_nhan:
-                sql+='''
-                    and sp.ngay_nhan is not null
+                     group by sp.name,sp.ngay_gui, rp.name,rpu.name,rcs.name,case when sp.ngay_nhan is not null then 'Da nhan' else 'Chua nhan' end
+                    order by sp.name
+                    '''
+                self.cr.execute(sql)
+                for line in self.cr.dictfetchall():
+                    res.append({
+                                'so_phieuxuat': line['so_phieuxuat'],
+                                'ten_kh':line['ten_kh'],
+                                'ngay_gui':self.get_vietname_date(line['ngay_gui']),
+                                'sl_nhietke_conlai':line['sl_nhietke_conlai'],
+                                'bb_giaonhan':line['bb_giaonhan'],
+                                'tdv':line['tdv'], 
+                                'tinh':line['tinh'], 
+                            })
+            else:
+                sql = '''
+                    select id from res_partner where 
+                        customer = 't' and 
+                        street LIKE '%Q.Gò Vấp%' or street LIKE '%Q. Gò Vấp%' or street LIKE '%Quận Gò Vấp%' or
+                        street LIKE '%Q.Tân Bình%' or street LIKE '%Q. Tân Bình%' or street LIKE '%Quận Tân Bình%' or
+                        street LIKE '%Q1%' or street LIKE '%Q.1%' or street LIKE '%Quận 1%' or
+                        street LIKE '%Q.Tân Phú%' or street LIKE '%Q. Tân Phú%' or street LIKE '%Quận Tân Phú%' or
+                        street LIKE '%Q3%' or street LIKE '%Q.3%' or street LIKE '%Quận 3%' or
+                        street LIKE '%Q10%' or street LIKE '%Q.10%' or street LIKE '%Quận 10%' or
+                        street LIKE '%Q11%' or street LIKE '%Q.11%' or street LIKE '%Quận 11%' or
+                        street LIKE '%Q4%' or street LIKE '%Q.4%' or street LIKE '%Quận 4%' or
+                        street LIKE '%Q5%' or street LIKE '%Q.5%' or street LIKE '%Quận 5%' or
+                        street LIKE '%Q6%' or street LIKE '%Q.6%' or street LIKE '%Quận 6%' or
+                        street LIKE '%Q8%' or street LIKE '%Q.8%' or street LIKE '%Quận 8%' or
+                        street LIKE '%Q.Bình Tân%' or street LIKE '%Q. Bình Tân%' or street LIKE '%Quận Bình Tân%' or
+                        street LIKE '%Q7%' or street LIKE '%Q.7%' or street LIKE '%Quận 7%' or
+                        street LIKE '%H.Bình Chánh%' or street LIKE '%H. Bình Chánh%' or street LIKE '%Huyện Bình Chánh%' or
+                        street LIKE '%H.Nhà Bè%' or street LIKE '%H. Nhà Bè%' or street LIKE '%Huyện Nhà Bè%' or
+                        street LIKE '%H.Cần Giờ%' or street LIKE '%H. Cần Giờ%' or street LIKE '%Huyện Cần Giờ%' or
+                        
+                        street2 LIKE '%Q.Gò Vấp%' or street2 LIKE '%Q. Gò Vấp%' or street2 LIKE '%Quận Gò Vấp%' or
+                        street2 LIKE '%Q.Tân Bình%' or street2 LIKE '%Q. Tân Bình%' or street2 LIKE '%Quận Tân Bình%' or
+                        street2 LIKE '%Q1%' or street2 LIKE '%Q.1%' or street2 LIKE '%Quận 1%' or 
+                        street2 LIKE '%Q.Tân Phú%' or street2 LIKE '%Q. Tân Phú%' or street2 LIKE '%Quận Tân Phú%' or
+                        street2 LIKE '%Q3%' or street2 LIKE '%Q.3%' or street2 LIKE '%Quận 3%' or
+                        street2 LIKE '%Q10%' or street2 LIKE '%Q.10%' or street2 LIKE '%Quận 10%' or
+                        street2 LIKE '%Q11%' or street2 LIKE '%Q.11%' or street2 LIKE '%Quận 11%' or
+                        street2 LIKE '%Q4%' or street2 LIKE '%Q.4%' or street2 LIKE '%Quận 4%' or
+                        street2 LIKE '%Q5%' or street2 LIKE '%Q.5%' or street2 LIKE '%Quận 5%' or
+                        street2 LIKE '%Q6%' or street2 LIKE '%Q.6%' or street2 LIKE '%Quận 6%' or
+                        street2 LIKE '%Q8%' or street2 LIKE '%Q.8%' or street2 LIKE '%Quận 8%' or
+                        street2 LIKE '%Q.Bình Tân%' or street2 LIKE '%Q. Bình Tân%' or street2 LIKE '%Quận Bình Tân%' or
+                        street2 LIKE '%Q7%' or street2 LIKE '%Q.7%' or street2 LIKE '%Quận 7%' or
+                        street2 LIKE '%H.Bình Chánh%' or street2 LIKE '%H. Bình Chánh%' or street2 LIKE '%Huyện Bình Chánh%' or
+                        street2 LIKE '%H.Nhà Bè%' or street2 LIKE '%H. Nhà Bè%' or street2 LIKE '%Huyện Nhà Bè%' or
+                        street2 LIKE '%H.Cần Giờ%' or street2 LIKE '%H. Cần Giờ%' or street2 LIKE '%Huyện Cần Giờ%'
                 '''
-            if chua_nhan:
+                self.cr.execute(sql)
+                thuy_ids = [row[0] for row in self.cr.fetchall()]
+                thuy_ids = str(thuy_ids).replace('[', '(')
+                thuy_ids = str(thuy_ids).replace(']', ')')
+                sql ='''
+                    select sp.name as so_phieuxuat,sp.ngay_gui, rp.name as ten_kh, rpu.name as tdv, rcs.name as tinh,   
+                        sum(spp.sl_nhietke_conlai) as sl_nhietke_conlai,
+                        case when sp.ngay_nhan is not null then 'Da nhan' else 'Chua nhan' end as bb_giaonhan
+                    from stock_picking_packaging spp
+                    left join stock_picking sp on sp.id = spp.picking_id
+                    left join res_partner rp ON sp.partner_id = rp.id
+                    left join res_users ru ON rp.user_id = ru.id
+                    left join res_partner rpu ON ru.partner_id = rpu.id
+                    left join res_country_state rcs ON rp.state_id = rcs.id
+                    where sp.ngay_gui >= '%s' and (sp.ngay_nhan is null or sp.ngay_nhan <= '%s') and rp.user_id = %s
+                    and rp.id in %s
+                ''' %(tu_ngay, den_ngay, self.uid, thuy_ids)
+                if partner_id:
+                    sql+='''
+                        and rp.id = %s 
+                    '''%(partner_id[0])
+                if da_nhan:
+                    sql+='''
+                        and sp.ngay_nhan is not null
+                    '''
+                if chua_nhan:
+                    sql+='''
+                        and sp.ngay_nhan is null
+                    '''    
                 sql+='''
-                    and sp.ngay_nhan is null
-                '''    
-            sql+='''
-                 group by sp.name,sp.ngay_gui, rp.name,rpu.name,rcs.name,case when sp.ngay_nhan is not null then 'Da nhan' else 'Chua nhan' end
-                order by sp.name
-                '''
-            self.cr.execute(sql)
-            for line in self.cr.dictfetchall():
-                res.append({
-                            'so_phieuxuat': line['so_phieuxuat'],
-                            'ten_kh':line['ten_kh'],
-                            'ngay_gui':self.get_vietname_date(line['ngay_gui']),
-                            'sl_nhietke_conlai':line['sl_nhietke_conlai'],
-                            'bb_giaonhan':line['bb_giaonhan'],
-                            'tdv':line['tdv'], 
-                            'tinh':line['tinh'], 
-                        })
+                     group by sp.name,sp.ngay_gui, rp.name,rpu.name,rcs.name,case when sp.ngay_nhan is not null then 'Da nhan' else 'Chua nhan' end
+                    order by sp.name
+                    '''
+                self.cr.execute(sql)
+                for line in self.cr.dictfetchall():
+                    res.append({
+                                'so_phieuxuat': line['so_phieuxuat'],
+                                'ten_kh':line['ten_kh'],
+                                'ngay_gui':self.get_vietname_date(line['ngay_gui']),
+                                'sl_nhietke_conlai':line['sl_nhietke_conlai'],
+                                'bb_giaonhan':line['bb_giaonhan'],
+                                'tdv':line['tdv'], 
+                                'tinh':line['tinh'], 
+                            })
         else:
             sql ='''
                 select sp.name as so_phieuxuat,sp.ngay_gui, rp.name as ten_kh, rpu.name as tdv, rcs.name as tinh,   

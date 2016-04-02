@@ -270,6 +270,22 @@ class product_category(osv.osv):
     _columns = {
         'manufacturer_product_ids': fields.many2many('manufacturer.product','manufacturer_product_category_ref','category_id','manufacturer_product_id','Hãng sản xuất'),
     }
+    def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
+        if context is None:
+            context = {}
+        if uid == 24:
+            sql = '''
+                select id from product_category where code = 'VC'
+            '''
+            cr.execute(sql)
+            thuy_ids = [row[0] for row in cr.fetchall()]
+            args += [('id','in',thuy_ids)]
+        return super(product_category, self).search(cr, uid, args, offset=offset, limit=limit, order=order, context=context, count=count)
+    def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
+        if not args:
+            args = []
+        ids = self.search(cr, user, [('name', operator, name)]+ args, limit=limit, context=context)
+        return self.name_get(cr, user, ids, context=context)
     
 product_category()    
 class product_product(osv.osv):
@@ -319,6 +335,23 @@ class product_product(osv.osv):
             name = record['name']
             res.append((record['id'], name))
         return res
-     
+    
+    def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
+        if context is None:
+            context = {}
+        if uid == 24:
+            sql = '''
+                select id from product_product where product_tmpl_id in (select id from product_template where
+                categ_id in (select id from product_category where code = 'VC'))
+            '''
+            cr.execute(sql)
+            thuy_ids = [row[0] for row in cr.fetchall()]
+            args += [('id','in',thuy_ids)]
+        return super(product_product, self).search(cr, uid, args, offset=offset, limit=limit, order=order, context=context, count=count)
+    def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
+        if not args:
+            args = []
+        ids = self.search(cr, user, [('name', operator, name)]+ args, limit=limit, context=context)
+        return self.name_get(cr, user, ids, context=context)
 product_product()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

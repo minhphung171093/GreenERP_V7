@@ -263,7 +263,7 @@ class Parser(report_sxw.rml_parse):
                     left join manufacturer_product mp on pp.manufacturer_product_id = mp.id
                     left join account_account aa on ai.account_id = aa.id
                     left join kv_benh_vien kv on kv.id=rp.kv_benh_vien
-                where ai.date_invoice between '%s' and '%s' and ai.state!='cancel' and ai.type='out_invoice' 
+                where ai.date_invoice between '%s' and '%s' and ai.state!='cancel' and ai.type in ('out_invoice','in_refund') 
         '''%(date_from,date_to)
         if partner_ids:
             partner_ids = str(partner_ids).replace('[', '(')
@@ -378,7 +378,7 @@ class Parser(report_sxw.rml_parse):
                     left join manufacturer_product mp on pp.manufacturer_product_id = mp.id
                     left join account_account aa on ai.account_id = aa.id
                     left join kv_benh_vien kv on kv.id=rp.kv_benh_vien
-                where ai.date_invoice between '%s' and '%s' and ai.state!='cancel' and ai.type='out_invoice' 
+                where ai.date_invoice between '%s' and '%s' and ai.state!='cancel' and ai.type in ('out_invoice','in_refund') 
         '''%(date_from,date_to)
         if partner_ids:
             partner_ids = str(partner_ids).replace('[', '(')
@@ -493,7 +493,7 @@ class Parser(report_sxw.rml_parse):
                     left join manufacturer_product mp on pp.manufacturer_product_id = mp.id
                     left join account_account aa on ai.account_id = aa.id
                     left join kv_benh_vien kv on kv.id=rp.kv_benh_vien
-                where ai.date_invoice between '%s' and '%s' and ai.state!='cancel' and ai.type='out_invoice' 
+                where ai.date_invoice between '%s' and '%s' and ai.state!='cancel' and ai.type in ('out_invoice','in_refund') 
         '''%(date_from,date_to)
         if partner_ids:
             partner_ids = str(partner_ids).replace('[', '(')
@@ -608,7 +608,7 @@ class Parser(report_sxw.rml_parse):
                     left join manufacturer_product mp on pp.manufacturer_product_id = mp.id
                     left join account_account aa on ai.account_id = aa.id
                     left join kv_benh_vien kv on kv.id=rp.kv_benh_vien
-                where ai.date_invoice between '%s' and '%s' and ai.state!='cancel' and ai.type='out_invoice' 
+                where ai.date_invoice between '%s' and '%s' and ai.state!='cancel' and ai.type in ('out_invoice','in_refund') 
         '''%(date_from,date_to)
         if partner_ids:
             partner_ids = str(partner_ids).replace('[', '(')
@@ -723,7 +723,7 @@ class Parser(report_sxw.rml_parse):
                     left join manufacturer_product mp on pp.manufacturer_product_id = mp.id
                     left join account_account aa on ai.account_id = aa.id
                     left join kv_benh_vien kv on kv.id=rp.kv_benh_vien
-                where ai.date_invoice between '%s' and '%s' and ai.state!='cancel' and ai.type='out_invoice' 
+                where ai.date_invoice between '%s' and '%s' and ai.state!='cancel' and ai.type in ('out_invoice','in_refund') 
         '''%(date_from,date_to)
         if partner_ids:
             partner_ids = str(partner_ids).replace('[', '(')
