@@ -53,6 +53,7 @@
         'report/quyettoan_ve_thang_view.xml',
         'report/bangke_chitiet_hethan_view.xml',
         'report/chitiet_trathuong_ngay_view.xml',
+        'report/chitiet_chi_uyquyen_view.xml'
         'wizard/chitiet_vetuchon_trungthuong_view.xml',
         'wizard/doanhthu_xoso_tuchon_view.xml',
         'wizard/veban_theolo_view.xml',
@@ -71,6 +72,7 @@
         'wizard/quyettoan_ve_thang_view.xml',
         'wizard/bangke_chitiet_hethan_view.xml',
         'wizard/chitiet_trathuong_ngay_view.xml',
+        'wizard/chitiet_chi_uyquyen_view.xml'
         'ql_ve_loto_schedule.xml',
         'purchase_view.xml',
         'stock_view.xml',
