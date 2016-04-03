@@ -11,7 +11,7 @@
 	                    <group col='4' colspan='2'>
 	                    	<field name="date_from"/>
 	                        <field name="date_to"/>
-	                        <field name="categ_ids" widget="many2many_tags" attrs="{'readonly':[('user_id','=',24)]}"/>
+	                        <field name="categ_ids" widget="many2many_tags"/>
 	                        <field name="loc_ids" widget="many2many_tags"/>
 	                        <field name="nsx_ids" widget="many2many_tags"/>
 	                        <field name="khu_vuc_ids" widget="many2many_tags"/>

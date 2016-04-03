@@ -26,6 +26,20 @@ from openerp.tools.translate import _
 class danhsach_canhtranh_wizard(osv.osv_memory):
     _name = 'danhsach.canhtranh.wizard'
     
+    def get_categ_vaccine(self,cr,uid,context):
+        if uid == 24:
+            sql = '''
+                select id from product_category where code = 'VC'
+            '''
+            cr.execute(sql)
+            vaccine_ids = [row[0] for row in cr.fetchall()]
+            return vaccine_ids
+        else:
+            return False
+        
+    def get_uid(self,cr,uid,context):
+        return uid
+    
     _columns = {
         'partner_ids': fields.many2many('res.partner','danhsachcanhtranh_partner_ref','dsct_id','partner_id', 'Khách hàng'),
         'product_ids': fields.many2many('product.product','danhsachcanhtranh_product_ref','dsct_id','product_id', 'Sản phẩm'),
@@ -33,11 +47,14 @@ class danhsach_canhtranh_wizard(osv.osv_memory):
         'nsx_ids': fields.many2many('manufacturer.product','danhsachcanhtranh_manufacturer_product_ref','dsct_id','nsx_id', 'Hãng sản xuất'),
         'date_from': fields.date('Từ ngày',required=True),
         'date_to': fields.date('Đến ngày',required=True),
+        'user_id': fields.many2one('res.users', 'User'),
     }
     
     _defaults = {
         'date_from': lambda *a: time.strftime('%Y-%m-%d'),
         'date_to': lambda *a: time.strftime('%Y-%m-%d'),
+        'categ_ids': get_categ_vaccine,
+        'user_id': get_uid,
     }
     
     def print_report(self, cr, uid, ids, context=None):

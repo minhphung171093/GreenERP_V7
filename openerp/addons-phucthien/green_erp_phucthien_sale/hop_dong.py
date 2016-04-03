@@ -116,6 +116,65 @@ class hop_dong(osv.osv):
         'state': 'moi_tao',
     }
     
+    def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
+        if context is None:
+            context = {}
+        if uid == 24:
+            sql = '''
+                select id from res_partner where 
+                    customer = 't' and 
+                    street LIKE '%Q.Gò Vấp%' or street LIKE '%Q. Gò Vấp%' or street LIKE '%Quận Gò Vấp%' or
+                    street LIKE '%Q.Tân Bình%' or street LIKE '%Q. Tân Bình%' or street LIKE '%Quận Tân Bình%' or
+                    street LIKE '%Q1%' or street LIKE '%Q.1%' or street LIKE '%Quận 1%' or
+                    street LIKE '%Q.Tân Phú%' or street LIKE '%Q. Tân Phú%' or street LIKE '%Quận Tân Phú%' or
+                    street LIKE '%Q3%' or street LIKE '%Q.3%' or street LIKE '%Quận 3%' or
+                    street LIKE '%Q10%' or street LIKE '%Q.10%' or street LIKE '%Quận 10%' or
+                    street LIKE '%Q11%' or street LIKE '%Q.11%' or street LIKE '%Quận 11%' or
+                    street LIKE '%Q4%' or street LIKE '%Q.4%' or street LIKE '%Quận 4%' or
+                    street LIKE '%Q5%' or street LIKE '%Q.5%' or street LIKE '%Quận 5%' or
+                    street LIKE '%Q6%' or street LIKE '%Q.6%' or street LIKE '%Quận 6%' or
+                    street LIKE '%Q8%' or street LIKE '%Q.8%' or street LIKE '%Quận 8%' or
+                    street LIKE '%Q.Bình Tân%' or street LIKE '%Q. Bình Tân%' or street LIKE '%Quận Bình Tân%' or
+                    street LIKE '%Q7%' or street LIKE '%Q.7%' or street LIKE '%Quận 7%' or
+                    street LIKE '%H.Bình Chánh%' or street LIKE '%H. Bình Chánh%' or street LIKE '%Huyện Bình Chánh%' or
+                    street LIKE '%H.Nhà Bè%' or street LIKE '%H. Nhà Bè%' or street LIKE '%Huyện Nhà Bè%' or
+                    street LIKE '%H.Cần Giờ%' or street LIKE '%H. Cần Giờ%' or street LIKE '%Huyện Cần Giờ%' or
+                    
+                    street2 LIKE '%Q.Gò Vấp%' or street2 LIKE '%Q. Gò Vấp%' or street2 LIKE '%Quận Gò Vấp%' or
+                    street2 LIKE '%Q.Tân Bình%' or street2 LIKE '%Q. Tân Bình%' or street2 LIKE '%Quận Tân Bình%' or
+                    street2 LIKE '%Q1%' or street2 LIKE '%Q.1%' or street2 LIKE '%Quận 1%' or 
+                    street2 LIKE '%Q.Tân Phú%' or street2 LIKE '%Q. Tân Phú%' or street2 LIKE '%Quận Tân Phú%' or
+                    street2 LIKE '%Q3%' or street2 LIKE '%Q.3%' or street2 LIKE '%Quận 3%' or
+                    street2 LIKE '%Q10%' or street2 LIKE '%Q.10%' or street2 LIKE '%Quận 10%' or
+                    street2 LIKE '%Q11%' or street2 LIKE '%Q.11%' or street2 LIKE '%Quận 11%' or
+                    street2 LIKE '%Q4%' or street2 LIKE '%Q.4%' or street2 LIKE '%Quận 4%' or
+                    street2 LIKE '%Q5%' or street2 LIKE '%Q.5%' or street2 LIKE '%Quận 5%' or
+                    street2 LIKE '%Q6%' or street2 LIKE '%Q.6%' or street2 LIKE '%Quận 6%' or
+                    street2 LIKE '%Q8%' or street2 LIKE '%Q.8%' or street2 LIKE '%Quận 8%' or
+                    street2 LIKE '%Q.Bình Tân%' or street2 LIKE '%Q. Bình Tân%' or street2 LIKE '%Quận Bình Tân%' or
+                    street2 LIKE '%Q7%' or street2 LIKE '%Q.7%' or street2 LIKE '%Quận 7%' or
+                    street2 LIKE '%H.Bình Chánh%' or street2 LIKE '%H. Bình Chánh%' or street2 LIKE '%Huyện Bình Chánh%' or
+                    street2 LIKE '%H.Nhà Bè%' or street2 LIKE '%H. Nhà Bè%' or street2 LIKE '%Huyện Nhà Bè%' or
+                    street2 LIKE '%H.Cần Giờ%' or street2 LIKE '%H. Cần Giờ%' or street2 LIKE '%Huyện Cần Giờ%'
+                    
+            '''
+            cr.execute(sql)
+            thuy_ids = [row[0] for row in cr.fetchall()]
+            thuy_ids = str(thuy_ids).replace('[', '(')
+            thuy_ids = str(thuy_ids).replace(']', ')')
+            sql = '''
+                select id from hop_dong where partner_id in %s
+            '''%(thuy_ids)
+            cr.execute(sql)
+            hd_thuy_ids = [row[0] for row in cr.fetchall()]
+            args += [('id','in',hd_thuy_ids)]
+        return super(hop_dong, self).search(cr, uid, args, offset=offset, limit=limit, order=order, context=context, count=count)
+    def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
+        if not args:
+            args = []
+        ids = self.search(cr, user, [('name', operator, name)]+ args, limit=limit, context=context)
+        return self.name_get(cr, user, ids, context=context)
+    
     def print_hopdong(self, cr, uid, ids, context=None):
         hopdong = self.browse(cr, uid, ids[0])
         datas = {

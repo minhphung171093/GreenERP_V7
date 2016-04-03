@@ -71,53 +71,143 @@ class Parser(report_sxw.rml_parse):
         nsx_ids = wizard_data['nsx_ids']
         if not partner_ids:
             partner_ids = self.pool.get('res.partner').search(self.cr,self.uid, [('customer','=',True)])
-        sql = '''
-            select dsct.partner_id as partner_id, rp.internal_code as ma_kh, rp.name as ten_kh,
-                pp.default_code as ma_sp, pp.name_template as ten_sp, mp.name as nsx,pu.name as dvt,
-                dsct.qty as so_luong, dsct.qty_con_lai as so_luong_cl,
-                spct1.name as spct1, dsct.soluong_canhtranh1 as sl1, dsct.soluong_canhtranh1_conlai as sl_cl_1,
-                spct2.name as spct2, dsct.soluong_canhtranh2 as sl2, dsct.soluong_canhtranh2_conlai as sl_cl_2,
-                spct3.name as spct3, dsct.soluong_canhtranh3 as sl3, dsct.soluong_canhtranh3_conlai as sl_cl_3
-            from danhsach_canhtranh dsct
-            left join res_partner rp on dsct.partner_id = rp.id
-            left join product_product pp on dsct.product_id=pp.id
-            left join product_template pt on pp.product_tmpl_id=pt.id
-            left join product_category pc on pt.categ_id=pc.id
-            left join product_uom pu on pt.uom_id=pu.id
-            left join manufacturer_product mp on pp.manufacturer_product_id = mp.id
-            left join sanpham_canhtranh spct1 on dsct.sanpham_canhtranh1_id = spct1.id
-            left join sanpham_canhtranh spct2 on dsct.sanpham_canhtranh2_id = spct2.id
-            left join sanpham_canhtranh spct3 on dsct.sanpham_canhtranh3_id = spct3.id
-            where dsct.name between '%s' and '%s'
-        '''%(date_from,date_to)
-        if partner_ids:
-            partner_ids = str(partner_ids).replace('[', '(')
-            partner_ids = str(partner_ids).replace(']', ')')
+        if self.uid==24:
+            sql = '''
+                select id from res_partner where 
+                    customer = 't' and 
+                    street LIKE '%Q.Gò Vấp%' or street LIKE '%Q. Gò Vấp%' or street LIKE '%Quận Gò Vấp%' or
+                    street LIKE '%Q.Tân Bình%' or street LIKE '%Q. Tân Bình%' or street LIKE '%Quận Tân Bình%' or
+                    street LIKE '%Q1%' or street LIKE '%Q.1%' or street LIKE '%Quận 1%' or
+                    street LIKE '%Q.Tân Phú%' or street LIKE '%Q. Tân Phú%' or street LIKE '%Quận Tân Phú%' or
+                    street LIKE '%Q3%' or street LIKE '%Q.3%' or street LIKE '%Quận 3%' or
+                    street LIKE '%Q10%' or street LIKE '%Q.10%' or street LIKE '%Quận 10%' or
+                    street LIKE '%Q11%' or street LIKE '%Q.11%' or street LIKE '%Quận 11%' or
+                    street LIKE '%Q4%' or street LIKE '%Q.4%' or street LIKE '%Quận 4%' or
+                    street LIKE '%Q5%' or street LIKE '%Q.5%' or street LIKE '%Quận 5%' or
+                    street LIKE '%Q6%' or street LIKE '%Q.6%' or street LIKE '%Quận 6%' or
+                    street LIKE '%Q8%' or street LIKE '%Q.8%' or street LIKE '%Quận 8%' or
+                    street LIKE '%Q.Bình Tân%' or street LIKE '%Q. Bình Tân%' or street LIKE '%Quận Bình Tân%' or
+                    street LIKE '%Q7%' or street LIKE '%Q.7%' or street LIKE '%Quận 7%' or
+                    street LIKE '%H.Bình Chánh%' or street LIKE '%H. Bình Chánh%' or street LIKE '%Huyện Bình Chánh%' or
+                    street LIKE '%H.Nhà Bè%' or street LIKE '%H. Nhà Bè%' or street LIKE '%Huyện Nhà Bè%' or
+                    street LIKE '%H.Cần Giờ%' or street LIKE '%H. Cần Giờ%' or street LIKE '%Huyện Cần Giờ%' or
+                    
+                    street2 LIKE '%Q.Gò Vấp%' or street2 LIKE '%Q. Gò Vấp%' or street2 LIKE '%Quận Gò Vấp%' or
+                    street2 LIKE '%Q.Tân Bình%' or street2 LIKE '%Q. Tân Bình%' or street2 LIKE '%Quận Tân Bình%' or
+                    street2 LIKE '%Q1%' or street2 LIKE '%Q.1%' or street2 LIKE '%Quận 1%' or 
+                    street2 LIKE '%Q.Tân Phú%' or street2 LIKE '%Q. Tân Phú%' or street2 LIKE '%Quận Tân Phú%' or
+                    street2 LIKE '%Q3%' or street2 LIKE '%Q.3%' or street2 LIKE '%Quận 3%' or
+                    street2 LIKE '%Q10%' or street2 LIKE '%Q.10%' or street2 LIKE '%Quận 10%' or
+                    street2 LIKE '%Q11%' or street2 LIKE '%Q.11%' or street2 LIKE '%Quận 11%' or
+                    street2 LIKE '%Q4%' or street2 LIKE '%Q.4%' or street2 LIKE '%Quận 4%' or
+                    street2 LIKE '%Q5%' or street2 LIKE '%Q.5%' or street2 LIKE '%Quận 5%' or
+                    street2 LIKE '%Q6%' or street2 LIKE '%Q.6%' or street2 LIKE '%Quận 6%' or
+                    street2 LIKE '%Q8%' or street2 LIKE '%Q.8%' or street2 LIKE '%Quận 8%' or
+                    street2 LIKE '%Q.Bình Tân%' or street2 LIKE '%Q. Bình Tân%' or street2 LIKE '%Quận Bình Tân%' or
+                    street2 LIKE '%Q7%' or street2 LIKE '%Q.7%' or street2 LIKE '%Quận 7%' or
+                    street2 LIKE '%H.Bình Chánh%' or street2 LIKE '%H. Bình Chánh%' or street2 LIKE '%Huyện Bình Chánh%' or
+                    street2 LIKE '%H.Nhà Bè%' or street2 LIKE '%H. Nhà Bè%' or street2 LIKE '%Huyện Nhà Bè%' or
+                    street2 LIKE '%H.Cần Giờ%' or street2 LIKE '%H. Cần Giờ%' or street2 LIKE '%Huyện Cần Giờ%'
+            '''
+            self.cr.execute(sql)
+            thuy_ids = [row[0] for row in self.cr.fetchall()]
+            thuy_ids = str(thuy_ids).replace('[', '(')
+            thuy_ids = str(thuy_ids).replace(']', ')')
+            sql = '''
+                select dsct.partner_id as partner_id, rp.internal_code as ma_kh, rp.name as ten_kh,
+                    pp.default_code as ma_sp, pp.name_template as ten_sp, mp.name as nsx,pu.name as dvt,
+                    dsct.qty as so_luong, dsct.qty_con_lai as so_luong_cl,
+                    spct1.name as spct1, dsct.soluong_canhtranh1 as sl1, dsct.soluong_canhtranh1_conlai as sl_cl_1,
+                    spct2.name as spct2, dsct.soluong_canhtranh2 as sl2, dsct.soluong_canhtranh2_conlai as sl_cl_2,
+                    spct3.name as spct3, dsct.soluong_canhtranh3 as sl3, dsct.soluong_canhtranh3_conlai as sl_cl_3
+                from danhsach_canhtranh dsct
+                left join res_partner rp on dsct.partner_id = rp.id
+                left join product_product pp on dsct.product_id=pp.id
+                left join product_template pt on pp.product_tmpl_id=pt.id
+                left join product_category pc on pt.categ_id=pc.id
+                left join product_uom pu on pt.uom_id=pu.id
+                left join manufacturer_product mp on pp.manufacturer_product_id = mp.id
+                left join sanpham_canhtranh spct1 on dsct.sanpham_canhtranh1_id = spct1.id
+                left join sanpham_canhtranh spct2 on dsct.sanpham_canhtranh2_id = spct2.id
+                left join sanpham_canhtranh spct3 on dsct.sanpham_canhtranh3_id = spct3.id
+                where dsct.name between '%s' and '%s' and rp.id in %s
+            '''%(date_from,date_to,thuy_ids)
+            if partner_ids:
+                partner_ids = str(partner_ids).replace('[', '(')
+                partner_ids = str(partner_ids).replace(']', ')')
+                sql+='''
+                    and dsct.partner_id in %s 
+                '''%(partner_ids)
+            if product_ids:
+                product_ids = str(product_ids).replace('[', '(')
+                product_ids = str(product_ids).replace(']', ')')
+                sql+='''
+                    and dsct.product_id in %s 
+                '''%(product_ids)
+            if categ_ids:
+                categ_ids = str(categ_ids).replace('[', '(')
+                categ_ids = str(categ_ids).replace(']', ')')
+                sql+='''
+                    and pc.id in %s 
+                '''%(categ_ids)
+            if nsx_ids:
+                nsx_ids = str(nsx_ids).replace('[', '(')
+                nsx_ids = str(nsx_ids).replace(']', ')')
+                sql+='''
+                    and mp.id in %s 
+                '''%(nsx_ids)
             sql+='''
-                and dsct.partner_id in %s 
-            '''%(partner_ids)
-        if product_ids:
-            product_ids = str(product_ids).replace('[', '(')
-            product_ids = str(product_ids).replace(']', ')')
+                 order by dsct.name
+            '''
+            self.cr.execute(sql)
+        else:
+            sql = '''
+                select dsct.partner_id as partner_id, rp.internal_code as ma_kh, rp.name as ten_kh,
+                    pp.default_code as ma_sp, pp.name_template as ten_sp, mp.name as nsx,pu.name as dvt,
+                    dsct.qty as so_luong, dsct.qty_con_lai as so_luong_cl,
+                    spct1.name as spct1, dsct.soluong_canhtranh1 as sl1, dsct.soluong_canhtranh1_conlai as sl_cl_1,
+                    spct2.name as spct2, dsct.soluong_canhtranh2 as sl2, dsct.soluong_canhtranh2_conlai as sl_cl_2,
+                    spct3.name as spct3, dsct.soluong_canhtranh3 as sl3, dsct.soluong_canhtranh3_conlai as sl_cl_3
+                from danhsach_canhtranh dsct
+                left join res_partner rp on dsct.partner_id = rp.id
+                left join product_product pp on dsct.product_id=pp.id
+                left join product_template pt on pp.product_tmpl_id=pt.id
+                left join product_category pc on pt.categ_id=pc.id
+                left join product_uom pu on pt.uom_id=pu.id
+                left join manufacturer_product mp on pp.manufacturer_product_id = mp.id
+                left join sanpham_canhtranh spct1 on dsct.sanpham_canhtranh1_id = spct1.id
+                left join sanpham_canhtranh spct2 on dsct.sanpham_canhtranh2_id = spct2.id
+                left join sanpham_canhtranh spct3 on dsct.sanpham_canhtranh3_id = spct3.id
+                where dsct.name between '%s' and '%s'
+            '''%(date_from,date_to)
+            if partner_ids:
+                partner_ids = str(partner_ids).replace('[', '(')
+                partner_ids = str(partner_ids).replace(']', ')')
+                sql+='''
+                    and dsct.partner_id in %s 
+                '''%(partner_ids)
+            if product_ids:
+                product_ids = str(product_ids).replace('[', '(')
+                product_ids = str(product_ids).replace(']', ')')
+                sql+='''
+                    and dsct.product_id in %s 
+                '''%(product_ids)
+            if categ_ids:
+                categ_ids = str(categ_ids).replace('[', '(')
+                categ_ids = str(categ_ids).replace(']', ')')
+                sql+='''
+                    and pc.id in %s 
+                '''%(categ_ids)
+            if nsx_ids:
+                nsx_ids = str(nsx_ids).replace('[', '(')
+                nsx_ids = str(nsx_ids).replace(']', ')')
+                sql+='''
+                    and mp.id in %s 
+                '''%(nsx_ids)
             sql+='''
-                and dsct.product_id in %s 
-            '''%(product_ids)
-        if categ_ids:
-            categ_ids = str(categ_ids).replace('[', '(')
-            categ_ids = str(categ_ids).replace(']', ')')
-            sql+='''
-                and pc.id in %s 
-            '''%(categ_ids)
-        if nsx_ids:
-            nsx_ids = str(nsx_ids).replace('[', '(')
-            nsx_ids = str(nsx_ids).replace(']', ')')
-            sql+='''
-                and mp.id in %s 
-            '''%(nsx_ids)
-        sql+='''
-             order by dsct.name
-        '''
-        self.cr.execute(sql)
+                 order by dsct.name
+            '''
+            self.cr.execute(sql)
         return self.cr.dictfetchall()
     
     def display_address(self, partner_id):

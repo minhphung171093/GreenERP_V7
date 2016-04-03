@@ -172,6 +172,67 @@ class sale_order(osv.osv):
               'sp_khuyen_mai': False,   
                  }
     
+    def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
+        if context is None:
+            context = {}
+        if uid == 24:
+            sql = '''
+                select id from res_partner where 
+                    customer = 't' and 
+                    street LIKE '%Q.Gò Vấp%' or street LIKE '%Q. Gò Vấp%' or street LIKE '%Quận Gò Vấp%' or
+                    street LIKE '%Q.Tân Bình%' or street LIKE '%Q. Tân Bình%' or street LIKE '%Quận Tân Bình%' or
+                    street LIKE '%Q1%' or street LIKE '%Q.1%' or street LIKE '%Quận 1%' or
+                    street LIKE '%Q.Tân Phú%' or street LIKE '%Q. Tân Phú%' or street LIKE '%Quận Tân Phú%' or
+                    street LIKE '%Q3%' or street LIKE '%Q.3%' or street LIKE '%Quận 3%' or
+                    street LIKE '%Q10%' or street LIKE '%Q.10%' or street LIKE '%Quận 10%' or
+                    street LIKE '%Q11%' or street LIKE '%Q.11%' or street LIKE '%Quận 11%' or
+                    street LIKE '%Q4%' or street LIKE '%Q.4%' or street LIKE '%Quận 4%' or
+                    street LIKE '%Q5%' or street LIKE '%Q.5%' or street LIKE '%Quận 5%' or
+                    street LIKE '%Q6%' or street LIKE '%Q.6%' or street LIKE '%Quận 6%' or
+                    street LIKE '%Q8%' or street LIKE '%Q.8%' or street LIKE '%Quận 8%' or
+                    street LIKE '%Q.Bình Tân%' or street LIKE '%Q. Bình Tân%' or street LIKE '%Quận Bình Tân%' or
+                    street LIKE '%Q7%' or street LIKE '%Q.7%' or street LIKE '%Quận 7%' or
+                    street LIKE '%H.Bình Chánh%' or street LIKE '%H. Bình Chánh%' or street LIKE '%Huyện Bình Chánh%' or
+                    street LIKE '%H.Nhà Bè%' or street LIKE '%H. Nhà Bè%' or street LIKE '%Huyện Nhà Bè%' or
+                    street LIKE '%H.Cần Giờ%' or street LIKE '%H. Cần Giờ%' or street LIKE '%Huyện Cần Giờ%' or
+                    
+                    street2 LIKE '%Q.Gò Vấp%' or street2 LIKE '%Q. Gò Vấp%' or street2 LIKE '%Quận Gò Vấp%' or
+                    street2 LIKE '%Q.Tân Bình%' or street2 LIKE '%Q. Tân Bình%' or street2 LIKE '%Quận Tân Bình%' or
+                    street2 LIKE '%Q1%' or street2 LIKE '%Q.1%' or street2 LIKE '%Quận 1%' or 
+                    street2 LIKE '%Q.Tân Phú%' or street2 LIKE '%Q. Tân Phú%' or street2 LIKE '%Quận Tân Phú%' or
+                    street2 LIKE '%Q3%' or street2 LIKE '%Q.3%' or street2 LIKE '%Quận 3%' or
+                    street2 LIKE '%Q10%' or street2 LIKE '%Q.10%' or street2 LIKE '%Quận 10%' or
+                    street2 LIKE '%Q11%' or street2 LIKE '%Q.11%' or street2 LIKE '%Quận 11%' or
+                    street2 LIKE '%Q4%' or street2 LIKE '%Q.4%' or street2 LIKE '%Quận 4%' or
+                    street2 LIKE '%Q5%' or street2 LIKE '%Q.5%' or street2 LIKE '%Quận 5%' or
+                    street2 LIKE '%Q6%' or street2 LIKE '%Q.6%' or street2 LIKE '%Quận 6%' or
+                    street2 LIKE '%Q8%' or street2 LIKE '%Q.8%' or street2 LIKE '%Quận 8%' or
+                    street2 LIKE '%Q.Bình Tân%' or street2 LIKE '%Q. Bình Tân%' or street2 LIKE '%Quận Bình Tân%' or
+                    street2 LIKE '%Q7%' or street2 LIKE '%Q.7%' or street2 LIKE '%Quận 7%' or
+                    street2 LIKE '%H.Bình Chánh%' or street2 LIKE '%H. Bình Chánh%' or street2 LIKE '%Huyện Bình Chánh%' or
+                    street2 LIKE '%H.Nhà Bè%' or street2 LIKE '%H. Nhà Bè%' or street2 LIKE '%Huyện Nhà Bè%' or
+                    street2 LIKE '%H.Cần Giờ%' or street2 LIKE '%H. Cần Giờ%' or street2 LIKE '%Huyện Cần Giờ%'
+                    
+            '''
+            cr.execute(sql)
+            thuy_ids = [row[0] for row in cr.fetchall()]
+            thuy_ids = str(thuy_ids).replace('[', '(')
+            thuy_ids = str(thuy_ids).replace(']', ')')
+            sql = '''
+                select id from sale_order where partner_id in %s
+                and id in (select order_id from sale_order_line where product_id in (select id from product_product 
+                where product_tmpl_id in (select id from product_template where categ_id in (select id from product_category 
+                where code = 'VC'))))
+            '''%(thuy_ids)
+            cr.execute(sql)
+            sale_thuy_ids = [row[0] for row in cr.fetchall()]
+            args += [('id','in',sale_thuy_ids)]
+        return super(sale_order, self).search(cr, uid, args, offset=offset, limit=limit, order=order, context=context, count=count)
+    def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
+        if not args:
+            args = []
+        ids = self.search(cr, user, [('name', operator, name)]+ args, limit=limit, context=context)
+        return self.name_get(cr, user, ids, context=context)
     def onchange_partner_id(self, cr, uid, ids, part, context=None):
         val=[]
         if not part:
@@ -197,7 +258,7 @@ class sale_order(osv.osv):
         if part:
 #             if partner.street2:
 #             country = part.country_id and country_id.name or False
-            val['dia_chi_kh']= partner.street + '/' +(partner.street2 or '') + '/' + partner.country_id.name
+            val['dia_chi_kh']= partner.street + '/' +(partner.street2 or '') + '/' + (partner.country_id and partner.country_id.name or '')
 #             else:
 #                 val['dia_chi_kh']= partner.street + '/' + partner.country_id.name
         return {'value': val}
@@ -205,7 +266,7 @@ class sale_order(osv.osv):
         if 'partner_id' in vals:
             part = self.pool.get('res.partner').browse(cr, uid, vals['partner_id'])
             vals.update({
-                        'dia_chi_kh': part.street + '/' +(part.street2 or '') + '/' + part.country_id.name
+                        'dia_chi_kh': part.street + '/' +(part.street2 or '') + '/' + (part.country_id and part.country_id.name or '')
                          })
         new_id = super(sale_order, self).create(cr, uid, vals, context)
         sale = self.browse(cr, uid, new_id)
@@ -215,7 +276,7 @@ class sale_order(osv.osv):
         if 'partner_id' in vals:
             part = self.pool.get('res.partner').browse(cr, uid, vals['partner_id'])
             vals.update({
-                        'dia_chi_kh': part.street + '/' +(part.street2 or '') + '/' + part.country_id.name
+                        'dia_chi_kh': part.street + '/' +(part.street2 or '') + '/' +  (part.country_id and part.country_id.name or '')
                          })
         new_write = super(sale_order, self).write(cr, uid, ids, vals, context=context) 
         return new_write

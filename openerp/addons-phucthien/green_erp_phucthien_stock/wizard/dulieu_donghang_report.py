@@ -147,12 +147,16 @@ class dulieu_donghang_report(osv.osv_memory):
                             case when sp.ngay_nhan is not null then 'Da nhan' else 'Chua nhan' end as bb_giaonhan
                         from stock_picking_packaging spp
                         left join stock_picking sp on sp.id = spp.picking_id
+                        left join stock_move sm on sm.picking_id = sp.id
+                        left join product_product pp on sm.product_id = pp.id
+                        left join product_template pt on pp.product_tmpl_id = pt.id
+                        left join product_category pc on pt.categ_id = pc.id
                         left join res_partner rp ON sp.partner_id = rp.id
                         left join res_users ru ON rp.user_id = ru.id
                         left join res_partner rpu ON ru.partner_id = rpu.id
                         left join res_country_state rcs ON rp.state_id = rcs.id
                         where sp.ngay_gui >= '%s' and (sp.ngay_nhan is null or sp.ngay_nhan <= '%s') and rp.user_id = %s
-                        and rp.id in %s
+                        and rp.id in %s and pc.code='VC'
                     ''' %(tu_ngay, den_ngay, self.uid, thuy_ids)
                     if partner_id:
                         sql+='''
