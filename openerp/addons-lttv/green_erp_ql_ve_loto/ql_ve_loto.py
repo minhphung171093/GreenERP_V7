@@ -471,8 +471,23 @@ class ve_loto(osv.osv):
                 'thanh_tien': 0.0,
             }
             soluong = 0
-            for line in loto.ve_loto_2_line:
-                soluong += line.sl_2_d + line.sl_2_c + line.sl_2_dc + line.sl_2_18 + line.sl_3_d + line.sl_3_c + line.sl_3_dc + line.sl_3_7 + line.sl_3_17 + line.sl_4_16 
+            sql = '''
+                select case when sum(coalesce(sl_2_d,0)+coalesce(sl_2_c,0)+coalesce(sl_2_dc,0)+coalesce(sl_2_18,0)+
+                    coalesce(sl_3_d,0)+coalesce(sl_3_c,0)+coalesce(sl_3_dc,0)+coalesce(sl_3_7,0)+coalesce(sl_3_17,0)+coalesce(sl_4_16,0)
+                )!=0 
+                        
+                    then sum(coalesce(sl_2_d,0)+coalesce(sl_2_c,0)+coalesce(sl_2_dc,0)+coalesce(sl_2_18,0)+
+                        coalesce(sl_3_d,0)+coalesce(sl_3_c,0)+coalesce(sl_3_dc,0)+coalesce(sl_3_7,0)+coalesce(sl_3_17,0)+coalesce(sl_4_16,0)
+                    ) else 0 end tongcong
+                    
+                    from ve_loto_line
+                    
+                    where ve_loto_id=%s
+            '''%(loto.id)
+            cr.execute(sql)
+            soluong = cr.fetchone()[0]
+#             for line in loto.ve_loto_2_line:
+#                 soluong += line.sl_2_d + line.sl_2_c + line.sl_2_dc + line.sl_2_18 + line.sl_3_d + line.sl_3_c + line.sl_3_dc + line.sl_3_7 + line.sl_3_17 + line.sl_4_16 
             res[loto.id]['tong_cong'] = soluong
             res[loto.id]['thanh_tien'] = soluong*int(loto.product_id.list_price)
         return res
@@ -499,18 +514,14 @@ class ve_loto(osv.osv):
         'tong_cong': fields.function(_get_total,type='float',digits=(16,0),
             store={
                 've.loto': (lambda self, cr, uid, ids, c={}: ids, ['state','ve_loto_2_line','ve_loto_3_line','ve_loto_4_line','parent_id','lichsu_line'], 10),
-                've.loto.line': (_get_loto, ['name', 've_loto_id', 'so_dt_2_d', 'sl_2_d', 'sl_2_d_trung', 'so_dt_2_c', 'sl_2_c', 'sl_2_c_trung',
-                                             'so_dt_2_dc', 'sl_2_dc', 'sl_2_dc_trung', 'so_dt_2_18', 'sl_2_18', 'sl_2_18_trung',
-                    'so_dt_3_d', 'sl_3_d', 'sl_3_d_trung', 'so_dt_3_c', 'sl_3_c', 'sl_3_c_trung', 'so_dt_3_dc', 'sl_3_dc', 'sl_3_dc_trung',
-                    'so_dt_3_7', 'sl_3_7', 'sl_3_7_trung','so_dt_3_17', 'sl_3_17', 'sl_3_17_trung','so_dt_4_16', 'sl_4_16', 'sl_4_16_trung'], 10),
+                've.loto.line': (_get_loto, ['name', 've_loto_id', 'sl_2_d', 'sl_2_c', 'sl_2_dc', 'sl_2_18',
+                                             'sl_3_d', 'sl_3_c','sl_3_dc', 'sl_3_7', 'sl_3_17', 'sl_4_16'], 10),
             },multi='tong',string='Tổng cộng số lượng'),
         'thanh_tien': fields.function(_get_total,type='float',
             store={
                 've.loto': (lambda self, cr, uid, ids, c={}: ids, ['state','ve_loto_2_line','ve_loto_3_line','ve_loto_4_line','parent_id','lichsu_line'], 10),
-                've.loto.line': (_get_loto, ['name', 've_loto_id', 'so_dt_2_d', 'sl_2_d', 'sl_2_d_trung', 'so_dt_2_c', 'sl_2_c', 'sl_2_c_trung',
-                                             'so_dt_2_dc', 'sl_2_dc', 'sl_2_dc_trung', 'so_dt_2_18', 'sl_2_18', 'sl_2_18_trung',
-                    'so_dt_3_d', 'sl_3_d', 'sl_3_d_trung', 'so_dt_3_c', 'sl_3_c', 'sl_3_c_trung', 'so_dt_3_dc', 'sl_3_dc', 'sl_3_dc_trung',
-                    'so_dt_3_7', 'sl_3_7', 'sl_3_7_trung','so_dt_3_17', 'sl_3_17', 'sl_3_17_trung','so_dt_4_16', 'sl_4_16', 'sl_4_16_trung'], 10),
+                've.loto.line': (_get_loto, ['name', 've_loto_id', 'sl_2_d', 'sl_2_c', 'sl_2_dc', 'sl_2_18',
+                                             'sl_3_d', 'sl_3_c','sl_3_dc', 'sl_3_7', 'sl_3_17', 'sl_4_16'], 10),
             },multi='tong',string='Thành tiền',digits=(16,0)),
         've_loto_2_line': fields.one2many('ve.loto.line','ve_loto_id','Line2', readonly=False),
         've_loto_3_line': fields.one2many('ve.loto.line','ve_loto_id','Line3', readonly=False),
