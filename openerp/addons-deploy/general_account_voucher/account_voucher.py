@@ -327,7 +327,7 @@ class account_voucher(osv.osv):
         return user.context_shop_id.id or False
     
     _defaults = {
-#         'assign_user':_get_assign_user,
+        'assign_user':_get_assign_user,
         
         #get Bank and Cash Journal firstly
         'journal_id':_get_journal,
@@ -811,6 +811,7 @@ class account_voucher(osv.osv):
                 'move_id': move_id,
                 'state': 'posted',
                 'number': name,
+                
             })
             
             
