@@ -129,7 +129,7 @@ class Parser(report_sxw.rml_parse):
         qty = 0
         dongia = 0
         thanhtien = 0
-        for line in o.hopdong_line:
+        for line in o.hopdong_hoahong_line:
             qty+=line.product_qty
             dongia += line.price_unit
             thanhtien += line.price_subtotal
