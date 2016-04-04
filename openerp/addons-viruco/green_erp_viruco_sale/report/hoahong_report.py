@@ -34,6 +34,7 @@ class Parser(report_sxw.rml_parse):
             'convert_f_amount':self.convert_f_amount,
             'convert_date': self.convert_date,
             'get_tong': self.get_tong,
+            'get_transhipment': self.get_transhipment,
             'get_so_phuluc': self.get_so_phuluc,
             'get_price_hh': self.get_price_hh,
             'get_tax_hh': self.get_tax_hh,
@@ -43,8 +44,100 @@ class Parser(report_sxw.rml_parse):
             'get_giaohang': self.get_giaohang,
             'get_delivery_order': self.get_delivery_order,
             'get_cang_den': self.get_cang_den,
+            'convert_theodoi_date': self.convert_theodoi_date,
+            'convert_dbh_date': self.convert_dbh_date,
+            'get_dia_chi': self.get_dia_chi,
+            'get_soluong': self.get_soluong,
+            'get_month_name':self.get_month_name,
+            'get_date_name':self.get_date_name,
+            
         })
+        
+    def get_soluong(self,order):
+        cur_obj = self.pool.get('res.currency')
+        cur = order.pricelist_id.currency_id
+        val = 0
+        for line in order.don_ban_hang_line:
+            val += line.product_qty
+#         product_qty = cur_obj.round(self.cr, self.uid, cur, val)
+        return {
+                'product_qty': val,
+                }
+        
+    def get_transhipment(self, transhipment):
+        tam = ''
+        if transhipment == 'allowed':
+            tam = 'Allowed'
+        if transhipment == 'not_allowed':
+            tam = 'Not Allowed'
+        return tam
     
+    def get_dia_chi(self, street, street2, state_id, zip, country_id):
+        address = ''
+        if street:
+            address += street + ', '
+        if street2:
+            address += street2 + ', '
+        if state_id:
+            state = self.pool.get('res.country.state').browse(self.cr,self.uid,state_id)
+            address += state.name + ', ' 
+        if zip:
+            address += zip + ', '
+        if country_id:
+            country = self.pool.get('res.country').browse(self.cr,self.uid,country_id)
+            address += country.name  
+        return address
+    
+    def convert_dbh_date(self, date):
+        if date:
+            date = datetime.strptime(date, DATE_FORMAT)
+            return date.strftime('%d/%m/%Y')
+        
+    def convert_date(self, date):
+        if not date:
+            date = time.strftime(DATE_FORMAT)
+        date = datetime.strptime(date, DATE_FORMAT)
+        return date.strftime('%d-%b-%y')
+    
+    def convert_theodoi_date(self, date):
+        if not date:
+            return ''
+        date = datetime.strptime(date[0:10], DATE_FORMAT)
+        return date.strftime('%d-%m-%Y')
+        
+    def convert_f_amount(self, amount):
+        a = format(amount,',')
+        b = a.split('.')
+        if len(b)==2 and len(b[1])==1:
+            a+='0'
+        return a.replace(',',' ')
+ 
+#     def convert_amount(self, amount):
+#         a = format(int(amount),',')
+#         a = a.replace(',','.')
+#         return a    
+    
+    def convert(self, amount):
+        amount_text = amount_to_text_en.amount_to_text(amount, 'en', '')
+        if amount_text and len(amount_text)>1:
+            amount = amount_text[1:]
+            head = amount_text[:1]
+            amount_text = head.upper()+amount
+        return amount_text
+    
+    def get_tong(self, o):
+        qty = 0
+        dongia = 0
+        thanhtien = 0
+        for line in o.hopdong_line:
+            qty+=line.product_qty
+            dongia += line.price_unit
+            thanhtien += line.price_subtotal
+        return {
+            'qty': qty,
+            'dongia': dongia,
+            'thanhtien': thanhtien,    
+        }
     def get_delivery_order(self, picking_id):
         if picking_id:
             nguon_hang = ''
@@ -134,50 +227,30 @@ class Parser(report_sxw.rml_parse):
     def get_price_hh(self,product_id,hop_dong_id): 
         price_unit = 0.0
         sql = '''
-            select price_unit from hopdong_hoahong_line where hopdong_hh_id = %s and product_id = %s
+            select case when price_unit!=0 then price_unit else 0 end price_unit from hopdong_hoahong_line where hopdong_hh_id = %s and product_id = %s
         '''%(hop_dong_id,product_id)
         self.cr.execute(sql)
-        price_unit = self.cr.dictfetchone()['price_unit']
+        p = self.cr.dictfetchone()
+        price_unit = p and p['price_unit'] or 0
         return price_unit
     
     def get_tax_hh(self,o):
         line = o.hopdong_hoahong_line[0]
         return line.tax_hh
-        
-        
-    def convert_date(self, date):
-        if not date:
+    
+    def get_month_name(self, month):
+        _months = {1:_("JAN"), 2:_("FEB"), 3:_("MAR"), 4:_("APR"), 5:_("MAY"), 6:_("JUN"), 7:_("JUL"), 8:_("AUG"), 9:_("SEP"), 10:_("OCT"), 11:_("NOV"), 12:_("DEC")}
+        d = _months[month]
+        return d
+            
+    def get_date_name(self,date):
+        if date:
+            date_name = date and (date[8:10] + ' ' + self.get_month_name(int(date[5:7])) +'. '+ date[:4]) or ''
+            return date_name
+        else:
             return ''
-        date = datetime.strptime(date[0:10], DATE_FORMAT)
-        return date.strftime('%d-%m-%Y')
         
-    def convert_f_amount(self, amount):
-        a = format(amount,',')
-        b = a.split('.')
-        if len(b)==2 and len(b[1])==1:
-            a+='0'
-        return a.replace(',',' ')
     
-    def convert(self, amount):
-        amount_text = amount_to_text_en.amount_to_text(amount, 'en', '')
-        if amount_text and len(amount_text)>1:
-            amount = amount_text[1:]
-            head = amount_text[:1]
-            amount_text = head.upper()+amount
-        return amount_text
     
-    def get_tong(self, o):
-        qty = 0
-        dongia = 0
-        thanhtien = 0
-        for line in o.hopdong_line:
-            qty+=line.product_qty
-            dongia += line.price_unit
-            thanhtien += line.price_subtotal
-        return {
-            'qty': qty,
-            'dongia': dongia,
-            'thanhtien': thanhtien,    
-        }
         
         

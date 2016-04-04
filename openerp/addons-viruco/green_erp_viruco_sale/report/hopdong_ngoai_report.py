@@ -116,7 +116,7 @@ class Parser(report_sxw.rml_parse):
 #         return a    
     
     def convert(self, amount):
-        amount_text = amount_to_text_en.amount_to_text(amount, 'en', 'Dollars')
+        amount_text = amount_to_text_en.amount_to_text(amount, 'en', '')
         if amount_text and len(amount_text)>1:
             amount = amount_text[1:]
             head = amount_text[:1]

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+    	<record id="hopdong_ngoai_report" model="ir.actions.report.xml">
+	        <field name="name">hopdong_ngoai_report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">hop.dong</field>
+	        <field name="report_name">Hợp Đồng Ngoại</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">green_erp_viruco_sale/report/hopdong_ngoai_report.py</field>
+	        <field name="report_rml">green_erp_viruco_sale/report/hopdong_ngoai_report.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record> 
+    	
+            
+    	<report 
+			auto="False" 
+			menu="False"
+			id="hopdong_ngoai_report" 
+			model="hop.dong" 
+			name="hopdong_ngoai_report"
+	        string="In Hợp Đồng Ngoại"
+	        rml="green_erp_viruco_sale/report/hopdong_ngoai_report.ods"/> 	
+	</data>
+</openerp>
