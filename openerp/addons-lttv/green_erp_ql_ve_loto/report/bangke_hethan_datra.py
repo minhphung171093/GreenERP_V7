@@ -30,14 +30,38 @@ class Parser(report_sxw.rml_parse):
             'get_gt_menhgia': self.get_gt_menhgia,
             'get_lines': self.get_lines,
             'get_name_menhgia': self.get_name_menhgia,
-            'get_ddt_name': self.get_ddt_name,
-            'get_2_dc': self.get_2_dc,
+            'get_ngaymothuong': self.get_ngaymothuong,
+            'get_daiduthuong': self.get_daiduthuong,
+            'get_date_now': self.get_date_now,
             'get_2_18': self.get_2_18,
         })
         
-    def get_ddt_name(self, dai_duthuong_id):
-        dai_duthuong = self.pool.get('dai.duthuong').browse(self.cr, self.uid, dai_duthuong_id)
-        return dai_duthuong.name
+    def get_date_now(self):
+        return time.strftime(DATE_FORMAT)
+        
+    def get_ngaymothuong(self):
+        wizard_data = self.localcontext['data']['form']
+        date = wizard_data['date']
+        if not date:
+            return ''
+        date = datetime.strptime(date, DATE_FORMAT)
+        return date.strftime('%d/%m/%Y')
+    
+    def get_daiduthuong(self):
+        wizard_data = self.localcontext['data']['form']
+        date = wizard_data['date']
+        sql = '''
+            select ddt.name
+                from ketqua_xoso kqxs
+                left join dai_duthuong ddt on ddt.id = kqxs.dai_duthuong_id 
+                where name='%s'
+        '''(date)
+        self.cr.execute(sql)
+        ddt = self.cr.fetchall()
+        if dtt:
+            return dtt[0]
+        else:
+            return ''
         
     def get_2_18(self):
         res = []
