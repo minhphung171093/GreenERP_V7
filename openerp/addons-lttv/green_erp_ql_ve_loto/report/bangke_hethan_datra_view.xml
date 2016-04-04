@@ -23,6 +23,6 @@
 			model="bangke.hethan.datra" 
 			name="bangke_hethan_datra_report"
 	        string="Chi tiết hết hạn đã trả thưởng"
-	        rml="green_erp_ql_ve_loto/report/bangke_hethan_datra.odt"/> 	
+	        rml="green_erp_ql_ve_loto/report/bangke_hethan_datra.ods"/> 	
 	</data>
 </openerp>

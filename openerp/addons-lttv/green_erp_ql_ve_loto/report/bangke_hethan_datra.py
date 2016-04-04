@@ -28,7 +28,6 @@ class Parser(report_sxw.rml_parse):
             'get_vietname_date': self.get_vietname_date,
             'convert': self.convert,
             'get_gt_menhgia': self.get_gt_menhgia,
-            'get_lines': self.get_lines,
             'get_name_menhgia': self.get_name_menhgia,
             'get_ngaymothuong': self.get_ngaymothuong,
             'get_daiduthuong': self.get_daiduthuong,
@@ -54,12 +53,12 @@ class Parser(report_sxw.rml_parse):
             select ddt.name
                 from ketqua_xoso kqxs
                 left join dai_duthuong ddt on ddt.id = kqxs.dai_duthuong_id 
-                where name='%s'
-        '''(date)
+                where kqxs.name='%s'
+        '''%(date)
         self.cr.execute(sql)
         ddt = self.cr.fetchall()
-        if dtt:
-            return dtt[0]
+        if ddt:
+            return ddt[0]
         else:
             return ''
         
