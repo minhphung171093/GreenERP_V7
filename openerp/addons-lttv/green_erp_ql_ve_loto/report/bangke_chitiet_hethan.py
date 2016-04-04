@@ -31,8 +31,17 @@ class Parser(report_sxw.rml_parse):
             'get_so_nqt': self.get_so_nqt,
             'get_name_menhgia': self.get_name_menhgia,
             'get_ddt_name': self.get_ddt_name,
+            'convert_amount':self.convert_amount,
             'get_2_dc': self.get_2_dc,
             'get_2_18': self.get_2_18,
+            'get_2_d': self.get_2_d,
+            'get_2_c': self.get_2_d,
+            'get_3_d': self.get_3_d,
+            'get_3_c': self.get_3_c,
+            'get_3_dc': self.get_3_dc,
+            'get_3_7': self.get_3_7,
+            'get_3_17': self.get_3_17,
+            'get_4_16': self.get_4_16,
         })
         
     def get_ddt_name(self, dai_duthuong_id):
@@ -57,52 +66,137 @@ class Parser(report_sxw.rml_parse):
         date = wizard_data['date']
         product = wizard_data['product_id']
         res = []
-        seq = -1
-        sl_tong = 0
-        st_tong = 0
-        for col in self.get_so_nqt():
-            seq += 1
-            seq_n = seq
+        slan_dict = {}
+        sql = '''
+                select slan_2_d
+                 
+                    from quyet_toan_ve_ngay_line
+                     
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
+                     
+                    group by slan_2_d
+                    order by slan_2_d asc
+            '''%(date,product[0])
+        self.cr.execute(sql)
+         #'so lan trung can phai group by so lan lai va order by tang dan'
+        for seq,slan in enumerate(self.cr.dictfetchall()):
+            slan_dict[int(slan['slan_2_d'])] = seq
             if seq==0:
                 res.append({
+                    'so':'',
                     'name': 'Đầu',
-                    col['date_to']:0,
                     'sl_tong': 0,
-                    'slan_tong': 0,
-                    'st_tong': 0,     
+                    'slan': int(slan['slan_2_d']),
+                    'st_tong': 0, 
                 })
             else:
                 res.append({
+                    'so':'',
                     'name': '',
-                    col['date_to']:0,
                     'sl_tong': 0,
-                    'slan_tong': 0,
-                    'st_tong': 0,     
+                    'slan': slan['slan_2_d'],
+                    'st_tong': 0, 
                 })
-            sql = '''
-                select case when sum(sl_2_d)!=0 then sum(sl_2_d) else 0 end sl_2_d,
-                        case when sum(st_2_d)!=0 then sum(st_2_d) else 0 end st_2_d
+            for nqt in self.get_so_nqt(): #('so ngay quyet toan, co ham roi'):
+#                 res[nqt['date_to']] = 0
+                res[seq][nqt['date_to']] = 0
                 
+        for nqt in self.get_so_nqt(): #'so ngay quyet toan, co ham roi'
+            sql = '''
+                select slan_2_d::int,
+                        case when sum(sl_2_d)!=0 then sum(sl_2_d) else 0 end sl_2_d,
+                        case when sum(st_2_d)!=0 then sum(st_2_d) else 0 end st_2_d
+                 
                     from quyet_toan_ve_ngay_line
-                    
+                     
                     where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
-                    
-            '''%(col['date_to'],product[0])
+                     
+                    group by slan_2_d
+                    order by slan_2_d asc
+            '''%(date,product[0])
             self.cr.execute(sql)
-            for seq_2_d, line_2_d in enumerate(self.cr.dictfetchall()):
-                if seq_n+seq_2_d < seq:
-                    seq += 1
-                    res.append({
-                        'name': '',
-                        col['date_to']:0,
-                        'sl_tong': 0,
-                        'slan_tong': 0,
-                        'st_tong': 0,     
-                    })
-                res[seq_n+seq_2_d][col['date_to']] = line_2_dc['sl_2_dc']
-                res[seq_n+seq_2_d]['sl_tong'] += line_2_dc['sl_2_dc']
-                res[seq_n+seq_2_d]['slan_tong'] = line_2_dc['slan_2_dc']
-                res[seq_n+seq_2_d]['st_tong'] += line_2_dc['st_2_dc']
+            #sql lay slan, soluong, sotien cua loai 2 so 18 lo group by theo so lan
+            for slan_nqt in self.cr.dictfetchall():
+                res[slan_dict[slan_nqt['slan_2_d']]][nqt['date_to']] += slan_nqt['slan_2_d']
+                res[slan_dict[slan_nqt['slan_2_d']]]['sl_tong'] += slan_nqt['sl_2_d']
+                res[slan_dict[slan_nqt['slan_2_d']]]['st_tong'] += slan_nqt['st_2_d']
+        if not res:
+            res.append({
+                    'so':'2 số',
+                    'name': 'Đầu',
+                    'sl_tong': '',
+                    'slan': '',
+                    'st_tong': '', 
+                           })
+        return res
+    
+    def get_2_c(self):
+        wizard_data = self.localcontext['data']['form']
+        date = wizard_data['date']
+        product = wizard_data['product_id']
+        res = []
+        slan_dict = {}
+        sql = '''
+                select slan_2_c
+                 
+                    from quyet_toan_ve_ngay_line
+                     
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
+                     
+                    group by slan_2_c
+                    order by slan_2_c asc
+            '''%(date,product[0])
+        self.cr.execute(sql)
+         #'so lan trung can phai group by so lan lai va order by tang dan'
+        for seq,slan in enumerate(self.cr.dictfetchall()):
+            slan_dict[int(slan['slan_2_c'])] = seq
+            if seq==0:
+                res.append({
+                    'so':'',
+                    'name': 'Cuối',
+                    'sl_tong': 0,
+                    'slan': int(slan['slan_2_c']),
+                    'st_tong': 0, 
+                })
+            else:
+                res.append({
+                    'so':'',
+                    'name': '',
+                    'sl_tong': 0,
+                    'slan': slan['slan_2_d'],
+                    'st_tong': 0, 
+                })
+            for nqt in self.get_so_nqt(): #('so ngay quyet toan, co ham roi'):
+#                 res[nqt['date_to']] = 0
+                res[seq][nqt['date_to']] = 0
+                
+        for nqt in self.get_so_nqt(): #'so ngay quyet toan, co ham roi'
+            sql = '''
+                select slan_2_c::int,
+                        case when sum(sl_2_c)!=0 then sum(sl_2_c) else 0 end sl_2_c,
+                        case when sum(st_2_c)!=0 then sum(st_2_c) else 0 end st_2_c
+                 
+                    from quyet_toan_ve_ngay_line
+                     
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
+                     
+                    group by slan_2_c
+                    order by slan_2_c asc
+            '''%(date,product[0])
+            self.cr.execute(sql)
+            #sql lay slan, soluong, sotien cua loai 2 so 18 lo group by theo so lan
+            for slan_nqt in self.cr.dictfetchall():
+                res[slan_dict[slan_nqt['slan_2_c']]][nqt['date_to']] += slan_nqt['slan_2_c']
+                res[slan_dict[slan_nqt['slan_2_c']]]['sl_tong'] += slan_nqt['sl_2_c']
+                res[slan_dict[slan_nqt['slan_2_c']]]['st_tong'] += slan_nqt['st_2_c']
+        if not res:
+            res.append({
+                    'so':'2 số',
+                    'name': 'Đầu',
+                    'sl_tong': '',
+                    'slan': '',
+                    'st_tong': '', 
+                           })
         return res
     
     def get_2_dc(self):
@@ -110,104 +204,71 @@ class Parser(report_sxw.rml_parse):
         date = wizard_data['date']
         product = wizard_data['product_id']
         res = []
-        seq = -1
-        sl_tong = 0
-        st_tong = 0
-        for col in self.get_so_nqt():
-            seq += 1
-            seq_n = seq
+        slan_dict = {}
+        sql = '''
+                select slan_2_dc
+                 
+                    from quyet_toan_ve_ngay_line
+                     
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
+                     
+                    group by slan_2_dc
+                    order by slan_2_dc asc
+            '''%(date,product[0])
+        self.cr.execute(sql)
+         #'so lan trung can phai group by so lan lai va order by tang dan'
+        for seq,slan in enumerate(self.cr.dictfetchall()):
+            slan_dict[int(slan['slan_2_dc'])] = seq
             if seq==0:
                 res.append({
-                    'name': 'Đ/C',
-                    col['date_to']:0,
+                    'so':'',
+                    'name': '18 Lô',
                     'sl_tong': 0,
-                    'slan_tong': 0,
-                    'st_tong': 0,     
+                    'slan': int(slan['slan_2_dc']),
+                    'st_tong': 0, 
                 })
             else:
                 res.append({
+                    'so':'',
                     'name': '',
-                    col['date_to']:0,
                     'sl_tong': 0,
-                    'slan_tong': 0,
-                    'st_tong': 0,     
+                    'slan': slan['slan_2_dc'],
+                    'st_tong': 0, 
                 })
+            for nqt in self.get_so_nqt(): #('so ngay quyet toan, co ham roi'):
+#                 res[nqt['date_to']] = 0
+                res[seq][nqt['date_to']] = 0
+                
+        for nqt in self.get_so_nqt(): #'so ngay quyet toan, co ham roi'
             sql = '''
-                select slan_2_dc,
+                select slan_2_dc::int,
                         case when sum(sl_2_dc)!=0 then sum(sl_2_dc) else 0 end sl_2_dc,
                         case when sum(st_2_dc)!=0 then sum(st_2_dc) else 0 end st_2_dc
-                
+                 
                     from quyet_toan_ve_ngay_line
-                    
+                     
                     where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
-                    
+                     
                     group by slan_2_dc
-            '''%(col['date_to'],product[0])
+                    order by slan_2_dc asc
+            '''%(date,product[0])
             self.cr.execute(sql)
-            for seq_2_dc, line_2_dc in enumerate(self.cr.dictfetchall()):
-                if seq_n+seq_2_dc < seq:
-                    seq += 1
-                    res.append({
-                        'name': '',
-                        col['date_to']:0,
-                        'sl_tong': 0,
-                        'slan_tong': 0,
-                        'st_tong': 0,     
-                    })
-                res[seq_n+seq_2_dc][col['date_to']] = line_2_dc['sl_2_dc']
-                res[seq_n+seq_2_dc]['sl_tong'] += line_2_dc['sl_2_dc']
-                res[seq_n+seq_2_dc]['slan_tong'] = line_2_dc['slan_2_dc']
-                res[seq_n+seq_2_dc]['st_tong'] += line_2_dc['st_2_dc']
+            #sql lay slan, soluong, sotien cua loai 2 so 18 lo group by theo so lan
+            for slan_nqt in self.cr.dictfetchall():
+                res[slan_dict[slan_nqt['slan_2_dc']]][nqt['date_to']] += slan_nqt['slan_2_dc']
+                res[slan_dict[slan_nqt['slan_2_dc']]]['sl_tong'] += slan_nqt['sl_2_dc']
+                res[slan_dict[slan_nqt['slan_2_dc']]]['st_tong'] += slan_nqt['st_2_dc']
+        if not res:
+            res.append({
+                    'so':'',
+                    'name': 'Đ/C',
+                    'sl_tong': '',
+                    'slan': '',
+                    'st_tong': '', 
+                           })
         return res
     
     def get_2_18(self):
-#         wizard_data = self.localcontext['data']['form']
-#         date = wizard_data['date']
-#         product = wizard_data['product_id']
-#         res = []
-#         seq = -1
-#         seq_all = -1
-#         sl_tong = 0
-#         st_tong = 0
-#         for seq_c,col in enumerate(self.get_lines()):
-#             seq += 1
-#             seq_n = seq
-#             seq_all += seq
-#             if seq_c==0:
-#                 res.append({
-#                     'name': '18 Lô',
-#                     col['date_to']:0,
-#                     'sl_tong': 0,
-#                     'slan_tong': 0,
-#                     'st_tong': 0,     
-#                 })
-#             sql = '''
-#                 select slan_2_18,
-#                         case when sum(sl_2_18)!=0 then sum(sl_2_18) else 0 end sl_2_18,
-#                         case when sum(st_2_18)!=0 then sum(st_2_18) else 0 end st_2_18
-#                  
-#                     from quyet_toan_ve_ngay_line
-#                      
-#                     where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
-#                      
-#                     group by slan_2_18
-#             '''%(date,product[0])
-#             self.cr.execute(sql)
-#             for seq_2_18, line_2_18 in enumerate(self.cr.dictfetchall()):
-#                 if seq_n+seq_2_18 > seq_all:
-#                     seq += 1
-#                     res.append({
-#                         'name': '',
-#                         col['date_to']:0,
-#                         'sl_tong': 0,
-#                         'slan_tong': 0,
-#                         'st_tong': 0,     
-#                     })
-#                 res[seq_n+seq_2_18][col['date_to']] = line_2_18['sl_2_18']
-#                 res[seq_n+seq_2_18]['sl_tong'] += line_2_18['sl_2_18']
-#                 res[seq_n+seq_2_18]['slan_tong'] = line_2_18['slan_2_18']
-#                 res[seq_n+seq_2_18]['st_tong'] += line_2_18['st_2_18']
-#             seq = -1
         wizard_data = self.localcontext['data']['form']
         date = wizard_data['date']
         product = wizard_data['product_id']
@@ -226,27 +287,30 @@ class Parser(report_sxw.rml_parse):
         self.cr.execute(sql)
          #'so lan trung can phai group by so lan lai va order by tang dan'
         for seq,slan in enumerate(self.cr.dictfetchall()):
-            slan_dict[slan] = seq
+            slan_dict[int(slan['slan_2_18'])] = seq
             if seq==0:
                 res.append({
+                    'so':'',
                     'name': '18 Lô',
                     'sl_tong': 0,
-                    'slan': slan,
+                    'slan': int(slan['slan_2_18']),
                     'st_tong': 0, 
                 })
             else:
                 res.append({
+                    'so':'',
                     'name': '',
                     'sl_tong': 0,
-                    'slan': slan,
+                    'slan': slan['slan_2_18'],
                     'st_tong': 0, 
                 })
             for nqt in self.get_so_nqt(): #('so ngay quyet toan, co ham roi'):
-                res[nqt['date_to']] = 0
+#                 res[nqt['date_to']] = 0
+                res[seq][nqt['date_to']] = 0
                 
         for nqt in self.get_so_nqt(): #'so ngay quyet toan, co ham roi'
             sql = '''
-                select slan_2_18,
+                select slan_2_18::int,
                         case when sum(sl_2_18)!=0 then sum(sl_2_18) else 0 end sl_2_18,
                         case when sum(st_2_18)!=0 then sum(st_2_18) else 0 end st_2_18
                  
@@ -257,11 +321,434 @@ class Parser(report_sxw.rml_parse):
                     group by slan_2_18
                     order by slan_2_18 asc
             '''%(date,product[0])
+            self.cr.execute(sql)
             #sql lay slan, soluong, sotien cua loai 2 so 18 lo group by theo so lan
             for slan_nqt in self.cr.dictfetchall():
-                res[slan_dict[slan_nqt['slan']]][nqt['date_to']] += slan_nqt['slan_2_18']
-                res[slan_dict[slan_nqt['slan']]]['sl_tong'] += slan_nqt['sl_2_18']
-                res[slan_dict[slan_nqt['slan']]]['st_tong'] += slan_nqt['st_2_18']
+                res[slan_dict[slan_nqt['slan_2_18']]][nqt['date_to']] += slan_nqt['slan_2_18']
+                res[slan_dict[slan_nqt['slan_2_18']]]['sl_tong'] += slan_nqt['sl_2_18']
+                res[slan_dict[slan_nqt['slan_2_18']]]['st_tong'] += slan_nqt['st_2_18']
+        if not res:
+            res.append({
+                    'so':'',
+                    'name': '18 Lô',
+                    'sl_tong': '',
+                    'slan': '',
+                    'st_tong': '', 
+                           })
+        return res
+    
+    def get_3_d(self):
+        wizard_data = self.localcontext['data']['form']
+        date = wizard_data['date']
+        product = wizard_data['product_id']
+        res = []
+        slan_dict = {}
+        sql = '''
+                select slan_3_d
+                 
+                    from quyet_toan_ve_ngay_line
+                     
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
+                     
+                    group by slan_3_d
+                    order by slan_3_d asc
+            '''%(date,product[0])
+        self.cr.execute(sql)
+         #'so lan trung can phai group by so lan lai va order by tang dan'
+        for seq,slan in enumerate(self.cr.dictfetchall()):
+            slan_dict[int(slan['slan_3_d'])] = seq
+            if seq==0:
+                res.append({
+                    'so':'3 số',
+                    'name': 'Đầu',
+                    'sl_tong': 0,
+                    'slan': int(slan['slan_3_d']),
+                    'st_tong': 0, 
+                })
+            else:
+                res.append({
+                    'so':'',
+                    'name': '',
+                    'sl_tong': 0,
+                    'slan': slan['slan_3_d'],
+                    'st_tong': 0, 
+                })
+            for nqt in self.get_so_nqt(): #('so ngay quyet toan, co ham roi'):
+#                 res[nqt['date_to']] = 0
+                res[seq][nqt['date_to']] = 0
+                
+        for nqt in self.get_so_nqt(): #'so ngay quyet toan, co ham roi'
+            sql = '''
+                select slan_3_d::int,
+                        case when sum(sl_3_d)!=0 then sum(sl_3_d) else 0 end sl_3_d,
+                        case when sum(st_3_d)!=0 then sum(st_3_d) else 0 end st_3_d
+                 
+                    from quyet_toan_ve_ngay_line
+                     
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
+                     
+                    group by slan_3_d
+                    order by slan_3_d asc
+            '''%(date,product[0])
+            self.cr.execute(sql)
+            #sql lay slan, soluong, sotien cua loai 2 so 18 lo group by theo so lan
+            for slan_nqt in self.cr.dictfetchall():
+                res[slan_dict[slan_nqt['slan_3_d']]][nqt['date_to']] += slan_nqt['slan_3_d']
+                res[slan_dict[slan_nqt['slan_3_d']]]['sl_tong'] += slan_nqt['sl_3_d']
+                res[slan_dict[slan_nqt['slan_3_d']]]['st_tong'] += slan_nqt['st_3_d']
+        if not res:
+            res.append({
+                    'so':'3 số',
+                    'name': 'Đầu',
+                    'sl_tong': '',
+                    'slan': '',
+                    'st_tong': '', 
+                           })
+        return res
+    
+    def get_3_c(self):
+        wizard_data = self.localcontext['data']['form']
+        date = wizard_data['date']
+        product = wizard_data['product_id']
+        res = []
+        slan_dict = {}
+        sql = '''
+                select slan_3_c
+                 
+                    from quyet_toan_ve_ngay_line
+                     
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
+                     
+                    group by slan_3_c
+                    order by slan_3_c asc
+            '''%(date,product[0])
+        self.cr.execute(sql)
+         #'so lan trung can phai group by so lan lai va order by tang dan'
+        for seq,slan in enumerate(self.cr.dictfetchall()):
+            slan_dict[int(slan['slan_3_c'])] = seq
+            if seq==0:
+                res.append({
+                    'so':'',
+                    'name': 'Cuối',
+                    'sl_tong': 0,
+                    'slan': int(slan['slan_3_c']),
+                    'st_tong': 0, 
+                })
+            else:
+                res.append({
+                    'so':'',
+                    'name': '',
+                    'sl_tong': 0,
+                    'slan': slan['slan_3_c'],
+                    'st_tong': 0, 
+                })
+            for nqt in self.get_so_nqt(): #('so ngay quyet toan, co ham roi'):
+#                 res[nqt['date_to']] = 0
+                res[seq][nqt['date_to']] = 0
+                
+        for nqt in self.get_so_nqt(): #'so ngay quyet toan, co ham roi'
+            sql = '''
+                select slan_3_c::int,
+                        case when sum(sl_3_c)!=0 then sum(sl_3_c) else 0 end sl_3_c,
+                        case when sum(st_3_c)!=0 then sum(st_3_c) else 0 end st_3_c
+                 
+                    from quyet_toan_ve_ngay_line
+                     
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
+                     
+                    group by slan_3_c
+                    order by slan_3_c asc
+            '''%(date,product[0])
+            self.cr.execute(sql)
+            #sql lay slan, soluong, sotien cua loai 2 so 18 lo group by theo so lan
+            for slan_nqt in self.cr.dictfetchall():
+                res[slan_dict[slan_nqt['slan_3_c']]][nqt['date_to']] += slan_nqt['slan_3_c']
+                res[slan_dict[slan_nqt['slan_3_c']]]['sl_tong'] += slan_nqt['sl_3_c']
+                res[slan_dict[slan_nqt['slan_3_c']]]['st_tong'] += slan_nqt['st_3_c']
+        if not res:
+            res.append({
+                    'so':'',
+                    'name': 'Cuối',
+                    'sl_tong': '',
+                    'slan': '',
+                    'st_tong': '', 
+                           })
+        return res
+    
+    def get_3_dc(self):
+        wizard_data = self.localcontext['data']['form']
+        date = wizard_data['date']
+        product = wizard_data['product_id']
+        res = []
+        slan_dict = {}
+        sql = '''
+                select slan_3_dc
+                 
+                    from quyet_toan_ve_ngay_line
+                     
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
+                     
+                    group by slan_3_dc
+                    order by slan_3_dc asc
+            '''%(date,product[0])
+        self.cr.execute(sql)
+         #'so lan trung can phai group by so lan lai va order by tang dan'
+        for seq,slan in enumerate(self.cr.dictfetchall()):
+            slan_dict[int(slan['slan_3_dc'])] = seq
+            if seq==0:
+                res.append({
+                    'so':'',
+                    'name': 'Đ/C',
+                    'sl_tong': 0,
+                    'slan': int(slan['slan_3_dc']),
+                    'st_tong': 0, 
+                })
+            else:
+                res.append({
+                    'so':'',
+                    'name': '',
+                    'sl_tong': 0,
+                    'slan': slan['slan_3_dc'],
+                    'st_tong': 0, 
+                })
+            for nqt in self.get_so_nqt(): #('so ngay quyet toan, co ham roi'):
+#                 res[nqt['date_to']] = 0
+                res[seq][nqt['date_to']] = 0
+                
+        for nqt in self.get_so_nqt(): #'so ngay quyet toan, co ham roi'
+            sql = '''
+                select slan_3_dc::int,
+                        case when sum(sl_3_dc)!=0 then sum(sl_3_dc) else 0 end sl_3_dc,
+                        case when sum(st_3_dc)!=0 then sum(st_3_dc) else 0 end st_3_dc
+                 
+                    from quyet_toan_ve_ngay_line
+                     
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
+                     
+                    group by slan_3_dc
+                    order by slan_3_dc asc
+            '''%(date,product[0])
+            self.cr.execute(sql)
+            #sql lay slan, soluong, sotien cua loai 2 so 18 lo group by theo so lan
+            for slan_nqt in self.cr.dictfetchall():
+                res[slan_dict[slan_nqt['slan_3_dc']]][nqt['date_to']] += slan_nqt['slan_3_dc']
+                res[slan_dict[slan_nqt['slan_3_dc']]]['sl_tong'] += slan_nqt['sl_3_dc']
+                res[slan_dict[slan_nqt['slan_3_dc']]]['st_tong'] += slan_nqt['st_3_dc']
+        if not res:
+            res.append({
+                    'so':'',
+                    'name': 'Đ/C',
+                    'sl_tong': '',
+                    'slan': '',
+                    'st_tong': '', 
+                           })
+        return res
+    
+    def get_3_7(self):
+        wizard_data = self.localcontext['data']['form']
+        date = wizard_data['date']
+        product = wizard_data['product_id']
+        res = []
+        slan_dict = {}
+        sql = '''
+                select slan_3_7
+                 
+                    from quyet_toan_ve_ngay_line
+                     
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
+                     
+                    group by slan_3_7
+                    order by slan_3_7 asc
+            '''%(date,product[0])
+        self.cr.execute(sql)
+         #'so lan trung can phai group by so lan lai va order by tang dan'
+        for seq,slan in enumerate(self.cr.dictfetchall()):
+            slan_dict[int(slan['slan_3_7'])] = seq
+            if seq==0:
+                res.append({
+                    'so':'',
+                    'name': '7 Lô',
+                    'sl_tong': 0,
+                    'slan': int(slan['slan_3_7']),
+                    'st_tong': 0, 
+                })
+            else:
+                res.append({
+                    'so':'',
+                    'name': '',
+                    'sl_tong': 0,
+                    'slan': slan['slan_3_7'],
+                    'st_tong': 0, 
+                })
+            for nqt in self.get_so_nqt(): #('so ngay quyet toan, co ham roi'):
+#                 res[nqt['date_to']] = 0
+                res[seq][nqt['date_to']] = 0
+                
+        for nqt in self.get_so_nqt(): #'so ngay quyet toan, co ham roi'
+            sql = '''
+                select slan_3_7::int,
+                        case when sum(sl_3_7)!=0 then sum(sl_3_7) else 0 end sl_3_7,
+                        case when sum(st_3_7)!=0 then sum(st_3_7) else 0 end st_3_7
+                 
+                    from quyet_toan_ve_ngay_line
+                     
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
+                     
+                    group by slan_3_7
+                    order by slan_3_7 asc
+            '''%(date,product[0])
+            self.cr.execute(sql)
+            #sql lay slan, soluong, sotien cua loai 2 so 18 lo group by theo so lan
+            for slan_nqt in self.cr.dictfetchall():
+                res[slan_dict[slan_nqt['slan_3_7']]][nqt['date_to']] += slan_nqt['slan_3_7']
+                res[slan_dict[slan_nqt['slan_3_7']]]['sl_tong'] += slan_nqt['sl_3_7']
+                res[slan_dict[slan_nqt['slan_3_7']]]['st_tong'] += slan_nqt['st_3_7']
+        if not res:
+            res.append({
+                    'so':'',
+                    'name': '7 Lô',
+                    'sl_tong': '',
+                    'slan': '',
+                    'st_tong': '', 
+                           })
+        return res
+    
+    def get_3_17(self):
+        wizard_data = self.localcontext['data']['form']
+        date = wizard_data['date']
+        product = wizard_data['product_id']
+        res = []
+        slan_dict = {}
+        sql = '''
+                select slan_3_17
+                 
+                    from quyet_toan_ve_ngay_line
+                     
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
+                     
+                    group by slan_3_17
+                    order by slan_3_17 asc
+            '''%(date,product[0])
+        self.cr.execute(sql)
+         #'so lan trung can phai group by so lan lai va order by tang dan'
+        for seq,slan in enumerate(self.cr.dictfetchall()):
+            slan_dict[int(slan['slan_3_17'])] = seq
+            if seq==0:
+                res.append({
+                    'so':'',
+                    'name': '17 Lô',
+                    'sl_tong': 0,
+                    'slan': int(slan['slan_3_17']),
+                    'st_tong': 0, 
+                })
+            else:
+                res.append({
+                    'so':'',
+                    'name': '',
+                    'sl_tong': 0,
+                    'slan': slan['slan_3_17'],
+                    'st_tong': 0, 
+                })
+            for nqt in self.get_so_nqt(): #('so ngay quyet toan, co ham roi'):
+#                 res[nqt['date_to']] = 0
+                res[seq][nqt['date_to']] = 0
+                
+        for nqt in self.get_so_nqt(): #'so ngay quyet toan, co ham roi'
+            sql = '''
+                select slan_3_17::int,
+                        case when sum(sl_3_17)!=0 then sum(sl_3_17) else 0 end sl_3_17,
+                        case when sum(st_3_17)!=0 then sum(st_3_17) else 0 end st_3_17
+                 
+                    from quyet_toan_ve_ngay_line
+                     
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
+                     
+                    group by slan_3_17
+                    order by slan_3_17 asc
+            '''%(date,product[0])
+            self.cr.execute(sql)
+            #sql lay slan, soluong, sotien cua loai 2 so 18 lo group by theo so lan
+            for slan_nqt in self.cr.dictfetchall():
+                res[slan_dict[slan_nqt['slan_3_17']]][nqt['date_to']] += slan_nqt['slan_3_17']
+                res[slan_dict[slan_nqt['slan_3_17']]]['sl_tong'] += slan_nqt['sl_3_17']
+                res[slan_dict[slan_nqt['slan_3_17']]]['st_tong'] += slan_nqt['st_3_17']
+        if not res:
+            res.append({
+                    'so':'',
+                    'name': '17 Lô',
+                    'sl_tong': '',
+                    'slan': '',
+                    'st_tong': '', 
+                           })
+        return res
+    
+    def get_4_16(self):
+        wizard_data = self.localcontext['data']['form']
+        date = wizard_data['date']
+        product = wizard_data['product_id']
+        res = []
+        slan_dict = {}
+        sql = '''
+                select slan_4_16
+                 
+                    from quyet_toan_ve_ngay_line
+                     
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
+                     
+                    group by slan_4_16
+                    order by slan_4_16 asc
+            '''%(date,product[0])
+        self.cr.execute(sql)
+         #'so lan trung can phai group by so lan lai va order by tang dan'
+        for seq,slan in enumerate(self.cr.dictfetchall()):
+            slan_dict[int(slan['slan_4_16'])] = seq
+            if seq==0:
+                res.append({
+                    'so':'',
+                    'name': '16 Lô',
+                    'sl_tong': 0,
+                    'slan': int(slan['slan_4_16']),
+                    'st_tong': 0, 
+                })
+            else:
+                res.append({
+                    'so':'',
+                    'name': '',
+                    'sl_tong': 0,
+                    'slan': slan['slan_4_16'],
+                    'st_tong': 0, 
+                })
+            for nqt in self.get_so_nqt(): #('so ngay quyet toan, co ham roi'):
+#                 res[nqt['date_to']] = 0
+                res[seq][nqt['date_to']] = 0
+                
+        for nqt in self.get_so_nqt(): #'so ngay quyet toan, co ham roi'
+            sql = '''
+                select slan_4_16::int,
+                        case when sum(sl_4_16)!=0 then sum(sl_4_16) else 0 end sl_4_16,
+                        case when sum(st_4_16)!=0 then sum(st_4_16) else 0 end st_4_16
+                 
+                    from quyet_toan_ve_ngay_line
+                     
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
+                     
+                    group by slan_4_16
+                    order by slan_4_16 asc
+            '''%(date,product[0])
+            self.cr.execute(sql)
+            #sql lay slan, soluong, sotien cua loai 2 so 18 lo group by theo so lan
+            for slan_nqt in self.cr.dictfetchall():
+                res[slan_dict[slan_nqt['slan_4_16']]][nqt['date_to']] += slan_nqt['slan_4_16']
+                res[slan_dict[slan_nqt['slan_4_16']]]['sl_tong'] += slan_nqt['sl_4_16']
+                res[slan_dict[slan_nqt['slan_4_16']]]['st_tong'] += slan_nqt['st_4_16']
+        if not res:
+            res.append({
+                    'so':'4 số',
+                    'name': '16 Lô',
+                    'sl_tong': '',
+                    'slan': '',
+                    'st_tong': '', 
+                           })
         return res
     
     def get_vietname_date(self, date):
@@ -289,4 +776,10 @@ class Parser(report_sxw.rml_parse):
         product = wizard_data['product_id']
         menhgia = self.pool.get('product.product').browse(self.cr, self.uid, product[0])
         return int(menhgia.list_price)/10000
+    
+    def convert_amount(self, amount):
+        if not amount:
+            amount = 0.0
+        amount = format(amount, ',').split('.')[0]
+        return amount.replace(',','.')
     
