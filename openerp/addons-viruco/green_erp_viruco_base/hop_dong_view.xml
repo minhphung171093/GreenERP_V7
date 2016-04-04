@@ -246,6 +246,7 @@
 						<button name="huy_hd_ngoai" string="Hủy bỏ" type="object" states="moi_tao,da_duyet,het_han,thuc_hien" class="oe_highlight"/>
 						<button name="set_to_draft" string="Quay về mới tạo" states="huy_bo" type="object" class="oe_highlight"/>
 						<button name="bt_theodoi_hopdong" string="Theo dõi HĐ" type="object" class="oe_highlight"/>
+						<button name="print_hopdong_hoahong" string="In HĐ Hoa Hồng" type="object" class="oe_highlight"/>
 						<field name="state" widget="statusbar" statusbar_visible="moi_tao,da_duyet,da_ky,het_han,huy_bo"/>
 					</header>
 	            	<sheet>

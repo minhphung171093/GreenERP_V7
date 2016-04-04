@@ -536,7 +536,11 @@ class hop_dong(osv.osv):
 #                 'datas': datas,
 #                 'nodestroy' : True
             }
-            
+    def print_hopdong_hoahong(self, cr, uid, ids, context=None):
+        return {
+            'type': 'ir.actions.report.xml',
+            'report_name': 'hoahong_report',
+        }            
     def print_theodoi_hopdong(self, cr, uid, ids, context=None):
         return {
             'type': 'ir.actions.report.xml',
