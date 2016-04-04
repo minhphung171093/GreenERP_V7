@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+    	<record id="bangke_hethan_datra_report" model="ir.actions.report.xml">
+	        <field name="name">bangke_hethan_datra_report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">bangke.hethan.datra</field>
+	        <field name="report_name">Chi tiết hết hạn đã trả thưởng</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">green_erp_ql_ve_loto/report/bangke_hethan_datra.py</field>
+	        <field name="report_rml">green_erp_ql_ve_loto/report/bangke_hethan_datra.odt</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record> 
+    	   
+    	<report 
+			auto="False" 
+			menu="True"
+			id="bangke_hethan_datra_report" 
+			model="bangke.hethan.datra" 
+			name="bangke_hethan_datra_report"
+	        string="Chi tiết hết hạn đã trả thưởng"
+	        rml="green_erp_ql_ve_loto/report/bangke_hethan_datra.odt"/> 	
+	</data>
+</openerp>

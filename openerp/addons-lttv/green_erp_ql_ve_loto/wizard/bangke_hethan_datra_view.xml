@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+        <record id="view_bangke_hethan_datra_report" model="ir.ui.view">
+            <field name="name">bangke.hethan.datra.report</field>
+            <field name="model">bangke.hethan.datra</field>
+            <field name="arch" type="xml">
+                <form string="Chi tiết hết hạn đã trả thưởng" version="7.0">
+                    <group col='4' colspan='2'>
+                    	<field name='product_id'/>
+                    	<field name='date'/>
+                    </group>
+                    <footer>
+                        <button name="print_report" string="In" type="object" class="oe_highlight" context="{'type':'appointments'}"/>
+                        hoặc
+                        <button string="Hủy bỏ" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_view_bangke_hethan_datra_report" model="ir.actions.act_window">
+            <field name="name">Chi tiết hết hạn đã trả thưởng</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bangke.hethan.datra</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        
+        <menuitem name="Chi tiết hết hạn đã trả thưởng" id="menu_action_view_bangke_hethan_datra_report" action="action_view_bangke_hethan_datra_report" parent="green_erp_ql_tra_thuong.menu_tra_thuong_baocao" sequence="35"/>
+        
+    </data>
+</openerp>
+
