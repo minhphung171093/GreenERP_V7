@@ -227,6 +227,15 @@ class sale_order(osv.osv):
             cr.execute(sql)
             sale_thuy_ids = [row[0] for row in cr.fetchall()]
             args += [('id','in',sale_thuy_ids)]
+        if uid == 34:
+            sql = '''
+                select id from sale_order where id in (select order_id from sale_order_line where product_id in (select id from product_product 
+                where product_tmpl_id in (select id from product_template where categ_id in (select id from product_category 
+                where code = 'NR'))))
+            '''
+            cr.execute(sql)
+            sale_tong_ids = [row[0] for row in cr.fetchall()]
+            args += [('id','in',sale_tong_ids)]
         return super(sale_order, self).search(cr, uid, args, offset=offset, limit=limit, order=order, context=context, count=count)
     def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
         if not args:

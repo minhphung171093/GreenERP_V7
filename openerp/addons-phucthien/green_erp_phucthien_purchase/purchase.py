@@ -347,6 +347,14 @@ class product_product(osv.osv):
             cr.execute(sql)
             thuy_ids = [row[0] for row in cr.fetchall()]
             args += [('id','in',thuy_ids)]
+        if uid == 34:
+            sql = '''
+                select id from product_product where product_tmpl_id in (select id from product_template where
+                categ_id in (select id from product_category where code = 'NR'))
+            '''
+            cr.execute(sql)
+            tong_ids = [row[0] for row in cr.fetchall()]
+            args += [('id','in',tong_ids)]
         return super(product_product, self).search(cr, uid, args, offset=offset, limit=limit, order=order, context=context, count=count)
     def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
         if not args:

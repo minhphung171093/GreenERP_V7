@@ -1125,7 +1125,7 @@
     		action="action_sale_order_hang_km"
     		name="Đơn bán hàng khuyến mãi"
     		parent="base.menu_sales"
-    		groups="base.group_sale_salesman_all_leads" 
+    		groups="base.group_sale_manager" 
     		sequence="6"/>
     		
     	<record id="sale.action_orders" model="ir.actions.act_window">

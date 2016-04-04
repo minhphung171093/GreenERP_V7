@@ -144,6 +144,11 @@ class Parser(report_sxw.rml_parse):
                     sl.name as loc_name,mp.name as nsx, rurp.name as nvbh
                     from account_invoice_line ail
                         left join account_invoice ai on ail.invoice_id=ai.id
+                        
+                        left join stock_move sm on ail.source_id=sm.id
+                        left join stock_picking sp on sp.id = sm.picking_id
+                        left join sale_order so on sp.sale_id = so.id
+                        
                         left join res_partner rp on ail.partner_id=rp.id
                         left join res_users ru on rp.user_id = ru.id
                         left join res_partner rurp on ru.partner_id=rurp.id
@@ -159,7 +164,7 @@ class Parser(report_sxw.rml_parse):
                                         left join account_tax at on ailt.tax_id=at.id
                                     group by ail.id
                             ) as at on ail.id=at.id
-                        left join stock_move sm on sm.id=ail.source_id
+                        
                         left join stock_location sl on sl.id=sm.location_id
                         left join manufacturer_product mp on pp.manufacturer_product_id = mp.id
                         left join kv_benh_vien kv on kv.id=rp.kv_benh_vien
@@ -177,7 +182,7 @@ class Parser(report_sxw.rml_parse):
                 users_ids = str(users_ids).replace('[', '(')
                 users_ids = str(users_ids).replace(']', ')')
                 sql+='''
-                    and rp.user_id in %s 
+                    and so.user_id in %s 
                 '''%(users_ids)
             if product_ids:
                 product_ids = str(product_ids).replace('[', '(')
@@ -230,6 +235,11 @@ class Parser(report_sxw.rml_parse):
                     sl.name as loc_name,mp.name as nsx, rurp.name as nvbh
                     from account_invoice_line ail
                         left join account_invoice ai on ail.invoice_id=ai.id
+                        
+                        left join stock_move sm on ail.source_id=sm.id
+                        left join stock_picking sp on sp.id = sm.picking_id
+                        left join sale_order so on sp.sale_id = so.id
+                        
                         left join res_partner rp on ail.partner_id=rp.id
                         left join res_users ru on rp.user_id = ru.id
                         left join res_partner rurp on ru.partner_id=rurp.id
@@ -245,7 +255,7 @@ class Parser(report_sxw.rml_parse):
                                         left join account_tax at on ailt.tax_id=at.id
                                     group by ail.id
                             ) as at on ail.id=at.id
-                        left join stock_move sm on sm.id=ail.source_id
+                        
                         left join stock_location sl on sl.id=sm.location_id
                         left join manufacturer_product mp on pp.manufacturer_product_id = mp.id
                         left join kv_benh_vien kv on kv.id=rp.kv_benh_vien
@@ -262,7 +272,7 @@ class Parser(report_sxw.rml_parse):
                 users_ids = str(users_ids).replace('[', '(')
                 users_ids = str(users_ids).replace(']', ')')
                 sql+='''
-                    and rp.user_id in %s 
+                    and so.user_id in %s 
                 '''%(users_ids)
             if product_ids:
                 product_ids = str(product_ids).replace('[', '(')
@@ -370,6 +380,11 @@ class Parser(report_sxw.rml_parse):
                     sl.name as loc_name,mp.name as nsx, rurp.name as nvbh
                     from account_invoice_line ail
                         left join account_invoice ai on ail.invoice_id=ai.id
+                        
+                        left join stock_move sm on ail.source_id=sm.id
+                        left join stock_picking sp on sp.id = sm.picking_id
+                        left join sale_order so on sp.sale_id = so.id
+                        
                         left join res_partner rp on ail.partner_id=rp.id
                         left join res_users ru on rp.user_id = ru.id
                         left join res_partner rurp on ru.partner_id=rurp.id
@@ -385,7 +400,7 @@ class Parser(report_sxw.rml_parse):
                                         left join account_tax at on ailt.tax_id=at.id
                                     group by ail.id
                             ) as at on ail.id=at.id
-                        left join stock_move sm on sm.id=ail.source_id
+                        
                         left join stock_location sl on sl.id=sm.location_id
                         left join manufacturer_product mp on pp.manufacturer_product_id = mp.id
                         left join kv_benh_vien kv on kv.id=rp.kv_benh_vien
@@ -403,7 +418,7 @@ class Parser(report_sxw.rml_parse):
                 users_ids = str(users_ids).replace('[', '(')
                 users_ids = str(users_ids).replace(']', ')')
                 sql+='''
-                    and rp.user_id in %s 
+                    and so.user_id in %s 
                 '''%(users_ids)
             if product_ids:
                 product_ids = str(product_ids).replace('[', '(')
@@ -457,6 +472,11 @@ class Parser(report_sxw.rml_parse):
                     sl.name as loc_name,mp.name as nsx, rurp.name as nvbh
                     from account_invoice_line ail
                         left join account_invoice ai on ail.invoice_id=ai.id
+                        
+                        left join stock_move sm on ail.source_id=sm.id
+                        left join stock_picking sp on sp.id = sm.picking_id
+                        left join sale_order so on sp.sale_id = so.id
+                        
                         left join res_partner rp on ail.partner_id=rp.id
                         left join res_users ru on rp.user_id = ru.id
                         left join res_partner rurp on ru.partner_id=rurp.id
@@ -472,7 +492,7 @@ class Parser(report_sxw.rml_parse):
                                         left join account_tax at on ailt.tax_id=at.id
                                     group by ail.id
                             ) as at on ail.id=at.id
-                        left join stock_move sm on sm.id=ail.source_id
+                        
                         left join stock_location sl on sl.id=sm.location_id
                         left join manufacturer_product mp on pp.manufacturer_product_id = mp.id
                         left join kv_benh_vien kv on kv.id=rp.kv_benh_vien
@@ -489,7 +509,7 @@ class Parser(report_sxw.rml_parse):
                 users_ids = str(users_ids).replace('[', '(')
                 users_ids = str(users_ids).replace(']', ')')
                 sql+='''
-                    and rp.user_id in %s 
+                    and so.user_id in %s 
                 '''%(users_ids)
             if product_ids:
                 product_ids = str(product_ids).replace('[', '(')
@@ -598,6 +618,11 @@ class Parser(report_sxw.rml_parse):
                     sl.name as loc_name,mp.name as nsx, rurp.name as nvbh
                     from account_invoice_line ail
                         left join account_invoice ai on ail.invoice_id=ai.id
+                        
+                        left join stock_move sm on ail.source_id=sm.id
+                        left join stock_picking sp on sp.id = sm.picking_id
+                        left join sale_order so on sp.sale_id = so.id
+                        
                         left join res_partner rp on ail.partner_id=rp.id
                         left join res_users ru on rp.user_id = ru.id
                         left join res_partner rurp on ru.partner_id=rurp.id
@@ -613,7 +638,7 @@ class Parser(report_sxw.rml_parse):
                                         left join account_tax at on ailt.tax_id=at.id
                                     group by ail.id
                             ) as at on ail.id=at.id
-                        left join stock_move sm on sm.id=ail.source_id
+                        
                         left join stock_location sl on sl.id=sm.location_id
                         left join manufacturer_product mp on pp.manufacturer_product_id = mp.id
                         left join kv_benh_vien kv on kv.id=rp.kv_benh_vien
@@ -631,7 +656,7 @@ class Parser(report_sxw.rml_parse):
                 users_ids = str(users_ids).replace('[', '(')
                 users_ids = str(users_ids).replace(']', ')')
                 sql+='''
-                    and rp.user_id in %s 
+                    and so.user_id in %s 
                 '''%(users_ids)
             if product_ids:
                 product_ids = str(product_ids).replace('[', '(')
@@ -685,6 +710,11 @@ class Parser(report_sxw.rml_parse):
                     sl.name as loc_name,mp.name as nsx, rurp.name as nvbh
                     from account_invoice_line ail
                         left join account_invoice ai on ail.invoice_id=ai.id
+                        
+                        left join stock_move sm on ail.source_id=sm.id
+                        left join stock_picking sp on sp.id = sm.picking_id
+                        left join sale_order so on sp.sale_id = so.id
+                        
                         left join res_partner rp on ail.partner_id=rp.id
                         left join res_users ru on rp.user_id = ru.id
                         left join res_partner rurp on ru.partner_id=rurp.id
@@ -700,7 +730,7 @@ class Parser(report_sxw.rml_parse):
                                         left join account_tax at on ailt.tax_id=at.id
                                     group by ail.id
                             ) as at on ail.id=at.id
-                        left join stock_move sm on sm.id=ail.source_id
+                        
                         left join stock_location sl on sl.id=sm.location_id
                         left join manufacturer_product mp on pp.manufacturer_product_id = mp.id
                         left join kv_benh_vien kv on kv.id=rp.kv_benh_vien
@@ -717,7 +747,7 @@ class Parser(report_sxw.rml_parse):
                 users_ids = str(users_ids).replace('[', '(')
                 users_ids = str(users_ids).replace(']', ')')
                 sql+='''
-                    and rp.user_id in %s 
+                    and so.user_id in %s 
                 '''%(users_ids)
             if product_ids:
                 product_ids = str(product_ids).replace('[', '(')
@@ -826,6 +856,11 @@ class Parser(report_sxw.rml_parse):
                     sl.name as loc_name,mp.name as nsx, rurp.name as nvbh
                     from account_invoice_line ail
                         left join account_invoice ai on ail.invoice_id=ai.id
+                        
+                        left join stock_move sm on ail.source_id=sm.id
+                        left join stock_picking sp on sp.id = sm.picking_id
+                        left join sale_order so on sp.sale_id = so.id
+                        
                         left join res_partner rp on ail.partner_id=rp.id
                         left join res_users ru on rp.user_id = ru.id
                         left join res_partner rurp on ru.partner_id=rurp.id
@@ -841,7 +876,7 @@ class Parser(report_sxw.rml_parse):
                                         left join account_tax at on ailt.tax_id=at.id
                                     group by ail.id
                             ) as at on ail.id=at.id
-                        left join stock_move sm on sm.id=ail.source_id
+                        
                         left join stock_location sl on sl.id=sm.location_id
                         left join manufacturer_product mp on pp.manufacturer_product_id = mp.id
                         left join kv_benh_vien kv on kv.id=rp.kv_benh_vien
@@ -859,7 +894,7 @@ class Parser(report_sxw.rml_parse):
                 users_ids = str(users_ids).replace('[', '(')
                 users_ids = str(users_ids).replace(']', ')')
                 sql+='''
-                    and rp.user_id in %s 
+                    and so.user_id in %s 
                 '''%(users_ids)
             if product_ids:
                 product_ids = str(product_ids).replace('[', '(')
@@ -913,6 +948,11 @@ class Parser(report_sxw.rml_parse):
                     sl.name as loc_name,mp.name as nsx, rurp.name as nvbh
                     from account_invoice_line ail
                         left join account_invoice ai on ail.invoice_id=ai.id
+                        
+                        left join stock_move sm on ail.source_id=sm.id
+                        left join stock_picking sp on sp.id = sm.picking_id
+                        left join sale_order so on sp.sale_id = so.id
+                        
                         left join res_partner rp on ail.partner_id=rp.id
                         left join res_users ru on rp.user_id = ru.id
                         left join res_partner rurp on ru.partner_id=rurp.id
@@ -928,7 +968,7 @@ class Parser(report_sxw.rml_parse):
                                         left join account_tax at on ailt.tax_id=at.id
                                     group by ail.id
                             ) as at on ail.id=at.id
-                        left join stock_move sm on sm.id=ail.source_id
+                        
                         left join stock_location sl on sl.id=sm.location_id
                         left join manufacturer_product mp on pp.manufacturer_product_id = mp.id
                         left join kv_benh_vien kv on kv.id=rp.kv_benh_vien
@@ -945,7 +985,7 @@ class Parser(report_sxw.rml_parse):
                 users_ids = str(users_ids).replace('[', '(')
                 users_ids = str(users_ids).replace(']', ')')
                 sql+='''
-                    and rp.user_id in %s 
+                    and so.user_id in %s 
                 '''%(users_ids)
             if product_ids:
                 product_ids = str(product_ids).replace('[', '(')

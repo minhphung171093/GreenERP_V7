@@ -85,6 +85,13 @@ class doanhthu_banhang(osv.osv_memory):
             cr.execute(sql)
             vaccine_ids = [row[0] for row in cr.fetchall()]
             return vaccine_ids
+        elif uid == 34:
+            sql = '''
+                select id from product_category where code = 'NR'
+            '''
+            cr.execute(sql)
+            norinse_ids = [row[0] for row in cr.fetchall()]
+            return norinse_ids
         else:
             return False
         

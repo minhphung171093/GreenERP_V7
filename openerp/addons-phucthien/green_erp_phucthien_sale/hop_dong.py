@@ -164,10 +164,22 @@ class hop_dong(osv.osv):
             thuy_ids = str(thuy_ids).replace(']', ')')
             sql = '''
                 select id from hop_dong where partner_id in %s
+                and id in (select hopdong_id from hopdong_line where product_id in (select id from product_product 
+                where product_tmpl_id in (select id from product_template where categ_id in (select id from product_category 
+                where code = 'VC'))))
             '''%(thuy_ids)
             cr.execute(sql)
             hd_thuy_ids = [row[0] for row in cr.fetchall()]
             args += [('id','in',hd_thuy_ids)]
+        if uid == 34:
+            sql = '''
+                select id from hop_dong where id in (select hopdong_id from hopdong_line where product_id in (select id from product_product 
+                where product_tmpl_id in (select id from product_template where categ_id in (select id from product_category 
+                where code = 'NR'))))
+            '''
+            cr.execute(sql)
+            hd_tong_ids = [row[0] for row in cr.fetchall()]
+            args += [('id','in',hd_tong_ids)]
         return super(hop_dong, self).search(cr, uid, args, offset=offset, limit=limit, order=order, context=context, count=count)
     def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
         if not args:
