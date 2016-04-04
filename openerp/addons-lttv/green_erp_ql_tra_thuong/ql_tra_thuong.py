@@ -180,31 +180,30 @@ class tra_thuong_thucte(osv.osv):
                 raise osv.except_osv(_('Cảnh báo!'),_('Không thể tạo phiếu chi với tổng tiền bằng "0"!'))
             ngay = trathuong.ngay
             sql = '''
-                select product_id,loai, giai,sum(sl_trung) as sl_trung
+                select product_id,loai,slan_trung, giai,sum(sl_trung) as sl_trung
                     from tra_thuong_thucte_line
                     where trathuong_id=%s
-                    group by product_id,loai, giai
+                    group by product_id,loai,slan_trung, giai
             '''%(trathuong.id)
             cr.execute(sql)
             trathuong_line = cr.dictfetchall()
             for trath in trathuong_line:
                 sql = '''
                     select slan_trung,case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung from tra_thuong_line where product_id = %s and loai='%s' and giai='%s' and
-                        trathuong_id in (select id from tra_thuong where ngay = '%s' and parent_id is null) group by slan_trung
-                '''%(trath['product_id'], trath['loai'], trath['giai'], ngay)
+                        slan_trung=%s and trathuong_id in (select id from tra_thuong where ngay = '%s' and parent_id is null) group by slan_trung
+                '''%(trath['product_id'], trath['loai'], trath['giai'],trath['slan_trung'], ngay)
                 cr.execute(sql)
                 test = cr.dictfetchone()
                 if not test:
                     raise osv.except_osv(_('Cảnh báo!'),_('Không tìm thấy số trúng thưởng trong danh sách cần trả thưởng ngày "%s"!')%(ngay[8:10]+'-'+ngay[5:7]+'-'+ngay[:4]))
                 sl_phaitra = test['sl_trung']
-                slan_trung = test['slan_trung']
                 if sl_phaitra==0:
                     raise osv.except_osv(_('Cảnh báo!'),_('Không tìm thấy số trúng thưởng trong danh sách cần trả thưởng ngày "%s"!')%(ngay[8:10]+'-'+ngay[5:7]+'-'+ngay[:4]))
                 
                 sql = '''
                     select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_datra from tra_thuong_thucte_line where product_id = %s and loai='%s' and giai='%s' and
-                        trathuong_id in (select id from tra_thuong_thucte where ngay = '%s' and state='done')
-                '''%(trath['product_id'], trath['loai'], trath['giai'], ngay)
+                        slan_trung=%s and trathuong_id in (select id from tra_thuong_thucte where ngay = '%s' and state='done')
+                '''%(trath['product_id'], trath['loai'], trath['giai'], trath['slan_trung'], ngay)
                 cr.execute(sql)
                 sl_datra = cr.dictfetchone()['sl_datra']
                 if sl_phaitra - sl_datra < trath['sl_trung']:
@@ -319,31 +318,30 @@ class tra_thuong_thucte(osv.osv):
         tra_truong = self.browse(cr,uid,new_id)
         ngay = tra_truong.ngay
         sql = '''
-            select product_id,loai, giai,sum(sl_trung) as sl_trung
+            select product_id,loai, giai, slan_trung,sum(sl_trung) as sl_trung
                 from tra_thuong_thucte_line
                 where trathuong_id=%s
-                group by product_id,loai, giai
+                group by product_id,loai, slan_trung, giai
         '''%(new_id)
         cr.execute(sql)
         trathuong_line = cr.dictfetchall()
         for trathuong in trathuong_line:
             sql = '''
                 select slan_trung,case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung from tra_thuong_line where product_id = %s and loai='%s' and giai='%s' and
-                    trathuong_id in (select id from tra_thuong where ngay = '%s' and parent_id is null) group by slan_trung
-            '''%(trathuong['product_id'], trathuong['loai'], trathuong['giai'], ngay)
+                    slan_trung=%s and trathuong_id in (select id from tra_thuong where ngay = '%s' and parent_id is null) group by slan_trung
+            '''%(trathuong['product_id'], trathuong['loai'], trathuong['giai'], trathuong['slan_trung'], ngay)
             cr.execute(sql)
             test = cr.dictfetchone()
             if not test:
                 raise osv.except_osv(_('Cảnh báo!'),_('Không tìm thấy số trúng thưởng trong danh sách cần trả thưởng ngày "%s"!')%(ngay[8:10]+'-'+ngay[5:7]+'-'+ngay[:4]))
             sl_phaitra = test['sl_trung']
-            slan_trung = test['slan_trung']
             if sl_phaitra==0:
                 raise osv.except_osv(_('Cảnh báo!'),_('Không tìm thấy số trúng thưởng trong danh sách cần trả thưởng ngày "%s"!')%(ngay[8:10]+'-'+ngay[5:7]+'-'+ngay[:4]))
             
             sql = '''
                 select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_datra from tra_thuong_thucte_line where product_id = %s and loai='%s' and giai='%s' and
-                    trathuong_id in (select id from tra_thuong_thucte where ngay = '%s' and state='done')
-            '''%(trathuong['product_id'], trathuong['loai'], trathuong['giai'], ngay)
+                    slan_trung=%s and trathuong_id in (select id from tra_thuong_thucte where ngay = '%s' and state='done')
+            '''%(trathuong['product_id'], trathuong['loai'], trathuong['giai'], trathuong['slan_trung'], ngay)
             cr.execute(sql)
             sl_datra = cr.dictfetchone()['sl_datra']
             if sl_phaitra - sl_datra < trathuong['sl_trung']:
@@ -356,31 +354,30 @@ class tra_thuong_thucte(osv.osv):
         for tra_truong in self.browse(cr, uid, ids, context):
             ngay = tra_truong.ngay
             sql = '''
-                select product_id,loai, giai,sum(sl_trung) as sl_trung
+                select product_id,loai, slan_trung, giai,sum(sl_trung) as sl_trung
                     from tra_thuong_thucte_line
                     where trathuong_id=%s
-                    group by product_id,loai, giai
+                    group by product_id,loai,slan_trung, giai
             '''%(tra_truong.id)
             cr.execute(sql)
             trathuong_line = cr.dictfetchall()
             for trathuong in trathuong_line:
                 sql = '''
                     select slan_trung,case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung from tra_thuong_line where product_id = %s and loai='%s' and giai='%s' and
-                        trathuong_id in (select id from tra_thuong where ngay = '%s' and parent_id is null) group by slan_trung
-                '''%(trathuong['product_id'], trathuong['loai'], trathuong['giai'], ngay)
+                        slan_trung=%s and trathuong_id in (select id from tra_thuong where ngay = '%s' and parent_id is null) group by slan_trung
+                '''%(trathuong['product_id'], trathuong['loai'], trathuong['giai'], trathuong['slan_trung'], ngay)
                 cr.execute(sql)
                 test = cr.dictfetchone()
                 if not test:
                     raise osv.except_osv(_('Cảnh báo!'),_('Không tìm thấy số trúng thưởng trong danh sách cần trả thưởng ngày "%s"!')%(ngay[8:10]+'-'+ngay[5:7]+'-'+ngay[:4]))
                 sl_phaitra = test['sl_trung']
-                slan_trung = test['slan_trung']
                 if sl_phaitra==0:
                     raise osv.except_osv(_('Cảnh báo!'),_('Không tìm thấy số trúng thưởng trong danh sách cần trả thưởng ngày "%s"!')%(ngay[8:10]+'-'+ngay[5:7]+'-'+ngay[:4]))
                 
                 sql = '''
                     select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_datra from tra_thuong_thucte_line where product_id = %s and loai='%s' and giai='%s' and
-                        trathuong_id in (select id from tra_thuong_thucte where ngay = '%s' and state='done' and id!=%s)
-                '''%(trathuong['product_id'], trathuong['loai'], trathuong['giai'], ngay,tra_truong.id)
+                        slan_trung=%s and trathuong_id in (select id from tra_thuong_thucte where ngay = '%s' and state='done' and id!=%s)
+                '''%(trathuong['product_id'], trathuong['loai'], trathuong['giai'], trathuong['slan_trung'], ngay,tra_truong.id)
                 cr.execute(sql)
                 sl_datra = cr.dictfetchone()['sl_datra']
                 if sl_phaitra - sl_datra < trathuong['sl_trung']:
@@ -429,7 +426,7 @@ class tra_thuong_thucte_line(osv.osv):
             res[line.id] = line.sl_trung * line.slan_trung * line.tong_tien
         return res
     
-    def onchange_product(self, cr, uid, ids, product_id=False,name=False,loai=False,giai=False,ngay=False,sl_trung=False,daily_id=False, context=None):
+    def onchange_product(self, cr, uid, ids, product_id=False,slan_trung=False,loai=False,giai=False,ngay=False,sl_trung=False,daily_id=False, context=None):
         res = {}
         warning = {}
         sl_chuatra = 0
@@ -437,8 +434,8 @@ class tra_thuong_thucte_line(osv.osv):
         if product_id and loai and giai and ngay:
             sql = '''
                 select slan_trung,case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung from tra_thuong_line where product_id = %s and loai='%s' and giai='%s' and
-                    trathuong_id in (select id from tra_thuong where ngay = '%s' and parent_id is null) group by slan_trung
-            '''%(product_id, loai, giai, ngay)
+                    slan_trung=%s and trathuong_id in (select id from tra_thuong where ngay = '%s' and parent_id is null) group by slan_trung
+            '''%(product_id, loai, giai, slan_trung, ngay)
             cr.execute(sql)
             test = cr.dictfetchone()
             if not test:
@@ -450,17 +447,17 @@ class tra_thuong_thucte_line(osv.osv):
                 return {'value': res,'warning':warning}
 #                 raise osv.except_osv(_('Cảnh báo!'),_('Không tìm thấy số trúng thưởng "%s" trong danh sách cần trả thưởng ngày "%s"!')%(name,ngay[8:10]+'-'+ngay[5:7]+'-'+ngay[:4]))
             sl_phaitra = test['sl_trung']
-            slan_trung = test['slan_trung']
+#             slan_trung = test['slan_trung']
             if sl_phaitra==0:
                 raise osv.except_osv(_('Cảnh báo!'),_('Không tìm thấy số trúng thưởng trong danh sách cần trả thưởng ngày "%s"!')%(ngay[8:10]+'-'+ngay[5:7]+'-'+ngay[:4]))
             
             sql = '''
                 select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_datra from tra_thuong_thucte_line where product_id = %s and loai='%s' and giai='%s' and
-                    trathuong_id in (select id from tra_thuong_thucte where ngay = '%s' and state='done')
-            '''%(product_id, loai, giai, ngay)
+                    slan_trung=%s and trathuong_id in (select id from tra_thuong_thucte where ngay = '%s' and state='done')
+            '''%(product_id, loai, giai, slan_trung, ngay)
             cr.execute(sql)
             sl_datra = cr.dictfetchone()['sl_datra']
-            res = {'sl_trung':sl_phaitra - sl_datra,'slan_trung':slan_trung}
+            res = {'sl_trung':sl_phaitra - sl_datra}
             if sl_trung:
                 res.update({'sl_trung':sl_trung})
                 if sl_phaitra - sl_datra < sl_trung:

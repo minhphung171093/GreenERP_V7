@@ -295,11 +295,11 @@
 	                        <field name="tra_thuong_line" nolabel='1'>
 	                        	<tree editable='bottom'>
 	                        		<field name="product_id" on_change="onchange_product(product_id,name,loai,giai,parent.ngay,sl_trung,parent.daily_id)"/>
-	                        		<field name="name" invisible='1' on_change="onchange_product(product_id,name,loai,giai,parent.ngay,sl_trung,parent.daily_id)"/>
-			                        <field name="loai" on_change="onchange_product(product_id,name,loai,giai,parent.ngay,sl_trung,parent.daily_id)"/>
-			                        <field name="giai" on_change="onchange_product(product_id,name,loai,giai,parent.ngay,sl_trung,parent.daily_id)"/>
-			                        <field name="sl_trung" on_change="onchange_product(product_id,name,loai,giai,parent.ngay,sl_trung,parent.daily_id)"/>
-			                        <field name="slan_trung" readonly='1'/>
+	                        		<field name="name" invisible='1' on_change="onchange_product(product_id,slan_trung,loai,giai,parent.ngay,sl_trung,parent.daily_id)"/>
+			                        <field name="loai" on_change="onchange_product(product_id,slan_trung,loai,giai,parent.ngay,sl_trung,parent.daily_id)"/>
+			                        <field name="giai" on_change="onchange_product(product_id,slan_trung,loai,giai,parent.ngay,sl_trung,parent.daily_id)"/>
+			                        <field name="sl_trung" on_change="onchange_product(product_id,slan_trung,loai,giai,parent.ngay,sl_trung,parent.daily_id)"/>
+			                        <field name="slan_trung" readonly='0'/>
 			                        <field name="tong_tien"/>
 			                        <field name="tong"/>
 	                        	</tree>
