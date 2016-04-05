@@ -108,12 +108,14 @@ class hop_dong(osv.osv):
         'thanh_ly_hd':fields.boolean('Thanh lý hợp đồng'),
         'hd_gan_hh': fields.function(_get_hd_gan_hh,type='boolean', string='Hợp đồng gần hết hạn'),
         'lydo_huy':fields.char('Lý do hủy', size = 1024), 
+        'gioihan_soluong':fields.boolean('Không giới hạn số lượng', size = 1024), 
     }
     
     _defaults = {
         'type': 'thau',
         'tu_ngay': lambda *a: time.strftime('%Y-%m-%d'),
         'state': 'moi_tao',
+        'gioihan_soluong': False,
     }
     
     def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):

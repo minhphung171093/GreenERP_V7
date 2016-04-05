@@ -57,6 +57,7 @@
 	                    <group col='4' colspan='2'>
 	                    	<field name="company_id" context="{'show_address': 1}"/>
 	                    	<field name="partner_id"  context="{'show_address': 1}"/>
+	                    	<field name="gioihan_soluong" invisible = '1'/>
 						</group>
 						<notebook>
 							<page string="Thông tin chung">
@@ -140,6 +141,7 @@
 	                    <group col='4' colspan='2'>
 	                    	<field name="company_id" context="{'show_address': 1}"/>
 	                    	<field name="partner_id"  context="{'show_address': 1}"/>
+	                    	<field name="gioihan_soluong"/>
 						</group>
 						<notebook>
 							<page string="Thông tin chung">
@@ -220,6 +222,7 @@
 	                    <group col='4' colspan='2'>
 	                    	<field name="company_id" context="{'show_address': 1}"/>
 	                    	<field name="partner_id"  context="{'show_address': 1}"/>
+	                    	<field name="gioihan_soluong" invisible = '1'/>
 						</group>
 						<notebook>
 							<page string="Thông tin chung">
