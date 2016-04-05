@@ -64,6 +64,12 @@ class hop_dong(osv.osv):
                 res[line.id] = False            
         return res
     
+    def _get_state_id(self, cr, uid, ids, field_name, arg, context=None):
+        result = {}
+        for hd in self.browse(cr, uid, ids, context=context):
+            result[hd.id] = hd.partner_id.state_id and hd.partner_id.state_id.id or False
+        return result
+    
     _columns = {
         'name':fields.char('Số', size = 1024,required = True),
         'type':fields.selection([('kinh_te','Hợp đồng kinh tế'),('thau','Hợp đồng thầu'),('nguyen_tac','Hợp đồng nguyên tắc')
@@ -109,6 +115,7 @@ class hop_dong(osv.osv):
         'hd_gan_hh': fields.function(_get_hd_gan_hh,type='boolean', string='Hợp đồng gần hết hạn'),
         'lydo_huy':fields.char('Lý do hủy', size = 1024), 
         'gioihan_soluong':fields.boolean('Không giới hạn số lượng', size = 1024), 
+        'state_id': fields.function(_get_state_id, type='many2one', relation='res.country.state', string='Tỉnh', store = True),
     }
     
     _defaults = {

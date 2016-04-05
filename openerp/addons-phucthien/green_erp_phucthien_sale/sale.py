@@ -1046,9 +1046,9 @@ class res_partner(osv.osv):
         'danhsach_canhtranh_ids':fields.one2many('danhsach.canhtranh','partner_id','Danh sách sản phẩm cạnh tranh'),
         
         'gp_hd_kb': fields.boolean('GPHĐ khám, chữa bệnh'),
-        'date_gp_hd_kb': fields.date('Ngày hết hạn GDP'),
+        'date_gp_hd_kb': fields.date('Ngày hết hạn GPHĐ khám, chữa bệnh'),
         'gcn_ddk_kdt': fields.boolean('GCN đủ điều kiện KD thuốc'),
-        'date_gcn_ddk_kdt': fields.date('Ngày hết hạn GPP'),
+        'date_gcn_ddk_kdt': fields.date('Ngày hết hạn GCN đủ điều kiện KD thuốc'),
     }
     _defaults = {
         'user_id': _get_user,       

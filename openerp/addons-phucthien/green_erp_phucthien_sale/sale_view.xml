@@ -192,37 +192,25 @@
             <field name="arch" type="xml">
             	<xpath expr="//page[@string='Accounting']" position="after">
           			<page string="Giấy phép">
-          				<group col='6' colspan='2'>
-          					<group colspan='2'>
+          				<group>
+          					<group>
           						<field name='gpkd'/>
-          						<field name='date_gpkd' invisible='1'/>
-          					</group>
-          					<group colspan='2'>
+          						<field name='date_gpkd' attrs="{'invisible': [('gpkd','=',False)]}"/>
           						<field name='cchn'/>
           						<field name='date_cchn' attrs="{'invisible': [('cchn','=',False)]}"/>
-          					</group>
-          					<group colspan='2'>
           						<field name='gptn'/>
           						<field name='date_gptn' attrs="{'invisible': [('gptn','=',False)]}"/>
-          					</group>
-          					<group colspan='2'>
           						<field name='gdp' />
           						<field name='date_gdp' attrs="{'invisible': [('gdp','=',False)]}"/>
           					</group>
-          					<group colspan='2'>
+          					<group>
           						<field name='gpp' />
           						<field name='date_gpp' attrs="{'invisible': [('gpp','=',False)]}"/>
-          					</group>
-          					<group colspan='2'>
           						<field name='gsp' />
           						<field name='date_gsp' attrs="{'invisible': [('gsp','=',False)]}"/>
-          					</group>
-          					<group colspan='2'>
-          						<field name='gp_hd_kb' />
+          						<field name='gp_hd_kb'/>
           						<field name='date_gp_hd_kb' attrs="{'invisible': [('gp_hd_kb','=',False)]}"/>
-          					</group>
-          					<group colspan='2'>
-          						<field name='gcn_ddk_kdt' />
+          						<field name='gcn_ddk_kdt'/>
           						<field name='date_gcn_ddk_kdt' attrs="{'invisible': [('gcn_ddk_kdt','=',False)]}"/>
           					</group>
           				</group>

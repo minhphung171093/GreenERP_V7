@@ -24,8 +24,19 @@
                 <search string="Search Hợp đồng">
                     <field name="name"/>
                     <field name="partner_id"/>
+                    <field name="state_id"/>
+                    <field name="tu_ngay"/>
+                    <field name="den_ngay"/>
+                    <field name="ngay_gui"/>
+                    <field name="ngay_nhan"/>
                     <group expand="0" string="Group By...">
-                        <filter string="Status" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
+                        <filter string="Trạng thái" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
+                        <filter string="Tỉnh" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state_id'}"/>
+                        <filter string="Khách hàng" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'partner_id'}"/>
+                    	<filter string="Từ ngày" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'tu_ngay'}"/>
+                    	<filter string="Đến ngày" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'den_ngay'}"/>
+                    	<filter string="Ngày gửi" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'ngay_gui'}"/>
+                    	<filter string="Ngày nhận" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'ngay_nhan'}"/>
                     </group>
                </search>
             </field>
@@ -58,6 +69,7 @@
 	                    	<field name="company_id" context="{'show_address': 1}"/>
 	                    	<field name="partner_id"  context="{'show_address': 1}"/>
 	                    	<field name="gioihan_soluong" invisible = '1'/>
+	                    	<field name="state_id" invisible = '1'/>
 						</group>
 						<notebook>
 							<page string="Thông tin chung">
@@ -142,6 +154,7 @@
 	                    	<field name="company_id" context="{'show_address': 1}"/>
 	                    	<field name="partner_id"  context="{'show_address': 1}"/>
 	                    	<field name="gioihan_soluong"/>
+	                    	<field name="state_id" invisible = '1'/>
 						</group>
 						<notebook>
 							<page string="Thông tin chung">
@@ -223,6 +236,7 @@
 	                    	<field name="company_id" context="{'show_address': 1}"/>
 	                    	<field name="partner_id"  context="{'show_address': 1}"/>
 	                    	<field name="gioihan_soluong" invisible = '1'/>
+	                    	<field name="state_id" invisible = '1'/>
 						</group>
 						<notebook>
 							<page string="Thông tin chung">
