@@ -167,11 +167,11 @@ class sale_order(osv.osv):
                                                 'sale.order':(lambda self, cr, uid, ids, c={}: ids, ['state'], 10),
                                             }),
         'sp_khuyen_mai': fields.boolean('San pham khuyen mai'),
-        'lien_he_id': fields.many2one('res.partner','Liên hệ'),
     }
     _defaults = {
               'sp_khuyen_mai': False,   
                  }
+    
     
     def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
         if context is None:

@@ -109,6 +109,12 @@
                 	<field name="yeu_cau"/>
                 	<field name="ghi_chu_xhd"/>
                 </xpath>
+                <xpath expr="//field[@name='client_order_ref']" position="attributes">
+                	<attribute name="string">Điện thoại liên hệ</attribute>
+                </xpath>
+                <xpath expr="//field[@name='client_order_ref']" position="after">
+                	<field name="lien_he_id" domain="[('parent_id','=',partner_id)]" on_change = "onchange_lien_he_id(lien_he_id)"/>
+                </xpath>
             </field>
         </record>
         

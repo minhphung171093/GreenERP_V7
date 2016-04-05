@@ -112,9 +112,6 @@
                 	<field name="dia_chi_kh" />
                 	<field name="sp_khuyen_mai" invisible = '1'/>
                 </xpath>
-                <xpath expr="//field[@name='client_order_ref']" position="after">
-                	<field name="lien_he_id" domain="[('parent_id','=',partner_id)]"/>
-                </xpath>
                 <xpath expr="//field[@name='partner_shipping_id']" position="replace">
                 	<field name="partner_shipping_id" invisible='1' groups="sale.group_delivery_invoice_address" context="{'default_type':'delivery'}"/>
                 	<field name="diachi_giaohang_id" domain="[('partner_id','=',partner_id)]"/>

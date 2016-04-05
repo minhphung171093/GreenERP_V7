@@ -62,8 +62,20 @@ class sale_order(osv.osv):
           'diachi_giaohang_id': fields.many2one('diachi.giaohang','Địa chỉ giao hàng'),
           'yeu_cau': fields.char('Yêu cầu', size = 1024),
           'ghi_chu_xhd': fields.char('Ghi chú xuất hóa đơn', size = 1024),
+          'lien_he_id': fields.many2one('res.partner','Liên hệ'),
     }
     
+    def onchange_lien_he_id(self, cr, uid, ids, lien_he_id, context=None):
+        val=[]
+        sdt=''
+        if lien_he_id:
+            lien_he = self.pool.get('res.partner').browse(cr,uid,lien_he_id)
+            if lien_he.phone:
+                sdt += lien_he.phone
+            if lien_he.mobile:
+                sdt += ' - ' + lien_he.mobile
+            return {'value': {'client_order_ref': sdt}}
+        
     def _create_pickings_and_procurements(self, cr, uid, order, order_lines, picking_id=False, context=None):
         """Create the required procurements to supply sales order lines, also connecting
         the procurements to appropriate stock moves in order to bring the goods to the
@@ -247,6 +259,7 @@ class sale_order(osv.osv):
             'daidien_khachhang': order.client_order_ref,
             'yeu_cau': order.yeu_cau and order.yeu_cau or '',
             'ghi_chu_xhd': order.ghi_chu_xhd and order.ghi_chu_xhd or '',
+            'lien_he_id': order.lien_he_id and order.lien_he_id.id or False,
         }
     
     #Thanh: Get Location From Order Line
