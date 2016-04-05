@@ -24,6 +24,12 @@ class Parser(report_sxw.rml_parse):
     def __init__(self, cr, uid, name, context):
         super(Parser, self).__init__(cr, uid, name, context=context)
         pool = pooler.get_pool(self.cr.dbname)
+        self.sl_phai_tra_tong = 0
+        self.stien_phai_tra_tong = 0
+        self.sl_da_tra_tong = 0
+        self.stien_da_tra_tong = 0
+        self.sl_con_lai_tong = 0
+        self.stien_con_lai_tong = 0
         self.localcontext.update({
             'get_vietname_date': self.get_vietname_date,
             'convert': self.convert,
@@ -32,8 +38,29 @@ class Parser(report_sxw.rml_parse):
             'get_ngaymothuong': self.get_ngaymothuong,
             'get_daiduthuong': self.get_daiduthuong,
             'get_date_now': self.get_date_now,
+            'get_2_d': self.get_2_d,
+            'get_2_c': self.get_2_c,
+            'get_2_dc': self.get_2_dc,
             'get_2_18': self.get_2_18,
+            'get_3_d': self.get_3_d,
+            'get_3_c': self.get_3_c,
+            'get_3_dc': self.get_3_dc,
+            'get_3_7': self.get_3_7,
+            'get_3_17': self.get_3_17,
+            'get_4_16': self.get_4_16,
+            'get_tong': self.get_tong,
         })
+        
+    def get_tong(self):
+        res = [{
+            'sl_phai_tra_tong': self.sl_phai_tra_tong,
+            'stien_phai_tra_tong': self.stien_phai_tra_tong,
+            'sl_da_tra_tong': self.sl_da_tra_tong,
+            'stien_da_tra_tong': self.stien_da_tra_tong,
+            'sl_con_lai_tong': self.sl_con_lai_tong,
+            'stien_con_lai_tong': self.stien_con_lai_tong,
+        }]
+        return res
         
     def get_date_now(self):
         return time.strftime(DATE_FORMAT)
@@ -61,22 +88,705 @@ class Parser(report_sxw.rml_parse):
             return ddt[0]
         else:
             return ''
+    
+    def get_2_d(self):
+        res = []
+        wizard_data = self.localcontext['data']['form']
+        product = wizard_data['product_id']
+        date = wizard_data['date']
+        sql = '''
+        select slan_trung
         
+        from (
+            select case when slan_trung!=0 then slan_trung else 1 end slan_trung
+                from tra_thuong_line
+                
+                where loai='2_so' and giai='dau' and product_id=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+        ) foo
+                group by slan_trung
+                order by slan_trung
+        '''%(product[0], date)
+        self.cr.execute(sql)
+        
+        for sl in self.cr.dictfetchall():#'so lan trung  ngay mo thuong order by tang dan':
+            #'sql sum so tien, so luong phai tra'
+            sql = '''
+                select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung,
+                    case when sum(sl_trung*slan_trung*tong_tien)!=0 then sum(sl_trung*slan_trung*tong_tien) else 0 end st_trung
+                    
+                    from tra_thuong_line
+                
+                where loai='2_so' and giai='dau' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+            '''%(product[0],sl['slan_trung'], date)
+            self.cr.execute(sql)
+            phaitra_2_18 = self.cr.dictfetchone()
+            #'sql sum so tien, so luong da tra'
+            sql = '''
+                select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung,
+                    case when sum(sl_trung*slan_trung*tong_tien)!=0 then sum(sl_trung*slan_trung*tong_tien) else 0 end st_trung
+                    
+                    from tra_thuong_thucte_line
+                
+                where loai='2_so' and giai='dau' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong_thucte where ngay='%s')
+            '''%(product[0],sl['slan_trung'], date)
+            self.cr.execute(sql)
+            datra_2_18 = self.cr.dictfetchone()
+            res.append({
+                        'so_lan':sl['slan_trung'],
+                        'sl_phai_tra': phaitra_2_18['sl_trung'],
+                        'stien_phai_tra': phaitra_2_18['st_trung'],
+                        'sl_da_tra': datra_2_18['sl_trung'],
+                        'stien_da_tra': datra_2_18['st_trung'],
+                        'sl_con_lai': phaitra_2_18['sl_trung'] - datra_2_18['sl_trung'],
+                        'stien_con_lai': phaitra_2_18['st_trung'] - datra_2_18['st_trung'],
+                        })
+            #'dung bien toan cuc de tim tong cong'
+            self.sl_phai_tra_tong += phaitra_2_18['sl_trung']
+            self.stien_phai_tra_tong += phaitra_2_18['st_trung']
+            self.sl_da_tra_tong += datra_2_18['sl_trung']
+            self.stien_da_tra_tong += datra_2_18['st_trung']
+            self.sl_con_lai_tong += phaitra_2_18['sl_trung'] - datra_2_18['sl_trung']
+            self.stien_con_lai_tong += phaitra_2_18['st_trung'] - datra_2_18['st_trung']
+        if not res:
+            res.append({
+                'so_lan': '',
+                'sl_phai_tra': 0,
+                'stien_phai_tra': 0,
+                'sl_da_tra': 0,
+                'stien_da_tra': 0,
+                'sl_con_lai': 0,
+                'stien_con_lai': 0,
+            })
+        return res
+    
+    def get_2_c(self):
+        res = []
+        wizard_data = self.localcontext['data']['form']
+        product = wizard_data['product_id']
+        date = wizard_data['date']
+        sql = '''
+        select slan_trung
+        
+        from (
+            select case when slan_trung!=0 then slan_trung else 1 end slan_trung
+                from tra_thuong_line
+                
+                where loai='2_so' and giai='cuoi' and product_id=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+        ) foo
+                group by slan_trung
+                order by slan_trung
+        '''%(product[0], date)
+        self.cr.execute(sql)
+        
+        for sl in self.cr.dictfetchall():#'so lan trung  ngay mo thuong order by tang dan':
+            #'sql sum so tien, so luong phai tra'
+            sql = '''
+                select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung,
+                    case when sum(sl_trung*slan_trung*tong_tien)!=0 then sum(sl_trung*slan_trung*tong_tien) else 0 end st_trung
+                    
+                    from tra_thuong_line
+                
+                where loai='2_so' and giai='cuoi' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+            '''%(product[0],sl['slan_trung'], date)
+            self.cr.execute(sql)
+            phaitra_2_18 = self.cr.dictfetchone()
+            #'sql sum so tien, so luong da tra'
+            sql = '''
+                select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung,
+                    case when sum(sl_trung*slan_trung*tong_tien)!=0 then sum(sl_trung*slan_trung*tong_tien) else 0 end st_trung
+                    
+                    from tra_thuong_thucte_line
+                
+                where loai='2_so' and giai='cuoi' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong_thucte where ngay='%s')
+            '''%(product[0],sl['slan_trung'], date)
+            self.cr.execute(sql)
+            datra_2_18 = self.cr.dictfetchone()
+            res.append({
+                        'so_lan':sl['slan_trung'],
+                        'sl_phai_tra': phaitra_2_18['sl_trung'],
+                        'stien_phai_tra': phaitra_2_18['st_trung'],
+                        'sl_da_tra': datra_2_18['sl_trung'],
+                        'stien_da_tra': datra_2_18['st_trung'],
+                        'sl_con_lai': phaitra_2_18['sl_trung'] - datra_2_18['sl_trung'],
+                        'stien_con_lai': phaitra_2_18['st_trung'] - datra_2_18['st_trung'],
+                        })
+            #'dung bien toan cuc de tim tong cong'
+            self.sl_phai_tra_tong += phaitra_2_18['sl_trung']
+            self.stien_phai_tra_tong += phaitra_2_18['st_trung']
+            self.sl_da_tra_tong += datra_2_18['sl_trung']
+            self.stien_da_tra_tong += datra_2_18['st_trung']
+            self.sl_con_lai_tong += phaitra_2_18['sl_trung'] - datra_2_18['sl_trung']
+            self.stien_con_lai_tong += phaitra_2_18['st_trung'] - datra_2_18['st_trung']
+        if not res:
+            res.append({
+                'so_lan': '',
+                'sl_phai_tra': 0,
+                'stien_phai_tra': 0,
+                'sl_da_tra': 0,
+                'stien_da_tra': 0,
+                'sl_con_lai': 0,
+                'stien_con_lai': 0,
+            })
+        return res
+    
+    def get_2_dc(self):
+        res = []
+        wizard_data = self.localcontext['data']['form']
+        product = wizard_data['product_id']
+        date = wizard_data['date']
+        sql = '''
+        select slan_trung
+        
+        from (
+            select case when slan_trung!=0 then slan_trung else 1 end slan_trung
+                from tra_thuong_line
+                
+                where loai='2_so' and giai='dau_cuoi' and product_id=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+        ) foo
+                group by slan_trung
+                order by slan_trung
+        '''%(product[0], date)
+        self.cr.execute(sql)
+        
+        for sl in self.cr.dictfetchall():#'so lan trung  ngay mo thuong order by tang dan':
+            #'sql sum so tien, so luong phai tra'
+            sql = '''
+                select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung,
+                    case when sum(sl_trung*slan_trung*tong_tien)!=0 then sum(sl_trung*slan_trung*tong_tien) else 0 end st_trung
+                    
+                    from tra_thuong_line
+                
+                where loai='2_so' and giai='dau_cuoi' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+            '''%(product[0],sl['slan_trung'], date)
+            self.cr.execute(sql)
+            phaitra_2_18 = self.cr.dictfetchone()
+            #'sql sum so tien, so luong da tra'
+            sql = '''
+                select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung,
+                    case when sum(sl_trung*slan_trung*tong_tien)!=0 then sum(sl_trung*slan_trung*tong_tien) else 0 end st_trung
+                    
+                    from tra_thuong_thucte_line
+                
+                where loai='2_so' and giai='dau_cuoi' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong_thucte where ngay='%s')
+            '''%(product[0],sl['slan_trung'], date)
+            self.cr.execute(sql)
+            datra_2_18 = self.cr.dictfetchone()
+            res.append({
+                        'so_lan':sl['slan_trung'],
+                        'sl_phai_tra': phaitra_2_18['sl_trung'],
+                        'stien_phai_tra': phaitra_2_18['st_trung'],
+                        'sl_da_tra': datra_2_18['sl_trung'],
+                        'stien_da_tra': datra_2_18['st_trung'],
+                        'sl_con_lai': phaitra_2_18['sl_trung'] - datra_2_18['sl_trung'],
+                        'stien_con_lai': phaitra_2_18['st_trung'] - datra_2_18['st_trung'],
+                        })
+            #'dung bien toan cuc de tim tong cong'
+            self.sl_phai_tra_tong += phaitra_2_18['sl_trung']
+            self.stien_phai_tra_tong += phaitra_2_18['st_trung']
+            self.sl_da_tra_tong += datra_2_18['sl_trung']
+            self.stien_da_tra_tong += datra_2_18['st_trung']
+            self.sl_con_lai_tong += phaitra_2_18['sl_trung'] - datra_2_18['sl_trung']
+            self.stien_con_lai_tong += phaitra_2_18['st_trung'] - datra_2_18['st_trung']
+        if not res:
+            res.append({
+                'so_lan': '',
+                'sl_phai_tra': 0,
+                'stien_phai_tra': 0,
+                'sl_da_tra': 0,
+                'stien_da_tra': 0,
+                'sl_con_lai': 0,
+                'stien_con_lai': 0,
+            })
+        return res
+    
     def get_2_18(self):
         res = []
-        for sl in 'so lan trung  ngay mo thuong order by tang dan':
-            'sql sum so tien, so luong phai tra'
-            'sql sum so tien, so luong da tra'
+        wizard_data = self.localcontext['data']['form']
+        product = wizard_data['product_id']
+        date = wizard_data['date']
+        sql = '''
+        select slan_trung
+        
+        from (
+            select case when slan_trung!=0 then slan_trung else 1 end slan_trung
+                from tra_thuong_line
+                
+                where loai='2_so' and giai='18_lo' and product_id=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+        ) foo
+                group by slan_trung
+                order by slan_trung
+        '''%(product[0], date)
+        self.cr.execute(sql)
+        
+        for sl in self.cr.dictfetchall():#'so lan trung  ngay mo thuong order by tang dan':
+            #'sql sum so tien, so luong phai tra'
+            sql = '''
+                select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung,
+                    case when sum(sl_trung*slan_trung*tong_tien)!=0 then sum(sl_trung*slan_trung*tong_tien) else 0 end st_trung
+                    
+                    from tra_thuong_line
+                
+                where loai='2_so' and giai='18_lo' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+            '''%(product[0],sl['slan_trung'], date)
+            self.cr.execute(sql)
+            phaitra_2_18 = self.cr.dictfetchone()
+            #'sql sum so tien, so luong da tra'
+            sql = '''
+                select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung,
+                    case when sum(sl_trung*slan_trung*tong_tien)!=0 then sum(sl_trung*slan_trung*tong_tien) else 0 end st_trung
+                    
+                    from tra_thuong_thucte_line
+                
+                where loai='2_so' and giai='18_lo' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong_thucte where ngay='%s')
+            '''%(product[0],sl['slan_trung'], date)
+            self.cr.execute(sql)
+            datra_2_18 = self.cr.dictfetchone()
             res.append({
-                        'so_lan':sl,
-                        'sl_phai_tra': 0,
-                        'stien_phai_tra': 0,
-                        'sl_da_tra': 0,
-                        'stien_da_tra': 0,
-                        'sl_con_lai': 0,
-                        'stien_con_lai': 0,
+                        'so_lan':sl['slan_trung'],
+                        'sl_phai_tra': phaitra_2_18['sl_trung'],
+                        'stien_phai_tra': phaitra_2_18['st_trung'],
+                        'sl_da_tra': datra_2_18['sl_trung'],
+                        'stien_da_tra': datra_2_18['st_trung'],
+                        'sl_con_lai': phaitra_2_18['sl_trung'] - datra_2_18['sl_trung'],
+                        'stien_con_lai': phaitra_2_18['st_trung'] - datra_2_18['st_trung'],
                         })
-            'dung bien toan cuc de tim tong cong'
+            #'dung bien toan cuc de tim tong cong'
+            self.sl_phai_tra_tong += phaitra_2_18['sl_trung']
+            self.stien_phai_tra_tong += phaitra_2_18['st_trung']
+            self.sl_da_tra_tong += datra_2_18['sl_trung']
+            self.stien_da_tra_tong += datra_2_18['st_trung']
+            self.sl_con_lai_tong += phaitra_2_18['sl_trung'] - datra_2_18['sl_trung']
+            self.stien_con_lai_tong += phaitra_2_18['st_trung'] - datra_2_18['st_trung']
+        if not res:
+            res.append({
+                'so_lan': '',
+                'sl_phai_tra': 0,
+                'stien_phai_tra': 0,
+                'sl_da_tra': 0,
+                'stien_da_tra': 0,
+                'sl_con_lai': 0,
+                'stien_con_lai': 0,
+            })
+        return res
+    
+    def get_3_d(self):
+        res = []
+        wizard_data = self.localcontext['data']['form']
+        product = wizard_data['product_id']
+        date = wizard_data['date']
+        sql = '''
+        select slan_trung
+        
+        from (
+            select case when slan_trung!=0 then slan_trung else 1 end slan_trung
+                from tra_thuong_line
+                
+                where loai='3_so' and giai='dau' and product_id=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+        ) foo
+                group by slan_trung
+                order by slan_trung
+        '''%(product[0], date)
+        self.cr.execute(sql)
+        
+        for sl in self.cr.dictfetchall():#'so lan trung  ngay mo thuong order by tang dan':
+            #'sql sum so tien, so luong phai tra'
+            sql = '''
+                select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung,
+                    case when sum(sl_trung*slan_trung*tong_tien)!=0 then sum(sl_trung*slan_trung*tong_tien) else 0 end st_trung
+                    
+                    from tra_thuong_line
+                
+                where loai='3_so' and giai='dau' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+            '''%(product[0],sl['slan_trung'], date)
+            self.cr.execute(sql)
+            phaitra_2_18 = self.cr.dictfetchone()
+            #'sql sum so tien, so luong da tra'
+            sql = '''
+                select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung,
+                    case when sum(sl_trung*slan_trung*tong_tien)!=0 then sum(sl_trung*slan_trung*tong_tien) else 0 end st_trung
+                    
+                    from tra_thuong_thucte_line
+                
+                where loai='3_so' and giai='dau' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong_thucte where ngay='%s')
+            '''%(product[0],sl['slan_trung'], date)
+            self.cr.execute(sql)
+            datra_2_18 = self.cr.dictfetchone()
+            res.append({
+                        'so_lan':sl['slan_trung'],
+                        'sl_phai_tra': phaitra_2_18['sl_trung'],
+                        'stien_phai_tra': phaitra_2_18['st_trung'],
+                        'sl_da_tra': datra_2_18['sl_trung'],
+                        'stien_da_tra': datra_2_18['st_trung'],
+                        'sl_con_lai': phaitra_2_18['sl_trung'] - datra_2_18['sl_trung'],
+                        'stien_con_lai': phaitra_2_18['st_trung'] - datra_2_18['st_trung'],
+                        })
+            #'dung bien toan cuc de tim tong cong'
+            self.sl_phai_tra_tong += phaitra_2_18['sl_trung']
+            self.stien_phai_tra_tong += phaitra_2_18['st_trung']
+            self.sl_da_tra_tong += datra_2_18['sl_trung']
+            self.stien_da_tra_tong += datra_2_18['st_trung']
+            self.sl_con_lai_tong += phaitra_2_18['sl_trung'] - datra_2_18['sl_trung']
+            self.stien_con_lai_tong += phaitra_2_18['st_trung'] - datra_2_18['st_trung']
+        if not res:
+            res.append({
+                'so_lan': '',
+                'sl_phai_tra': 0,
+                'stien_phai_tra': 0,
+                'sl_da_tra': 0,
+                'stien_da_tra': 0,
+                'sl_con_lai': 0,
+                'stien_con_lai': 0,
+            })
+        return res
+    
+    def get_3_c(self):
+        res = []
+        wizard_data = self.localcontext['data']['form']
+        product = wizard_data['product_id']
+        date = wizard_data['date']
+        sql = '''
+        select slan_trung
+        
+        from (
+            select case when slan_trung!=0 then slan_trung else 1 end slan_trung
+                from tra_thuong_line
+                
+                where loai='3_so' and giai='cuoi' and product_id=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+        ) foo
+                group by slan_trung
+                order by slan_trung
+        '''%(product[0], date)
+        self.cr.execute(sql)
+        
+        for sl in self.cr.dictfetchall():#'so lan trung  ngay mo thuong order by tang dan':
+            #'sql sum so tien, so luong phai tra'
+            sql = '''
+                select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung,
+                    case when sum(sl_trung*slan_trung*tong_tien)!=0 then sum(sl_trung*slan_trung*tong_tien) else 0 end st_trung
+                    
+                    from tra_thuong_line
+                
+                where loai='3_so' and giai='cuoi' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+            '''%(product[0],sl['slan_trung'], date)
+            self.cr.execute(sql)
+            phaitra_2_18 = self.cr.dictfetchone()
+            #'sql sum so tien, so luong da tra'
+            sql = '''
+                select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung,
+                    case when sum(sl_trung*slan_trung*tong_tien)!=0 then sum(sl_trung*slan_trung*tong_tien) else 0 end st_trung
+                    
+                    from tra_thuong_thucte_line
+                
+                where loai='3_so' and giai='cuoi' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong_thucte where ngay='%s')
+            '''%(product[0],sl['slan_trung'], date)
+            self.cr.execute(sql)
+            datra_2_18 = self.cr.dictfetchone()
+            res.append({
+                        'so_lan':sl['slan_trung'],
+                        'sl_phai_tra': phaitra_2_18['sl_trung'],
+                        'stien_phai_tra': phaitra_2_18['st_trung'],
+                        'sl_da_tra': datra_2_18['sl_trung'],
+                        'stien_da_tra': datra_2_18['st_trung'],
+                        'sl_con_lai': phaitra_2_18['sl_trung'] - datra_2_18['sl_trung'],
+                        'stien_con_lai': phaitra_2_18['st_trung'] - datra_2_18['st_trung'],
+                        })
+            #'dung bien toan cuc de tim tong cong'
+            self.sl_phai_tra_tong += phaitra_2_18['sl_trung']
+            self.stien_phai_tra_tong += phaitra_2_18['st_trung']
+            self.sl_da_tra_tong += datra_2_18['sl_trung']
+            self.stien_da_tra_tong += datra_2_18['st_trung']
+            self.sl_con_lai_tong += phaitra_2_18['sl_trung'] - datra_2_18['sl_trung']
+            self.stien_con_lai_tong += phaitra_2_18['st_trung'] - datra_2_18['st_trung']
+        if not res:
+            res.append({
+                'so_lan': '',
+                'sl_phai_tra': 0,
+                'stien_phai_tra': 0,
+                'sl_da_tra': 0,
+                'stien_da_tra': 0,
+                'sl_con_lai': 0,
+                'stien_con_lai': 0,
+            })
+        return res
+    
+    def get_3_dc(self):
+        res = []
+        wizard_data = self.localcontext['data']['form']
+        product = wizard_data['product_id']
+        date = wizard_data['date']
+        sql = '''
+        select slan_trung
+        
+        from (
+            select case when slan_trung!=0 then slan_trung else 1 end slan_trung
+                from tra_thuong_line
+                
+                where loai='3_so' and giai='dau_cuoi' and product_id=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+        ) foo
+                group by slan_trung
+                order by slan_trung
+        '''%(product[0], date)
+        self.cr.execute(sql)
+        
+        for sl in self.cr.dictfetchall():#'so lan trung  ngay mo thuong order by tang dan':
+            #'sql sum so tien, so luong phai tra'
+            sql = '''
+                select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung,
+                    case when sum(sl_trung*slan_trung*tong_tien)!=0 then sum(sl_trung*slan_trung*tong_tien) else 0 end st_trung
+                    
+                    from tra_thuong_line
+                
+                where loai='3_so' and giai='dau_cuoi' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+            '''%(product[0],sl['slan_trung'], date)
+            self.cr.execute(sql)
+            phaitra_2_18 = self.cr.dictfetchone()
+            #'sql sum so tien, so luong da tra'
+            sql = '''
+                select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung,
+                    case when sum(sl_trung*slan_trung*tong_tien)!=0 then sum(sl_trung*slan_trung*tong_tien) else 0 end st_trung
+                    
+                    from tra_thuong_thucte_line
+                
+                where loai='3_so' and giai='dau_cuoi' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong_thucte where ngay='%s')
+            '''%(product[0],sl['slan_trung'], date)
+            self.cr.execute(sql)
+            datra_2_18 = self.cr.dictfetchone()
+            res.append({
+                        'so_lan':sl['slan_trung'],
+                        'sl_phai_tra': phaitra_2_18['sl_trung'],
+                        'stien_phai_tra': phaitra_2_18['st_trung'],
+                        'sl_da_tra': datra_2_18['sl_trung'],
+                        'stien_da_tra': datra_2_18['st_trung'],
+                        'sl_con_lai': phaitra_2_18['sl_trung'] - datra_2_18['sl_trung'],
+                        'stien_con_lai': phaitra_2_18['st_trung'] - datra_2_18['st_trung'],
+                        })
+            #'dung bien toan cuc de tim tong cong'
+            self.sl_phai_tra_tong += phaitra_2_18['sl_trung']
+            self.stien_phai_tra_tong += phaitra_2_18['st_trung']
+            self.sl_da_tra_tong += datra_2_18['sl_trung']
+            self.stien_da_tra_tong += datra_2_18['st_trung']
+            self.sl_con_lai_tong += phaitra_2_18['sl_trung'] - datra_2_18['sl_trung']
+            self.stien_con_lai_tong += phaitra_2_18['st_trung'] - datra_2_18['st_trung']
+        if not res:
+            res.append({
+                'so_lan': '',
+                'sl_phai_tra': 0,
+                'stien_phai_tra': 0,
+                'sl_da_tra': 0,
+                'stien_da_tra': 0,
+                'sl_con_lai': 0,
+                'stien_con_lai': 0,
+            })
+        return res
+    
+    def get_3_7(self):
+        res = []
+        wizard_data = self.localcontext['data']['form']
+        product = wizard_data['product_id']
+        date = wizard_data['date']
+        sql = '''
+        select slan_trung
+        
+        from (
+            select case when slan_trung!=0 then slan_trung else 1 end slan_trung
+                from tra_thuong_line
+                
+                where loai='3_so' and giai='7_lo' and product_id=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+        ) foo
+                group by slan_trung
+                order by slan_trung
+        '''%(product[0], date)
+        self.cr.execute(sql)
+        
+        for sl in self.cr.dictfetchall():#'so lan trung  ngay mo thuong order by tang dan':
+            #'sql sum so tien, so luong phai tra'
+            sql = '''
+                select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung,
+                    case when sum(sl_trung*slan_trung*tong_tien)!=0 then sum(sl_trung*slan_trung*tong_tien) else 0 end st_trung
+                    
+                    from tra_thuong_line
+                
+                where loai='3_so' and giai='7_lo' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+            '''%(product[0],sl['slan_trung'], date)
+            self.cr.execute(sql)
+            phaitra_2_18 = self.cr.dictfetchone()
+            #'sql sum so tien, so luong da tra'
+            sql = '''
+                select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung,
+                    case when sum(sl_trung*slan_trung*tong_tien)!=0 then sum(sl_trung*slan_trung*tong_tien) else 0 end st_trung
+                    
+                    from tra_thuong_thucte_line
+                
+                where loai='3_so' and giai='7_lo' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong_thucte where ngay='%s')
+            '''%(product[0],sl['slan_trung'], date)
+            self.cr.execute(sql)
+            datra_2_18 = self.cr.dictfetchone()
+            res.append({
+                        'so_lan':sl['slan_trung'],
+                        'sl_phai_tra': phaitra_2_18['sl_trung'],
+                        'stien_phai_tra': phaitra_2_18['st_trung'],
+                        'sl_da_tra': datra_2_18['sl_trung'],
+                        'stien_da_tra': datra_2_18['st_trung'],
+                        'sl_con_lai': phaitra_2_18['sl_trung'] - datra_2_18['sl_trung'],
+                        'stien_con_lai': phaitra_2_18['st_trung'] - datra_2_18['st_trung'],
+                        })
+            #'dung bien toan cuc de tim tong cong'
+            self.sl_phai_tra_tong += phaitra_2_18['sl_trung']
+            self.stien_phai_tra_tong += phaitra_2_18['st_trung']
+            self.sl_da_tra_tong += datra_2_18['sl_trung']
+            self.stien_da_tra_tong += datra_2_18['st_trung']
+            self.sl_con_lai_tong += phaitra_2_18['sl_trung'] - datra_2_18['sl_trung']
+            self.stien_con_lai_tong += phaitra_2_18['st_trung'] - datra_2_18['st_trung']
+        if not res:
+            res.append({
+                'so_lan': '',
+                'sl_phai_tra': 0,
+                'stien_phai_tra': 0,
+                'sl_da_tra': 0,
+                'stien_da_tra': 0,
+                'sl_con_lai': 0,
+                'stien_con_lai': 0,
+            })
+        return res
+    
+    def get_3_17(self):
+        res = []
+        wizard_data = self.localcontext['data']['form']
+        product = wizard_data['product_id']
+        date = wizard_data['date']
+        sql = '''
+        select slan_trung
+        
+        from (
+            select case when slan_trung!=0 then slan_trung else 1 end slan_trung
+                from tra_thuong_line
+                
+                where loai='3_so' and giai='17_lo' and product_id=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+        ) foo
+                group by slan_trung
+                order by slan_trung
+        '''%(product[0], date)
+        self.cr.execute(sql)
+        
+        for sl in self.cr.dictfetchall():#'so lan trung  ngay mo thuong order by tang dan':
+            #'sql sum so tien, so luong phai tra'
+            sql = '''
+                select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung,
+                    case when sum(sl_trung*slan_trung*tong_tien)!=0 then sum(sl_trung*slan_trung*tong_tien) else 0 end st_trung
+                    
+                    from tra_thuong_line
+                
+                where loai='3_so' and giai='17_lo' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+            '''%(product[0],sl['slan_trung'], date)
+            self.cr.execute(sql)
+            phaitra_2_18 = self.cr.dictfetchone()
+            #'sql sum so tien, so luong da tra'
+            sql = '''
+                select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung,
+                    case when sum(sl_trung*slan_trung*tong_tien)!=0 then sum(sl_trung*slan_trung*tong_tien) else 0 end st_trung
+                    
+                    from tra_thuong_thucte_line
+                
+                where loai='3_so' and giai='17_lo' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong_thucte where ngay='%s')
+            '''%(product[0],sl['slan_trung'], date)
+            self.cr.execute(sql)
+            datra_2_18 = self.cr.dictfetchone()
+            res.append({
+                        'so_lan':sl['slan_trung'],
+                        'sl_phai_tra': phaitra_2_18['sl_trung'],
+                        'stien_phai_tra': phaitra_2_18['st_trung'],
+                        'sl_da_tra': datra_2_18['sl_trung'],
+                        'stien_da_tra': datra_2_18['st_trung'],
+                        'sl_con_lai': phaitra_2_18['sl_trung'] - datra_2_18['sl_trung'],
+                        'stien_con_lai': phaitra_2_18['st_trung'] - datra_2_18['st_trung'],
+                        })
+            #'dung bien toan cuc de tim tong cong'
+            self.sl_phai_tra_tong += phaitra_2_18['sl_trung']
+            self.stien_phai_tra_tong += phaitra_2_18['st_trung']
+            self.sl_da_tra_tong += datra_2_18['sl_trung']
+            self.stien_da_tra_tong += datra_2_18['st_trung']
+            self.sl_con_lai_tong += phaitra_2_18['sl_trung'] - datra_2_18['sl_trung']
+            self.stien_con_lai_tong += phaitra_2_18['st_trung'] - datra_2_18['st_trung']
+        if not res:
+            res.append({
+                'so_lan': '',
+                'sl_phai_tra': 0,
+                'stien_phai_tra': 0,
+                'sl_da_tra': 0,
+                'stien_da_tra': 0,
+                'sl_con_lai': 0,
+                'stien_con_lai': 0,
+            })
+        return res
+    
+    def get_4_16(self):
+        res = []
+        wizard_data = self.localcontext['data']['form']
+        product = wizard_data['product_id']
+        date = wizard_data['date']
+        sql = '''
+        select slan_trung
+        
+        from (
+            select case when slan_trung!=0 then slan_trung else 1 end slan_trung
+                from tra_thuong_line
+                
+                where loai='4_so' and giai='16_lo' and product_id=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+        ) foo
+                group by slan_trung
+                order by slan_trung
+        '''%(product[0], date)
+        self.cr.execute(sql)
+        
+        for sl in self.cr.dictfetchall():#'so lan trung  ngay mo thuong order by tang dan':
+            #'sql sum so tien, so luong phai tra'
+            sql = '''
+                select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung,
+                    case when sum(sl_trung*slan_trung*tong_tien)!=0 then sum(sl_trung*slan_trung*tong_tien) else 0 end st_trung
+                    
+                    from tra_thuong_line
+                
+                where loai='4_so' and giai='16_lo' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+            '''%(product[0],sl['slan_trung'], date)
+            self.cr.execute(sql)
+            phaitra_2_18 = self.cr.dictfetchone()
+            #'sql sum so tien, so luong da tra'
+            sql = '''
+                select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung,
+                    case when sum(sl_trung*slan_trung*tong_tien)!=0 then sum(sl_trung*slan_trung*tong_tien) else 0 end st_trung
+                    
+                    from tra_thuong_thucte_line
+                
+                where loai='4_so' and giai='16_lo' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong_thucte where ngay='%s')
+            '''%(product[0],sl['slan_trung'], date)
+            self.cr.execute(sql)
+            datra_2_18 = self.cr.dictfetchone()
+            res.append({
+                        'so_lan':sl['slan_trung'],
+                        'sl_phai_tra': phaitra_2_18['sl_trung'],
+                        'stien_phai_tra': phaitra_2_18['st_trung'],
+                        'sl_da_tra': datra_2_18['sl_trung'],
+                        'stien_da_tra': datra_2_18['st_trung'],
+                        'sl_con_lai': phaitra_2_18['sl_trung'] - datra_2_18['sl_trung'],
+                        'stien_con_lai': phaitra_2_18['st_trung'] - datra_2_18['st_trung'],
+                        })
+            #'dung bien toan cuc de tim tong cong'
+            self.sl_phai_tra_tong += phaitra_2_18['sl_trung']
+            self.stien_phai_tra_tong += phaitra_2_18['st_trung']
+            self.sl_da_tra_tong += datra_2_18['sl_trung']
+            self.stien_da_tra_tong += datra_2_18['st_trung']
+            self.sl_con_lai_tong += phaitra_2_18['sl_trung'] - datra_2_18['sl_trung']
+            self.stien_con_lai_tong += phaitra_2_18['st_trung'] - datra_2_18['st_trung']
+        if not res:
+            res.append({
+                'so_lan': '',
+                'sl_phai_tra': 0,
+                'stien_phai_tra': 0,
+                'sl_da_tra': 0,
+                'stien_da_tra': 0,
+                'sl_con_lai': 0,
+                'stien_con_lai': 0,
+            })
         return res
     
     def get_vietname_date(self, date):
