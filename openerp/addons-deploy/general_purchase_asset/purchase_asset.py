@@ -65,8 +65,8 @@ class purchase_order(osv.osv):
         product_uom_obj = self.pool.get('product.uom')
         for po in self.browse(cr, uid, ids, context=context):
             kiemtra_ngayhethan = True
-            if po.partner_id.gpkd and po.partner_id.date_gpkd < po.date_order:
-                kiemtra_ngayhethan = False
+#             if po.partner_id.gpkd and po.partner_id.date_gpkd < po.date_order:
+#                 kiemtra_ngayhethan = False
             if po.partner_id.cchn and po.partner_id.date_cchn < po.date_order:
                 kiemtra_ngayhethan = False
             if po.partner_id.gptn and po.partner_id.date_gptn < po.date_order:

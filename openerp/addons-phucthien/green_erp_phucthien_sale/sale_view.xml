@@ -198,7 +198,7 @@
           				<group col='6' colspan='2'>
           					<group colspan='2'>
           						<field name='gpkd'/>
-          						<field name='date_gpkd' attrs="{'invisible': [('gpkd','=',False)]}"/>
+          						<field name='date_gpkd' invisible='1'/>
           					</group>
           					<group colspan='2'>
           						<field name='cchn'/>
