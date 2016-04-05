@@ -24,6 +24,7 @@ class Parser(report_sxw.rml_parse):
     def __init__(self, cr, uid, name, context):
         super(Parser, self).__init__(cr, uid, name, context=context)
         pool = pooler.get_pool(self.cr.dbname)
+        self.tong_nqt = [{'sl_tong': 0,'st_tong':0}]
         self.localcontext.update({
             'get_vietname_date': self.get_vietname_date,
             'convert': self.convert,
@@ -42,7 +43,17 @@ class Parser(report_sxw.rml_parse):
             'get_3_7': self.get_3_7,
             'get_3_17': self.get_3_17,
             'get_4_16': self.get_4_16,
+            'get_khoitao_tong': self.get_khoitao_tong,
+            'get_tong': self.get_tong,
         })
+        
+    def get_khoitao_tong(self):
+        for nqt in self.get_so_nqt():
+            self.tong_nqt[0][nqt['date_to']] = 0
+        return True
+    
+    def get_tong(self):
+        return self.tong_nqt
         
     def get_ddt_name(self, dai_duthuong_id):
         dai_duthuong = self.pool.get('dai.duthuong').browse(self.cr, self.uid, dai_duthuong_id)
@@ -83,7 +94,7 @@ class Parser(report_sxw.rml_parse):
             slan_dict[int(slan['slan_2_d'])] = seq
             if seq==0:
                 res.append({
-                    'so':'',
+                    'so':'2 số',
                     'name': 'Đầu',
                     'sl_tong': 0,
                     'slan': int(slan['slan_2_d']),
@@ -109,16 +120,20 @@ class Parser(report_sxw.rml_parse):
                  
                     from quyet_toan_ve_ngay_line
                      
-                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s and date_to='%s')
                      
                     group by slan_2_d
-            '''%(date,product[0])
+            '''%(date,product[0],nqt['date_to'])
             self.cr.execute(sql)
             #sql lay slan, soluong, sotien cua loai 2 so 18 lo group by theo so lan
             for slan_nqt in self.cr.dictfetchall():
                 res[slan_dict[slan_nqt['slan_2_d']]][nqt['date_to']] += slan_nqt['sl_2_d']
                 res[slan_dict[slan_nqt['slan_2_d']]]['sl_tong'] += slan_nqt['sl_2_d']
                 res[slan_dict[slan_nqt['slan_2_d']]]['st_tong'] += slan_nqt['st_2_d']
+                
+                self.tong_nqt[0][nqt['date_to']] += slan_nqt['sl_2_d']
+                self.tong_nqt[0]['sl_tong'] += slan_nqt['sl_2_d']
+                self.tong_nqt[0]['st_tong'] += slan_nqt['st_2_d']
         if not res:
             res.append({
                     'so':'2 số',
@@ -177,20 +192,24 @@ class Parser(report_sxw.rml_parse):
                  
                     from quyet_toan_ve_ngay_line
                      
-                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s and date_to='%s')
                      
                     group by slan_2_c
-            '''%(date,product[0])
+            '''%(date,product[0],nqt['date_to'])
             self.cr.execute(sql)
             #sql lay slan, soluong, sotien cua loai 2 so 18 lo group by theo so lan
             for slan_nqt in self.cr.dictfetchall():
                 res[slan_dict[slan_nqt['slan_2_c']]][nqt['date_to']] += slan_nqt['sl_2_c']
                 res[slan_dict[slan_nqt['slan_2_c']]]['sl_tong'] += slan_nqt['sl_2_c']
                 res[slan_dict[slan_nqt['slan_2_c']]]['st_tong'] += slan_nqt['st_2_c']
+                
+                self.tong_nqt[0][nqt['date_to']] += slan_nqt['sl_2_c']
+                self.tong_nqt[0]['sl_tong'] += slan_nqt['sl_2_c']
+                self.tong_nqt[0]['st_tong'] += slan_nqt['st_2_c']
         if not res:
             res.append({
-                    'so':'2 số',
-                    'name': 'Đầu',
+                    'so':'',
+                    'name': 'Cuối',
                     'sl_tong': '',
                     'slan': '',
                     'st_tong': '', 
@@ -204,12 +223,13 @@ class Parser(report_sxw.rml_parse):
         res = []
         slan_dict = {}
         sql = '''
-                select slan_2_dc
+            select slan_2_dc from (
+                select case when slan_2_dc!=0 then slan_2_dc else 1 end slan_2_dc 
                  
                     from quyet_toan_ve_ngay_line
                      
                     where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
-                     
+                )foo
                     group by slan_2_dc
                     order by slan_2_dc asc
             '''%(date,product[0])
@@ -220,7 +240,7 @@ class Parser(report_sxw.rml_parse):
             if seq==0:
                 res.append({
                     'so':'',
-                    'name': '18 Lô',
+                    'name': 'Đ/C',
                     'sl_tong': 0,
                     'slan': int(slan['slan_2_dc']),
                     'st_tong': 0, 
@@ -239,23 +259,30 @@ class Parser(report_sxw.rml_parse):
                 
         for nqt in self.get_so_nqt(): #'so ngay quyet toan, co ham roi'
             sql = '''
-                select slan_2_dc::int,
-                        case when sum(sl_2_dc)!=0 then sum(sl_2_dc) else 0 end sl_2_dc,
+            select slan_2_dc,case when sum(sl_2_dc)!=0 then sum(sl_2_dc) else 0 end sl_2_dc,
                         case when sum(st_2_dc)!=0 then sum(st_2_dc) else 0 end st_2_dc
+            from (
+                select case when slan_2_dc!=0 then slan_2_dc else 1 end slan_2_dc,
+                        case when sl_2_dc!=0 then sl_2_dc else 0 end sl_2_dc,
+                        case when st_2_dc!=0 then st_2_dc else 0 end st_2_dc
                  
                     from quyet_toan_ve_ngay_line
                      
-                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
-                     
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s and date_to='%s')
+            )foo
                     group by slan_2_dc
                     order by slan_2_dc asc
-            '''%(date,product[0])
+            '''%(date,product[0],nqt['date_to'])
             self.cr.execute(sql)
             #sql lay slan, soluong, sotien cua loai 2 so 18 lo group by theo so lan
             for slan_nqt in self.cr.dictfetchall():
                 res[slan_dict[slan_nqt['slan_2_dc']]][nqt['date_to']] += slan_nqt['sl_2_dc']
                 res[slan_dict[slan_nqt['slan_2_dc']]]['sl_tong'] += slan_nqt['sl_2_dc']
                 res[slan_dict[slan_nqt['slan_2_dc']]]['st_tong'] += slan_nqt['st_2_dc']
+                
+                self.tong_nqt[0][nqt['date_to']] += slan_nqt['sl_2_dc']
+                self.tong_nqt[0]['sl_tong'] += slan_nqt['sl_2_dc']
+                self.tong_nqt[0]['st_tong'] += slan_nqt['st_2_dc']
         if not res:
             res.append({
                     'so':'',
@@ -273,12 +300,13 @@ class Parser(report_sxw.rml_parse):
         res = []
         slan_dict = {}
         sql = '''
-                select slan_2_18
+            select slan_2_18 from (
+                select case when slan_2_18!=0 then slan_2_18 else 1 end slan_2_18  
                  
                     from quyet_toan_ve_ngay_line
                      
                     where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
-                     
+            )foo
                     group by slan_2_18
                     order by slan_2_18 asc
             '''%(date,product[0])
@@ -308,23 +336,31 @@ class Parser(report_sxw.rml_parse):
                 
         for nqt in self.get_so_nqt(): #'so ngay quyet toan, co ham roi'
             sql = '''
-                select slan_2_18::int,
-                        case when sum(sl_2_18)!=0 then sum(sl_2_18) else 0 end sl_2_18,
-                        case when sum(st_2_18)!=0 then sum(st_2_18) else 0 end st_2_18
+            select slan_2_18,case when sum(sl_2_18)!=0 then sum(sl_2_18) else 0 end sl_2_18,
+                    case when sum(st_2_18)!=0 then sum(st_2_18) else 0 end st_2_18
+            
+            from (
+                select case when slan_2_18!=0 then slan_2_18 else 1 end slan_2_18,
+                        case when sl_2_18!=0 then sl_2_18 else 0 end sl_2_18,
+                        case when st_2_18!=0 then st_2_18 else 0 end st_2_18
                  
                     from quyet_toan_ve_ngay_line
                      
-                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
-                     
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s and date_to='%s')
+            )foo
                     group by slan_2_18
                     order by slan_2_18 asc
-            '''%(date,product[0])
+            '''%(date,product[0],nqt['date_to'])
             self.cr.execute(sql)
             #sql lay slan, soluong, sotien cua loai 2 so 18 lo group by theo so lan
             for slan_nqt in self.cr.dictfetchall():
-                res[slan_dict[slan_nqt['slan_2_18']]][nqt['date_to']] += slan_nqt['slan_2_18']
+                res[slan_dict[slan_nqt['slan_2_18']]][nqt['date_to']] += slan_nqt['sl_2_18']
                 res[slan_dict[slan_nqt['slan_2_18']]]['sl_tong'] += slan_nqt['sl_2_18']
                 res[slan_dict[slan_nqt['slan_2_18']]]['st_tong'] += slan_nqt['st_2_18']
+                
+                self.tong_nqt[0][nqt['date_to']] += slan_nqt['sl_2_18']
+                self.tong_nqt[0]['sl_tong'] += slan_nqt['sl_2_18']
+                self.tong_nqt[0]['st_tong'] += slan_nqt['st_2_18']
         if not res:
             res.append({
                     'so':'',
@@ -383,16 +419,20 @@ class Parser(report_sxw.rml_parse):
                  
                     from quyet_toan_ve_ngay_line
                      
-                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s and date_to='%s')
                      
                     group by slan_3_d
-            '''%(date,product[0])
+            '''%(date,product[0],nqt['date_to'])
             self.cr.execute(sql)
             #sql lay slan, soluong, sotien cua loai 2 so 18 lo group by theo so lan
             for slan_nqt in self.cr.dictfetchall():
                 res[slan_dict[slan_nqt['slan_3_d']]][nqt['date_to']] += slan_nqt['sl_3_d']
                 res[slan_dict[slan_nqt['slan_3_d']]]['sl_tong'] += slan_nqt['sl_3_d']
                 res[slan_dict[slan_nqt['slan_3_d']]]['st_tong'] += slan_nqt['st_3_d']
+                
+                self.tong_nqt[0][nqt['date_to']] += slan_nqt['sl_3_d']
+                self.tong_nqt[0]['sl_tong'] += slan_nqt['sl_3_d']
+                self.tong_nqt[0]['st_tong'] += slan_nqt['st_3_d']
         if not res:
             res.append({
                     'so':'3 số',
@@ -451,16 +491,20 @@ class Parser(report_sxw.rml_parse):
                  
                     from quyet_toan_ve_ngay_line
                      
-                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s and date_to='%s')
                      
                     group by slan_3_c
-            '''%(date,product[0])
+            '''%(date,product[0],nqt['date_to'])
             self.cr.execute(sql)
             #sql lay slan, soluong, sotien cua loai 2 so 18 lo group by theo so lan
             for slan_nqt in self.cr.dictfetchall():
                 res[slan_dict[slan_nqt['slan_3_c']]][nqt['date_to']] += slan_nqt['sl_3_c']
                 res[slan_dict[slan_nqt['slan_3_c']]]['sl_tong'] += slan_nqt['sl_3_c']
                 res[slan_dict[slan_nqt['slan_3_c']]]['st_tong'] += slan_nqt['st_3_c']
+                
+                self.tong_nqt[0][nqt['date_to']] += slan_nqt['sl_3_c']
+                self.tong_nqt[0]['sl_tong'] += slan_nqt['sl_3_c']
+                self.tong_nqt[0]['st_tong'] += slan_nqt['st_3_c']
         if not res:
             res.append({
                     'so':'',
@@ -478,11 +522,14 @@ class Parser(report_sxw.rml_parse):
         res = []
         slan_dict = {}
         sql = '''
-                select slan_3_dc
+                select case when slan_3_dc!=0 then slan_3_dc else 1 end slan_3_dc
+                from (
+                    select case when slan_3_dc!=0 then slan_3_dc else 1 end slan_3_dc
                  
                     from quyet_toan_ve_ngay_line
                      
                     where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
+                ) foo
                      
                     group by slan_3_dc
                     order by slan_3_dc asc
@@ -513,23 +560,32 @@ class Parser(report_sxw.rml_parse):
                 
         for nqt in self.get_so_nqt(): #'so ngay quyet toan, co ham roi'
             sql = '''
-                select slan_3_dc::int,
+                select case when slan_3_dc!=0 then slan_3_dc else 1 end slan_3_dc,
                         case when sum(sl_3_dc)!=0 then sum(sl_3_dc) else 0 end sl_3_dc,
                         case when sum(st_3_dc)!=0 then sum(st_3_dc) else 0 end st_3_dc
+                from (
+                    select case when slan_3_dc!=0 then slan_3_dc else 1 end slan_3_dc,
+                        case when sl_3_dc!=0 then sl_3_dc else 0 end sl_3_dc,
+                        case when st_3_dc!=0 then st_3_dc else 0 end st_3_dc
                  
                     from quyet_toan_ve_ngay_line
                      
-                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s and date_to='%s')
+                ) foo
                      
                     group by slan_3_dc
                     order by slan_3_dc asc
-            '''%(date,product[0])
+            '''%(date,product[0],nqt['date_to'])
             self.cr.execute(sql)
             #sql lay slan, soluong, sotien cua loai 2 so 18 lo group by theo so lan
             for slan_nqt in self.cr.dictfetchall():
-                res[slan_dict[slan_nqt['slan_3_dc']]][nqt['date_to']] += slan_nqt['slan_3_dc']
+                res[slan_dict[slan_nqt['slan_3_dc']]][nqt['date_to']] += slan_nqt['sl_3_dc']
                 res[slan_dict[slan_nqt['slan_3_dc']]]['sl_tong'] += slan_nqt['sl_3_dc']
                 res[slan_dict[slan_nqt['slan_3_dc']]]['st_tong'] += slan_nqt['st_3_dc']
+                
+                self.tong_nqt[0][nqt['date_to']] += slan_nqt['sl_3_dc']
+                self.tong_nqt[0]['sl_tong'] += slan_nqt['sl_3_dc']
+                self.tong_nqt[0]['st_tong'] += slan_nqt['st_3_dc']
         if not res:
             res.append({
                     'so':'',
@@ -547,11 +603,14 @@ class Parser(report_sxw.rml_parse):
         res = []
         slan_dict = {}
         sql = '''
-                select slan_3_7
+            select case when slan_3_7!=0 then slan_3_7 else 1 end slan_3_7 
+                from (
+                select case when slan_3_7!=0 then slan_3_7 else 1 end slan_3_7 
                  
                     from quyet_toan_ve_ngay_line
                      
                     where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
+                ) foo
                      
                     group by slan_3_7
                     order by slan_3_7 asc
@@ -582,23 +641,32 @@ class Parser(report_sxw.rml_parse):
                 
         for nqt in self.get_so_nqt(): #'so ngay quyet toan, co ham roi'
             sql = '''
-                select slan_3_7::int,
+                select case when slan_3_7!=0 then slan_3_7 else 1 end slan_3_7,
                         case when sum(sl_3_7)!=0 then sum(sl_3_7) else 0 end sl_3_7,
                         case when sum(st_3_7)!=0 then sum(st_3_7) else 0 end st_3_7
+                from (
+                select case when slan_3_7!=0 then slan_3_7 else 1 end slan_3_7,
+                        case when sl_3_7!=0 then sl_3_7 else 0 end sl_3_7,
+                        case when st_3_7!=0 then st_3_7 else 0 end st_3_7
                  
                     from quyet_toan_ve_ngay_line
                      
-                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s and date_to='%s')
+                ) foo
                      
                     group by slan_3_7
                     order by slan_3_7 asc
-            '''%(date,product[0])
+            '''%(date,product[0],nqt['date_to'])
             self.cr.execute(sql)
             #sql lay slan, soluong, sotien cua loai 2 so 18 lo group by theo so lan
             for slan_nqt in self.cr.dictfetchall():
-                res[slan_dict[slan_nqt['slan_3_7']]][nqt['date_to']] += slan_nqt['slan_3_7']
+                res[slan_dict[slan_nqt['slan_3_7']]][nqt['date_to']] += slan_nqt['sl_3_7']
                 res[slan_dict[slan_nqt['slan_3_7']]]['sl_tong'] += slan_nqt['sl_3_7']
                 res[slan_dict[slan_nqt['slan_3_7']]]['st_tong'] += slan_nqt['st_3_7']
+                
+                self.tong_nqt[0][nqt['date_to']] += slan_nqt['sl_3_7']
+                self.tong_nqt[0]['sl_tong'] += slan_nqt['sl_3_7']
+                self.tong_nqt[0]['st_tong'] += slan_nqt['st_3_7']
         if not res:
             res.append({
                     'so':'',
@@ -616,11 +684,14 @@ class Parser(report_sxw.rml_parse):
         res = []
         slan_dict = {}
         sql = '''
-                select slan_3_17
+            select case when slan_3_17!=0 then slan_3_17 else 1 end slan_3_17 
+                from (
+                select case when slan_3_17!=0 then slan_3_17 else 1 end slan_3_17 
                  
                     from quyet_toan_ve_ngay_line
                      
                     where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
+                ) foo
                      
                     group by slan_3_17
                     order by slan_3_17 asc
@@ -651,23 +722,32 @@ class Parser(report_sxw.rml_parse):
                 
         for nqt in self.get_so_nqt(): #'so ngay quyet toan, co ham roi'
             sql = '''
-                select slan_3_17::int,
+                select case when slan_3_17!=0 then slan_3_17 else 1 end slan_3_17,
                         case when sum(sl_3_17)!=0 then sum(sl_3_17) else 0 end sl_3_17,
                         case when sum(st_3_17)!=0 then sum(st_3_17) else 0 end st_3_17
+                from (
+                select case when slan_3_17!=0 then slan_3_17 else 1 end slan_3_17,
+                        case when sl_3_17!=0 then sl_3_17 else 0 end sl_3_17,
+                        case when st_3_17!=0 then st_3_17 else 0 end st_3_17
                  
                     from quyet_toan_ve_ngay_line
                      
-                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s and date_to='%s')
+                ) foo
                      
                     group by slan_3_17
                     order by slan_3_17 asc
-            '''%(date,product[0])
+            '''%(date,product[0],nqt['date_to'])
             self.cr.execute(sql)
             #sql lay slan, soluong, sotien cua loai 2 so 18 lo group by theo so lan
             for slan_nqt in self.cr.dictfetchall():
-                res[slan_dict[slan_nqt['slan_3_17']]][nqt['date_to']] += slan_nqt['slan_3_17']
+                res[slan_dict[slan_nqt['slan_3_17']]][nqt['date_to']] += slan_nqt['sl_3_17']
                 res[slan_dict[slan_nqt['slan_3_17']]]['sl_tong'] += slan_nqt['sl_3_17']
                 res[slan_dict[slan_nqt['slan_3_17']]]['st_tong'] += slan_nqt['st_3_17']
+                
+                self.tong_nqt[0][nqt['date_to']] += slan_nqt['sl_3_17']
+                self.tong_nqt[0]['sl_tong'] += slan_nqt['sl_3_17']
+                self.tong_nqt[0]['st_tong'] += slan_nqt['st_3_17']
         if not res:
             res.append({
                     'so':'',
@@ -685,12 +765,14 @@ class Parser(report_sxw.rml_parse):
         res = []
         slan_dict = {}
         sql = '''
-                select slan_4_16
+            select case when slan_4_16!=0 then slan_4_16 else 1 end slan_4_16 
+            from (
+                select case when slan_4_16!=0 then slan_4_16 else 1 end slan_4_16 
                  
                     from quyet_toan_ve_ngay_line
                      
                     where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
-                     
+            ) foo
                     group by slan_4_16
                     order by slan_4_16 asc
             '''%(date,product[0])
@@ -700,7 +782,7 @@ class Parser(report_sxw.rml_parse):
             slan_dict[int(slan['slan_4_16'])] = seq
             if seq==0:
                 res.append({
-                    'so':'',
+                    'so':'4 số',
                     'name': '16 Lô',
                     'sl_tong': 0,
                     'slan': int(slan['slan_4_16']),
@@ -720,23 +802,31 @@ class Parser(report_sxw.rml_parse):
                 
         for nqt in self.get_so_nqt(): #'so ngay quyet toan, co ham roi'
             sql = '''
-                select slan_4_16::int,
+                select case when slan_4_16!=0 then slan_4_16 else 1 end slan_4_16,
                         case when sum(sl_4_16)!=0 then sum(sl_4_16) else 0 end sl_4_16,
                         case when sum(st_4_16)!=0 then sum(st_4_16) else 0 end st_4_16
+                from (
+                select case when slan_4_16!=0 then slan_4_16 else 1 end slan_4_16,
+                        case when sl_4_16=0 then sl_4_16 else 0 end sl_4_16,
+                        case when st_4_16!=0 then st_4_16 else 0 end st_4_16
                  
                     from quyet_toan_ve_ngay_line
                      
-                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s)
-                     
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where product_id=%s and date_to='%s')
+                ) foo
                     group by slan_4_16
                     order by slan_4_16 asc
-            '''%(date,product[0])
+            '''%(date,product[0],nqt['date_to'])
             self.cr.execute(sql)
             #sql lay slan, soluong, sotien cua loai 2 so 18 lo group by theo so lan
             for slan_nqt in self.cr.dictfetchall():
-                res[slan_dict[slan_nqt['slan_4_16']]][nqt['date_to']] += slan_nqt['slan_4_16']
+                res[slan_dict[slan_nqt['slan_4_16']]][nqt['date_to']] += slan_nqt['sl_4_16']
                 res[slan_dict[slan_nqt['slan_4_16']]]['sl_tong'] += slan_nqt['sl_4_16']
                 res[slan_dict[slan_nqt['slan_4_16']]]['st_tong'] += slan_nqt['st_4_16']
+                
+                self.tong_nqt[0][nqt['date_to']] += slan_nqt['sl_4_16']
+                self.tong_nqt[0]['sl_tong'] += slan_nqt['sl_4_16']
+                self.tong_nqt[0]['st_tong'] += slan_nqt['st_4_16']
         if not res:
             res.append({
                     'so':'4 số',
