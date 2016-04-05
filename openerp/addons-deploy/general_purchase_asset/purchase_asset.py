@@ -77,6 +77,10 @@ class purchase_order(osv.osv):
                 kiemtra_ngayhethan = False
             if po.partner_id.gsp and po.partner_id.date_gsp < po.date_order:
                 kiemtra_ngayhethan = False  
+            if po.partner_id.gp_hd_kb and po.partner_id.date_gp_hd_kb and po.partner_id.date_gp_hd_kb < po.date_order:
+                kiemtra_ngayhethan = False  
+            if po.partner_id.gcn_ddk_kdt and po.partner_id.date_gcn_ddk_kdt and po.partner_id.date_gcn_ddk_kdt < po.date_order:
+                kiemtra_ngayhethan = False  
             if not kiemtra_ngayhethan:
                 raise osv.except_osv(_('Cảnh báo!'),_('Kiểm tra lại ngày hết hạn của giấy phép!'))
             if not po.order_line:

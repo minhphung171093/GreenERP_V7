@@ -220,6 +220,14 @@
           						<field name='gsp' />
           						<field name='date_gsp' attrs="{'invisible': [('gsp','=',False)]}"/>
           					</group>
+          					<group colspan='2'>
+          						<field name='gp_hd_kb' />
+          						<field name='date_gp_hd_kb' attrs="{'invisible': [('gp_hd_kb','=',False)]}"/>
+          					</group>
+          					<group colspan='2'>
+          						<field name='gcn_ddk_kdt' />
+          						<field name='date_gcn_ddk_kdt' attrs="{'invisible': [('gcn_ddk_kdt','=',False)]}"/>
+          					</group>
           				</group>
 	                </page>
 	                <page string="Hợp Đồng" attrs="{'invisible': [('customer','=',False)]}">

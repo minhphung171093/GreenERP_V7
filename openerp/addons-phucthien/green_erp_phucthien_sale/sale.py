@@ -1044,6 +1044,11 @@ class res_partner(osv.osv):
         'gp_gan_hh': fields.function(_get_gp_gan_hh,type='boolean', string='Giấy phép gần hết hạn'),
         'so_ngay_no_ids':fields.one2many('so.ngay.no','partner_id','Số ngày nợ theo sản phẩm'),
         'danhsach_canhtranh_ids':fields.one2many('danhsach.canhtranh','partner_id','Danh sách sản phẩm cạnh tranh'),
+        
+        'gp_hd_kb': fields.boolean('GPHĐ khám, chữa bệnh'),
+        'date_gp_hd_kb': fields.date('Ngày hết hạn GDP'),
+        'gcn_ddk_kdt': fields.boolean('GCN đủ điều kiện KD thuốc'),
+        'date_gcn_ddk_kdt': fields.date('Ngày hết hạn GPP'),
     }
     _defaults = {
         'user_id': _get_user,       
