@@ -121,14 +121,23 @@ class Parser(report_sxw.rml_parse):
             self.cr.execute(sql)
             phaitra_2_18 = self.cr.dictfetchone()
             #'sql sum so tien, so luong da tra'
+#             sql = '''
+#                 select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung,
+#                     case when sum(sl_trung*slan_trung*tong_tien)!=0 then sum(sl_trung*slan_trung*tong_tien) else 0 end st_trung
+#                     
+#                     from tra_thuong_thucte_line
+#                 
+#                 where loai='2_so' and giai='dau' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong_thucte where ngay='%s')
+#             '''%(product[0],sl['slan_trung'], date)
+            
             sql = '''
-                select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung,
-                    case when sum(sl_trung*slan_trung*tong_tien)!=0 then sum(sl_trung*slan_trung*tong_tien) else 0 end st_trung
+                select case when sum(sl_2_d)!=0 then sum(sl_2_d) else 0 end sl_trung,
+                    case when sum(st_2_d)!=0 then sum(st_2_d) else 0 end st_trung
                     
-                    from tra_thuong_thucte_line
+                    from quyet_toan_ve_ngay_line
                 
-                where loai='2_so' and giai='dau' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong_thucte where ngay='%s')
-            '''%(product[0],sl['slan_trung'], date)
+                where quyettoan_id in (select id from quyet_toan_ve_ngay where ngay_mo_thuong='%s' and product_id=%s)
+            '''%(date, product[0])
             self.cr.execute(sql)
             datra_2_18 = self.cr.dictfetchone()
             res.append({
@@ -191,14 +200,22 @@ class Parser(report_sxw.rml_parse):
             self.cr.execute(sql)
             phaitra_2_18 = self.cr.dictfetchone()
             #'sql sum so tien, so luong da tra'
+#             sql = '''
+#                 select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung,
+#                     case when sum(sl_trung*slan_trung*tong_tien)!=0 then sum(sl_trung*slan_trung*tong_tien) else 0 end st_trung
+#                     
+#                     from tra_thuong_thucte_line
+#                 
+#                 where loai='2_so' and giai='cuoi' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong_thucte where ngay='%s')
+#             '''%(product[0],sl['slan_trung'], date)
             sql = '''
-                select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung,
-                    case when sum(sl_trung*slan_trung*tong_tien)!=0 then sum(sl_trung*slan_trung*tong_tien) else 0 end st_trung
+                select case when sum(sl_2_c)!=0 then sum(sl_2_c) else 0 end sl_trung,
+                    case when sum(st_2_c)!=0 then sum(st_2_c) else 0 end st_trung
                     
-                    from tra_thuong_thucte_line
+                    from quyet_toan_ve_ngay_line
                 
-                where loai='2_so' and giai='cuoi' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong_thucte where ngay='%s')
-            '''%(product[0],sl['slan_trung'], date)
+                where quyettoan_id in (select id from quyet_toan_ve_ngay where ngay_mo_thuong='%s' and product_id=%s)
+            '''%(date, product[0])
             self.cr.execute(sql)
             datra_2_18 = self.cr.dictfetchone()
             res.append({
@@ -262,13 +279,13 @@ class Parser(report_sxw.rml_parse):
             phaitra_2_18 = self.cr.dictfetchone()
             #'sql sum so tien, so luong da tra'
             sql = '''
-                select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung,
-                    case when sum(sl_trung*slan_trung*tong_tien)!=0 then sum(sl_trung*slan_trung*tong_tien) else 0 end st_trung
+                select case when sum(sl_2_dc)!=0 then sum(sl_2_dc) else 0 end sl_trung,
+                    case when sum(st_2_dc)!=0 then sum(st_2_dc) else 0 end st_trung
                     
-                    from tra_thuong_thucte_line
+                    from quyet_toan_ve_ngay_line
                 
-                where loai='2_so' and giai='dau_cuoi' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong_thucte where ngay='%s')
-            '''%(product[0],sl['slan_trung'], date)
+                where slan_2_dc=%s and quyettoan_id in (select id from quyet_toan_ve_ngay where ngay_mo_thuong='%s' and product_id=%s)
+            '''%(sl['slan_trung'], date, product[0])
             self.cr.execute(sql)
             datra_2_18 = self.cr.dictfetchone()
             res.append({
@@ -332,13 +349,13 @@ class Parser(report_sxw.rml_parse):
             phaitra_2_18 = self.cr.dictfetchone()
             #'sql sum so tien, so luong da tra'
             sql = '''
-                select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung,
-                    case when sum(sl_trung*slan_trung*tong_tien)!=0 then sum(sl_trung*slan_trung*tong_tien) else 0 end st_trung
+                select case when sum(sl_2_18)!=0 then sum(sl_2_18) else 0 end sl_trung,
+                    case when sum(st_2_18)!=0 then sum(st_2_18) else 0 end st_trung
                     
-                    from tra_thuong_thucte_line
+                    from quyet_toan_ve_ngay_line
                 
-                where loai='2_so' and giai='18_lo' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong_thucte where ngay='%s')
-            '''%(product[0],sl['slan_trung'], date)
+                where slan_2_18=%s and quyettoan_id in (select id from quyet_toan_ve_ngay where ngay_mo_thuong='%s' and product_id=%s)
+            '''%(sl['slan_trung'], date, product[0])
             self.cr.execute(sql)
             datra_2_18 = self.cr.dictfetchone()
             res.append({
@@ -402,13 +419,13 @@ class Parser(report_sxw.rml_parse):
             phaitra_2_18 = self.cr.dictfetchone()
             #'sql sum so tien, so luong da tra'
             sql = '''
-                select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung,
-                    case when sum(sl_trung*slan_trung*tong_tien)!=0 then sum(sl_trung*slan_trung*tong_tien) else 0 end st_trung
+                select case when sum(sl_3_d)!=0 then sum(sl_3_d) else 0 end sl_trung,
+                    case when sum(st_3_d)!=0 then sum(st_3_d) else 0 end st_trung
                     
-                    from tra_thuong_thucte_line
+                    from quyet_toan_ve_ngay_line
                 
-                where loai='3_so' and giai='dau' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong_thucte where ngay='%s')
-            '''%(product[0],sl['slan_trung'], date)
+                where quyettoan_id in (select id from quyet_toan_ve_ngay where ngay_mo_thuong='%s' and product_id=%s)
+            '''%(date, product[0])
             self.cr.execute(sql)
             datra_2_18 = self.cr.dictfetchone()
             res.append({
@@ -472,13 +489,13 @@ class Parser(report_sxw.rml_parse):
             phaitra_2_18 = self.cr.dictfetchone()
             #'sql sum so tien, so luong da tra'
             sql = '''
-                select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung,
-                    case when sum(sl_trung*slan_trung*tong_tien)!=0 then sum(sl_trung*slan_trung*tong_tien) else 0 end st_trung
+                select case when sum(sl_3_c)!=0 then sum(sl_3_c) else 0 end sl_trung,
+                    case when sum(st_3_c)!=0 then sum(st_3_c) else 0 end st_trung
                     
-                    from tra_thuong_thucte_line
+                    from quyet_toan_ve_ngay_line
                 
-                where loai='3_so' and giai='cuoi' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong_thucte where ngay='%s')
-            '''%(product[0],sl['slan_trung'], date)
+                where quyettoan_id in (select id from quyet_toan_ve_ngay where ngay_mo_thuong='%s' and product_id=%s)
+            '''%(date, product[0])
             self.cr.execute(sql)
             datra_2_18 = self.cr.dictfetchone()
             res.append({
@@ -542,13 +559,13 @@ class Parser(report_sxw.rml_parse):
             phaitra_2_18 = self.cr.dictfetchone()
             #'sql sum so tien, so luong da tra'
             sql = '''
-                select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung,
-                    case when sum(sl_trung*slan_trung*tong_tien)!=0 then sum(sl_trung*slan_trung*tong_tien) else 0 end st_trung
+                select case when sum(sl_3_dc)!=0 then sum(sl_3_dc) else 0 end sl_trung,
+                    case when sum(st_3_dc)!=0 then sum(st_3_dc) else 0 end st_trung
                     
-                    from tra_thuong_thucte_line
+                    from quyet_toan_ve_ngay_line
                 
-                where loai='3_so' and giai='dau_cuoi' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong_thucte where ngay='%s')
-            '''%(product[0],sl['slan_trung'], date)
+                where slan_3_dc=%s and quyettoan_id in (select id from quyet_toan_ve_ngay where ngay_mo_thuong='%s' and product_id=%s)
+            '''%(sl['slan_trung'], date, product[0])
             self.cr.execute(sql)
             datra_2_18 = self.cr.dictfetchone()
             res.append({
@@ -612,13 +629,13 @@ class Parser(report_sxw.rml_parse):
             phaitra_2_18 = self.cr.dictfetchone()
             #'sql sum so tien, so luong da tra'
             sql = '''
-                select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung,
-                    case when sum(sl_trung*slan_trung*tong_tien)!=0 then sum(sl_trung*slan_trung*tong_tien) else 0 end st_trung
+                select case when sum(sl_3_7)!=0 then sum(sl_3_7) else 0 end sl_trung,
+                    case when sum(st_3_7)!=0 then sum(st_3_7) else 0 end st_trung
                     
-                    from tra_thuong_thucte_line
+                    from quyet_toan_ve_ngay_line
                 
-                where loai='3_so' and giai='7_lo' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong_thucte where ngay='%s')
-            '''%(product[0],sl['slan_trung'], date)
+                where slan_3_7=%s and quyettoan_id in (select id from quyet_toan_ve_ngay where ngay_mo_thuong='%s' and product_id=%s)
+            '''%(sl['slan_trung'], date, product[0])
             self.cr.execute(sql)
             datra_2_18 = self.cr.dictfetchone()
             res.append({
@@ -682,13 +699,13 @@ class Parser(report_sxw.rml_parse):
             phaitra_2_18 = self.cr.dictfetchone()
             #'sql sum so tien, so luong da tra'
             sql = '''
-                select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung,
-                    case when sum(sl_trung*slan_trung*tong_tien)!=0 then sum(sl_trung*slan_trung*tong_tien) else 0 end st_trung
+                select case when sum(sl_3_17)!=0 then sum(sl_3_17) else 0 end sl_trung,
+                    case when sum(st_3_17)!=0 then sum(st_3_17) else 0 end st_trung
                     
-                    from tra_thuong_thucte_line
+                    from quyet_toan_ve_ngay_line
                 
-                where loai='3_so' and giai='17_lo' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong_thucte where ngay='%s')
-            '''%(product[0],sl['slan_trung'], date)
+                where slan_3_17=%s and quyettoan_id in (select id from quyet_toan_ve_ngay where ngay_mo_thuong='%s' and product_id=%s)
+            '''%(sl['slan_trung'], date, product[0])
             self.cr.execute(sql)
             datra_2_18 = self.cr.dictfetchone()
             res.append({
@@ -752,13 +769,13 @@ class Parser(report_sxw.rml_parse):
             phaitra_2_18 = self.cr.dictfetchone()
             #'sql sum so tien, so luong da tra'
             sql = '''
-                select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_trung,
-                    case when sum(sl_trung*slan_trung*tong_tien)!=0 then sum(sl_trung*slan_trung*tong_tien) else 0 end st_trung
+                select case when sum(sl_4_16)!=0 then sum(sl_4_16) else 0 end sl_trung,
+                    case when sum(st_4_16)!=0 then sum(st_4_16) else 0 end st_trung
                     
-                    from tra_thuong_thucte_line
+                    from quyet_toan_ve_ngay_line
                 
-                where loai='4_so' and giai='16_lo' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong_thucte where ngay='%s')
-            '''%(product[0],sl['slan_trung'], date)
+                where slan_4_16=%s and quyettoan_id in (select id from quyet_toan_ve_ngay where ngay_mo_thuong='%s' and product_id=%s)
+            '''%(sl['slan_trung'], date, product[0])
             self.cr.execute(sql)
             datra_2_18 = self.cr.dictfetchone()
             res.append({

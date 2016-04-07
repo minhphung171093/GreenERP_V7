@@ -36,7 +36,7 @@ class Parser(report_sxw.rml_parse):
             'get_2_dc': self.get_2_dc,
             'get_2_18': self.get_2_18,
             'get_2_d': self.get_2_d,
-            'get_2_c': self.get_2_d,
+            'get_2_c': self.get_2_c,
             'get_3_d': self.get_3_d,
             'get_3_c': self.get_3_c,
             'get_3_dc': self.get_3_dc,
@@ -177,7 +177,7 @@ class Parser(report_sxw.rml_parse):
                     'so':'',
                     'name': '',
                     'sl_tong': 0,
-                    'slan': slan['slan_2_d'],
+                    'slan': slan['slan_2_c'],
                     'st_tong': 0, 
                 })
             for nqt in self.get_so_nqt(): #('so ngay quyet toan, co ham roi'):

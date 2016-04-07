@@ -61,7 +61,7 @@ class Parser(report_sxw.rml_parse):
                     from tra_thuong_thucte_line
                     
                     where product_id=%s and trathuong_id in (select id from tra_thuong_thucte where state='done'
-                            and ngay_tra_thuong between '%s' and '%s')
+                            and ngay_tra_thuong between '%s' and '%s' and daily_id is not null)
             '''%(menhgia.id, date_from, date_to)
             self.cr.execute(sql)
             so_tien = self.cr.fetchone()[0]
