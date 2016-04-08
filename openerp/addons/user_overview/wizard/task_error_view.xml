@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+        <record id="view_task_error_report" model="ir.ui.view">
+            <field name="name">task.error.report</field>
+            <field name="model">task.error</field>
+            <field name="arch" type="xml">
+                <form string="Task Error" version="7.0">
+                    <group colspan="4" col="4" >
+	                    <field name="date_from"/>
+	                    <field name="date_to"/>
+                    </group>
+                    <footer>
+                        <button name="print_report" string="Print" type="object" class="oe_highlight" context="{'type':'appointments'}"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_task_error_report" model="ir.actions.act_window">
+            <field name="name">Task Error</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">task.error</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_task_error_report"/>
+            <field name="target">new</field>
+        </record>
+        
+        <menuitem id="menu_sitp_report" name="Report" parent="project.menu_project_management" sequence="70" />
+        <menuitem action="action_task_error_report" id="menu_action_task_error_report" parent="menu_sitp_report" sequence="10" />
+
+    </data>
+</openerp>
+

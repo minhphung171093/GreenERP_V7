@@ -135,9 +135,9 @@ class email_template(osv.osv):
                             help="Optional translation language (ISO code) to select when sending out an email. "
                                  "If not set, the english version will be used. "
                                  "This should usually be a placeholder expression "
-                                 "that provides the appropriate language, e.g. "
-                                 "${object.partner_id.lang}.",
-                            placeholder="${object.partner_id.lang}"),
+                                 "that provides the appropriate language code, e.g. "
+                                 "${object.partner_id.lang.code}.",
+                            placeholder="${object.partner_id.lang.code}"),
         'user_signature': fields.boolean('Add Signature',
                                          help="If checked, the user's signature will be appended to the text version "
                                               "of the message"),
@@ -305,25 +305,21 @@ class email_template(osv.osv):
                           is taken from template definition)
            :returns: a dict containing all relevant fields for creating a new
                      mail.mail entry, with one extra key ``attachments``, in the
-                     format [(report_name, data)] where data is base64 encoded.
+                     format expected by :py:meth:`mail_thread.message_post`.
         """
         if context is None:
             context = {}
         report_xml_pool = self.pool.get('ir.actions.report.xml')
         template = self.get_email_template(cr, uid, template_id, res_id, context)
-        ctx = context.copy()
-        if template.lang:
-            ctx['lang'] = template._context.get('lang')
         values = {}
         for field in ['subject', 'body_html', 'email_from',
                       'email_to', 'email_recipients', 'email_cc', 'reply_to']:
             values[field] = self.render_template(cr, uid, getattr(template, field),
-                                                 template.model, res_id, context=ctx) \
+                                                 template.model, res_id, context=context) \
                                                  or False
         if template.user_signature:
             signature = self.pool.get('res.users').browse(cr, uid, uid, context).signature
-            if signature:
-                values['body_html'] = tools.append_content_to_html(values['body_html'], signature)
+            values['body_html'] = tools.append_content_to_html(values['body_html'], signature)
 
         if values['body_html']:
             values['body'] = tools.html_sanitize(values['body_html'])
@@ -336,12 +332,14 @@ class email_template(osv.osv):
         attachments = []
         # Add report in attachments
         if template.report_template:
-            report_name = self.render_template(cr, uid, template.report_name, template.model, res_id, context=ctx)
+            report_name = self.render_template(cr, uid, template.report_name, template.model, res_id, context=context)
             report_service = 'report.' + report_xml_pool.browse(cr, uid, template.report_template.id, context).report_name
             # Ensure report is rendered using template's language
+            ctx = context.copy()
+            if template.lang:
+                ctx['lang'] = self.render_template(cr, uid, template.lang, template.model, res_id, context)
             service = netsvc.LocalService(report_service)
             (result, format) = service.create(cr, uid, [res_id], {'model': template.model}, ctx)
-            # TODO in trunk, change return format to binary to match message_post expected format
             result = base64.b64encode(result)
             if not report_name:
                 report_name = report_service

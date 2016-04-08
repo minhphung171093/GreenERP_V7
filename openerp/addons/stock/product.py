@@ -105,9 +105,7 @@ class product_product(osv.osv):
                     'compute_child': False
                 })
 
-                # qty_available depends of the location in the context
-                qty = self.read(cr, uid, [product.id], ['qty_available'], context=c)[0]['qty_available']
-
+                qty = product.qty_available
                 diff = product.standard_price - new_price
                 if not diff: raise osv.except_osv(_('Error!'), _("No difference between standard price and new price!"))
                 if qty:
@@ -283,8 +281,6 @@ class product_product(osv.osv):
         if prodlot_id:
             prodlot_clause = ' and prodlot_id = %s '
             where += [prodlot_id]
-        elif 'prodlot_id' in context and not prodlot_id:
-            prodlot_clause = ' and prodlot_id is null '
 
         # TODO: perhaps merge in one query.
         if 'in' in what:

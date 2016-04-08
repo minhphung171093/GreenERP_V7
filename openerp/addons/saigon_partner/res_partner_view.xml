@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+ <data>
+        
+        <record id="res_partner_view_form_inherit" model="ir.ui.view">
+            <field name="name">res.partner.view.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//page[@string='History']" position="after">
+                        <page string="Sales History">
+                        	<h2>
+                        		<label string="Sales History"/>
+                        	</h2>
+                        	<field name="sale_history" nolabel="1"/>
+                        </page>
+                    </xpath>
+                    
+                </data>
+            </field>
+        </record>
+        
+   </data>  
+</openerp>

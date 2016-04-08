@@ -501,17 +501,7 @@ class browse_record(object):
     def __getattr__(self, name):
         try:
             return self[name]
-        except KeyError as e:
-            if name in self._all_columns:
-                raise ValueError(
-                    'Cannot fetch field "%(field)s" for "%(model)s" record '
-                    'with ID %(id)s, that record does not exist or has been '
-                    'deleted' % {
-                        'field': name,
-                        'model': self._model._name,
-                        'id': self._id,
-                    }
-                )
+        except KeyError, e:
             raise AttributeError(e)
 
     def __contains__(self, name):
@@ -602,12 +592,7 @@ def get_pg_type(f, type_override=None):
     if field_type in FIELDS_TO_PGTYPES:
         pg_type =  (FIELDS_TO_PGTYPES[field_type], FIELDS_TO_PGTYPES[field_type])
     elif issubclass(field_type, fields.float):
-        # Explicit support for "falsy" digits (0, False) to indicate a
-        # NUMERIC field with no fixed precision. The values will be saved
-        # in the database with all significant digits.
-        # FLOAT8 type is still the default when there is no precision because
-        # it is faster for most operations (sums, etc.)
-        if f.digits is not None:
+        if f.digits:
             pg_type = ('numeric', 'NUMERIC')
         else:
             pg_type = ('float8', 'DOUBLE PRECISION')
@@ -1215,6 +1200,17 @@ class BaseModel(object):
                                 for fpos2 in range(len(fields)):
                                     if lines2 and lines2[0][fpos2]:
                                         data[fpos2] = lines2[0][fpos2]
+                                if not data[fpos]:
+                                    dt = ''
+                                    for rr in r:
+                                        name_relation = self.pool.get(rr._table_name)._rec_name
+                                        if isinstance(rr[name_relation], browse_record):
+                                            rr = rr[name_relation]
+                                        rr_name = self.pool.get(rr._table_name).name_get(cr, uid, [rr.id], context=context)
+                                        rr_name = rr_name and rr_name[0] and rr_name[0][1] or ''
+                                        dt += tools.ustr(rr_name or '') + ','
+                                    data[fpos] = dt[:-1]
+                                    break
                                 lines += lines2[1:]
                                 first = False
                             else:
@@ -2887,27 +2883,30 @@ class BaseModel(object):
                     cr.execute(update_query, (ss[1](val), key))
 
     def _check_selection_field_value(self, cr, uid, field, value, context=None):
-        """Raise except_orm if value is not among the valid values for the selection field"""
-        if self._columns[field]._type == 'reference':
-            val_model, val_id_str = value.split(',', 1)
-            val_id = False
-            try:
-                val_id = long(val_id_str)
-            except ValueError:
-                pass
-            if not val_id:
-                raise except_orm(_('ValidateError'),
-                                 _('Invalid value for reference field "%s.%s" (last part must be a non-zero integer): "%s"') % (self._table, field, value))
-            val = val_model
-        else:
-            val = value
-        if isinstance(self._columns[field].selection, (tuple, list)):
-            if val in dict(self._columns[field].selection):
+        if field!='value_reference' and value!=5:
+            """Raise except_orm if value is not among the valid values for the selection field"""
+            _logger.info('PHUNG field: %s. value: %s'%(field,value))
+            #raise osv.except_osv(_('Warning!'), _('field: %s. value: %s'%(field,value)))
+            if self._columns[field]._type == 'reference':
+                val_model, val_id_str = value.split(',', 1)
+                val_id = False
+                try:
+                    val_id = long(val_id_str)
+                except ValueError:
+                    pass
+                if not val_id:
+                    raise except_orm(_('ValidateError'),
+                                     _('Invalid value for reference field "%s.%s" (last part must be a non-zero integer): "%s"') % (self._table, field, value))
+                val = val_model
+            else:
+                val = value
+            if isinstance(self._columns[field].selection, (tuple, list)):
+                if val in dict(self._columns[field].selection):
+                    return
+            elif val in dict(self._columns[field].selection(self, cr, uid, context=context)):
                 return
-        elif val in dict(self._columns[field].selection(self, cr, uid, context=context)):
-            return
-        raise except_orm(_('ValidateError'),
-                         _('The value "%s" for the field "%s.%s" is not in the selection') % (value, self._table, field))
+            raise except_orm(_('ValidateError'),
+                             _('The value "%s" for the field "%s.%s" is not in the selection') % (value, self._table, field))
 
     def _check_removed_columns(self, cr, log=False):
         # iterate on the database columns to drop the NOT NULL constraints
@@ -4552,6 +4551,7 @@ class BaseModel(object):
             if field in self._columns \
                     and hasattr(self._columns[field], 'selection') \
                     and vals[field]:
+                _logger.info('PHUNG %s, %s'%(field,vals[field]))
                 self._check_selection_field_value(cr, user, field, vals[field], context=context)
         if self._log_access:
             upd0 += ',create_uid,create_date,write_uid,write_date'
@@ -5458,10 +5458,10 @@ class ImportWarning(Warning):
 def convert_pgerror_23502(model, fields, info, e):
     m = re.match(r'^null value in column "(?P<field>\w+)" violates '
                  r'not-null constraint\n',
-                 tools.ustr(e))
+                 str(e))
     field_name = m.group('field')
     if not m or field_name not in fields:
-        return {'message': tools.ustr(e)}
+        return {'message': unicode(e)}
     message = _(u"Missing required value for the field '%s'.") % field_name
     field = fields.get(field_name)
     if field:
@@ -5473,10 +5473,10 @@ def convert_pgerror_23502(model, fields, info, e):
     }
 def convert_pgerror_23505(model, fields, info, e):
     m = re.match(r'^duplicate key (?P<field>\w+) violates unique constraint',
-                 tools.ustr(e))
+                 str(e))
     field_name = m.group('field')
     if not m or field_name not in fields:
-        return {'message': tools.ustr(e)}
+        return {'message': unicode(e)}
     message = _(u"The value for the field '%s' already exists.") % field_name
     field = fields.get(field_name)
     if field:
@@ -5489,7 +5489,7 @@ def convert_pgerror_23505(model, fields, info, e):
 
 PGERROR_TO_OE = collections.defaultdict(
     # shape of mapped converters
-    lambda: (lambda model, fvg, info, pgerror: {'message': tools.ustr(pgerror)}), {
+    lambda: (lambda model, fvg, info, pgerror: {'message': unicode(pgerror)}), {
     # not_null_violation
     '23502': convert_pgerror_23502,
     # unique constraint error

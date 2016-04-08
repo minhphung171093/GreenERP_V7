@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+ <data>
+	
+   		<record id="sale_message_view_form" model="ir.ui.view">
+            <field name="name">sale.message.form</field>
+            <field name="model">sale.message</field>
+            <field name="arch" type="xml">
+                <form string="Sale Message" version="7.0">
+                	<h2>
+            			<label string="Message"/>
+            		</h2>
+                	<field name="name"/>
+                    <footer>
+                        <button name="save" string="Confirm" type="object" class="oe_highlight"/>
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+        			</footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_sale_message" model="ir.actions.act_window">
+            <field name="name">Sale Message</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.message</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="sale_message_view_form"/>
+            <field name="view_type">form</field>
+            <field name="target">new</field>
+        </record>
+
+   </data>  
+</openerp>

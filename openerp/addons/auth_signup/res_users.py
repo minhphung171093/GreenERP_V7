@@ -273,6 +273,7 @@ class res_users(osv.Model):
 
     def create(self, cr, uid, values, context=None):
         # overridden to automatically invite user to sign up
+        print values
         user_id = super(res_users, self).create(cr, uid, values, context=context)
         user = self.browse(cr, uid, user_id, context=context)
         if context and context.get('reset_password') and user.email:

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+	<t t-extend="AttendanceSlider">
+		<t t-jquery=".oe_attendance_status" t-operation="replace">
+			<div>
+			</div>
+		</t>
+	</t>
+
+</templates>

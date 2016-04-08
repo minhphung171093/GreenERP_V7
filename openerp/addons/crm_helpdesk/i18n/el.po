@@ -1,22 +1,21 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * crm_helpdesk
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2012
+# Greek translation for openobject-addons
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-14 00:10+0000\n"
-"PO-Revision-Date: 2015-05-29 14:31+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Greek (http://www.transifex.com/projects/p/odoo-7/language/el/)\n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2013-06-07 19:36+0000\n"
+"PO-Revision-Date: 2012-12-21 23:00+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Greek <el@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: el\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-11-21 06:06+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #. module: crm_helpdesk
 #: field:crm.helpdesk.report,delay_close:0
@@ -29,14 +28,15 @@ msgid "# of Cases"
 msgstr "# από Υποθέσεις"
 
 #. module: crm_helpdesk
-#: view:crm.helpdesk:0 view:crm.helpdesk.report:0
+#: view:crm.helpdesk:0
+#: view:crm.helpdesk.report:0
 msgid "Group By..."
 msgstr "Ομαδοποίηση ανά..."
 
 #. module: crm_helpdesk
 #: help:crm.helpdesk,email_from:0
 msgid "Destination email for email gateway"
-msgstr "Προορισμός email για email gateway"
+msgstr ""
 
 #. module: crm_helpdesk
 #: selection:crm.helpdesk.report,month:0
@@ -46,10 +46,11 @@ msgstr "Μάρτιος"
 #. module: crm_helpdesk
 #: field:crm.helpdesk,message_unread:0
 msgid "Unread Messages"
-msgstr "Αδιάβαστα Μυνήματα"
+msgstr ""
 
 #. module: crm_helpdesk
-#: field:crm.helpdesk,company_id:0 view:crm.helpdesk.report:0
+#: field:crm.helpdesk,company_id:0
+#: view:crm.helpdesk.report:0
 #: field:crm.helpdesk.report,company_id:0
 msgid "Company"
 msgstr "Εταιρία"
@@ -57,20 +58,22 @@ msgstr "Εταιρία"
 #. module: crm_helpdesk
 #: field:crm.helpdesk,email_cc:0
 msgid "Watchers Emails"
-msgstr "Emails Αναγνωστών"
+msgstr ""
 
 #. module: crm_helpdesk
 #: view:crm.helpdesk.report:0
 msgid "Salesperson"
-msgstr "Πωλητής"
+msgstr ""
 
 #. module: crm_helpdesk
-#: selection:crm.helpdesk,priority:0 selection:crm.helpdesk.report,priority:0
+#: selection:crm.helpdesk,priority:0
+#: selection:crm.helpdesk.report,priority:0
 msgid "Highest"
 msgstr "Υψηλότερο"
 
 #. module: crm_helpdesk
-#: view:crm.helpdesk.report:0 field:crm.helpdesk.report,day:0
+#: view:crm.helpdesk.report:0
+#: field:crm.helpdesk.report,day:0
 msgid "Day"
 msgstr "Ημέρα"
 
@@ -95,14 +98,15 @@ msgid "My company"
 msgstr ""
 
 #. module: crm_helpdesk
-#: selection:crm.helpdesk,state:0 selection:crm.helpdesk.report,state:0
+#: selection:crm.helpdesk,state:0
+#: selection:crm.helpdesk.report,state:0
 msgid "Cancelled"
 msgstr "Ακυρώθηκε"
 
 #. module: crm_helpdesk
 #: help:crm.helpdesk,message_unread:0
 msgid "If checked new messages require your attention."
-msgstr "Εάν επιλεγεί τα νέα μηνύματα χρειάζονται την προσοχή σας"
+msgstr ""
 
 #. module: crm_helpdesk
 #: model:ir.actions.act_window,name:crm_helpdesk.action_report_crm_helpdesk
@@ -111,7 +115,8 @@ msgid "Helpdesk Analysis"
 msgstr "Ανάλυση Γραφείου Τεχνικής Υποστήριξης"
 
 #. module: crm_helpdesk
-#: view:crm.helpdesk.report:0 field:crm.helpdesk.report,date_closed:0
+#: view:crm.helpdesk.report:0
+#: field:crm.helpdesk.report,date_closed:0
 msgid "Close Date"
 msgstr "Ημερομηνία Ολοκλήρωσης"
 
@@ -130,12 +135,12 @@ msgstr "Επόμενη Ενέργεια"
 msgid ""
 "Holds the Chatter summary (number of messages, ...). This summary is "
 "directly in html format in order to be inserted in kanban views."
-msgstr "Κρατά την συνολική σύνοψη (αριθμός των μυνημάτων, ...). Αυτή η σύνοψη είναι κατ' ευθείαν σε html format για να μπορεί να ενσωματωθεί σε εμφανίσεις kanban."
+msgstr ""
 
 #. module: crm_helpdesk
 #: view:crm.helpdesk:0
 msgid "Helpdesk Supports"
-msgstr "Γραφείο Βοήθειας Υποστήριξης"
+msgstr ""
 
 #. module: crm_helpdesk
 #: view:crm.helpdesk:0
@@ -143,8 +148,10 @@ msgid "Extra Info"
 msgstr "Επιπλέον πληροφορίες"
 
 #. module: crm_helpdesk
-#: view:crm.helpdesk:0 field:crm.helpdesk,partner_id:0
-#: view:crm.helpdesk.report:0 field:crm.helpdesk.report,partner_id:0
+#: view:crm.helpdesk:0
+#: field:crm.helpdesk,partner_id:0
+#: view:crm.helpdesk.report:0
+#: field:crm.helpdesk.report,partner_id:0
 msgid "Partner"
 msgstr "Συνεργάτης"
 
@@ -159,21 +166,24 @@ msgid "Section"
 msgstr "Τομέας"
 
 #. module: crm_helpdesk
-#: view:crm.helpdesk:0 field:crm.helpdesk,priority:0
-#: view:crm.helpdesk.report:0 field:crm.helpdesk.report,priority:0
+#: view:crm.helpdesk:0
+#: field:crm.helpdesk,priority:0
+#: view:crm.helpdesk.report:0
+#: field:crm.helpdesk.report,priority:0
 msgid "Priority"
 msgstr "Προτεραιότητα"
 
 #. module: crm_helpdesk
 #: field:crm.helpdesk,message_follower_ids:0
 msgid "Followers"
-msgstr "Ακόλουθοι"
+msgstr ""
 
 #. module: crm_helpdesk
-#: view:crm.helpdesk:0 selection:crm.helpdesk,state:0
+#: view:crm.helpdesk:0
+#: selection:crm.helpdesk,state:0
 #: view:crm.helpdesk.report:0
 msgid "New"
-msgstr "Νέος"
+msgstr ""
 
 #. module: crm_helpdesk
 #: model:ir.model,name:crm_helpdesk.model_crm_helpdesk_report
@@ -186,13 +196,15 @@ msgid "Email"
 msgstr "Email"
 
 #. module: crm_helpdesk
-#: field:crm.helpdesk,channel_id:0 view:crm.helpdesk.report:0
+#: field:crm.helpdesk,channel_id:0
+#: view:crm.helpdesk.report:0
 #: field:crm.helpdesk.report,channel_id:0
 msgid "Channel"
 msgstr "Κανάλι"
 
 #. module: crm_helpdesk
-#: selection:crm.helpdesk,priority:0 selection:crm.helpdesk.report,priority:0
+#: selection:crm.helpdesk,priority:0
+#: selection:crm.helpdesk.report,priority:0
 msgid "Lowest"
 msgstr "Χαμηλότερο"
 
@@ -204,10 +216,11 @@ msgstr "# Ταχυδρομείο"
 #. module: crm_helpdesk
 #: view:crm.helpdesk.report:0
 msgid "My Sales Team(s)"
-msgstr "Οι δικές μου Ομάδες Πώλησεων"
+msgstr ""
 
 #. module: crm_helpdesk
-#: field:crm.helpdesk,create_date:0 field:crm.helpdesk.report,create_date:0
+#: field:crm.helpdesk,create_date:0
+#: field:crm.helpdesk.report,create_date:0
 msgid "Creation Date"
 msgstr "Ημερομηνία Δημιουργίας"
 
@@ -217,7 +230,8 @@ msgid "Reset to Draft"
 msgstr "Επαναφορά σε Πρόχειρο"
 
 #. module: crm_helpdesk
-#: view:crm.helpdesk:0 field:crm.helpdesk,date_deadline:0
+#: view:crm.helpdesk:0
+#: field:crm.helpdesk,date_deadline:0
 #: field:crm.helpdesk.report,date_deadline:0
 msgid "Deadline"
 msgstr "Προσθεσμία"
@@ -240,7 +254,7 @@ msgstr "Κατηγορίες"
 #. module: crm_helpdesk
 #: view:crm.helpdesk:0
 msgid "New Helpdesk Request"
-msgstr "Νέα Αίτηση Γραφείου Βοήθειας"
+msgstr ""
 
 #. module: crm_helpdesk
 #: view:crm.helpdesk:0
@@ -250,13 +264,13 @@ msgstr "Ημερομηνίες"
 #. module: crm_helpdesk
 #: view:crm.helpdesk.report:0
 msgid "Month of helpdesk requests"
-msgstr "Μήνας των αιτήσεων βοήθειας"
+msgstr ""
 
 #. module: crm_helpdesk
-#: code:addons/crm_helpdesk/crm_helpdesk.py:105
+#: code:addons/crm_helpdesk/crm_helpdesk.py:104
 #, python-format
 msgid "No Subject"
-msgstr "Χωρίς Θέμα"
+msgstr ""
 
 #. module: crm_helpdesk
 #: view:crm.helpdesk:0
@@ -268,7 +282,7 @@ msgstr ""
 msgid ""
 "Helpdesk requests that are assigned to me or to one of the sale teams I "
 "manage"
-msgstr "Αιτήσεις Βοήθειας οι οποίες είναι ανατεθιμένες σε εμένα ή σε μία από τις ομάδες πώλησης τις οποίες εγώ διευθύνω"
+msgstr ""
 
 #. module: crm_helpdesk
 #: view:crm.helpdesk.report:0
@@ -278,7 +292,7 @@ msgstr "# Γραφείο Υποστήριξης"
 #. module: crm_helpdesk
 #: view:crm.helpdesk:0
 msgid "All pending Helpdesk Request"
-msgstr "Όλες οι Εκρεμμείς Αιτήσεις Βοήθειας"
+msgstr ""
 
 #. module: crm_helpdesk
 #: view:crm.helpdesk:0
@@ -301,7 +315,8 @@ msgid "December"
 msgstr "Δεκέμβριος"
 
 #. module: crm_helpdesk
-#: view:crm.helpdesk.report:0 field:crm.helpdesk.report,month:0
+#: view:crm.helpdesk.report:0
+#: field:crm.helpdesk.report,month:0
 msgid "Month"
 msgstr "Μήνας"
 
@@ -321,14 +336,15 @@ msgid "Reference 2"
 msgstr "Παραπομπή 2"
 
 #. module: crm_helpdesk
-#: field:crm.helpdesk,categ_id:0 field:crm.helpdesk.report,categ_id:0
+#: field:crm.helpdesk,categ_id:0
+#: field:crm.helpdesk.report,categ_id:0
 msgid "Category"
 msgstr "Κατηγορία"
 
 #. module: crm_helpdesk
 #: view:crm.helpdesk:0
 msgid "Responsible User"
-msgstr "Υπεύθυνος Χρήστης"
+msgstr ""
 
 #. module: crm_helpdesk
 #: view:crm.helpdesk:0
@@ -336,14 +352,15 @@ msgid "Helpdesk Support"
 msgstr "Γραφείο Υποστήριξη ς"
 
 #. module: crm_helpdesk
-#: field:crm.helpdesk,planned_cost:0 field:crm.helpdesk.report,planned_cost:0
+#: field:crm.helpdesk,planned_cost:0
+#: field:crm.helpdesk.report,planned_cost:0
 msgid "Planned Costs"
 msgstr "Υπολογιζόμενα Κόστη"
 
 #. module: crm_helpdesk
 #: help:crm.helpdesk,channel_id:0
 msgid "Communication channel."
-msgstr "Κανάλι Επικοινωνίας"
+msgstr ""
 
 #. module: crm_helpdesk
 #: help:crm.helpdesk,email_cc:0
@@ -351,7 +368,7 @@ msgid ""
 "These email addresses will be added to the CC field of all inbound and "
 "outbound emails for this record before being sent. Separate multiple email "
 "addresses with a comma"
-msgstr "Αυτές οι email διευθύνσεις θα προστεθούν στο CC πεδίο όλων των εισερχόμενων και εξερχόμενων emails για αυτή την εγγραφή πριν αποσταλεί. Διαφορετικές πολλαπλάσιες email διευθύνσεις με ένα ερωτηματικό"
+msgstr ""
 
 #. module: crm_helpdesk
 #: view:crm.helpdesk:0
@@ -364,27 +381,33 @@ msgid "Draft"
 msgstr "Πρόχειρο"
 
 #. module: crm_helpdesk
-#: selection:crm.helpdesk,priority:0 selection:crm.helpdesk.report,priority:0
+#: selection:crm.helpdesk,priority:0
+#: selection:crm.helpdesk.report,priority:0
 msgid "Low"
 msgstr "Χαμηλό"
 
 #. module: crm_helpdesk
-#: field:crm.helpdesk,date_closed:0 selection:crm.helpdesk,state:0
-#: view:crm.helpdesk.report:0 selection:crm.helpdesk.report,state:0
+#: field:crm.helpdesk,date_closed:0
+#: selection:crm.helpdesk,state:0
+#: view:crm.helpdesk.report:0
+#: selection:crm.helpdesk.report,state:0
 msgid "Closed"
 msgstr "Έκλεισε"
 
 #. module: crm_helpdesk
-#: view:crm.helpdesk:0 selection:crm.helpdesk,state:0
+#: view:crm.helpdesk:0
+#: selection:crm.helpdesk,state:0
 #: selection:crm.helpdesk.report,state:0
 msgid "Pending"
 msgstr "Εκκρεμεί"
 
 #. module: crm_helpdesk
-#: view:crm.helpdesk:0 field:crm.helpdesk,state:0 view:crm.helpdesk.report:0
+#: view:crm.helpdesk:0
+#: field:crm.helpdesk,state:0
+#: view:crm.helpdesk.report:0
 #: field:crm.helpdesk.report,state:0
 msgid "Status"
-msgstr "Στάδιο"
+msgstr ""
 
 #. module: crm_helpdesk
 #: selection:crm.helpdesk.report,month:0
@@ -392,7 +415,8 @@ msgid "August"
 msgstr "Αύγουστος"
 
 #. module: crm_helpdesk
-#: selection:crm.helpdesk,priority:0 selection:crm.helpdesk.report,priority:0
+#: selection:crm.helpdesk,priority:0
+#: selection:crm.helpdesk.report,priority:0
 msgid "Normal"
 msgstr "Κανονικό"
 
@@ -420,8 +444,10 @@ msgid ""
 "                Helpdesk and Support allow you to track your interventions.\n"
 "              </p><p>\n"
 "                Use the OpenERP Issues system to manage your support\n"
-"                activities. Issues can be connected to the email gateway: new\n"
-"                emails may create issues, each of them automatically gets the\n"
+"                activities. Issues can be connected to the email gateway: "
+"new\n"
+"                emails may create issues, each of them automatically gets "
+"the\n"
 "                history of the conversation with the customer.\n"
 "              </p>\n"
 "            "
@@ -435,7 +461,7 @@ msgstr "Προγραμματισμένα Έσοδα"
 #. module: crm_helpdesk
 #: field:crm.helpdesk,message_is_follower:0
 msgid "Is a Follower"
-msgstr "Είναι Ακόλουθος"
+msgstr ""
 
 #. module: crm_helpdesk
 #: field:crm.helpdesk.report,user_id:0
@@ -460,14 +486,14 @@ msgstr "Εκτεταμένα Φίλτρα..."
 #. module: crm_helpdesk
 #: model:ir.actions.act_window,name:crm_helpdesk.crm_case_helpdesk_act111
 msgid "Helpdesk Requests"
-msgstr "Αιτήσεις Βοήθειας"
+msgstr ""
 
 #. module: crm_helpdesk
 #: help:crm.helpdesk,section_id:0
 msgid ""
 "Responsible sales team. Define Responsible user and Email account for mail "
 "gateway."
-msgstr "Υπεύθυνη ομάδα πώλησης. Καθορίστε Υπεύθυνο χρήστη και Email λογαριασμό για mail gateway."
+msgstr ""
 
 #. module: crm_helpdesk
 #: selection:crm.helpdesk.report,month:0
@@ -482,10 +508,11 @@ msgstr "Ιανουάριος"
 #. module: crm_helpdesk
 #: field:crm.helpdesk,message_summary:0
 msgid "Summary"
-msgstr "Σύνοψη"
+msgstr ""
 
 #. module: crm_helpdesk
-#: view:crm.helpdesk:0 field:crm.helpdesk,date:0
+#: view:crm.helpdesk:0
+#: field:crm.helpdesk,date:0
 msgid "Date"
 msgstr "Ημερομηνία"
 
@@ -497,7 +524,7 @@ msgstr "Διαφ."
 #. module: crm_helpdesk
 #: view:crm.helpdesk.report:0
 msgid "My Company"
-msgstr "Η Εταιρία μου"
+msgstr ""
 
 #. module: crm_helpdesk
 #: view:crm.helpdesk:0
@@ -515,7 +542,8 @@ msgid "Communication"
 msgstr "Επικοινωνία"
 
 #. module: crm_helpdesk
-#: view:crm.helpdesk:0 view:crm.helpdesk.report:0
+#: view:crm.helpdesk:0
+#: view:crm.helpdesk.report:0
 #: selection:crm.helpdesk.report,state:0
 msgid "Open"
 msgstr "Άνοιγμα"
@@ -523,12 +551,12 @@ msgstr "Άνοιγμα"
 #. module: crm_helpdesk
 #: view:crm.helpdesk:0
 msgid "Helpdesk Support Tree"
-msgstr "Ιεραρχική δομή Γραφείου Βοήθειας Υποστήριξης"
+msgstr ""
 
 #. module: crm_helpdesk
 #: selection:crm.helpdesk,state:0
 msgid "In Progress"
-msgstr "Σε Εξέλιξη"
+msgstr ""
 
 #. module: crm_helpdesk
 #: view:crm.helpdesk:0
@@ -543,7 +571,8 @@ msgid "Helpdesk"
 msgstr "Γραφείο Υποστήριξης"
 
 #. module: crm_helpdesk
-#: view:crm.helpdesk:0 field:crm.helpdesk,user_id:0
+#: view:crm.helpdesk:0
+#: field:crm.helpdesk,user_id:0
 msgid "Responsible"
 msgstr "Υπεύθυνος"
 
@@ -583,7 +612,7 @@ msgid ""
 "Have a general overview of all support requests by sorting them with "
 "specific criteria such as the processing time, number of requests answered, "
 "emails sent and costs."
-msgstr "Έχετε μια γενική άποψη όλων των αιτήσεων βοήθειας ταξινομόντας αυτές με συγκεκριμένα κριτήρια όπως τον χρόνο επεξεργασίας,την ποσότητα των αιτήσεων που απαντήθηκαν τα emails που στάλθηκαν και τα κόστη."
+msgstr ""
 
 #. module: crm_helpdesk
 #: selection:crm.helpdesk.report,month:0
@@ -596,7 +625,8 @@ msgid "Name"
 msgstr "Όνομα"
 
 #. module: crm_helpdesk
-#: view:crm.helpdesk.report:0 field:crm.helpdesk.report,name:0
+#: view:crm.helpdesk.report:0
+#: field:crm.helpdesk.report,name:0
 msgid "Year"
 msgstr "Έτος"
 
@@ -618,23 +648,26 @@ msgstr "Οι Υποθέσεις μου"
 #. module: crm_helpdesk
 #: help:crm.helpdesk,state:0
 msgid ""
-"The status is set to 'Draft', when a case is created.                                  \n"
-"If the case is in progress the status is set to 'Open'.                                  \n"
-"When the case is over, the status is set to 'Done'.                                  \n"
+"The status is set to 'Draft', when a case is created.                        "
+"          \n"
+"If the case is in progress the status is set to 'Open'.                      "
+"            \n"
+"When the case is over, the status is set to 'Done'.                          "
+"        \n"
 "If the case needs to be reviewed then the status is set to 'Pending'."
-msgstr "Το καθεστώ είναι ρυθμισμένο στο 'Προσχέδιο', όταν η υπόθεση δημιουργείται. \nΕάν η υπόθεση είναι σε εξέλιξη το καθεστώς ρυθμίζεται σε 'Ανοικτή'. \nΌταν η υπόθεση έχει τελειώσει, το καθεστώς ρυθμίζεται σε 'Έκλεισε'. \nΕάν η υπόθεση χρειάζεται να αναθεωρηθεί τότε το καθεστώς είναι ρυθμισμένο σε 'Εκκρεμής'."
+msgstr ""
 
 #. module: crm_helpdesk
 #: help:crm.helpdesk,message_ids:0
 msgid "Messages and communication history"
-msgstr "Μηνύματα και ιστορικό επικοινωνίας"
+msgstr ""
 
 #. module: crm_helpdesk
 #: model:ir.actions.act_window,help:crm_helpdesk.crm_helpdesk_categ_action
 msgid ""
 "Create and manage helpdesk categories to better manage and classify your "
 "support requests."
-msgstr "Δημιουργία και διαχείριση κατηγοριών βοήθειας για καλύτερη διαχείριση και ταξινόμηση των αιτήσεων υποστήριξης."
+msgstr ""
 
 #. module: crm_helpdesk
 #: view:crm.helpdesk:0
@@ -644,15 +677,17 @@ msgstr ""
 #. module: crm_helpdesk
 #: view:crm.helpdesk:0
 msgid "Open Helpdesk Request"
-msgstr "Ανοιχτές Αιτήσεις Βοήθειας"
+msgstr ""
 
 #. module: crm_helpdesk
-#: selection:crm.helpdesk,priority:0 selection:crm.helpdesk.report,priority:0
+#: selection:crm.helpdesk,priority:0
+#: selection:crm.helpdesk.report,priority:0
 msgid "High"
 msgstr "Υψηλο"
 
 #. module: crm_helpdesk
-#: view:crm.helpdesk:0 field:crm.helpdesk,section_id:0
+#: view:crm.helpdesk:0
+#: field:crm.helpdesk,section_id:0
 #: view:crm.helpdesk.report:0
 msgid "Sales Team"
 msgstr "Ομάδα Πώλησης"
@@ -665,9 +700,15 @@ msgstr "Τελευταία Ενέργια"
 #. module: crm_helpdesk
 #: view:crm.helpdesk:0
 msgid "Assigned to Me or My Sales Team(s)"
-msgstr "Ανατιθεμένη σε Εμένα ή στις Ομάδες μου Πώλησης"
+msgstr ""
 
 #. module: crm_helpdesk
 #: field:crm.helpdesk,duration:0
 msgid "Duration"
 msgstr "Διάρκεια"
+
+#~ msgid "Cancel"
+#~ msgstr "Ακύρωση"
+
+#~ msgid "Close"
+#~ msgstr "Κλείσιμο"

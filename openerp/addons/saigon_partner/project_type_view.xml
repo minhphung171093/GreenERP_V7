@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+ <data>
+        
+        <record id="view_project_type_tree" model="ir.ui.view">
+            <field name="name">project.type.tree</field>
+            <field name="model">project.type</field>
+            <field eval="2" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Project Type">
+                    <field name="name" />
+                    <field name="project_manager_id" />
+                </tree>
+            </field>
+        </record>
+        
+        <record id="project_type_view_form" model="ir.ui.view">
+            <field name="name">project.type.form</field>
+            <field name="model">project.type</field>
+            <field name="arch" type="xml">
+                <form string="Project Type" version="7.0">
+                	<sheet>
+                		<group>
+		                    <field name="name" />
+		                    <field name="project_manager_id" />
+	                    </group>
+	                    <notebook>
+	                        <page string="Team" name="team">
+	                            <field colspan="4" name="members" widget="many2many_kanban">
+	                                <kanban quick_create="false" create="true" delete="true">
+	                                    <field name="name"/>
+	                                    <templates>
+	                                        <t t-name="kanban-box">
+	                                            <div style="position: relative">
+	                                                <a t-if="! read_only_mode" type="delete" style="position: absolute; right: 0; padding: 4px; diplay: inline-block">X</a>
+	                                                <div class="oe_module_vignette">
+	                                                    <div class="oe_module_desc">
+	                                                        <field name="name"/>
+	                                                    </div>
+	                                                </div>
+	                                            </div>
+	                                        </t>
+	                                    </templates>
+	                                </kanban>
+	                            </field>
+	                        </page>
+	                        <page string="Other Info">
+                            	<field name="description" placeholder="Add a Description..."/>
+	                        </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <record id="project_type_action_form" model="ir.actions.act_window">
+            <field name="name">Project Type</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">project.type</field>
+            <field name="view_type">form</field>
+            <field name="domain">[]</field>
+            <field name="view_id" ref="view_project_type_tree"/>
+        </record>
+        
+        <menuitem action="project_type_action_form"
+            id="menu_project_type_action_form"
+            parent="base.menu_definitions" sequence="30"
+            groups="project.group_project_manager"/>
+        
+   </data>  
+</openerp>

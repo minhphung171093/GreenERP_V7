@@ -222,7 +222,6 @@
 
                     <field name="pay_now" invisible="1"/>
                     <field name="type" invisible="True"/>
-                    <field name="payment_rate_currency_id" invisible="1"/>
                     <group>
                         <group>
                             <field name="partner_id" domain="[('supplier','=',True)]" string="Supplier" on_change="onchange_partner_id(partner_id, journal_id, amount, currency_id, type, date, context)" context="{'default_customer': 0, 'search_default_supplier': 1, 'default_supplier': 1}" />
@@ -249,7 +248,7 @@
                         <page string="Bill Information">
                             <field name="line_dr_ids" on_change="onchange_price(line_dr_ids, tax_id, partner_id)" context="{'journal_id':journal_id,'partner_id':partner_id}">
                                 <tree string="Expense Lines" editable="bottom">
-                                    <field name="account_id" domain="[('user_type.report_type','=','expense'), ('type','!=','view')]"/>
+                                    <field name="account_id" widget="selection" domain="[('user_type.report_type','=','expense'), ('type','!=','view')]"/>
                                     <field name="name"/>
                                     <field name="amount"/>
                                     <field name="account_analytic_id" groups="analytic.group_analytic_accounting"/>

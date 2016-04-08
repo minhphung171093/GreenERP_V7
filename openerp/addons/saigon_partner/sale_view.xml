@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+ <data>
+        
+        <record id="sale_order_view_form_inherit" model="ir.ui.view">
+            <field name="name">sale.order.view.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <data>
+                	<xpath expr="//field[@name='project_id']" position="after">
+                        <field name="create_task" invisible="1"/>
+                    </xpath>
+                
+                    <xpath expr="//button[@name='invoice_cancel']" position="after">
+                    	<button string="Re-open Quotation" name="set_to_draft" states="cancel" type="object" groups="base.group_user"/>
+                        <button name="create_task" string="Create Task" type="object" attrs="{'invisible':[('create_task','=',True)]}"  groups="base.group_user"/>
+                    </xpath>
+                    
+                </data>
+            </field>
+        </record>
+        
+   </data>  
+</openerp>

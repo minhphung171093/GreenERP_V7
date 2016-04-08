@@ -36,7 +36,6 @@ import common
 from openerp.osv.fields import float as float_field, function as function_field, datetime as datetime_field
 from openerp.tools.translate import _
 from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT
-from openerp.tools.safe_eval import safe_eval as eval
 
 _logger = logging.getLogger(__name__)
 
@@ -235,16 +234,13 @@ class rml_parse(object):
         self.localcontext['lang'] = lang
         self.lang_dict_called = False
         for obj in self.objects:
-            obj.refresh()
             obj._context['lang'] = lang
 
     def _get_lang_dict(self):
         pool_lang = self.pool.get('res.lang')
         lang = self.localcontext.get('lang', 'en_US') or 'en_US'
-        lang_ids = pool_lang.search(self.cr,self.uid,[('code','=',lang)])
-        if not lang_ids:
-            lang_ids = pool_lang.search(self.cr,self.uid,[('code','=','en_US')])
-        lang_obj = pool_lang.browse(self.cr,self.uid,lang_ids[0])
+        lang_ids = pool_lang.search(self.cr,self.uid,[('code','=',lang)])[0]
+        lang_obj = pool_lang.browse(self.cr,self.uid,lang_ids)
         self.lang_dict.update({'lang_obj':lang_obj,'date_format':lang_obj.date_format,'time_format':lang_obj.time_format})
         self.default_lang[lang] = self.lang_dict.copy()
         return True
@@ -267,9 +263,7 @@ class rml_parse(object):
         elif (hasattr(obj, '_field') and\
                 isinstance(obj._field, (float_field, function_field)) and\
                 obj._field.digits):
-                d = obj._field.digits[1]
-                if not d and d is not 0:
-                    d = DEFAULT_DIGITS
+                d = obj._field.digits[1] or DEFAULT_DIGITS
         return d
 
     def formatLang(self, value, digits=None, date=False, date_time=False, grouping=True, monetary=False, dp=False, currency_obj=False):
@@ -326,11 +320,8 @@ class rml_parse(object):
                 res='%s %s'%(currency_obj.symbol, res)
         return res
 
-    def display_address(self, address_browse_record, without_company=False):
-        return self.pool.get('res.partner')._display_address(
-            self.cr, self.uid, address_browse_record,
-            without_company=without_company
-        )
+    def display_address(self, address_browse_record):
+        return self.pool.get('res.partner')._display_address(self.cr, self.uid, address_browse_record)
 
     def repeatIn(self, lst, name,nodes_parent=False):
         ret_lst = []

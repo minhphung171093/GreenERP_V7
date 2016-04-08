@@ -386,7 +386,7 @@ class hr_payslip(osv.osv):
         #OR if it starts between the given dates
         clause_2 = ['&',('date_start', '<=', date_to),('date_start','>=', date_from)]
         #OR if it starts before the date_from and finish after the date_end (or never finish)
-        clause_3 = ['&',('date_start','<=', date_from),'|',('date_end', '=', False),('date_end','>=', date_to)]
+        clause_3 = [('date_start','<=', date_from),'|',('date_end', '=', False),('date_end','>=', date_to)]
         clause_final =  [('employee_id', '=', employee.id),'|','|'] + clause_1 + clause_2 + clause_3
         contract_ids = contract_obj.search(cr, uid, clause_final, context=context)
         return contract_ids
@@ -868,20 +868,18 @@ result = rules.NET > categories.NET * 0.10''',
         rule = self.browse(cr, uid, rule_id, context=context)
         if rule.amount_select == 'fix':
             try:
-                return rule.amount_fix, float(eval(rule.quantity, localdict)), 100.0
+                return rule.amount_fix, eval(rule.quantity, localdict), 100.0
             except:
                 raise osv.except_osv(_('Error!'), _('Wrong quantity defined for salary rule %s (%s).')% (rule.name, rule.code))
         elif rule.amount_select == 'percentage':
             try:
-                return (float(eval(rule.amount_percentage_base, localdict)),
-                        float(eval(rule.quantity, localdict)),
-                        rule.amount_percentage)
+                return eval(rule.amount_percentage_base, localdict), eval(rule.quantity, localdict), rule.amount_percentage
             except:
                 raise osv.except_osv(_('Error!'), _('Wrong percentage base or quantity defined for salary rule %s (%s).')% (rule.name, rule.code))
         else:
             try:
                 eval(rule.amount_python_compute, localdict, mode='exec', nocopy=True)
-                return float(localdict['result']), 'result_qty' in localdict and localdict['result_qty'] or 1.0, 'result_rate' in localdict and localdict['result_rate'] or 100.0
+                return localdict['result'], 'result_qty' in localdict and localdict['result_qty'] or 1.0, 'result_rate' in localdict and localdict['result_rate'] or 100.0
             except:
                 raise osv.except_osv(_('Error!'), _('Wrong python code defined for salary rule %s (%s).')% (rule.name, rule.code))
 

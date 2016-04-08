@@ -1,21 +1,20 @@
 # Translation of OpenERP Server.
 # This file contains the translation of the following modules:
-# * project_mrp
-# 
-# Translators:
+#	* project_mrp
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-14 00:10+0000\n"
-"PO-Revision-Date: 2015-05-27 09:18+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Bulgarian (http://www.transifex.com/projects/p/odoo-7/language/bg/)\n"
+"Project-Id-Version: OpenERP Server 5.0.4\n"
+"Report-Msgid-Bugs-To: support@openerp.com\n"
+"POT-Creation-Date: 2013-06-07 19:37+0000\n"
+"PO-Revision-Date: 2012-12-21 23:00+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: bg\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-11-21 06:30+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #. module: project_mrp
 #: model:process.node,note:project_mrp.process_node_procuretasktask0
@@ -85,8 +84,10 @@ msgstr "Задача"
 #: view:product.product:0
 msgid ""
 "will be \n"
-"                        created to follow up the job to do. This task will appear\n"
-"                        in the project related to the contract of the sales order."
+"                        created to follow up the job to do. This task will "
+"appear\n"
+"                        in the project related to the contract of the sales "
+"order."
 msgstr ""
 
 #. module: project_mrp
@@ -101,7 +102,6 @@ msgstr "Проект"
 
 #. module: project_mrp
 #: model:ir.model,name:project_mrp.model_procurement_order
-#: model:process.node,name:project_mrp.process_node_saleprocurement0
 #: field:project.task,procurement_id:0
 msgid "Procurement"
 msgstr "Снабдаване"
@@ -109,7 +109,7 @@ msgstr "Снабдаване"
 #. module: project_mrp
 #: view:product.product:0
 msgid "False"
-msgstr "Грешно"
+msgstr ""
 
 #. module: project_mrp
 #: code:addons/project_mrp/project_procurement.py:86
@@ -125,7 +125,7 @@ msgstr ""
 #. module: project_mrp
 #: field:project.task,sale_line_id:0
 msgid "Sales Order Line"
-msgstr "Ред от нареждане за продажба"
+msgstr ""
 
 #. module: project_mrp
 #: model:process.transition,name:project_mrp.process_transition_createtask0
@@ -135,7 +135,7 @@ msgstr "Създаване на задача"
 #. module: project_mrp
 #: model:ir.model,name:project_mrp.model_sale_order
 msgid "Sales Order"
-msgstr "Нареждане за продажба"
+msgstr ""
 
 #. module: project_mrp
 #: view:project.task:0

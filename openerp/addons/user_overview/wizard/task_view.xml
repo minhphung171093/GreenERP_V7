@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+        <record id="view_task_report" model="ir.ui.view">
+            <field name="name">task.report</field>
+            <field name="model">task.report</field>
+            <field name="arch" type="xml">
+                <form string="Task" version="7.0">
+                    <group colspan="4" col="4" >
+	                    <field name="date_from"/>
+	                    <field name="date_to"/>
+                    </group>
+                    <footer>
+                        <button name="print_report" string="Print" type="object" class="oe_highlight" context="{'type':'appointments'}"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_task_report" model="ir.actions.act_window">
+            <field name="name">Task</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">task.report</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_task_report"/>
+            <field name="target">new</field>
+        </record>
+        
+        <menuitem action="action_task_report" id="menu_action_task_report" parent="menu_sitp_report" sequence="20" />
+
+    </data>
+</openerp>
+

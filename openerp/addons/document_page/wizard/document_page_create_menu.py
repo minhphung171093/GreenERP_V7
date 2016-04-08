@@ -19,7 +19,6 @@
 #
 ##############################################################################
 
-from openerp import SUPERUSER_ID
 from openerp.osv import fields, osv
 
 class document_page_create_menu(osv.osv_memory):
@@ -70,9 +69,8 @@ class document_page_create_menu(osv.osv_memory):
         value['domain'] = "[('parent_id','=',%d)]" % (page.id)
         value['res_id'] = page.id
 
-        action_id = obj_action.create(cr, SUPERUSER_ID, value)
-        # only the super user is allowed to create menu due to security rules on ir.values
-        menu_id = obj_menu.create(cr, SUPERUSER_ID, {
+        action_id = obj_action.create(cr, uid, value)
+        menu_id = obj_menu.create(cr, uid, {
                         'name': data.menu_name,
                         'parent_id':data.menu_parent_id.id,
                         'icon': 'STOCK_DIALOG_QUESTION',

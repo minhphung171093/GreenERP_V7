@@ -70,13 +70,13 @@ class account_config_settings(osv.osv_memory):
             type='many2one',
             relation='account.account',
             string="Gain Exchange Rate Account", 
-            domain="[('type', '=', 'other'), ('company_id', '=', company_id)]"),
+            domain="[('type', '=', 'other')]"),
         'expense_currency_exchange_account_id': fields.related(
             'company_id', 'expense_currency_exchange_account_id',
             type="many2one",
             relation='account.account',
             string="Loss Exchange Rate Account",
-            domain="[('type', '=', 'other'), ('company_id', '=', company_id)]"),
+            domain="[('type', '=', 'other')]"),
     }
     def onchange_company_id(self, cr, uid, ids, company_id, context=None):
         res = super(account_config_settings, self).onchange_company_id(cr, uid, ids, company_id, context=context)
@@ -88,23 +88,6 @@ class account_config_settings(osv.osv_memory):
             res['value'].update({'income_currency_exchange_account_id': False, 
                                  'expense_currency_exchange_account_id': False})
         return res
-
-    def _check_account_gain(self, cr, uid, ids, context=None):
-        for obj in self.browse(cr, uid, ids, context=context):
-            if obj.income_currency_exchange_account_id.company_id and obj.company_id != obj.income_currency_exchange_account_id.company_id:
-                return False
-        return True
-
-    def _check_account_loss(self, cr, uid, ids, context=None):
-        for obj in self.browse(cr, uid, ids, context=context):
-            if obj.expense_currency_exchange_account_id.company_id and obj.company_id != obj.expense_currency_exchange_account_id.company_id:
-                return False
-        return True
-
-    _constraints = [
-        (_check_account_gain, 'The company of the gain exchange rate account must be the same than the company selected.', ['income_currency_exchange_account_id']),
-        (_check_account_loss, 'The company of the loss exchange rate account must be the same than the company selected.', ['expense_currency_exchange_account_id']),
-    ]
 
 class account_voucher(osv.osv):
     def _check_paid(self, cr, uid, ids, name, args, context=None):
@@ -384,7 +367,7 @@ class account_voucher(osv.osv):
                         \n* The \'Posted\' status is used when user create voucher,a voucher number is generated and voucher entries are created in account \
                         \n* The \'Cancelled\' status is used when user cancel voucher.'),
         'amount': fields.float('Total', digits_compute=dp.get_precision('Account'), required=True, readonly=True, states={'draft':[('readonly',False)]}),
-        'tax_amount':fields.float('Tax Amount', digits_compute=dp.get_precision('Account'), readonly=True),
+        'tax_amount':fields.float('Tax Amount', digits_compute=dp.get_precision('Account'), readonly=True, states={'draft':[('readonly',False)]}),
         'reference': fields.char('Ref #', size=64, readonly=True, states={'draft':[('readonly',False)]}, help="Transaction reference number."),
         'number': fields.char('Number', size=32, readonly=True,),
         'move_id':fields.many2one('account.move', 'Account Entry'),
@@ -427,7 +410,7 @@ class account_voucher(osv.osv):
         'state': 'draft',
         'pay_now': 'pay_now',
         'name': '',
-        'date': fields.date.context_today,
+        'date': lambda *a: time.strftime('%Y-%m-%d'),
         'company_id': lambda self,cr,uid,c: self.pool.get('res.company')._company_default_get(cr, uid, 'account.voucher',context=c),
         'tax_id': _get_tax,
         'payment_option': 'without_writeoff',
@@ -573,12 +556,7 @@ class account_voucher(osv.osv):
         else:
             if not journal.default_credit_account_id or not journal.default_debit_account_id:
                 raise osv.except_osv(_('Error!'), _('Please define default credit/debit accounts on the journal "%s".') % (journal.name))
-            if ttype in ('sale', 'receipt'):
-                account_id = journal.default_debit_account_id.id
-            elif ttype in ('purchase', 'payment'):
-                account_id = journal.default_credit_account_id.id
-            else:
-                account_id = journal.default_credit_account_id.id or journal.default_debit_account_id.id
+            account_id = journal.default_credit_account_id.id or journal.default_debit_account_id.id
             tr_type = 'receipt'
 
         default['value']['account_id'] = account_id
@@ -670,10 +648,6 @@ class account_voucher(osv.osv):
             account_id = partner.property_account_receivable.id
         elif journal.type in ('purchase', 'purchase_refund','expense'):
             account_id = partner.property_account_payable.id
-        elif ttype in ('sale', 'receipt'):
-            account_id = journal.default_debit_account_id.id
-        elif ttype in ('purchase', 'payment'):
-            account_id = journal.default_credit_account_id.id
         else:
             account_id = journal.default_credit_account_id.id or journal.default_debit_account_id.id
 
@@ -818,7 +792,6 @@ class account_voucher(osv.osv):
                 total_credit += line.credit and line.amount_currency or 0.0
                 total_debit += line.debit and line.amount_currency or 0.0
 
-        remaining_amount = price
         #voucher line creation
         for line in account_move_lines:
 
@@ -839,13 +812,13 @@ class account_voucher(osv.osv):
                 'move_line_id':line.id,
                 'account_id':line.account_id.id,
                 'amount_original': amount_original,
-                'amount': (line.id in move_lines_found) and min(abs(remaining_amount), amount_unreconciled) or 0.0,
+                'amount': (line.id in move_lines_found) and min(abs(price), amount_unreconciled) or 0.0,
                 'date_original':line.date,
                 'date_due':line.date_maturity,
                 'amount_unreconciled': amount_unreconciled,
                 'currency_id': line_currency_id,
             }
-            remaining_amount -= rs['amount']
+            price -= rs['amount']
             #in case a corresponding move_line hasn't been found, we now try to assign the voucher amount
             #on existing invoices: we split voucher amount by most old first, but only for lines in the same currency
             if not move_lines_found:
@@ -930,12 +903,7 @@ class account_voucher(osv.osv):
             return False
         journal_pool = self.pool.get('account.journal')
         journal = journal_pool.browse(cr, uid, journal_id, context=context)
-        if ttype in ('sale', 'receipt'):
-            account_id = journal.default_debit_account_id
-        elif ttype in ('purchase', 'payment'):
-            account_id = journal.default_credit_account_id
-        else:
-            account_id = journal.default_credit_account_id or journal.default_debit_account_id
+        account_id = journal.default_credit_account_id or journal.default_debit_account_id
         tax_id = False
         if account_id and account_id.tax_ids:
             tax_id = account_id.tax_ids[0].id
@@ -949,7 +917,7 @@ class account_voucher(osv.osv):
             currency_id = journal.currency.id
         else:
             currency_id = journal.company_id.currency_id.id
-        vals['value'].update({'currency_id': currency_id, 'payment_rate_currency_id': currency_id})
+        vals['value'].update({'currency_id': currency_id})
         #in case we want to register the payment directly from an invoice, it's confusing to allow to switch the journal 
         #without seeing that the amount is expressed in the journal currency, and not in the invoice currency. So to avoid
         #this common mistake, we simply reset the amount to 0 if the currency is not the invoice currency.
@@ -983,19 +951,19 @@ class account_voucher(osv.osv):
     def cancel_voucher(self, cr, uid, ids, context=None):
         reconcile_pool = self.pool.get('account.move.reconcile')
         move_pool = self.pool.get('account.move')
-        move_line_pool = self.pool.get('account.move.line')
+
         for voucher in self.browse(cr, uid, ids, context=context):
             # refresh to make sure you don't unlink an already removed move
             voucher.refresh()
+            recs = []
             for line in voucher.move_ids:
-                # refresh to make sure you don't unreconcile an already unreconciled entry
-                line.refresh()
                 if line.reconcile_id:
-                    move_lines = [move_line.id for move_line in line.reconcile_id.line_id]
-                    move_lines.remove(line.id)
-                    reconcile_pool.unlink(cr, uid, [line.reconcile_id.id])
-                    if len(move_lines) >= 2:
-                        move_line_pool.reconcile_partial(cr, uid, move_lines, 'auto',context=context)
+                    recs += [line.reconcile_id.id]
+                if line.reconcile_partial_id:
+                    recs += [line.reconcile_partial_id.id]
+
+            reconcile_pool.unlink(cr, uid, recs)
+
             if voucher.move_id:
                 move_pool.button_cancel(cr, uid, [voucher.move_id.id])
                 move_pool.unlink(cr, uid, [voucher.move_id.id])
@@ -1026,10 +994,6 @@ class account_voucher(osv.osv):
                 account_id = partner.property_account_receivable.id
             elif journal.type in ('purchase', 'purchase_refund','expense'):
                 account_id = partner.property_account_payable.id
-            elif ttype in ('sale', 'receipt'):
-                account_id = journal.default_debit_account_id.id
-            elif ttype in ('purchase', 'payment'):
-                account_id = journal.default_credit_account_id.id
             else:
                 account_id = journal.default_credit_account_id.id or journal.default_debit_account_id.id
             if account_id:
@@ -1090,8 +1054,7 @@ class account_voucher(osv.osv):
                 'period_id': voucher.period_id.id,
                 'partner_id': voucher.partner_id.id,
                 'currency_id': company_currency <> current_currency and  current_currency or False,
-                'amount_currency': (sign * abs(voucher.amount) # amount < 0 for refunds
-                    if company_currency != current_currency else 0.0),
+                'amount_currency': company_currency <> current_currency and sign * voucher.amount or 0.0,
                 'date': voucher.date,
                 'date_maturity': voucher.date_due
             }
@@ -1253,7 +1216,7 @@ class account_voucher(osv.osv):
             if line.amount == line.amount_unreconciled:
                 if not line.move_line_id:
                     raise osv.except_osv(_('Wrong voucher line'),_("The invoice you are willing to pay is not valid anymore."))
-                sign = line.type =='dr' and -1 or 1
+                sign = voucher.type in ('payment', 'purchase') and -1 or 1
                 currency_rate_difference = sign * (line.move_line_id.amount_residual - amount)
             else:
                 currency_rate_difference = 0.0
@@ -1311,7 +1274,8 @@ class account_voucher(osv.osv):
                         # otherwise we use the rates of the system
                         amount_currency = currency_obj.compute(cr, uid, company_currency, line.move_line_id.currency_id.id, move_line['debit']-move_line['credit'], context=ctx)
                 if line.amount == line.amount_unreconciled:
-                    foreign_currency_diff = line.move_line_id.amount_residual_currency - abs(amount_currency)
+                    sign = voucher.type in ('payment', 'purchase') and -1 or 1
+                    foreign_currency_diff = sign * line.move_line_id.amount_residual_currency + amount_currency
 
             move_line['amount_currency'] = amount_currency
             voucher_line = move_line_obj.create(cr, uid, move_line)
@@ -1372,14 +1336,10 @@ class account_voucher(osv.osv):
             if voucher.payment_option == 'with_writeoff':
                 account_id = voucher.writeoff_acc_id.id
                 write_off_name = voucher.comment
-            elif voucher.partner_id:
-                if voucher.type in ('sale', 'receipt'):
-                    account_id = voucher.partner_id.property_account_receivable.id
-                else:
-                    account_id = voucher.partner_id.property_account_payable.id
+            elif voucher.type in ('sale', 'receipt'):
+                account_id = voucher.partner_id.property_account_receivable.id
             else:
-                # fallback on account of voucher
-                account_id = voucher.account_id.id
+                account_id = voucher.partner_id.property_account_payable.id
             sign = voucher.type == 'payment' and -1 or 1
             move_line = {
                 'name': write_off_name or name,

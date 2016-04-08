@@ -1,22 +1,21 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * report_webkit
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2012
+# Russian translation for openobject-addons
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-14 00:11+0000\n"
-"PO-Revision-Date: 2015-05-29 13:01+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Russian (http://www.transifex.com/projects/p/odoo-7/language/ru/)\n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2013-06-07 19:37+0000\n"
+"PO-Revision-Date: 2012-12-21 23:00+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: ru\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-11-21 06:32+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #. module: report_webkit
 #: view:ir.actions.report.xml:0
@@ -34,7 +33,7 @@ msgid "Ledger  28  431.8 x 279.4 mm"
 msgstr "Ledger  28  431.8 x 279.4 мм"
 
 #. module: report_webkit
-#: code:addons/report_webkit/webkit_report.py:231
+#: code:addons/report_webkit/webkit_report.py:235
 #, python-format
 msgid "No header defined for this Webkit report!"
 msgstr "Неопределен заголовок для этого отчёта Webkit!"
@@ -47,12 +46,14 @@ msgstr "Тип изображения (png,gif,jpeg)"
 #. module: report_webkit
 #: help:ir.actions.report.xml,precise_mode:0
 msgid ""
-"This mode allow more precise element"
-"                                                             position as "
-"each object is printed on a separate HTML."
-"                                                            but memory and "
-"disk usage is wider"
-msgstr "Этот режим позволяет более точное позиционирование элемента, поскольку каждый объект печатается по отдельному HTML. но больше используется память и диск"
+"This mode allow more precise element                                         "
+"                    position as each object is printed on a separate HTML.   "
+"                                                         but memory and disk "
+"usage is wider"
+msgstr ""
+"Этот режим позволяет более точное позиционирование элемента, поскольку "
+"каждый объект печатается по отдельному HTML. но больше используется память и "
+"диск"
 
 #. module: report_webkit
 #: selection:ir.header_webkit,format:0
@@ -60,15 +61,16 @@ msgid "Executive 4   7.5 x 10 inches, 190.5 x 254 mm"
 msgstr "Executive 4 7.5 x 10 дюймов, 190.5 x 254 мм"
 
 #. module: report_webkit
-#: field:ir.header_img,company_id:0 field:ir.header_webkit,company_id:0
+#: field:ir.header_img,company_id:0
+#: field:ir.header_webkit,company_id:0
 msgid "Company"
 msgstr "Компания"
 
 #. module: report_webkit
-#: code:addons/report_webkit/webkit_report.py:232
+#: code:addons/report_webkit/webkit_report.py:236
 #, python-format
 msgid "Please set a header in company settings."
-msgstr "Пожалуйста, установите заголовок в настройках компании."
+msgstr ""
 
 #. module: report_webkit
 #: selection:ir.header_webkit,format:0
@@ -112,10 +114,10 @@ msgid "A4  0   210 x 297 mm, 8.26 x 11.69 inches"
 msgstr "A4 0 210 x 297 мм, 8.26 x 11.69 дюймов"
 
 #. module: report_webkit
-#: code:addons/report_webkit/webkit_report.py:167
+#: code:addons/report_webkit/webkit_report.py:176
 #, python-format
 msgid "Webkit error"
-msgstr "Ошибка Webkit"
+msgstr ""
 
 #. module: report_webkit
 #: selection:ir.header_webkit,format:0
@@ -123,14 +125,14 @@ msgid "B2  17  500 x 707 mm"
 msgstr "B2 17 500 x 707 мм"
 
 #. module: report_webkit
-#: code:addons/report_webkit/webkit_report.py:259
-#: code:addons/report_webkit/webkit_report.py:270
-#: code:addons/report_webkit/webkit_report.py:279
-#: code:addons/report_webkit/webkit_report.py:292
-#: code:addons/report_webkit/webkit_report.py:303
+#: code:addons/report_webkit/webkit_report.py:262
+#: code:addons/report_webkit/webkit_report.py:273
+#: code:addons/report_webkit/webkit_report.py:282
+#: code:addons/report_webkit/webkit_report.py:295
+#: code:addons/report_webkit/webkit_report.py:306
 #, python-format
 msgid "Webkit render!"
-msgstr "Отображение Webkit!"
+msgstr ""
 
 #. module: report_webkit
 #: model:ir.model,name:report_webkit.model_ir_header_img
@@ -143,14 +145,14 @@ msgid "Precise Mode"
 msgstr "Точный режим"
 
 #. module: report_webkit
-#: code:addons/report_webkit/webkit_report.py:97
+#: code:addons/report_webkit/webkit_report.py:96
 #, python-format
 msgid ""
 "Please install executable on your system (sudo apt-get install wkhtmltopdf) "
 "or download it from here: "
 "http://code.google.com/p/wkhtmltopdf/downloads/list and set the path in the "
 "ir.config_parameter with the webkit_path key.Minimal version is 0.9.9"
-msgstr "Пожалуйста, установите выполнимую на вашей системе утилиту (sudo apt-get install wkhtmltopdf) или загрузите ее отсюда: http://code.google.com/p/wkhtmltopdf/downloads/list и укажите путь в ir.config_parameter с ключом webkit_path. Минимальная версия - 0.9.9"
+msgstr ""
 
 #. module: report_webkit
 #: selection:ir.header_webkit,format:0
@@ -181,7 +183,7 @@ msgstr "Доступные изображения"
 #. module: report_webkit
 #: field:ir.header_webkit,html:0
 msgid "webkit header"
-msgstr "заголовок webkit"
+msgstr ""
 
 #. module: report_webkit
 #: selection:ir.header_webkit,format:0
@@ -199,13 +201,14 @@ msgid "The header linked to the report"
 msgstr "Заголовок связанный с отчетом"
 
 #. module: report_webkit
-#: code:addons/report_webkit/webkit_report.py:96
+#: code:addons/report_webkit/webkit_report.py:95
 #, python-format
 msgid "Wkhtmltopdf library path is not set"
-msgstr "Путь к библиотеке Wkhtmltopdf не установлен"
+msgstr ""
 
 #. module: report_webkit
-#: view:ir.actions.report.xml:0 view:res.company:0
+#: view:ir.actions.report.xml:0
+#: view:res.company:0
 msgid "Webkit"
 msgstr "Webkit"
 
@@ -254,7 +257,9 @@ msgstr "_Ok"
 msgid ""
 "Check this to add a Print action for this Report in the sidebar of the "
 "corresponding document types"
-msgstr "Установите флажок для добавления на боковую панель действия печати для соответствующих типов документов"
+msgstr ""
+"Установите флажок для добавления на боковую панель действия печати для "
+"соответствующих типов документов"
 
 #. module: report_webkit
 #: selection:ir.header_webkit,format:0
@@ -279,7 +284,7 @@ msgstr "Изображение"
 #. module: report_webkit
 #: view:ir.header_img:0
 msgid "Header Image"
-msgstr "Изображение заголовка"
+msgstr ""
 
 #. module: report_webkit
 #: field:res.company,header_webkit:0
@@ -291,7 +296,9 @@ msgstr "Доступен html"
 msgid ""
 "Check this to view the newly added internal print action after creating it "
 "(technical view) "
-msgstr "Установите флажок для вида вновь добавленного внутреннего действия печати после его создания (технический вид) "
+msgstr ""
+"Установите флажок для вида вновь добавленного внутреннего действия печати "
+"после его создания (технический вид) "
 
 #. module: report_webkit
 #: view:res.company:0
@@ -306,7 +313,7 @@ msgstr "Портрет"
 #. module: report_webkit
 #: view:report.webkit.actions:0
 msgid "or"
-msgstr "или"
+msgstr ""
 
 #. module: report_webkit
 #: selection:ir.header_webkit,orientation:0
@@ -319,10 +326,10 @@ msgid "B8  22  62 x 88 mm"
 msgstr "B8 22 62 x 88 мм"
 
 #. module: report_webkit
-#: code:addons/report_webkit/webkit_report.py:168
+#: code:addons/report_webkit/webkit_report.py:177
 #, python-format
 msgid "The command 'wkhtmltopdf' failed with error code = %s. Message: %s"
-msgstr "Команда 'wkhtmltopdf' не была выполнена с кодом ошибки = %s. Сообщение: %s"
+msgstr ""
 
 #. module: report_webkit
 #: selection:ir.header_webkit,format:0
@@ -365,10 +372,10 @@ msgid "Right Margin (mm)"
 msgstr "Правое поле (мм)"
 
 #. module: report_webkit
-#: code:addons/report_webkit/webkit_report.py:226
+#: code:addons/report_webkit/webkit_report.py:230
 #, python-format
 msgid "Webkit report template not found!"
-msgstr "Шаблон отчета Webkit не найден!"
+msgstr ""
 
 #. module: report_webkit
 #: field:ir.header_webkit,orientation:0
@@ -398,7 +405,7 @@ msgstr ":B10 16 31 x 44 мм"
 #. module: report_webkit
 #: view:report.webkit.actions:0
 msgid "Cancel"
-msgstr "Отмена"
+msgstr ""
 
 #. module: report_webkit
 #: field:ir.header_webkit,css:0
@@ -417,10 +424,10 @@ msgid "Webkit Logos"
 msgstr "Логотипы Webkit"
 
 #. module: report_webkit
-#: code:addons/report_webkit/webkit_report.py:163
+#: code:addons/report_webkit/webkit_report.py:172
 #, python-format
 msgid "No diagnosis message was provided"
-msgstr "Не было никакого диагностического сообщения"
+msgstr ""
 
 #. module: report_webkit
 #: selection:ir.header_webkit,format:0
@@ -435,7 +442,7 @@ msgstr "Шаблон Webkit"
 #. module: report_webkit
 #: field:ir.header_webkit,footer_html:0
 msgid "webkit footer"
-msgstr "нижний колонтитул webkit"
+msgstr ""
 
 #. module: report_webkit
 #: field:ir.actions.report.xml,webkit_debug:0
@@ -453,7 +460,8 @@ msgid "B0  14  1000 x 1414 mm"
 msgstr "B0 14 1000 x 1414 мм"
 
 #. module: report_webkit
-#: field:ir.header_img,name:0 field:ir.header_webkit,name:0
+#: field:ir.header_img,name:0
+#: field:ir.header_webkit,name:0
 msgid "Name"
 msgstr "Название"
 
@@ -484,7 +492,7 @@ msgid "Left Margin (mm)"
 msgstr "Левое поле (мм)"
 
 #. module: report_webkit
-#: code:addons/report_webkit/webkit_report.py:226
+#: code:addons/report_webkit/webkit_report.py:230
 #, python-format
 msgid "Error!"
 msgstr "Ошибка!"
@@ -505,12 +513,12 @@ msgid "ir.actions.report.xml"
 msgstr "ir.actions.report.xml"
 
 #. module: report_webkit
-#: code:addons/report_webkit/webkit_report.py:165
+#: code:addons/report_webkit/webkit_report.py:174
 #, python-format
 msgid "The following diagnosis message was provided:\n"
-msgstr "Поступило следующее диагностическое сообщение:\n"
+msgstr ""
 
 #. module: report_webkit
 #: view:ir.header_webkit:0
 msgid "HTML Header"
-msgstr "Заголовок HTML"
+msgstr ""

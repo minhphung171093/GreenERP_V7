@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+       <record id="action_user_overview_project_task_user_tree" model="ir.actions.act_window">
+            <field name="name">Tasks Analysis User</field>
+            <field name="res_model">report.project.task.user</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,graph</field>
+            <field name="search_view_id" ref="project.view_task_project_user_search"/>
+            <field name="context">{'search_default_year':1,'search_default_project':1,'group_by_no_leaf':1,'group_by':[]}</field>
+            <field name="domain">[('user_id','=',uid)]</field>
+        </record>
+
+        <menuitem action="action_user_overview_project_task_user_tree"
+            id="menu_action_user_overview_project_task_user_tree"
+            parent="user_overview1" sequence="10"/>
+		
+    </data>
+</openerp>

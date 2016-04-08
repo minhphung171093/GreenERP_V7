@@ -331,11 +331,11 @@ instance.web.SearchView = instance.web.Widget.extend(/** @lends instance.web.Sea
         'keydown .oe_searchview_input, .oe_searchview_facet': function (e) {
             switch(e.which) {
             case $.ui.keyCode.LEFT:
-                this.focusPreceding(e.target);
+                this.focusPreceding(this);
                 e.preventDefault();
                 break;
             case $.ui.keyCode.RIGHT:
-                this.focusFollowing(e.target);
+                this.focusFollowing(this);
                 e.preventDefault();
                 break;
             }
@@ -466,7 +466,6 @@ instance.web.SearchView = instance.web.Widget.extend(/** @lends instance.web.Sea
      * Sets up search view's view-wide auto-completion widget
      */
     setup_global_completion: function () {
-        var self = this;
         var autocomplete = this.$el.autocomplete({
             source: this.proxy('complete_global_search'),
             select: this.proxy('select_completion'),
@@ -1453,7 +1452,7 @@ instance.web.search.SelectionField = instance.web.search.Field.extend(/** @lends
         var results = _(this.attrs.selection).chain()
             .filter(function (sel) {
                 var value = sel[0], label = sel[1];
-                if (value === undefined || !label) { return false; }
+                if (!value) { return false; }
                 return label.toLowerCase().indexOf(needle.toLowerCase()) !== -1;
             })
             .map(function (sel) {
@@ -1497,19 +1496,7 @@ instance.web.search.DateField = instance.web.search.Field.extend(/** @lends inst
         return instance.web.date_to_str(facetValue.get('value'));
     },
     complete: function (needle) {
-        var d;
-        try {
-            var t = (this.attrs && this.attrs.type === 'datetime') ? 'datetime' : 'date';
-            var v = instance.web.parse_value(needle, {'widget': t});
-            if (t === 'datetime'){
-                d = instance.web.str_to_datetime(v);
-            }
-            else{
-                d = instance.web.str_to_date(v);
-            }
-        } catch (e) {
-            // pass
-        }
+        var d = Date.parse(needle);
         if (!d) { return $.when(null); }
         var date_string = instance.web.format_value(d, this.attrs);
         var label = _.str.sprintf(_.str.escapeHTML(
@@ -1591,11 +1578,8 @@ instance.web.search.ManyToOneField = instance.web.search.CharField.extend({
         return facetValue.get('label');
     },
     make_domain: function (name, operator, facetValue) {
-        switch(operator){
-        case this.default_operator:
+        if (operator === this.default_operator) {
             return [[name, '=', facetValue.get('value')]];
-        case 'child_of':
-            return [[name, 'child_of', facetValue.get('value')]];
         }
         return this._super(name, operator, facetValue);
     },
@@ -2150,10 +2134,6 @@ instance.web.search.ExtendedSearchProposition.Float = instance.web.search.Extend
         {value: "∃", text: _lt("is set")},
         {value: "∄", text: _lt("is not set")}
     ],
-    init: function (parent) {
-        this._super(parent);
-        this.decimal_point = instance.web._t.database.parameters.decimal_point;
-    },
     toString: function () {
         return this.$el.val();
     },

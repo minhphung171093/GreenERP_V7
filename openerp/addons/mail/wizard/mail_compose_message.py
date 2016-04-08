@@ -19,7 +19,6 @@
 #
 ##############################################################################
 
-import base64
 import re
 from openerp import tools
 from openerp import SUPERUSER_ID
@@ -117,6 +116,9 @@ class mail_compose_message(osv.TransientModel):
             'mail_compose_message_ir_attachments_rel',
             'wizard_id', 'attachment_id', 'Attachments'),
         'filter_id': fields.many2one('ir.filters', 'Filters'),
+        'partner_cc_ids': fields.many2many('res.partner',
+            'mail_compose_message_res_partner_cc_rel',
+            'wizard_id', 'partner_id', 'CC'),
     }
 
     _defaults = {
@@ -234,19 +236,16 @@ class mail_compose_message(osv.TransientModel):
                 # mail.message values, according to the wizard options
                 post_values = {
                     'subject': wizard.subject,
-                    'body': wizard.body or '',
+                    'body': wizard.body,
                     'parent_id': wizard.parent_id and wizard.parent_id.id,
                     'partner_ids': [partner.id for partner in wizard.partner_ids],
                     'attachment_ids': [attach.id for attach in wizard.attachment_ids],
-                    'attachments': [],
                 }
                 # mass mailing: render and override default values
                 if mass_mail_mode and wizard.model:
                     email_dict = self.render_message(cr, uid, wizard, res_id, context=context)
                     post_values['partner_ids'] += email_dict.pop('partner_ids', [])
-                    for filename, attachment_data in email_dict.pop('attachments', []):
-                        # decode as render message return in base64 while message_post expect binary
-                        post_values['attachments'].append((filename, base64.b64decode(attachment_data)))
+                    post_values['attachments'] = email_dict.pop('attachments', [])
                     attachment_ids = []
                     for attach_id in post_values.pop('attachment_ids'):
                         new_attach_id = ir_attachment_obj.copy(cr, uid, attach_id, {'res_model': self._name, 'res_id': wizard.id}, context=context)
@@ -260,6 +259,13 @@ class mail_compose_message(osv.TransientModel):
                 elif mass_mail_mode:  # mass mail: is a log pushed to recipients, author not added
                     subtype = False
                     context = dict(context, mail_create_nosubscribe=True)  # add context key to avoid subscribing the author
+                list_email_cc = ''
+                for partner_cc in wizard.partner_cc_ids:
+                    if partner_cc.email:
+                        list_email_cc += partner_cc.email+','
+                if list_email_cc:
+                    list_email_cc = list_email_cc[:-1]
+                context.update({'list_email_cc': list_email_cc})
                 msg_id = active_model_pool.message_post(cr, uid, [res_id], type='comment', subtype=subtype, context=context, **post_values)
                 # mass_mailing: notify specific partners, because subtype was False, and no-one was notified
                 if mass_mail_mode and post_values['partner_ids']:

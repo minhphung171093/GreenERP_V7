@@ -1,22 +1,21 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * crm_partner_assign
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2012
+# Russian translation for openobject-addons
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-03-07 08:38+0000\n"
-"PO-Revision-Date: 2015-05-29 13:00+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Russian (http://www.transifex.com/projects/p/odoo-7/language/ru/)\n"
+"PO-Revision-Date: 2012-12-21 23:00+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: ru\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-11-21 06:06+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,delay_close:0
@@ -38,7 +37,10 @@ msgstr "Планируемая выручка"
 msgid ""
 "Message type: email for email message, notification for system message, "
 "comment for other messages such as user replies"
-msgstr "Тип сообщения: эл. почта - для эл. почты, уведомление - для системных сообщений, комментарий - для остальных сообщений таких как сообщения пользователя"
+msgstr ""
+"Тип сообщения: эл. почта - для эл. почты, уведомление - для системных "
+"сообщений, комментарий - для остальных сообщений таких как сообщения "
+"пользователя"
 
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,nbr:0
@@ -46,7 +48,8 @@ msgid "# of Cases"
 msgstr "кол-во вопросов"
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 view:crm.partner.report.assign:0
+#: view:crm.lead.report.assign:0
+#: view:crm.partner.report.assign:0
 msgid "Group By..."
 msgstr "Группировать по ..."
 
@@ -80,12 +83,14 @@ msgstr "Содержимое"
 msgid ""
 "Email address of the sender. This field is set when no matching partner is "
 "found for incoming emails."
-msgstr "Адрес эл. почты отправителя. Это поле устанавливается когда партнер не определен для входящих писем."
+msgstr ""
+"Адрес эл. почты отправителя. Это поле устанавливается когда партнер не "
+"определен для входящих писем."
 
 #. module: crm_partner_assign
 #: view:crm.partner.report.assign:0
 msgid "Date Partnership"
-msgstr "Дата сотрудничества"
+msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,type:0
@@ -103,7 +108,8 @@ msgid "Whole Story"
 msgstr "Вся история"
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,company_id:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,company_id:0
 msgid "Company"
 msgstr "Компания"
 
@@ -118,7 +124,8 @@ msgid "Partner Date"
 msgstr "Дата партнера"
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 view:crm.partner.report.assign:0
+#: view:crm.lead.report.assign:0
+#: view:crm.partner.report.assign:0
 #: view:res.partner:0
 msgid "Salesperson"
 msgstr "Продавец"
@@ -129,7 +136,8 @@ msgid "Highest"
 msgstr "Высший"
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,day:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,day:0
 msgid "Day"
 msgstr "День"
 
@@ -141,7 +149,7 @@ msgstr "Уникальный идентификатор сообщения"
 #. module: crm_partner_assign
 #: field:res.partner,date_review_next:0
 msgid "Next Partner Review"
-msgstr "Обзор следующего контрагента"
+msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.forward.to.partner,history_mode:0
@@ -149,7 +157,8 @@ msgid "Latest email"
 msgstr "Последнее эл. письмо"
 
 #. module: crm_partner_assign
-#: field:crm.lead,partner_latitude:0 field:res.partner,partner_latitude:0
+#: field:crm.lead,partner_latitude:0
+#: field:res.partner,partner_latitude:0
 msgid "Geo Latitude"
 msgstr "Географическая широта"
 
@@ -183,12 +192,14 @@ msgstr "Дата закрытия"
 msgid ""
 "Gives the probability to assign a lead to this partner. (0 means no "
 "assignation.)"
-msgstr "Дает вероятность назначения кандидата этому партнёру. 0 обозначает отсутствие назначения."
+msgstr ""
+"Дает вероятность назначения кандидата этому партнёру. 0 обозначает "
+"отсутствие назначения."
 
 #. module: crm_partner_assign
 #: view:res.partner:0
 msgid "Partner Activation"
-msgstr "Активация контрагента"
+msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.forward.to.partner,type:0
@@ -199,7 +210,7 @@ msgstr "Системное уведомление"
 #: code:addons/crm_partner_assign/wizard/crm_forward_to_partner.py:74
 #, python-format
 msgid "Lead forward"
-msgstr "Следующая возможность"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,probability:0
@@ -230,7 +241,8 @@ msgid "Partner Grade"
 msgstr "Статус партнёра"
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 view:crm.partner.report.assign:0
+#: view:crm.lead.report.assign:0
+#: view:crm.partner.report.assign:0
 msgid "Section"
 msgstr "Раздел"
 
@@ -245,7 +257,8 @@ msgid "Next"
 msgstr "Следующий"
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,priority:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,priority:0
 msgid "Priority"
 msgstr "Приоритет"
 
@@ -338,15 +351,17 @@ msgstr "Июль"
 #. module: crm_partner_assign
 #: view:crm.partner.report.assign:0
 msgid "Date Review"
-msgstr "Дата обзора"
+msgstr ""
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,stage_id:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,stage_id:0
 msgid "Stage"
 msgstr "Этап"
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,state:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,state:0
 msgid "Status"
 msgstr "Статус"
 
@@ -367,12 +382,14 @@ msgid "Geo Localization"
 msgstr "Геолокация"
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 view:crm.partner.report.assign:0
+#: view:crm.lead.report.assign:0
+#: view:crm.partner.report.assign:0
 msgid "Opportunities Assignment Analysis"
 msgstr "Анализ назначений предложений"
 
 #. module: crm_partner_assign
-#: view:crm.lead.forward.to.partner:0 view:res.partner:0
+#: view:crm.lead.forward.to.partner:0
+#: view:res.partner:0
 msgid "Cancel"
 msgstr "Отмена"
 
@@ -424,8 +441,10 @@ msgid "April"
 msgstr "Апрель"
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,grade_id:0
-#: view:crm.partner.report.assign:0 field:crm.partner.report.assign,grade_id:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,grade_id:0
+#: view:crm.partner.report.assign:0
+#: field:crm.partner.report.assign,grade_id:0
 msgid "Grade"
 msgstr "Класс"
 
@@ -440,7 +459,8 @@ msgid "Users that voted for this message"
 msgstr "Пользователи, которые проголосовали за это сообщение"
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,month:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,month:0
 msgid "Month"
 msgstr "Месяц"
 
@@ -458,7 +478,7 @@ msgstr "Связанные сообщения"
 #: field:crm.partner.report.assign,date_review:0
 #: field:res.partner,date_review:0
 msgid "Latest Partner Review"
-msgstr "Последний обзор контрагента"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,subject:0
@@ -488,13 +508,15 @@ msgstr "# Предложений"
 #. module: crm_partner_assign
 #: help:crm.lead.forward.to.partner,starred:0
 msgid "Current user has a starred notification linked to this message"
-msgstr "Текущий пользователь имеет отмеченное уведомление, связанное с этим сообщением"
+msgstr ""
+"Текущий пользователь имеет отмеченное уведомление, связанное с этим "
+"сообщением"
 
 #. module: crm_partner_assign
 #: field:crm.partner.report.assign,date_partnership:0
 #: field:res.partner,date_partnership:0
 msgid "Partnership Date"
-msgstr "Дата сотрудничества"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.lead:0
@@ -512,7 +534,8 @@ msgid "Low"
 msgstr "Низкий"
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 selection:crm.lead.report.assign,state:0
+#: view:crm.lead.report.assign:0
+#: selection:crm.lead.report.assign,state:0
 msgid "Closed"
 msgstr "Закрыто"
 
@@ -522,7 +545,8 @@ msgid "Mass forward to partner"
 msgstr "Массовая отправка партнёру"
 
 #. module: crm_partner_assign
-#: view:res.partner:0 field:res.partner,opportunity_assigned_ids:0
+#: view:res.partner:0
+#: field:res.partner,opportunity_assigned_ids:0
 msgid "Assigned Opportunities"
 msgstr "Назначенные предложения"
 
@@ -593,7 +617,8 @@ msgid "Extended Filters..."
 msgstr "Расширенные фильтры..."
 
 #. module: crm_partner_assign
-#: field:crm.lead,partner_longitude:0 field:res.partner,partner_longitude:0
+#: field:crm.lead,partner_longitude:0
+#: field:res.partner,partner_longitude:0
 msgid "Geo Longitude"
 msgstr "Географическая долгота"
 
@@ -640,7 +665,7 @@ msgstr "Планируемая выручка"
 #. module: crm_partner_assign
 #: view:res.partner:0
 msgid "Partner Review"
-msgstr "Обзор контрагента"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.partner.report.assign,period_id:0
@@ -669,7 +694,8 @@ msgid "Message Record Name"
 msgstr "Название записи сообщения"
 
 #. module: crm_partner_assign
-#: field:res.partner.activation,sequence:0 field:res.partner.grade,sequence:0
+#: field:res.partner.activation,sequence:0
+#: field:res.partner.grade,sequence:0
 msgid "Sequence"
 msgstr "Нумерация"
 
@@ -679,7 +705,9 @@ msgstr "Нумерация"
 msgid ""
 "Cannot contact geolocation servers. Please make sure that your internet "
 "connection is up and running (%s)."
-msgstr "Не удается связаться с сервером геолокации. Пожалуйста, убедитесь, что ваше подключение к интернету работает (%s)."
+msgstr ""
+"Не удается связаться с сервером геолокации. Пожалуйста, убедитесь, что ваше "
+"подключение к интернету работает (%s)."
 
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,month:0
@@ -697,7 +725,8 @@ msgid "Last date this case was forwarded/assigned to a partner"
 msgstr "Последняя дата, когда этот вопрос был назначен партнёру"
 
 #. module: crm_partner_assign
-#: selection:crm.lead.report.assign,state:0 view:res.partner:0
+#: selection:crm.lead.report.assign,state:0
+#: view:res.partner:0
 msgid "Open"
 msgstr "Открыто"
 
@@ -750,25 +779,30 @@ msgstr "Вероятная выручка"
 
 #. module: crm_partner_assign
 #: view:crm.partner.report.assign:0
-#: field:crm.partner.report.assign,activation:0 view:res.partner:0
-#: field:res.partner,activation:0 view:res.partner.activation:0
+#: field:crm.partner.report.assign,activation:0
+#: view:res.partner:0
+#: field:res.partner,activation:0
+#: view:res.partner.activation:0
 msgid "Activation"
 msgstr "Активация"
 
 #. module: crm_partner_assign
-#: view:crm.lead:0 field:crm.lead,partner_assigned_id:0
+#: view:crm.lead:0
+#: field:crm.lead,partner_assigned_id:0
 msgid "Assigned Partner"
 msgstr "Назначенный партнер"
 
 #. module: crm_partner_assign
 #: field:res.partner,grade_id:0
 msgid "Partner Level"
-msgstr "Уровень контрагента"
+msgstr ""
 
 #. module: crm_partner_assign
 #: help:crm.lead.forward.to.partner,to_read:0
 msgid "Current user has an unread notification linked to this message"
-msgstr "Текущий пользователь имеет непрочитанные уведомления, связанные с этим сообщением"
+msgstr ""
+"Текущий пользователь имеет непрочитанные уведомления, связанные с этим "
+"сообщением"
 
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,type:0
@@ -794,17 +828,19 @@ msgstr "Названия"
 #: model:ir.actions.act_window,name:crm_partner_assign.res_partner_activation_act
 #: model:ir.ui.menu,name:crm_partner_assign.res_partner_activation_config_mi
 msgid "Partner Activations"
-msgstr "Активации партнера"
+msgstr ""
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,country_id:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,country_id:0
 #: view:crm.partner.report.assign:0
 #: field:crm.partner.report.assign,country_id:0
 msgid "Country"
 msgstr "Страна"
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,year:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,year:0
 msgid "Year"
 msgstr "Год"
 
@@ -834,7 +870,9 @@ msgstr "Анализ сотрудничества"
 msgid ""
 "Technical field holding the message notifications. Use notified_partner_ids "
 "to access notified partners."
-msgstr "Техническое поле, содержащее уведомления. Используйте notified_partner_ids для доступа к оповещаемым партнерам."
+msgstr ""
+"Техническое поле, содержащее уведомления. Используйте notified_partner_ids "
+"для доступа к оповещаемым партнерам."
 
 #. module: crm_partner_assign
 #: view:crm.partner.report.assign:0
@@ -864,9 +902,11 @@ msgstr "Информация о вопросе"
 #. module: crm_partner_assign
 #: help:crm.lead.forward.to.partner,author_id:0
 msgid ""
-"Author of the message. If not set, email_from may hold an email address that"
-" did not match any partner."
-msgstr "Автор сообщения. Если не установлен, email_from может содержать адрес почты, который не соответствует ни одному партнеру."
+"Author of the message. If not set, email_from may hold an email address that "
+"did not match any partner."
+msgstr ""
+"Автор сообщения. Если не установлен, email_from может содержать адрес почты, "
+"который не соответствует ни одному партнеру."
 
 #. module: crm_partner_assign
 #: model:ir.model,name:crm_partner_assign.model_crm_partner_report_assign

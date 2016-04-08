@@ -1,3 +1,4 @@
+pychart
 babel
 docutils
 feedparser
@@ -9,13 +10,12 @@ mock
 PIL
 psutil
 psycopg2 >= 2.2
-pychart
 pydot
 python-dateutil < 2
 python-ldap
 python-openid
 pytz
-pywebdav < 0.9.8
+pywebdav <= 0.9.4
 pyyaml
 reportlab
 simplejson

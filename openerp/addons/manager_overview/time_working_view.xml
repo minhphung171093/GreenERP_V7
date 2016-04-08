@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+ <data>
+        <record id="view_time_working_tree2" model="ir.ui.view">
+            <field name="name">time.working.tree</field>
+            <field name="model">time.working</field>
+            <field eval="2" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Time Working">
+                    <field name="a_from" widget="float_time"/>
+                    <field name="a_to" widget="float_time"/>
+                    <field name="b_from" widget="float_time"/>
+                    <field name="b_to" widget="float_time"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="view_time_working_form2" model="ir.ui.view">
+            <field name="name">time.working.form</field>
+            <field name="model">time.working</field>
+            <field eval="2" name="priority"/>
+            <field name="arch" type="xml">
+                <form string="Time Working"  version="7.0">
+                	<sheet>
+                		<h2>
+                			<label string="Morning"/>
+                		</h2>
+                		<group>
+		                    <field name="a_from" widget="float_time"/>
+		                    <field name="a_to" widget="float_time"/>
+	                    </group>
+	                    <h2>
+                			<label string="Affternoon"/>
+                		</h2>
+                		<group>
+		                    <field name="b_from" widget="float_time"/>
+		                    <field name="b_to" widget="float_time"/>
+	                    </group>
+	                </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <record id="time_working_action_form" model="ir.actions.act_window">
+            <field name="name">Time Working</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">time.working</field>
+            <field name="view_type">form</field>
+            <field name="domain"></field>
+            <field name="view_id" ref="view_time_working_tree2"/>
+        </record>
+        
+        <menuitem action="time_working_action_form"
+            id="menu_time_working_action_form"
+            parent="user_overview.user_overview1" sequence="40"
+            groups="project.group_project_manager"/>
+            
+                 
+   </data>  
+</openerp>

@@ -356,21 +356,17 @@ class datetime(_column):
         else:
             registry = openerp.modules.registry.RegistryManager.get(cr.dbname)
             tz_name = registry.get('res.users').read(cr, SUPERUSER_ID, uid, ['tz'])['tz']
-        utc_timestamp = pytz.utc.localize(timestamp, is_dst=False) # UTC = no DST
         if tz_name:
             try:
+                utc = pytz.timezone('UTC')
                 context_tz = pytz.timezone(tz_name)
+                utc_timestamp = utc.localize(timestamp, is_dst=False) # UTC = no DST
                 return utc_timestamp.astimezone(context_tz)
             except Exception:
                 _logger.debug("failed to compute context/client-specific timestamp, "
                               "using the UTC value",
                               exc_info=True)
-        return utc_timestamp
-
-    @classmethod
-    def _as_display_name(cls, field, cr, uid, obj, value, context=None):
-        value = datetime.context_timestamp(cr, uid, DT.datetime.strptime(value, tools.DEFAULT_SERVER_DATETIME_FORMAT), context=context)
-        return tools.ustr(value.strftime(tools.DEFAULT_SERVER_DATETIME_FORMAT))
+        return timestamp
 
 class binary(_column):
     _type = 'binary'
@@ -468,7 +464,7 @@ class many2one(_column):
         # we use uid=1 because the visibility of a many2one field value (just id and name)
         # must be the access right of the parent form and not the linked object itself.
         records = dict(obj.name_get(cr, SUPERUSER_ID,
-                                    list(set([x for x in res.values() if x and isinstance(x, (int,long))])),
+                                    list(set([x for x in res.values() if isinstance(x, (int,long))])),
                                     context=context))
         for id in res:
             if res[id] in records:
@@ -1146,17 +1142,9 @@ class function(_column):
         return result
 
     def get(self, cr, obj, ids, name, uid=False, context=None, values=None):
-        multi = self._multi
-        # if we already have a value, don't recompute it.
-        # This happen if case of stored many2one fields
-        if values and not multi and name in values[0]:
-            result = dict((v['id'], v[name]) for v in values)
-        elif values and multi and all(n in values[0] for n in name):
-            result = dict((v['id'], dict((n, v[n]) for n in name)) for v in values)
-        else:
-            result = self._fnct(obj, cr, uid, ids, name, self._arg, context)
+        result = self._fnct(obj, cr, uid, ids, name, self._arg, context)
         for id in ids:
-            if multi and id in result:
+            if self._multi and id in result:
                 for field, value in result[id].iteritems():
                     if value:
                         result[id][field] = self.postprocess(cr, uid, obj, field, value, context)
@@ -1432,8 +1420,7 @@ class property(function):
         default_val = self._get_default(obj, cr, uid, prop_name, context)
 
         property_create = False
-        if isinstance(default_val, (openerp.osv.orm.browse_record,
-                                    openerp.osv.orm.browse_null)):
+        if isinstance(default_val, openerp.osv.orm.browse_record):
             if default_val.id != id_val:
                 property_create = True
         elif default_val != id_val:

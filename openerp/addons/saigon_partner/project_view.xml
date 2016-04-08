@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		<record id="project_project_view_form_inherit" model="ir.ui.view">
+            <field name="name">project.project.view.form.inherit</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project"/>
+            <field name="arch" type="xml">
+                <data>
+                
+                    <xpath expr="//page[@string='Team']" position="attributes">
+                    	<attribute name="invisible">1</attribute>
+                    </xpath>
+                    
+                    <xpath expr="//field[@name='user_id']" position="after">
+                    	<field name="project_type_id" on_change="onchange_project_type(project_type_id)"/>
+                    </xpath>
+                    
+                </data>
+            </field>
+        </record>
+        
+        <record model="ir.ui.menu" id="project.menu_projects">
+		    <field name="groups_id" eval="[(6, 0, [ref('project.group_project_manager')])]" />
+		</record>
+
+    </data>
+</openerp>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+ <data>
+	
+		<record id="view_manager_overview_search_form" model="ir.ui.view">
+            <field name="name">project.task.search.form</field>
+            <field name="model">project.task</field>
+            <field name="arch" type="xml">
+               <search string="Tasks">
+                    <field name="name" string="Tasks"/>
+                    <field name="project_id"/>
+                    <filter name="open" string="Running" domain="[('flag','=',False)]"/>
+			<filter name="search_inprogress" string="In Progress" domain="[('stage_id.state','=','open')]"/>
+                    <group expand="0" string="Group By...">
+                        <filter name="user_id" string="User" icon="terp-personal" domain="[('project_id.name','!=','Accounting')]" context="{'group_by':'user_id'}"/>
+                        <filter name="project_id" string="Project" icon="terp-personal" domain="[('project_id.name','!=','Accounting')]" context="{'group_by':'project_id'}"/>
+                        <filter name="stage_id" string="Stages" icon="terp-personal" domain="[('project_id.name','!=','Accounting')]" context="{'group_by':'stage_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="view_manager_overview_tree2" model="ir.ui.view">
+            <field name="name">manager.overview.tree</field>
+            <field name="model">project.task</field>
+            <field eval="2" name="priority"/>
+            <field name="arch" type="xml">
+                <tree editable="top" string="Tasks">
+                    <field name="name" string="Task"/>
+                    <field name="user_id" string="User"/>
+                    <field name="project_id" />
+                    <field name="date_deadline" />
+                    <field name="priority"/>
+                    <field name="total_hours" invisible="1"/>
+                    <field name="planned_hours" string="Planned Hour(s)" sum="Planned Hours" on_change="onchange_planned(planned_hours, effective_hours)"/>
+                    <field name="effective_hours" widget="float_time" sum="Spent Hours"/>
+                    <field name="hours_spent_now" string="Hours Spent Update" sum="Hours Spent Update"/>
+                    <field name="remaining_hours" widget="float_time" sum="Remaining Hours" on_change="onchange_remaining(remaining_hours,planned_hours)" invisible="1" groups="project.group_time_work_estimation_tasks"/>
+                    <field name="progress" widget="progressbar" />
+                    <field name="stage_id"/>
+                    <field name="flag" invisible="1"/>
+	                <button name="task_login" attrs="{'invisible':[('flag','=',False)]}" string="Paused" type="object" icon="logout" class="oe_highlight" context="{'inventory_id':True}"/>
+	                <button name="task_logout" attrs="{'invisible':[('flag','=',True)]}" string="Working" type="object" icon="login" class="oe_highlight" context="{'inventory_id':True}"/>
+                    <field name="status_task"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="manager_overview_action_form" model="ir.actions.act_window">
+            <field name="name">Manager Overview</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">project.task</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('project_id.name','!=','Accounting')]</field>
+		<field name="context">{'search_default_search_inprogress':1}</field>
+            <field name="search_view_id" ref="view_manager_overview_search_form"/>
+            <field name="view_id" ref="view_manager_overview_tree2"/>
+        </record>
+        
+        <record id="manager_overview_action_form2" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_manager_overview_tree2"/>
+            <field name="act_window_id" ref="manager_overview_action_form"/>
+        </record>
+        
+        <menuitem action="manager_overview_action_form"
+            id="menu_manager_overview_action_form"
+            parent="user_overview1" sequence="20"
+            groups="project.group_project_manager"/>
+        
+        <record id="view_error_reporting_tree" model="ir.ui.view">
+            <field name="name">error.reporting.tree</field>
+            <field name="model">error.reporting</field>
+            <field eval="2" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="ErrorR eporting">
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+        
+        <record id="error_reporting_view_form" model="ir.ui.view">
+            <field name="name">error.reporting.form</field>
+            <field name="model">error.reporting</field>
+            <field name="arch" type="xml">
+                <form string="Error Reporting" version="7.0">
+                	<sheet>
+                		<group>
+		                    <field name="name" />
+	                    </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <record id="error_reporting_action_form" model="ir.actions.act_window">
+            <field name="name">Error Reporting</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">error.reporting</field>
+            <field name="view_type">form</field>
+            <field name="domain">[]</field>
+            <field name="view_id" ref="view_error_reporting_tree"/>
+        </record>
+        
+        <menuitem action="error_reporting_action_form"
+            id="menu_error_reporting_action_form"
+            parent="base.menu_definitions" sequence="40"
+            groups="project.group_project_manager"/>
+        
+   </data>  
+</openerp>

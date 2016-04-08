@@ -1,36 +1,36 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * crm_partner_assign
-# 
-# Translators:
+# Lithuanian translation for openobject-addons
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2013-03-07 08:38+0000\n"
-"PO-Revision-Date: 2015-05-29 13:00+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Lithuanian (http://www.transifex.com/projects/p/odoo-7/language/lt/)\n"
+"PO-Revision-Date: 2012-12-21 23:00+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Lithuanian <lt@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: lt\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-11-21 06:06+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,delay_close:0
 msgid "Delay to Close"
-msgstr "Delsimas užverti"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,author_id:0
 msgid "Author"
-msgstr "Autorius"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,planned_revenue:0
 msgid "Planned Revenue"
-msgstr "Planuojamos pajamos"
+msgstr ""
 
 #. module: crm_partner_assign
 #: help:crm.lead.forward.to.partner,type:0
@@ -42,17 +42,18 @@ msgstr ""
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,nbr:0
 msgid "# of Cases"
-msgstr "# įvykių"
+msgstr ""
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 view:crm.partner.report.assign:0
+#: view:crm.lead.report.assign:0
+#: view:crm.partner.report.assign:0
 msgid "Group By..."
-msgstr "Grupuoti pagal..."
+msgstr ""
 
 #. module: crm_partner_assign
 #: help:crm.lead.forward.to.partner,body:0
 msgid "Automatically sanitized HTML contents"
-msgstr "Automatiškai apribojamas HTML turinys"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.lead:0
@@ -72,7 +73,7 @@ msgstr ""
 #. module: crm_partner_assign
 #: view:crm.lead.forward.to.partner:0
 msgid "Body"
-msgstr "Tekstas"
+msgstr ""
 
 #. module: crm_partner_assign
 #: help:crm.lead.forward.to.partner,email_from:0
@@ -89,12 +90,12 @@ msgstr ""
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,type:0
 msgid "Lead"
-msgstr "Iniciatyva"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.lead.report.assign:0
 msgid "Delay to close"
-msgstr "Delsimas užverti"
+msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.forward.to.partner,history_mode:0
@@ -102,14 +103,15 @@ msgid "Whole Story"
 msgstr ""
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,company_id:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,company_id:0
 msgid "Company"
-msgstr "Įmonė"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,notification_ids:0
 msgid "Notifications"
-msgstr "Pranešimai"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,date_assign:0
@@ -117,20 +119,22 @@ msgid "Partner Date"
 msgstr ""
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 view:crm.partner.report.assign:0
+#: view:crm.lead.report.assign:0
+#: view:crm.partner.report.assign:0
 #: view:res.partner:0
 msgid "Salesperson"
-msgstr "Pardavėjas"
+msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,priority:0
 msgid "Highest"
-msgstr "Didžiausias"
+msgstr ""
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,day:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,day:0
 msgid "Day"
-msgstr "Data"
+msgstr ""
 
 #. module: crm_partner_assign
 #: help:crm.lead.forward.to.partner,message_id:0
@@ -148,14 +152,15 @@ msgid "Latest email"
 msgstr ""
 
 #. module: crm_partner_assign
-#: field:crm.lead,partner_latitude:0 field:res.partner,partner_latitude:0
+#: field:crm.lead,partner_latitude:0
+#: field:res.partner,partner_latitude:0
 msgid "Geo Latitude"
 msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,state:0
 msgid "Cancelled"
-msgstr "Atšauktas"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.lead:0
@@ -165,7 +170,7 @@ msgstr ""
 #. module: crm_partner_assign
 #: model:ir.model,name:crm_partner_assign.model_crm_lead_forward_to_partner
 msgid "Email composition wizard"
-msgstr "El. laiško sukūrimo vedlys"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.partner.report.assign,turnover:0
@@ -175,7 +180,7 @@ msgstr ""
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,date_closed:0
 msgid "Close Date"
-msgstr "Užvėrimo data"
+msgstr ""
 
 #. module: crm_partner_assign
 #: help:res.partner,partner_weight:0
@@ -208,7 +213,7 @@ msgstr ""
 #. module: crm_partner_assign
 #: view:res.partner:0
 msgid "Previous"
-msgstr "Ankstesnis"
+msgstr ""
 
 #. module: crm_partner_assign
 #: code:addons/crm_partner_assign/partner_geo_assign.py:36
@@ -219,7 +224,7 @@ msgstr ""
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,email_from:0
 msgid "From"
-msgstr "Nuo"
+msgstr ""
 
 #. module: crm_partner_assign
 #: model:ir.actions.act_window,name:crm_partner_assign.res_partner_grade_action
@@ -229,40 +234,42 @@ msgid "Partner Grade"
 msgstr ""
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 view:crm.partner.report.assign:0
+#: view:crm.lead.report.assign:0
+#: view:crm.partner.report.assign:0
 msgid "Section"
-msgstr "Sekcija"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.lead.forward.to.partner:0
 msgid "Send"
-msgstr "Siųsti"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:res.partner:0
 msgid "Next"
-msgstr "Kitas"
+msgstr ""
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,priority:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,priority:0
 msgid "Priority"
-msgstr "Svarbumas"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,delay_expected:0
 msgid "Overpassed Deadline"
-msgstr "Persidengęs baigimo terminas"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,type:0
 #: field:crm.lead.report.assign,type:0
 msgid "Type"
-msgstr "Tipas"
+msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.forward.to.partner,type:0
 msgid "Email"
-msgstr "El. paštas"
+msgstr ""
 
 #. module: crm_partner_assign
 #: help:crm.lead,partner_assigned_id:0
@@ -272,7 +279,7 @@ msgstr ""
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,priority:0
 msgid "Lowest"
-msgstr "Mažiausias"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.partner.report.assign:0
@@ -282,7 +289,7 @@ msgstr ""
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,template_id:0
 msgid "Template"
-msgstr "Šablonas"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.lead.report.assign:0
@@ -292,12 +299,12 @@ msgstr ""
 #. module: crm_partner_assign
 #: view:crm.lead.report.assign:0
 msgid "Leads Analysis"
-msgstr "Iniciatyvų analizė"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,creation_date:0
 msgid "Creation Date"
-msgstr "Sukūrimo data"
+msgstr ""
 
 #. module: crm_partner_assign
 #: model:ir.model,name:crm_partner_assign.model_res_partner_activation
@@ -312,12 +319,12 @@ msgstr ""
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,res_id:0
 msgid "Related Document ID"
-msgstr "Susijęs dokumento ID"
+msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,state:0
 msgid "Pending"
-msgstr "Laukianti"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.lead:0
@@ -327,12 +334,12 @@ msgstr ""
 #. module: crm_partner_assign
 #: help:crm.lead.report.assign,type:0
 msgid "Type is used to separate Leads and Opportunities"
-msgstr "Tipas naudojamas atskirti iniciatyvas nuo pardavimo galimybių"
+msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,month:0
 msgid "July"
-msgstr "Liepa"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.partner.report.assign:0
@@ -340,19 +347,21 @@ msgid "Date Review"
 msgstr ""
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,stage_id:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,stage_id:0
 msgid "Stage"
-msgstr "Etapas"
+msgstr ""
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,state:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,state:0
 msgid "Status"
-msgstr "Būsena"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,to_read:0
 msgid "To read"
-msgstr "Neskaityta"
+msgstr ""
 
 #. module: crm_partner_assign
 #: code:addons/crm_partner_assign/wizard/crm_forward_to_partner.py:74
@@ -366,14 +375,16 @@ msgid "Geo Localization"
 msgstr ""
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 view:crm.partner.report.assign:0
+#: view:crm.lead.report.assign:0
+#: view:crm.partner.report.assign:0
 msgid "Opportunities Assignment Analysis"
 msgstr ""
 
 #. module: crm_partner_assign
-#: view:crm.lead.forward.to.partner:0 view:res.partner:0
+#: view:crm.lead.forward.to.partner:0
+#: view:res.partner:0
 msgid "Cancel"
-msgstr "Atšaukti"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,history_mode:0
@@ -383,12 +394,12 @@ msgstr ""
 #. module: crm_partner_assign
 #: view:res.partner:0
 msgid "Close"
-msgstr "Uždaryta"
+msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,month:0
 msgid "March"
-msgstr "Kovas"
+msgstr ""
 
 #. module: crm_partner_assign
 #: model:ir.actions.act_window,name:crm_partner_assign.action_report_crm_opportunity_assign
@@ -399,7 +410,7 @@ msgstr ""
 #. module: crm_partner_assign
 #: help:crm.lead.report.assign,delay_close:0
 msgid "Number of Days to close the case"
-msgstr "Dienų skaičius užverti įvykį"
+msgstr ""
 
 #. module: crm_partner_assign
 #: help:crm.lead.forward.to.partner,notified_partner_ids:0
@@ -410,28 +421,30 @@ msgstr ""
 #. module: crm_partner_assign
 #: selection:crm.lead.forward.to.partner,type:0
 msgid "Comment"
-msgstr "Komentaras"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:res.partner,partner_weight:0
 msgid "Weight"
-msgstr "Svoris"
+msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,month:0
 msgid "April"
-msgstr "Balandis"
+msgstr ""
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,grade_id:0
-#: view:crm.partner.report.assign:0 field:crm.partner.report.assign,grade_id:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,grade_id:0
+#: view:crm.partner.report.assign:0
+#: field:crm.partner.report.assign,grade_id:0
 msgid "Grade"
 msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,month:0
 msgid "December"
-msgstr "Gruodis"
+msgstr ""
 
 #. module: crm_partner_assign
 #: help:crm.lead.forward.to.partner,vote_user_ids:0
@@ -439,14 +452,15 @@ msgid "Users that voted for this message"
 msgstr ""
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,month:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,month:0
 msgid "Month"
-msgstr "Mėnuo"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,opening_date:0
 msgid "Opening Date"
-msgstr "Atidarymo data"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,child_ids:0
@@ -462,17 +476,17 @@ msgstr ""
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,subject:0
 msgid "Subject"
-msgstr "Tema"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.lead.forward.to.partner:0
 msgid "or"
-msgstr "arba"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,body:0
 msgid "Contents"
-msgstr "Turinys"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,vote_user_ids:0
@@ -482,7 +496,7 @@ msgstr ""
 #. module: crm_partner_assign
 #: view:crm.lead.report.assign:0
 msgid "#Opportunities"
-msgstr "Pardavimų galimybės"
+msgstr ""
 
 #. module: crm_partner_assign
 #: help:crm.lead.forward.to.partner,starred:0
@@ -498,22 +512,23 @@ msgstr ""
 #. module: crm_partner_assign
 #: view:crm.lead:0
 msgid "Team"
-msgstr "Komanda"
+msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,state:0
 msgid "Draft"
-msgstr "Juodraštis"
+msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,priority:0
 msgid "Low"
-msgstr "Žemas"
+msgstr ""
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 selection:crm.lead.report.assign,state:0
+#: view:crm.lead.report.assign:0
+#: selection:crm.lead.report.assign,state:0
 msgid "Closed"
-msgstr "Uždaryta"
+msgstr ""
 
 #. module: crm_partner_assign
 #: model:ir.actions.act_window,name:crm_partner_assign.action_crm_send_mass_forward
@@ -521,7 +536,8 @@ msgid "Mass forward to partner"
 msgstr ""
 
 #. module: crm_partner_assign
-#: view:res.partner:0 field:res.partner,opportunity_assigned_ids:0
+#: view:res.partner:0
+#: field:res.partner,opportunity_assigned_ids:0
 msgid "Assigned Opportunities"
 msgstr ""
 
@@ -538,7 +554,7 @@ msgstr ""
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,month:0
 msgid "August"
-msgstr "Rugpjūtis"
+msgstr ""
 
 #. module: crm_partner_assign
 #: help:crm.lead.forward.to.partner,record_name:0
@@ -548,51 +564,52 @@ msgstr ""
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,priority:0
 msgid "Normal"
-msgstr "Įprasta"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:res.partner:0
 msgid "Escalate"
-msgstr "Plėtojama"
+msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,month:0
 msgid "June"
-msgstr "Birželis"
+msgstr ""
 
 #. module: crm_partner_assign
 #: help:crm.lead.report.assign,delay_open:0
 msgid "Number of Days to open the case"
-msgstr "Dienų skaičius atverti įvykį"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,delay_open:0
 msgid "Delay to Open"
-msgstr "Delsimas atverti"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,user_id:0
 #: field:crm.partner.report.assign,user_id:0
 msgid "User"
-msgstr "Naudotojas"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:res.partner.grade,active:0
 msgid "Active"
-msgstr "Aktyvus"
+msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,month:0
 msgid "November"
-msgstr "Lapkritis"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.lead.report.assign:0
 msgid "Extended Filters..."
-msgstr "Išplėstiniai filtrai..."
+msgstr ""
 
 #. module: crm_partner_assign
-#: field:crm.lead,partner_longitude:0 field:res.partner,partner_longitude:0
+#: field:crm.lead,partner_longitude:0
+#: field:res.partner,partner_longitude:0
 msgid "Geo Longitude"
 msgstr ""
 
@@ -609,7 +626,7 @@ msgstr ""
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,month:0
 msgid "October"
-msgstr "Spalis"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.lead:0
@@ -619,7 +636,7 @@ msgstr ""
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,month:0
 msgid "January"
-msgstr "Sausis"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.lead.forward.to.partner:0
@@ -629,12 +646,12 @@ msgstr ""
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,date:0
 msgid "Date"
-msgstr "Data"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.lead.report.assign:0
 msgid "Planned Revenues"
-msgstr "Planuojamos pajamos"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:res.partner:0
@@ -660,7 +677,7 @@ msgstr ""
 #: view:crm.lead.forward.to.partner:0
 #: field:crm.lead.forward.to.partner,attachment_ids:0
 msgid "Attachments"
-msgstr "Priedai"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,record_name:0
@@ -668,9 +685,10 @@ msgid "Message Record Name"
 msgstr ""
 
 #. module: crm_partner_assign
-#: field:res.partner.activation,sequence:0 field:res.partner.grade,sequence:0
+#: field:res.partner.activation,sequence:0
+#: field:res.partner.grade,sequence:0
 msgid "Sequence"
-msgstr "Seka"
+msgstr ""
 
 #. module: crm_partner_assign
 #: code:addons/crm_partner_assign/partner_geo_assign.py:37
@@ -683,7 +701,7 @@ msgstr ""
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,month:0
 msgid "September"
-msgstr "Rugsėjis"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:res.partner.grade,name:0
@@ -696,9 +714,10 @@ msgid "Last date this case was forwarded/assigned to a partner"
 msgstr ""
 
 #. module: crm_partner_assign
-#: selection:crm.lead.report.assign,state:0 view:res.partner:0
+#: selection:crm.lead.report.assign,state:0
+#: view:res.partner:0
 msgid "Open"
-msgstr "Atvira"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,subtype_id:0
@@ -713,17 +732,17 @@ msgstr ""
 #. module: crm_partner_assign
 #: view:crm.lead.report.assign:0
 msgid "Current"
-msgstr "Naudojami"
+msgstr ""
 
 #. module: crm_partner_assign
 #: model:ir.model,name:crm_partner_assign.model_crm_lead
 msgid "Lead/Opportunity"
-msgstr "Iniciatyva/Galimybė"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,notified_partner_ids:0
 msgid "Notified partners"
-msgstr "Informuoti partneriai"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.lead.forward.to.partner:0
@@ -735,27 +754,30 @@ msgstr ""
 #: field:crm.lead.report.assign,section_id:0
 #: field:crm.partner.report.assign,section_id:0
 msgid "Sales Team"
-msgstr "Pardavimų komanda"
+msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,month:0
 msgid "May"
-msgstr "Gegužė"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,probable_revenue:0
 msgid "Probable Revenue"
-msgstr "Tikėtinos pajamos"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.partner.report.assign:0
-#: field:crm.partner.report.assign,activation:0 view:res.partner:0
-#: field:res.partner,activation:0 view:res.partner.activation:0
+#: field:crm.partner.report.assign,activation:0
+#: view:res.partner:0
+#: field:res.partner,activation:0
+#: view:res.partner.activation:0
 msgid "Activation"
 msgstr ""
 
 #. module: crm_partner_assign
-#: view:crm.lead:0 field:crm.lead,partner_assigned_id:0
+#: view:crm.lead:0
+#: field:crm.lead,partner_assigned_id:0
 msgid "Assigned Partner"
 msgstr ""
 
@@ -772,22 +794,22 @@ msgstr ""
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,type:0
 msgid "Opportunity"
-msgstr "Pardavimo galimybė"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,partner_id:0
 msgid "Customer"
-msgstr "Klientas"
+msgstr ""
 
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,month:0
 msgid "February"
-msgstr "Vasaris"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:res.partner.activation,name:0
 msgid "Name"
-msgstr "Pavadinimas"
+msgstr ""
 
 #. module: crm_partner_assign
 #: model:ir.actions.act_window,name:crm_partner_assign.res_partner_activation_act
@@ -796,21 +818,23 @@ msgid "Partner Activations"
 msgstr ""
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,country_id:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,country_id:0
 #: view:crm.partner.report.assign:0
 #: field:crm.partner.report.assign,country_id:0
 msgid "Country"
-msgstr "Valstybė"
+msgstr ""
 
 #. module: crm_partner_assign
-#: view:crm.lead.report.assign:0 field:crm.lead.report.assign,year:0
+#: view:crm.lead.report.assign:0
+#: field:crm.lead.report.assign,year:0
 msgid "Year"
-msgstr "Metai"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:res.partner:0
 msgid "Convert to Opportunity"
-msgstr "Konvertuoti į pardavimo galimybę"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.lead:0
@@ -820,7 +844,7 @@ msgstr ""
 #. module: crm_partner_assign
 #: view:crm.lead.report.assign:0
 msgid "Delay to open"
-msgstr "Delsimas atverti"
+msgstr ""
 
 #. module: crm_partner_assign
 #: model:ir.actions.act_window,name:crm_partner_assign.action_report_crm_partner_assign
@@ -863,8 +887,8 @@ msgstr ""
 #. module: crm_partner_assign
 #: help:crm.lead.forward.to.partner,author_id:0
 msgid ""
-"Author of the message. If not set, email_from may hold an email address that"
-" did not match any partner."
+"Author of the message. If not set, email_from may hold an email address that "
+"did not match any partner."
 msgstr ""
 
 #. module: crm_partner_assign
@@ -875,12 +899,12 @@ msgstr ""
 #. module: crm_partner_assign
 #: selection:crm.lead.report.assign,priority:0
 msgid "High"
-msgstr "Aukštas"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,partner_ids:0
 msgid "Additional contacts"
-msgstr "Papildomi kontaktai"
+msgstr ""
 
 #. module: crm_partner_assign
 #: help:crm.lead.forward.to.partner,parent_id:0
@@ -890,12 +914,12 @@ msgstr ""
 #. module: crm_partner_assign
 #: field:crm.lead.report.assign,create_date:0
 msgid "Create Date"
-msgstr "Sukūrimo data"
+msgstr ""
 
 #. module: crm_partner_assign
 #: field:crm.lead.forward.to.partner,filter_id:0
 msgid "Filters"
-msgstr "Filtrai"
+msgstr ""
 
 #. module: crm_partner_assign
 #: view:crm.lead.report.assign:0
@@ -904,4 +928,4 @@ msgstr "Filtrai"
 #: field:crm.partner.report.assign,partner_id:0
 #: model:ir.model,name:crm_partner_assign.model_res_partner
 msgid "Partner"
-msgstr "Partneris"
+msgstr ""

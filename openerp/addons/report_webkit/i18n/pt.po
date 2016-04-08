@@ -1,27 +1,26 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * report_webkit
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2012
+# Portuguese translation for openobject-addons
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-14 00:11+0000\n"
-"PO-Revision-Date: 2015-05-23 13:52+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Portuguese (http://www.transifex.com/projects/p/odoo-7/language/pt/)\n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2013-06-07 19:37+0000\n"
+"PO-Revision-Date: 2013-01-24 10:24+0000\n"
+"Last-Translator: Andrei Talpa (multibase.pt) <andrei.talpa@multibase.pt>\n"
+"Language-Team: Portuguese <pt@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: pt\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-11-21 06:32+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #. module: report_webkit
 #: view:ir.actions.report.xml:0
 msgid "Webkit Template (used if Report File is not found)"
-msgstr "Modelo Webkit (usado se o Ficheiro do Relatório não foi encontrado)"
+msgstr ""
 
 #. module: report_webkit
 #: selection:ir.header_webkit,format:0
@@ -31,13 +30,13 @@ msgstr "Tabloide 29 279.4 x 431.8 mm"
 #. module: report_webkit
 #: selection:ir.header_webkit,format:0
 msgid "Ledger  28  431.8 x 279.4 mm"
-msgstr "Ledger  28  431.8 x 279.4 mm"
+msgstr ""
 
 #. module: report_webkit
-#: code:addons/report_webkit/webkit_report.py:231
+#: code:addons/report_webkit/webkit_report.py:235
 #, python-format
 msgid "No header defined for this Webkit report!"
-msgstr "Nenhum cabeçalho definido para este relatório webkit!"
+msgstr ""
 
 #. module: report_webkit
 #: help:ir.header_img,type:0
@@ -47,11 +46,10 @@ msgstr "Tipo de imagem (png,gif,jpeg)"
 #. module: report_webkit
 #: help:ir.actions.report.xml,precise_mode:0
 msgid ""
-"This mode allow more precise element"
-"                                                             position as "
-"each object is printed on a separate HTML."
-"                                                            but memory and "
-"disk usage is wider"
+"This mode allow more precise element                                         "
+"                    position as each object is printed on a separate HTML.   "
+"                                                         but memory and disk "
+"usage is wider"
 msgstr ""
 
 #. module: report_webkit
@@ -60,15 +58,16 @@ msgid "Executive 4   7.5 x 10 inches, 190.5 x 254 mm"
 msgstr "Executivo 4 7.5 x 10 polegadas, 190.5 x 254 mm"
 
 #. module: report_webkit
-#: field:ir.header_img,company_id:0 field:ir.header_webkit,company_id:0
+#: field:ir.header_img,company_id:0
+#: field:ir.header_webkit,company_id:0
 msgid "Company"
 msgstr "Empresa"
 
 #. module: report_webkit
-#: code:addons/report_webkit/webkit_report.py:232
+#: code:addons/report_webkit/webkit_report.py:236
 #, python-format
 msgid "Please set a header in company settings."
-msgstr "Por favor, defina um cabeçalho em configurações da empresa."
+msgstr ""
 
 #. module: report_webkit
 #: selection:ir.header_webkit,format:0
@@ -99,7 +98,7 @@ msgstr "Webkit Cabeçalhos/Rodapés"
 #. module: report_webkit
 #: selection:ir.header_webkit,format:0
 msgid "Legal    3   8.5 x 14 inches, 215.9 x 355.6 mm"
-msgstr "Legal    3   8.5 x 14 inches, 215.9 x 355.6 mm"
+msgstr ""
 
 #. module: report_webkit
 #: model:ir.model,name:report_webkit.model_ir_header_webkit
@@ -112,10 +111,10 @@ msgid "A4  0   210 x 297 mm, 8.26 x 11.69 inches"
 msgstr "A4 0 210 x 297 mm, 8.26 x 11.69 polegadas"
 
 #. module: report_webkit
-#: code:addons/report_webkit/webkit_report.py:167
+#: code:addons/report_webkit/webkit_report.py:176
 #, python-format
 msgid "Webkit error"
-msgstr "Erro Webkit"
+msgstr ""
 
 #. module: report_webkit
 #: selection:ir.header_webkit,format:0
@@ -123,14 +122,14 @@ msgid "B2  17  500 x 707 mm"
 msgstr "B2 17 500 x 707 mm"
 
 #. module: report_webkit
-#: code:addons/report_webkit/webkit_report.py:259
-#: code:addons/report_webkit/webkit_report.py:270
-#: code:addons/report_webkit/webkit_report.py:279
-#: code:addons/report_webkit/webkit_report.py:292
-#: code:addons/report_webkit/webkit_report.py:303
+#: code:addons/report_webkit/webkit_report.py:262
+#: code:addons/report_webkit/webkit_report.py:273
+#: code:addons/report_webkit/webkit_report.py:282
+#: code:addons/report_webkit/webkit_report.py:295
+#: code:addons/report_webkit/webkit_report.py:306
 #, python-format
 msgid "Webkit render!"
-msgstr "Renderização Webkit!"
+msgstr ""
 
 #. module: report_webkit
 #: model:ir.model,name:report_webkit.model_ir_header_img
@@ -140,17 +139,17 @@ msgstr "ir.header_img"
 #. module: report_webkit
 #: field:ir.actions.report.xml,precise_mode:0
 msgid "Precise Mode"
-msgstr "Modo de Precisão"
+msgstr ""
 
 #. module: report_webkit
-#: code:addons/report_webkit/webkit_report.py:97
+#: code:addons/report_webkit/webkit_report.py:96
 #, python-format
 msgid ""
 "Please install executable on your system (sudo apt-get install wkhtmltopdf) "
 "or download it from here: "
 "http://code.google.com/p/wkhtmltopdf/downloads/list and set the path in the "
 "ir.config_parameter with the webkit_path key.Minimal version is 0.9.9"
-msgstr "Por favor, instale o executável no seu sistema (sudo apt-get install wkhtmltopdf) ou baixe-o aqui: http://code.google.com/p/wkhtmltopdf/downloads/list e defina o caminho no ir.config_parameter com a chave webkit_path .Minimal versão é 0.9.9"
+msgstr ""
 
 #. module: report_webkit
 #: selection:ir.header_webkit,format:0
@@ -196,16 +195,17 @@ msgstr "A1 6 594 x 841 mm"
 #. module: report_webkit
 #: help:ir.actions.report.xml,webkit_header:0
 msgid "The header linked to the report"
-msgstr "O cabeçalho ligado ao relatório"
+msgstr ""
 
 #. module: report_webkit
-#: code:addons/report_webkit/webkit_report.py:96
+#: code:addons/report_webkit/webkit_report.py:95
 #, python-format
 msgid "Wkhtmltopdf library path is not set"
-msgstr "O caminho para a libraria Wkhtmltopdf não está definido"
+msgstr ""
 
 #. module: report_webkit
-#: view:ir.actions.report.xml:0 view:res.company:0
+#: view:ir.actions.report.xml:0
+#: view:res.company:0
 msgid "Webkit"
 msgstr "Webkit"
 
@@ -232,12 +232,12 @@ msgstr "A6 10 105 x 148 mm"
 #. module: report_webkit
 #: help:ir.actions.report.xml,report_webkit_data:0
 msgid "This template will be used if the main report file is not found"
-msgstr "Este modelo será utilizado se o arquivo principal de relatório não for encontrado"
+msgstr ""
 
 #. module: report_webkit
 #: selection:ir.header_webkit,format:0
 msgid "Folio 27  210 x 330 mm"
-msgstr "Folio 27  210 x 330 mm"
+msgstr ""
 
 #. module: report_webkit
 #: field:ir.header_webkit,margin_top:0
@@ -254,7 +254,7 @@ msgstr "_Ok"
 msgid ""
 "Check this to add a Print action for this Report in the sidebar of the "
 "corresponding document types"
-msgstr "Marque essa opção para adicionar uma ação de impressão para este Relatório na barra lateral dos tipos de documentos correspondentes"
+msgstr ""
 
 #. module: report_webkit
 #: selection:ir.header_webkit,format:0
@@ -269,7 +269,7 @@ msgstr "Cabeçalho Webkit"
 #. module: report_webkit
 #: help:ir.actions.report.xml,webkit_debug:0
 msgid "Enable the webkit engine debugger"
-msgstr "Ativar o motor de debug Webkit"
+msgstr ""
 
 #. module: report_webkit
 #: field:ir.header_img,img:0
@@ -279,7 +279,7 @@ msgstr "Imagem"
 #. module: report_webkit
 #: view:ir.header_img:0
 msgid "Header Image"
-msgstr "Imagem de Cabeçalho"
+msgstr ""
 
 #. module: report_webkit
 #: field:res.company,header_webkit:0
@@ -291,7 +291,7 @@ msgstr "Html disponível"
 msgid ""
 "Check this to view the newly added internal print action after creating it "
 "(technical view) "
-msgstr "Marque esta opção para visualizar a ação de impressão interna recém-adicionada depois de criá-la (visão técnica) "
+msgstr ""
 
 #. module: report_webkit
 #: view:res.company:0
@@ -306,7 +306,7 @@ msgstr "Retrato"
 #. module: report_webkit
 #: view:report.webkit.actions:0
 msgid "or"
-msgstr "ou"
+msgstr ""
 
 #. module: report_webkit
 #: selection:ir.header_webkit,orientation:0
@@ -319,10 +319,10 @@ msgid "B8  22  62 x 88 mm"
 msgstr "B8 22 62 x 88 mm"
 
 #. module: report_webkit
-#: code:addons/report_webkit/webkit_report.py:168
+#: code:addons/report_webkit/webkit_report.py:177
 #, python-format
 msgid "The command 'wkhtmltopdf' failed with error code = %s. Message: %s"
-msgstr "O comando 'wkhtmltopdf' falhou com código de erro = %s. Mensagem: %s"
+msgstr ""
 
 #. module: report_webkit
 #: selection:ir.header_webkit,format:0
@@ -365,10 +365,10 @@ msgid "Right Margin (mm)"
 msgstr "Margem direita (mm)"
 
 #. module: report_webkit
-#: code:addons/report_webkit/webkit_report.py:226
+#: code:addons/report_webkit/webkit_report.py:230
 #, python-format
 msgid "Webkit report template not found!"
-msgstr "Modelo de Relatório Webkit não encontrado!"
+msgstr ""
 
 #. module: report_webkit
 #: field:ir.header_webkit,orientation:0
@@ -383,7 +383,7 @@ msgstr "B6 20 125 x 176 mm"
 #. module: report_webkit
 #: help:ir.header_webkit,html:0
 msgid "Set Webkit Report Header"
-msgstr "Definir Cabeçalho do Relatório Webkit"
+msgstr ""
 
 #. module: report_webkit
 #: field:ir.header_webkit,format:0
@@ -414,13 +414,13 @@ msgstr "B4 19 250 x 353 mm"
 #: model:ir.actions.act_window,name:report_webkit.action_header_img
 #: model:ir.ui.menu,name:report_webkit.menu_header_img
 msgid "Webkit Logos"
-msgstr "Logótipo Webkit"
+msgstr ""
 
 #. module: report_webkit
-#: code:addons/report_webkit/webkit_report.py:163
+#: code:addons/report_webkit/webkit_report.py:172
 #, python-format
 msgid "No diagnosis message was provided"
-msgstr "Nenhuma mensagem de diagnóstico foi gerada"
+msgstr ""
 
 #. module: report_webkit
 #: selection:ir.header_webkit,format:0
@@ -440,7 +440,7 @@ msgstr "Rodapé do webkit"
 #. module: report_webkit
 #: field:ir.actions.report.xml,webkit_debug:0
 msgid "Webkit debug"
-msgstr "Debug Webkit"
+msgstr ""
 
 #. module: report_webkit
 #: selection:ir.header_webkit,format:0
@@ -453,7 +453,8 @@ msgid "B0  14  1000 x 1414 mm"
 msgstr "B0 14 1000 x 1414 mm"
 
 #. module: report_webkit
-#: field:ir.header_img,name:0 field:ir.header_webkit,name:0
+#: field:ir.header_img,name:0
+#: field:ir.header_webkit,name:0
 msgid "Name"
 msgstr "Nome"
 
@@ -476,7 +477,7 @@ msgstr "Adicionar botões para impressão"
 #. module: report_webkit
 #: selection:ir.header_webkit,format:0
 msgid "Comm10E 25  105 x 241 mm, U.S. Common 10 Envelope"
-msgstr "Comm10E 25  105 x 241 mm, U.S. Common 10 Envelope"
+msgstr ""
 
 #. module: report_webkit
 #: field:ir.header_webkit,margin_left:0
@@ -484,7 +485,7 @@ msgid "Left Margin (mm)"
 msgstr "Margem esquerda (mm)"
 
 #. module: report_webkit
-#: code:addons/report_webkit/webkit_report.py:226
+#: code:addons/report_webkit/webkit_report.py:230
 #, python-format
 msgid "Error!"
 msgstr "Erro !"
@@ -492,7 +493,7 @@ msgstr "Erro !"
 #. module: report_webkit
 #: help:ir.header_webkit,footer_html:0
 msgid "Set Webkit Report Footer."
-msgstr "Definir Rodapé do Relatório Webkit"
+msgstr ""
 
 #. module: report_webkit
 #: selection:ir.header_webkit,format:0
@@ -505,12 +506,12 @@ msgid "ir.actions.report.xml"
 msgstr "ir.actions.report.xml"
 
 #. module: report_webkit
-#: code:addons/report_webkit/webkit_report.py:165
+#: code:addons/report_webkit/webkit_report.py:174
 #, python-format
 msgid "The following diagnosis message was provided:\n"
-msgstr "A seguinte mensagem de diagnóstico foi gerada:\n"
+msgstr ""
 
 #. module: report_webkit
 #: view:ir.header_webkit:0
 msgid "HTML Header"
-msgstr "Cabeçalho HTML"
+msgstr ""

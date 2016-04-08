@@ -1,22 +1,21 @@
-# Translation of OpenERP Server.
-# This file contains the translation of the following modules:
-# * share
-# 
-# Translators:
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2012
+# Swedish translation for openobject-addons
+# Copyright (c) 2012 Rosetta Contributors and Canonical Ltd 2012
+# This file is distributed under the same license as the openobject-addons package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo 7.0\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-14 00:11+0000\n"
-"PO-Revision-Date: 2015-05-29 13:16+0000\n"
-"Last-Translator: Martin Trigaux\n"
-"Language-Team: Swedish (http://www.transifex.com/projects/p/odoo-7/language/sv/)\n"
+"Project-Id-Version: openobject-addons\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2013-06-07 19:37+0000\n"
+"PO-Revision-Date: 2012-12-21 23:00+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Language: sv\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2013-11-21 06:34+0000\n"
+"X-Generator: Launchpad (build 16831)\n"
 
 #. module: share
 #: code:addons/share/wizard/share_wizard.py:842
@@ -72,7 +71,8 @@ msgstr "Delningstitel"
 #: code:addons/share/wizard/share_wizard.py:877
 #, python-format
 msgid ""
-"The documents are not attached, you can view them online directly on my OpenERP server at:\n"
+"The documents are not attached, you can view them online directly on my "
+"OpenERP server at:\n"
 "    %s\n"
 "\n"
 msgstr ""
@@ -97,7 +97,8 @@ msgid "Share Access URL"
 msgstr "Delnings URL"
 
 #. module: share
-#: field:share.wizard,email_1:0 field:share.wizard,email_2:0
+#: field:share.wizard,email_1:0
+#: field:share.wizard,email_2:0
 #: field:share.wizard,email_3:0
 msgid "New user email"
 msgstr ""
@@ -106,7 +107,8 @@ msgstr ""
 #: code:addons/share/wizard/share_wizard.py:887
 #, python-format
 msgid "You may use your current login (%s) and password to view them.\n"
-msgstr "Du kan använda nuvarande inloggning (%s) och lösenord för att se dem.\n"
+msgstr ""
+"Du kan använda nuvarande inloggning (%s) och lösenord för att se dem.\n"
 
 #. module: share
 #: code:addons/share/wizard/share_wizard.py:621
@@ -134,7 +136,8 @@ msgid "Sharing filter created by user %s (%s) for group %s"
 msgstr ""
 
 #. module: share
-#: field:share.wizard,embed_url:0 field:share.wizard.result.line,share_url:0
+#: field:share.wizard,embed_url:0
+#: field:share.wizard.result.line,share_url:0
 msgid "Share URL"
 msgstr ""
 
@@ -152,7 +155,8 @@ msgstr ""
 
 #. module: share
 #. openerp-web
-#: code:addons/share/static/src/js/share.js:60 view:share.wizard:0
+#: code:addons/share/static/src/js/share.js:60
+#: view:share.wizard:0
 #, python-format
 msgid "Share"
 msgstr "Utdelning"
@@ -166,7 +170,8 @@ msgstr ""
 #. module: share
 #: code:addons/share/wizard/share_wizard.py:669
 #, python-format
-msgid "Please indicate the emails of the persons to share with, one per line."
+msgid ""
+"Please indicate the emails of the persons to share with, one per line."
 msgstr ""
 
 #. module: share
@@ -212,12 +217,7 @@ msgstr ""
 #. module: share
 #: view:share.wizard:0
 msgid "Configuration"
-msgstr "Inställningar"
-
-#. module: share
-#: selection:share.wizard,access_mode:0
-msgid "Can view"
-msgstr "Kan se"
+msgstr ""
 
 #. module: share
 #: view:share.wizard:0
@@ -230,6 +230,13 @@ msgstr ""
 #: field:res.groups,share:0
 msgid "Share Group"
 msgstr "Delningsgrupp"
+
+#. module: share
+#: code:addons/share/wizard/share_wizard.py:835
+#: code:addons/share/wizard/share_wizard.py:866
+#, python-format
+msgid "Email required"
+msgstr "E-post krävs"
 
 #. module: share
 #: view:share.wizard:0
@@ -261,7 +268,8 @@ msgstr ""
 #: code:addons/share/wizard/share_wizard.py:890
 #, python-format
 msgid ""
-"OpenERP is a powerful and user-friendly suite of Business Applications (CRM, Sales, HR, etc.)\n"
+"OpenERP is a powerful and user-friendly suite of Business Applications (CRM, "
+"Sales, HR, etc.)\n"
 "It is open source and can be found on http://www.openerp.com."
 msgstr ""
 
@@ -358,7 +366,8 @@ msgstr "Användare"
 #: code:addons/share/wizard/share_wizard.py:658
 #, python-format
 msgid ""
-"Sorry, the current screen and filter you are trying to share are not supported at the moment.\n"
+"Sorry, the current screen and filter you are trying to share are not "
+"supported at the moment.\n"
 "You may want to try a simpler filter."
 msgstr ""
 
@@ -390,7 +399,8 @@ msgid "{'search_default_no_share':1}"
 msgstr ""
 
 #. module: share
-#: view:share.wizard:0 field:share.wizard,result_line_ids:0
+#: view:share.wizard:0
+#: field:share.wizard,result_line_ids:0
 msgid "Summary"
 msgstr "Sammandrag"
 
@@ -438,7 +448,7 @@ msgstr "share.wizard.result.line"
 #. module: share
 #: field:share.wizard,embed_code:0
 msgid "Code"
-msgstr "Kod"
+msgstr ""
 
 #. module: share
 #: help:share.wizard,user_type:0
@@ -459,11 +469,9 @@ msgid "Current View Type"
 msgstr ""
 
 #. module: share
-#: code:addons/share/wizard/share_wizard.py:835
-#: code:addons/share/wizard/share_wizard.py:866
-#, python-format
-msgid "Email Required"
-msgstr ""
+#: selection:share.wizard,access_mode:0
+msgid "Can view"
+msgstr "Kan se"
 
 #. module: share
 #: selection:share.wizard,access_mode:0
@@ -499,7 +507,8 @@ msgstr ""
 #: model:res.groups,comment:share.group_share_user
 msgid ""
 "\n"
-"Members of this groups have access to the sharing wizard, which allows them to invite external users to view or edit some of their documents."
+"Members of this groups have access to the sharing wizard, which allows them "
+"to invite external users to view or edit some of their documents."
 msgstr ""
 
 #. module: share
@@ -513,7 +522,7 @@ msgstr ""
 #. module: share
 #: model:ir.model,name:share.model_res_users
 msgid "Users"
-msgstr "Användare"
+msgstr ""
 
 #. module: share
 #: code:addons/share/wizard/share_wizard.py:876
@@ -526,7 +535,7 @@ msgstr ""
 #. module: share
 #: model:ir.model,name:share.model_res_groups
 msgid "Access Groups"
-msgstr "Rättighetsgrupper"
+msgstr ""
 
 #. module: share
 #: field:share.wizard,invite:0
@@ -542,7 +551,8 @@ msgid "Password"
 msgstr "Lösenord"
 
 #. module: share
-#: code:addons/share/wizard/share_wizard.py:77 field:share.wizard,new_users:0
+#: code:addons/share/wizard/share_wizard.py:77
+#: field:share.wizard,new_users:0
 #, python-format
 msgid "Emails"
 msgstr "E-post"
@@ -600,7 +610,7 @@ msgstr "ir.model.access"
 #. module: share
 #: view:share.wizard:0
 msgid "or"
-msgstr "eller"
+msgstr ""
 
 #. module: share
 #: help:share.wizard,access_mode:0

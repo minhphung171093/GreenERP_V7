@@ -401,7 +401,7 @@ def is_leaf(element, internal=False):
         and len(element) == 3 \
         and element[1] in INTERNAL_OPS \
         and ((isinstance(element[0], basestring) and element[0])
-             or tuple(element) in (TRUE_LEAF, FALSE_LEAF))
+             or element in (TRUE_LEAF, FALSE_LEAF))
 
 
 # --------------------------------------------------
@@ -490,7 +490,7 @@ class ExtendedLeaf(object):
     #       i.e.: many2one: 'state_id': current field name
     # --------------------------------------------------
 
-    def __init__(self, leaf, model, join_context=None, internal=False):
+    def __init__(self, leaf, model, join_context=None):
         """ Initialize the ExtendedLeaf
 
             :attr [string, tuple] leaf: operator or tuple-formatted domain
@@ -529,7 +529,7 @@ class ExtendedLeaf(object):
             self._models.append(item[0])
         self._models.append(model)
         # check validity
-        self.check_leaf(internal)
+        self.check_leaf()
 
     def __str__(self):
         return '<osv.ExtendedLeaf: %s on %s (ctx: %s)>' % (str(self.leaf), self.model._table, ','.join(self._get_context_debug()))
@@ -575,7 +575,7 @@ class ExtendedLeaf(object):
     # Leaf manipulation
     # --------------------------------------------------
 
-    def check_leaf(self, internal=False):
+    def check_leaf(self):
         """ Leaf validity rules:
             - a valid leaf is an operator or a leaf
             - a valid leaf has a field objects unless
@@ -584,7 +584,7 @@ class ExtendedLeaf(object):
                 - left is id, operator is 'child_of'
                 - left is in MAGIC_COLUMNS
         """
-        if not is_operator(self.leaf) and not is_leaf(self.leaf, internal):
+        if not is_operator(self.leaf) and not is_leaf(self.leaf, True):
             raise ValueError("Invalid leaf %s" % str(self.leaf))
 
     def is_operator(self):
@@ -603,14 +603,14 @@ class ExtendedLeaf(object):
         self.leaf = normalize_leaf(self.leaf)
         return True
 
-def create_substitution_leaf(leaf, new_elements, new_model=None, internal=False):
+def create_substitution_leaf(leaf, new_elements, new_model=None):
     """ From a leaf, create a new leaf (based on the new_elements tuple
         and new_model), that will have the same join context. Used to
         insert equivalent leafs in the processing stack. """
     if new_model is None:
         new_model = leaf.model
     new_join_context = [tuple(context) for context in leaf.join_context]
-    new_leaf = ExtendedLeaf(new_elements, new_model, join_context=new_join_context, internal=internal)
+    new_leaf = ExtendedLeaf(new_elements, new_model, join_context=new_join_context)
     return new_leaf
 
 class expression(object):
@@ -1037,32 +1037,36 @@ class expression(object):
 
                     unaccent = self._unaccent if sql_operator.endswith('like') else lambda x: x
 
+                    trans_left = unaccent('value')
+                    quote_left = unaccent(_quote(left))
                     instr = unaccent('%s')
 
                     if sql_operator == 'in':
                         # params will be flatten by to_sql() => expand the placeholders
                         instr = '(%s)' % ', '.join(['%s'] * len(right))
 
-                    subselect = """WITH temp_irt_current (id, name) as (
-                            SELECT ct.id, coalesce(it.value,ct.{quote_left})
-                            FROM {current_table} ct 
-                            LEFT JOIN ir_translation it ON (it.name = %s and 
-                                        it.lang = %s and 
-                                        it.type = %s and 
-                                        it.res_id = ct.id and 
-                                        it.value != '')
-                            ) 
-                            SELECT id FROM temp_irt_current WHERE {name} {operator} {right} order by name
-                            """.format(current_table=working_model._table, quote_left=_quote(left), name=unaccent('name'), 
-                                       operator=sql_operator, right=instr)
+                    subselect = """(SELECT res_id
+                                      FROM ir_translation
+                                     WHERE name = %s
+                                       AND lang = %s
+                                       AND type = %s
+                                       AND {trans_left} {operator} {right}
+                                   ) UNION (
+                                    SELECT id
+                                      FROM "{table}"
+                                     WHERE {left} {operator} {right}
+                                   )
+                                """.format(trans_left=trans_left, operator=sql_operator,
+                                           right=instr, table=working_model._table, left=quote_left)
 
                     params = (
                         working_model._name + ',' + left,
                         context.get('lang') or 'en_US',
                         'model',
                         right,
+                        right,
                     )
-                    push(create_substitution_leaf(leaf, ('id', inselect_operator, (subselect, params)), working_model, internal=True))
+                    push(create_substitution_leaf(leaf, ('id', inselect_operator, (subselect, params)), working_model))
 
                 else:
                     push_result(leaf)

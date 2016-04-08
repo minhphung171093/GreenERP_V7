@@ -31,7 +31,6 @@ from openerp import pooler, tools
 from openerp.osv import fields, osv, expression
 from openerp.tools.translate import _
 from openerp.tools.float_utils import float_round as round
-from openerp.tools.safe_eval import safe_eval as eval
 
 import openerp.addons.decimal_precision as dp
 
@@ -227,36 +226,29 @@ class account_account(osv.osv):
     _description = "Account"
     _parent_store = True
 
-    def _where_calc(self, cr, uid, domain, active_test=True, context=None):
-        """ Convert domains to allow easier filtering:
-                code: force case insensitive and right side matching search
-                journal_id: restrict to the accounts sharing the same account.account.type
-        """
+    def search(self, cr, uid, args, offset=0, limit=None, order=None,
+            context=None, count=False):
+        if context is None:
+            context = {}
         pos = 0
-        while pos < len(domain):
-            if domain[pos][0] == 'code' and domain[pos][1] in ('like', 'ilike') and domain[pos][2]:
-                domain[pos] = ('code', '=like', tools.ustr(domain[pos][2].replace('%', '')) + '%')
-            if domain[pos][0] == 'journal_id':
-                if not domain[pos][2]:
-                    del domain[pos]
+
+        while pos < len(args):
+
+            if args[pos][0] == 'code' and args[pos][1] in ('like', 'ilike') and args[pos][2]:
+                args[pos] = ('code', '=like', tools.ustr(args[pos][2].replace('%', ''))+'%')
+            if args[pos][0] == 'journal_id':
+                if not args[pos][2]:
+                    del args[pos]
                     continue
-                jour = self.pool.get('account.journal').browse(cr, uid, domain[pos][2], context=context)
-                if (not (jour.account_control_ids or jour.type_control_ids)) or not domain[pos][2]:
-                    domain[pos] = ('type', 'not in', ('consolidation', 'view'))
+                jour = self.pool.get('account.journal').browse(cr, uid, args[pos][2], context=context)
+                if (not (jour.account_control_ids or jour.type_control_ids)) or not args[pos][2]:
+                    args[pos] = ('type','not in',('consolidation','view'))
                     continue
                 ids3 = map(lambda x: x.id, jour.type_control_ids)
                 ids1 = super(account_account, self).search(cr, uid, [('user_type', 'in', ids3)])
                 ids1 += map(lambda x: x.id, jour.account_control_ids)
-                domain[pos] = ('id', 'in', ids1)
+                args[pos] = ('id', 'in', ids1)
             pos += 1
-
-        return super(account_account, self)._where_calc(cr, uid, domain, active_test, context)
-
-    def search(self, cr, uid, args, offset=0, limit=None, order=None,
-            context=None, count=False):
-        """ Check presence of key 'consolidate_children' in context to include also the Consolidated Children
-            of found accounts into the result of the search
-        """
 
         if context and context.has_key('consolidate_children'): #add consolidated children of accounts
             ids = super(account_account, self).search(cr, uid, args, offset, limit,
@@ -853,11 +845,16 @@ class account_journal(osv.osv):
     def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
         if not args:
             args = []
-        if operator in expression.NEGATIVE_TERM_OPERATORS:
-            domain = [('code', operator, name), ('name', operator, name)]
-        else:
-            domain = ['|', ('code', operator, name), ('name', operator, name)]
-        ids = self.search(cr, user, expression.AND([domain, args]), limit=limit, context=context)
+        if context is None:
+            context = {}
+        ids = []
+        if context.get('journal_type', False):
+            args += [('type','=',context.get('journal_type'))]
+        if name:
+            ids = self.search(cr, user, [('code', 'ilike', name)]+ args, limit=limit, context=context)
+        if not ids:
+            ids = self.search(cr, user, [('name', 'ilike', name)]+ args, limit=limit, context=context)#fix it ilike should be replace with operator
+
         return self.name_get(cr, user, ids, context=context)
 
 account_journal()
@@ -947,11 +944,13 @@ class account_fiscalyear(osv.osv):
     def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=80):
         if args is None:
             args = []
-        if operator in expression.NEGATIVE_TERM_OPERATORS:
-            domain = [('code', operator, name), ('name', operator, name)]
-        else:
-            domain = ['|', ('code', operator, name), ('name', operator, name)]
-        ids = self.search(cr, user, expression.AND([domain, args]), limit=limit, context=context)
+        if context is None:
+            context = {}
+        ids = []
+        if name:
+            ids = self.search(cr, user, [('code', 'ilike', name)]+ args, limit=limit)
+        if not ids:
+            ids = self.search(cr, user, [('name', operator, name)]+ args, limit=limit)
         return self.name_get(cr, user, ids, context=context)
 
 account_fiscalyear()
@@ -1046,11 +1045,19 @@ class account_period(osv.osv):
     def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
         if args is None:
             args = []
-        if operator in expression.NEGATIVE_TERM_OPERATORS:
-            domain = [('code', operator, name), ('name', operator, name)]
-        else:
-            domain = ['|', ('code', operator, name), ('name', operator, name)]
-        ids = self.search(cr, user, expression.AND([domain, args]), limit=limit, context=context)
+        if context is None:
+            context = {}
+        ids = []
+        if name:
+            ids = self.search(cr, user,
+                              [('code', 'ilike', name)] + args,
+                              limit=limit,
+                              context=context)
+        if not ids:
+            ids = self.search(cr, user,
+                              [('name', operator, name)] + args,
+                              limit=limit,
+                              context=context)
         return self.name_get(cr, user, ids, context=context)
 
     def write(self, cr, uid, ids, vals, context=None):
@@ -1165,19 +1172,6 @@ class account_move(osv.osv):
     _description = "Account Entry"
     _order = 'id desc'
 
-    def account_assert_balanced(self, cr, uid, context=None):
-        cr.execute("""\
-            SELECT      move_id
-            FROM        account_move_line
-            WHERE       state = 'valid'
-            GROUP BY    move_id
-            HAVING      abs(sum(debit) - sum(credit)) > 0.00001
-            """)
-        assert len(cr.fetchall()) == 0, \
-            "For all Journal Items, the state is valid implies that the sum " \
-            "of credits equals the sum of debits"
-        return True
-
     def account_move_prepare(self, cr, uid, journal_id, date=False, ref='', company_id=False, context=None):
         '''
         Prepares and returns a dictionary of values, ready to be passed to create() based on the parameters received.
@@ -1200,6 +1194,36 @@ class account_move(osv.osv):
             'ref': ref,
             'company_id': company_id,
         }
+
+    def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=80):
+        """
+        Returns a list of tupples containing id, name, as internally it is called {def name_get}
+        result format: {[(id, name), (id, name), ...]}
+
+        @param cr: A database cursor
+        @param user: ID of the user currently logged in
+        @param name: name to search
+        @param args: other arguments
+        @param operator: default operator is 'ilike', it can be changed
+        @param context: context arguments, like lang, time zone
+        @param limit: Returns first 'n' ids of complete result, default is 80.
+
+        @return: Returns a list of tuples containing id and name
+        """
+
+        if not args:
+          args = []
+        ids = []
+        if name:
+            ids += self.search(cr, user, [('name','ilike',name)]+args, limit=limit, context=context)
+
+        if not ids and name and type(name) == int:
+            ids += self.search(cr, user, [('id','=',name)]+args, limit=limit, context=context)
+
+        if not ids:
+            ids += self.search(cr, user, args, limit=limit, context=context)
+
+        return self.name_get(cr, user, ids, context=context)
 
     def name_get(self, cursor, user, ids, context=None):
         if isinstance(ids, (int, long)):
@@ -1703,8 +1727,7 @@ class account_move_reconcile(osv.osv):
         if not total:
             self.pool.get('account.move.line').write(cr, uid,
                 map(lambda x: x.id, rec.line_partial_ids),
-                {'reconcile_id': rec.id },
-                context=context
+                {'reconcile_id': rec.id }
             )
         return True
 
@@ -1763,7 +1786,7 @@ class account_tax_code(osv.osv):
         res2 = {}
         for record in self.browse(cr, uid, ids, context=context):
             def _rec_get(record):
-                amount = res.get(record.id) or 0.0
+                amount = res.get(record.id, 0.0)
                 for rec in record.child_ids:
                     amount += _rec_get(rec) * rec.sign
                 return amount
@@ -1830,12 +1853,10 @@ class account_tax_code(osv.osv):
     def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=80):
         if not args:
             args = []
-        if operator in expression.NEGATIVE_TERM_OPERATORS:
-            domain = [('code', operator, name), ('name', operator, name)]
-        else:
-            domain = ['|', ('code', operator, name), ('name', operator, name)]
-        ids = self.search(cr, user, expression.AND([domain, args]), limit=limit, context=context)
-        return self.name_get(cr, user, ids, context=context)
+        if context is None:
+            context = {}
+        ids = self.search(cr, user, ['|',('name',operator,name),('code',operator,name)] + args, limit=limit, context=context)
+        return self.name_get(cr, user, ids, context)
 
     def name_get(self, cr, uid, ids, context=None):
         if isinstance(ids, (int, long)):
@@ -1965,11 +1986,15 @@ class account_tax(osv.osv):
         """
         if not args:
             args = []
-        if operator in expression.NEGATIVE_TERM_OPERATORS:
-            domain = [('description', operator, name), ('name', operator, name)]
+        if context is None:
+            context = {}
+        ids = []
+        if name:
+            ids = self.search(cr, user, [('description', '=', name)] + args, limit=limit, context=context)
+            if not ids:
+                ids = self.search(cr, user, [('name', operator, name)] + args, limit=limit, context=context)
         else:
-            domain = ['|', ('description', operator, name), ('name', operator, name)]
-        ids = self.search(cr, user, expression.AND([domain, args]), limit=limit, context=context)
+            ids = self.search(cr, user, args, limit=limit, context=context or {})
         return self.name_get(cr, user, ids, context=context)
 
     def write(self, cr, uid, ids, vals, context=None):
@@ -1978,17 +2003,15 @@ class account_tax(osv.osv):
         return super(account_tax, self).write(cr, uid, ids, vals, context=context)
 
     def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
-        if context is None:
-            context = {}
         journal_pool = self.pool.get('account.journal')
 
-        if context.get('type'):
+        if context and context.has_key('type'):
             if context.get('type') in ('out_invoice','out_refund'):
                 args += [('type_tax_use','in',['sale','all'])]
             elif context.get('type') in ('in_invoice','in_refund'):
                 args += [('type_tax_use','in',['purchase','all'])]
 
-        if context.get('journal_id'):
+        if context and context.has_key('journal_id'):
             journal = journal_pool.browse(cr, uid, context.get('journal_id'))
             if journal.type in ('sale', 'purchase'):
                 args += [('type_tax_use','in',[journal.type,'all'])]
@@ -2034,7 +2057,7 @@ class account_tax(osv.osv):
         for tax in taxes:
             if tax.applicable_type=='code':
                 localdict = {'price_unit':price_unit, 'product':product, 'partner':partner}
-                eval(tax.python_applicable, localdict, mode="exec", nocopy=True)
+                exec tax.python_applicable in localdict
                 if localdict.get('result', False):
                     res.append(tax)
             else:
@@ -2075,7 +2098,7 @@ class account_tax(osv.osv):
                # data['amount'] = quantity
             elif tax.type=='code':
                 localdict = {'price_unit':cur_price_unit, 'product':product, 'partner':partner}
-                eval(tax.python_compute, localdict, mode="exec", nocopy=True)
+                exec tax.python_compute in localdict
                 amount = localdict['result']
                 data['amount'] = amount
             elif tax.type=='balance':
@@ -2089,8 +2112,6 @@ class account_tax(osv.osv):
                 amount = amount2
                 child_tax = self._unit_compute(cr, uid, tax.child_ids, amount, product, partner, quantity)
                 res.extend(child_tax)
-                for child in child_tax:
-                    amount2 += child.get('amount', 0.0)
                 if tax.child_depend:
                     for r in res:
                         for name in ('base','ref_base'):
@@ -2211,7 +2232,7 @@ class account_tax(osv.osv):
 
             elif tax.type=='code':
                 localdict = {'price_unit':cur_price_unit, 'product':product, 'partner':partner}
-                eval(tax.python_compute_inv, localdict, mode="exec", nocopy=True)
+                exec tax.python_compute_inv in localdict
                 amount = localdict['result']
             elif tax.type=='balance':
                 amount = cur_price_unit - reduce(lambda x,y: y.get('amount',0.0)+x, res, 0.0)
@@ -2957,7 +2978,7 @@ class account_fiscal_position_template(osv.osv):
         'chart_template_id': fields.many2one('account.chart.template', 'Chart Template', required=True),
         'account_ids': fields.one2many('account.fiscal.position.account.template', 'position_id', 'Account Mapping'),
         'tax_ids': fields.one2many('account.fiscal.position.tax.template', 'position_id', 'Tax Mapping'),
-        'note': fields.text('Notes'),
+        'note': fields.text('Notes', translate=True),
     }
 
     def generate_fiscal_position(self, cr, uid, chart_temp_id, tax_template_ref, acc_template_ref, company_id, context=None):
