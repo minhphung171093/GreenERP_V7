@@ -52,13 +52,14 @@ class Parser(report_sxw.rml_parse):
         date_from = wizard_data['date_from']
         date_to = wizard_data['date_to']
         sql = '''
-            select daily_id from tra_thuong_thucte where state='done' and ngay_tra_thuong between '%s' and '%s' group by daily_id
+            select nguoi_nhan_thuong from tra_thuong_thucte where state='done' and ngay_tra_thuong between '%s' and '%s' group by nguoi_nhan_thuong
         '''%(date_from,date_to)
         self.cr.execute(sql)
         return self.cr.fetchall()
     
     def get_ten_khachhang(self,line):
-        return self.pool.get('res.partner').browse(self.cr, self.uid, line[0]).name
+#         return self.pool.get('res.partner').browse(self.cr, self.uid, line[0]).name
+        return line[0]
     
     def get_soluong_giatri(self,line,menhgia):
         soluong = 0
@@ -91,8 +92,13 @@ class Parser(report_sxw.rml_parse):
             sql = '''
                 select id from tra_thuong_thucte_line
                     where product_id=%s
-                        and trathuong_id in (select id from tra_thuong_thucte where state='done' and daily_id=%s and ngay_tra_thuong between '%s' and '%s')
+                        and trathuong_id in (select id from tra_thuong_thucte where state='done' and nguoi_nhan_thuong='%s' and ngay_tra_thuong between '%s' and '%s')
             '''%(menhgia_ids[0],line[0],date_from,date_to)
+#             sql = '''
+#                 select id from tra_thuong_thucte_line
+#                     where product_id=%s
+#                         and trathuong_id in (select id from tra_thuong_thucte where state='done' and ngay_tra_thuong between '%s' and '%s')
+#             '''%(menhgia_ids[0],date_from,date_to)
             self.cr.execute(sql)
             tt_tt_ids = [r[0] for r in self.cr.fetchall()]
             for tt in tt_tt_obj.browse(self.cr, self.uid, tt_tt_ids):
@@ -112,8 +118,12 @@ class Parser(report_sxw.rml_parse):
         date_to = wizard_data['date_to']
         sql = '''
             select id from tra_thuong_thucte_line
-                where trathuong_id in (select id from tra_thuong_thucte where state='done' and daily_id=%s and ngay_tra_thuong between '%s' and '%s')
+                where trathuong_id in (select id from tra_thuong_thucte where state='done' and nguoi_nhan_thuong='%s' and ngay_tra_thuong between '%s' and '%s')
         '''%(line[0],date_from,date_to)
+#         sql = '''
+#             select id from tra_thuong_thucte_line
+#                 where trathuong_id in (select id from tra_thuong_thucte where state='done' and ngay_tra_thuong between '%s' and '%s')
+#         '''%(date_from,date_to)
         self.cr.execute(sql)
         tt_tt_ids = [r[0] for r in self.cr.fetchall()]
         for tt in tt_tt_obj.browse(self.cr, self.uid, tt_tt_ids):
