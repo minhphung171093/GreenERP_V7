@@ -59,6 +59,7 @@ class Parser(report_sxw.rml_parse):
             'get_bl_no':self.get_bl_no,
             'get_the_tich':self.get_the_tich,
             'get_buyer':self.get_buyer,
+            'get_cus_date':self.get_cus_date,
         })
     
 #     def get_master_data(self):
@@ -359,7 +360,12 @@ class Parser(report_sxw.rml_parse):
             return line.etd_date
         else:
             return ''
-        
+    def get_cus_date(self,o):
+        if o.draft_bl_line:
+            line = o.draft_bl_line[0]
+            return line.date_customs_declaration
+        else:
+            return ''        
     def get_cong(self,o):
         if o.draft_bl_line:
             line = o.draft_bl_line[0]
