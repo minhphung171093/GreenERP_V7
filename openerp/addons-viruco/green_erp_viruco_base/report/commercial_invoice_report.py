@@ -329,7 +329,7 @@ class Parser(report_sxw.rml_parse):
                                 'price': seal.hopdong_line_id and seal.hopdong_line_id.price_unit or 0,
                                 'amount': self.amount,
                                 'seal_no_name': line.container_no_seal + '/' + line.seal_no or '',
-                                'packages_name': seal.packages_id.name or '',
+                                'packages_name': seal.packages_id.name_eng or '',
                                 'pack_weight': self.get_packages_weight(seal.packages_weight),
                                 'draft_bl': 'draft_bl',
                                 'invoice_thue': '',
