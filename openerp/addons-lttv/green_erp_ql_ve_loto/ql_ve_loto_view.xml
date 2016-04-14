@@ -303,7 +303,7 @@
                     		<group>
 		                        <field name="ve_loto_4_line" nolabel='1'>
 		                        	<tree editable='bottom'>
-				                        <field name="so_dt_4_16" string="Số - DT"/>
+				                        <field name="so_dt_4_16"/>
 				                        <field name="sl_4_16" sum="Tổng"/>
 		                        	</tree>
 		                        </field>
@@ -417,7 +417,7 @@
                     		<group>
 		                        <field name="ve_loto_4_line" nolabel='1'>
 		                        	<tree editable='bottom'>
-				                        <field name="so_dt_4_16" string="Số - DT"/>
+				                        <field name="so_dt_4_16"/>
 				                        <field name="sl_4_16" sum="Tổng"/>
 				                        <field name="sl_4_16_trung" sum="Tổng"/>
 		                        	</tree>
@@ -514,7 +514,7 @@
 					                    		<group>
 							                        <field name="ve_loto_4_line" nolabel='1'>
 							                        	<tree editable='bottom'>
-									                        <field name="so_dt_4_16" string="Số - DT"/>
+									                        <field name="so_dt_4_16"/>
 									                        <field name="sl_4_16" sum="Tổng"/>
 									                        <field name="sl_4_16_trung" sum="Tổng"/>
 							                        	</tree>
