@@ -1034,7 +1034,7 @@ class Parser(report_sxw.rml_parse):
         return self.cr.dictfetchone()
     
     def display_address(self, partner_id):
-        partner = self.pool.get('res.partner').browse(self.cr, self.uid, partner_id)
+        partner = self.pool.get('res.partner').browse(self.cr, 1, partner_id)
         address = partner.street and partner.street + ' , ' or ''
         address += partner.street2 and partner.street2 + ' , ' or ''
         address += partner.city and partner.city.name + ' , ' or ''

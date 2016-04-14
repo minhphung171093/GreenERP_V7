@@ -72,10 +72,19 @@ class account_voucher_batch(osv.osv):
         if not ids: return {}
         res = {}
         for record in self.browse(cr, uid, ids, context=context):
-            amount = 0.0
+            res[record.id] = {
+                'amount_untaxed': 0.0,
+                'amount_tax': 0.0,
+                'amount_total': 0.0,
+            }
+            untax_amount = 0.0
+            tax_amount = 0.0
             for voucher in record.voucher_lines:
-                amount += voucher.amount
-            res[record.id] =  amount
+                untax_amount += voucher.untax_amount
+                tax_amount += voucher.tax_amount
+            res[record.id]['amount_untaxed'] = untax_amount
+            res[record.id]['amount_tax'] = tax_amount
+            res[record.id]['amount_total'] = untax_amount+tax_amount
         return res
     
     _columns = {
@@ -83,8 +92,8 @@ class account_voucher_batch(osv.osv):
             'shop_id': fields.many2one('sale.shop', 'Shop', required=True, states={'draft':[('readonly',False)]}),
             'description': fields.text('Description', required=True),
             'date': fields.date('Date', required=True, readonly=True, states={'draft':[('readonly',False)]}),
-            'date_document': fields.date('Ngày hóa đơn', required=True, readonly=True, states={'draft':[('readonly',False)]}),
-            'assign_user': fields.char('Assign User', size = 128, required = True, readonly=True, states={'draft':[('readonly',False)]},),
+            'date_document': fields.date('Ngày hóa đơn', readonly=True, states={'draft':[('readonly',False)]}),
+            'assign_user': fields.char('Assign User', size = 128, readonly=True, states={'draft':[('readonly',False)]},),
             'journal_id':fields.many2one('account.journal', 'Journal', required=True, readonly=True, states={'draft':[('readonly',False)]}),
             'voucher_lines': fields.one2many('account.voucher', 'batch_id', 'Voucher lines', required=True, readonly=True, states={'draft':[('readonly',False)]}),
             'company_id': fields.many2one('res.company', 'Company', required=True, readonly=True, states={'draft':[('readonly',False)]}),
@@ -99,7 +108,9 @@ class account_voucher_batch(osv.osv):
             'write_uid':  fields.many2one('res.users', 'Updated by', readonly=True),
             'create_uid': fields.many2one('res.users', 'Created by', readonly=True),
             
-            'amount': fields.function(_get_total, string='Amount', type='float', digits_compute=dp.get_precision('Account'), readonly=True), 
+            'amount_untaxed': fields.function(_get_total, string='Tiền hh,dv', type='float', multi='sums', readonly=True), 
+            'amount_tax': fields.function(_get_total, string='Tiền thuế', type='float', multi='sums', readonly=True),
+            'amount_total': fields.function(_get_total, string='Tổng TT', type='float', multi='sums', readonly=True),
                                                
             'state':fields.selection(
                 [('draft','Draft'),
@@ -108,11 +119,27 @@ class account_voucher_batch(osv.osv):
                 ], 'Status', readonly=True, size=32),
             'partner_bank_id':fields.many2one('res.partner.bank', 'Partner Bank', required=False, readonly=True, states={'draft':[('readonly',False)]}),
             'company_bank_id':fields.many2one('res.partner.bank', 'Company Bank', required=False, readonly=True, states={'draft':[('readonly',False)]}),
+            'partner_id':fields.many2one('res.partner', 'Nhà cung cấp', readonly=True, states={'draft':[('readonly',False)]}),
+            'dia_chi_kh': fields.text('Địa chỉ KH'),
         }
     
     def _get_assign_user(self, cr, uid, context=None):
         res = self.pool.get('res.users').read(cr, uid, uid, ['name'])['name']
         return res
+    
+    def onchange_partner_id(self, cr, uid, ids, part, context=None):
+        val=[]
+        if not part:
+            return {'value': {'dia_chi_kh': ''}}
+
+        partner = self.pool.get('res.partner').browse(cr, uid, part, context=context)
+        dia_chi_kh = ''
+        ms_thue = ''
+        if part:
+            dia_chi_kh += partner.street and partner.street or ''
+            dia_chi_kh += partner.street2 and ', ' +  partner.street2 or ''
+            dia_chi_kh += partner.country_id and ', ' +  partner.country_id.name or ''
+        return {'value':{'dia_chi_kh': dia_chi_kh}}
     
     def _get_journal(self, cr, uid, context=None):
         ttype = ['cash','bank']
@@ -274,11 +301,11 @@ class account_voucher(osv.osv):
             'shop_id': fields.many2one('sale.shop', 'Shop', required=True, readonly=True, states={'draft':[('readonly',False)]}),
             'number_register': fields.char('Number Register', size=64, readonly=True, states={'draft':[('readonly',False)]}),
             'reference_number': fields.char('Số hóa đơn', size=32, readonly=True, states={'draft':[('readonly',False)]}),
-            'assign_user': fields.char('Assign User', size = 128, required = True, readonly=True, states={'draft':[('readonly',False)]},),
+            'assign_user': fields.char('Assign User', size = 128, readonly=True, states={'draft':[('readonly',False)]},),
             'partner_id':fields.many2one('res.partner', 'Partner', change_default=1, required = False,readonly=True, states={'draft':[('readonly',False)]}),
             'date':fields.date('Date', required = True, readonly=True, select=True, states={'draft':[('readonly',False)]}, help="Effective date for accounting entries"),
             'date_document': fields.date('Document Date', readonly=True, states={'draft':[('readonly',False)]},),
-            'tax_amount':fields.integer('Tax Amount', readonly=True, states={'draft':[('readonly',False)]}),
+            'tax_amount':fields.integer('Tiền thuế', readonly=True, states={'draft':[('readonly',False)]}),
             
             'batch_id': fields.many2one('account.voucher.batch', 'Related Batch', ondelete='cascade'),
             'partner_bank_id':fields.many2one('res.partner.bank', 'Partner Bank', required=False, readonly=True, states={'draft':[('readonly',False)]}),
@@ -287,8 +314,27 @@ class account_voucher(osv.osv):
             'dien_giai': fields.char('Diễn giải', sie=1024),
             
             'amount': fields.integer('Total', required=True, readonly=True, states={'draft':[('readonly',False)]}),
-            'untax_amount': fields.integer('Giá trị trước thuế', required=True, readonly=True, states={'draft':[('readonly',False)]}),
+            'untax_amount': fields.integer('Tổng tiền hàng', readonly=True, states={'draft':[('readonly',False)]}),
+            'ma_hh_dv': fields.char('Mã HH, DV', sie=1024),
+            'ten_hh_dv': fields.char('Tên HH, DV', sie=1024),
+            'tax_amount_pt': fields.integer('Tổng tiền thuế', readonly=True, states={'draft':[('readonly',False)]}),
+            'dia_chi_kh': fields.text('Địa chỉ KH/NCC'),
+            'ms_thue': fields.char('MST', sie=1024),
         }
+    def onchange_partner_thuchi_id(self, cr, uid, ids, part, context=None):
+        val=[]
+        if not part:
+            return {'value': {'dia_chi_kh': '', 'ms_thue': ''}}
+
+        partner = self.pool.get('res.partner').browse(cr, uid, part, context=context)
+        dia_chi_kh = ''
+        ms_thue = ''
+        if part:
+            dia_chi_kh += partner.street and partner.street or ''
+            dia_chi_kh += partner.street2 and ', ' +  partner.street2 or ''
+            dia_chi_kh += partner.country_id and ', ' +  partner.country_id.name or ''
+            ms_thue = partner.vat or ''
+        return {'value':{'dia_chi_kh': dia_chi_kh, 'ms_thue': ms_thue}}
     
     def _get_assign_user(self, cr, uid, context=None):
         res = self.pool.get('res.users').read(cr, uid, uid, ['name'])['name']
@@ -417,6 +463,20 @@ class account_voucher(osv.osv):
             self.compute_tax(cr, uid, [new_id], context)
         return new_id
     
+    def write(self, cr, uid, ids, vals, context=None):
+        if context is None:
+            context = {}
+        if vals.get('date',False) and not vals.get('date_document',False):
+            vals.update({'date_document': vals['date']})
+        new_id = super(account_voucher, self).write(cr, uid, ids, vals, context)
+        if context.get('phieuthu_chi',False):
+            for id in ids: 
+                amount_val = self.compute_tax_pt(cr, uid, id, context)
+                untax_amount = amount_val['amount']-amount_val['tax_amount'] or 0
+                cr.execute('update account_voucher set amount=%s, tax_amount=%s, untax_amount=%s',(amount_val['amount'],amount_val['tax_amount'],untax_amount,))
+        line_ids = self.pool.get('account.voucher.line').search(cr,uid,[('voucher_id','=',ids[0])])
+        return new_id
+    
     def compute_tax_pt(self, cr, uid, voucher_id, context=None):
         tax_pool = self.pool.get('account.tax')
         partner_pool = self.pool.get('res.partner')
@@ -462,19 +522,6 @@ class account_voucher(osv.osv):
 
         return {'amount':total, 'tax_amount':total_tax}
     
-    def write(self, cr, uid, ids, vals, context=None):
-        if context is None:
-            context = {}
-        if vals.get('date',False) and not vals.get('date_document',False):
-            vals.update({'date_document': vals['date']})
-        new_id = super(account_voucher, self).write(cr, uid, ids, vals, context)
-        if context.get('phieuthu_chi',False):
-            for id in ids: 
-                amount_val = self.compute_tax_pt(cr, uid, id, context)
-                untax_amount = amount_val['amount']-amount_val['tax_amount'] or 0
-                cr.execute('update account_voucher set amount=%s, tax_amount=%s, untax_amount=%s',(amount_val['amount'],amount_val['tax_amount'],untax_amount,))
-        return new_id
-    
     def onchange_price(self, cr, uid, ids, line_ids, tax_id, partner_id=False, context=None):
         context = context or {}
         tax_pool = self.pool.get('account.tax')
@@ -487,34 +534,35 @@ class account_voucher(osv.osv):
             'tax_amount': False,
             'amount': False,
             'untax_amount': False,
+            'tax_amount_pt': False
         }
         voucher_total = 0.0
-
-        line_ids = resolve_o2m_operations(cr, uid, line_pool, line_ids, ["amount"], context)
-
+        voucher_tax_pt = 0.0
+        line_ids = resolve_o2m_operations(cr, uid, line_pool, line_ids, ["amount","tax_amount"], context)
         total_tax = 0.0
         for line in line_ids:
             line_amount = 0.0
             line_amount = line.get('amount',0.0)
-
+            tax_amount_pt = line.get('tax_amount',0.0)
             if tax_id:
                 tax = [tax_pool.browse(cr, uid, tax_id, context=context)]
                 if partner_id:
                     partner = partner_pool.browse(cr, uid, partner_id, context=context) or False
                     taxes = position_pool.map_tax(cr, uid, partner and partner.property_account_position or False, tax)
                     tax = tax_pool.browse(cr, uid, taxes, context=context)
-
+ 
                 if not tax[0].price_include:
                     for tax_line in tax_pool.compute_all(cr, uid, tax, line_amount, 1).get('taxes', []):
                         total_tax += tax_line.get('amount')
-
+            voucher_tax_pt += tax_amount_pt                
             voucher_total += line_amount
         total = voucher_total + total_tax
-
+ 
         res.update({
             'amount': total or voucher_total,
             'tax_amount': total_tax,
-            'untax_amount': voucher_total
+            'untax_amount': voucher_total,
+            'tax_amount_pt': voucher_tax_pt
         })
         return {
             'value': res
@@ -1020,10 +1068,18 @@ class account_voucher_line(osv.osv):
         'type_lctt': fields.selection([('hdkd','Hoạt động kinh doanh'),
                                        ('hddt','Hoạt động đầu tư'),
                                        ('hdtc','Hoạt động tài chính')], 'Loại LCTT'),
+        'tax_id': fields.many2one('account.tax','Thuế'),
+        'tax_amount':fields.integer('Tiền thuế'),
     }
       
     _defaults = {
         'type_lctt': 'hdkd',
     }
+    def onchange_tax(self, cr, uid, ids, amount, tax_id, context=None):
+        if tax_id and amount:
+            tax = self.pool.get('account.tax').browse(cr, uid,tax_id)
+            return {'value':{'tax_amount': amount*tax.amount or 0}}
+        else:
+            return False
       
 account_voucher_line()

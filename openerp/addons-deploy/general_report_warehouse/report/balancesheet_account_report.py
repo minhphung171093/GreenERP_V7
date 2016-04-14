@@ -195,7 +195,7 @@ class Parser(report_sxw.rml_parse):
                             end start_onhand_qty,
                             
                             case when loc1.usage != 'internal' and loc2.usage = 'internal' and date(timezone('UTC',stm.date::timestamp)) < '%(start_date)s'
-                            then (stm.price_unit * stm.product_qty)
+                            then round(stm.price_unit * stm.product_qty)
                             else
                             case when loc1.usage = 'internal' and loc2.usage != 'internal' and date(timezone('UTC',stm.date::timestamp)) < '%(start_date)s'
                             then -1*(stm.price_unit * stm.product_qty)
@@ -206,12 +206,15 @@ class Parser(report_sxw.rml_parse):
                             then stm.primary_qty
                             else 0.0 end nhaptk_qty,
                             
+                            case when loc1.usage != 'internal' and loc2.usage = 'internal' and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
+                            then round(stm.price_unit * stm.product_qty)
+                            else 0.0 end nhaptk_val,
+                            
                             case when loc1.usage = 'internal' and loc2.usage != 'internal' and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
                             then 1*stm.primary_qty 
                             else 0.0
                             end xuattk_qty,
                     
-                            
                             
                             case when loc1.usage = 'internal' and loc2.usage != 'internal' and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
                             then 1*(stm.price_unit * stm.product_qty)
@@ -251,7 +254,7 @@ class Parser(report_sxw.rml_parse):
                             end start_onhand_qty,
                             
                             case when loc1.usage != 'internal' and loc2.usage = 'internal' and date(timezone('UTC',stm.date::timestamp)) < '%(start_date)s'
-                            then (stm.price_unit * ail.quantity)
+                            then round(stm.price_unit * ail.quantity)
                             else
                             case when loc1.usage = 'internal' and loc2.usage != 'internal' and date(timezone('UTC',stm.date::timestamp)) < '%(start_date)s'
                             then -1*(stm.price_unit * ail.quantity)
@@ -761,7 +764,7 @@ class Parser(report_sxw.rml_parse):
                             then round(stm.price_unit * stm.product_qty)
                             else
                             case when loc1.usage = 'internal' and loc2.usage != 'internal' and date(timezone('UTC',stm.date::timestamp)) < '%(start_date)s'
-                            then -1*round(stm.price_unit * stm.product_qty)
+                            then -1*stm.price_unit * stm.product_qty
                             else 0.0 end
                             end start_val,
                              
@@ -783,7 +786,7 @@ class Parser(report_sxw.rml_parse):
                              
                             case when loc1.usage = 'internal' and loc2.usage != 'internal' and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
                             and ai.state in ('open','paid')
-                            then 1*round(stm.price_unit * stm.product_qty)
+                            then 1*stm.price_unit * stm.product_qty
                             else 0.0
                             end xuattk_val,        
                               
@@ -803,7 +806,7 @@ class Parser(report_sxw.rml_parse):
                             else
                             case when loc1.usage = 'internal' and loc2.usage != 'internal' and date(timezone('UTC',stm.date::timestamp)) <= '%(end_date)s'
                             and ai.state in ('open','paid')
-                            then -1*round(stm.price_unit * stm.product_qty)
+                            then -1*stm.price_unit * stm.product_qty
                             else 0.0 end
                             end end_val            
                         FROM stock_move stm 
@@ -918,6 +921,7 @@ class Parser(report_sxw.rml_parse):
                         left join stock_location loc2 on stm.location_dest_id=loc2.id
                         left join account_invoice_line ail on ail.source_id=stm.id
                         left join account_invoice ai on ai.id=ail.invoice_id
+                        left join stock_picking sp on sp.id=stm.picking_id
                     WHERE stm.state= 'done' and stm.picking_id is not null  
                     and ail.source_id is not null and ai.state in ('open','paid')
                      )foo

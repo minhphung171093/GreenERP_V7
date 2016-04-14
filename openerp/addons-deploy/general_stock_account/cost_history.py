@@ -244,7 +244,7 @@ class average_cost_detail_history(osv.osv):
 #                 else:
                     #SUM QTY Nhap va SUM VALUE Nhap
                 sql ='''
-                    SELECT sum(primary_qty) qty, sum(round(price_unit * primary_qty)) total
+                    SELECT sum(primary_qty) qty, sum(round(price_unit * quantity)) total
                         FROM
                             stock_move stm 
                         WHERE 
@@ -272,10 +272,10 @@ class average_cost_detail_history(osv.osv):
                 nhap_value += nhap_ht_res and nhap_ht_res[1] or 0
                 
                 peridical_cost = (nhap_qty + qty_previous) and round(float(nhap_value + previous_value)/float(nhap_qty + qty_previous),4) or 0.0
-                
+#                 print '1: ' + ' ' + history.product_id.product_tmpl_id.name + str(peridical_cost)
                 if not peridical_cost:
                     peridical_cost = qty_previous and round(float(previous_value)/float(qty_previous),4) or 0.0
-                    
+#                     print '2: ' + history.product_id.product_tmpl_id.name + str(peridical_cost)
                 #Tinh Periodical
                 sql = '''
                         UPDATE 

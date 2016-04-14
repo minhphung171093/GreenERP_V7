@@ -1410,35 +1410,35 @@ class remind_work(osv.osv):
             datetime_now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             if (vals['date_start'] < datetime_now):
                 raise osv.except_osv(_('Warning!'),_('Thời gian bắt đầu không được nhỏ hơn thời gian hiện tại'))
-        if remind.user_ids:
-            users = [r.id for r in remind.user_ids]
-            for user_id in users:
-                user = self.pool.get('res.users').browse(cr, uid, user_id)
-                if remind.date_start:
-                    date_start_vn = datetime.datetime.strptime(remind.date_start,'%Y-%m-%d %H:%M:%S')+ timedelta(hours=7)
-                    date_start_vn = date_start_vn.strftime('%d-%m-%Y %H:%M:%S')
-                if remind.date_end:
-                    date_end_vn = datetime.datetime.strptime(remind.date_end,'%Y-%m-%d %H:%M:%S')+ timedelta(hours=7) 
-                    date_end_vn = date_end_vn.strftime('%d-%m-%Y %H:%M:%S') 
-                body = '''<p><b> THÔNG BÁO:</b><br/>Kế hoạch công tác mới được tạo ra có thời gian từ ngày %s đến ngày %s.<br/>
-                <b>Nội dung chính: </b> %s.<br/>
-                <b>Tình trạng công việc: </b> %s.<br/> 
-                <b>Khách hàng: </b> %s.<br/> 
-                <b>Nội dung:</b> <br/>%s</p><br/>
-                <b>Nội dung làm việc:</b> <br/>%s</p><br/>
-                <b>Kết quả:</b> <br/>%s</p><br/>
-                <b>Hướng giải quyết:</b> <br/>%s</p><br/>
-                '''%(date_start_vn, date_end_vn, remind.noidung_chinh_id.name,remind.situation_id and remind.situation_id.name or '',remind.partner_id and remind.partner_id.name or '',remind.note or '',remind.noidung_lamviec or '',remind.ket_qua or '',remind.huong_giai_quyet or '')
-                if body:
-                    post_values = {
-                        'subject': remind.name,
-                        'body': body,
-                        'partner_ids': [],
-                        }
-                    if user_id != uid:
-                        lead_email = user.email
-                        msg_id = self.pool.get('res.partner').message_post(cr, uid, [user.partner_id.id], type='comment', subtype=False, context=context, **post_values)
-                        self.send_mail(cr, uid, lead_email, msg_id, context)
+#         if remind.user_ids:
+#             users = [r.id for r in remind.user_ids]
+#             for user_id in users:
+#                 user = self.pool.get('res.users').browse(cr, uid, user_id)
+#                 if remind.date_start:
+#                     date_start_vn = datetime.datetime.strptime(remind.date_start,'%Y-%m-%d %H:%M:%S')+ timedelta(hours=7)
+#                     date_start_vn = date_start_vn.strftime('%d-%m-%Y %H:%M:%S')
+#                 if remind.date_end:
+#                     date_end_vn = datetime.datetime.strptime(remind.date_end,'%Y-%m-%d %H:%M:%S')+ timedelta(hours=7) 
+#                     date_end_vn = date_end_vn.strftime('%d-%m-%Y %H:%M:%S') 
+#                 body = '''<p><b> THÔNG BÁO:</b><br/>Kế hoạch công tác mới được tạo ra có thời gian từ ngày %s đến ngày %s.<br/>
+#                 <b>Nội dung chính: </b> %s.<br/>
+#                 <b>Tình trạng công việc: </b> %s.<br/> 
+#                 <b>Khách hàng: </b> %s.<br/> 
+#                 <b>Nội dung:</b> <br/>%s</p><br/>
+#                 <b>Nội dung làm việc:</b> <br/>%s</p><br/>
+#                 <b>Kết quả:</b> <br/>%s</p><br/>
+#                 <b>Hướng giải quyết:</b> <br/>%s</p><br/>
+#                 '''%(date_start_vn, date_end_vn, remind.noidung_chinh_id.name,remind.situation_id and remind.situation_id.name or '',remind.partner_id and remind.partner_id.name or '',remind.note or '',remind.noidung_lamviec or '',remind.ket_qua or '',remind.huong_giai_quyet or '')
+#                 if body:
+#                     post_values = {
+#                         'subject': remind.name,
+#                         'body': body,
+#                         'partner_ids': [],
+#                         }
+#                     if user_id != uid:
+#                         lead_email = user.email
+#                         msg_id = self.pool.get('res.partner').message_post(cr, uid, [user.partner_id.id], type='comment', subtype=False, context=context, **post_values)
+#                         self.send_mail(cr, uid, lead_email, msg_id, context)
         return new_id
     
     def send_mail_for_remind_work(self, cr, uid, context=None):
