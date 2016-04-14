@@ -316,9 +316,11 @@
 	                                    <field name="name" string="Name" />
 	                                    <field name="origin" />
 	                                    <field name="chatluong_id" string="Quality"/>
-	                                    <field name="quycach_donggoi_id" string="Packing"/>
-	                                    <field name="quycach_baobi_id" string="Packaging Spec" />
+	                                    <field name="quycach_donggoi_id" string="Kind of Packing"/>
+	                                    <field name="quycach_baobi_id" string="Bale Form" />
+	                                    <field name="no_packge"  />
 	                                    <field name="product_uom" string="UOM"/>
+	                                    <field name="poly" />
 	                                    <field name="product_qty" string="Quantity"/>
 	                                    <field name="price_unit" string="Price"/>
 	                                    <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]" string="Taxes" />

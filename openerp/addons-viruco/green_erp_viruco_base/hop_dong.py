@@ -864,8 +864,15 @@ class hopdong_line(osv.osv):
         'sotien_giam': fields.float('Số tiền giảm',digits=(16,2)),
         'hopdong_giam_id': fields.many2one('hop.dong', 'Hợp đồng'),
         'origin': fields.char('Origin', size = 1024),
+        'poly': fields.selection([
+            ('thicle', 'Thicle Poly'),
+            ('thin', 'Thin Poly'),
+            ], 'Poly'),
+        'no_packge':fields.float('Số tiền giảm',digits=(16,2)),
     }
-    
+    _defaults={
+        'poly':'thin',
+               }
     def onchange_product_id(self, cr, uid, ids,product_id=False,type = False, context=None):
         vals = {}
         if product_id:
