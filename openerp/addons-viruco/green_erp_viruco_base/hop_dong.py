@@ -303,7 +303,7 @@ class hop_dong(osv.osv):
         'thongbao_nhanhang':'Bên B thông báo cho bên A trước  ngày',
     }
     
-    def bt_theodoi_hopdong(self, cr, uid, ids, context=None): 
+    def bt_theodoi_hopdong(self, cr, uid, ids, context=None):
         for line in self.browse(cr, uid, ids):
             if line.theodoi_hopdong_line:
                 sql = '''
@@ -329,23 +329,42 @@ class hop_dong(osv.osv):
                             for draft_bl in bl_ids:
                                 bl = self.pool.get('draft.bl').browse(cr,uid,draft_bl['id'])
                                 for bl_line in bl.draft_bl_line:
-                                    for good in bl_line.description_line:
-                                        self.pool.get('theodoi.hopdong.line').create(cr,uid,{
-                                                                                           'hopdong_id': line.id,
-                                                                                           'name': hd_mua.name + ' - ' + hd_mua.partner_id.name,
-                                                                                           'freight': bl.freight,
-                                                                                           'shipping_line_id': bl.shipping_line_id and bl.shipping_line_id.id or False,
-                                                                                           'forwarder_line_id': bl.forwarder_line_id and bl.forwarder_line_id.id or False,
-                                                                                           'log_in_charge': '',
-                                                                                           'doc_in_charge': '',
-                                                                                           'etd': bl.etd_date,
-                                                                                           'bl_no': bl_line.bl_no,
-                                                                                           'dhl_no': '',
-                                                                                           'container_no_seal': bl_line.container_no_seal or good.container_no_seal,
-                                                                                           'seal_no': bl_line.container_no_seal or good.seal_no,
-                                                                                           'product_id': bl_line.hopdong_line_id.product_id.id or good.hopdong_line_id.product_id.id,
-                                                                                           'gross_weight': good.gross_weight,
-                                                                                           })
+                                    if bl_line.option == 'seal_no':
+                                        for good in bl_line.description_line:
+                                            self.pool.get('theodoi.hopdong.line').create(cr,uid,{
+                                                                                               'hopdong_id': line.id,
+                                                                                               'name': hd_mua.name + ' - ' + hd_mua.partner_id.name,
+                                                                                               'freight': bl.freight,
+                                                                                               'shipping_line_id': bl.shipping_line_id and bl.shipping_line_id.id or False,
+                                                                                               'forwarder_line_id': bl.forwarder_line_id and bl.forwarder_line_id.id or False,
+                                                                                               'log_in_charge': '',
+                                                                                               'doc_in_charge': '',
+                                                                                               'etd': bl.etd_date,
+                                                                                               'bl_no': bl_line.bl_no,
+                                                                                               'dhl_no': '',
+                                                                                               'container_no_seal': bl_line.container_no_seal,
+                                                                                               'seal_no': bl_line.container_no_seal,
+                                                                                               'product_id': good.hopdong_line_id and good.hopdong_line_id.product_id and good.hopdong_line_id.product_id.id,
+                                                                                               'gross_weight': good.gross_weight,
+                                                                                               })
+                                    if bl_line.option == 'product':
+                                        for good in bl_line.seal_descript_line:
+                                            self.pool.get('theodoi.hopdong.line').create(cr,uid,{
+                                                                                               'hopdong_id': line.id,
+                                                                                               'name': hd_mua.name + ' - ' + hd_mua.partner_id.name,
+                                                                                               'freight': bl.freight,
+                                                                                               'shipping_line_id': bl.shipping_line_id and bl.shipping_line_id.id or False,
+                                                                                               'forwarder_line_id': bl.forwarder_line_id and bl.forwarder_line_id.id or False,
+                                                                                               'log_in_charge': '',
+                                                                                               'doc_in_charge': '',
+                                                                                               'etd': bl.etd_date,
+                                                                                               'bl_no': bl_line.bl_no,
+                                                                                               'dhl_no': '',
+                                                                                               'container_no_seal': good.container_no_seal,
+                                                                                               'seal_no': good.seal_no,
+                                                                                               'product_id': bl_line.hopdong_line_id and bl_line.hopdong_line_id.product_id and bl_line.hopdong_line_id.product_id.id,
+                                                                                               'gross_weight': good.gross_weight,
+                                                                                               })  
                 else:
                     sql = '''
                         select id from draft_bl where hopdong_id = %s and state not in ('huy_bo','moi_tao')
@@ -868,7 +887,7 @@ class hopdong_line(osv.osv):
             ('thicle', 'Thicle Poly'),
             ('thin', 'Thin Poly'),
             ], 'Poly'),
-        'no_packge':fields.float('Số tiền giảm',digits=(16,2)),
+        'no_packge':fields.float('No. of Packages',digits=(16,2)),
     }
     _defaults={
         'poly':'thin',

@@ -96,6 +96,7 @@ class draft_bl(osv.osv):
             ], 'Trạng thái',readonly=True, states={'moi_tao': [('readonly', False)]}),
         'user_id': fields.many2one('res.users','Người thực hiện'),
         'buyer_thue':fields.many2one('res.partner','Form E'),
+        'dhl_no': fields.char('DHL No', size=1024),
 #         'user_chungtu_id': fields.many2one('res.users','Người thực hiện'),
     }
     
@@ -299,6 +300,7 @@ class description_line(osv.osv):
         'net_weight':fields.float('Net Weight'),
         'gross_weight':fields.float('Gross Weight'),
         'hopdong_line_id': fields.many2one('hopdong.line', 'Product', ondelete='cascade', select=True),
+        'no_packge':fields.float('No. of Packages',digits=(16,2)),
     }
 
 #     def create(self, cr, uid, vals, context=None):

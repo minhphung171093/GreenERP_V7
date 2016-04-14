@@ -48,7 +48,8 @@ class Parser(report_sxw.rml_parse):
             'convert_dbh_date': self.convert_dbh_date,
             'get_dia_chi': self.get_dia_chi,
             'get_soluong': self.get_soluong,
-            
+            'get_chungtu': self.get_chungtu,
+            'get_user': self.get_user,
         })
         
     def get_soluong(self,order):
@@ -61,6 +62,13 @@ class Parser(report_sxw.rml_parse):
         return {
                 'product_qty': val,
                 }
+        
+    def get_user(self, user_id):
+        if user_id:
+            user = self.pool.get('res.users').browse(self.cr,self.uid,user_id)
+            return user.name
+        else:
+            return ''
         
     def get_transhipment(self, transhipment):
         tam = ''
@@ -169,6 +177,15 @@ class Parser(report_sxw.rml_parse):
         self.cr.execute(sql)
         bl_ids = self.cr.dictfetchall()
         return bl_ids
+    
+    def get_chungtu(self, hopdong_id):
+        draft_ids = []
+        sql = '''
+            select user_id, date, dhl_no from draft_bl where state not in ('moi_tao','huy_bo') and hopdong_id = %s
+        '''%(hopdong_id)
+        self.cr.execute(sql)
+        draft_ids = self.cr.dictfetchall()
+        return draft_ids
         
     def get_thanhtoan(self, hopdong_id):
         account_voucher_ids = []

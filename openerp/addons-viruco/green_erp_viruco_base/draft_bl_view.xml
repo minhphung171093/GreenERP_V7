@@ -8,8 +8,8 @@
 			<field name="model">draft.bl</field>
 			<field name="arch" type="xml">
 				<tree string="Chứng từ xuất khẩu">
-					
 					<field name="hopdong_id"/>
+					<field name="user_id"/>
 					<field name="partner_id"/>
 					<field name="net_weight"/>
 					<field name="etd_date"/>
@@ -19,6 +19,7 @@
             		<field name="shipping_line_id" />
 	                <field name="cuoc_tau"/>
 	                <field name="bl_no"/>
+	                <field name="dhl_no"/>
 	                <field name="state"/>
 				</tree>
 			</field>
@@ -78,6 +79,7 @@
                     		<field name="consignee_text" string = "2nd Notify Party" invisible='1' />
                     		<field name="user_id" on_change ="onchange_user_id(user_id,hopdong_id)" options="{'create': false, 'create_edit': false}"/>
                     		<field name="buyer_thue" context="{'search_buyer_form_e':1}" options="{'create': false, 'create_edit': false}"  />
+	                    	<field name="dhl_no" options="{'create': false, 'create_edit': false}"/>
 	                    </group>
 	                    <group>
                     		<field name="mean_transport"/>
@@ -157,8 +159,9 @@
 													<tree editable = 'bottom'>
 					                                    <field name="hopdong_line_id" domain="[('hopdong_id','=',parent.hopdong_id)]"/>
 					                                    <field name="packages_qty"/>
-					                                    <field name="packages_id"/>
-					                                    <field name="packages_weight"/>
+					                                    <field name="packages_id" string = "Kind Of Packages"/>
+					                                    <field name="packages_weight" string = "Bale Form"/>
+					                                    <field name="no_packge"/>
 					                                    <field name="net_weight"/>
 					                                    <field name="gross_weight"/>
 													</tree>

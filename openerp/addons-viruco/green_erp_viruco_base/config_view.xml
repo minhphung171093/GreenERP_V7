@@ -103,6 +103,7 @@
 			<field name="arch" type="xml">
 				<tree string="Điều kiện giao hàng">
 					<field name="name"/>
+					<field name="discharge"/>
 					<field name="description"/>
 				</tree>
 			</field>
@@ -114,6 +115,7 @@
             <field name="arch" type="xml">
                 <search string="Điều kiện giao hàng">
                     <field name="name"/>
+					<field name="discharge"/>
                </search>
             </field>
         </record>
@@ -126,6 +128,7 @@
 	            	<sheet>
 	            		<group>
 		                	<field name="name"/>
+							<field name="discharge"/>
 							<field name="description"/>
 						</group>
 		         	</sheet>

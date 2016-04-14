@@ -106,9 +106,20 @@ noi_giaohang()
 class dieukien_giaohang(osv.osv):
     _name = 'dieukien.giaohang'
     _columns = {
-        'name':fields.char('Điều kiện',size=1024,required=True),
+        'name':fields.char('Term',size=1024,required=True),
+        'discharge':fields.char('Discharge',size=1024,required=True),
         'description': fields.text('Ghi chú'),
     }
+    
+    def name_get(self, cr, uid, ids, context=None):
+        if not len(ids):
+            return []
+        reads = self.read(cr, uid, ids, ['name','discharge'], context=context)
+        res = []
+        for record in reads:
+            name = record['name'] + ' ' + record['discharge']
+            res.append((record['id'], name))
+        return res
     
 dieukien_giaohang()
 

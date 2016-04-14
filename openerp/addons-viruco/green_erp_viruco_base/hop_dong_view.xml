@@ -110,6 +110,7 @@
 	                                    <field name="name" string="Tên"/>
 	                                    <field name="chatluong_id" />
 	                                    <field name="quycach_donggoi_id"/>
+	                                     <field name="no_packge" string="No. of Packages"/>
 	                                    <field name="quycach_baobi_id"/>
 	                                    <field name="product_uom"/>
 	                                    <field name="product_qty"/>
