@@ -503,7 +503,7 @@ class ve_loto(osv.osv):
         'create_uid': fields.many2one('res.users','Người nhập'),
         'create_date': fields.datetime('Ngày chỉnh sửa',readonly=True),
         'daily_id': fields.many2one('res.partner','Đại lý',domain="[('dai_ly','=',True)]",required=True),
-        'ngay': fields.date('Ngày xổ số',required=True,states={'done':[('readonly',True)]}),
+        'ngay': fields.date('Ngày xổ số',required=True),
         'so_chungtu': fields.char('Số chứng từ', size=128,required=False),
         'product_id': fields.many2one('product.product','Mệnh giá',domain="[('menh_gia','=',True)]",required=True),
         'ky_ve_id': fields.many2one('ky.ve','Kỳ vé',required=True),
