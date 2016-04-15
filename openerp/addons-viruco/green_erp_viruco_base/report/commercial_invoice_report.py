@@ -393,6 +393,7 @@ class Parser(report_sxw.rml_parse):
                             'form': '',
                             'net_weight': '',
                             'gross_weight': '',
+                            'no_of_pack': '',
                             })                
 
 
@@ -402,6 +403,7 @@ class Parser(report_sxw.rml_parse):
                             'form': detail.packages_weight,
                             'net_weight': detail.net_weight and round(detail.net_weight,2) or 0,
                             'gross_weight': detail.gross_weight and round(detail.gross_weight,2) or 0,
+                            'no_of_pack': '',
                             })
                     self.pack = detail.packages_id.name or ''
                     self.pack_weight = self.get_packages_weight(detail.packages_weight)
@@ -410,6 +412,7 @@ class Parser(report_sxw.rml_parse):
                             'form': '',
                             'net_weight': '',
                             'gross_weight': '',
+                            'no_of_pack': '',
                             })                
             if line.option and line.option == 'seal_no':
                 if len(line.description_line) > 1:
@@ -419,6 +422,7 @@ class Parser(report_sxw.rml_parse):
                                 'form': detail.packages_weight,
                                 'net_weight': detail.net_weight and round(detail.net_weight,2) or 0,
                                 'gross_weight': detail.gross_weight and round(detail.gross_weight,2) or 0,
+                                'no_of_pack': detail.no_packge and round(detail.no_packge,2) or 0,
                                 })
                         self.pack = detail.packages_id.name or ''
                         self.pack_weight = self.get_packages_weight(detail.packages_weight)
@@ -427,6 +431,7 @@ class Parser(report_sxw.rml_parse):
                                 'form': '',
                                 'net_weight': '',
                                 'gross_weight': '',
+                                'no_of_pack': '',
                                 })
     
                 if len(line.description_line) == 1:
@@ -436,6 +441,7 @@ class Parser(report_sxw.rml_parse):
                                 'form': detail.packages_weight,
                                 'net_weight': detail.net_weight and round(detail.net_weight,2) or 0,
                                 'gross_weight': detail.gross_weight and round(detail.gross_weight,2) or 0,
+                                'no_of_pack': detail.no_packge and round(detail.no_packge,2) or 0,
                                 })
             
         return res
