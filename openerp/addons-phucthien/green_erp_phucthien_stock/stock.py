@@ -2034,12 +2034,15 @@ class trahang_chokho(osv.osv):
         res = {}
         for guihang in self.browse(cr,uid,ids):
             qty = 0
-            for line in guihang.trahang_chokho_line:
-                qty += line.qty_conlai
-            if qty == 0:
-                res[guihang.id] = 'done'
+            if guihang.huy_bool==True:
+                res[guihang.id] = 'cancel'
             else:
-                res[guihang.id] = 'cho_gh'
+                for line in guihang.trahang_chokho_line:
+                    qty += line.qty_conlai
+                if qty == 0:
+                    res[guihang.id] = 'done'
+                else:
+                    res[guihang.id] = 'cho_gh'
         return res
     
     _columns = {
@@ -2050,11 +2053,19 @@ class trahang_chokho(osv.osv):
         'trahang_chokho_line': fields.one2many('trahang.chokho.line','trahang_id','Tra Hang'),
         'giaohang_line': fields.one2many('giaohang.line','trahang_id','Giao Hang'),
         'date': fields.date('Ngày gửi hàng', required = True),
-        'state': fields.function(_trangthai, string='Trạng thái', type='selection', selection=[('cho_gh','Chờ giao hàng'),('done','Đã giao hàng')]),
+        'state': fields.function(_trangthai, string='Trạng thái', type='selection', selection=[('cho_gh','Chờ giao hàng'),('done','Đã giao hàng'),('cancel','Hủy bỏ')]),
+        'huy_bool': fields.boolean('is cancel?'),
     }
+    
+    _defaults = {
+        'huy_bool': False,
+                 }
     
     def bt_save(self, cr, uid, ids, context=None):
         return {'type': 'ir.actions.act_window_close'}
+    
+    def bt_huybo(self, cr, uid, ids, context=None):
+        return self.write(cr,uid,ids,{'huy_bool':True})
     
     def bt_print_bbgh(self, cr, uid, ids, context=None):
         if context is None:

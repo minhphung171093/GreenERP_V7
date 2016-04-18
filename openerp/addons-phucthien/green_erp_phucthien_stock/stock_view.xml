@@ -1110,7 +1110,8 @@
 	            	<header>
 	                    <button name="bt_giaohang" states = 'cho_gh' string="Giao Hàng" type="object" class="oe_highlight" />
 	                    <button name="bt_print_bbgh" states = 'cho_gh' string="In biên bản gửi hàng" type="object" class="oe_highlight" />
-	                    <field name="state" widget="statusbar" statusbar_visible="cho_gh,done"/>
+	                    <button name="bt_huybo" states = 'cho_gh' string="Hủy giao hàng" type="object" class="oe_highlight" />
+	                    <field name="state" widget="statusbar" statusbar_visible="cho_gh,done,cancel"/>
 		            </header>
 	            	<sheet>
 	                    <group col='4' colspan='2'>
@@ -1118,6 +1119,7 @@
                     		<field name="picking_id"/>
                     		<field name="date"/>
                     		<field name="invoice_id" invisible = '1'/>
+                    		<field name="huy_bool" invisible = '1'/>
 	                    </group>
 	                    <notebook>
 							<page string = "Thông tin gửi kho">
