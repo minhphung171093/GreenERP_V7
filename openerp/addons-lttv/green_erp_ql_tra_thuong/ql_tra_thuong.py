@@ -143,6 +143,10 @@ class tra_thuong_line(osv.osv):
         'slan_trung': fields.integer('Số lần',required=True),
         'tong_tien': fields.function(_get_gia_moilantrung,string='Số tiền',type='float',store=True),
         'tong': fields.function(_get_tong, string='Tổng', type='float'),
+        'ngay': fields.related('trathuong_id','ngay', string='Ngày xổ số', type='date', select=True,
+                                store = True),
+        'parent_id': fields.related('trathuong_id', 'parent_id', string='Parent', type='many2one', relation='tra.thuong', select=True,
+                                store = True),
     }
     
     _defaults = {
@@ -478,6 +482,8 @@ class tra_thuong_thucte_line(osv.osv):
         'slan_trung': fields.integer('Số lần',required=True,readonly=False),
         'tong_tien': fields.function(_get_gia_moilantrung,string='Số tiền',type='float',store=True),
         'tong': fields.function(_get_tong, string='Tổng', type='float'),
+        'ngay': fields.related('trathuong_id','ngay', string='Ngày xổ số', type='date', select=True,
+                                store = True),
     }
     
     _defaults = {

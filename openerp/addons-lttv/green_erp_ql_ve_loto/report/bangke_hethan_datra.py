@@ -101,7 +101,7 @@ class Parser(report_sxw.rml_parse):
             select case when slan_trung!=0 then slan_trung else 1 end slan_trung
                 from tra_thuong_line
                 
-                where loai='2_so' and giai='dau' and product_id=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+                where loai='2_so' and giai='dau' and product_id=%s and trathuong_id in (select id from tra_thuong where ngay='%s' and parent_id is null)
         ) foo
                 group by slan_trung
                 order by slan_trung
@@ -116,7 +116,7 @@ class Parser(report_sxw.rml_parse):
                     
                     from tra_thuong_line
                 
-                where loai='2_so' and giai='dau' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+                where loai='2_so' and giai='dau' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong where ngay='%s' and parent_id is null)
             '''%(product[0],sl['slan_trung'], date)
             self.cr.execute(sql)
             phaitra_2_18 = self.cr.dictfetchone()
@@ -180,7 +180,7 @@ class Parser(report_sxw.rml_parse):
             select case when slan_trung!=0 then slan_trung else 1 end slan_trung
                 from tra_thuong_line
                 
-                where loai='2_so' and giai='cuoi' and product_id=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+                where loai='2_so' and giai='cuoi' and product_id=%s and trathuong_id in (select id from tra_thuong where ngay='%s' and parent_id is null)
         ) foo
                 group by slan_trung
                 order by slan_trung
@@ -195,7 +195,7 @@ class Parser(report_sxw.rml_parse):
                     
                     from tra_thuong_line
                 
-                where loai='2_so' and giai='cuoi' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+                where loai='2_so' and giai='cuoi' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong where ngay='%s' and parent_id is null)
             '''%(product[0],sl['slan_trung'], date)
             self.cr.execute(sql)
             phaitra_2_18 = self.cr.dictfetchone()
@@ -258,7 +258,7 @@ class Parser(report_sxw.rml_parse):
             select case when slan_trung!=0 then slan_trung else 1 end slan_trung
                 from tra_thuong_line
                 
-                where loai='2_so' and giai='dau_cuoi' and product_id=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+                where loai='2_so' and giai='dau_cuoi' and product_id=%s and trathuong_id in (select id from tra_thuong where ngay='%s' and parent_id is null)
         ) foo
                 group by slan_trung
                 order by slan_trung
@@ -273,7 +273,7 @@ class Parser(report_sxw.rml_parse):
                     
                     from tra_thuong_line
                 
-                where loai='2_so' and giai='dau_cuoi' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+                where loai='2_so' and giai='dau_cuoi' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong where ngay='%s' and parent_id is null)
             '''%(product[0],sl['slan_trung'], date)
             self.cr.execute(sql)
             phaitra_2_18 = self.cr.dictfetchone()
@@ -328,7 +328,7 @@ class Parser(report_sxw.rml_parse):
             select case when slan_trung!=0 then slan_trung else 1 end slan_trung
                 from tra_thuong_line
                 
-                where loai='2_so' and giai='18_lo' and product_id=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+                where loai='2_so' and giai='18_lo' and product_id=%s and trathuong_id in (select id from tra_thuong where ngay='%s' and parent_id is null)
         ) foo
                 group by slan_trung
                 order by slan_trung
@@ -343,7 +343,7 @@ class Parser(report_sxw.rml_parse):
                     
                     from tra_thuong_line
                 
-                where loai='2_so' and giai='18_lo' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+                where loai='2_so' and giai='18_lo' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong where ngay='%s' and parent_id is null)
             '''%(product[0],sl['slan_trung'], date)
             self.cr.execute(sql)
             phaitra_2_18 = self.cr.dictfetchone()
@@ -398,7 +398,7 @@ class Parser(report_sxw.rml_parse):
             select case when slan_trung!=0 then slan_trung else 1 end slan_trung
                 from tra_thuong_line
                 
-                where loai='3_so' and giai='dau' and product_id=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+                where loai='3_so' and giai='dau' and product_id=%s and trathuong_id in (select id from tra_thuong where ngay='%s' and parent_id is null)
         ) foo
                 group by slan_trung
                 order by slan_trung
@@ -413,7 +413,7 @@ class Parser(report_sxw.rml_parse):
                     
                     from tra_thuong_line
                 
-                where loai='3_so' and giai='dau' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+                where loai='3_so' and giai='dau' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong where ngay='%s' and parent_id is null)
             '''%(product[0],sl['slan_trung'], date)
             self.cr.execute(sql)
             phaitra_2_18 = self.cr.dictfetchone()
@@ -468,7 +468,7 @@ class Parser(report_sxw.rml_parse):
             select case when slan_trung!=0 then slan_trung else 1 end slan_trung
                 from tra_thuong_line
                 
-                where loai='3_so' and giai='cuoi' and product_id=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+                where loai='3_so' and giai='cuoi' and product_id=%s and trathuong_id in (select id from tra_thuong where ngay='%s' and parent_id is null)
         ) foo
                 group by slan_trung
                 order by slan_trung
@@ -483,7 +483,7 @@ class Parser(report_sxw.rml_parse):
                     
                     from tra_thuong_line
                 
-                where loai='3_so' and giai='cuoi' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+                where loai='3_so' and giai='cuoi' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong where ngay='%s' and parent_id is null)
             '''%(product[0],sl['slan_trung'], date)
             self.cr.execute(sql)
             phaitra_2_18 = self.cr.dictfetchone()
@@ -538,7 +538,7 @@ class Parser(report_sxw.rml_parse):
             select case when slan_trung!=0 then slan_trung else 1 end slan_trung
                 from tra_thuong_line
                 
-                where loai='3_so' and giai='dau_cuoi' and product_id=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+                where loai='3_so' and giai='dau_cuoi' and product_id=%s and trathuong_id in (select id from tra_thuong where ngay='%s' and parent_id is null)
         ) foo
                 group by slan_trung
                 order by slan_trung
@@ -553,7 +553,7 @@ class Parser(report_sxw.rml_parse):
                     
                     from tra_thuong_line
                 
-                where loai='3_so' and giai='dau_cuoi' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+                where loai='3_so' and giai='dau_cuoi' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong where ngay='%s' and parent_id is null)
             '''%(product[0],sl['slan_trung'], date)
             self.cr.execute(sql)
             phaitra_2_18 = self.cr.dictfetchone()
@@ -608,7 +608,7 @@ class Parser(report_sxw.rml_parse):
             select case when slan_trung!=0 then slan_trung else 1 end slan_trung
                 from tra_thuong_line
                 
-                where loai='3_so' and giai='7_lo' and product_id=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+                where loai='3_so' and giai='7_lo' and product_id=%s and trathuong_id in (select id from tra_thuong where ngay='%s' and parent_id is null)
         ) foo
                 group by slan_trung
                 order by slan_trung
@@ -623,7 +623,7 @@ class Parser(report_sxw.rml_parse):
                     
                     from tra_thuong_line
                 
-                where loai='3_so' and giai='7_lo' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+                where loai='3_so' and giai='7_lo' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong where ngay='%s' and parent_id is null)
             '''%(product[0],sl['slan_trung'], date)
             self.cr.execute(sql)
             phaitra_2_18 = self.cr.dictfetchone()
@@ -678,7 +678,7 @@ class Parser(report_sxw.rml_parse):
             select case when slan_trung!=0 then slan_trung else 1 end slan_trung
                 from tra_thuong_line
                 
-                where loai='3_so' and giai='17_lo' and product_id=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+                where loai='3_so' and giai='17_lo' and product_id=%s and trathuong_id in (select id from tra_thuong where ngay='%s' and parent_id is null)
         ) foo
                 group by slan_trung
                 order by slan_trung
@@ -693,7 +693,7 @@ class Parser(report_sxw.rml_parse):
                     
                     from tra_thuong_line
                 
-                where loai='3_so' and giai='17_lo' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+                where loai='3_so' and giai='17_lo' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong where ngay='%s' and parent_id is null)
             '''%(product[0],sl['slan_trung'], date)
             self.cr.execute(sql)
             phaitra_2_18 = self.cr.dictfetchone()
@@ -748,7 +748,7 @@ class Parser(report_sxw.rml_parse):
             select case when slan_trung!=0 then slan_trung else 1 end slan_trung
                 from tra_thuong_line
                 
-                where loai='4_so' and giai='16_lo' and product_id=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+                where loai='4_so' and giai='16_lo' and product_id=%s and trathuong_id in (select id from tra_thuong where ngay='%s' and parent_id is null)
         ) foo
                 group by slan_trung
                 order by slan_trung
@@ -763,7 +763,7 @@ class Parser(report_sxw.rml_parse):
                     
                     from tra_thuong_line
                 
-                where loai='4_so' and giai='16_lo' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong where ngay='%s')
+                where loai='4_so' and giai='16_lo' and product_id=%s and slan_trung=%s and trathuong_id in (select id from tra_thuong where ngay='%s' and parent_id is null)
             '''%(product[0],sl['slan_trung'], date)
             self.cr.execute(sql)
             phaitra_2_18 = self.cr.dictfetchone()
