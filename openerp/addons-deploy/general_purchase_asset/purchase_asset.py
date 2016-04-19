@@ -26,7 +26,7 @@ class purchase_order_rule(osv.osv):
         'to_date': fields.date('To Date', required=True),
         'uom_id': fields.many2one('product.uom','Units of Measure'),
         'operator': fields.selection([('>=','>='),('<=','<=')],'Operator', required=True),
-        'quantity': fields.float('Quatity', required=True),
+        'quantity': fields.float('Quantity', required=True),
         'value': fields.float('Value', required=True),
         'active': fields.boolean('Active'),
         'message': fields.text('Message'),

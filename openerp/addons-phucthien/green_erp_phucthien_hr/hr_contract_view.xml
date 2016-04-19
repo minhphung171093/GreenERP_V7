@@ -8,9 +8,9 @@
 	        <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
 	        <field name="arch" type="xml">
 	        	<field name="wage" position="before">
-	        		<field name="responsibility"/>
-	        		<field name="travel_allowance"/>
-	        		<field name="phone_allowance"/>
+	        		<field name="responsibility" string="Phụ cấp trách nhiệm"/>
+	        		<field name="travel_allowance" string="Phụ cấp di chuyển"/>
+	        		<field name="phone_allowance" string="Phụ cấp điện thoại"/>
 	        	</field>
 	        	<xpath expr="//label[@for='trial_date_start']" position="before">
 	        		<field name="loai_hd_id"/>

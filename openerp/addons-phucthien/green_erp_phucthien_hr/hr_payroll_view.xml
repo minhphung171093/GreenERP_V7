@@ -18,7 +18,7 @@
 	        <field name="model">hr.template</field>
 	        <field name="arch" type="xml">
 	            <tree string="Rule Category Template">
-	                <field name="name"/>
+	                <field name="name" string="Tên"/>
 	                <field name="template_line"/>		                
 	            </tree>
 	        </field>
@@ -34,8 +34,8 @@
 		                <separator sring="Template Line" colspan="4"/>
 		                <field name="template_line" colspan="4" nolabel="1">
 		                	<tree string="Template Line" editable="top">
-		                		<field name="name"/>
-		                		<field name="sequence"/>
+		                		<field name="name" string="Quy tắc"/>
+		                		<field name="sequence" string="Số thứ tự"/>
 		                	</tree>
 		                </field>
 		            </group>		                
@@ -44,7 +44,7 @@
 		</record>
 	
 		<record id="hr_template_action" model="ir.actions.act_window">
-        	<field name="name">Rule Category Template</field>
+        	<field name="name">Mẫu quy tắc danh mục</field>
         	<field name="res_model">hr.template</field>
         	<field name="view_type">form</field>
         	<field name="view_id" ref="hr_template_tree"/>	        	
