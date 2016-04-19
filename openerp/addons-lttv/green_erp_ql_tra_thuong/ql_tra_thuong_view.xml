@@ -29,7 +29,7 @@
             <field name="name">tra.thuong.tree</field>
             <field name="model">tra.thuong</field>
             <field name="arch" type="xml">
-                <tree string="Trả thưởng" create='false' edit='false'>
+                <tree string="Trả thưởng">
                     <field name="daily_id"/>
                     <field name="ngay"/>
                     <field name="state" invisible='1'/>
