@@ -79,7 +79,7 @@ class Parser(report_sxw.rml_parse):
         return period_name
     
     def display_address(self, partner_id):
-        partner = self.pool.get('res.partner').browse(self.cr, self.uid, partner_id)
+        partner = self.pool.get('res.partner').browse(self.cr, 1, partner_id)
         address = partner.street and partner.street + ' , ' or ''
         address += partner.street2 and partner.street2 + ' , ' or ''
         address += partner.city and partner.city.name + ' , ' or ''
@@ -133,37 +133,59 @@ class Parser(report_sxw.rml_parse):
         else:
             user_ids = str(user_ids).replace("[","(")
             user_ids = str(user_ids).replace("]",")")
-            sql = '''
-                select id from res_partner where user_id in %s and customer is True
-            '''%(user_ids)
-            self.cr.execute(sql)
-            cus_ids = [r[0] for r in self.cr.fetchall()]  
-            if cus_ids:
-                cus_ids = str(cus_ids).replace("[","(")
-                cus_ids = str(cus_ids).replace("]",")")
-                sql ='''
-                 select id from account_invoice where id in (select distinct invoice_id from account_invoice_line where product_id in (select product_product.id
-                                from product_product,product_template 
-                                where product_template.categ_id in %s 
-                                and product_product.product_tmpl_id = product_template.id) and invoice_id in 
-                                    (select id from account_invoice where date_invoice < '%s' and ((type ='out_invoice' and account_id not in %s) or (type ='in_refund')) and state in ('open','paid')))
-                                and partner_id in %s
-                                order by date_invoice
-                '''%(vc_cate_ids,date_from,account_ids,cus_ids)
-                self.cr.execute(sql)   
-                inv_truoc_ids = [r[0] for r in self.cr.fetchall()] 
-                
-                sql ='''
-                 select id from account_invoice where id in (select distinct invoice_id from account_invoice_line where product_id in (select product_product.id
-                                from product_product,product_template 
-                                where product_template.categ_id in %s
-                                and product_product.product_tmpl_id = product_template.id) and invoice_id in 
-                                    (select id from account_invoice where date_invoice between '%s' and '%s' and ((type ='out_invoice' and account_id not in %s) or (type ='in_refund')) and state in ('open','paid')))
-                                and partner_id in %s
-                                order by date_invoice
-                '''%(vc_cate_ids,date_from,date_to,account_ids,cus_ids)
-                self.cr.execute(sql)   
-                inv_ids = [r[0] for r in self.cr.fetchall()] 
+#             sql = '''
+#                 select partner_id from sale_order where user_id in %s and partner_id in (select id from res_partner where customer is True)
+#             '''%(user_ids)
+#             self.cr.execute(sql)
+#             cus_ids = [r[0] for r in self.cr.fetchall()]  
+#             if cus_ids:
+#                 cus_ids = str(cus_ids).replace("[","(")
+#                 cus_ids = str(cus_ids).replace("]",")")
+#                 sql ='''
+#                  select id from account_invoice where id in (select distinct invoice_id from account_invoice_line where product_id in (select product_product.id
+#                                 from product_product,product_template 
+#                                 where product_template.categ_id in %s 
+#                                 and product_product.product_tmpl_id = product_template.id) and invoice_id in 
+#                                     (select id from account_invoice where date_invoice < '%s' and ((type ='out_invoice' and account_id not in %s) or (type ='in_refund')) and state in ('open','paid')))
+#                                 and partner_id in %s
+#                                 order by date_invoice
+#                 '''%(vc_cate_ids,date_from,account_ids,cus_ids)
+#                 self.cr.execute(sql)   
+            sql ='''
+                select ai.id
+                from account_invoice ai
+                left join account_invoice_line ail on ail.invoice_id = ai.id
+                left join product_product pp on ail.product_id = pp.id
+                left join product_template pt on pp.product_tmpl_id = pt.id
+                left join stock_move sm on ail.source_id = sm.id
+                left join stock_picking sp on sm.picking_id = sp.id
+                left join sale_order so on sp.sale_id = so.id
+                where pt.categ_id in %s 
+                and ai.date_invoice < '%s' and ((ai.type ='out_invoice' and ai.account_id not in %s) or (ai.type ='in_refund')) 
+                and ai.state in ('open','paid') and so.user_id in %s
+                group by ai.id
+                order by ai.date_invoice
+            '''%(vc_cate_ids,date_from,account_ids,user_ids)
+            self.cr.execute(sql)  
+            inv_truoc_ids = [r[0] for r in self.cr.fetchall()] 
+            
+            sql ='''
+                select ai.id
+                from account_invoice ai
+                left join account_invoice_line ail on ail.invoice_id = ai.id
+                left join product_product pp on ail.product_id = pp.id
+                left join product_template pt on pp.product_tmpl_id = pt.id
+                left join stock_move sm on ail.source_id = sm.id
+                left join stock_picking sp on sm.picking_id = sp.id
+                left join sale_order so on sp.sale_id = so.id
+                where pt.categ_id in %s 
+                and ai.date_invoice between '%s' and '%s' and ((ai.type ='out_invoice' and ai.account_id not in %s) or (ai.type ='in_refund')) 
+                and ai.state in ('open','paid') and so.user_id in %s
+                group by ai.id
+                order by ai.date_invoice
+            '''%(vc_cate_ids,date_from,date_to,account_ids,user_ids)
+            self.cr.execute(sql)   
+            inv_ids = [r[0] for r in self.cr.fetchall()] 
         if inv_truoc_ids:
             for inv in inv_truoc_ids:
                 tien_mat = 0
@@ -176,15 +198,22 @@ class Parser(report_sxw.rml_parse):
                 da_tra = 0
                 nodk = 0
                 sql = ''' 
-                    select ai.amount_total as amount_total, date_invoice, reference_number, supplier_invoice_number, rp.name as cus, rp.id as cus_id, rp.internal_code as code from account_invoice ai, res_partner rp 
-                        where ai.partner_id = rp.id and ai.id = %s 
+                    select ai.amount_total as amount_total, ai.date_invoice as date_invoice, ai.reference_number as reference_number,
+                    ai.supplier_invoice_number as supplier_invoice_number, rp.name as cus, rp.id as cus_id, so.user_id as user_id, rp.internal_code as code 
+                    from account_invoice ai
+                    left join res_partner rp on ai.partner_id = rp.id 
+                    left join account_invoice_line ail on ail.invoice_id = ai.id
+                    left join stock_move sm on ail.source_id = sm.id
+                    left join stock_picking sp on sm.picking_id = sp.id
+                    left join sale_order so on sp.sale_id = so.id
+                    where ai.id = %s 
                         
                 '''%(inv)
                 self.cr.execute(sql) 
                 inv_id = self.cr.dictfetchone()
                 amount_total = inv_id and inv_id['amount_total'] or 0
-                tdv_name = self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).user_id and self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).user_id.name or ''
-                kv = self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).state_id and self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).state_id.name or ''
+                tdv_name = self.pool.get('res.users').browse(self.cr,self.uid,inv_id['user_id']).name or ''
+                kv = self.pool.get('res.partner').browse(self.cr,1,inv_id['cus_id']).state_id and self.pool.get('res.partner').browse(self.cr,1,inv_id['cus_id']).state_id.name or ''
                 sql='''
                     select ma.name from account_invoice_line acc, product_product pr , manufacturer_product ma
                     where invoice_id = %s and acc.product_id = pr.id and ma.id = pr.manufacturer_product_id
@@ -247,16 +276,23 @@ class Parser(report_sxw.rml_parse):
                 tong_ck = 0
                 thuc_thu = 0
                 sql = ''' 
-                    select ai.residual as residual, date_invoice, reference_number, supplier_invoice_number, amount_total, rp.name as cus, rp.id as cus_id, rp.internal_code as code from account_invoice ai, res_partner rp 
-                        where ai.partner_id = rp.id and ai.id = %s 
+                    select ai.amount_total as amount_total, ai.date_invoice as date_invoice, ai.reference_number as reference_number,
+                    ai.supplier_invoice_number as supplier_invoice_number, rp.name as cus, rp.id as cus_id, so.user_id as user_id, rp.internal_code as code 
+                    from account_invoice ai
+                    left join res_partner rp on ai.partner_id = rp.id 
+                    left join account_invoice_line ail on ail.invoice_id = ai.id
+                    left join stock_move sm on ail.source_id = sm.id
+                    left join stock_picking sp on sm.picking_id = sp.id
+                    left join sale_order so on sp.sale_id = so.id
+                    where ai.id = %s 
                         
                 '''%(inv)
                 self.cr.execute(sql) 
                 inv_id = self.cr.dictfetchone()
                 invoice_id = invoice_obj.browse(self.cr,self.uid,inv)
 #                 nock = nodk + (invoice_id.residual and invoice_id.residual or 0)
-                tdv_name = self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).user_id and self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).user_id.name or ''
-                kv = self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).state_id and self.pool.get('res.partner').browse(self.cr,self.uid,inv_id['cus_id']).state_id.name or ''
+                tdv_name = self.pool.get('res.users').browse(self.cr,self.uid,inv_id['user_id']).name or ''
+                kv = self.pool.get('res.partner').browse(self.cr,1,inv_id['cus_id']).state_id and self.pool.get('res.partner').browse(self.cr,1,inv_id['cus_id']).state_id.name or ''
                 for pay in invoice_id.payment_ids:
                     if pay.date >= date_from and pay.date <= date_to:
                         if pay.journal_id.code == '11':
@@ -347,7 +383,7 @@ class Parser(report_sxw.rml_parse):
             user_ids = str(user_ids).replace("[","(")
             user_ids = str(user_ids).replace("]",")")
             sql = '''
-                select id from res_partner where user_id in %s and customer is True
+                select partner_id from sale_order where user_id in %s and partner_id in (select id from res_partner where customer is True)
             '''%(user_ids)
             self.cr.execute(sql)
             cus_ids = [r[0] for r in self.cr.fetchall()]  
@@ -382,7 +418,7 @@ class Parser(report_sxw.rml_parse):
             user_ids = str(user_ids).replace("[","(")
             user_ids = str(user_ids).replace("]",")")
             sql = '''
-                select id from res_partner where user_id in %s and customer is True
+                select partner_id from sale_order where user_id in %s and partner_id in (select id from res_partner where customer is True)
             '''%(user_ids)
             self.cr.execute(sql)
             cus_ids = [r[0] for r in self.cr.fetchall()]  

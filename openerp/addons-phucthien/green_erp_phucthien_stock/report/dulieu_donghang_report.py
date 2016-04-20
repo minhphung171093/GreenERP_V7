@@ -110,7 +110,7 @@ class Parser(report_sxw.rml_parse):
                 thuy_ids = str(thuy_ids).replace('[', '(')
                 thuy_ids = str(thuy_ids).replace(']', ')')
                 sql ='''
-                    select sp.name as so_phieuxuat,sp.ngay_gui, rp.name as ten_kh, rpu.name as tdv, rcs.name as tinh,   
+                    select sp.name as so_phieuxuat,sp.ngay_gui, rp.name as ten_kh, rpu_so.name as tdv, rcs.name as tinh,   
                         sum(spp.sl_nhietke_conlai) as sl_nhietke_conlai,
                         case when sp.ngay_nhan is not null then 'Da nhan' else 'Chua nhan' end as bb_giaonhan
                     from stock_picking_packaging spp
@@ -123,6 +123,9 @@ class Parser(report_sxw.rml_parse):
                     left join res_users ru ON rp.user_id = ru.id
                     left join res_partner rpu ON ru.partner_id = rpu.id
                     left join res_country_state rcs ON rp.state_id = rcs.id
+                    left join sale_order so ON sp.sale_id = so.id
+                    left join res_users ru_so ON so.user_id = ru_so.id
+                    left join res_partner rpu_so ON ru_so.partner_id = rpu_so.id
                     where sp.ngay_gui >= '%s' and (sp.ngay_nhan is null or sp.ngay_nhan <= '%s')
                     and rp.id in %s and pc.code='VC'
                 ''' %(tu_ngay, den_ngay, thuy_ids)
@@ -139,7 +142,7 @@ class Parser(report_sxw.rml_parse):
                         and sp.ngay_nhan is null
                     '''    
                 sql+='''
-                     group by sp.name,sp.ngay_gui, rp.name,rpu.name,rcs.name,case when sp.ngay_nhan is not null then 'Da nhan' else 'Chua nhan' end
+                     group by sp.name,sp.ngay_gui, rp.name,rpu_so.name,rcs.name,case when sp.ngay_nhan is not null then 'Da nhan' else 'Chua nhan' end
                     order by sp.name
                     '''
                 self.cr.execute(sql)
@@ -200,7 +203,7 @@ class Parser(report_sxw.rml_parse):
 #                             })
             else:    
                 sql ='''
-                    select sp.name as so_phieuxuat,sp.ngay_gui, rp.name as ten_kh, rpu.name as tdv, rcs.name as tinh,   
+                    select sp.name as so_phieuxuat,sp.ngay_gui, rp.name as ten_kh, rpu_so.name as tdv, rcs.name as tinh,   
                         sum(spp.sl_nhietke_conlai) as sl_nhietke_conlai,
                         case when sp.ngay_nhan is not null then 'Da nhan' else 'Chua nhan' end as bb_giaonhan
                     from stock_picking_packaging spp
@@ -210,6 +213,8 @@ class Parser(report_sxw.rml_parse):
                     left join res_users ru ON rp.user_id = ru.id
                     left join res_partner rpu ON ru.partner_id = rpu.id
                     left join res_country_state rcs ON rp.state_id = rcs.id
+                    left join res_users ru_so ON so.user_id = ru_so.id
+                    left join res_partner rpu_so ON ru_so.partner_id = rpu_so.id
                     where sp.ngay_gui >= '%s' and (sp.ngay_nhan is null or sp.ngay_nhan <= '%s') and so.user_id = %s
                 ''' %(tu_ngay, den_ngay, self.uid)
                 if partner_id:
@@ -225,7 +230,7 @@ class Parser(report_sxw.rml_parse):
                         and sp.ngay_nhan is null
                     '''    
                 sql+='''
-                     group by sp.name,sp.ngay_gui, rp.name,rpu.name,rcs.name,case when sp.ngay_nhan is not null then 'Da nhan' else 'Chua nhan' end
+                     group by sp.name,sp.ngay_gui, rp.name,rpu_so.name,rcs.name,case when sp.ngay_nhan is not null then 'Da nhan' else 'Chua nhan' end
                     order by sp.name
                     '''
                 self.cr.execute(sql)
@@ -242,7 +247,7 @@ class Parser(report_sxw.rml_parse):
                 
         else:
             sql ='''
-                select sp.name as so_phieuxuat,sp.ngay_gui, rp.name as ten_kh, rpu.name as tdv, rcs.name as tinh,   
+                select sp.name as so_phieuxuat,sp.ngay_gui, rp.name as ten_kh, rpu_so.name as tdv, rcs.name as tinh,   
                     sum(spp.sl_nhietke_conlai) as sl_nhietke_conlai,
                     case when sp.ngay_nhan is not null then 'Da nhan' else 'Chua nhan' end as bb_giaonhan
                 from stock_picking_packaging spp
@@ -252,6 +257,8 @@ class Parser(report_sxw.rml_parse):
                 left join res_users ru ON rp.user_id = ru.id
                 left join res_partner rpu ON ru.partner_id = rpu.id
                 left join res_country_state rcs ON rp.state_id = rcs.id
+                left join res_users ru_so ON so.user_id = ru_so.id
+                left join res_partner rpu_so ON ru_so.partner_id = rpu_so.id
                 where sp.ngay_gui >= '%s' and (sp.ngay_nhan is null or sp.ngay_nhan <= '%s')
             ''' %(tu_ngay, den_ngay)
             if partner_id:
@@ -267,7 +274,7 @@ class Parser(report_sxw.rml_parse):
                     and sp.ngay_nhan is null
                 '''    
             sql+='''
-                 group by sp.name,sp.ngay_gui, rp.name,rpu.name,rcs.name,case when sp.ngay_nhan is not null then 'Da nhan' else 'Chua nhan' end
+                 group by sp.name,sp.ngay_gui, rp.name,rpu_so.name,rcs.name,case when sp.ngay_nhan is not null then 'Da nhan' else 'Chua nhan' end
                 order by sp.name
                 '''
             self.cr.execute(sql)

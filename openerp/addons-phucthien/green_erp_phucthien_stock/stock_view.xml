@@ -1276,7 +1276,7 @@
 							
 							<page string = "Chi tiết thùng">
 								<field name="ct_thung_line" nolabel='1'>
-									<tree editable='bottom'>
+									<tree editable='bottom' create='false'>
 										<field name="loai_thung_id" on_change="onchange_loai_thung_id(loai_thung_id,sl_thung)"/>
 										<field name="sl_thung" on_change="onchange_loai_thung_id(loai_thung_id,sl_thung)"/>
 										<field name="chi_phi_thung" />
