@@ -170,6 +170,7 @@ class sale_order(osv.osv):
     }
     _defaults = {
               'sp_khuyen_mai': False,   
+              'user_id': False,
                  }
     
     
@@ -261,8 +262,8 @@ class sale_order(osv.osv):
             'fiscal_position': fiscal_position,
             
         }
-        if dedicated_salesman:
-            val.update({'user_id': dedicated_salesman,})
+#         if dedicated_salesman:
+#             val.update({'user_id': dedicated_salesman,})
         if pricelist:
             val['pricelist_id'] = pricelist
         if part:
@@ -280,6 +281,24 @@ class sale_order(osv.osv):
                          })
         new_id = super(sale_order, self).create(cr, uid, vals, context)
         sale = self.browse(cr, uid, new_id)
+        product_ids = []
+        for line in sale.order_line:
+            product_ids.append(line.product_id.id)
+        if product_ids:
+            product_ids = str(product_ids).replace('[', '(')
+            product_ids = str(product_ids).replace(']', ')')
+            sql = '''
+                select user_id from nhanvien_banhang_line where product_id in %s and partner_id = %s group by user_id
+            '''%(product_ids, sale.partner_id.id)
+            cr.execute(sql)
+            user_ids = [row[0] for row in cr.fetchall()]
+            if len(user_ids)>1:
+                raise osv.except_osv(_('Cảnh báo!'),_('Đơn bán hàng này có nhiều nhân viên bán hàng. Bạn cần kiểm tra lại !!'))
+            else:
+                sql = '''
+                    update sale_order set user_id = %s where id = %s
+                '''%(user_ids[0], new_id)
+                cr.execute(sql)
         return new_id
     
     def write(self, cr, uid, ids, vals, context=None):
@@ -289,6 +308,25 @@ class sale_order(osv.osv):
                         'dia_chi_kh': part.street + '/' +(part.street2 or '') + '/' +  (part.country_id and part.country_id.name or '')
                          })
         new_write = super(sale_order, self).write(cr, uid, ids, vals, context=context) 
+        for sale in self.browse(cr, uid, ids):
+            product_ids = []
+            for line in sale.order_line:
+                product_ids.append(line.product_id.id)
+            if product_ids:
+                product_ids = str(product_ids).replace('[', '(')
+                product_ids = str(product_ids).replace(']', ')')
+                sql = '''
+                    select user_id from nhanvien_banhang_line where product_id in %s and partner_id = %s group by user_id
+                '''%(product_ids, sale.partner_id.id)
+                cr.execute(sql)
+                user_ids = [row[0] for row in cr.fetchall()]
+                if len(user_ids)>1:
+                    raise osv.except_osv(_('Cảnh báo!'),_('Đơn bán hàng này có nhiều nhân viên bán hàng. Bạn cần kiểm tra lại !!'))
+                else:
+                    sql = '''
+                        update sale_order set user_id = %s where id = %s
+                    '''%(user_ids[0], ids[0])
+                    cr.execute(sql)
         return new_write
     def action_button_confirm(self, cr, uid, ids, context=None):
         assert len(ids) == 1, 'This option should only be used for a single id at a time.'
@@ -900,7 +938,21 @@ class sale_order_line(osv.osv):
         res = super(sale_order_line, self).product_id_change(cr, uid, ids, pricelist, product, qty=qty,
             uom=uom, qty_uos=qty_uos, uos=uos, name=name, partner_id=partner_id,
             lang=lang, update_tax=update_tax, date_order=date_order, packaging=packaging, fiscal_position=fiscal_position, flag=flag, context=context)
-
+        if product:
+            sql = '''
+                select product_id from nhanvien_banhang_line where partner_id = %s and partner_id in (select id from res_partner
+                where customer = 't')
+            '''%(partner_id)
+            cr.execute(sql)
+            product_ids = [row[0] for row in cr.fetchall()]
+            if product not in product_ids:
+#                 res['value'].update({'product_id': False})
+                warn_msg = _('Bạn chưa cấu hình sản phẩm này đối với khách hàng %s !!') %(partner_obj.browse(cr,uid,partner_id).name)
+                warning = {
+                       'title': _('Cảnh báo!'),
+                       'message' : warn_msg
+                    }
+                return {'value':{'product_id': False}, 'warning': warning}
         if not product:
             res['value'].update({'product_packaging': False})
             return res

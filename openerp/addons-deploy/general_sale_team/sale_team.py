@@ -32,8 +32,7 @@ class res_users(osv.osv):
         'team_ids':fields.many2many('crm.case.section', 'sale_member_rel', 'member_id', 'section_id', 'Teams'),
         'leader_team_lines':fields.one2many('crm.case.section', 'user_id', 'Leader of Teams'),
     }
-    
-    
 res_users()
+
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

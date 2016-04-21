@@ -186,7 +186,7 @@
                         <page string="Sales &amp; Purchases">
                             <group>
                                 <group>
-                                    <field name="user_id"/>
+                                    <field name="user_id" invisible ='1'/>
                                     <field name="company_id" groups="base.group_multi_company" widget="selection"/>
                                 </group>
                                 <group>
@@ -301,6 +301,54 @@
 	        <field name="act_window_id" ref="action_partner_person_only"/>
 	    </record>
 <!--	    <menuitem id="menu_action_partner_person_only" parent="base.menu_sales" action="action_partner_person_only" sequence="1"/>  -->
+        <record id="res_city_tree_view" model="ir.ui.view">
+			<field name="name">res.city.tree</field>
+			<field name="model">res.city</field>
+			<field name="arch" type="xml">
+				<tree string="Tỉnh/Quận/Huyện">
+					<field name="name"/>
+					<field name="state_id"/>
+                    <field name="country_id"/>
+				</tree>
+			</field>
+		</record>
+		
+		<record id="res_city_form_view" model="ir.ui.view">
+            <field name="name">res.city.form</field>
+            <field name="model">res.city</field>
+            <field name="arch" type="xml">
+	            <form string="Tỉnh/Quận/Huyện" version="7.0"> 
+	            	<sheet>
+	                    <group col='4' colspan='2'>
+                    		<field name="name"/>
+							<field name="state_id"/>
+		                    <field name="country_id"/>
+		                </group>
+		                <group>
+                    		<notebook >
+								<page string = "Postal Codes">
+									<field name="postcode_line" nolabel='1'>
+										<tree editable='bottom'>
+											<field name="name"/>
+										</tree>
+									</field>
+								</page>
+							</notebook>
+	                	</group>    
+		         	</sheet>
+		         </form>
+			</field>
+		</record>
+		
+		<record id="action_res_city" model="ir.actions.act_window">
+            <field name="name">Tỉnh/Quận/Huyện</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.city</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="res_city_tree_view"/>
+        </record>
+        <menuitem id="menu_action_res_city" parent="base.menu_localisation" action="action_res_city" sequence="5"/>
         
     </data>
 </openerp>

@@ -17,6 +17,8 @@ class users(osv.osv):
                                         required=False, readonly=False, help='The profile of the user. The admin should have no profile.'),
         'nguoi_quanly_id': fields.many2one('res.users', 'Người quản lý'),    
         'nhan_vien_line':fields.one2many('res.users','nguoi_quanly_id','Nhan Vien'),   
+        'product_ids': fields.many2many('product.product','user_product_ref','user_id','product_id', 'Sản phẩm'),
+        'khu_vuc_line': fields.one2many('khu.vuc.line','user_id','Line'),
     }
     
     def create(self, cr, uid, vals, context=None):         
@@ -78,11 +80,19 @@ class users(osv.osv):
         return datetime_value.strftime(DEFAULT_SERVER_DATETIME_FORMAT)
     
 users()
-
+class khu_vuc_line(osv.osv):
+    _name = "khu.vuc.line"
+    
+    _columns = {
+        'user_id':fields.many2one('res.users', 'User', ondelete = 'cascade'),
+        'state_id':fields.many2one('res.country.state', 'Tỉnh/TP'),
+        'city': fields.many2many('res.city', 'khuvuc_city_rel', 'kv_line_id', 'city_id', string='Quận/Huyện'),
+    }
+khu_vuc_line()
 class groups(osv.osv):
     _inherit = "res.groups"
     _columns = {
-        'profiles_ids': fields.many2many('profile', 'profiles_groups_rel', 'group_id', 'profile_id', string='Profiles', required=False, readonly=False),
+        'profiles_ids': fields.many2many('profile', 'profiles_groups_rel', 'group_id', 'profile_id', string='Profiles'),
     }
     
 #    def write(self, cr, uid, ids, values, context=None):         

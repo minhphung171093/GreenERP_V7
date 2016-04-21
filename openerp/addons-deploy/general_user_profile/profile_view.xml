@@ -108,5 +108,28 @@
             </field>
         </record>
         
+        <record id="view_users_form_inherit" model="ir.ui.view">
+            <field name="name">view.users.form.inherit</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//page[@string='Access Rights']" position="after">
+            		<page string="Khu vực NVKD" invisible = '1'>
+            			<group>
+            				<field name="product_ids"/>
+            			</group>
+                       	<group>
+                       		<field name="khu_vuc_line" nolabel='1'>
+								<tree editable='bottom'>
+									<field name="state_id"/>
+									<field name="city"/>
+								</tree>
+							</field>
+                   		</group>
+                   	</page>
+                </xpath>
+            </field>
+        </record>
+        
     </data>
 </openerp>

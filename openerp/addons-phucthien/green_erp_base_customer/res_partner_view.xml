@@ -325,6 +325,16 @@
 								</field>
                             </group>
                         </page>
+                        <page string="Danh sách sản phẩm và NVBH">
+                            <group>
+                            	<field name="nhanvien_banhang_line" nolabel='1'>
+									<tree editable='bottom'>
+										<field name="product_id" required = '1'/>
+										<field name="user_id" required = '1'/>
+									</tree>
+								</field>
+                            </group>
+                        </page>
                         <!-- The History page becomes visible as soon as there is something to display inside -->
                         <!-- Thanh: Add new Tab -->
                         <page string="Alerts" name="alerts">

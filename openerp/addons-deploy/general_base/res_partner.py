@@ -9,6 +9,11 @@ class res_partner(osv.osv):
     _inherit = 'res.partner'
     _order = "internal_code,name"
     
+#     def init(self, cr):
+#         
+#         
+#         return True
+    
     def name_get(self, cr, uid, ids, context=None):
         if context is None:
             context = {}
