@@ -77,24 +77,6 @@ doanhthu_banhang_review_line()
 class doanhthu_banhang(osv.osv_memory):
     _name = 'doanhthu.banhang'
     
-    def get_categ_vaccine(self,cr,uid,context):
-        if uid == 24:
-            sql = '''
-                select id from product_category where code = 'VC'
-            '''
-            cr.execute(sql)
-            vaccine_ids = [row[0] for row in cr.fetchall()]
-            return vaccine_ids
-        elif uid == 34:
-            sql = '''
-                select id from product_category where code = 'NR'
-            '''
-            cr.execute(sql)
-            norinse_ids = [row[0] for row in cr.fetchall()]
-            return norinse_ids
-        else:
-            return False
-        
     def get_uid(self,cr,uid,context):
         return uid
     
@@ -115,7 +97,6 @@ class doanhthu_banhang(osv.osv_memory):
     _defaults = {
         'date_from': lambda *a: time.strftime('%Y-%m-%d'),
         'date_to': lambda *a: time.strftime('%Y-%m-%d'),
-        'categ_ids': get_categ_vaccine,
         'user_id': get_uid,
     }
     
@@ -195,214 +176,88 @@ class doanhthu_banhang(osv.osv_memory):
             for tinh_id in tinh_ids:
                 mang_tinh_ids.append(tinh_id.id)
                 
-            if uid==24:
-                sql = '''
-                    select id from res_partner where 
-                        customer = 't' and 
-                        street LIKE '%Q.Gò Vấp%' or street LIKE '%Q. Gò Vấp%' or street LIKE '%Quận Gò Vấp%' or
-                        street LIKE '%Q.Tân Bình%' or street LIKE '%Q. Tân Bình%' or street LIKE '%Quận Tân Bình%' or
-                        street LIKE '%Q1%' or street LIKE '%Q.1%' or street LIKE '%Quận 1%' or
-                        street LIKE '%Q.Tân Phú%' or street LIKE '%Q. Tân Phú%' or street LIKE '%Quận Tân Phú%' or
-                        street LIKE '%Q3%' or street LIKE '%Q.3%' or street LIKE '%Quận 3%' or
-                        street LIKE '%Q10%' or street LIKE '%Q.10%' or street LIKE '%Quận 10%' or
-                        street LIKE '%Q11%' or street LIKE '%Q.11%' or street LIKE '%Quận 11%' or
-                        street LIKE '%Q4%' or street LIKE '%Q.4%' or street LIKE '%Quận 4%' or
-                        street LIKE '%Q5%' or street LIKE '%Q.5%' or street LIKE '%Quận 5%' or
-                        street LIKE '%Q6%' or street LIKE '%Q.6%' or street LIKE '%Quận 6%' or
-                        street LIKE '%Q8%' or street LIKE '%Q.8%' or street LIKE '%Quận 8%' or
-                        street LIKE '%Q.Bình Tân%' or street LIKE '%Q. Bình Tân%' or street LIKE '%Quận Bình Tân%' or
-                        street LIKE '%Q7%' or street LIKE '%Q.7%' or street LIKE '%Quận 7%' or
-                        street LIKE '%H.Bình Chánh%' or street LIKE '%H. Bình Chánh%' or street LIKE '%Huyện Bình Chánh%' or
-                        street LIKE '%H.Nhà Bè%' or street LIKE '%H. Nhà Bè%' or street LIKE '%Huyện Nhà Bè%' or
-                        street LIKE '%H.Cần Giờ%' or street LIKE '%H. Cần Giờ%' or street LIKE '%Huyện Cần Giờ%' or
-                        
-                        street2 LIKE '%Q.Gò Vấp%' or street2 LIKE '%Q. Gò Vấp%' or street2 LIKE '%Quận Gò Vấp%' or
-                        street2 LIKE '%Q.Tân Bình%' or street2 LIKE '%Q. Tân Bình%' or street2 LIKE '%Quận Tân Bình%' or
-                        street2 LIKE '%Q1%' or street2 LIKE '%Q.1%' or street2 LIKE '%Quận 1%' or 
-                        street2 LIKE '%Q.Tân Phú%' or street2 LIKE '%Q. Tân Phú%' or street2 LIKE '%Quận Tân Phú%' or
-                        street2 LIKE '%Q3%' or street2 LIKE '%Q.3%' or street2 LIKE '%Quận 3%' or
-                        street2 LIKE '%Q10%' or street2 LIKE '%Q.10%' or street2 LIKE '%Quận 10%' or
-                        street2 LIKE '%Q11%' or street2 LIKE '%Q.11%' or street2 LIKE '%Quận 11%' or
-                        street2 LIKE '%Q4%' or street2 LIKE '%Q.4%' or street2 LIKE '%Quận 4%' or
-                        street2 LIKE '%Q5%' or street2 LIKE '%Q.5%' or street2 LIKE '%Quận 5%' or
-                        street2 LIKE '%Q6%' or street2 LIKE '%Q.6%' or street2 LIKE '%Quận 6%' or
-                        street2 LIKE '%Q8%' or street2 LIKE '%Q.8%' or street2 LIKE '%Quận 8%' or
-                        street2 LIKE '%Q.Bình Tân%' or street2 LIKE '%Q. Bình Tân%' or street2 LIKE '%Quận Bình Tân%' or
-                        street2 LIKE '%Q7%' or street2 LIKE '%Q.7%' or street2 LIKE '%Quận 7%' or
-                        street2 LIKE '%H.Bình Chánh%' or street2 LIKE '%H. Bình Chánh%' or street2 LIKE '%Huyện Bình Chánh%' or
-                        street2 LIKE '%H.Nhà Bè%' or street2 LIKE '%H. Nhà Bè%' or street2 LIKE '%Huyện Nhà Bè%' or
-                        street2 LIKE '%H.Cần Giờ%' or street2 LIKE '%H. Cần Giờ%' or street2 LIKE '%Huyện Cần Giờ%'
-                '''
-                cr.execute(sql)
-                thuy_ids = [row[0] for row in cr.fetchall()]
-                thuy_ids = str(thuy_ids).replace('[', '(')
-                thuy_ids = str(thuy_ids).replace(']', ')')
-                sql = '''
-                    select ail.id as id,ai.partner_id as partner_id,ai.date_invoice as ngay_hd,ai.reference_number as so_hd,rp.internal_code as ma_kh,rp.name as ten_kh,pp.default_code as ma_sp,
-                        pp.name_template as ten_sp,pu.name as dvt,spl.name as so_lo,spl.life_date as han_dung,ail.quantity as so_luong,ail.price_unit as gia_ban,
-                        ail.price_unit*ail.quantity as dt_truocthue,at.amount_tax as tien_thue,(ail.price_unit*ail.quantity)+at.amount_tax as dt_sauthue,pt.standard_price as gia_von,
-                        sl.name as loc_name,mp.name as nsx, rurp.name as nvbh
-                        from account_invoice_line ail
-                            left join account_invoice ai on ail.invoice_id=ai.id
-                            left join res_partner rp on ail.partner_id=rp.id
-                            left join res_users ru on rp.user_id = ru.id
-                            left join res_partner rurp on ru.partner_id=rurp.id
-                            left join product_product pp on ail.product_id=pp.id
-                            left join product_template pt on pp.product_tmpl_id=pt.id
-                            left join product_category pc on pt.categ_id=pc.id
-                            left join product_uom pu on ail.uos_id=pu.id
-                            left join stock_production_lot spl on ail.prodlot_id = spl.id
-                            left join (
-                                    select ail.id,sum(at.amount*ail.price_unit*ail.quantity) as amount_tax
-                                        from account_invoice_line ail
-                                            left join account_invoice_line_tax ailt on ail.id=ailt.invoice_line_id
-                                            left join account_tax at on ailt.tax_id=at.id
-                                        group by ail.id
-                                ) as at on ail.id=at.id
-                            left join stock_move sm on sm.id=ail.source_id
-                            left join stock_location sl on sl.id=sm.location_id
-                            left join manufacturer_product mp on pp.manufacturer_product_id = mp.id
-                            left join kv_benh_vien kv on kv.id=rp.kv_benh_vien
-                            left join res_country_state rcs on rcs.id=rp.state_id
-                        where ai.date_invoice between '%s' and '%s' and ai.state!='cancel' and ai.type='out_invoice' 
-                        and rp.id in %s
-                '''%(date_from,date_to,thuy_ids)
-                if mang_partner_ids:
-                    mang_partner_ids = str(mang_partner_ids).replace('[', '(')
-                    mang_partner_ids = str(mang_partner_ids).replace(']', ')')
-                    sql+='''
-                        and ai.partner_id in %s 
-                    '''%(mang_partner_ids)
-                if mang_users_ids:
-                    mang_users_ids = str(mang_users_ids).replace('[', '(')
-                    mang_users_ids = str(mang_users_ids).replace(']', ')')
-                    sql+='''
-                        and rp.user_id in %s 
-                    '''%(mang_users_ids)
-                if mang_product_ids:
-                    mang_product_ids = str(mang_product_ids).replace('[', '(')
-                    mang_product_ids = str(mang_product_ids).replace(']', ')')
-                    sql+='''
-                        and ail.product_id in %s 
-                    '''%(mang_product_ids)
-                if mang_categ_ids:
-                    mang_categ_ids = str(mang_categ_ids).replace('[', '(')
-                    mang_categ_ids = str(mang_categ_ids).replace(']', ')')
-                    sql+='''
-                        and pc.id in %s 
-                    '''%(mang_categ_ids)
-                if mang_loc_ids:
-                    mang_loc_ids = str(mang_loc_ids).replace('[', '(')
-                    mang_loc_ids = str(mang_loc_ids).replace(']', ')')
-                    sql+='''
-                        and sl.id in %s 
-                    '''%(mang_loc_ids)
-                if mang_nsx_ids:
-                    mang_nsx_ids = str(mang_nsx_ids).replace('[', '(')
-                    mang_nsx_ids = str(mang_nsx_ids).replace(']', ')')
-                    sql+='''
-                        and mp.id in %s 
-                    '''%(mang_nsx_ids)
-                if mang_khu_vuc_ids:
-                    mang_khu_vuc_ids = str(mang_khu_vuc_ids).replace('[', '(')
-                    mang_khu_vuc_ids = str(mang_khu_vuc_ids).replace(']', ')')
-                    sql+='''
-                        and kv.id in %s 
-                    '''%(mang_khu_vuc_ids)
-                if mang_tinh_ids:
-                    mang_tinh_ids = str(mang_tinh_ids).replace('[', '(')
-                    mang_tinh_ids = str(mang_tinh_ids).replace(']', ')')
-                    sql+='''
-                        and rcs.id in %s 
-                    '''%(mang_tinh_ids)
-                    
+            sql = '''
+                select ail.id as id,ai.partner_id as partner_id,ai.date_invoice as ngay_hd,ai.reference_number as so_hd,rp.internal_code as ma_kh,rp.name as ten_kh,pp.default_code as ma_sp,
+                    pp.name_template as ten_sp,pu.name as dvt,spl.name as so_lo,spl.life_date as han_dung,ail.quantity as so_luong,ail.price_unit as gia_ban,
+                    ail.price_unit*ail.quantity as dt_truocthue,at.amount_tax as tien_thue,(ail.price_unit*ail.quantity)+at.amount_tax as dt_sauthue,pt.standard_price as gia_von,
+                    sl.name as loc_name,mp.name as nsx, rurp.name as nvbh
+                    from account_invoice_line ail
+                        left join account_invoice ai on ail.invoice_id=ai.id
+                        left join res_partner rp on ail.partner_id=rp.id
+                        left join res_users ru on rp.user_id = ru.id
+                        left join res_partner rurp on ru.partner_id=rurp.id
+                        left join product_product pp on ail.product_id=pp.id
+                        left join product_template pt on pp.product_tmpl_id=pt.id
+                        left join product_category pc on pt.categ_id=pc.id
+                        left join product_uom pu on ail.uos_id=pu.id
+                        left join stock_production_lot spl on ail.prodlot_id = spl.id
+                        left join (
+                                select ail.id,sum(at.amount*ail.price_unit*ail.quantity) as amount_tax
+                                    from account_invoice_line ail
+                                        left join account_invoice_line_tax ailt on ail.id=ailt.invoice_line_id
+                                        left join account_tax at on ailt.tax_id=at.id
+                                    group by ail.id
+                            ) as at on ail.id=at.id
+                        left join stock_move sm on sm.id=ail.source_id
+                        left join stock_location sl on sl.id=sm.location_id
+                        left join manufacturer_product mp on pp.manufacturer_product_id = mp.id
+                        left join kv_benh_vien kv on kv.id=rp.kv_benh_vien
+                        left join res_country_state rcs on rcs.id=rp.state_id
+                    where ai.date_invoice between '%s' and '%s' and ai.state!='cancel' and ai.type='out_invoice' 
+            '''%(date_from,date_to)
+            if mang_partner_ids:
+                mang_partner_ids = str(mang_partner_ids).replace('[', '(')
+                mang_partner_ids = str(mang_partner_ids).replace(']', ')')
                 sql+='''
-                     order by ai.date_invoice
-                '''
-                cr.execute(sql)
-            else:
-                sql = '''
-                    select ail.id as id,ai.partner_id as partner_id,ai.date_invoice as ngay_hd,ai.reference_number as so_hd,rp.internal_code as ma_kh,rp.name as ten_kh,pp.default_code as ma_sp,
-                        pp.name_template as ten_sp,pu.name as dvt,spl.name as so_lo,spl.life_date as han_dung,ail.quantity as so_luong,ail.price_unit as gia_ban,
-                        ail.price_unit*ail.quantity as dt_truocthue,at.amount_tax as tien_thue,(ail.price_unit*ail.quantity)+at.amount_tax as dt_sauthue,pt.standard_price as gia_von,
-                        sl.name as loc_name,mp.name as nsx, rurp.name as nvbh
-                        from account_invoice_line ail
-                            left join account_invoice ai on ail.invoice_id=ai.id
-                            left join res_partner rp on ail.partner_id=rp.id
-                            left join res_users ru on rp.user_id = ru.id
-                            left join res_partner rurp on ru.partner_id=rurp.id
-                            left join product_product pp on ail.product_id=pp.id
-                            left join product_template pt on pp.product_tmpl_id=pt.id
-                            left join product_category pc on pt.categ_id=pc.id
-                            left join product_uom pu on ail.uos_id=pu.id
-                            left join stock_production_lot spl on ail.prodlot_id = spl.id
-                            left join (
-                                    select ail.id,sum(at.amount*ail.price_unit*ail.quantity) as amount_tax
-                                        from account_invoice_line ail
-                                            left join account_invoice_line_tax ailt on ail.id=ailt.invoice_line_id
-                                            left join account_tax at on ailt.tax_id=at.id
-                                        group by ail.id
-                                ) as at on ail.id=at.id
-                            left join stock_move sm on sm.id=ail.source_id
-                            left join stock_location sl on sl.id=sm.location_id
-                            left join manufacturer_product mp on pp.manufacturer_product_id = mp.id
-                            left join kv_benh_vien kv on kv.id=rp.kv_benh_vien
-                            left join res_country_state rcs on rcs.id=rp.state_id
-                        where ai.date_invoice between '%s' and '%s' and ai.state!='cancel' and ai.type='out_invoice' 
-                '''%(date_from,date_to)
-                if mang_partner_ids:
-                    mang_partner_ids = str(mang_partner_ids).replace('[', '(')
-                    mang_partner_ids = str(mang_partner_ids).replace(']', ')')
-                    sql+='''
-                        and ai.partner_id in %s 
-                    '''%(mang_partner_ids)
-                if mang_users_ids:
-                    mang_users_ids = str(mang_users_ids).replace('[', '(')
-                    mang_users_ids = str(mang_users_ids).replace(']', ')')
-                    sql+='''
-                        and rp.user_id in %s 
-                    '''%(mang_users_ids)
-                if mang_product_ids:
-                    mang_product_ids = str(mang_product_ids).replace('[', '(')
-                    mang_product_ids = str(mang_product_ids).replace(']', ')')
-                    sql+='''
-                        and ail.product_id in %s 
-                    '''%(mang_product_ids)
-                if mang_categ_ids:
-                    mang_categ_ids = str(mang_categ_ids).replace('[', '(')
-                    mang_categ_ids = str(mang_categ_ids).replace(']', ')')
-                    sql+='''
-                        and pc.id in %s 
-                    '''%(mang_categ_ids)
-                if mang_loc_ids:
-                    mang_loc_ids = str(mang_loc_ids).replace('[', '(')
-                    mang_loc_ids = str(mang_loc_ids).replace(']', ')')
-                    sql+='''
-                        and sl.id in %s 
-                    '''%(mang_loc_ids)
-                if mang_nsx_ids:
-                    mang_nsx_ids = str(mang_nsx_ids).replace('[', '(')
-                    mang_nsx_ids = str(mang_nsx_ids).replace(']', ')')
-                    sql+='''
-                        and mp.id in %s 
-                    '''%(mang_nsx_ids)
-                if mang_khu_vuc_ids:
-                    mang_khu_vuc_ids = str(mang_khu_vuc_ids).replace('[', '(')
-                    mang_khu_vuc_ids = str(mang_khu_vuc_ids).replace(']', ')')
-                    sql+='''
-                        and kv.id in %s 
-                    '''%(mang_khu_vuc_ids)
-                if mang_tinh_ids:
-                    mang_tinh_ids = str(mang_tinh_ids).replace('[', '(')
-                    mang_tinh_ids = str(mang_tinh_ids).replace(']', ')')
-                    sql+='''
-                        and rcs.id in %s 
-                    '''%(mang_tinh_ids)
-                    
+                    and ai.partner_id in %s 
+                '''%(mang_partner_ids)
+            if mang_users_ids:
+                mang_users_ids = str(mang_users_ids).replace('[', '(')
+                mang_users_ids = str(mang_users_ids).replace(']', ')')
                 sql+='''
-                     order by ai.date_invoice
-                '''
-                cr.execute(sql)
+                    and rp.user_id in %s 
+                '''%(mang_users_ids)
+            if mang_product_ids:
+                mang_product_ids = str(mang_product_ids).replace('[', '(')
+                mang_product_ids = str(mang_product_ids).replace(']', ')')
+                sql+='''
+                    and ail.product_id in %s 
+                '''%(mang_product_ids)
+            if mang_categ_ids:
+                mang_categ_ids = str(mang_categ_ids).replace('[', '(')
+                mang_categ_ids = str(mang_categ_ids).replace(']', ')')
+                sql+='''
+                    and pc.id in %s 
+                '''%(mang_categ_ids)
+            if mang_loc_ids:
+                mang_loc_ids = str(mang_loc_ids).replace('[', '(')
+                mang_loc_ids = str(mang_loc_ids).replace(']', ')')
+                sql+='''
+                    and sl.id in %s 
+                '''%(mang_loc_ids)
+            if mang_nsx_ids:
+                mang_nsx_ids = str(mang_nsx_ids).replace('[', '(')
+                mang_nsx_ids = str(mang_nsx_ids).replace(']', ')')
+                sql+='''
+                    and mp.id in %s 
+                '''%(mang_nsx_ids)
+            if mang_khu_vuc_ids:
+                mang_khu_vuc_ids = str(mang_khu_vuc_ids).replace('[', '(')
+                mang_khu_vuc_ids = str(mang_khu_vuc_ids).replace(']', ')')
+                sql+='''
+                    and kv.id in %s 
+                '''%(mang_khu_vuc_ids)
+            if mang_tinh_ids:
+                mang_tinh_ids = str(mang_tinh_ids).replace('[', '(')
+                mang_tinh_ids = str(mang_tinh_ids).replace(']', ')')
+                sql+='''
+                    and rcs.id in %s 
+                '''%(mang_tinh_ids)
+                
+            sql+='''
+                 order by ai.date_invoice
+            '''
+            cr.execute(sql)
             return cr.dictfetchall()
          
         def get_tong_dt_truocthue(o):
@@ -450,218 +305,90 @@ class doanhthu_banhang(osv.osv_memory):
             for tinh_id in tinh_ids:
                 mang_tinh_ids.append(tinh_id.id)
                 
-            if uid==24:
-                sql = '''
-                    select id from res_partner where 
-                        customer = 't' and 
-                        street LIKE '%Q.Gò Vấp%' or street LIKE '%Q. Gò Vấp%' or street LIKE '%Quận Gò Vấp%' or
-                        street LIKE '%Q.Tân Bình%' or street LIKE '%Q. Tân Bình%' or street LIKE '%Quận Tân Bình%' or
-                        street LIKE '%Q1%' or street LIKE '%Q.1%' or street LIKE '%Quận 1%' or
-                        street LIKE '%Q.Tân Phú%' or street LIKE '%Q. Tân Phú%' or street LIKE '%Quận Tân Phú%' or
-                        street LIKE '%Q3%' or street LIKE '%Q.3%' or street LIKE '%Quận 3%' or
-                        street LIKE '%Q10%' or street LIKE '%Q.10%' or street LIKE '%Quận 10%' or
-                        street LIKE '%Q11%' or street LIKE '%Q.11%' or street LIKE '%Quận 11%' or
-                        street LIKE '%Q4%' or street LIKE '%Q.4%' or street LIKE '%Quận 4%' or
-                        street LIKE '%Q5%' or street LIKE '%Q.5%' or street LIKE '%Quận 5%' or
-                        street LIKE '%Q6%' or street LIKE '%Q.6%' or street LIKE '%Quận 6%' or
-                        street LIKE '%Q8%' or street LIKE '%Q.8%' or street LIKE '%Quận 8%' or
-                        street LIKE '%Q.Bình Tân%' or street LIKE '%Q. Bình Tân%' or street LIKE '%Quận Bình Tân%' or
-                        street LIKE '%Q7%' or street LIKE '%Q.7%' or street LIKE '%Quận 7%' or
-                        street LIKE '%H.Bình Chánh%' or street LIKE '%H. Bình Chánh%' or street LIKE '%Huyện Bình Chánh%' or
-                        street LIKE '%H.Nhà Bè%' or street LIKE '%H. Nhà Bè%' or street LIKE '%Huyện Nhà Bè%' or
-                        street LIKE '%H.Cần Giờ%' or street LIKE '%H. Cần Giờ%' or street LIKE '%Huyện Cần Giờ%' or
-                        
-                        street2 LIKE '%Q.Gò Vấp%' or street2 LIKE '%Q. Gò Vấp%' or street2 LIKE '%Quận Gò Vấp%' or
-                        street2 LIKE '%Q.Tân Bình%' or street2 LIKE '%Q. Tân Bình%' or street2 LIKE '%Quận Tân Bình%' or
-                        street2 LIKE '%Q1%' or street2 LIKE '%Q.1%' or street2 LIKE '%Quận 1%' or 
-                        street2 LIKE '%Q.Tân Phú%' or street2 LIKE '%Q. Tân Phú%' or street2 LIKE '%Quận Tân Phú%' or
-                        street2 LIKE '%Q3%' or street2 LIKE '%Q.3%' or street2 LIKE '%Quận 3%' or
-                        street2 LIKE '%Q10%' or street2 LIKE '%Q.10%' or street2 LIKE '%Quận 10%' or
-                        street2 LIKE '%Q11%' or street2 LIKE '%Q.11%' or street2 LIKE '%Quận 11%' or
-                        street2 LIKE '%Q4%' or street2 LIKE '%Q.4%' or street2 LIKE '%Quận 4%' or
-                        street2 LIKE '%Q5%' or street2 LIKE '%Q.5%' or street2 LIKE '%Quận 5%' or
-                        street2 LIKE '%Q6%' or street2 LIKE '%Q.6%' or street2 LIKE '%Quận 6%' or
-                        street2 LIKE '%Q8%' or street2 LIKE '%Q.8%' or street2 LIKE '%Quận 8%' or
-                        street2 LIKE '%Q.Bình Tân%' or street2 LIKE '%Q. Bình Tân%' or street2 LIKE '%Quận Bình Tân%' or
-                        street2 LIKE '%Q7%' or street2 LIKE '%Q.7%' or street2 LIKE '%Quận 7%' or
-                        street2 LIKE '%H.Bình Chánh%' or street2 LIKE '%H. Bình Chánh%' or street2 LIKE '%Huyện Bình Chánh%' or
-                        street2 LIKE '%H.Nhà Bè%' or street2 LIKE '%H. Nhà Bè%' or street2 LIKE '%Huyện Nhà Bè%' or
-                        street2 LIKE '%H.Cần Giờ%' or street2 LIKE '%H. Cần Giờ%' or street2 LIKE '%Huyện Cần Giờ%'
-                '''
-                cr.execute(sql)
-                thuy_ids = [row[0] for row in cr.fetchall()]
-                thuy_ids = str(thuy_ids).replace('[', '(')
-                thuy_ids = str(thuy_ids).replace(']', ')')
-                sql = '''
-                    select ail.id as id,ai.partner_id as partner_id,ai.date_invoice as ngay_hd,ai.reference_number as so_hd,rp.internal_code as ma_kh,rp.name as ten_kh,pp.default_code as ma_sp,
-                        pp.name_template as ten_sp,pu.name as dvt,spl.name as so_lo,spl.life_date as han_dung,ail.quantity as so_luong,ail.price_unit as gia_ban,
-                        ail.price_unit*ail.quantity as dt_truocthue,at.amount_tax as tien_thue,(ail.price_unit*ail.quantity)+at.amount_tax as dt_sauthue,pt.standard_price as gia_von,
-                        sl.name as loc_name,mp.name as nsx, rurp.name as nvbh
-                        from account_invoice_line ail
-                            left join account_invoice ai on ail.invoice_id=ai.id
-                            left join res_partner rp on ail.partner_id=rp.id
-                            left join res_users ru on rp.user_id = ru.id
-                            left join res_partner rurp on ru.partner_id=rurp.id
-                            left join product_product pp on ail.product_id=pp.id
-                            left join product_template pt on pp.product_tmpl_id=pt.id
-                            left join product_category pc on pt.categ_id=pc.id
-                            left join product_uom pu on ail.uos_id=pu.id
-                            left join stock_production_lot spl on ail.prodlot_id = spl.id
-                            left join (
-                                    select ail.id,sum(at.amount*ail.price_unit*ail.quantity) as amount_tax
-                                        from account_invoice_line ail
-                                            left join account_invoice_line_tax ailt on ail.id=ailt.invoice_line_id
-                                            left join account_tax at on ailt.tax_id=at.id
-                                        group by ail.id
-                                ) as at on ail.id=at.id
-                            left join stock_move sm on sm.id=ail.source_id
-                            left join stock_location sl on sl.id=sm.location_id
-                            left join manufacturer_product mp on pp.manufacturer_product_id = mp.id
-                            left join kv_benh_vien kv on kv.id=rp.kv_benh_vien
-                            left join res_country_state rcs on rcs.id=rp.state_id
-                        where ai.date_invoice between '%s' and '%s' and ai.state!='cancel' and ai.type='out_invoice' 
-                        and rp.id in %s
-                '''%(date_from,date_to,thuy_ids)
-                if mang_partner_ids:
-                    mang_partner_ids = str(mang_partner_ids).replace('[', '(')
-                    mang_partner_ids = str(mang_partner_ids).replace(']', ')')
-                    sql+='''
-                        and ai.partner_id in %s 
-                    '''%(mang_partner_ids)
-                if mang_users_ids:
-                    mang_users_ids = str(mang_users_ids).replace('[', '(')
-                    mang_users_ids = str(mang_users_ids).replace(']', ')')
-                    sql+='''
-                        and rp.user_id in %s 
-                    '''%(mang_users_ids)
-                if mang_product_ids:
-                    mang_product_ids = str(mang_product_ids).replace('[', '(')
-                    mang_product_ids = str(mang_product_ids).replace(']', ')')
-                    sql+='''
-                        and ail.product_id in %s 
-                    '''%(mang_product_ids)
-                if mang_categ_ids:
-                    mang_categ_ids = str(mang_categ_ids).replace('[', '(')
-                    mang_categ_ids = str(mang_categ_ids).replace(']', ')')
-                    sql+='''
-                        and pc.id in %s 
-                    '''%(mang_categ_ids)
-                if mang_loc_ids:
-                    mang_loc_ids = str(mang_loc_ids).replace('[', '(')
-                    mang_loc_ids = str(mang_loc_ids).replace(']', ')')
-                    sql+='''
-                        and sl.id in %s 
-                    '''%(mang_loc_ids)
-                if mang_nsx_ids:
-                    mang_nsx_ids = str(mang_nsx_ids).replace('[', '(')
-                    mang_nsx_ids = str(mang_nsx_ids).replace(']', ')')
-                    sql+='''
-                        and mp.id in %s 
-                    '''%(mang_nsx_ids)
-                if mang_khu_vuc_ids:
-                    mang_khu_vuc_ids = str(mang_khu_vuc_ids).replace('[', '(')
-                    mang_khu_vuc_ids = str(mang_khu_vuc_ids).replace(']', ')')
-                    sql+='''
-                        and kv.id in %s 
-                    '''%(mang_khu_vuc_ids)
-                if mang_tinh_ids:
-                    mang_tinh_ids = str(mang_tinh_ids).replace('[', '(')
-                    mang_tinh_ids = str(mang_tinh_ids).replace(']', ')')
-                    sql+='''
-                        and rcs.id in %s 
-                    '''%(mang_tinh_ids)
-                    
+            sql = '''
+                select ail.id as id,ai.partner_id as partner_id,ai.date_invoice as ngay_hd,ai.reference_number as so_hd,rp.internal_code as ma_kh,rp.name as ten_kh,pp.default_code as ma_sp,
+                    pp.name_template as ten_sp,pu.name as dvt,spl.name as so_lo,spl.life_date as han_dung,ail.quantity as so_luong,ail.price_unit as gia_ban,
+                    ail.price_unit*ail.quantity as dt_truocthue,at.amount_tax as tien_thue,(ail.price_unit*ail.quantity)+at.amount_tax as dt_sauthue,pt.standard_price as gia_von,
+                    sl.name as loc_name,mp.name as nsx, rurp.name as nvbh
+                    from account_invoice_line ail
+                        left join account_invoice ai on ail.invoice_id=ai.id
+                        left join res_partner rp on ail.partner_id=rp.id
+                        left join res_users ru on rp.user_id = ru.id
+                        left join res_partner rurp on ru.partner_id=rurp.id
+                        left join product_product pp on ail.product_id=pp.id
+                        left join product_template pt on pp.product_tmpl_id=pt.id
+                        left join product_category pc on pt.categ_id=pc.id
+                        left join product_uom pu on ail.uos_id=pu.id
+                        left join stock_production_lot spl on ail.prodlot_id = spl.id
+                        left join (
+                                select ail.id,sum(at.amount*ail.price_unit*ail.quantity) as amount_tax
+                                    from account_invoice_line ail
+                                        left join account_invoice_line_tax ailt on ail.id=ailt.invoice_line_id
+                                        left join account_tax at on ailt.tax_id=at.id
+                                    group by ail.id
+                            ) as at on ail.id=at.id
+                        left join stock_move sm on sm.id=ail.source_id
+                        left join stock_location sl on sl.id=sm.location_id
+                        left join manufacturer_product mp on pp.manufacturer_product_id = mp.id
+                        left join kv_benh_vien kv on kv.id=rp.kv_benh_vien
+                        left join res_country_state rcs on rcs.id=rp.state_id
+                    where ai.date_invoice between '%s' and '%s' and ai.state!='cancel' and ai.type='out_invoice' 
+            '''%(date_from,date_to)
+            if mang_partner_ids:
+                mang_partner_ids = str(mang_partner_ids).replace('[', '(')
+                mang_partner_ids = str(mang_partner_ids).replace(']', ')')
                 sql+='''
-                     order by ai.date_invoice
-                '''
-                cr.execute(sql)
-                s= 'select sum(round(v.dt_truocthue)) as tong from ('+sql+')v'
-                cr.execute(s)
-            else:
-                sql = '''
-                    select ail.id as id,ai.partner_id as partner_id,ai.date_invoice as ngay_hd,ai.reference_number as so_hd,rp.internal_code as ma_kh,rp.name as ten_kh,pp.default_code as ma_sp,
-                        pp.name_template as ten_sp,pu.name as dvt,spl.name as so_lo,spl.life_date as han_dung,ail.quantity as so_luong,ail.price_unit as gia_ban,
-                        ail.price_unit*ail.quantity as dt_truocthue,at.amount_tax as tien_thue,(ail.price_unit*ail.quantity)+at.amount_tax as dt_sauthue,pt.standard_price as gia_von,
-                        sl.name as loc_name,mp.name as nsx, rurp.name as nvbh
-                        from account_invoice_line ail
-                            left join account_invoice ai on ail.invoice_id=ai.id
-                            left join res_partner rp on ail.partner_id=rp.id
-                            left join res_users ru on rp.user_id = ru.id
-                            left join res_partner rurp on ru.partner_id=rurp.id
-                            left join product_product pp on ail.product_id=pp.id
-                            left join product_template pt on pp.product_tmpl_id=pt.id
-                            left join product_category pc on pt.categ_id=pc.id
-                            left join product_uom pu on ail.uos_id=pu.id
-                            left join stock_production_lot spl on ail.prodlot_id = spl.id
-                            left join (
-                                    select ail.id,sum(at.amount*ail.price_unit*ail.quantity) as amount_tax
-                                        from account_invoice_line ail
-                                            left join account_invoice_line_tax ailt on ail.id=ailt.invoice_line_id
-                                            left join account_tax at on ailt.tax_id=at.id
-                                        group by ail.id
-                                ) as at on ail.id=at.id
-                            left join stock_move sm on sm.id=ail.source_id
-                            left join stock_location sl on sl.id=sm.location_id
-                            left join manufacturer_product mp on pp.manufacturer_product_id = mp.id
-                            left join kv_benh_vien kv on kv.id=rp.kv_benh_vien
-                            left join res_country_state rcs on rcs.id=rp.state_id
-                        where ai.date_invoice between '%s' and '%s' and ai.state!='cancel' and ai.type='out_invoice' 
-                '''%(date_from,date_to)
-                if mang_partner_ids:
-                    mang_partner_ids = str(mang_partner_ids).replace('[', '(')
-                    mang_partner_ids = str(mang_partner_ids).replace(']', ')')
-                    sql+='''
-                        and ai.partner_id in %s 
-                    '''%(mang_partner_ids)
-                if mang_users_ids:
-                    mang_users_ids = str(mang_users_ids).replace('[', '(')
-                    mang_users_ids = str(mang_users_ids).replace(']', ')')
-                    sql+='''
-                        and rp.user_id in %s 
-                    '''%(mang_users_ids)
-                if mang_product_ids:
-                    mang_product_ids = str(mang_product_ids).replace('[', '(')
-                    mang_product_ids = str(mang_product_ids).replace(']', ')')
-                    sql+='''
-                        and ail.product_id in %s 
-                    '''%(mang_product_ids)
-                if mang_categ_ids:
-                    mang_categ_ids = str(mang_categ_ids).replace('[', '(')
-                    mang_categ_ids = str(mang_categ_ids).replace(']', ')')
-                    sql+='''
-                        and pc.id in %s 
-                    '''%(mang_categ_ids)
-                if mang_loc_ids:
-                    mang_loc_ids = str(mang_loc_ids).replace('[', '(')
-                    mang_loc_ids = str(mang_loc_ids).replace(']', ')')
-                    sql+='''
-                        and sl.id in %s 
-                    '''%(mang_loc_ids)
-                if mang_nsx_ids:
-                    mang_nsx_ids = str(mang_nsx_ids).replace('[', '(')
-                    mang_nsx_ids = str(mang_nsx_ids).replace(']', ')')
-                    sql+='''
-                        and mp.id in %s 
-                    '''%(mang_nsx_ids)
-                if mang_khu_vuc_ids:
-                    mang_khu_vuc_ids = str(mang_khu_vuc_ids).replace('[', '(')
-                    mang_khu_vuc_ids = str(mang_khu_vuc_ids).replace(']', ')')
-                    sql+='''
-                        and kv.id in %s 
-                    '''%(mang_khu_vuc_ids)
-                if mang_tinh_ids:
-                    mang_tinh_ids = str(mang_tinh_ids).replace('[', '(')
-                    mang_tinh_ids = str(mang_tinh_ids).replace(']', ')')
-                    sql+='''
-                        and rcs.id in %s 
-                    '''%(mang_tinh_ids)
-                    
+                    and ai.partner_id in %s 
+                '''%(mang_partner_ids)
+            if mang_users_ids:
+                mang_users_ids = str(mang_users_ids).replace('[', '(')
+                mang_users_ids = str(mang_users_ids).replace(']', ')')
                 sql+='''
-                     order by ai.date_invoice
-                '''
-                cr.execute(sql)
-                s= 'select sum(round(v.dt_truocthue)) as tong from ('+sql+')v'
-                cr.execute(s)
+                    and rp.user_id in %s 
+                '''%(mang_users_ids)
+            if mang_product_ids:
+                mang_product_ids = str(mang_product_ids).replace('[', '(')
+                mang_product_ids = str(mang_product_ids).replace(']', ')')
+                sql+='''
+                    and ail.product_id in %s 
+                '''%(mang_product_ids)
+            if mang_categ_ids:
+                mang_categ_ids = str(mang_categ_ids).replace('[', '(')
+                mang_categ_ids = str(mang_categ_ids).replace(']', ')')
+                sql+='''
+                    and pc.id in %s 
+                '''%(mang_categ_ids)
+            if mang_loc_ids:
+                mang_loc_ids = str(mang_loc_ids).replace('[', '(')
+                mang_loc_ids = str(mang_loc_ids).replace(']', ')')
+                sql+='''
+                    and sl.id in %s 
+                '''%(mang_loc_ids)
+            if mang_nsx_ids:
+                mang_nsx_ids = str(mang_nsx_ids).replace('[', '(')
+                mang_nsx_ids = str(mang_nsx_ids).replace(']', ')')
+                sql+='''
+                    and mp.id in %s 
+                '''%(mang_nsx_ids)
+            if mang_khu_vuc_ids:
+                mang_khu_vuc_ids = str(mang_khu_vuc_ids).replace('[', '(')
+                mang_khu_vuc_ids = str(mang_khu_vuc_ids).replace(']', ')')
+                sql+='''
+                    and kv.id in %s 
+                '''%(mang_khu_vuc_ids)
+            if mang_tinh_ids:
+                mang_tinh_ids = str(mang_tinh_ids).replace('[', '(')
+                mang_tinh_ids = str(mang_tinh_ids).replace(']', ')')
+                sql+='''
+                    and rcs.id in %s 
+                '''%(mang_tinh_ids)
+                
+            sql+='''
+                 order by ai.date_invoice
+            '''
+            cr.execute(sql)
+            s= 'select sum(round(v.dt_truocthue)) as tong from ('+sql+')v'
+            cr.execute(s)
             return cr.dictfetchone()
          
         def get_tong_soluong(o):
@@ -709,218 +436,90 @@ class doanhthu_banhang(osv.osv_memory):
             for tinh_id in tinh_ids:
                 mang_tinh_ids.append(tinh_id.id)
                 
-            if uid==24:
-                sql = '''
-                    select id from res_partner where 
-                        customer = 't' and 
-                        street LIKE '%Q.Gò Vấp%' or street LIKE '%Q. Gò Vấp%' or street LIKE '%Quận Gò Vấp%' or
-                        street LIKE '%Q.Tân Bình%' or street LIKE '%Q. Tân Bình%' or street LIKE '%Quận Tân Bình%' or
-                        street LIKE '%Q1%' or street LIKE '%Q.1%' or street LIKE '%Quận 1%' or
-                        street LIKE '%Q.Tân Phú%' or street LIKE '%Q. Tân Phú%' or street LIKE '%Quận Tân Phú%' or
-                        street LIKE '%Q3%' or street LIKE '%Q.3%' or street LIKE '%Quận 3%' or
-                        street LIKE '%Q10%' or street LIKE '%Q.10%' or street LIKE '%Quận 10%' or
-                        street LIKE '%Q11%' or street LIKE '%Q.11%' or street LIKE '%Quận 11%' or
-                        street LIKE '%Q4%' or street LIKE '%Q.4%' or street LIKE '%Quận 4%' or
-                        street LIKE '%Q5%' or street LIKE '%Q.5%' or street LIKE '%Quận 5%' or
-                        street LIKE '%Q6%' or street LIKE '%Q.6%' or street LIKE '%Quận 6%' or
-                        street LIKE '%Q8%' or street LIKE '%Q.8%' or street LIKE '%Quận 8%' or
-                        street LIKE '%Q.Bình Tân%' or street LIKE '%Q. Bình Tân%' or street LIKE '%Quận Bình Tân%' or
-                        street LIKE '%Q7%' or street LIKE '%Q.7%' or street LIKE '%Quận 7%' or
-                        street LIKE '%H.Bình Chánh%' or street LIKE '%H. Bình Chánh%' or street LIKE '%Huyện Bình Chánh%' or
-                        street LIKE '%H.Nhà Bè%' or street LIKE '%H. Nhà Bè%' or street LIKE '%Huyện Nhà Bè%' or
-                        street LIKE '%H.Cần Giờ%' or street LIKE '%H. Cần Giờ%' or street LIKE '%Huyện Cần Giờ%' or
-                        
-                        street2 LIKE '%Q.Gò Vấp%' or street2 LIKE '%Q. Gò Vấp%' or street2 LIKE '%Quận Gò Vấp%' or
-                        street2 LIKE '%Q.Tân Bình%' or street2 LIKE '%Q. Tân Bình%' or street2 LIKE '%Quận Tân Bình%' or
-                        street2 LIKE '%Q1%' or street2 LIKE '%Q.1%' or street2 LIKE '%Quận 1%' or 
-                        street2 LIKE '%Q.Tân Phú%' or street2 LIKE '%Q. Tân Phú%' or street2 LIKE '%Quận Tân Phú%' or
-                        street2 LIKE '%Q3%' or street2 LIKE '%Q.3%' or street2 LIKE '%Quận 3%' or
-                        street2 LIKE '%Q10%' or street2 LIKE '%Q.10%' or street2 LIKE '%Quận 10%' or
-                        street2 LIKE '%Q11%' or street2 LIKE '%Q.11%' or street2 LIKE '%Quận 11%' or
-                        street2 LIKE '%Q4%' or street2 LIKE '%Q.4%' or street2 LIKE '%Quận 4%' or
-                        street2 LIKE '%Q5%' or street2 LIKE '%Q.5%' or street2 LIKE '%Quận 5%' or
-                        street2 LIKE '%Q6%' or street2 LIKE '%Q.6%' or street2 LIKE '%Quận 6%' or
-                        street2 LIKE '%Q8%' or street2 LIKE '%Q.8%' or street2 LIKE '%Quận 8%' or
-                        street2 LIKE '%Q.Bình Tân%' or street2 LIKE '%Q. Bình Tân%' or street2 LIKE '%Quận Bình Tân%' or
-                        street2 LIKE '%Q7%' or street2 LIKE '%Q.7%' or street2 LIKE '%Quận 7%' or
-                        street2 LIKE '%H.Bình Chánh%' or street2 LIKE '%H. Bình Chánh%' or street2 LIKE '%Huyện Bình Chánh%' or
-                        street2 LIKE '%H.Nhà Bè%' or street2 LIKE '%H. Nhà Bè%' or street2 LIKE '%Huyện Nhà Bè%' or
-                        street2 LIKE '%H.Cần Giờ%' or street2 LIKE '%H. Cần Giờ%' or street2 LIKE '%Huyện Cần Giờ%'
-                '''
-                cr.execute(sql)
-                thuy_ids = [row[0] for row in cr.fetchall()]
-                thuy_ids = str(thuy_ids).replace('[', '(')
-                thuy_ids = str(thuy_ids).replace(']', ')')
-                sql = '''
-                    select ail.id as id,ai.partner_id as partner_id,ai.date_invoice as ngay_hd,ai.reference_number as so_hd,rp.internal_code as ma_kh,rp.name as ten_kh,pp.default_code as ma_sp,
-                        pp.name_template as ten_sp,pu.name as dvt,spl.name as so_lo,spl.life_date as han_dung,ail.quantity as so_luong,ail.price_unit as gia_ban,
-                        ail.price_unit*ail.quantity as dt_truocthue,at.amount_tax as tien_thue,(ail.price_unit*ail.quantity)+at.amount_tax as dt_sauthue,pt.standard_price as gia_von,
-                        sl.name as loc_name,mp.name as nsx, rurp.name as nvbh
-                        from account_invoice_line ail
-                            left join account_invoice ai on ail.invoice_id=ai.id
-                            left join res_partner rp on ail.partner_id=rp.id
-                            left join res_users ru on rp.user_id = ru.id
-                            left join res_partner rurp on ru.partner_id=rurp.id
-                            left join product_product pp on ail.product_id=pp.id
-                            left join product_template pt on pp.product_tmpl_id=pt.id
-                            left join product_category pc on pt.categ_id=pc.id
-                            left join product_uom pu on ail.uos_id=pu.id
-                            left join stock_production_lot spl on ail.prodlot_id = spl.id
-                            left join (
-                                    select ail.id,sum(at.amount*ail.price_unit*ail.quantity) as amount_tax
-                                        from account_invoice_line ail
-                                            left join account_invoice_line_tax ailt on ail.id=ailt.invoice_line_id
-                                            left join account_tax at on ailt.tax_id=at.id
-                                        group by ail.id
-                                ) as at on ail.id=at.id
-                            left join stock_move sm on sm.id=ail.source_id
-                            left join stock_location sl on sl.id=sm.location_id
-                            left join manufacturer_product mp on pp.manufacturer_product_id = mp.id
-                            left join kv_benh_vien kv on kv.id=rp.kv_benh_vien
-                            left join res_country_state rcs on rcs.id=rp.state_id
-                        where ai.date_invoice between '%s' and '%s' and ai.state!='cancel' and ai.type='out_invoice' 
-                        and rp.id in %s
-                '''%(date_from,date_to,thuy_ids)
-                if mang_partner_ids:
-                    mang_partner_ids = str(mang_partner_ids).replace('[', '(')
-                    mang_partner_ids = str(mang_partner_ids).replace(']', ')')
-                    sql+='''
-                        and ai.partner_id in %s 
-                    '''%(mang_partner_ids)
-                if mang_users_ids:
-                    mang_users_ids = str(mang_users_ids).replace('[', '(')
-                    mang_users_ids = str(mang_users_ids).replace(']', ')')
-                    sql+='''
-                        and rp.user_id in %s 
-                    '''%(mang_users_ids)
-                if mang_product_ids:
-                    mang_product_ids = str(mang_product_ids).replace('[', '(')
-                    mang_product_ids = str(mang_product_ids).replace(']', ')')
-                    sql+='''
-                        and ail.product_id in %s 
-                    '''%(mang_product_ids)
-                if mang_categ_ids:
-                    mang_categ_ids = str(mang_categ_ids).replace('[', '(')
-                    mang_categ_ids = str(mang_categ_ids).replace(']', ')')
-                    sql+='''
-                        and pc.id in %s 
-                    '''%(mang_categ_ids)
-                if mang_loc_ids:
-                    mang_loc_ids = str(mang_loc_ids).replace('[', '(')
-                    mang_loc_ids = str(mang_loc_ids).replace(']', ')')
-                    sql+='''
-                        and sl.id in %s 
-                    '''%(mang_loc_ids)
-                if mang_nsx_ids:
-                    mang_nsx_ids = str(mang_nsx_ids).replace('[', '(')
-                    mang_nsx_ids = str(mang_nsx_ids).replace(']', ')')
-                    sql+='''
-                        and mp.id in %s 
-                    '''%(mang_nsx_ids)
-                if mang_khu_vuc_ids:
-                    mang_khu_vuc_ids = str(mang_khu_vuc_ids).replace('[', '(')
-                    mang_khu_vuc_ids = str(mang_khu_vuc_ids).replace(']', ')')
-                    sql+='''
-                        and kv.id in %s 
-                    '''%(mang_khu_vuc_ids)
-                if mang_tinh_ids:
-                    mang_tinh_ids = str(mang_tinh_ids).replace('[', '(')
-                    mang_tinh_ids = str(mang_tinh_ids).replace(']', ')')
-                    sql+='''
-                        and rcs.id in %s 
-                    '''%(mang_tinh_ids)
-                    
+            sql = '''
+                select ail.id as id,ai.partner_id as partner_id,ai.date_invoice as ngay_hd,ai.reference_number as so_hd,rp.internal_code as ma_kh,rp.name as ten_kh,pp.default_code as ma_sp,
+                    pp.name_template as ten_sp,pu.name as dvt,spl.name as so_lo,spl.life_date as han_dung,ail.quantity as so_luong,ail.price_unit as gia_ban,
+                    ail.price_unit*ail.quantity as dt_truocthue,at.amount_tax as tien_thue,(ail.price_unit*ail.quantity)+at.amount_tax as dt_sauthue,pt.standard_price as gia_von,
+                    sl.name as loc_name,mp.name as nsx, rurp.name as nvbh
+                    from account_invoice_line ail
+                        left join account_invoice ai on ail.invoice_id=ai.id
+                        left join res_partner rp on ail.partner_id=rp.id
+                        left join res_users ru on rp.user_id = ru.id
+                        left join res_partner rurp on ru.partner_id=rurp.id
+                        left join product_product pp on ail.product_id=pp.id
+                        left join product_template pt on pp.product_tmpl_id=pt.id
+                        left join product_category pc on pt.categ_id=pc.id
+                        left join product_uom pu on ail.uos_id=pu.id
+                        left join stock_production_lot spl on ail.prodlot_id = spl.id
+                        left join (
+                                select ail.id,sum(at.amount*ail.price_unit*ail.quantity) as amount_tax
+                                    from account_invoice_line ail
+                                        left join account_invoice_line_tax ailt on ail.id=ailt.invoice_line_id
+                                        left join account_tax at on ailt.tax_id=at.id
+                                    group by ail.id
+                            ) as at on ail.id=at.id
+                        left join stock_move sm on sm.id=ail.source_id
+                        left join stock_location sl on sl.id=sm.location_id
+                        left join manufacturer_product mp on pp.manufacturer_product_id = mp.id
+                        left join kv_benh_vien kv on kv.id=rp.kv_benh_vien
+                        left join res_country_state rcs on rcs.id=rp.state_id
+                    where ai.date_invoice between '%s' and '%s' and ai.state!='cancel' and ai.type='out_invoice' 
+            '''%(date_from,date_to)
+            if mang_partner_ids:
+                mang_partner_ids = str(mang_partner_ids).replace('[', '(')
+                mang_partner_ids = str(mang_partner_ids).replace(']', ')')
                 sql+='''
-                     order by ai.date_invoice
-                '''
-                cr.execute(sql)
-                s= 'select sum(v.so_luong) as tong from ('+sql+')v'
-                cr.execute(s)
-            else:
-                sql = '''
-                    select ail.id as id,ai.partner_id as partner_id,ai.date_invoice as ngay_hd,ai.reference_number as so_hd,rp.internal_code as ma_kh,rp.name as ten_kh,pp.default_code as ma_sp,
-                        pp.name_template as ten_sp,pu.name as dvt,spl.name as so_lo,spl.life_date as han_dung,ail.quantity as so_luong,ail.price_unit as gia_ban,
-                        ail.price_unit*ail.quantity as dt_truocthue,at.amount_tax as tien_thue,(ail.price_unit*ail.quantity)+at.amount_tax as dt_sauthue,pt.standard_price as gia_von,
-                        sl.name as loc_name,mp.name as nsx, rurp.name as nvbh
-                        from account_invoice_line ail
-                            left join account_invoice ai on ail.invoice_id=ai.id
-                            left join res_partner rp on ail.partner_id=rp.id
-                            left join res_users ru on rp.user_id = ru.id
-                            left join res_partner rurp on ru.partner_id=rurp.id
-                            left join product_product pp on ail.product_id=pp.id
-                            left join product_template pt on pp.product_tmpl_id=pt.id
-                            left join product_category pc on pt.categ_id=pc.id
-                            left join product_uom pu on ail.uos_id=pu.id
-                            left join stock_production_lot spl on ail.prodlot_id = spl.id
-                            left join (
-                                    select ail.id,sum(at.amount*ail.price_unit*ail.quantity) as amount_tax
-                                        from account_invoice_line ail
-                                            left join account_invoice_line_tax ailt on ail.id=ailt.invoice_line_id
-                                            left join account_tax at on ailt.tax_id=at.id
-                                        group by ail.id
-                                ) as at on ail.id=at.id
-                            left join stock_move sm on sm.id=ail.source_id
-                            left join stock_location sl on sl.id=sm.location_id
-                            left join manufacturer_product mp on pp.manufacturer_product_id = mp.id
-                            left join kv_benh_vien kv on kv.id=rp.kv_benh_vien
-                            left join res_country_state rcs on rcs.id=rp.state_id
-                        where ai.date_invoice between '%s' and '%s' and ai.state!='cancel' and ai.type='out_invoice' 
-                '''%(date_from,date_to)
-                if mang_partner_ids:
-                    mang_partner_ids = str(mang_partner_ids).replace('[', '(')
-                    mang_partner_ids = str(mang_partner_ids).replace(']', ')')
-                    sql+='''
-                        and ai.partner_id in %s 
-                    '''%(mang_partner_ids)
-                if mang_users_ids:
-                    mang_users_ids = str(mang_users_ids).replace('[', '(')
-                    mang_users_ids = str(mang_users_ids).replace(']', ')')
-                    sql+='''
-                        and rp.user_id in %s 
-                    '''%(mang_users_ids)
-                if mang_product_ids:
-                    mang_product_ids = str(mang_product_ids).replace('[', '(')
-                    mang_product_ids = str(mang_product_ids).replace(']', ')')
-                    sql+='''
-                        and ail.product_id in %s 
-                    '''%(mang_product_ids)
-                if mang_categ_ids:
-                    mang_categ_ids = str(mang_categ_ids).replace('[', '(')
-                    mang_categ_ids = str(mang_categ_ids).replace(']', ')')
-                    sql+='''
-                        and pc.id in %s 
-                    '''%(mang_categ_ids)
-                if mang_loc_ids:
-                    mang_loc_ids = str(mang_loc_ids).replace('[', '(')
-                    mang_loc_ids = str(mang_loc_ids).replace(']', ')')
-                    sql+='''
-                        and sl.id in %s 
-                    '''%(mang_loc_ids)
-                if mang_nsx_ids:
-                    mang_nsx_ids = str(mang_nsx_ids).replace('[', '(')
-                    mang_nsx_ids = str(mang_nsx_ids).replace(']', ')')
-                    sql+='''
-                        and mp.id in %s 
-                    '''%(mang_nsx_ids)
-                if mang_khu_vuc_ids:
-                    mang_khu_vuc_ids = str(mang_khu_vuc_ids).replace('[', '(')
-                    mang_khu_vuc_ids = str(mang_khu_vuc_ids).replace(']', ')')
-                    sql+='''
-                        and kv.id in %s 
-                    '''%(mang_khu_vuc_ids)
-                if mang_tinh_ids:
-                    mang_tinh_ids = str(mang_tinh_ids).replace('[', '(')
-                    mang_tinh_ids = str(mang_tinh_ids).replace(']', ')')
-                    sql+='''
-                        and rcs.id in %s 
-                    '''%(mang_tinh_ids)
-                    
+                    and ai.partner_id in %s 
+                '''%(mang_partner_ids)
+            if mang_users_ids:
+                mang_users_ids = str(mang_users_ids).replace('[', '(')
+                mang_users_ids = str(mang_users_ids).replace(']', ')')
                 sql+='''
-                     order by ai.date_invoice
-                '''
-                cr.execute(sql)
-                s= 'select sum(v.so_luong) as tong from ('+sql+')v'
-                cr.execute(s)
+                    and rp.user_id in %s 
+                '''%(mang_users_ids)
+            if mang_product_ids:
+                mang_product_ids = str(mang_product_ids).replace('[', '(')
+                mang_product_ids = str(mang_product_ids).replace(']', ')')
+                sql+='''
+                    and ail.product_id in %s 
+                '''%(mang_product_ids)
+            if mang_categ_ids:
+                mang_categ_ids = str(mang_categ_ids).replace('[', '(')
+                mang_categ_ids = str(mang_categ_ids).replace(']', ')')
+                sql+='''
+                    and pc.id in %s 
+                '''%(mang_categ_ids)
+            if mang_loc_ids:
+                mang_loc_ids = str(mang_loc_ids).replace('[', '(')
+                mang_loc_ids = str(mang_loc_ids).replace(']', ')')
+                sql+='''
+                    and sl.id in %s 
+                '''%(mang_loc_ids)
+            if mang_nsx_ids:
+                mang_nsx_ids = str(mang_nsx_ids).replace('[', '(')
+                mang_nsx_ids = str(mang_nsx_ids).replace(']', ')')
+                sql+='''
+                    and mp.id in %s 
+                '''%(mang_nsx_ids)
+            if mang_khu_vuc_ids:
+                mang_khu_vuc_ids = str(mang_khu_vuc_ids).replace('[', '(')
+                mang_khu_vuc_ids = str(mang_khu_vuc_ids).replace(']', ')')
+                sql+='''
+                    and kv.id in %s 
+                '''%(mang_khu_vuc_ids)
+            if mang_tinh_ids:
+                mang_tinh_ids = str(mang_tinh_ids).replace('[', '(')
+                mang_tinh_ids = str(mang_tinh_ids).replace(']', ')')
+                sql+='''
+                    and rcs.id in %s 
+                '''%(mang_tinh_ids)
+                
+            sql+='''
+                 order by ai.date_invoice
+            '''
+            cr.execute(sql)
+            s= 'select sum(v.so_luong) as tong from ('+sql+')v'
+            cr.execute(s)
             return cr.dictfetchone()
          
         def get_tong_dt_sauthue(o):
@@ -968,218 +567,90 @@ class doanhthu_banhang(osv.osv_memory):
             for tinh_id in tinh_ids:
                 mang_tinh_ids.append(tinh_id.id)
                 
-            if uid==24:
-                sql = '''
-                    select id from res_partner where 
-                        customer = 't' and 
-                        street LIKE '%Q.Gò Vấp%' or street LIKE '%Q. Gò Vấp%' or street LIKE '%Quận Gò Vấp%' or
-                        street LIKE '%Q.Tân Bình%' or street LIKE '%Q. Tân Bình%' or street LIKE '%Quận Tân Bình%' or
-                        street LIKE '%Q1%' or street LIKE '%Q.1%' or street LIKE '%Quận 1%' or
-                        street LIKE '%Q.Tân Phú%' or street LIKE '%Q. Tân Phú%' or street LIKE '%Quận Tân Phú%' or
-                        street LIKE '%Q3%' or street LIKE '%Q.3%' or street LIKE '%Quận 3%' or
-                        street LIKE '%Q10%' or street LIKE '%Q.10%' or street LIKE '%Quận 10%' or
-                        street LIKE '%Q11%' or street LIKE '%Q.11%' or street LIKE '%Quận 11%' or
-                        street LIKE '%Q4%' or street LIKE '%Q.4%' or street LIKE '%Quận 4%' or
-                        street LIKE '%Q5%' or street LIKE '%Q.5%' or street LIKE '%Quận 5%' or
-                        street LIKE '%Q6%' or street LIKE '%Q.6%' or street LIKE '%Quận 6%' or
-                        street LIKE '%Q8%' or street LIKE '%Q.8%' or street LIKE '%Quận 8%' or
-                        street LIKE '%Q.Bình Tân%' or street LIKE '%Q. Bình Tân%' or street LIKE '%Quận Bình Tân%' or
-                        street LIKE '%Q7%' or street LIKE '%Q.7%' or street LIKE '%Quận 7%' or
-                        street LIKE '%H.Bình Chánh%' or street LIKE '%H. Bình Chánh%' or street LIKE '%Huyện Bình Chánh%' or
-                        street LIKE '%H.Nhà Bè%' or street LIKE '%H. Nhà Bè%' or street LIKE '%Huyện Nhà Bè%' or
-                        street LIKE '%H.Cần Giờ%' or street LIKE '%H. Cần Giờ%' or street LIKE '%Huyện Cần Giờ%' or
-                        
-                        street2 LIKE '%Q.Gò Vấp%' or street2 LIKE '%Q. Gò Vấp%' or street2 LIKE '%Quận Gò Vấp%' or
-                        street2 LIKE '%Q.Tân Bình%' or street2 LIKE '%Q. Tân Bình%' or street2 LIKE '%Quận Tân Bình%' or
-                        street2 LIKE '%Q1%' or street2 LIKE '%Q.1%' or street2 LIKE '%Quận 1%' or 
-                        street2 LIKE '%Q.Tân Phú%' or street2 LIKE '%Q. Tân Phú%' or street2 LIKE '%Quận Tân Phú%' or
-                        street2 LIKE '%Q3%' or street2 LIKE '%Q.3%' or street2 LIKE '%Quận 3%' or
-                        street2 LIKE '%Q10%' or street2 LIKE '%Q.10%' or street2 LIKE '%Quận 10%' or
-                        street2 LIKE '%Q11%' or street2 LIKE '%Q.11%' or street2 LIKE '%Quận 11%' or
-                        street2 LIKE '%Q4%' or street2 LIKE '%Q.4%' or street2 LIKE '%Quận 4%' or
-                        street2 LIKE '%Q5%' or street2 LIKE '%Q.5%' or street2 LIKE '%Quận 5%' or
-                        street2 LIKE '%Q6%' or street2 LIKE '%Q.6%' or street2 LIKE '%Quận 6%' or
-                        street2 LIKE '%Q8%' or street2 LIKE '%Q.8%' or street2 LIKE '%Quận 8%' or
-                        street2 LIKE '%Q.Bình Tân%' or street2 LIKE '%Q. Bình Tân%' or street2 LIKE '%Quận Bình Tân%' or
-                        street2 LIKE '%Q7%' or street2 LIKE '%Q.7%' or street2 LIKE '%Quận 7%' or
-                        street2 LIKE '%H.Bình Chánh%' or street2 LIKE '%H. Bình Chánh%' or street2 LIKE '%Huyện Bình Chánh%' or
-                        street2 LIKE '%H.Nhà Bè%' or street2 LIKE '%H. Nhà Bè%' or street2 LIKE '%Huyện Nhà Bè%' or
-                        street2 LIKE '%H.Cần Giờ%' or street2 LIKE '%H. Cần Giờ%' or street2 LIKE '%Huyện Cần Giờ%'
-                '''
-                cr.execute(sql)
-                thuy_ids = [row[0] for row in cr.fetchall()]
-                thuy_ids = str(thuy_ids).replace('[', '(')
-                thuy_ids = str(thuy_ids).replace(']', ')')
-                sql = '''
-                    select ail.id as id,ai.partner_id as partner_id,ai.date_invoice as ngay_hd,ai.reference_number as so_hd,rp.internal_code as ma_kh,rp.name as ten_kh,pp.default_code as ma_sp,
-                        pp.name_template as ten_sp,pu.name as dvt,spl.name as so_lo,spl.life_date as han_dung,ail.quantity as so_luong,ail.price_unit as gia_ban,
-                        ail.price_unit*ail.quantity as dt_truocthue,at.amount_tax as tien_thue,(ail.price_unit*ail.quantity)+at.amount_tax as dt_sauthue,pt.standard_price as gia_von,
-                        sl.name as loc_name,mp.name as nsx, rurp.name as nvbh
-                        from account_invoice_line ail
-                            left join account_invoice ai on ail.invoice_id=ai.id
-                            left join res_partner rp on ail.partner_id=rp.id
-                            left join res_users ru on rp.user_id = ru.id
-                            left join res_partner rurp on ru.partner_id=rurp.id
-                            left join product_product pp on ail.product_id=pp.id
-                            left join product_template pt on pp.product_tmpl_id=pt.id
-                            left join product_category pc on pt.categ_id=pc.id
-                            left join product_uom pu on ail.uos_id=pu.id
-                            left join stock_production_lot spl on ail.prodlot_id = spl.id
-                            left join (
-                                    select ail.id,sum(at.amount*ail.price_unit*ail.quantity) as amount_tax
-                                        from account_invoice_line ail
-                                            left join account_invoice_line_tax ailt on ail.id=ailt.invoice_line_id
-                                            left join account_tax at on ailt.tax_id=at.id
-                                        group by ail.id
-                                ) as at on ail.id=at.id
-                            left join stock_move sm on sm.id=ail.source_id
-                            left join stock_location sl on sl.id=sm.location_id
-                            left join manufacturer_product mp on pp.manufacturer_product_id = mp.id
-                            left join kv_benh_vien kv on kv.id=rp.kv_benh_vien
-                            left join res_country_state rcs on rcs.id=rp.state_id
-                        where ai.date_invoice between '%s' and '%s' and ai.state!='cancel' and ai.type='out_invoice' 
-                        and rp.id in %s
-                '''%(date_from,date_to,thuy_ids)
-                if mang_partner_ids:
-                    mang_partner_ids = str(mang_partner_ids).replace('[', '(')
-                    mang_partner_ids = str(mang_partner_ids).replace(']', ')')
-                    sql+='''
-                        and ai.partner_id in %s 
-                    '''%(mang_partner_ids)
-                if mang_users_ids:
-                    mang_users_ids = str(mang_users_ids).replace('[', '(')
-                    mang_users_ids = str(mang_users_ids).replace(']', ')')
-                    sql+='''
-                        and rp.user_id in %s 
-                    '''%(mang_users_ids)
-                if mang_product_ids:
-                    mang_product_ids = str(mang_product_ids).replace('[', '(')
-                    mang_product_ids = str(mang_product_ids).replace(']', ')')
-                    sql+='''
-                        and ail.product_id in %s 
-                    '''%(mang_product_ids)
-                if mang_categ_ids:
-                    mang_categ_ids = str(mang_categ_ids).replace('[', '(')
-                    mang_categ_ids = str(mang_categ_ids).replace(']', ')')
-                    sql+='''
-                        and pc.id in %s 
-                    '''%(mang_categ_ids)
-                if mang_loc_ids:
-                    mang_loc_ids = str(mang_loc_ids).replace('[', '(')
-                    mang_loc_ids = str(mang_loc_ids).replace(']', ')')
-                    sql+='''
-                        and sl.id in %s 
-                    '''%(mang_loc_ids)
-                if mang_nsx_ids:
-                    mang_nsx_ids = str(mang_nsx_ids).replace('[', '(')
-                    mang_nsx_ids = str(mang_nsx_ids).replace(']', ')')
-                    sql+='''
-                        and mp.id in %s 
-                    '''%(mang_nsx_ids)
-                if mang_khu_vuc_ids:
-                    mang_khu_vuc_ids = str(mang_khu_vuc_ids).replace('[', '(')
-                    mang_khu_vuc_ids = str(mang_khu_vuc_ids).replace(']', ')')
-                    sql+='''
-                        and kv.id in %s 
-                    '''%(mang_khu_vuc_ids)
-                if mang_tinh_ids:
-                    mang_tinh_ids = str(mang_tinh_ids).replace('[', '(')
-                    mang_tinh_ids = str(mang_tinh_ids).replace(']', ')')
-                    sql+='''
-                        and rcs.id in %s 
-                    '''%(mang_tinh_ids)
-                    
+            sql = '''
+                select ail.id as id,ai.partner_id as partner_id,ai.date_invoice as ngay_hd,ai.reference_number as so_hd,rp.internal_code as ma_kh,rp.name as ten_kh,pp.default_code as ma_sp,
+                    pp.name_template as ten_sp,pu.name as dvt,spl.name as so_lo,spl.life_date as han_dung,ail.quantity as so_luong,ail.price_unit as gia_ban,
+                    ail.price_unit*ail.quantity as dt_truocthue,at.amount_tax as tien_thue,(ail.price_unit*ail.quantity)+at.amount_tax as dt_sauthue,pt.standard_price as gia_von,
+                    sl.name as loc_name,mp.name as nsx, rurp.name as nvbh
+                    from account_invoice_line ail
+                        left join account_invoice ai on ail.invoice_id=ai.id
+                        left join res_partner rp on ail.partner_id=rp.id
+                        left join res_users ru on rp.user_id = ru.id
+                        left join res_partner rurp on ru.partner_id=rurp.id
+                        left join product_product pp on ail.product_id=pp.id
+                        left join product_template pt on pp.product_tmpl_id=pt.id
+                        left join product_category pc on pt.categ_id=pc.id
+                        left join product_uom pu on ail.uos_id=pu.id
+                        left join stock_production_lot spl on ail.prodlot_id = spl.id
+                        left join (
+                                select ail.id,sum(at.amount*ail.price_unit*ail.quantity) as amount_tax
+                                    from account_invoice_line ail
+                                        left join account_invoice_line_tax ailt on ail.id=ailt.invoice_line_id
+                                        left join account_tax at on ailt.tax_id=at.id
+                                    group by ail.id
+                            ) as at on ail.id=at.id
+                        left join stock_move sm on sm.id=ail.source_id
+                        left join stock_location sl on sl.id=sm.location_id
+                        left join manufacturer_product mp on pp.manufacturer_product_id = mp.id
+                        left join kv_benh_vien kv on kv.id=rp.kv_benh_vien
+                        left join res_country_state rcs on rcs.id=rp.state_id
+                    where ai.date_invoice between '%s' and '%s' and ai.state!='cancel' and ai.type='out_invoice' 
+            '''%(date_from,date_to)
+            if mang_partner_ids:
+                mang_partner_ids = str(mang_partner_ids).replace('[', '(')
+                mang_partner_ids = str(mang_partner_ids).replace(']', ')')
                 sql+='''
-                     order by ai.date_invoice
-                '''
-                cr.execute(sql)
-                s= 'select sum(round(v.dt_sauthue)) as tong from ('+sql+')v'
-                cr.execute(s)
-            else:
-                sql = '''
-                    select ail.id as id,ai.partner_id as partner_id,ai.date_invoice as ngay_hd,ai.reference_number as so_hd,rp.internal_code as ma_kh,rp.name as ten_kh,pp.default_code as ma_sp,
-                        pp.name_template as ten_sp,pu.name as dvt,spl.name as so_lo,spl.life_date as han_dung,ail.quantity as so_luong,ail.price_unit as gia_ban,
-                        ail.price_unit*ail.quantity as dt_truocthue,at.amount_tax as tien_thue,(ail.price_unit*ail.quantity)+at.amount_tax as dt_sauthue,pt.standard_price as gia_von,
-                        sl.name as loc_name,mp.name as nsx, rurp.name as nvbh
-                        from account_invoice_line ail
-                            left join account_invoice ai on ail.invoice_id=ai.id
-                            left join res_partner rp on ail.partner_id=rp.id
-                            left join res_users ru on rp.user_id = ru.id
-                            left join res_partner rurp on ru.partner_id=rurp.id
-                            left join product_product pp on ail.product_id=pp.id
-                            left join product_template pt on pp.product_tmpl_id=pt.id
-                            left join product_category pc on pt.categ_id=pc.id
-                            left join product_uom pu on ail.uos_id=pu.id
-                            left join stock_production_lot spl on ail.prodlot_id = spl.id
-                            left join (
-                                    select ail.id,sum(at.amount*ail.price_unit*ail.quantity) as amount_tax
-                                        from account_invoice_line ail
-                                            left join account_invoice_line_tax ailt on ail.id=ailt.invoice_line_id
-                                            left join account_tax at on ailt.tax_id=at.id
-                                        group by ail.id
-                                ) as at on ail.id=at.id
-                            left join stock_move sm on sm.id=ail.source_id
-                            left join stock_location sl on sl.id=sm.location_id
-                            left join manufacturer_product mp on pp.manufacturer_product_id = mp.id
-                            left join kv_benh_vien kv on kv.id=rp.kv_benh_vien
-                            left join res_country_state rcs on rcs.id=rp.state_id
-                        where ai.date_invoice between '%s' and '%s' and ai.state!='cancel' and ai.type='out_invoice' 
-                '''%(date_from,date_to)
-                if mang_partner_ids:
-                    mang_partner_ids = str(mang_partner_ids).replace('[', '(')
-                    mang_partner_ids = str(mang_partner_ids).replace(']', ')')
-                    sql+='''
-                        and ai.partner_id in %s 
-                    '''%(mang_partner_ids)
-                if mang_users_ids:
-                    mang_users_ids = str(mang_users_ids).replace('[', '(')
-                    mang_users_ids = str(mang_users_ids).replace(']', ')')
-                    sql+='''
-                        and rp.user_id in %s 
-                    '''%(mang_users_ids)
-                if mang_product_ids:
-                    mang_product_ids = str(mang_product_ids).replace('[', '(')
-                    mang_product_ids = str(mang_product_ids).replace(']', ')')
-                    sql+='''
-                        and ail.product_id in %s 
-                    '''%(mang_product_ids)
-                if mang_categ_ids:
-                    mang_categ_ids = str(mang_categ_ids).replace('[', '(')
-                    mang_categ_ids = str(mang_categ_ids).replace(']', ')')
-                    sql+='''
-                        and pc.id in %s 
-                    '''%(mang_categ_ids)
-                if mang_loc_ids:
-                    mang_loc_ids = str(mang_loc_ids).replace('[', '(')
-                    mang_loc_ids = str(mang_loc_ids).replace(']', ')')
-                    sql+='''
-                        and sl.id in %s 
-                    '''%(mang_loc_ids)
-                if mang_nsx_ids:
-                    mang_nsx_ids = str(mang_nsx_ids).replace('[', '(')
-                    mang_nsx_ids = str(mang_nsx_ids).replace(']', ')')
-                    sql+='''
-                        and mp.id in %s 
-                    '''%(mang_nsx_ids)
-                if mang_khu_vuc_ids:
-                    mang_khu_vuc_ids = str(mang_khu_vuc_ids).replace('[', '(')
-                    mang_khu_vuc_ids = str(mang_khu_vuc_ids).replace(']', ')')
-                    sql+='''
-                        and kv.id in %s 
-                    '''%(mang_khu_vuc_ids)
-                if mang_tinh_ids:
-                    mang_tinh_ids = str(mang_tinh_ids).replace('[', '(')
-                    mang_tinh_ids = str(mang_tinh_ids).replace(']', ')')
-                    sql+='''
-                        and rcs.id in %s 
-                    '''%(mang_tinh_ids)
-                    
+                    and ai.partner_id in %s 
+                '''%(mang_partner_ids)
+            if mang_users_ids:
+                mang_users_ids = str(mang_users_ids).replace('[', '(')
+                mang_users_ids = str(mang_users_ids).replace(']', ')')
                 sql+='''
-                     order by ai.date_invoice
-                '''
-                cr.execute(sql)
-                s= 'select sum(round(v.dt_sauthue)) as tong from ('+sql+')v'
-                cr.execute(s)
+                    and rp.user_id in %s 
+                '''%(mang_users_ids)
+            if mang_product_ids:
+                mang_product_ids = str(mang_product_ids).replace('[', '(')
+                mang_product_ids = str(mang_product_ids).replace(']', ')')
+                sql+='''
+                    and ail.product_id in %s 
+                '''%(mang_product_ids)
+            if mang_categ_ids:
+                mang_categ_ids = str(mang_categ_ids).replace('[', '(')
+                mang_categ_ids = str(mang_categ_ids).replace(']', ')')
+                sql+='''
+                    and pc.id in %s 
+                '''%(mang_categ_ids)
+            if mang_loc_ids:
+                mang_loc_ids = str(mang_loc_ids).replace('[', '(')
+                mang_loc_ids = str(mang_loc_ids).replace(']', ')')
+                sql+='''
+                    and sl.id in %s 
+                '''%(mang_loc_ids)
+            if mang_nsx_ids:
+                mang_nsx_ids = str(mang_nsx_ids).replace('[', '(')
+                mang_nsx_ids = str(mang_nsx_ids).replace(']', ')')
+                sql+='''
+                    and mp.id in %s 
+                '''%(mang_nsx_ids)
+            if mang_khu_vuc_ids:
+                mang_khu_vuc_ids = str(mang_khu_vuc_ids).replace('[', '(')
+                mang_khu_vuc_ids = str(mang_khu_vuc_ids).replace(']', ')')
+                sql+='''
+                    and kv.id in %s 
+                '''%(mang_khu_vuc_ids)
+            if mang_tinh_ids:
+                mang_tinh_ids = str(mang_tinh_ids).replace('[', '(')
+                mang_tinh_ids = str(mang_tinh_ids).replace(']', ')')
+                sql+='''
+                    and rcs.id in %s 
+                '''%(mang_tinh_ids)
+                
+            sql+='''
+                 order by ai.date_invoice
+            '''
+            cr.execute(sql)
+            s= 'select sum(round(v.dt_sauthue)) as tong from ('+sql+')v'
+            cr.execute(s)
             return cr.dictfetchone()
          
         def display_address(o, partner_id):

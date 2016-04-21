@@ -12,6 +12,7 @@ class profile(osv.osv):
                                         required=False, readonly=False, help='The profile of the user. The admin should have no profile.'),
                 
         'name': fields.char('Profile Name', size=64, required=True),
+        'code': fields.char('Code Name', size=64, required=True),
         'groups_ids': fields.many2many('res.groups', 'profiles_groups_rel', 'profile_id', 'group_id', string='Groups', required=False, readonly=False),
     }
     _sql_constraints = [

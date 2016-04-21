@@ -26,24 +26,6 @@ from openerp.tools.translate import _
 class danhsach_canhtranh_wizard(osv.osv_memory):
     _name = 'danhsach.canhtranh.wizard'
     
-    def get_categ_vaccine(self,cr,uid,context):
-        if uid == 24:
-            sql = '''
-                select id from product_category where code = 'VC'
-            '''
-            cr.execute(sql)
-            vaccine_ids = [row[0] for row in cr.fetchall()]
-            return vaccine_ids
-        elif uid == 34:
-            sql = '''
-                select id from product_category where code = 'NR'
-            '''
-            cr.execute(sql)
-            norinse_ids = [row[0] for row in cr.fetchall()]
-            return norinse_ids
-        else:
-            return False
-        
     def get_uid(self,cr,uid,context):
         return uid
     
@@ -60,7 +42,6 @@ class danhsach_canhtranh_wizard(osv.osv_memory):
     _defaults = {
         'date_from': lambda *a: time.strftime('%Y-%m-%d'),
         'date_to': lambda *a: time.strftime('%Y-%m-%d'),
-        'categ_ids': get_categ_vaccine,
         'user_id': get_uid,
     }
     
