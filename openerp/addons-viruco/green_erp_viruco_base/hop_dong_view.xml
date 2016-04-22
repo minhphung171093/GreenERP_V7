@@ -553,6 +553,44 @@
             <field name="view_id" ref="hop_dong_mua_trongnuoc_form_view"/>
             <field name="act_window_id" ref="action_hop_dong_mua_trongnuoc"/>
         </record>
+<!-- Chi tiết hợp đồng mua -->
+        <record id="ct_hop_dong_mua_trongnuoc_tree_view" model="ir.ui.view">
+			<field name="name">ct.hop.dong.mua.trongnuoc.tree</field>
+			<field name="model">hopdong.line</field>
+			<field name="arch" type="xml">
+				<tree string="Chi tiết Hợp đồng mua trong nước" editable='top'>
+					<field name="hopdong_id"/>
+                    <field name="product_id" options="{'create': false, 'create_edit': false}" on_change="onchange_product_id(product_id, hopdong_id.type, context)"/>
+                    <field name="name"/>
+                    <field name="quycach_donggoi_id"  />
+                    <field name="quycach_baobi_id"  />
+                    <field name="product_uom"/>
+                    <field name="product_qty" />
+                    <field name="price_unit"/>
+                    <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','sale')]"/>
+                    <field name="price_subtotal"/>
+				</tree>
+			</field>
+		</record>
+		
+          
+		<record id="action_ct_hop_dong_mua_trongnuoc" model="ir.actions.act_window">
+            <field name="name">Chi tiết Hợp đồng mua trong nước</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hopdong.line</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="ct_hop_dong_mua_trongnuoc_tree_view"/>
+            <field name="domain">[('hopdong_id.type','=','hd_mua_trongnuoc')]</field>
+            <field name="context">{'default_type':'hd_mua_trongnuoc','readonly_by_pass': True}</field>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_ct_hop_dong_mua_trongnuoc1">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="ct_hop_dong_mua_trongnuoc_tree_view"/>
+            <field name="act_window_id" ref="action_ct_hop_dong_mua_trongnuoc"/>
+        </record>
+
         
         <record id="hop_dong_mua_nhapkhau_tree_view" model="ir.ui.view">
 			<field name="name">hop.dong.mua.nhapkhau.tree</field>

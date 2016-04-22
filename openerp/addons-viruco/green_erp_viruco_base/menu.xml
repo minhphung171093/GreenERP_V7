@@ -11,7 +11,8 @@
 				<menuitem id="menu_action_phuluc_hop_dong_ngoai" action="action_phuluc_hop_dong_ngoai" name="Phụ lục hợp đồng ngoại" parent="menu_phuluc_hopdong_ban" sequence="1"/>
 	        <menuitem id="menu_hopdong_mua" parent="green_erp_viruco_base.hop_dong" name="Hợp Đồng Mua" sequence="20"/>
 				<menuitem id="menu_action_hop_dong_mua_trongnuoc" action="action_hop_dong_mua_trongnuoc" name="Hợp đồng mua trong nước" parent="menu_hopdong_mua" sequence="2" groups="group_viruco_thumua"/>
-				<menuitem id="menu_action_hop_dong_mua_nhapkhau" action="action_hop_dong_mua_nhapkhau" name="Hợp đồng mua nhập khẩu" parent="menu_hopdong_mua" sequence="3" groups="group_viruco_thumua,group_viruco_mua_nhapkhau" />
+				<menuitem id="menu_action_ct_hop_dong_mua_trongnuoc" action="action_ct_hop_dong_mua_trongnuoc" name="Chi tiết Hợp đồng mua trong nước" parent="menu_hopdong_mua" sequence="3" groups="group_viruco_thumua"/>
+				<menuitem id="menu_action_hop_dong_mua_nhapkhau" action="action_hop_dong_mua_nhapkhau" name="Hợp đồng mua nhập khẩu" parent="menu_hopdong_mua" sequence="4" groups="group_viruco_thumua,group_viruco_mua_nhapkhau" />
 	        <menuitem id="menu_phuluc_hopdong_mua" parent="green_erp_viruco_base.hop_dong" name="Phụ lục hợp Đồng Mua" sequence="25"/>
 				<menuitem id="menu_action_phuluc_hop_dong_mua_trongnuoc" action="action_phuluc_hop_dong_mua_trongnuoc" name="Phụ lục HĐ mua trong nước" parent="menu_phuluc_hopdong_mua" sequence="2" groups="group_viruco_thumua" />
 				<menuitem id="menu_action_phuluc_hop_dong_mua_nhapkhau" action="action_phuluc_hop_dong_mua_nhapkhau" name="Phụ lục HĐ mua nhập khẩu" parent="menu_phuluc_hopdong_mua" sequence="3" groups="group_viruco_thumua,group_viruco_mua_nhapkhau" />
