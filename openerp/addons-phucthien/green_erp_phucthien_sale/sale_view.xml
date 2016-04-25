@@ -1033,13 +1033,78 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="sale_canh_bao_tree"/>
         </record>
-          
+
+      
         <menuitem id="menu_action_sale_canh_bao"
     		action="action_sale_canh_bao"
     		name="Cảnh báo của các đơn hàng"
     		parent="base.menu_base_config"
     		sequence="16"
     		groups="base.group_sale_manager"/> 
+
+<!-- SAT Report -->    
+        <record model='ir.ui.view' id='sat_report_tree'>
+            <field name="name">sat.report.tree</field>
+            <field name="model">sat.report</field>
+            <field name="arch" type="xml">
+                <tree string="SAT">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="ngay"/>
+                    <field name="ngay_trung_thau"/>
+                    <field name="ket_qua"/>
+                    <field name="amount_total"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record model='ir.ui.view' id='sat_report_form'>
+            <field name="name">sat.report.form</field>
+            <field name="model">sat.report</field>
+            <field name="arch" type="xml">
+                <form string="SAT" version="7.0" >
+                	<sheet>
+                		<h1>
+	                    	<label string="Tên"/>
+	                        <field name="name" class="oe_inline" nolabel="1" />
+	                    </h1>
+	               		<group col='4' colspan='2'>
+	               			<field name="partner_id" domain="[('customer','=',True)]"/>
+	               			<field name="ngay"/>
+	               			<field name="ket_qua"/>
+	               			<field name="ngay_trung_thau" attrs="{'invisible':[('ket_qua','!=','trung')]}"/>
+	               			<field name="lydo" attrs="{'invisible':[('ket_qua','!=','khong')]}"/>
+                  		</group>
+	                   	<notebook>
+							<page string = "Chi tiết gói thầu">
+								<field name="sat_report_line" nolabel='1'>
+									<tree editable='bottom'>
+										<field name="product_id"/>
+										<field name="soluong" />
+										<field name="don_gia" />
+										<field name="price_subtotal" />
+									</tree>
+								</field>
+								<group class="oe_subtotal_footer oe_right" >
+									<field name="amount_total" class="oe_subtotal_footer_separator" widget='monetary' />
+								</group>
+								<div class="oe_clear"/>
+							</page>
+						</notebook>
+						
+					</sheet>
+                </form>
+            </field>
+        </record>
+      
+       	<record id="action_sat_report" model="ir.actions.act_window">
+            <field name="name">SAT</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sat.report</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="sat_report_tree"/>
+        </record>
     		
     	<record id="create_danhsach_canhtranh_popup_form_view" model="ir.ui.view">
             <field name="name">create.danhsach.canhtranh.popup.form</field>

@@ -1760,4 +1760,63 @@ class sale_canh_bao_line(osv.osv):
                 'ngay': fields.datetime('Thời gian'),
                 }
 sale_canh_bao_line()
+
+class sat_report(osv.osv):
+    _name = "sat.report"
+    def _amount_all(self, cr, uid, ids, field_name, arg, context=None):
+        res = {}
+        for order in self.browse(cr, uid, ids, context=context):
+            res[order.id] = {
+#                 'amount_untaxed': 0.0,
+#                 'amount_tax': 0.0,
+                'amount_total': 0.0,
+            }
+            val = val1 = 0.0
+            for line in order.sat_report_line:
+                val1 += line.price_subtotal
+#                 val += self._amount_line_tax(cr, uid, line, context=context)
+#             res[order.id]['amount_tax'] = cur_obj.round(cr, uid, cur, val)
+#             res[order.id]['amount_untaxed'] = cur_obj.round(cr, uid, cur, val1)
+            res[order.id]['amount_total'] =val1
+        return res
+    def _get_order(self, cr, uid, ids, context=None):
+        result = {}
+        for line in self.pool.get('sat.report.line').browse(cr, uid, ids, context=context):
+            result[line.sat_report_id.id] = True
+        return result.keys()
+    _columns = {
+                'name':fields.char('Tên',size = 1024,required=True),
+                'partner_id': fields.many2one('res.partner', 'Đơn vị'),
+                'ngay': fields.datetime('Hiệu lực thầu'),
+                'ngay_trung_thau': fields.datetime('Ngày trúng thầu'),
+                'lydo':fields.text('Lý do rớt thầu'),
+                'ket_qua':fields.selection([('trung','Trúng thầu'),('khong','Không trúng thầu')],'Kết quả'),
+                'amount_total': fields.function(_amount_all, digits=(16,2), string='Tổng cộng',
+                    store={
+                        'sat.report': (lambda self, cr, uid, ids, c={}: ids, ['sat_report_line'], 10),
+                        'sat.report.line': (_get_order, ['price_subtotal', 'soluong', 'don_gia'], 10),
+                    },
+                    multi='sums', help="The total amount."),
+                'sat_report_line': fields.one2many('sat.report.line','sat_report_id','Line'),
+                }
+sat_report()
+
+
+class sat_report_line(osv.osv):
+    _name = "sat.report.line"
+    def _amount_line(self, cr, uid, ids, field_name, arg, context=None):
+        res = {}
+        if context is None:
+            context = {}
+        for line in self.browse(cr, uid, ids, context=context):
+            res[line.id] = line.soluong * line.don_gia
+        return res
+    _columns = {
+                'sat_report_id': fields.many2one('sat.report', 'SAT'),
+                'product_id': fields.many2one('product.product','Sản phẩm', required=True),
+                'soluong':fields.float('Số lượng', digits=(16,2)),
+                'don_gia':fields.float('Đơn giá thầu', digits=(16,2)),
+                'price_subtotal': fields.function(_amount_line, string='Thành tiền', digits=(16,2)),
+                }
+sat_report_line()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
