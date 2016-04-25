@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+    	<record id="dttt_all_dly_theo_tgian_report" model="ir.actions.report.xml">
+	        <field name="name">dttt.all.dly.theo.tgian.report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">dttt.all.dly.theo.tgian</field>
+	        <field name="report_name">DTTT tất cả đại lý theo thời gian</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-odt</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-doc'),('compatible_types','=','oo-odt')]"/>
+	        <field name="parser_loc">green_erp_ql_ve_loto/report/dttt_all_dly_theo_tgian.py</field>
+	        <field name="report_rml">green_erp_ql_ve_loto/report/dttt_all_dly_theo_tgian.odt</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record> 
+    	   
+    	<report 
+			auto="False" 
+			menu="False"
+			id="dttt_all_dly_theo_tgian_report" 
+			model="dttt.all.dly.theo.tgian" 
+			name="dttt_all_dly_theo_tgian_report"
+	        string="DTTT tất cả đại lý theo thời gian"
+	        rml="green_erp_ql_ve_loto/report/dttt_all_dly_theo_tgian.odt"/> 	
+	</data>
+</openerp>

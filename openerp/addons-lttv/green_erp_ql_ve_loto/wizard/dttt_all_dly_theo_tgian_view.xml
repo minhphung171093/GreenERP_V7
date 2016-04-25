@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+        <record id="view_dttt_all_dly_theo_tgian" model="ir.ui.view">
+            <field name="name">dttt.all.dly.theo.tgian</field>
+            <field name="model">dttt.all.dly.theo.tgian</field>
+            <field name="arch" type="xml">
+                <form string="DTTT tất cả đại lý theo thời gian" version="7.0">
+                    <group colspan='4'>
+                    	<field name='date'/>
+                    	<field name='date_to'/>
+                    </group>
+                    <footer>
+                        <button name="print_report" string="In" type="object" class="oe_highlight" context="{'type':'appointments'}"/>
+                        hoặc
+                        <button string="Hủy bỏ" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_view_dttt_all_dly_theo_tgian" model="ir.actions.act_window">
+            <field name="name">DTTT tất cả đại lý theo thời gian</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dttt.all.dly.theo.tgian</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        
+        <menuitem name="DTTT tất cả đại lý theo thời gian" id="menu_action_view_dttt_all_dly_theo_tgian" action="action_view_dttt_all_dly_theo_tgian" parent="menu_baocao" sequence="42" groups="group_pp_ve_loto,group_ql_ve_loto_man"/>
+        
+    </data>
+</openerp>
+
