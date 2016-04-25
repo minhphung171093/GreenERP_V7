@@ -46,7 +46,7 @@ class tra_thuong(osv.osv):
     _columns = {
         'daily_id': fields.many2one('res.partner','Đại lý',domain="[('dai_ly','=',True)]",required=True,states={'done':[('readonly',True)]}),
 #         'journal_id': fields.many2one('account.journal','Phương thức thanh toán',states={'done':[('readonly',True)]}),
-        'ngay': fields.date('Ngày xổ số', readonly=True),
+        'ngay': fields.date('Ngày xổ số', readonly=False),
         'tra_thuong_line': fields.one2many('tra.thuong.line','trathuong_id','Line',states={'done':[('readonly',True)]}),
         'tong_cong': fields.function(_amount_tong, string='Tổng cộng',
             store={
