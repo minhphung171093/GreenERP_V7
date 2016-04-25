@@ -169,16 +169,18 @@ class Parser(report_sxw.rml_parse):
             parent_total_ton_cuoi_sl = 0
             parent_total_ton_cuoi_gt = 0
             sql ='''
-                SELECT name,id FROM product_category where parent_id = %s
-                order by name
+                SELECT manufacturer_product_id FROM product_product where product_tmpl_id in (select id from product_template 
+                where categ_id = %s) and manufacturer_product_id is not null
+                group by manufacturer_product_id
+                order by manufacturer_product_id
             '''%(cate_parent['id'])
             self.cr.execute(sql)
             for cate_son in self.cr.dictfetchall():
                 sql = '''
                     select id from stock_move where state = 'done' and (picking_id is not null or id in (select move_id from stock_inventory_move_rel)) 
-                    and product_id in (select id from product_product where product_tmpl_id in (select id from product_template where categ_id = %s))
+                    and product_id in (select id from product_product where manufacturer_product_id = %s)
                     and date(timezone('UTC',date::timestamp)) between '%s' and '%s'
-                '''%(cate_son['id'], self.start_date, self.date_end)
+                '''%(cate_son['manufacturer_product_id'], self.start_date, self.date_end)
                 self.cr.execute(sql)
                 cate_id = self.cr.dictfetchall()
                 if cate_id:
@@ -193,7 +195,7 @@ class Parser(report_sxw.rml_parse):
                     total_ton_cuoi_gt = 0
                     
                     sql ='''  
-                        SELECT pp.id,pp.default_code, pp.name_template,sum(start_onhand_qty) start_onhand_qty, round(sum(start_val)) start_val, 
+                        SELECT pp.id,pp.default_code, pp.name_template, sum(start_onhand_qty) start_onhand_qty, round(sum(start_val)) start_val, 
                             sum(nhaptk_qty) nhaptk_qty, round(sum(nhaptk_val)) nhaptk_val,
                             sum(xuattk_qty) xuattk_qty, round(sum(xuattk_val)) xuattk_val,    
                             sum(end_onhand_qty) end_onhand_qty,
@@ -375,19 +377,15 @@ class Parser(report_sxw.rml_parse):
                             )foo
                             inner join product_product pp on foo.product_id = pp.id
                             inner join product_uom pu on foo.product_uom = pu.id
-                            inner join  (
-                                    SELECT pt.id from  product_template pt inner join product_category pc on pt.categ_id = pc.id
-                                        where pc.id in ('%(categ_ids)s')
-                            )categ on pp.product_tmpl_id = categ.id
-                            WHERE (pp.id in (select product_id  from product_shop_rel where shop_id in('%(shop_ids)s'))
-                                   or pp.id not in (select product_id  from product_shop_rel))
+                            WHERE pp.manufacturer_product_id in ('%(manufacturer_product_ids)s') and (pp.id in (select product_id from product_shop_rel where shop_id in('%(shop_ids)s'))
+                                   or pp.id not in (select product_id from product_shop_rel))
                             group by pp.default_code,pp.name_template,pp.id
                             order by pp.default_code,pp.name_template,pp.id
                         '''%({
                           'start_date': self.start_date,
                           'end_date': self.date_end,
                           'shop_ids':self.shop_ids,
-                          'categ_ids':cate_son['id'],
+                          'manufacturer_product_ids':cate_son['manufacturer_product_id'],
                           'cus_stock':location_id,
                           }) 
                         
@@ -447,16 +445,16 @@ class Parser(report_sxw.rml_parse):
                                             })
                     
                         total_ton_dau_sl += line['start_onhand_qty']
-                        total_ton_dau_gt += line['start_val']
+                        total_ton_dau_gt += line['start_onhand_qty'] and line['start_val'] or 0.0
                         total_nhap_sl += line['nhaptk_qty']
                         total_nhap_gt += line['nhaptk_val']
                         total_xuat_sl += line['xuattk_qty']
                         total_xuat_gt += line['xuattk_val']
                         total_ton_cuoi_sl += line['end_onhand_qty']
-                        total_ton_cuoi_gt += line['end_val']
+                        total_ton_cuoi_gt += line['end_onhand_qty'] and line['end_val'] or 0.0
                         
                     ds_cateson_ids.append({
-                                'stt': cate_son['name'],
+                                'stt': cate_son['manufacturer_product_id'] and self.pool.get('manufacturer.product').browse(self.cr,self.uid,cate_son['manufacturer_product_id']).name or '',
                                 'product_name': '', 
                                 'dvt': '',
                                 'ton_dau_sl': total_ton_dau_sl,

@@ -63,6 +63,7 @@ class sale_order(osv.osv):
           'yeu_cau': fields.char('Yêu cầu', size = 1024),
           'ghi_chu_xhd': fields.char('Ghi chú xuất hóa đơn', size = 1024),
           'lien_he_id': fields.many2one('res.partner','Liên hệ'),
+          'buyer': fields.char('Người mua hàng', size = 1024),
     }
     
     def onchange_lien_he_id(self, cr, uid, ids, lien_he_id, context=None):
@@ -258,6 +259,7 @@ class sale_order(osv.osv):
             'diachi_giaohang_id': order.diachi_giaohang_id and order.diachi_giaohang_id.id or False,
             'daidien_khachhang': order.client_order_ref,
             'yeu_cau': order.yeu_cau and order.yeu_cau or '',
+            'buyer': order.buyer and order.buyer or '',
             'ghi_chu_xhd': order.ghi_chu_xhd and order.ghi_chu_xhd or '',
             'lien_he_id': order.lien_he_id and order.lien_he_id.id or False,
         }

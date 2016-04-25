@@ -114,6 +114,7 @@
                 </xpath>
                 <xpath expr="//field[@name='client_order_ref']" position="after">
                 	<field name="lien_he_id" domain="[('parent_id','=',partner_id)]" on_change = "onchange_lien_he_id(lien_he_id)"/>
+                	<field name="buyer"/>
                 </xpath>
             </field>
         </record>

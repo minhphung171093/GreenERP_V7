@@ -239,24 +239,39 @@ class sale_order(osv.osv):
                          })
         new_id = super(sale_order, self).create(cr, uid, vals, context)
         sale = self.browse(cr, uid, new_id)
-        product_ids = []
+        categ_ids = []
+        sql = '''
+            select id from product_category where code in ('VC','NR')
+        '''
+        cr.execute(sql)
+        vc_nr_ids = [row[0] for row in cr.fetchall()]
         for line in sale.order_line:
-            product_ids.append(line.product_id.id)
-        if product_ids:
-            product_ids = str(product_ids).replace('[', '(')
-            product_ids = str(product_ids).replace(']', ')')
+            categ_saleline_id = line.product_id.product_tmpl_id.categ_id.id
+            if categ_saleline_id in vc_nr_ids:
+                categ_ids.append(categ_saleline_id)
+        if categ_ids:
+            categ_ids = str(categ_ids).replace('[', '(')
+            categ_ids = str(categ_ids).replace(']', ')')
             sql = '''
-                select user_id from nhanvien_banhang_line where product_id in %s and partner_id = %s group by user_id
-            '''%(product_ids, sale.partner_id.id)
+                select user_id from nhanvien_banhang_line where categ_id in %s and partner_id = %s group by user_id
+            '''%(categ_ids, sale.partner_id.id)
             cr.execute(sql)
             user_ids = [row[0] for row in cr.fetchall()]
-            if len(user_ids)>1:
-                raise osv.except_osv(_('Cảnh báo!'),_('Đơn bán hàng này có nhiều nhân viên bán hàng. Bạn cần kiểm tra lại !!'))
+            if user_ids:
+                if len(user_ids)>1:
+                    raise osv.except_osv(_('Cảnh báo!'),_('Đơn bán hàng này có nhiều nhân viên bán hàng. Bạn cần kiểm tra lại !!'))
+                else:
+                    sql = '''
+                        update sale_order set user_id = %s where id = %s
+                    '''%(user_ids[0], new_id)
+                    cr.execute(sql)
             else:
-                sql = '''
-                    update sale_order set user_id = %s where id = %s
-                '''%(user_ids[0], new_id)
-                cr.execute(sql)
+                raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa cấu hình danh mục sản phẩm này đối với khách hàng %s !!')%(sale.partner_id.name))
+        else:
+            sql = '''
+                update sale_order set user_id = null where id = %s
+            '''%(ids[0])
+            cr.execute(sql)
         return new_id
     
     def write(self, cr, uid, ids, vals, context=None):
@@ -267,24 +282,39 @@ class sale_order(osv.osv):
                          })
         new_write = super(sale_order, self).write(cr, uid, ids, vals, context=context) 
         for sale in self.browse(cr, uid, ids):
-            product_ids = []
+            categ_ids = []
+            sql = '''
+                select id from product_category where code in ('VC','NR')
+            '''
+            cr.execute(sql)
+            vc_nr_ids = [row[0] for row in cr.fetchall()]
             for line in sale.order_line:
-                product_ids.append(line.product_id.id)
-            if product_ids:
-                product_ids = str(product_ids).replace('[', '(')
-                product_ids = str(product_ids).replace(']', ')')
+                categ_saleline_id = line.product_id.product_tmpl_id.categ_id.id
+                if categ_saleline_id in vc_nr_ids:
+                    categ_ids.append(categ_saleline_id)
+            if categ_ids:
+                categ_ids = str(categ_ids).replace('[', '(')
+                categ_ids = str(categ_ids).replace(']', ')')
                 sql = '''
-                    select user_id from nhanvien_banhang_line where product_id in %s and partner_id = %s group by user_id
-                '''%(product_ids, sale.partner_id.id)
+                    select user_id from nhanvien_banhang_line where categ_id in %s and partner_id = %s group by user_id
+                '''%(categ_ids, sale.partner_id.id)
                 cr.execute(sql)
                 user_ids = [row[0] for row in cr.fetchall()]
-                if len(user_ids)>1:
-                    raise osv.except_osv(_('Cảnh báo!'),_('Đơn bán hàng này có nhiều nhân viên bán hàng. Bạn cần kiểm tra lại !!'))
+                if user_ids:
+                    if len(user_ids)>1:
+                        raise osv.except_osv(_('Cảnh báo!'),_('Đơn bán hàng này có nhiều nhân viên bán hàng. Bạn cần kiểm tra lại !!'))
+                    else:
+                        sql = '''
+                            update sale_order set user_id = %s where id = %s
+                        '''%(user_ids[0], ids[0])
+                        cr.execute(sql)
                 else:
-                    sql = '''
-                        update sale_order set user_id = %s where id = %s
-                    '''%(user_ids[0], ids[0])
-                    cr.execute(sql)
+                    raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa cấu hình sản phẩm này đối với khách hàng %s !!')%(sale.partner_id.name))
+            else:
+                sql = '''
+                    update sale_order set user_id = null where id = %s
+                '''%(ids[0])
+                cr.execute(sql)
         return new_write
     def action_button_confirm(self, cr, uid, ids, context=None):
         assert len(ids) == 1, 'This option should only be used for a single id at a time.'
@@ -897,20 +927,29 @@ class sale_order_line(osv.osv):
             uom=uom, qty_uos=qty_uos, uos=uos, name=name, partner_id=partner_id,
             lang=lang, update_tax=update_tax, date_order=date_order, packaging=packaging, fiscal_position=fiscal_position, flag=flag, context=context)
         if product:
+            pro = self.pool.get('product.product').browse(cr,uid,product)
+            categ_id = pro.product_tmpl_id.categ_id.id
             sql = '''
-                select product_id from nhanvien_banhang_line where partner_id = %s and partner_id in (select id from res_partner
+                select categ_id from nhanvien_banhang_line where partner_id = %s and partner_id in (select id from res_partner
                 where customer = 't')
             '''%(partner_id)
             cr.execute(sql)
-            product_ids = [row[0] for row in cr.fetchall()]
-            if product not in product_ids:
-#                 res['value'].update({'product_id': False})
-                warn_msg = _('Bạn chưa cấu hình sản phẩm này đối với khách hàng %s !!') %(partner_obj.browse(cr,uid,partner_id).name)
-                warning = {
-                       'title': _('Cảnh báo!'),
-                       'message' : warn_msg
-                    }
-                return {'value':{'product_id': False}, 'warning': warning}
+            categ_ids = [row[0] for row in cr.fetchall()]
+            
+            sql = '''
+                select id from product_category where code in ('VC','NR')
+            '''
+            cr.execute(sql)
+            vc_nr_ids = [row[0] for row in cr.fetchall()]
+            
+            if categ_id in vc_nr_ids:
+                if categ_id not in categ_ids:
+                    warn_msg = _('Bạn chưa cấu hình danh mục sản phẩm %s đối với khách hàng %s !!') %(pro.product_tmpl_id.categ_id.name,partner_obj.browse(cr,uid,partner_id).name)
+                    warning = {
+                           'title': _('Cảnh báo!'),
+                           'message' : warn_msg
+                        }
+                    return {'value':{'product_id': False}, 'warning': warning}
         if not product:
             res['value'].update({'product_packaging': False})
             return res
@@ -1309,7 +1348,34 @@ class remind_work(osv.osv):
         'state':  'draft',
         'user_ids': lambda self,cr,uid,ctx: [(6,0,[uid])],
     }
-    
+    def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
+        if context is None:
+            context = {}
+        sql = '''
+            select user_id from res_users_profiles_rel where profile in (select id from profile where code not in ('admin','gd','ktt','pgd'))
+        '''
+        cr.execute(sql)
+        nv_ids = [row[0] for row in cr.fetchall()]
+        if uid in nv_ids:
+            user_ids = []
+            user = self.pool.get('res.users').browse(cr,uid,uid)
+            for line in user.nhan_vien_line:
+                user_ids.append(line.id)
+            user_ids.append(uid)
+            user_ids = str(user_ids).replace('[', '(')
+            user_ids = str(user_ids).replace(']', ')')
+            sql = '''
+                select remind_work_id from remind_work_users_ref where user_id in %s
+            '''%(user_ids)
+            cr.execute(sql)
+            khct_nv_ids = [row[0] for row in cr.fetchall()]
+            args += [('id','in',khct_nv_ids)]
+        return super(remind_work, self).search(cr, uid, args, offset=offset, limit=limit, order=order, context=context, count=count)
+    def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
+        if not args:
+            args = []
+        ids = self.search(cr, user, [('name', operator, name)]+ args, limit=limit, context=context)
+        return self.name_get(cr, user, ids, context=context)
 #     def create(self, cr, uid, vals, context=None):
 #         if 'date_start' in vals:
 #             datetime_now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -1597,6 +1663,34 @@ class target_sale(osv.osv):
                 'target_sale_line': fields.one2many('target.sale.line','target_id','Line'),
                 }
     
+    def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
+        if context is None:
+            context = {}
+        sql = '''
+            select user_id from res_users_profiles_rel where profile in (select id from profile where code = 'nvkd')
+        '''
+        cr.execute(sql)
+        nvkd_ids = [row[0] for row in cr.fetchall()]
+        if uid in nvkd_ids:
+            user_ids = []
+            user = self.pool.get('res.users').browse(cr,uid,uid)
+            for line in user.nhan_vien_line:
+                user_ids.append(line.id)
+            user_ids.append(uid)
+            user_ids = str(user_ids).replace('[', '(')
+            user_ids = str(user_ids).replace(']', ')')
+            sql = '''
+                select id from target_sale where user_id in %s
+            '''%(user_ids)
+            cr.execute(sql)
+            target_nvkd_ids = [row[0] for row in cr.fetchall()]
+            args += [('id','in',target_nvkd_ids)]
+        return super(target_sale, self).search(cr, uid, args, offset=offset, limit=limit, order=order, context=context, count=count)
+    def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
+        if not args:
+            args = []
+        ids = self.search(cr, user, [('name', operator, name)]+ args, limit=limit, context=context)
+        return self.name_get(cr, user, ids, context=context)
 target_sale()
 
 class target_sale_line(osv.osv):
