@@ -57,6 +57,10 @@
         'report/tonghop_chi_uyquyen_view.xml',
         'report/tonghop_chi_uyquyen_all_view.xml',
         'report/bangke_hethan_datra_view.xml',
+        'report/dttt_all_dly_theo_tgian_view.xml',
+        'report/thtt_theo_tgian_dly1_view.xml',
+        'report/thtt_theo_tgian_all_dly_view.xml',
+        
         'wizard/chitiet_vetuchon_trungthuong_view.xml',
         'wizard/doanhthu_xoso_tuchon_view.xml',
         'wizard/veban_theolo_view.xml',
@@ -79,6 +83,10 @@
         'wizard/tonghop_chi_uyquyen_view.xml',
         'wizard/tonghop_chi_uyquyen_all_view.xml',
         'wizard/bangke_hethan_datra_view.xml',
+        'wizard/dttt_all_dly_theo_tgian_view.xml',
+        'wizard/thtt_theo_tgian_dly1_view.xml',
+        'wizard/thtt_theo_tgian_all_dly_view.xml',
+        
         'ql_ve_loto_schedule.xml',
         'purchase_view.xml',
         'stock_view.xml',

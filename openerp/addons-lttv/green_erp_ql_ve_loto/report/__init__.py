@@ -23,3 +23,6 @@ import chitiet_chi_uyquyen
 import tonghop_chi_uyquyen
 import tonghop_chi_uyquyen_all
 import bangke_hethan_datra
+import dttt_all_dly_theo_tgian
+import thtt_theo_tgian_dly1
+import thtt_theo_tgian_all_dly
