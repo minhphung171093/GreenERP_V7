@@ -513,13 +513,13 @@ class ve_loto(osv.osv):
 #         'thanh_tien': fields.float('Thành tiền',digits=(16,0)),
         'tong_cong': fields.function(_get_total,type='float',digits=(16,0),
             store={
-                've.loto': (lambda self, cr, uid, ids, c={}: ids, ['state','ve_loto_2_line','ve_loto_3_line','ve_loto_4_line','parent_id','lichsu_line'], 10),
+                've.loto': (lambda self, cr, uid, ids, c={}: ids, ['state','ve_loto_2_line','ve_loto_3_line','ve_loto_4_line','parent_id','lichsu_line','product_id'], 10),
                 've.loto.line': (_get_loto, ['name', 've_loto_id', 'sl_2_d', 'sl_2_c', 'sl_2_dc', 'sl_2_18',
                                              'sl_3_d', 'sl_3_c','sl_3_dc', 'sl_3_7', 'sl_3_17', 'sl_4_16'], 10),
             },multi='tong',string='Tổng cộng số lượng'),
         'thanh_tien': fields.function(_get_total,type='float',
             store={
-                've.loto': (lambda self, cr, uid, ids, c={}: ids, ['state','ve_loto_2_line','ve_loto_3_line','ve_loto_4_line','parent_id','lichsu_line'], 10),
+                've.loto': (lambda self, cr, uid, ids, c={}: ids, ['state','ve_loto_2_line','ve_loto_3_line','ve_loto_4_line','parent_id','lichsu_line','product_id'], 10),
                 've.loto.line': (_get_loto, ['name', 've_loto_id', 'sl_2_d', 'sl_2_c', 'sl_2_dc', 'sl_2_18',
                                              'sl_3_d', 'sl_3_c','sl_3_dc', 'sl_3_7', 'sl_3_17', 'sl_4_16'], 10),
             },multi='tong',string='Thành tiền',digits=(16,0)),
