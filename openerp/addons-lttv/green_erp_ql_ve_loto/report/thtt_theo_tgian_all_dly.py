@@ -92,8 +92,8 @@ class Parser(report_sxw.rml_parse):
         date_to = wizard_data['date_to']
         
         dl_ids = [dlcha.id]
-        dlcon_ids = self.pool.get('res.partner').search(self.cr, self.uid, [('parent_id','=',dlcha.id)])
-        dl_ids += dlcon_ids
+#         dlcon_ids = self.pool.get('res.partner').search(self.cr, self.uid, [('parent_id','=',dlcha.id)])
+#         dl_ids += dlcon_ids
         dl_ids = str(dl_ids).replace('[','(')
         dl_ids = str(dl_ids).replace(']',')')
         
@@ -107,34 +107,43 @@ class Parser(report_sxw.rml_parse):
             gt_menhgia = int(product_id.list_price or 0)/10000
                 
             sql ='''
-                select case when sum(coalesce(sl_2_d,0))!=0 then sum(coalesce(sl_2_d,0)) else 0 end tong_sl_2_d,
+                select case when sum(case when coalesce(sl_2_d_trung,0)!=0 then coalesce(sl_2_d,0) else 0 end)!=0 then sum(case when coalesce(sl_2_d_trung,0)!=0 then coalesce(sl_2_d,0) else 0 end) else 0 end tong_sl_2_d,
                     case when sum(coalesce(sl_2_d_trung,0))!=0 then sum(coalesce(sl_2_d_trung,0)) else 0 end tong_sl_2_d_trung,
                     case when sum(coalesce(sl_2_d,0)*coalesce(sl_2_d_trung,0)*700000*%(gt_menhgia)s)!=0 then sum(coalesce(sl_2_d,0)*coalesce(sl_2_d_trung,0)*700000*%(gt_menhgia)s) else 0 end tong_tien_2_d,
-                    case when sum(coalesce(sl_2_c,0))!=0 then sum(coalesce(sl_2_c,0)) else 0 end tong_sl_2_c,
+                    
+                    case when sum(case when coalesce(sl_2_c_trung,0)!=0 then coalesce(sl_2_c,0) else 0 end)!=0 then sum(case when coalesce(sl_2_c_trung,0)!=0 then coalesce(sl_2_c,0) else 0 end) else 0 end tong_sl_2_c,
                     case when sum(coalesce(sl_2_c_trung,0))!=0 then sum(coalesce(sl_2_c_trung,0)) else 0 end tong_sl_2_c_trung,
                     case when sum(coalesce(sl_2_c,0)*coalesce(sl_2_c_trung,0)*700000*%(gt_menhgia)s)!=0 then sum(coalesce(sl_2_c,0)*coalesce(sl_2_c_trung,0)*700000*%(gt_menhgia)s) else 0 end tong_tien_2_c,
-                    case when sum(coalesce(sl_2_dc,0))!=0 then sum(coalesce(sl_2_dc,0)) else 0 end tong_sl_2_dc,
+                    
+                    case when sum(case when coalesce(sl_2_dc_trung,0)!=0 then coalesce(sl_2_dc,0) else 0 end)!=0 then sum(case when coalesce(sl_2_dc_trung,0)!=0 then coalesce(sl_2_dc,0) else 0 end) else 0 end tong_sl_2_dc,
                     case when sum(coalesce(sl_2_dc_trung,0))!=0 then sum(coalesce(sl_2_dc_trung,0)) else 0 end tong_sl_2_dc_trung,
                     case when sum(coalesce(sl_2_dc,0)*coalesce(sl_2_dc_trung,0)*350000*%(gt_menhgia)s)!=0 then sum(coalesce(sl_2_dc,0)*coalesce(sl_2_dc_trung,0)*350000*%(gt_menhgia)s) else 0 end tong_tien_2_dc,
-                    case when sum(coalesce(sl_2_18,0))!=0 then sum(coalesce(sl_2_18,0)) else 0 end tong_sl_2_18,
+                    
+                    case when sum(case when coalesce(sl_2_18_trung,0)!=0 then coalesce(sl_2_18,0) else 0 end)!=0 then sum(case when coalesce(sl_2_18_trung,0)!=0 then coalesce(sl_2_18,0) else 0 end) else 0 end tong_sl_2_18,
                     case when sum(coalesce(sl_2_18_trung,0))!=0 then sum(coalesce(sl_2_18_trung,0)) else 0 end tong_sl_2_18_trung,
-                    case when sum(coalesce(sl_2_18,0)*coalesce(sl_2_18_trung,0)*350000*%(gt_menhgia)s)!=0 then sum(coalesce(sl_2_18,0)*coalesce(sl_2_18_trung,0)*350000*%(gt_menhgia)s) else 0 end tong_tien_2_18,
-                    case when sum(coalesce(sl_3_d,0))!=0 then sum(coalesce(sl_3_d,0)) else 0 end tong_sl_3_d,
+                    case when sum(coalesce(sl_2_18,0)*coalesce(sl_2_18_trung,0)*39000*%(gt_menhgia)s)!=0 then sum(coalesce(sl_2_18,0)*coalesce(sl_2_18_trung,0)*39000*%(gt_menhgia)s) else 0 end tong_tien_2_18,
+                    
+                    case when sum(case when coalesce(sl_3_d_trung,0)!=0 then coalesce(sl_3_d,0) else 0 end)!=0 then sum(case when coalesce(sl_3_d_trung,0)!=0 then coalesce(sl_3_d,0) else 0 end) else 0 end tong_sl_3_d,
                     case when sum(coalesce(sl_3_d_trung,0))!=0 then sum(coalesce(sl_3_d_trung,0)) else 0 end tong_sl_3_d_trung,
                     case when sum(coalesce(sl_3_d,0)*coalesce(sl_3_d_trung,0)*5000000*%(gt_menhgia)s)!=0 then sum(coalesce(sl_3_d,0)*coalesce(sl_3_d_trung,0)*5000000*%(gt_menhgia)s) else 0 end tong_tien_3_d,
-                    case when sum(coalesce(sl_3_c,0))!=0 then sum(coalesce(sl_3_c,0)) else 0 end tong_sl_3_c,
+                    
+                    case when sum(case when coalesce(sl_3_c_trung,0)!=0 then coalesce(sl_3_c,0) else 0 end)!=0 then sum(case when coalesce(sl_3_c_trung,0)!=0 then coalesce(sl_3_c,0) else 0 end) else 0 end tong_sl_3_c,
                     case when sum(coalesce(sl_3_c_trung,0))!=0 then sum(coalesce(sl_3_c_trung,0)) else 0 end tong_sl_3_c_trung,
                     case when sum(coalesce(sl_3_c,0)*coalesce(sl_3_c_trung,0)*5000000*%(gt_menhgia)s)!=0 then sum(coalesce(sl_3_c,0)*coalesce(sl_3_c_trung,0)*5000000*%(gt_menhgia)s) else 0 end tong_tien_3_c,
-                    case when sum(coalesce(sl_3_dc,0))!=0 then sum(coalesce(sl_3_dc,0)) else 0 end tong_sl_3_dc,
+                    
+                    case when sum(case when coalesce(sl_3_dc_trung,0)!=0 then coalesce(sl_3_dc,0) else 0 end)!=0 then sum(case when coalesce(sl_3_dc_trung,0)!=0 then coalesce(sl_3_dc,0) else 0 end) else 0 end tong_sl_3_dc,
                     case when sum(coalesce(sl_3_dc_trung,0))!=0 then sum(coalesce(sl_3_dc_trung,0)) else 0 end tong_sl_3_dc_trung,
                     case when sum(coalesce(sl_3_dc,0)*coalesce(sl_3_dc_trung,0)*2500000*%(gt_menhgia)s)!=0 then sum(coalesce(sl_3_dc,0)*coalesce(sl_3_dc_trung,0)*2500000*%(gt_menhgia)s) else 0 end tong_tien_3_dc,
-                    case when sum(coalesce(sl_3_7,0))!=0 then sum(coalesce(sl_3_7,0)) else 0 end tong_sl_3_7,
+                    
+                    case when sum(case when coalesce(sl_3_7_trung,0)!=0 then coalesce(sl_3_7,0) else 0 end)!=0 then sum(case when coalesce(sl_3_7_trung,0)!=0 then coalesce(sl_3_7,0) else 0 end) else 0 end tong_sl_3_7,
                     case when sum(coalesce(sl_3_7_trung,0))!=0 then sum(coalesce(sl_3_7_trung,0)) else 0 end tong_sl_3_7_trung,
                     case when sum(coalesce(sl_3_7,0)*coalesce(sl_3_7_trung,0)*715000*%(gt_menhgia)s)!=0 then sum(coalesce(sl_3_7,0)*coalesce(sl_3_7_trung,0)*715000*%(gt_menhgia)s) else 0 end tong_tien_3_7,
-                    case when sum(coalesce(sl_3_17,0))!=0 then sum(coalesce(sl_3_17,0)) else 0 end tong_sl_3_17,
-                    case when sum(coalesce(sl_3_17_trung,0))!=0 then sum(coalesce(sl_3_17_trung,0) )else 0 end tong_sl_3_17_trung,
+                    
+                    case when sum(case when coalesce(sl_3_17_trung,0)!=0 then coalesce(sl_3_17,0) else 0 end)!=0 then sum(case when coalesce(sl_3_17_trung,0)!=0 then coalesce(sl_3_17,0) else 0 end) else 0 end tong_sl_3_17,
+                    case when sum(coalesce(sl_3_17_trung,0))!=0 then sum(coalesce(sl_3_17_trung,0)) else 0 end tong_sl_3_17_trung,
                     case when sum(coalesce(sl_3_17,0)*coalesce(sl_3_17_trung,0)*295000*%(gt_menhgia)s)!=0 then sum(coalesce(sl_3_17,0)*coalesce(sl_3_17_trung,0)*295000*%(gt_menhgia)s) else 0 end tong_tien_3_17,
-                    case when sum(coalesce(sl_4_16,0))!=0 then sum(coalesce(sl_4_16,0)) else 0 end tong_sl_4_16,
+                    
+                    case when sum(case when coalesce(sl_4_16_trung,0)!=0 then coalesce(sl_4_16,0) else 0 end)!=0 then sum(case when coalesce(sl_4_16_trung,0)!=0 then coalesce(sl_4_16,0) else 0 end) else 0 end tong_sl_4_16,
                     case when sum(coalesce(sl_4_16_trung,0))!=0 then sum(coalesce(sl_4_16_trung,0)) else 0 end tong_sl_4_16_trung,
                     case when sum(coalesce(sl_4_16,0)*coalesce(sl_4_16_trung,0)*2000000*%(gt_menhgia)s)!=0 then sum(coalesce(sl_4_16,0)*coalesce(sl_4_16_trung,0)*2000000*%(gt_menhgia)s) else 0 end tong_tien_4_16
                     
