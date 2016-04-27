@@ -89,9 +89,9 @@ class Parser(report_sxw.rml_parse):
         tong_tien_4 = 0
         
         # tong cong
-        tong_slan_trung = 0
-        tong_sluong_trung = 0
-        tong_thanhtien = 0
+#         tong_slan_trung = 0
+#         tong_sluong_trung = 0
+#         tong_thanhtien = 0
         
         wizard_data = self.localcontext['data']['form']
         date_from = wizard_data['date']
@@ -109,6 +109,9 @@ class Parser(report_sxw.rml_parse):
         product_product_obj = self.pool.get('product.product')
         product_product_ids = product_product_obj.search(self.cr ,self.uid, [('menh_gia','=',True)])
         for menhgia in product_product_ids:
+            tong_slan_trung = 0
+            tong_sluong_trung = 0
+            tong_thanhtien = 0
             product_id = product_product_obj.browse(self.cr, self.uid, menhgia)
             gt_menhgia = int(product_id.list_price or 0)/10000
                 

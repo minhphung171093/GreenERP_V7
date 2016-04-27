@@ -83,9 +83,9 @@ class Parser(report_sxw.rml_parse):
         tong_tien_4 = 0
         
         # tong cong
-        tong_slan_trung = 0
-        tong_sluong_trung = 0
-        tong_thanhtien = 0
+#         tong_slan_trung = 0
+#         tong_sluong_trung = 0
+#         tong_thanhtien = 0
         
         wizard_data = self.localcontext['data']['form']
         date_from = wizard_data['date']
@@ -105,7 +105,10 @@ class Parser(report_sxw.rml_parse):
         for menhgia in product_product_ids:
             product_id = product_product_obj.browse(self.cr, self.uid, menhgia)
             gt_menhgia = int(product_id.list_price or 0)/10000
-                
+            tong_slan_trung = 0
+            tong_sluong_trung = 0
+            tong_thanhtien = 0
+            
             sql ='''
                 select case when sum(case when coalesce(sl_2_d_trung,0)!=0 then coalesce(sl_2_d,0) else 0 end)!=0 then sum(case when coalesce(sl_2_d_trung,0)!=0 then coalesce(sl_2_d,0) else 0 end) else 0 end tong_sl_2_d,
                     case when sum(coalesce(sl_2_d_trung,0))!=0 then sum(coalesce(sl_2_d_trung,0)) else 0 end tong_sl_2_d_trung,
