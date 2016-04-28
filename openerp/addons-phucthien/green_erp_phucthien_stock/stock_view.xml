@@ -73,6 +73,7 @@
                 	<field name="ngay_nhan" attrs="{'invisible':[('type','!=','out')]}"/>
                 	<field name="daidien_khachhang" string="SĐT người đại diện KH" attrs="{'invisible':[('type','!=','out')]}"/>
                 	<field name="lien_he_id" string="Người đại diện KH" attrs="{'invisible':[('type','!=','out')]}"/>
+                	<field name="buyer" attrs="{'invisible':[('type','!=','out')]}"/>
                 	<field name="nguoi_giao_hang" attrs="{'invisible':[('type','!=','out')]}"/>
                 	<field name="nguoi_van_chuyen" attrs="{'invisible':[('type','!=','out')]}" on_change="on_change_nguoivanchuyen(nguoi_van_chuyen)"/>
                 	<field name="phuongtien_giaohang" attrs="{'invisible':[('type','!=','out')]}"/>
