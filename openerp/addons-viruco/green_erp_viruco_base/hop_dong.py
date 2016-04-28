@@ -1079,6 +1079,9 @@ class don_ban_hang(osv.osv):
     }
     
     def duyet(self, cr, uid, ids, context=None):
+        dbh = self.browse(cr, uid, ids[0])
+        if not dbh.don_ban_hang_line:
+            raise osv.except_osv(_('Cảnh báo!'), _('Vui lòng chọn sản phẩm cần bán!'))
         return self.write(cr, uid, ids, {'state': 'da_duyet'})
     def set_to_draft(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids, {'state': 'moi_tao'})    
