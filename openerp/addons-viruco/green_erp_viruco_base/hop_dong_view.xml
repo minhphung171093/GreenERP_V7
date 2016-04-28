@@ -559,7 +559,7 @@
 			<field name="model">hopdong.line</field>
 			<field name="arch" type="xml">
 				<tree string="Chi tiết Hợp đồng mua trong nước" editable='top'>
-					<field name="hopdong_id"/>
+					<field name="hopdong_id" widget="many2one_clickable"/>
                     <field name="product_id" options="{'create': false, 'create_edit': false}" on_change="onchange_product_id(product_id, hopdong_id.type, context)"/>
                     <field name="name"/>
                     <field name="quycach_donggoi_id"  />
