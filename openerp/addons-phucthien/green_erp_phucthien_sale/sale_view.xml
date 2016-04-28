@@ -582,6 +582,7 @@
                     <field name="state"/>
                     <field name="gan_cho" invisible='1'/>
                     <field name="gui_tre_lct" invisible='1'/>
+                    <field name="remind_stp_ids" invisible='1'/>
                 </tree>
             </field>
         </record>
@@ -668,6 +669,7 @@
 	                   		<field name="noidung_lamviec"/>
 	                   		<field name="ket_qua"/>
 	                   		<field name="huong_giai_quyet"/>
+	                   		<field name="remind_stp_ids" widget="many2many_tags" />
 	                    </group>
 	                </sheet>
 	                <div class="oe_chatter">
@@ -1104,6 +1106,75 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="sat_report_tree"/>
+        </record>
+
+<!-- STP Report -->
+
+        <record model='ir.ui.view' id='stp_report_tree'>
+            <field name="name">stp.report.tree</field>
+            <field name="model">stp.report</field>
+            <field name="arch" type="xml">
+                <tree string="STP">
+                    <field name="name"/>
+                    <field name="ngay"/>
+                    <field name="lydo"/>
+                    <field name="hinh_thuc_mua"/>
+                    <field name="amount_total"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record model='ir.ui.view' id='stp_report_form'>
+            <field name="name">stp.report.form</field>
+            <field name="model">stp.report</field>
+            <field name="arch" type="xml">
+                <form string="STP" version="7.0" >
+                	<header>
+	                    <button name="ql_duyet" string="Quản lý duyệt" type="object" class="oe_highlight" states="moi_tao" />
+	                    <button name="kt_duyet" string="Kế toán duyệt" type="object" class="oe_highlight" states="ql_duyet" />
+	                    <button name="da_chi" string="Đã chi" type="object" class="oe_highlight" states="kt_duyet"/>
+	                    <field name="state" widget="statusbar" nolabel="1" statusbar_visible="moi_tao,ql_duyet,kt_duyet,da_chi"/>
+	                </header>
+                	<sheet>
+                		<h1>
+	                    	<label string="Tên"/>
+	                        <field name="name" class="oe_inline" nolabel="1" />
+	                    </h1>
+	               		<group col='4' colspan='2'>
+	               			<field name="ngay"/>
+	               			<field name="lydo"/>
+	               			<field name="hinh_thuc_mua"/>
+                  		</group>
+	                   	<notebook>
+							<page string = "Chi tiết">
+								<field name="stp_report_line" nolabel='1'>
+									<tree editable='bottom'>
+										<field name="product_id"/>
+										<field name="soluong" />
+										<field name="don_gia" />
+										<field name="price_subtotal" />
+									</tree>
+								</field>
+								<group class="oe_subtotal_footer oe_right" >
+									<field name="amount_total" class="oe_subtotal_footer_separator" widget='monetary' />
+								</group>
+								<div class="oe_clear"/>
+							</page>
+						</notebook>
+						
+					</sheet>
+                </form>
+            </field>
+        </record>
+      
+       	<record id="action_stp_report" model="ir.actions.act_window">
+            <field name="name">SAT</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stp.report</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="stp_report_tree"/>
         </record>
     		
     	<record id="create_danhsach_canhtranh_popup_form_view" model="ir.ui.view">

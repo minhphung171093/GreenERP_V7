@@ -72,7 +72,7 @@
     			<menuitem name="Kế hoạch công tác" action="green_erp_phucthien_sale.action_remind_work" parent="menu_ke_hoach_cong_tac" id = "menu_action_remind_work" sequence="0"/>
     			<menuitem name="Kế hoạch công tác (lịch trễ)" action="green_erp_phucthien_sale.action_remind_work_tre_lct" parent="menu_ke_hoach_cong_tac" id = "menu_action_remind_work_tre_lct" sequence="1"/>
     			<menuitem name="Bộ phận" action="green_erp_phucthien_sale.action_bo_phan" parent="menu_ke_hoach_cong_tac" id = "menu_action_bo_phan" sequence="5"/>
-    
+    			<menuitem name="STP" action="green_erp_phucthien_sale.action_stp_report" parent="menu_ke_hoach_cong_tac" id = "menu_action_stp_report" sequence="6"/>
     	<menuitem id="menu_main_sat_report" name="SAT" sequence="106"/>
     		<menuitem id="menu_sat_report" parent="menu_main_sat_report" name="SAT" sequence="0"/>
     			<menuitem name="SAT" action="green_erp_phucthien_sale.action_sat_report" groups="base.group_user"  parent="menu_sat_report" id = "menu_action_sat_report" sequence="0"/>

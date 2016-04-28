@@ -1303,6 +1303,7 @@ class remind_work(osv.osv):
         'noidung_lamviec':fields.text('Nội dung làm việc',readonly=True, states={'draft': [('readonly', False)], 'open': [('readonly', False)]}),
         'ket_qua':fields.text('Kết quả',readonly=True, states={'draft': [('readonly', False)], 'open': [('readonly', False)]}),
         'huong_giai_quyet':fields.text('Hướng giải quyết',readonly=True, states={'draft': [('readonly', False)], 'open': [('readonly', False)]}),
+        'remind_stp_ids': fields.many2many('stp.report','remind_stp_ref','remind_work_id','stp_id','STP',readonly=True, states={'draft': [('readonly', False)], 'open': [('readonly', False)]}),
     }
     _defaults = {
         'date_start': fields.datetime.now,
@@ -1718,11 +1719,76 @@ class sat_report_line(osv.osv):
             res[line.id] = line.soluong * line.don_gia
         return res
     _columns = {
-                'sat_report_id': fields.many2one('sat.report', 'SAT'),
+                'sat_report_id': fields.many2one('sat.report', 'SAT', ondelete = 'cascade'),
                 'product_id': fields.many2one('product.product','Sản phẩm', required=True),
                 'soluong':fields.float('Số lượng', digits=(16,2)),
                 'don_gia':fields.float('Đơn giá thầu', digits=(16,2)),
                 'price_subtotal': fields.function(_amount_line, string='Thành tiền', digits=(16,2)),
                 }
 sat_report_line()
+
+class stp_report(osv.osv):
+    _name = "stp.report"
+    def _amount_all(self, cr, uid, ids, field_name, arg, context=None):
+        res = {}
+        for order in self.browse(cr, uid, ids, context=context):
+            res[order.id] = {
+                'amount_total': 0.0,
+            }
+            val = val1 = 0.0
+            for line in order.stp_report_line:
+                val1 += line.price_subtotal
+            res[order.id]['amount_total'] =val1
+        return res
+    def _get_order(self, cr, uid, ids, context=None):
+        result = {}
+        for line in self.pool.get('stp.report.line').browse(cr, uid, ids, context=context):
+            result[line.stp_report_id.id] = True
+        return result.keys()
+    _columns = {
+                'name':fields.char('Tên',size = 1024,required=True),
+                'ngay': fields.date('Ngày', states={'moi_tao': [('readonly', False)],'ql_duyet': [('readonly', True)],'kt_duyet': [('readonly', True)],'da_chi': [('readonly', True)]}),
+                'lydo':fields.text('Lý do mua', states={'moi_tao': [('readonly', False)],'ql_duyet': [('readonly', True)],'kt_duyet': [('readonly', True)],'da_chi': [('readonly', True)]}),
+                'hinh_thuc_mua':fields.text('Hình thức mua', states={'moi_tao': [('readonly', False)],'ql_duyet': [('readonly', True)],'kt_duyet': [('readonly', True)],'da_chi': [('readonly', True)]}),
+                'state':fields.selection([('moi_tao','Mới tạo'),
+                                          ('ql_duyet','Quản lý duyệt'),
+                                          ('kt_duyet','Kế toán duyệt'),
+                                          ('da_chi','Đã chi')],'Trạng thái',readonly = True),
+                'amount_total': fields.function(_amount_all, digits=(16,2), string='Tổng cộng',
+                    store={
+                        'stp.report': (lambda self, cr, uid, ids, c={}: ids, ['stp_report_line'], 10),
+                        'stp.report.line': (_get_order, ['price_subtotal', 'soluong', 'don_gia'], 10),
+                    },
+                    multi='sums', help="The total amount."),
+                'stp_report_line': fields.one2many('stp.report.line','stp_report_id','Line', states={'moi_tao': [('readonly', False)],'ql_duyet': [('readonly', True)],'kt_duyet': [('readonly', True)],'da_chi': [('readonly', True)]}),
+                }
+    _defaults = {
+        'state':'moi_tao',
+                 }
+    def ql_duyet(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {'state': 'ql_duyet'})
+    def kt_duyet(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {'state': 'kt_duyet'})
+    def da_chi(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {'state': 'da_chi'})
+stp_report()
+ 
+ 
+class stp_report_line(osv.osv):
+    _name = "stp.report.line"
+    def _amount_line(self, cr, uid, ids, field_name, arg, context=None):
+        res = {}
+        if context is None:
+            context = {}
+        for line in self.browse(cr, uid, ids, context=context):
+            res[line.id] = line.soluong * line.don_gia
+        return res
+    _columns = {
+                'stp_report_id': fields.many2one('stp.report', 'STP', ondelete = 'cascade'),
+                'product_id': fields.many2one('product.product','Sản phẩm', required=True),
+                'soluong':fields.float('Số lượng', digits=(16,2)),
+                'don_gia':fields.float('Đơn giá thầu', digits=(16,2)),
+                'price_subtotal': fields.function(_amount_line, string='Thành tiền', digits=(16,2)),
+                }
+stp_report_line()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
