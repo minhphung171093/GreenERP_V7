@@ -267,11 +267,6 @@ class sale_order(osv.osv):
                     cr.execute(sql)
             else:
                 raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa cấu hình danh mục sản phẩm này đối với khách hàng %s !!')%(sale.partner_id.name))
-        else:
-            sql = '''
-                update sale_order set user_id = null where id = %s
-            '''%(ids[0])
-            cr.execute(sql)
         return new_id
     
     def write(self, cr, uid, ids, vals, context=None):
@@ -309,7 +304,7 @@ class sale_order(osv.osv):
                         '''%(user_ids[0], ids[0])
                         cr.execute(sql)
                 else:
-                    raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa cấu hình sản phẩm này đối với khách hàng %s !!')%(sale.partner_id.name))
+                    raise osv.except_osv(_('Cảnh báo!'),_('Bạn chưa cấu hình danh mục sản phẩm này đối với khách hàng %s !!')%(sale.partner_id.name))
             else:
                 sql = '''
                     update sale_order set user_id = null where id = %s
