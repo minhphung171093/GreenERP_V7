@@ -28,3 +28,5 @@ access_phucthien_sale_26,account.move,account.model_account_move,green_erp_phuct
 access_phucthien_sale_27,account.move.reconcile,account.model_account_move_reconcile,green_erp_phucthien_sale.group_hopdong_user,True,False,False,False
 access_phucthien_sale_28,sat.report,model_sat_report,base.group_user,True,True,True,True
 access_phucthien_sale_29,sat.report.line,model_sat_report_line,base.group_user,True,True,True,True
+access_phucthien_sale_30,sat.report,model_stp_report,base.group_user,True,True,True,True
+access_phucthien_sale_31,sat.report.line,model_stp_report_line,base.group_user,True,True,True,True
