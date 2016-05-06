@@ -1131,10 +1131,12 @@
             <field name="arch" type="xml">
                 <form string="STP" version="7.0" >
                 	<header>
-	                    <button name="ql_duyet" string="Quản lý duyệt" type="object" class="oe_highlight" states="moi_tao" />
-	                    <button name="kt_duyet" string="Kế toán duyệt" type="object" class="oe_highlight" states="ql_duyet" />
-	                    <button name="da_chi" string="Đã chi" type="object" class="oe_highlight" states="kt_duyet"/>
-	                    <field name="state" widget="statusbar" nolabel="1" statusbar_visible="moi_tao,ql_duyet,kt_duyet,da_chi"/>
+                		<button name="xac_nhan" string="Xác nhận" type="object" class="oe_highlight" states="moi_tao" />
+	                    <button name="tp_duyet" string="TP duyệt" type="object" class="oe_highlight" states="xac_nhan" />
+	                    <button name="gd_duyet" string="Ban GĐ duyệt" type="object" class="oe_highlight" states="tp_duyet" />
+	                    <button name="kt_duyet" string="Kế toán duyệt" type="object" class="oe_highlight" states="gd_duyet" />
+	                    <button name="da_chi" string="Thủ quỹ chi" type="object" class="oe_highlight" states="kt_duyet" groups="green_erp_phucthien_sale.group_duyet_STP"/>
+	                    <field name="state" widget="statusbar" nolabel="1" statusbar_visible="moi_tao,xac_nhan,nv_dxuat,tp_duyet,gd_duyet,kt_duyet,da_chi"/>
 	                </header>
                 	<sheet>
                 		<h1>

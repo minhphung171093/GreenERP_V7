@@ -34,7 +34,7 @@
                             <field name="mobile"/>
                             <field name="ngay_sinh"/>
                             <field name="so_thich"/>
-                            <field name="gioi_tinh" required='1'/>
+                            <field name="gioi_tinh"/>
                             <field name="type" invisible='1'/>
                         </group>
                         <group>
@@ -237,7 +237,7 @@
                                             <field name="mobile"/>
                                             <field name="ngay_sinh"/>
                                             <field name="so_thich"/>
-                                            <field name="gioi_tinh" required='1'/>
+                                            <field name="gioi_tinh"/>
                                         </group>
                                         <div>
                                             <field name="use_parent_address"/><label for="use_parent_address"/>

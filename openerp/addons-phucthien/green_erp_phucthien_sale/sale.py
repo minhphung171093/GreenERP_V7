@@ -1840,8 +1840,10 @@ class stp_report(osv.osv):
                 'lydo':fields.text('Lý do mua', states={'moi_tao': [('readonly', False)],'ql_duyet': [('readonly', True)],'kt_duyet': [('readonly', True)],'da_chi': [('readonly', True)]}),
                 'hinh_thuc_mua':fields.text('Hình thức mua', states={'moi_tao': [('readonly', False)],'ql_duyet': [('readonly', True)],'kt_duyet': [('readonly', True)],'da_chi': [('readonly', True)]}),
                 'state':fields.selection([('moi_tao','Mới tạo'),
-                                          ('ql_duyet','Quản lý duyệt'),
-                                          ('kt_duyet','Kế toán duyệt'),
+                                          ('xac_nhan','Xác nhận'),
+                                          ('tp_duyet','Trưởng phòng duyệt'),
+                                          ('gd_duyet','Ban GĐ duyệt'),
+                                          ('kt_duyet','Kế toán trưởng duyệt'),
                                           ('da_chi','Đã chi')],'Trạng thái',readonly = True),
                 'amount_total': fields.function(_amount_all, digits=(16,2), string='Tổng cộng',
                     store={
@@ -1854,8 +1856,12 @@ class stp_report(osv.osv):
     _defaults = {
         'state':'moi_tao',
                  }
-    def ql_duyet(self, cr, uid, ids, context=None):
-        return self.write(cr, uid, ids, {'state': 'ql_duyet'})
+    def xac_nhan(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {'state': 'xac_nhan'})
+    def tp_duyet(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {'state': 'tp_duyet'})
+    def gd_duyet(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {'state': 'gd_duyet'})
     def kt_duyet(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids, {'state': 'kt_duyet'})
     def da_chi(self, cr, uid, ids, context=None):
