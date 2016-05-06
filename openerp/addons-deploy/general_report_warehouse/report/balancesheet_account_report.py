@@ -224,16 +224,15 @@ class Parser(report_sxw.rml_parse):
                                 then stm.primary_qty
                                 else 0.0 end nhaptk_qty,
                                 
-                                case when loc1.usage != 'internal' and loc2.usage = 'internal' and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
-                                and ai.state in ('open','paid') then round(stm.price_unit * stm.product_qty)
-                                else 0.0 end nhaptk_val,
-                                
                                 case when loc1.usage = 'internal' and loc2.usage != 'internal' and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
                                 and ai.state in ('open','paid')
                                 then 1*stm.primary_qty 
                                 else 0.0
                                 end xuattk_qty,
-                        
+                                
+                                case when loc1.usage != 'internal' and loc2.usage = 'internal' and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
+                                and ai.state in ('open','paid') then round(stm.price_unit * stm.product_qty)
+                                else 0.0 end nhaptk_val,
                                 
                                 case when loc1.usage = 'internal' and loc2.usage != 'internal' and date(timezone('UTC',stm.date::timestamp)) between '%(start_date)s' and '%(end_date)s'
                                 and ai.state in ('open','paid') then 1*(stm.price_unit * stm.product_qty)
@@ -252,11 +251,11 @@ class Parser(report_sxw.rml_parse):
                                 
                                 case when loc1.usage != 'internal' and loc2.usage = 'internal' and date(timezone('UTC',stm.date::timestamp)) <= '%(end_date)s'
                                 and ai.state in ('open','paid')
-                                then round(stm.price_unit * stm.product_qty)
+                                then round(stm.price_unit * stm.primary_qty)
                                 else
                                 case when loc1.usage = 'internal' and loc2.usage != 'internal' and date(timezone('UTC',stm.date::timestamp)) <= '%(end_date)s'
                                 and ai.state in ('open','paid')
-                                then -1*(stm.price_unit * stm.product_qty)
+                                then -1*(stm.price_unit * stm.primary_qty)
                                 else 0.0 end
                                 end end_val            
                             FROM stock_move stm 
@@ -430,6 +429,9 @@ class Parser(report_sxw.rml_parse):
                         line['xuattk_qty'] += xuat_dc_res and xuat_dc_res[0] or 0
                         line['xuattk_val'] += xuat_dc_res and xuat_dc_res[1] or 0
                         
+                        ton_cuoi_sl = line['start_onhand_qty']+line['nhaptk_qty']-line['xuattk_qty']
+                        ton_cuoi_gt = line['start_val']+line['nhaptk_val']-line['xuattk_val'] 
+                        
                         product_ids.append({
                                             'stt': seq+1,
                                             'product_name': line['name_template'] or '',
@@ -440,8 +442,8 @@ class Parser(report_sxw.rml_parse):
                                             'nhap_gt': line['nhaptk_val'] or 0.0,
                                             'xuat_sl': line['xuattk_qty'] or 0.0,
                                             'xuat_gt': line['xuattk_val'] or 0.0,
-                                            'ton_cuoi_sl': line['end_onhand_qty'] or 0.0,
-                                            'ton_cuoi_gt': line['end_onhand_qty'] and line['end_val'] or 0.0,
+                                            'ton_cuoi_sl': ton_cuoi_sl or 0.0,
+                                            'ton_cuoi_gt': ton_cuoi_sl and ton_cuoi_gt or 0.0,
                                             })
                     
                         total_ton_dau_sl += line['start_onhand_qty']
@@ -450,8 +452,8 @@ class Parser(report_sxw.rml_parse):
                         total_nhap_gt += line['nhaptk_val']
                         total_xuat_sl += line['xuattk_qty']
                         total_xuat_gt += line['xuattk_val']
-                        total_ton_cuoi_sl += line['end_onhand_qty']
-                        total_ton_cuoi_gt += line['end_onhand_qty'] and line['end_val'] or 0.0
+                        total_ton_cuoi_sl += ton_cuoi_sl
+                        total_ton_cuoi_gt += ton_cuoi_sl and ton_cuoi_gt or 0.0
                         
                     ds_cateson_ids.append({
                                 'stt': cate_son['manufacturer_product_id'] and self.pool.get('manufacturer.product').browse(self.cr,self.uid,cate_son['manufacturer_product_id']).name or '',
@@ -478,7 +480,7 @@ class Parser(report_sxw.rml_parse):
                                     'nhap_gt': pro['nhap_gt'],
                                     'xuat_sl': pro['xuat_sl'],
                                     'xuat_gt': pro['xuat_gt'],
-                                    'ton_cuoi_sl': pro['ton_cuoi_sl'],
+                                    'ton_cuoi_sl': pro['ton_dau_sl']+pro['nhap_sl']-pro['xuat_sl'],
                                     'ton_cuoi_gt': pro['ton_cuoi_gt'],
                                          })
                         
