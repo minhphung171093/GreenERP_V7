@@ -54,6 +54,7 @@
             'sale_schedule.xml',
             'menu.xml',
             'edi/sale_order_action_data.xml',
+            'target_sale_schedule.xml',
         ],
     'css' : [
         "static/src/css/base.css",

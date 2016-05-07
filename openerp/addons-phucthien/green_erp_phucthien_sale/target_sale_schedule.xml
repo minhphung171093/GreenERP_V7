@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record model="ir.cron" id="create_target_sale_schedule">
+	        <field name="name">Create Target Sale</field>
+	        <field name="interval_number">1</field>
+	        <field name="interval_type">months</field>
+	        <field name="numbercall">-1</field>
+	        <field name="doall" eval="False"/>
+	        <field name="model" eval="'target.sale'"/>
+	        <field name="function" eval="'create_target_sale_copy'"/>
+	        <field name="args" eval="'()'" />
+        </record>      
+        
+    </data>
+</openerp>

@@ -48,8 +48,20 @@
 	        <field name="groups" eval="[(6,0,[ref('base.group_sale_salesman')])]"/>
 	    </record>
 	    
-	    <record id="group_duyet_STP" model="res.groups">
-	        <field name="name">Duyet STP</field>
+	    <record id="group_thu_quy" model="res.groups">
+	        <field name="name">Thủ Quỹ</field>
+	        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+	    </record>
+	    <!--<record id="group_giam_doc" model="res.groups">
+	        <field name="name">Giám Đốc</field>
+	        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+	    </record>-->
+	    <record id="group_truong_phong" model="res.groups">
+	        <field name="name">Trưởng Phòng</field>
+	        <field name="users" eval="[(4, ref('base.user_root'))]"/>
+	    </record>
+	    <record id="group_kt_truong" model="res.groups">
+	        <field name="name">Kế Toán Trưởng</field>
 	        <field name="users" eval="[(4, ref('base.user_root'))]"/>
 	    </record>
 	</data>

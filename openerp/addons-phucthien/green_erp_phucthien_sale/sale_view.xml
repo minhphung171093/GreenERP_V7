@@ -931,13 +931,15 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="cau_hinh_target_tree"/>
         </record>
-        <menuitem id="menu_action_cau_hinh_target"
+        <!--<menuitem id="menu_action_cau_hinh_target"
     		action="action_cau_hinh_target"
     		name="Cấu hình target"
     		parent="base.menu_base_config"
     		sequence="15"
-    		groups="base.group_sale_manager"/>
+    		groups="base.group_sale_manager"/>-->
     		
+    		
+    	<!-- Target sale -->
     	<record model='ir.ui.view' id='target_sale_tree'>
             <field name="name">target.sale.tree</field>
             <field name="model">target.sale</field>
@@ -945,9 +947,8 @@
                 <tree string="Target bán hàng">
                     <field name="tu_ngay"/>
                     <field name="den_ngay"/>
-                    <field name="name"/>
-                    <field name="user_id"/>
-                    <field name="partner_id"/>
+                    <field name="tdv_ids"/>
+                    <field name="so_tien_thuong"/>
                 </tree>
             </field>
         </record>
@@ -957,15 +958,21 @@
             <field name="model">target.sale</field>
             <field name="arch" type="xml">
                 <form string="Target bán hàng" version="7.0">
+                	<header>
+                		<button name="print_target_sale" string="In" type="object" class="oe_highlight"/>
+                	</header>
                 	<group>
                 		<group>
-		                    <field name="tu_ngay"/>
-		                    <field name="name"/>
+		                    <field name="tu_ngay" required='1'/>
+		                    <field name="tdv_ids" widget="many2many_tags" required="1"/>
+		                    <!--<field name="name"/>-->
                    		</group>
                    		<group>
-		                    <field name="den_ngay"/>
-		                    <field name="user_id" attrs="{'invisible':[('name','!=','tdv')],'required':[('name','!=','kh')]}"/>
-		                    <field name="partner_id" domain="[('customer','=',True)]" attrs="{'invisible':[('name','!=','kh')],'required':[('name','!=','tdv')]}"/>
+		                    <field name="den_ngay" required='1'/>
+		                    <!--<field name="user_id" attrs="{'invisible':[('name','!=','tdv')],'required':[('name','!=','kh')]}"/>-->
+		                    <!--<field name="partner_id" domain="[('customer','=',True)]" attrs="{'invisible':[('name','!=','kh')],'required':[('name','!=','tdv')]}"/>-->
+		                    <field name="so_tien_thuong" />
+		                    <field name="loai" invisible='1'/>
                    		</group>
                    </group>
                    <notebook>
@@ -974,7 +981,16 @@
 								<tree editable='bottom'>
 									<field name="product_id"/>
 									<field name="so_tien_untax" />
-									<field name="so_tien_thuong" />
+								</tree>
+							</field>
+						</page>
+						<page string = "Cấu hình target">
+							<field name="cau_hinh_target_line" nolabel='1'>
+								<tree editable='bottom'>
+									<field name="stt"/>
+									<field name="name" />
+									<field name="dinh_muc_amount" />
+									<field name="thuong_amount" /> 
 								</tree>
 							</field>
 						</page>
@@ -990,8 +1006,100 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="target_sale_tree"/>
+            <field name="domain">[('loai','=','copy')]</field>
+            <field name="context">{'default_loai':'copy'}</field>
         </record>
         
+        <record id="action_target_sale1" model="ir.actions.act_window.view">
+            <field eval="0" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="target_sale_tree"/>
+            <field name="act_window_id" ref="action_target_sale"/>
+        </record>
+        
+        <record id="action_target_sale2" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="target_sale_form"/>
+            <field name="act_window_id" ref="action_target_sale"/>
+        </record>
+        
+        <!-- Target sale origin -->
+    	<record model='ir.ui.view' id='target_sale_origin_tree'>
+            <field name="name">target.sale.tree</field>
+            <field name="model">target.sale</field>
+            <field name="arch" type="xml">
+                <tree string="Target bán hàng">
+                    <field name="tdv_ids"/>
+                    <field name="so_tien_thuong"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record model='ir.ui.view' id='target_sale_origin_form'>
+            <field name="name">target.sale.form</field>
+            <field name="model">target.sale</field>
+            <field name="arch" type="xml">
+                <form string="Target bán hàng" version="7.0">
+                	<group>
+                		<group>
+		                    <field name="tdv_ids" widget="many2many_tags" required="1"/>
+                   		</group>
+                   		<group>
+		                    <field name="so_tien_thuong" />
+		                    <field name="loai" invisible='1'/>
+                   		</group>
+                   </group>
+                   <notebook>
+						<page string = "Chi tiết target">
+							<field name="target_sale_line" nolabel='1'>
+								<tree editable='bottom'>
+									<field name="product_id"/>
+									<field name="so_tien_untax" />
+								</tree>
+							</field>
+						</page>
+						<page string = "Cấu hình target">
+							<field name="cau_hinh_target_line" nolabel='1'>
+								<tree editable='bottom'>
+									<field name="stt"/>
+									<field name="name" />
+									<field name="dinh_muc_amount" />
+									<field name="thuong_amount" /> 
+								</tree>
+							</field>
+						</page>
+					</notebook>
+                </form>
+            </field>
+        </record>
+      
+       	<record id="action_target_sale_origin" model="ir.actions.act_window">
+            <field name="name">Cấu hình Target</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">target.sale</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="target_sale_tree"/>
+            <field name="domain">[('loai','=','origin')]</field>
+            <field name="context">{'default_loai':'origin'}</field>
+        </record>
+        
+        <record id="action_target_sale_origin1" model="ir.actions.act_window.view">
+            <field eval="0" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="target_sale_origin_tree"/>
+            <field name="act_window_id" ref="action_target_sale_origin"/>
+        </record>
+        
+        <record id="action_target_sale_origin2" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="target_sale_origin_form"/>
+            <field name="act_window_id" ref="action_target_sale_origin"/>
+        </record>
+        
+        <!-- -->
         <record model='ir.ui.view' id='sale_canh_bao_tree'>
             <field name="name">sale.canh.bao.tree</field>
             <field name="model">sale.canh.bao</field>
@@ -1132,11 +1240,11 @@
                 <form string="STP" version="7.0" >
                 	<header>
                 		<button name="xac_nhan" string="Xác nhận" type="object" class="oe_highlight" states="moi_tao" />
-	                    <button name="tp_duyet" string="TP duyệt" type="object" class="oe_highlight" states="xac_nhan" />
-	                    <button name="gd_duyet" string="Ban GĐ duyệt" type="object" class="oe_highlight" states="tp_duyet" />
-	                    <button name="kt_duyet" string="Kế toán duyệt" type="object" class="oe_highlight" states="gd_duyet" />
-	                    <button name="da_chi" string="Thủ quỹ chi" type="object" class="oe_highlight" states="kt_duyet" groups="green_erp_phucthien_sale.group_duyet_STP"/>
-	                    <field name="state" widget="statusbar" nolabel="1" statusbar_visible="moi_tao,xac_nhan,nv_dxuat,tp_duyet,gd_duyet,kt_duyet,da_chi"/>
+	                    <button name="tp_duyet" string="TP duyệt" type="object" class="oe_highlight" states="cho_tp_duyet" groups="green_erp_phucthien_sale.group_truong_phong,general_base.group_giamdoc,green_erp_phucthien_sale.group_kt_truong"/>
+	                    <button name="gd_duyet" string="Ban GĐ duyệt" type="object" class="oe_highlight" states="cho_gd_duyet" groups="general_base.group_giamdoc,green_erp_phucthien_sale.group_kt_truong"/>
+	                    <button name="kt_duyet" string="Kế toán duyệt" type="object" class="oe_highlight" states="cho_kt_duyet" groups="green_erp_phucthien_sale.group_kt_truong"/>
+	                    <button name="da_chi" string="Thủ quỹ chi" type="object" class="oe_highlight" states="cho_thu_quy" groups="green_erp_phucthien_sale.group_thu_quy"/>
+	                    <field name="state" widget="statusbar" nolabel="1" statusbar_visible="moi_tao,cho_tp_duyet,cho_gd_duyet,cho_kt_duyet,cho_thu_quy,da_chi"/>
 	                </header>
                 	<sheet>
                 		<h1>
@@ -1144,6 +1252,7 @@
 	                        <field name="name" class="oe_inline" nolabel="1" />
 	                    </h1>
 	               		<group col='4' colspan='2'>
+	               			<field name="nguoi_tao" readonly="1"/>
 	               			<field name="ngay"/>
 	               			<field name="lydo"/>
 	               			<field name="hinh_thuc_mua"/>
