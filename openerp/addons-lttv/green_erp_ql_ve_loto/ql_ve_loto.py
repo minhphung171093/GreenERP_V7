@@ -417,127 +417,167 @@ class ketqua_xoso(osv.osv):
                 veloto_ids = ve_loto_ids
                 veloto_ids = str(veloto_ids).replace('[', '(')
                 veloto_ids = str(veloto_ids).replace(']', ')')
+                
+                sql = '''
+                    update ve_loto_line set sl_2_d_trung=0, sl_2_c_trung=0, sl_2_dc_trung=0, sl_2_18_trung=0, sl_3_d_trung=0, sl_3_c_trung=0,
+                        sl_3_dc_trung=0, sl_3_7_trung=0, sl_3_17_trung=0, sl_4_16_trung=0 where ve_loto_id in %s;
+                '''%(veloto_ids)
+                cr.execute(sql)
+                
+                sql = '''
+                    select lt.id as ve_loto_id,
+                        case when sum(coalesce(ltl.sl_2_d,0)+coalesce(ltl.sl_2_c,0)+coalesce(ltl.sl_2_dc,0)+coalesce(ltl.sl_2_18,0)+
+                            coalesce(ltl.sl_3_d,0)+coalesce(ltl.sl_3_c,0)+coalesce(ltl.sl_3_dc,0)+coalesce(ltl.sl_3_7,0)+
+                            coalesce(ltl.sl_3_17,0)+coalesce(ltl.sl_4_16,0))!=0 then
+                            sum(coalesce(ltl.sl_2_d,0)+coalesce(ltl.sl_2_c,0)+coalesce(ltl.sl_2_dc,0)+coalesce(ltl.sl_2_18,0)+
+                            coalesce(ltl.sl_3_d,0)+coalesce(ltl.sl_3_c,0)+coalesce(ltl.sl_3_dc,0)+coalesce(ltl.sl_3_7,0)+
+                            coalesce(ltl.sl_3_17,0)+coalesce(ltl.sl_4_16,0)) else 0 end congsoluong,
+                        case when sum(coalesce(ltl.sl_2_d,0)+coalesce(ltl.sl_2_c,0)+coalesce(ltl.sl_2_dc,0)+coalesce(ltl.sl_2_18,0)+
+                            coalesce(ltl.sl_3_d,0)+coalesce(ltl.sl_3_c,0)+coalesce(ltl.sl_3_dc,0)+coalesce(ltl.sl_3_7,0)+
+                            coalesce(ltl.sl_3_17,0)+coalesce(ltl.sl_4_16,0))!=0 then
+                            sum(coalesce(ltl.sl_2_d,0)+coalesce(ltl.sl_2_c,0)+coalesce(ltl.sl_2_dc,0)+coalesce(ltl.sl_2_18,0)+
+                            coalesce(ltl.sl_3_d,0)+coalesce(ltl.sl_3_c,0)+coalesce(ltl.sl_3_dc,0)+coalesce(ltl.sl_3_7,0)+
+                            coalesce(ltl.sl_3_17,0)+coalesce(ltl.sl_4_16,0))*(pt.list_price::int) else 0 end congthanhtien
+                    
+                        from ve_loto_line ltl
+                        left join ve_loto lt on ltl.ve_loto_id=lt.id
+                        left join product_product pp on lt.product_id=pp.id
+                        left join product_template pt on pp.product_tmpl_id=pt.id
+                        
+                        where lt.id in %s
+                        group by lt.id,pt.list_price
+                '''%(veloto_ids)
+                cr.execute(sql)
+                sql_veloto = ''
+                for line in cr.dictfetchall():
+                    sql_veloto += '''
+                        update ve_loto set tong_cong=%s,thanh_tien=%s where id=%s;
+                    '''%(line['congsoluong'],line['congthanhtien'],line['ve_loto_id'])
+                if sql_veloto:
+                    cr.execute(sql_veloto)
+                
                 sql = ''
                 for ketqua in xoso.ketqua_xoso_line:
                     if ketqua.ma =='01':
                         sql += '''
                             update ve_loto_line set sl_2_d_trung=1 where so_dt_2_d='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_2_dc_trung=sl_2_dc_trung+1 where so_dt_2_dc='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_2_18_trung=sl_2_18_trung+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_2_dc_trung=coalesce(sl_2_dc_trung,0)+1 where so_dt_2_dc='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_2_18_trung=coalesce(sl_2_18_trung,0)+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
                         '''%{'sodt_2': ketqua.so,'veloto_ids': veloto_ids}
                     if ketqua.ma =='02':
                         sql += '''
-                            update ve_loto_line set sl_2_18_trung=sl_2_18_trung+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_2_18_trung=coalesce(sl_2_18_trung,0)+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
                             update ve_loto_line set sl_3_d_trung=1 where so_dt_3_d='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_3_dc_trung=sl_3_dc_trung+1 where so_dt_3_dc='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_3_17_trung=sl_3_17_trung+1 where so_dt_3_17='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_3_dc_trung=coalesce(sl_3_dc_trung,0)+1 where so_dt_3_dc='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_3_17_trung=coalesce(sl_3_17_trung,0)+1 where so_dt_3_17='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
                         '''%{'sodt_2': ketqua.so[-2:],'sodt_3': ketqua.so,'veloto_ids': veloto_ids}
                     if ketqua.ma =='03':
                         sql += '''
-                            update ve_loto_line set sl_2_18_trung=sl_2_18_trung+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_3_17_trung=sl_3_17_trung+1 where so_dt_3_17='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_4_16_trung=sl_4_16_trung+1 where so_dt_4_16='%(sodt_4)s' and ve_loto_id in %(veloto_ids)s;
-                        '''%{'sodt_2': ketqua.so[-2:],'sodt_3': ketqua.so[-3:],'sodt_4': ketqua.so[4:],'veloto_ids': veloto_ids}
+                            update ve_loto_line set sl_2_18_trung=coalesce(sl_2_18_trung,0)+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_3_17_trung=coalesce(sl_3_17_trung,0)+1 where so_dt_3_17='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_4_16_trung=coalesce(sl_4_16_trung,0)+1 where so_dt_4_16='%(sodt_4)s' and ve_loto_id in %(veloto_ids)s;
+                        '''%{'sodt_2': ketqua.so[-2:],'sodt_3': ketqua.so[-3:],'sodt_4': ketqua.so[-4:],'veloto_ids': veloto_ids}
                     if ketqua.ma =='04':
                         sql += '''
-                            update ve_loto_line set sl_2_18_trung=sl_2_18_trung+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_3_17_trung=sl_3_17_trung+1 where so_dt_3_17='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_4_16_trung=sl_4_16_trung+1 where so_dt_4_16='%(sodt_4)s' and ve_loto_id in %(veloto_ids)s;
-                        '''%{'sodt_2': ketqua.so[-2:],'sodt_3': ketqua.so[-3:],'sodt_4': ketqua.so[4:],'veloto_ids': veloto_ids}
+                            update ve_loto_line set sl_2_18_trung=coalesce(sl_2_18_trung,0)+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_3_17_trung=coalesce(sl_3_17_trung,0)+1 where so_dt_3_17='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_4_16_trung=coalesce(sl_4_16_trung,0)+1 where so_dt_4_16='%(sodt_4)s' and ve_loto_id in %(veloto_ids)s;
+                        '''%{'sodt_2': ketqua.so[-2:],'sodt_3': ketqua.so[-3:],'sodt_4': ketqua.so[-4:],'veloto_ids': veloto_ids}
                     if ketqua.ma =='05':
                         sql += '''
-                            update ve_loto_line set sl_2_18_trung=sl_2_18_trung+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_3_17_trung=sl_3_17_trung+1 where so_dt_3_17='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_4_16_trung=sl_4_16_trung+1 where so_dt_4_16='%(sodt_4)s' and ve_loto_id in %(veloto_ids)s;
-                        '''%{'sodt_2': ketqua.so[-2:],'sodt_3': ketqua.so[-3:],'sodt_4': ketqua.so[4:],'veloto_ids': veloto_ids}
+                            update ve_loto_line set sl_2_18_trung=coalesce(sl_2_18_trung,0)+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_3_17_trung=coalesce(sl_3_17_trung,0)+1 where so_dt_3_17='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_4_16_trung=coalesce(sl_4_16_trung,0)+1 where so_dt_4_16='%(sodt_4)s' and ve_loto_id in %(veloto_ids)s;
+                        '''%{'sodt_2': ketqua.so[-2:],'sodt_3': ketqua.so[-3:],'sodt_4': ketqua.so[-4:],'veloto_ids': veloto_ids}
                     if ketqua.ma =='06':
                         sql += '''
-                            update ve_loto_line set sl_2_18_trung=sl_2_18_trung+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_3_17_trung=sl_3_17_trung+1 where so_dt_3_17='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_4_16_trung=sl_4_16_trung+1 where so_dt_4_16='%(sodt_4)s' and ve_loto_id in %(veloto_ids)s;
-                        '''%{'sodt_2': ketqua.so[-2:],'sodt_3': ketqua.so[-3:],'sodt_4': ketqua.so[4:],'veloto_ids': veloto_ids}
+                            update ve_loto_line set sl_2_18_trung=coalesce(sl_2_18_trung,0)+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_3_17_trung=coalesce(sl_3_17_trung,0)+1 where so_dt_3_17='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_4_16_trung=coalesce(sl_4_16_trung,0)+1 where so_dt_4_16='%(sodt_4)s' and ve_loto_id in %(veloto_ids)s;
+                        '''%{'sodt_2': ketqua.so[-2:],'sodt_3': ketqua.so[-3:],'sodt_4': ketqua.so[-4:],'veloto_ids': veloto_ids}
                     if ketqua.ma =='07':
                         sql += '''
-                            update ve_loto_line set sl_2_18_trung=sl_2_18_trung+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_3_7_trung=sl_3_7_trung+1 where so_dt_3_7='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_3_17_trung=sl_3_17_trung+1 where so_dt_3_17='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_4_16_trung=sl_4_16_trung+1 where so_dt_4_16='%(sodt_4)s' and ve_loto_id in %(veloto_ids)s;
-                        '''%{'sodt_2': ketqua.so[-2:],'sodt_3': ketqua.so[-3:],'sodt_4': ketqua.so[4:],'veloto_ids': veloto_ids}
+                            update ve_loto_line set sl_2_18_trung=coalesce(sl_2_18_trung,0)+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_3_7_trung=coalesce(sl_3_7_trung,0)+1 where so_dt_3_7='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_3_17_trung=coalesce(sl_3_17_trung,0)+1 where so_dt_3_17='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_4_16_trung=coalesce(sl_4_16_trung,0)+1 where so_dt_4_16='%(sodt_4)s' and ve_loto_id in %(veloto_ids)s;
+                        '''%{'sodt_2': ketqua.so[-2:],'sodt_3': ketqua.so[-3:],'sodt_4': ketqua.so[-4:],'veloto_ids': veloto_ids}
                     if ketqua.ma =='08':
                         sql += '''
-                            update ve_loto_line set sl_2_18_trung=sl_2_18_trung+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_3_7_trung=sl_3_7_trung+1 where so_dt_3_7='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_3_17_trung=sl_3_17_trung+1 where so_dt_3_17='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_4_16_trung=sl_4_16_trung+1 where so_dt_4_16='%(sodt_4)s' and ve_loto_id in %(veloto_ids)s;
-                        '''%{'sodt_2': ketqua.so[-2:],'sodt_3': ketqua.so[-3:],'sodt_4': ketqua.so[4:],'veloto_ids': veloto_ids}
+                            update ve_loto_line set sl_2_18_trung=coalesce(sl_2_18_trung,0)+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_3_7_trung=coalesce(sl_3_7_trung,0)+1 where so_dt_3_7='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_3_17_trung=coalesce(sl_3_17_trung,0)+1 where so_dt_3_17='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_4_16_trung=coalesce(sl_4_16_trung,0)+1 where so_dt_4_16='%(sodt_4)s' and ve_loto_id in %(veloto_ids)s;
+                        '''%{'sodt_2': ketqua.so[-2:],'sodt_3': ketqua.so[-3:],'sodt_4': ketqua.so[-4:],'veloto_ids': veloto_ids}
                     if ketqua.ma =='09':
                         sql += '''
-                            update ve_loto_line set sl_2_18_trung=sl_2_18_trung+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_3_7_trung=sl_3_7_trung+1 where so_dt_3_7='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_3_17_trung=sl_3_17_trung+1 where so_dt_3_17='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_4_16_trung=sl_4_16_trung+1 where so_dt_4_16='%(sodt_4)s' and ve_loto_id in %(veloto_ids)s;
-                        '''%{'sodt_2': ketqua.so[-2:],'sodt_3': ketqua.so[-3:],'sodt_4': ketqua.so[4:],'veloto_ids': veloto_ids}
+                            update ve_loto_line set sl_2_18_trung=coalesce(sl_2_18_trung,0)+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_3_7_trung=coalesce(sl_3_7_trung,0)+1 where so_dt_3_7='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_3_17_trung=coalesce(sl_3_17_trung,0)+1 where so_dt_3_17='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_4_16_trung=coalesce(sl_4_16_trung,0)+1 where so_dt_4_16='%(sodt_4)s' and ve_loto_id in %(veloto_ids)s;
+                        '''%{'sodt_2': ketqua.so[-2:],'sodt_3': ketqua.so[-3:],'sodt_4': ketqua.so[-4:],'veloto_ids': veloto_ids}
                     if ketqua.ma =='10':
                         sql += '''
-                            update ve_loto_line set sl_2_18_trung=sl_2_18_trung+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_3_7_trung=sl_3_7_trung+1 where so_dt_3_7='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_3_17_trung=sl_3_17_trung+1 where so_dt_3_17='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_4_16_trung=sl_4_16_trung+1 where so_dt_4_16='%(sodt_4)s' and ve_loto_id in %(veloto_ids)s;
-                        '''%{'sodt_2': ketqua.so[-2:],'sodt_3': ketqua.so[-3:],'sodt_4': ketqua.so[4:],'veloto_ids': veloto_ids}
+                            update ve_loto_line set sl_2_18_trung=coalesce(sl_2_18_trung,0)+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_3_7_trung=coalesce(sl_3_7_trung,0)+1 where so_dt_3_7='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_3_17_trung=coalesce(sl_3_17_trung,0)+1 where so_dt_3_17='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_4_16_trung=coalesce(sl_4_16_trung,0)+1 where so_dt_4_16='%(sodt_4)s' and ve_loto_id in %(veloto_ids)s;
+                        '''%{'sodt_2': ketqua.so[-2:],'sodt_3': ketqua.so[-3:],'sodt_4': ketqua.so[-4:],'veloto_ids': veloto_ids}
                     if ketqua.ma =='11':
                         sql += '''
-                            update ve_loto_line set sl_2_18_trung=sl_2_18_trung+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_3_7_trung=sl_3_7_trung+1 where so_dt_3_7='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_3_17_trung=sl_3_17_trung+1 where so_dt_3_17='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_4_16_trung=sl_4_16_trung+1 where so_dt_4_16='%(sodt_4)s' and ve_loto_id in %(veloto_ids)s;
-                        '''%{'sodt_2': ketqua.so[-2:],'sodt_3': ketqua.so[-3:],'sodt_4': ketqua.so[4:],'veloto_ids': veloto_ids}
+                            update ve_loto_line set sl_2_18_trung=coalesce(sl_2_18_trung,0)+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_3_7_trung=coalesce(sl_3_7_trung,0)+1 where so_dt_3_7='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_3_17_trung=coalesce(sl_3_17_trung,0)+1 where so_dt_3_17='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_4_16_trung=coalesce(sl_4_16_trung,0)+1 where so_dt_4_16='%(sodt_4)s' and ve_loto_id in %(veloto_ids)s;
+                        '''%{'sodt_2': ketqua.so[-2:],'sodt_3': ketqua.so[-3:],'sodt_4': ketqua.so[-4:],'veloto_ids': veloto_ids}
                     if ketqua.ma =='12':
                         sql += '''
-                            update ve_loto_line set sl_2_18_trung=sl_2_18_trung+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_3_7_trung=sl_3_7_trung+1 where so_dt_3_7='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_3_17_trung=sl_3_17_trung+1 where so_dt_3_17='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_4_16_trung=sl_4_16_trung+1 where so_dt_4_16='%(sodt_4)s' and ve_loto_id in %(veloto_ids)s;
-                        '''%{'sodt_2': ketqua.so[-2:],'sodt_3': ketqua.so[-3:],'sodt_4': ketqua.so[4:],'veloto_ids': veloto_ids}
+                            update ve_loto_line set sl_2_18_trung=coalesce(sl_2_18_trung,0)+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_3_7_trung=coalesce(sl_3_7_trung,0)+1 where so_dt_3_7='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_3_17_trung=coalesce(sl_3_17_trung,0)+1 where so_dt_3_17='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_4_16_trung=coalesce(sl_4_16_trung,0)+1 where so_dt_4_16='%(sodt_4)s' and ve_loto_id in %(veloto_ids)s;
+                        '''%{'sodt_2': ketqua.so[-2:],'sodt_3': ketqua.so[-3:],'sodt_4': ketqua.so[-4:],'veloto_ids': veloto_ids}
                     if ketqua.ma =='13':
                         sql += '''
-                            update ve_loto_line set sl_2_18_trung=sl_2_18_trung+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_3_7_trung=sl_3_7_trung+1 where so_dt_3_7='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_3_17_trung=sl_3_17_trung+1 where so_dt_3_17='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_4_16_trung=sl_4_16_trung+1 where so_dt_4_16='%(sodt_4)s' and ve_loto_id in %(veloto_ids)s;
-                        '''%{'sodt_2': ketqua.so[-2:],'sodt_3': ketqua.so[-3:],'sodt_4': ketqua.so[4:],'veloto_ids': veloto_ids}
+                            update ve_loto_line set sl_2_18_trung=coalesce(sl_2_18_trung,0)+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_3_7_trung=coalesce(sl_3_7_trung,0)+1 where so_dt_3_7='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_3_17_trung=coalesce(sl_3_17_trung,0)+1 where so_dt_3_17='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_4_16_trung=coalesce(sl_4_16_trung,0)+1 where so_dt_4_16='%(sodt_4)s' and ve_loto_id in %(veloto_ids)s;
+                        '''%{'sodt_2': ketqua.so[-2:],'sodt_3': ketqua.so[-3:],'sodt_4': ketqua.so[-4:],'veloto_ids': veloto_ids}
                     if ketqua.ma =='14':
                         sql += '''
-                            update ve_loto_line set sl_2_18_trung=sl_2_18_trung+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_3_17_trung=sl_3_17_trung+1 where so_dt_3_17='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_4_16_trung=sl_4_16_trung+1 where so_dt_4_16='%(sodt_4)s' and ve_loto_id in %(veloto_ids)s;
-                        '''%{'sodt_2': ketqua.so[-2:],'sodt_3': ketqua.so[-3:],'sodt_4': ketqua.so[4:],'veloto_ids': veloto_ids}
+                            update ve_loto_line set sl_2_18_trung=coalesce(sl_2_18_trung,0)+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_3_17_trung=coalesce(sl_3_17_trung,0)+1 where so_dt_3_17='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_4_16_trung=coalesce(sl_4_16_trung,0)+1 where so_dt_4_16='%(sodt_4)s' and ve_loto_id in %(veloto_ids)s;
+                        '''%{'sodt_2': ketqua.so[-2:],'sodt_3': ketqua.so[-3:],'sodt_4': ketqua.so[-4:],'veloto_ids': veloto_ids}
                     if ketqua.ma =='15':
                         sql += '''
-                            update ve_loto_line set sl_2_18_trung=sl_2_18_trung+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_3_17_trung=sl_3_17_trung+1 where so_dt_3_17='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_4_16_trung=sl_4_16_trung+1 where so_dt_4_16='%(sodt_4)s' and ve_loto_id in %(veloto_ids)s;
-                        '''%{'sodt_2': ketqua.so[-2:],'sodt_3': ketqua.so[-3:],'sodt_4': ketqua.so[4:],'veloto_ids': veloto_ids}
+                            update ve_loto_line set sl_2_18_trung=coalesce(sl_2_18_trung,0)+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_3_17_trung=coalesce(sl_3_17_trung,0)+1 where so_dt_3_17='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_4_16_trung=coalesce(sl_4_16_trung,0)+1 where so_dt_4_16='%(sodt_4)s' and ve_loto_id in %(veloto_ids)s;
+                        '''%{'sodt_2': ketqua.so[-2:],'sodt_3': ketqua.so[-3:],'sodt_4': ketqua.so[-4:],'veloto_ids': veloto_ids}
                     if ketqua.ma =='16':
                         sql += '''
-                            update ve_loto_line set sl_2_18_trung=sl_2_18_trung+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_3_17_trung=sl_3_17_trung+1 where so_dt_3_17='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_4_16_trung=sl_4_16_trung+1 where so_dt_4_16='%(sodt_4)s' and ve_loto_id in %(veloto_ids)s;
-                        '''%{'sodt_2': ketqua.so[-2:],'sodt_3': ketqua.so[-3:],'sodt_4': ketqua.so[4:],'veloto_ids': veloto_ids}
+                            update ve_loto_line set sl_2_18_trung=coalesce(sl_2_18_trung,0)+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_3_17_trung=coalesce(sl_3_17_trung,0)+1 where so_dt_3_17='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_4_16_trung=coalesce(sl_4_16_trung,0)+1 where so_dt_4_16='%(sodt_4)s' and ve_loto_id in %(veloto_ids)s;
+                        '''%{'sodt_2': ketqua.so[-2:],'sodt_3': ketqua.so[-3:],'sodt_4': ketqua.so[-4:],'veloto_ids': veloto_ids}
                     if ketqua.ma =='17':
                         sql += '''
-                            update ve_loto_line set sl_2_18_trung=sl_2_18_trung+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_3_17_trung=sl_3_17_trung+1 where so_dt_3_17='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_4_16_trung=sl_4_16_trung+1 where so_dt_4_16='%(sodt_4)s' and ve_loto_id in %(veloto_ids)s;
-                        '''%{'sodt_2': ketqua.so[-2:],'sodt_3': ketqua.so[-3:],'sodt_4': ketqua.so[4:],'veloto_ids': veloto_ids}
+                            update ve_loto_line set sl_2_18_trung=coalesce(sl_2_18_trung,0)+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_3_17_trung=coalesce(sl_3_17_trung,0)+1 where so_dt_3_17='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_4_16_trung=coalesce(sl_4_16_trung,0)+1 where so_dt_4_16='%(sodt_4)s' and ve_loto_id in %(veloto_ids)s;
+                        '''%{'sodt_2': ketqua.so[-2:],'sodt_3': ketqua.so[-3:],'sodt_4': ketqua.so[-4:],'veloto_ids': veloto_ids}
                     if ketqua.ma =='18':
                         sql += '''
                             update ve_loto_line set sl_2_c_trung=1 where so_dt_2_c='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_2_dc_trung=sl_2_dc_trung+1 where so_dt_2_dc='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_2_18_trung=sl_2_18_trung+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_3_dc_trung=sl_3_dc_trung+1 where so_dt_3_dc='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_3_17_trung=sl_3_17_trung+1 where so_dt_3_17='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
-                            update ve_loto_line set sl_4_16_trung=sl_4_16_trung+1 where so_dt_4_16='%(sodt_4)s' and ve_loto_id in %(veloto_ids)s;
-                        '''%{'sodt_2': ketqua.so[-2:],'sodt_3': ketqua.so[-3:],'sodt_4': ketqua.so[4:],'veloto_ids': veloto_ids}
+                            update ve_loto_line set sl_2_dc_trung=coalesce(sl_2_dc_trung,0)+1 where so_dt_2_dc='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_2_18_trung=coalesce(sl_2_18_trung,0)+1 where so_dt_2_18='%(sodt_2)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_3_c_trung=1 where so_dt_3_c='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_3_dc_trung=coalesce(sl_3_dc_trung,0)+1 where so_dt_3_dc='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_3_17_trung=coalesce(sl_3_17_trung,0)+1 where so_dt_3_17='%(sodt_3)s' and ve_loto_id in %(veloto_ids)s;
+                            update ve_loto_line set sl_4_16_trung=coalesce(sl_4_16_trung,0)+1 where so_dt_4_16='%(sodt_4)s' and ve_loto_id in %(veloto_ids)s;
+                        '''%{'sodt_2': ketqua.so[-2:],'sodt_3': ketqua.so[-3:],'sodt_4': ketqua.so[-4:],'veloto_ids': veloto_ids}
                 sql += '''
                     update ve_loto set state='done' where id in %s;
                 '''%(veloto_ids)
