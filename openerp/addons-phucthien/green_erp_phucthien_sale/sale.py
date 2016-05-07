@@ -10,6 +10,7 @@ from datetime import date
 from datetime import timedelta
 from datetime import datetime
 import datetime
+from dateutil.relativedelta import relativedelta
 import calendar
 import amount_to_text_vn
 import openerp.addons.decimal_precision as dp
@@ -1644,19 +1645,57 @@ class cau_hinh_target_line(osv.osv):
                 'name': fields.char('Tên', size = 1024, required = True),
                 'dinh_muc_amount': fields.float('Số tiền định mức', required = True),
                 'thuong_amount': fields.float('Số tiền thưởng', required = True),
+                'target_id': fields.many2one('target.sale', 'Target Sale', ondelete = 'cascade'),
                 }
     
 cau_hinh_target_line()
 
 class target_sale(osv.osv):
     _name = "target.sale"
+    def _so_tien_thuong(self, cr, uid, ids, name, arg, context=None):
+        res = {}
+        for target in self.browse(cr,uid,ids):
+            res[target.id]={
+                                 'so_tien_thuong': 0.0,
+                                 }
+            tong = 0
+            so_tien_thuong = 0
+            for target_line in target.target_sale_line:
+                tong += target_line.so_tien_untax or 0
+            if target.cau_hinh_target_line :
+                sql = '''
+                    select case when max(dinh_muc_amount)!=0 then max(dinh_muc_amount) else 0 end max_dmuc
+                    from (select dinh_muc_amount,thuong_amount from cau_hinh_target_line 
+                    where %s >= dinh_muc_amount and target_id=%s) foo
+                '''%(tong,target.id)
+                cr.execute(sql)
+                rs = cr.dictfetchone()
+                max_dmuc = rs and rs['max_dmuc'] or 0
+                sql = '''
+                    select thuong_amount as so_tien_thuong
+                    from (select dinh_muc_amount,thuong_amount from cau_hinh_target_line 
+                                    where %s >= dinh_muc_amount and target_id=%s) foo
+                    where dinh_muc_amount = %s
+                '''%(tong,target.id,max_dmuc)
+                cr.execute(sql)
+                rs = cr.dictfetchone()
+                so_tien_thuong = rs and rs['so_tien_thuong'] or 0
+            res[target.id]['so_tien_thuong'] = so_tien_thuong
+        return res
     _columns = {
-                'tu_ngay': fields.date('Từ ngày', required = True),
-                'den_ngay': fields.date('Đến ngày', required = True),
-                'name':fields.selection([('tdv','Trình dược viên'),('kh','Khách hàng')],'Trình dược viên/Khách hàng',required=True),
+                'tu_ngay': fields.date('Từ ngày', required = False),
+                'den_ngay': fields.date('Đến ngày', required = False),
+                'name':fields.selection([('tdv','Trình dược viên'),('kh','Khách hàng')],'Trình dược viên/Khách hàng',required=False),
                 'user_id': fields.many2one('res.users', 'Trình dược viên'),
-                'partner_id': fields.many2one('res.partner', 'Khách hàng'),
+#                 'partner_id': fields.many2many('res.partner', 'partner_target_rel', 'target_id', 'partner_id', 'Trình dược viên'),
+                'tdv_ids': fields.many2many('res.users', 'tdv_target_rel', 'target_id', 'tdv_id', 'Trình dược viên'),
                 'target_sale_line': fields.one2many('target.sale.line','target_id','Line'),
+                'cau_hinh_target_line': fields.one2many('cau.hinh.target.line','target_id','Cấu hình'),
+                'so_tien_thuong':fields.function(_so_tien_thuong, string='Số tiền thưởng', type='float', multi = 'sums'),
+                'loai':fields.selection([('origin','Origin'),('copy','Copy')],'Loại'),
+                }
+    _default = {
+                'name': 'tdv',
                 }
     
     def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
@@ -1687,6 +1726,51 @@ class target_sale(osv.osv):
             args = []
         ids = self.search(cr, user, [('name', operator, name)]+ args, limit=limit, context=context)
         return self.name_get(cr, user, ids, context=context)
+    
+    def print_target_sale(self, cr, uid, ids, context=None): 
+        target = self.browse(cr,uid,ids[0])
+        vals = {
+                'date_from': target.tu_ngay or False,
+                'date_to': target.den_ngay or False,
+                'users_ids': [(6,0,[tdv.id for tdv in target.tdv_ids])],
+                'product_ids': [(6,0,[line.product_id.id for line in target.target_sale_line])],
+                }
+        wizard_obj = self.pool.get('doanhthu.banhang')
+        wizard_id = wizard_obj.create(cr, uid, vals, context)
+        return wizard_obj.print_report(cr, uid, [wizard_id], context)
+    
+    def create_target_sale_copy(self, cr, uid, context=None):
+        day = 0
+        vals = {}
+        DATETIME_FORMAT = "%Y-%m-%d"
+        now = time.strftime('%Y-%m-%d')
+        date_now = datetime.datetime.strptime(now, DATETIME_FORMAT)
+        target_origin_ids = self.search(cr, uid, [('loai','=','origin')])
+        for target in self.browse(cr, uid, target_origin_ids):
+            line1=[]
+            line2=[]
+            for target_line in target.target_sale_line:
+                line1.append((0,0,{
+                                    'product_id': target_line.product_id.id,
+                                   }))
+            for cauhinh_line in target.cau_hinh_target_line:
+                line2.append((0,0,{
+                                    'stt': cauhinh_line.stt,
+                                    'name': cauhinh_line.name,
+                                    'dinh_muc_amount': cauhinh_line.dinh_muc_amount or 0,
+                                    'thuong_amount': cauhinh_line.thuong_amount or 0,
+                                   }))
+            self.create(cr, uid, {
+                                  'tu_ngay': time.strftime('%Y-%m-01'),
+                                  'den_ngay': str(datetime.datetime.now() + relativedelta(months=+1, day=1, days=-1))[:10],
+                                  'name': 'tdv',
+                                  'tdv_ids': [(6,0,[tdv.id for tdv in target.tdv_ids])],
+                                  'target_sale_line': line1,
+                                  'cau_hinh_target_line': line2,
+                                  'loai': 'copy',
+                                  })  
+        return True
+        
 target_sale()
 
 class target_sale_line(osv.osv):
@@ -1699,17 +1783,22 @@ class target_sale_line(osv.osv):
                                  'so_tien_untax': 0.0,
                                  'so_tien_thuong': 0.0,
                                  }
+            amount = 0
             if target_line.target_id.name == 'tdv':
-                sql = '''
-                    select case when sum(quantity*price_unit)!=0 then sum(quantity*price_unit) else 0 end amount_untax 
-                    from account_invoice_line
-                    where product_id = %s and invoice_id in (select id from account_invoice
-                    where state in ('open','paid') and date_invoice between '%s' and '%s' and type = 'out_invoice') 
-                    and source_id in (select id from stock_move where picking_id in (select id from stock_picking
-                    where sale_id in (select id from sale_order where user_id = %s)))
-                '''%(target_line.product_id.id, target_line.target_id.tu_ngay, target_line.target_id.den_ngay, target_line.target_id.user_id.id)
-                cr.execute(sql)
-                amount = cr.dictfetchone()['amount_untax']
+                if target_line.target_id.tdv_ids:
+                    tdv_ids = [r.id for r in  target_line.target_id.tdv_ids]
+                    tdv_ids = str(tdv_ids).replace('[', '(')
+                    tdv_ids = str(tdv_ids).replace(']', ')')
+                    sql = '''
+                        select case when sum(quantity*price_unit)!=0 then sum(quantity*price_unit) else 0 end amount_untax 
+                        from account_invoice_line
+                        where product_id = %s and invoice_id in (select id from account_invoice
+                        where state in ('open','paid') and date_invoice between '%s' and '%s' and type = 'out_invoice') 
+                        and source_id in (select id from stock_move where picking_id in (select id from stock_picking
+                        where sale_id in (select id from sale_order where user_id in %s)))
+                    '''%(target_line.product_id.id, target_line.target_id.tu_ngay, target_line.target_id.den_ngay, tdv_ids)
+                    cr.execute(sql)
+                    amount = cr.dictfetchone()['amount_untax']
             if target_line.target_id.name == 'kh':
                 sql = '''
                     select case when sum(quantity*price_unit)!=0 then sum(quantity*price_unit) else 0 end amount_untax 
@@ -1720,14 +1809,14 @@ class target_sale_line(osv.osv):
                 cr.execute(sql)
                 amount = cr.dictfetchone()['amount_untax']
             res[target_line.id]['so_tien_untax'] = amount
-            sql = '''
-                select thuong_amount from cau_hinh_target_line where cau_hinh_id in (select id from cau_hinh_target where product_id = %s) 
-                and dinh_muc_amount <= %s 
-                order by dinh_muc_amount desc limit 1
-            '''%(target_line.product_id.id,amount)
-            cr.execute(sql)
-            thuong = cr.fetchone()
-            res[target_line.id]['so_tien_thuong'] = thuong and thuong[0] or 0
+#             sql = '''
+#                 select thuong_amount from cau_hinh_target_line where cau_hinh_id in (select id from cau_hinh_target where product_id = %s) 
+#                 and dinh_muc_amount <= %s 
+#                 order by dinh_muc_amount desc limit 1
+#             '''%(target_line.product_id.id,amount)
+#             cr.execute(sql)
+#             thuong = cr.fetchone()
+#             res[target_line.id]['so_tien_thuong'] = thuong and thuong[0] or 0
         return res
     
     _columns = {
@@ -1840,10 +1929,10 @@ class stp_report(osv.osv):
                 'lydo':fields.text('Lý do mua', states={'moi_tao': [('readonly', False)],'ql_duyet': [('readonly', True)],'kt_duyet': [('readonly', True)],'da_chi': [('readonly', True)]}),
                 'hinh_thuc_mua':fields.text('Hình thức mua', states={'moi_tao': [('readonly', False)],'ql_duyet': [('readonly', True)],'kt_duyet': [('readonly', True)],'da_chi': [('readonly', True)]}),
                 'state':fields.selection([('moi_tao','Mới tạo'),
-                                          ('xac_nhan','Xác nhận'),
-                                          ('tp_duyet','Trưởng phòng duyệt'),
-                                          ('gd_duyet','Ban GĐ duyệt'),
-                                          ('kt_duyet','Kế toán trưởng duyệt'),
+                                          ('cho_tp_duyet','Chờ Trưởng phòng duyệt'),
+                                          ('cho_gd_duyet','Chờ Ban GĐ duyệt'),
+                                          ('cho_kt_duyet','Chờ Kế toán trưởng duyệt'),
+                                          ('cho_thu_quy','Chờ Thủ quỹ chi'),
                                           ('da_chi','Đã chi')],'Trạng thái',readonly = True),
                 'amount_total': fields.function(_amount_all, digits=(16,2), string='Tổng cộng',
                     store={
@@ -1852,18 +1941,74 @@ class stp_report(osv.osv):
                     },
                     multi='sums', help="The total amount."),
                 'stp_report_line': fields.one2many('stp.report.line','stp_report_id','Line', states={'moi_tao': [('readonly', False)],'ql_duyet': [('readonly', True)],'kt_duyet': [('readonly', True)],'da_chi': [('readonly', True)]}),
+                'nguoi_tao': fields.many2one('res.users','Người tạo'),
                 }
     _defaults = {
         'state':'moi_tao',
+        'nguoi_tao': lambda self,cr, uid, ctx: uid,
                  }
     def xac_nhan(self, cr, uid, ids, context=None):
-        return self.write(cr, uid, ids, {'state': 'xac_nhan'})
+        sql = '''
+            select %s in 
+            (select uid from res_groups_users_rel where gid in (select id from res_groups where name='Trưởng Phòng'))
+            '''%(uid)
+        cr.execute(sql)
+        rs = cr.fetchone()
+        if rs and rs[0]:
+            return self.write(cr, uid, ids, {'state': 'cho_gd_duyet'})
+        
+        sql = '''
+            select %s in 
+            (select uid from res_groups_users_rel where gid in (select id from res_groups where name='Giám Đốc'))
+            '''%(uid)
+        cr.execute(sql)
+        rs = cr.fetchone()
+        if rs and rs[0]:
+            return self.write(cr, uid, ids, {'state': 'cho_kt_duyet'})
+        
+        sql = '''
+            select %s in 
+            (select uid from res_groups_users_rel where gid in (select id from res_groups where name='Kế Toán Trưởng'))
+            '''%(uid)
+        cr.execute(sql)
+        rs = cr.fetchone()
+        if rs and rs[0]:
+            return self.write(cr, uid, ids, {'state': 'cho_thu_quy'})
+        
+        return self.write(cr, uid, ids, {'state': 'cho_tp_duyet'})
     def tp_duyet(self, cr, uid, ids, context=None):
-        return self.write(cr, uid, ids, {'state': 'tp_duyet'})
+        sql = '''
+            select %s in 
+            (select uid from res_groups_users_rel where gid in (select id from res_groups where name='Giám Đốc'))
+            '''%(uid)
+        cr.execute(sql)
+        rs = cr.fetchone()
+        if rs and rs[0]:
+            return self.write(cr, uid, ids, {'state': 'cho_kt_duyet'})
+        
+        sql = '''
+            select %s in 
+            (select uid from res_groups_users_rel where gid in (select id from res_groups where name='Kế Toán Trưởng'))
+            '''%(uid)
+        cr.execute(sql)
+        rs = cr.fetchone()
+        if rs and rs[0]:
+            return self.write(cr, uid, ids, {'state': 'cho_thu_quy'})
+        
+        return self.write(cr, uid, ids, {'state': 'cho_gd_duyet'})
     def gd_duyet(self, cr, uid, ids, context=None):
-        return self.write(cr, uid, ids, {'state': 'gd_duyet'})
+        sql = '''
+            select %s in 
+            (select uid from res_groups_users_rel where gid in (select id from res_groups where name='Kế Toán Trưởng'))
+            '''%(uid)
+        cr.execute(sql)
+        rs = cr.fetchone()
+        if rs and rs[0]:
+            return self.write(cr, uid, ids, {'state': 'cho_thu_quy'})
+        
+        return self.write(cr, uid, ids, {'state': 'cho_kt_duyet'})
     def kt_duyet(self, cr, uid, ids, context=None):
-        return self.write(cr, uid, ids, {'state': 'kt_duyet'})
+        return self.write(cr, uid, ids, {'state': 'cho_thu_quy'})
     def da_chi(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids, {'state': 'da_chi'})
 stp_report()

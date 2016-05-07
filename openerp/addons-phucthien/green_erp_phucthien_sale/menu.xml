@@ -60,6 +60,13 @@
     		parent="phucthien_sale_report"
     		sequence="7"/>
     		
+    	<menuitem id="menu_action_target_sale_origin"
+    		action="action_target_sale_origin"
+    		name="Cấu hình target"
+    		parent="base.menu_base_config"
+    		sequence="15"
+    		groups="base.group_sale_manager"/>
+    		
 		<menuitem id="menu_action_danhsach_khachhang"
     		action="action_danhsach_khachhang"
     		name="In danh sách khách hàng"
