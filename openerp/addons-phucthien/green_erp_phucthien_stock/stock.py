@@ -351,60 +351,61 @@ class stock_picking_out(osv.osv):
     
     def send_mail_thongbao_khachang(self, cr, uid, ids, context=None):
         for line in self.browse(cr, uid, ids):
-            chitiet = ''
-            for ct in line.move_lines:
-                chitiet += '''
-                    <tr align="center"  width="100%"  style= font-size: 8px">
-                            <td width="40%" align ="left">%s</td>
-                            <td width="15%" align ="center">%s</td>
-                            <td width="15%" align ="center">%s</td>
-                            <td width="15%" align ="right">%s</td>              
-                            <td width="15%" align ="right">%s</td>
-                    </tr> 
-                '''%(ct.product_id.name,ct.product_qty,ct.product_uom.name,ct.sale_price,ct.product_qty*ct.sale_price)
-            body='''
-                <p>Đơn hàng #%s đã sãn sàng để giao đến quý khách</p>
-                <p>Chi tiết đơn hàng</p>
-                <table width="100%">
-                    <tr align="left" width="100%" height="36px" style="background-color: rgb(238, 76, 140) ; color: rgb(255, 255, 255); font-size: 12px">
-                        <th width="40%" align ="center">Sản Phẩm</th>
-                        <th width="15%" align ="center">Số lượng</th>
-                        <th width="15%" align ="center">Đơn vị tính</th>
-                        <th width="15%" align ="center">Đơn giá</th>
-                        <th width="15%" align ="center">Thành tiền</th>
-                     </tr>
-                    %s
-                    <tr align="left" width="100%" height="36px" style="background-color: rgb(238, 76, 140) ; color: rgb(255, 255, 255); font-size: 12px">
-                        <th width="40%" align ="center"></th>
-                        <th width="15%" align ="center"></th>
-                        <th width="10%" align ="center"></th>
-                        <th width="20%" align ="center">Tổng cộng trước thuế</th>
-                        <th width="15%" align ="center">%s</th>
-                     </tr>
-                     <tr align="left" width="100%" height="36px" style="background-color: rgb(238, 76, 140) ; color: rgb(255, 255, 255); font-size: 12px">
-                        <th width="40%" align ="center"></th>
-                        <th width="15%" align ="center"></th>
-                        <th width="10%" align ="center"></th>
-                        <th width="20%" align ="center">Thuế</th>
-                        <th width="15%" align ="center">%s</th>
-                     </tr>
-                     <tr align="left" width="100%" height="36px" style="background-color: rgb(238, 76, 140) ; color: rgb(255, 255, 255); font-size: 12px">
-                        <th width="40%" align ="center"></th>
-                        <th width="15%" align ="center"></th>
-                        <th width="10%" align ="center"></th>
-                        <th width="20%" align ="center">Tổng cộng</th>
-                        <th width="15%" align ="center">%s</th>
-                     </tr>
-                 </table> 
-            '''%(line.name,chitiet,line.sale_id.amount_untaxed,line.sale_id.amount_tax,line.sale_id.amount_total)
-            post_values = {
-                'subject': 'Đơn hàng #%s đã sãn sàng để giao đến quý khách'%(line.sale_id and line.sale_id.name),
-                'body': body,
-                'partner_ids': [],
-            }
-            lead_email = line.partner_id.email
-            msg_id = self.message_post(cr, uid, [line.id], type='comment', subtype=False, context=context, **post_values)
-            self.send_mail(cr, uid, lead_email, msg_id, context)
+            if line.partner_id.email:
+                chitiet = ''
+                for ct in line.move_lines:
+                    chitiet += '''
+                        <tr align="center"  width="100%"  style="font-size: 12px">
+                                <td width="40%" align ="left">'''+ct.product_id.name+'''</td>
+                                <td width="15%" align ="center">'''+format(ct.product_qty,',')+'''</td>
+                                <td width="15%" align ="center">'''+ct.product_uom.name+'''</td>
+                                <td width="15%" align ="right">'''+format(ct.sale_price,',')+'''</td>              
+                                <td width="15%" align ="right">'''+format(ct.product_qty*ct.sale_price,',')+'''</td>
+                        </tr> 
+                    '''
+                body='''
+                    <p>Đơn hàng #'''+line.name+''' đã sãn sàng để giao đến quý khách</p>
+                    <p>Chi tiết đơn hàng</p>
+                    <table width="100%">
+                        <tr align="left" width="100%" height="36px" style="background-color: rgb(238, 76, 140) ; color: rgb(255, 255, 255); font-size: 12px">
+                            <th width="40%" align ="center">Sản Phẩm</th>
+                            <th width="15%" align ="center">Số lượng</th>
+                            <th width="15%" align ="center">Đơn vị tính</th>
+                            <th width="15%" align ="center">Đơn giá</th>
+                            <th width="15%" align ="center">Thành tiền</th>
+                         </tr>
+                        '''+chitiet+'''
+                        <tr align="left" width="100%" height="36px" style="font-size: 12px">
+                            <th width="40%" align ="center"></th>
+                            <th width="15%" align ="center"></th>
+                            <th width="10%" align ="center"></th>
+                            <th width="20%" align ="center">Tổng cộng trước thuế</th>
+                            <th width="15%" align ="center">'''+format(line.sale_id.amount_untaxed,',')+'''</th>
+                         </tr>
+                         <tr align="left" width="100%" height="36px" style="font-size: 12px">
+                            <th width="40%" align ="center"></th>
+                            <th width="15%" align ="center"></th>
+                            <th width="10%" align ="center"></th>
+                            <th width="20%" align ="center">Thuế</th>
+                            <th width="15%" align ="center">'''+format(line.sale_id.amount_tax,',')+'''</th>
+                         </tr>
+                         <tr align="left" width="100%" height="36px" style="font-size: 12px">
+                            <th width="40%" align ="center"></th>
+                            <th width="15%" align ="center"></th>
+                            <th width="10%" align ="center"></th>
+                            <th width="20%" align ="center">Tổng cộng</th>
+                            <th width="15%" align ="center">'''+format(line.sale_id.amount_total,',')+'''</th>
+                         </tr>
+                     </table> 
+                '''#%(,,,,)
+                post_values = {
+                    'subject': 'Đơn hàng #%s đã sãn sàng để giao đến quý khách'%(line.sale_id and line.sale_id.name),
+                    'body': body,
+                    'partner_ids': [],
+                }
+                lead_email = line.partner_id.email
+                msg_id = self.message_post(cr, uid, [line.id], type='comment', subtype=False, context=context, **post_values)
+                self.send_mail(cr, uid, lead_email, msg_id, context)
         return True
     
     def write(self, cr, uid, ids, vals, context=None):
@@ -740,60 +741,61 @@ class stock_picking_in(osv.osv):
     
     def send_mail_thongbao_khachang(self, cr, uid, ids, context=None):
         for line in self.browse(cr, uid, ids):
-            chitiet = ''
-            for ct in line.move_lines:
-                chitiet += '''
-                    <tr align="center"  width="100%"  style= font-size: 8px">
-                            <td width="40%" align ="left">%s</td>
-                            <td width="15%" align ="center">%s</td>
-                            <td width="15%" align ="center">%s</td>
-                            <td width="15%" align ="right">%s</td>              
-                            <td width="15%" align ="right">%s</td>
-                    </tr> 
-                '''%(ct.product_id.name,ct.product_qty,ct.product_uom.name,ct.sale_price,ct.product_qty*ct.sale_price)
-            body='''
-                <p>Đơn hàng #%s đã sãn sàng để giao đến quý khách</p>
-                <p>Chi tiết đơn hàng</p>
-                <table width="100%">
-                    <tr align="left" width="100%" height="36px" style="background-color: rgb(238, 76, 140) ; color: rgb(255, 255, 255); font-size: 12px">
-                        <th width="40%" align ="center">Sản Phẩm</th>
-                        <th width="15%" align ="center">Số lượng</th>
-                        <th width="15%" align ="center">Đơn vị tính</th>
-                        <th width="15%" align ="center">Đơn giá</th>
-                        <th width="15%" align ="center">Thành tiền</th>
-                     </tr>
-                    %s
-                    <tr align="left" width="100%" height="36px" style="background-color: rgb(238, 76, 140) ; color: rgb(255, 255, 255); font-size: 12px">
-                        <th width="40%" align ="center"></th>
-                        <th width="15%" align ="center"></th>
-                        <th width="10%" align ="center"></th>
-                        <th width="20%" align ="center">Tổng cộng trước thuế</th>
-                        <th width="15%" align ="center">%s</th>
-                     </tr>
-                     <tr align="left" width="100%" height="36px" style="background-color: rgb(238, 76, 140) ; color: rgb(255, 255, 255); font-size: 12px">
-                        <th width="40%" align ="center"></th>
-                        <th width="15%" align ="center"></th>
-                        <th width="10%" align ="center"></th>
-                        <th width="20%" align ="center">Thuế</th>
-                        <th width="15%" align ="center">%s</th>
-                     </tr>
-                     <tr align="left" width="100%" height="36px" style="background-color: rgb(238, 76, 140) ; color: rgb(255, 255, 255); font-size: 12px">
-                        <th width="40%" align ="center"></th>
-                        <th width="15%" align ="center"></th>
-                        <th width="10%" align ="center"></th>
-                        <th width="20%" align ="center">Tổng cộng</th>
-                        <th width="15%" align ="center">%s</th>
-                     </tr>
-                 </table> 
-            '''%(line.name,chitiet,line.sale_id.amount_untaxed,line.sale_id.amount_tax,line.sale_id.amount_total)
-            post_values = {
-                'subject': 'Đơn hàng #%s đã sãn sàng để giao đến quý khách'%(line.sale_id and line.sale_id.name),
-                'body': body,
-                'partner_ids': [],
-            }
-            lead_email = line.partner_id.email
-            msg_id = self.message_post(cr, uid, [line.id], type='comment', subtype=False, context=context, **post_values)
-            self.send_mail(cr, uid, lead_email, msg_id, context)
+            if line.partner_id.email:
+                chitiet = ''
+                for ct in line.move_lines:
+                    chitiet += '''
+                        <tr align="center"  width="100%"  style="font-size: 12px">
+                                <td width="40%" align ="left">'''+ct.product_id.name+'''</td>
+                                <td width="15%" align ="center">'''+format(ct.product_qty,',')+'''</td>
+                                <td width="15%" align ="center">'''+ct.product_uom.name+'''</td>
+                                <td width="15%" align ="right">'''+format(ct.sale_price,',')+'''</td>              
+                                <td width="15%" align ="right">'''+format(ct.product_qty*ct.sale_price,',')+'''</td>
+                        </tr> 
+                    '''
+                body='''
+                    <p>Đơn hàng #'''+line.name+''' đã sãn sàng để giao đến quý khách</p>
+                    <p>Chi tiết đơn hàng</p>
+                    <table width="100%">
+                        <tr align="left" width="100%" height="36px" style="background-color: rgb(238, 76, 140) ; color: rgb(255, 255, 255); font-size: 12px">
+                            <th width="40%" align ="center">Sản Phẩm</th>
+                            <th width="15%" align ="center">Số lượng</th>
+                            <th width="15%" align ="center">Đơn vị tính</th>
+                            <th width="15%" align ="center">Đơn giá</th>
+                            <th width="15%" align ="center">Thành tiền</th>
+                         </tr>
+                        '''+chitiet+'''
+                        <tr align="left" width="100%" height="36px" style="font-size: 12px">
+                            <th width="40%" align ="center"></th>
+                            <th width="15%" align ="center"></th>
+                            <th width="10%" align ="center"></th>
+                            <th width="20%" align ="center">Tổng cộng trước thuế</th>
+                            <th width="15%" align ="center">'''+format(line.sale_id.amount_untaxed,',')+'''</th>
+                         </tr>
+                         <tr align="left" width="100%" height="36px" style="font-size: 12px">
+                            <th width="40%" align ="center"></th>
+                            <th width="15%" align ="center"></th>
+                            <th width="10%" align ="center"></th>
+                            <th width="20%" align ="center">Thuế</th>
+                            <th width="15%" align ="center">'''+format(line.sale_id.amount_tax,',')+'''</th>
+                         </tr>
+                         <tr align="left" width="100%" height="36px" style="font-size: 12px">
+                            <th width="40%" align ="center"></th>
+                            <th width="15%" align ="center"></th>
+                            <th width="10%" align ="center"></th>
+                            <th width="20%" align ="center">Tổng cộng</th>
+                            <th width="15%" align ="center">'''+format(line.sale_id.amount_total,',')+'''</th>
+                         </tr>
+                     </table> 
+                '''#%(,,,,)
+                post_values = {
+                    'subject': 'Đơn hàng #%s đã sãn sàng để giao đến quý khách'%(line.sale_id and line.sale_id.name),
+                    'body': body,
+                    'partner_ids': [],
+                }
+                lead_email = line.partner_id.email
+                msg_id = self.message_post(cr, uid, [line.id], type='comment', subtype=False, context=context, **post_values)
+                self.send_mail(cr, uid, lead_email, msg_id, context)
         return True
     
     def write(self, cr, uid, ids, vals, context=None):
@@ -1194,60 +1196,61 @@ class stock_picking(osv.osv):
     
     def send_mail_thongbao_khachang(self, cr, uid, ids, context=None):
         for line in self.browse(cr, uid, ids):
-            chitiet = ''
-            for ct in line.move_lines:
-                chitiet += '''
-                    <tr align="center"  width="100%"  style= font-size: 8px">
-                            <td width="40%" align ="left">%s</td>
-                            <td width="15%" align ="center">%s</td>
-                            <td width="15%" align ="center">%s</td>
-                            <td width="15%" align ="right">%s</td>              
-                            <td width="15%" align ="right">%s</td>
-                    </tr> 
-                '''%(ct.product_id.name,ct.product_qty,ct.product_uom.name,ct.sale_price,ct.product_qty*ct.sale_price)
-            body='''
-                <p>Đơn hàng #%s đã sãn sàng để giao đến quý khách</p>
-                <p>Chi tiết đơn hàng</p>
-                <table width="100%">
-                    <tr align="left" width="100%" height="36px" style="background-color: rgb(238, 76, 140) ; color: rgb(255, 255, 255); font-size: 12px">
-                        <th width="40%" align ="center">Sản Phẩm</th>
-                        <th width="15%" align ="center">Số lượng</th>
-                        <th width="15%" align ="center">Đơn vị tính</th>
-                        <th width="15%" align ="center">Đơn giá</th>
-                        <th width="15%" align ="center">Thành tiền</th>
-                     </tr>
-                    %s
-                    <tr align="left" width="100%" height="36px" style="background-color: rgb(238, 76, 140) ; color: rgb(255, 255, 255); font-size: 12px">
-                        <th width="40%" align ="center"></th>
-                        <th width="15%" align ="center"></th>
-                        <th width="10%" align ="center"></th>
-                        <th width="20%" align ="center">Tổng cộng trước thuế</th>
-                        <th width="15%" align ="center">%s</th>
-                     </tr>
-                     <tr align="left" width="100%" height="36px" style="background-color: rgb(238, 76, 140) ; color: rgb(255, 255, 255); font-size: 12px">
-                        <th width="40%" align ="center"></th>
-                        <th width="15%" align ="center"></th>
-                        <th width="10%" align ="center"></th>
-                        <th width="20%" align ="center">Thuế</th>
-                        <th width="15%" align ="center">%s</th>
-                     </tr>
-                     <tr align="left" width="100%" height="36px" style="background-color: rgb(238, 76, 140) ; color: rgb(255, 255, 255); font-size: 12px">
-                        <th width="40%" align ="center"></th>
-                        <th width="15%" align ="center"></th>
-                        <th width="10%" align ="center"></th>
-                        <th width="20%" align ="center">Tổng cộng</th>
-                        <th width="15%" align ="center">%s</th>
-                     </tr>
-                 </table> 
-            '''%(line.name,chitiet,line.sale_id.amount_untaxed,line.sale_id.amount_tax,line.sale_id.amount_total)
-            post_values = {
-                'subject': 'Đơn hàng #%s đã sãn sàng để giao đến quý khách'%(line.sale_id and line.sale_id.name),
-                'body': body,
-                'partner_ids': [],
-            }
-            lead_email = line.partner_id.email
-            msg_id = self.message_post(cr, uid, [line.id], type='comment', subtype=False, context=context, **post_values)
-            self.send_mail(cr, uid, lead_email, msg_id, context)
+            if line.partner_id.email:
+                chitiet = ''
+                for ct in line.move_lines:
+                    chitiet += '''
+                        <tr align="center"  width="100%"  style="font-size: 12px">
+                                <td width="40%" align ="left">'''+ct.product_id.name+'''</td>
+                                <td width="15%" align ="center">'''+format(ct.product_qty,',')+'''</td>
+                                <td width="15%" align ="center">'''+ct.product_uom.name+'''</td>
+                                <td width="15%" align ="right">'''+format(ct.sale_price,',')+'''</td>              
+                                <td width="15%" align ="right">'''+format(ct.product_qty*ct.sale_price,',')+'''</td>
+                        </tr> 
+                    '''
+                body='''
+                    <p>Đơn hàng #'''+line.name+''' đã sãn sàng để giao đến quý khách</p>
+                    <p>Chi tiết đơn hàng</p>
+                    <table width="100%">
+                        <tr align="left" width="100%" height="36px" style="background-color: rgb(238, 76, 140) ; color: rgb(255, 255, 255); font-size: 12px">
+                            <th width="40%" align ="center">Sản Phẩm</th>
+                            <th width="15%" align ="center">Số lượng</th>
+                            <th width="15%" align ="center">Đơn vị tính</th>
+                            <th width="15%" align ="center">Đơn giá</th>
+                            <th width="15%" align ="center">Thành tiền</th>
+                         </tr>
+                        '''+chitiet+'''
+                        <tr align="left" width="100%" height="36px" style="font-size: 12px">
+                            <th width="40%" align ="center"></th>
+                            <th width="15%" align ="center"></th>
+                            <th width="10%" align ="center"></th>
+                            <th width="20%" align ="center">Tổng cộng trước thuế</th>
+                            <th width="15%" align ="center">'''+format(line.sale_id.amount_untaxed,',')+'''</th>
+                         </tr>
+                         <tr align="left" width="100%" height="36px" style="font-size: 12px">
+                            <th width="40%" align ="center"></th>
+                            <th width="15%" align ="center"></th>
+                            <th width="10%" align ="center"></th>
+                            <th width="20%" align ="center">Thuế</th>
+                            <th width="15%" align ="center">'''+format(line.sale_id.amount_tax,',')+'''</th>
+                         </tr>
+                         <tr align="left" width="100%" height="36px" style="font-size: 12px">
+                            <th width="40%" align ="center"></th>
+                            <th width="15%" align ="center"></th>
+                            <th width="10%" align ="center"></th>
+                            <th width="20%" align ="center">Tổng cộng</th>
+                            <th width="15%" align ="center">'''+format(line.sale_id.amount_total,',')+'''</th>
+                         </tr>
+                     </table> 
+                '''#%(,,,,)
+                post_values = {
+                    'subject': 'Đơn hàng #%s đã sãn sàng để giao đến quý khách'%(line.sale_id and line.sale_id.name),
+                    'body': body,
+                    'partner_ids': [],
+                }
+                lead_email = line.partner_id.email
+                msg_id = self.message_post(cr, uid, [line.id], type='comment', subtype=False, context=context, **post_values)
+                self.send_mail(cr, uid, lead_email, msg_id, context)
         return True
     
     def write(self, cr, uid, ids, vals, context=None):

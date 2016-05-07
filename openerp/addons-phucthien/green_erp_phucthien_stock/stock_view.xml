@@ -161,7 +161,7 @@
 					<button name="status_send" attrs="{'invisible':[('state_receive','!=','draft')]}" string="Send" icon="gtk-go-up" type="object" class="oe_highlight"/>
 					<button name="status_receive" attrs="{'invisible':[('state_receive','!=','da_gui')]}" string="Receive" icon="gtk-goto-bottom" type="object" class="oe_highlight"/>
 					<button name="status_refresh" attrs="{'invisible':[('state_receive','=','draft')]}" string="Refresh" icon="gtk-refresh" type="object" class="oe_highlight"/>
-					<button name="send_mail_thongbao_khachang" string="Gửi mail" icon="terp-mail-" type="object" class="oe_highlight"/>
+					<button name="send_mail_thongbao_khachang" confirm="Bạn thật sự muốn gửi mail cho khách hàng?" string="Gửi mail" icon="terp-mail-" type="object" class="oe_highlight"/>
                 </xpath>
                 <xpath expr="//field[@name='state']" position="attributes">
                 	<attribute name="invisible">1</attribute>
@@ -1365,7 +1365,7 @@
 						<button name="status_send" attrs="{'invisible':[('state_receive','!=','draft')]}" string="Send" icon="gtk-go-up" type="object" class="oe_highlight"/>
 						<button name="status_receive" attrs="{'invisible':[('state_receive','!=','da_gui')]}" string="Receive" icon="gtk-goto-bottom" type="object" class="oe_highlight"/>
 						<button name="status_refresh" attrs="{'invisible':[('state_receive','=','draft')]}" string="Refresh" icon="gtk-refresh" type="object" class="oe_highlight"/>
-						<button name="send_mail_thongbao_khachang" string="Gửi mail" icon="terp-mail-" type="object" class="oe_highlight"/>
+						<button name="send_mail_thongbao_khachang" confirm="Bạn thật sự muốn gửi mail cho khách hàng?" string="Gửi mail" icon="terp-mail-" type="object" class="oe_highlight"/>
 	                </tree>
 	            </field>
 	        </record>
