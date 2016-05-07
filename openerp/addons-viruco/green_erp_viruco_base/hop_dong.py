@@ -15,7 +15,7 @@ import codecs
 
 class hop_dong(osv.osv):
     _name = "hop.dong"
-    _order = "tu_ngay"
+    _order = "tu_ngay desc"
     def default_get(self, cr, uid, fields, context=None):
         if context is None:
             context = {}
@@ -98,15 +98,14 @@ class hop_dong(osv.osv):
     def _get_ngay_canhbao(self, cr, uid, ids, fields, arg, context=None):
         res = {}
         for line in self.browse(cr, uid, ids):
-#             canh_bao = 1
-#             if line.den_ngay:
-#                 ngay_canhbao = datetime.strptime(line.den_ngay,'%Y-%m-%d') + timedelta(days=-canh_bao)
-#                 res[line.id]=ngay_canhbao.strftime('%Y-%m-%d')
+            canh_bao = 1
+            if line.den_ngay:
+                ngay_canhbao = datetime.strptime(line.den_ngay,'%Y-%m-%d') + timedelta(days=-canh_bao)
+                res[line.id]=ngay_canhbao.strftime('%Y-%m-%d')
 #                 if ngay_canhbao:
 #                     if line.state in ('moi_tao','da_duyet','da_ky'):
 #                         self.write(cr,uid,[line.id],{'state':'het_han'})                
-#             else:
-#                 res[line.id]=False
+            else:
                 res[line.id]=False
         return res   
     
@@ -302,6 +301,17 @@ class hop_dong(osv.osv):
         'user_id': lambda self, cr, uid, context=None: uid,
         'thongbao_nhanhang':'Bên B thông báo cho bên A trước  ngày',
     }
+    
+    def _check_den_ngay(self, cr, uid, ids, context=None):
+        for line in self.browse(cr, uid, ids, context=context):
+            if line.type=='hd_ngoai' and line.den_ngay and line.den_ngay<line.tu_ngay:
+                raise osv.except_osv(_('Cảnh báo!'), _('"Validity date" phải lớn hơn "Sign date"!'))
+                return False
+        return True
+
+    _constraints = [
+        (_check_den_ngay, 'Cảnh báo !', []),
+    ]
     
     def bt_theodoi_hopdong(self, cr, uid, ids, context=None):
         for line in self.browse(cr, uid, ids):
