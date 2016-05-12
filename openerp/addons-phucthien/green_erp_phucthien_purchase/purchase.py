@@ -245,7 +245,7 @@ class purchase_order_line(osv.osv):
         'approve': fields.boolean('Approve'),
         'adjust_price':fields.float('Điều chỉnh đơn giá'),
         'price_subtotal': fields.function(_amount_line, string='Subtotal', digits_compute= dp.get_precision('Account')),
-        'price_unit': fields.float('Unit Price', required=True, digits=(16,4)),
+        'price_unit': fields.float('Unit Price', required=True, digits=(16,5)),
     }
     
     _defaults = {

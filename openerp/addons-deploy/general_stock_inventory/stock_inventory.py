@@ -247,7 +247,7 @@ class stock_inventory_line(osv.osv):
         'product_ean': fields.char('Barcode', size=20),
         #'sys_uom': fields.many2one('product.uom', 'Primary UoM', required=True),
         'count_quantity': fields.float('Count Qty',digits=(16,3)),
-        'freeze_cost': fields.float('Freeze Cost', readonly=False, digits=(16,4)),
+        'freeze_cost': fields.float('Freeze Cost', readonly=False, digits=(16,5)),
 #         'freeze_cost': fields.related('move_id','price_unit', type="float", string="freeze_cost", store=True, readonly=True),
         'adjust_quantity': fields.function(_get_adjust_qty, string='Adjust Quantity',type ='float',multi='pro_info'), #adjust = count - sysonhand
         'adjust_value':    fields.function(_get_adjust_qty, string='Adjust Value',type ='float',multi='pro_info'),
@@ -258,7 +258,7 @@ class stock_inventory_line(osv.osv):
             store={
                 "stock.inventory.line": (lambda self, cr, uid, ids, c={}: ids, ['product_id','product_uom','product_qty'], 10),
             }, readonly=True, multi='pro_info'),
-        #'uom_conversion': fields.float('Factor', digits=(16,4), help="From product_barcode.", readonly=True),
+        #'uom_conversion': fields.float('Factor', digits=(16,5), help="From product_barcode.", readonly=True),
         
         'primary_qty': fields.function(_get_product_info, string='Primary Qty',digits= (16,4),type='float',
             store={

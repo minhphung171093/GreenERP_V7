@@ -747,7 +747,7 @@ class stock_move(osv.osv):
         'ini_flag':fields.boolean('Ini Flag'),
         'costed':fields.boolean('Costed'),
         'invoiced_qty':fields.float('Invoiced Qty'),
-        'price_unit': fields.float('Unit Price', digits=(16,4), help="Technical field used to record the product cost set by the user during a picking confirmation (when average price costing method is used)"),
+        'price_unit': fields.float('Unit Price', digits=(16,5), help="Technical field used to record the product cost set by the user during a picking confirmation (when average price costing method is used)"),
         'sale_price':  fields.related('sale_line_id', 'price_unit', string='Gía bán', type='float', relation='sale.order.line', readonly=1),
         'purchase_price':  fields.related('purchase_line_id', 'price_unit', string='Giá mua', type='float', relation='purchase.order.line', readonly=1),
     }
