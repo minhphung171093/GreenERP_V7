@@ -974,5 +974,16 @@
             </field>
         </record>
         
+        <record id="view_partner_property_form_inherit" model="ir.ui.view">
+            <field name="name">res.partner.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="account.view_partner_property_form"/>
+            <field name="arch" type="xml">
+            	<xpath expr="//field[@name='bank_ids']/tree/field[@name='sequence']" position="after">
+          			<field name="kichhoat"/>
+            	</xpath>
+            </field>
+        </record>
+        
     </data>
 </openerp>
