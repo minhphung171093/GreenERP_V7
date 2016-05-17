@@ -166,8 +166,10 @@ class Parser(report_sxw.rml_parse):
                     }
             
     def get_cang_den(self,bl_id):
-        bl = self.pool.get('draft.bl').browse(self.cr,self.uid,bl_id)
-        return bl.port_of_charge.name or ''
+        if bl_id:
+            bl = self.pool.get('draft.bl').browse(self.cr,self.uid,bl_id)
+            return bl.port_of_charge.name or ''
+        return ''
         
     def get_giaohang(self, hopdong_id):
         bl_ids = []
@@ -176,7 +178,9 @@ class Parser(report_sxw.rml_parse):
         '''%(hopdong_id)
         self.cr.execute(sql)
         bl_ids = self.cr.dictfetchall()
-        return bl_ids
+        if bl_ids:
+            return bl_ids
+        return [{'draft_bl_id': False,'picking_id': False, 'etd_date': False, 'eta_date': False, 'cuoc_tau': False}]
     
     def get_chungtu(self, hopdong_id):
         draft_ids = []
@@ -185,7 +189,9 @@ class Parser(report_sxw.rml_parse):
         '''%(hopdong_id)
         self.cr.execute(sql)
         draft_ids = self.cr.dictfetchall()
-        return draft_ids
+        if draft_ids:
+            return draft_ids
+        return [{'user_id': False,'date': False, 'dhl_no': False}]
         
     def get_thanhtoan(self, hopdong_id):
         account_voucher_ids = []
@@ -195,7 +201,12 @@ class Parser(report_sxw.rml_parse):
         '''%(hopdong_id)
         self.cr.execute(sql)
         account_voucher_ids = self.cr.dictfetchall()
-        return account_voucher_ids
+        if len(account_voucher_ids)==1:
+            account_voucher_ids.append({'amount': 0,'date':'','journal_id':''})
+            return account_voucher_ids
+        if len(account_voucher_ids)>1:
+            return account_voucher_ids
+        return [{'amount': 0,'date':'','journal_id':''},{'amount': 0,'date':'','journal_id':''}]
     
     def get_journal(self, journal_id):
         if journal_id:
