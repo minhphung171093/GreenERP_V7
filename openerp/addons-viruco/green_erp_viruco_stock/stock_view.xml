@@ -185,6 +185,7 @@
                     <field name="product_uos_qty" groups="product.group_uos"/>
                     <field name="product_uos" groups="product.group_uos"/>
                     <field name="hop_dong_mua_id" domain="[('type','in',['hd_mua_trongnuoc','hd_mua_nhapkhau'])]"/>
+                    <field name="product_thaythe_id" />
                     <field name="hop_dong_ban_id" readonly='1' domain="[('type','in',['hd_noi','hd_ngoai'])]"/>
                     <field name="picking_in_id" domain="[('purchase_id.hop_dong_id','=',hop_dong_mua_id)]"/>
                     <field name="ghichu" />
@@ -268,6 +269,7 @@
                                 <field name="quycach_baobi_id" />
 			            		<field name="quycach_donggoi_id" />
 			            		<field name="hop_dong_mua_id" domain="[('type','in',['hd_mua_trongnuoc','hd_mua_nhapkhau'])]"/>
+			            		<field name="product_thaythe_id" />
 			            		<field name="hop_dong_ban_id" readonly='1' domain="[('type','in',['hd_noi','hd_ngoai'])]"/>
 			            		<field name="picking_in_id" domain="[('type','=','in'),('purchase_id.hop_dong_id','=',hop_dong_mua_id)]"/>
 			            		<field name="ghichu" />
@@ -304,7 +306,167 @@
                 </form>
             </field>
         </record>
-	        
+<!-- Phan bo hang hoa -->
+        <record id="view_phan_bo_tree" model="ir.ui.view">
+            <field name="name">phan.bo.tree</field>
+            <field name="model">stock.move</field>
+            <field eval="4" name="priority"/>
+            <field name="arch" type="xml">
+                <tree colors="grey:scrapped == True" string="Stock Moves">
+                	<field name="picking_id" widget="many2one_clickable"/>
+                	<field name="partner_id"/>
+                    <field name="product_id"/>
+                    <field name="chatluong_id" />
+                    <field name="quycach_baobi_id" />
+            		<field name="quycach_donggoi_id" />
+                    <field name="product_qty" on_change="onchange_quantity(product_id, product_qty, product_uom, product_uos)"/>
+                    <field name="product_uom" string="Unit of Measure" groups="product.group_uom"/>
+                    <field name="product_uos_qty" groups="product.group_uos"/>
+                    <field name="product_uos" groups="product.group_uos"/>
+                    <field name="hop_dong_mua_id" domain="[('type','in',['hd_mua_trongnuoc','hd_mua_nhapkhau'])]"/>
+                    <field name="product_thaythe_id" />
+                    <field name="hop_dong_ban_id" readonly='1' domain="[('type','in',['hd_noi','hd_ngoai'])]"/>
+                    <field name="picking_in_id" domain="[('purchase_id.hop_dong_id','=',hop_dong_mua_id)]"/>
+                    <field name="ghichu" />
+                    <field name="location_id" groups="stock.group_locations" invisible="1"/>
+                    <field name="picking_id" invisible="1" />
+                    <field name="create_date" invisible="1" />
+                    <field name="date_expected" invisible="1" />
+                    <button name="%(action_split_hop_dong)d"
+                       string="Phân bổ hợp đồng" type="action"
+                       icon="STOCK_EXECUTE"
+                       states="draft,waiting,confirmed,assigned"
+                       groups="base.group_user"/>
+                    <button name="%(stock.move_scrap)d"
+                       string="Scrap Products" type="action"
+                       icon="terp-gtk-jump-to-ltr" context="{'scrap': True}"
+                       states="draft,waiting,confirmed,assigned"
+                       groups="base.group_user"/>
+                    <field name="scrapped" invisible="1"/>
+                    <field name="prodlot_id" groups="stock.group_production_lot"/>
+                    <button
+                       name="%(stock.track_line)d"
+                       string="Split in Serial Number"
+                       groups="stock.group_production_lot"
+                       type="action" icon="gtk-justify-fill"
+                       states="draft,waiting,confirmed,assigned"/>
+                     <field groups="stock.group_tracking_lot" name="tracking_id"/>
+                     <button name="setlast_tracking" string="Put in current pack" type="object"
+                        attrs="{'invisible': [('tracking_id','&lt;&gt;',False)]}"
+                        icon="terp-accessories-archiver"
+                        groups="stock.group_tracking_lot"
+                        states="draft,assigned,confirmed"/>
+                     <button name="%(stock.split_into)d" string="Put in a new pack" type="action"
+                        groups="stock.group_tracking_lot"
+                        icon="terp-accessories-archiver+"
+                        states="draft,assigned,confirmed"/>
+                      <field name="location_dest_id" groups="stock.group_locations"/>
+                      <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_phan_bo_form" model="ir.ui.view">
+            <field name="name">phan.bo.form</field>
+            <field name="model">stock.move</field>
+            <field eval="2" name="priority"/>
+            <field name="arch" type="xml">
+            <form string="Stock Moves" version="7.0">
+                <header>
+                        <button name="force_assign" states="confirmed" string="Force Availability" type="object" groups="base.group_user"/>
+                        <button name="action_confirm" states="draft" string="Confirm" type="object" groups="base.group_user"/>
+                        <button name="cancel_assign" states="assigned" string="Cancel Availability" type="object" groups="base.group_user"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,assigned,done"/>
+                </header>
+             <sheet>    
+                <group>
+                    <group>
+                        <field name="name" invisible="1"/>
+                        <field name="product_id" on_change="onchange_product_id(product_id,location_id,location_dest_id, parent.partner_id)"/>
+                        <field name="type" invisible="1"/>
+                        <label for="product_qty"/>
+                        <div>
+                            <field name="product_qty" on_change="onchange_quantity(product_id, product_qty, product_uom, product_uos)" class="oe_inline"/>
+                            <field name="product_uom" string="Unit Of Measure" groups="product.group_uom" class="oe_inline"/>
+                            <button name="%(stock.move_scrap)d"
+                                string="Scrap" type="action"
+                                icon="terp-gtk-jump-to-ltr" context="{'scrap': True}"
+                                states="draft,waiting,confirmed,assigned"
+                                groups="base.group_user"/>
+                        </div>
+                            <label for="product_uos_qty" groups="product.group_uos"/>
+                            <div groups="product.group_uos">
+                                <field name="product_uos_qty" on_change="onchange_uos_quantity(product_id, product_uos_qty, product_uos, product_uom)" class="oe_inline"/>
+                                <field name="product_uos" on_change="onchange_quantity(product_id, product_qty, product_uom, product_uos)" class="oe_inline"/>
+                            </div>
+                            <field name="product_packaging" groups="product.group_stock_packaging" domain="[('product_id','=',product_id)]"/>
+                            <field name="partner_id"/>
+                            </group>
+                            <group>
+                                <field name="create_date" invisible="1"/>
+                                <field name="date"/>
+                                <field name="date_expected" on_change="onchange_date(date,date_expected)"/>
+                                <field name="chatluong_id" />
+                                <field name="quycach_baobi_id" />
+			            		<field name="quycach_donggoi_id" />
+			            		<field name="hop_dong_mua_id" domain="[('type','in',['hd_mua_trongnuoc','hd_mua_nhapkhau'])]"/>
+			            		<field name="product_thaythe_id" />
+			            		<field name="hop_dong_ban_id" readonly='1' domain="[('type','in',['hd_noi','hd_ngoai'])]"/>
+			            		<field name="picking_in_id" domain="[('type','=','in'),('purchase_id.hop_dong_id','=',hop_dong_mua_id)]"/>
+			            		<field name="ghichu" />
+                            </group>
+
+                            <group string="Locations" groups="stock.group_locations">
+                                <field name="location_id" domain="[('usage','&lt;&gt;','view')]"/>
+                                <field name="location_dest_id" domain="[('usage','in', ['internal', 'supplier', 'customer'])]" groups="stock.group_locations"/>
+                            </group>
+
+                            <group groups="stock.group_tracking_lot,stock.group_production_lot" string="Traceability">
+                                <label for="tracking_id"/>
+                                <div>
+                                    <field name="tracking_id" groups="stock.group_tracking_lot" class="oe_inline"/>
+                                      <button name="%(stock.split_into)d" 
+                                            string="New Pack" type="action"
+                                            icon="terp-accessories-archiver+"
+                                            states="draft,assigned,confirmed"/>
+                                 </div>
+
+                                  <label for="prodlot_id"/>
+                                  <div>
+                                        <field name="prodlot_id" groups="stock.group_production_lot"
+                                            context="{'location_id':location_id, 'product_id':product_id}"
+                                            domain="[('product_id','=?',product_id)]"
+                                            on_change="onchange_lot_id(prodlot_id,product_qty, location_id, product_id, product_uom)" class="oe_inline"/>
+                                        <button name="%(stock.track_line)d"
+                                            groups="stock.group_production_lot"
+                                            states="draft,waiting,confirmed,assigned"
+                                            string="Split" type="action" icon="gtk-justify-fill"/>
+                            </div>
+                        </group>
+                    </group>
+                  </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="action_phan_bo" model="ir.actions.act_window">
+            <field name="name">Phân bổ</field>
+            <field name="res_model">stock.move</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="search_view_id" ref="stock.view_move_search"/>
+        </record>
+		<record model="ir.actions.act_window.view" id="action_phan_bo1">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_phan_bo_tree"/>
+            <field name="act_window_id" ref="action_phan_bo"/>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_phan_bo2">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_phan_bo_form"/>
+            <field name="act_window_id" ref="action_phan_bo"/>
+        </record>        
+        <menuitem action="action_phan_bo" id="menu_action_phan_bo" parent="stock.menu_stock_warehouse_mgmt" sequence="42"/>
 <!-- Picking view -->
 
 			<record id="view_stock_picking_out_form" model="ir.ui.view">
@@ -327,7 +489,7 @@
 	                    <field name="state" nolabel="1" readonly="1" widget="statusbar" statusbar_visible="draft,confirmed,assigned,done" statusbar_colors='{"auto":"blue", "confirmed":"blue"}'/>
 	                	<button name="print_denghi_xuatkho" string="In Đề nghị xuất kho" type="object" class="oe_highlight"/>
 	                	<button name="print_denghi_xuathang" string="In Đề nghị xuất hàng" type="object" class="oe_highlight"/>
-	                	<button name="bt_reset" string="Phân bổ lại" state="assigned,confirmed,draft" type="object" class="oe_highlight"/>
+	                	<button name="bt_tach_phieu" string="Tách phiếu" state="assigned,confirmed,draft" type="object" class="oe_highlight"/>
 	                </header>
 	                <sheet>
 	                    <h1>
@@ -375,6 +537,13 @@
 	                                </group>
 	                            </group>
 	                        </page>
+	                        <page string = "Chứng từ xuất khẩu">
+		                        <group >
+				                    <group >
+				                    	<field name="chung_tu_ids" nolabel='1'/>
+				                    </group>
+		                    	</group>
+	                    	</page>
 	                    </notebook>
 	                </sheet>
 	                <div class="oe_chatter">

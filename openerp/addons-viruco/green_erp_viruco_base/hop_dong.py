@@ -15,13 +15,15 @@ import codecs
 
 class hop_dong(osv.osv):
     _name = "hop.dong"
-    _order = "tu_ngay"
+    _order = "tu_ngay desc"
     def default_get(self, cr, uid, fields, context=None):
         if context is None:
             context = {}
         res = super(hop_dong, self).default_get(cr, uid, fields, context=context)
         if context.get('default_type')=='hd_ngoai':
             property = self.pool.get('admin.property')._get_project_property_by_name(cr, uid, 'properties_payment_terms')
+        elif context.get('default_type')=='hd_mua_nhapkhau':
+            property = self.pool.get('admin.property')._get_project_property_by_name(cr, uid, 'properties_pttt_mua_ngoai')
         else:
             property = self.pool.get('admin.property')._get_project_property_by_name(cr, uid, 'properties_phuongthucthanhtoan')
         res.update({'phuongthuc_thanhtoan':property and property.value or False})
@@ -93,51 +95,30 @@ class hop_dong(osv.osv):
             result[line.hopdong_hh_id.id] = True
         return result.keys()
     
-    def _get_hd_gan_hh(self, cr, uid, ids, name, arg, context=None):        
-        res = {}          
-        for line in self.browse(cr, uid, ids):
-            if line.den_ngay:
-                result = False     
-                b = datetime.now()
-                a = line.den_ngay
-                temp = datetime(int(a[0:4]),int(a[5:7]),int(a[8:10]))
-                kq = temp - b
-                if kq.days <= 15:
-                    result = True
-                res[line.id] = result
-            else:
-                res[line.id] = False            
-        return res
-    def _get_date_payment_canhbao(self, cr, uid, ids, fields, arg, context=None):
-        res = {}
-        for line in self.browse(cr, uid, ids):
-            canh_bao = 1
-            if line.date_payment:
-                date_payment_canhbao = datetime.strptime(line.date_payment,'%Y-%m-%d') + timedelta(days=canh_bao)
-                res[line.id]=date_payment_canhbao.strftime('%Y-%m-%d')
-                if line.state in ('moi_tao','da_duyet','da_ky'):
-                    self.write(cr,uid,[line.id],{'state':'het_han'})
-            else:
-                res[line.id]=False
-        return res    
     def _get_ngay_canhbao(self, cr, uid, ids, fields, arg, context=None):
         res = {}
         for line in self.browse(cr, uid, ids):
-            canh_bao = 7
+            canh_bao = 1
             if line.den_ngay:
                 ngay_canhbao = datetime.strptime(line.den_ngay,'%Y-%m-%d') + timedelta(days=-canh_bao)
                 res[line.id]=ngay_canhbao.strftime('%Y-%m-%d')
+#                 if ngay_canhbao:
+#                     if line.state in ('moi_tao','da_duyet','da_ky'):
+#                         self.write(cr,uid,[line.id],{'state':'het_han'})                
             else:
                 res[line.id]=False
-        return res    
+        return res   
+    
     
     def _get_create_theodoi_hopdong(self, cr, uid, ids, fields, arg, context=None):
         res = {}
         for line in self.browse(cr, uid, ids):
-            sql = '''
-                delete from theodoi_hopdong_line where hopdong_id = %s and hopdong_id in (select id from hop_dong where type = 'hd_ngoai')
-            '''%(line.id)
-            cr.execute(sql)
+            res[line.id]=''
+            if line.theodoi_hopdong_line:
+                sql = '''
+                    delete from theodoi_hopdong_line where hopdong_id = %s 
+                '''%(line.id)
+                cr.execute(sql)
             if line.type == 'hd_ngoai':
                 sql = '''
                     select hop_dong_mua_id from stock_move where hop_dong_ban_id = %s and hop_dong_mua_id is not null 
@@ -149,80 +130,73 @@ class hop_dong(osv.osv):
                     for hd in mua_ids:
                         hd_mua = self.pool.get('hop.dong').browse(cr,uid,hd['hop_dong_mua_id'])
                         sql = '''
-                            select id from draft_bl where hopdong_id = %s
+                            select id from draft_bl where hopdong_id = %s and state != 'huy_bo'
                         '''%(line.id)
                         cr.execute(sql)
                         bl_ids = cr.dictfetchall()
                         if bl_ids:
                             for draft_bl in bl_ids:
                                 bl = self.pool.get('draft.bl').browse(cr,uid,draft_bl['id'])
-                                if bl.draft_bl_line:
-                                    for bl_line in bl.draft_bl_line:
-                                        if bl_line.description_line:
-                                            for good in bl_line.description_line:
-                                                self.pool.get('theodoi.hopdong.line').create(cr,uid,{
-                                                                                                   'hopdong_id': line.id,
-                                                                                                   'name': hd_mua.name + ' - ' + hd_mua.partner_id.name,
-                                                                                                   'freight': bl.freight,
-                                                                                                   'shipping_line_id': bl.shipping_line_id and bl.shipping_line_id.id or False,
-                                                                                                   'forwarder_line_id': bl.forwarder_line_id and bl.forwarder_line_id.id or False,
-                                                                                                   'bl_no': bl.bl_no,
-                                                                                                   'seal_no': good.container_no_seal,
-                                                                                                   })
-                                else:
-                                    self.pool.get('theodoi.hopdong.line').create(cr,uid,{
+                                for bl_line in bl.draft_bl_line:
+                                    for good in bl_line.description_line:
+                                        self.pool.get('theodoi.hopdong.line').create(cr,uid,{
                                                                                            'hopdong_id': line.id,
                                                                                            'name': hd_mua.name + ' - ' + hd_mua.partner_id.name,
                                                                                            'freight': bl.freight,
                                                                                            'shipping_line_id': bl.shipping_line_id and bl.shipping_line_id.id or False,
                                                                                            'forwarder_line_id': bl.forwarder_line_id and bl.forwarder_line_id.id or False,
-                                                                                           'bl_no': bl.bl_no,
+                                                                                           'log_in_charge': '',
+                                                                                           'doc_in_charge': '',
+                                                                                           'etd': bl.etd_date,
+                                                                                           'bl_no': bl_line.bl_no,
+                                                                                           'dhl_no': '',
+                                                                                           'container_no_seal': bl_line.container_no_seal or good.container_no_seal,
+                                                                                           'seal_no': bl_line.container_no_seal or good.seal_no,
+                                                                                           'product_id': bl_line.hopdong_line_id.product_id.id or good.hopdong_line_id.product_id.id,
+                                                                                           'gross_weight': good.gross_weight,
                                                                                            })
-                        else:
-                            self.pool.get('theodoi.hopdong.line').create(cr,uid,{
-                                                                                                   'hopdong_id': line.id,
-                                                                                                   'name': hd_mua.name + ' - ' + hd_mua.partner_id.name,
-                                                                                                   })
                 else:
                     sql = '''
-                        select id from draft_bl where hopdong_id = %s
+                        select id from draft_bl where hopdong_id = %s and state != 'huy_bo'
                     '''%(line.id)
                     cr.execute(sql)
                     bl_ids = cr.dictfetchall()
                     if bl_ids:
                         for draft_bl in bl_ids:
                             bl = self.pool.get('draft.bl').browse(cr,uid,draft_bl['id'])
-                            if bl.draft_bl_line:
-                                for bl_line in bl.draft_bl_line:
-                                    if bl_line.description_line:
-                                        for good in bl_line.description_line:
-                                            self.pool.get('theodoi.hopdong.line').create(cr,uid,{
-                                                                                               'hopdong_id': line.id,
-                                                                                               'freight': bl.freight,
-                                                                                               'shipping_line_id': bl.shipping_line_id and bl.shipping_line_id.id or False,
-                                                                                               'forwarder_line_id': bl.forwarder_line_id and bl.forwarder_line_id.id or False,
-                                                                                               'bl_no': bl.bl_no,
-                                                                                               'seal_no': good.container_no_seal,
-                                                                                               })
-                                    else:
-                                        self.pool.get('theodoi.hopdong.line').create(cr,uid,{
-                                                                                               'hopdong_id': line.id,
-                                                                                               'freight': bl.freight,
-                                                                                               'shipping_line_id': bl.shipping_line_id and bl.shipping_line_id.id or False,
-                                                                                               'forwarder_line_id': bl.forwarder_line_id and bl.forwarder_line_id.id or False,
-                                                                                               'bl_no': bl.bl_no,
-                                                                                               })
+                            for bl_line in bl.draft_bl_line:
+                                for good in bl_line.description_line:
+                                    self.pool.get('theodoi.hopdong.line').create(cr,uid,{
+                                                                                       'hopdong_id': line.id,
+                                                                                       'name': '',
+                                                                                       'freight': bl.freight,
+                                                                                       'shipping_line_id': bl.shipping_line_id and bl.shipping_line_id.id or False,
+                                                                                       'forwarder_line_id': bl.forwarder_line_id and bl.forwarder_line_id.id or False,
+                                                                                       'log_in_charge': '',
+                                                                                       'doc_in_charge': '',
+                                                                                       'etd': bl.etd_date,
+                                                                                       'bl_no': bl_line.bl_no,
+                                                                                       'dhl_no': '',
+                                                                                       'container_no_seal': bl_line.container_no_seal or good.container_no_seal,
+                                                                                       'seal_no': bl_line.container_no_seal or good.seal_no,
+                                                                                       'product_id': bl_line.hopdong_line_id and bl_line.hopdong_line_id.product_id and bl_line.hopdong_line_id.product_id.id or good.hopdong_line_id and good.hopdong_line_id.product_id and good.hopdong_line_id.product_id.id,
+                                                                                       'gross_weight': good.gross_weight,
+                                                                                       })
                     
         return res    
+    
+    
     _columns = {
         'name':fields.char('Số', size = 1024,required = True,readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'so_tham_chieu':fields.char('Số tham chiếu', size = 1024,readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'user_id':fields.many2one('res.users','Người đề nghị',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'type':fields.selection([('hd_noi','Hợp đồng nội'),('hd_ngoai','Hợp đồng ngoại'),('hd_mua_trongnuoc','Hợp đồng mua trong nước'),('hd_mua_nhapkhau','Hợp đồng mua nhập khẩu')],'Loại hợp đồng' ,required=True,readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'sale_person_id':fields.many2one('res.users','Sale Person',states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'tu_ngay':fields.date('Từ ngày',required = True,readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'den_ngay':fields.date('Đến ngày',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'ngay_nhanhang':fields.char('Ngày nhận hàng', size=1024),
-        'diadiem_nhanhang':fields.many2one('stock.location', 'Địa điểm nhận hàng',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'diadiem_nhanhang':fields.many2one('place.of.delivery', 'Địa điểm nhận hàng',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'location_dest_id':fields.many2one('stock.location', 'Địa điểm nhận hàng',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
 #         'diadiem_nhanhang':fields.many2one('place.of.delivery', 'Địa điểm nhận hàng',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'port_of_loading':fields.many2one('port.of.loading', 'Port of loading',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'port_of_charge':fields.many2one('port.of.discharge', 'Port of discharge',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
@@ -230,7 +204,6 @@ class hop_dong(osv.osv):
         'partial_shipment':fields.boolean('Partial shipment',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'transshipment':fields.selection([('allowed','Allowed'),('not_allowed','Not Allowed')],'Transshipment', states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'thongbao_nhanhang':fields.char('Thông báo nhận hàng',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
-        'chat_luong':fields.text('Chất lượng',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'destinaltion':fields.many2one('res.country','Country',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'arbitration_id': fields.many2one('sale.arbitration','Arbitration',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
 #         'phucluc_hd':fields.text('Phụ lục Hợp đồng'),
@@ -241,7 +214,7 @@ class hop_dong(osv.osv):
         'partner_id': fields.many2one('res.partner','Khách hàng',required = True,readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'hopdong_line': fields.one2many('hopdong.line','hopdong_id','Line',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'hopdong_hoahong_line': fields.one2many('hopdong.hoahong.line','hopdong_hh_id','Line',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
-        'banggia_id': fields.many2one('bang.gia', 'Bảng giá', required=True, readonly=True, states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'banggia_id': fields.many2one('bang.gia', 'Bảng giá', readonly=True, states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'pricelist_id': fields.many2one('product.pricelist', 'Bảng giá',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'currency_id': fields.related('pricelist_id', 'currency_id', type="many2one", relation="res.currency", string="Đơn vị tiền tệ", readonly=True),
         'donbanhang_id': fields.many2one('don.ban.hang', 'Đơn bán hàng',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
@@ -259,38 +232,38 @@ class hop_dong(osv.osv):
         'ngaygui_chungtugoc':fields.date('Ngày gửi chứng từ gốc'),
         'dk_giaohang_id': fields.many2one('dieukien.giaohang', 'Điều kiện giao hàng',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'dk_thanhtoan_id': fields.many2one('dk.thanhtoan', 'Điều kiện thanh toán',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
-        'amount_untaxed': fields.function(_amount_all, digits=(16,0), string='Cộng',
+        'amount_untaxed': fields.function(_amount_all, digits=(16,2), string='Cộng',
             store={
                 'hop.dong': (lambda self, cr, uid, ids, c={}: ids, ['hopdong_line'], 10),
                 'hopdong.line': (_get_order, ['price_unit', 'tax_id', 'product_qty'], 10),
             },
             multi='sums', help="The amount without tax.", track_visibility='always'),
-        'amount_tax': fields.function(_amount_all, digits=(16,0), string='Thuế GTGT',
+        'amount_tax': fields.function(_amount_all, digits=(16,2), string='Thuế GTGT',
             store={
                 'hop.dong': (lambda self, cr, uid, ids, c={}: ids, ['hopdong_line'], 10),
                 'hopdong.line': (_get_order, ['price_unit', 'tax_id', 'product_qty'], 10),
             },
             multi='sums', help="The tax amount."),
-        'amount_total': fields.function(_amount_all, digits=(16,0), string='Tổng cộng',
+        'amount_total': fields.function(_amount_all, digits=(16,2), string='Tổng cộng',
             store={
                 'hop.dong': (lambda self, cr, uid, ids, c={}: ids, ['hopdong_line'], 10),
                 'hopdong.line': (_get_order, ['price_unit', 'tax_id', 'product_qty'], 10),
             },
             multi='sums', help="The total amount."),
                 
-        'amount_untaxed_hh': fields.function(_amount_all_hh, digits=(16,0), string='Cộng',
+        'amount_untaxed_hh': fields.function(_amount_all_hh, digits=(16,2), string='Cộng',
             store={
                 'hop.dong': (lambda self, cr, uid, ids, c={}: ids, ['hopdong_hoahong_line'], 10),
                 'hopdong.hoahong.line': (_get_order_hh, ['price_unit', 'tax_id', 'product_qty'], 10),
             },
             multi='sums', help="The amount without tax.", track_visibility='always'),
-        'amount_tax_hh': fields.function(_amount_all_hh,digits=(16,0), string='Thuế GTGT',
+        'amount_tax_hh': fields.function(_amount_all_hh,digits=(16,2), string='Thuế GTGT',
             store={
                 'hop.dong': (lambda self, cr, uid, ids, c={}: ids, ['hopdong_hoahong_line'], 10),
                 'hopdong.hoahong.line': (_get_order_hh, ['price_unit', 'tax_id', 'product_qty'], 10),
             },
             multi='sums', help="The tax amount."),
-        'amount_total_hh': fields.function(_amount_all_hh,digits=(16,0), string='Tổng cộng',
+        'amount_total_hh': fields.function(_amount_all_hh,digits=(16,2), string='Tổng cộng',
             store={
                 'hop.dong': (lambda self, cr, uid, ids, c={}: ids, ['hopdong_hoahong_line'], 10),
                 'hopdong.hoahong.line': (_get_order_hh, ['price_unit', 'tax_id', 'product_qty'], 10),
@@ -301,33 +274,171 @@ class hop_dong(osv.osv):
             ('da_duyet', 'Đã duyệt'),
             ('da_ky', 'Đã ký hợp đồng'),
             ('het_han', 'Hết hiệu lực'),
-            ('thuc_hien', 'Đang chờ giao hàng(chờ chứng từ)'),
-            ('thuc_hien_xongchungtu', 'Đang chờ giao hàng(xong chứng từ)'),
-            ('giaohang_chochungtu', 'Đã giao hàng(chờ chứng từ)'),
-            ('giaohang_xongchungtu', 'Đã giao hàng(xong chứng từ)'),
-            ('thanh_toan', 'Đã thanh toán'),
+            ('thuc_hien', 'Đã có hiệu lực'),
+            ('lam_chungtu', 'Đang làm chứng từ'),
+            ('xong_chungtu', 'Chứng từ hoàn tất'),
+            ('thanh_toan', 'Hoàn tất'),
             ('huy_bo', 'Hủy bỏ'),
             ], 'Trạng thái',readonly=True, states={'moi_tao': [('readonly', False)]}),
         'ngay_canhbao': fields.function(_get_ngay_canhbao, type='date', string='Ngày cảnh báo'),
-        'date_payment':fields.date('Ngày thanh toán',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
-        'date_payment_canhbao': fields.function(_get_date_payment_canhbao, type='date', string='Ngày cảnh báo'),
+#         'date_payment':fields.date('Ngày thanh toán',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'theodoi_hopdong_line': fields.one2many('theodoi.hopdong.line','hopdong_id','Line',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
-        'create_theodoi_hopdong': fields.function(_get_create_theodoi_hopdong, type='char', string='create_theodoi_hopdong'),
+        'create_theodoi_hopdong': fields.function(_get_create_theodoi_hopdong, type='char', string='theodoi_hopdong'),
         'flag':fields.boolean('C/O'),
+#         'trang_thai':fields.char('Trạng thái',size=1024,readonly=True),
         'date_dbh':fields.date('Ngày ban hang',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
+        'user_chungtu_id': fields.many2one('res.users','Người làm chứng từ'),
+        'chat_luong': fields.text('Chất lượng'),
     }
     
     _defaults = {
         'flag':False,
         'type': 'hd_noi',
-        'tu_ngay': time.strftime('%Y-%m-%d'),
+        'tu_ngay': lambda *a: time.strftime('%Y-%m-%d'),
         'state': 'moi_tao',
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'hop.dong', context=c),
         'currency_company_id': lambda self, cr, uid, c: self.pool.get('res.users').browse(cr, uid, uid).company_id.currency_id.id,
         'user_id': lambda self, cr, uid, context=None: uid,
         'thongbao_nhanhang':'Bên B thông báo cho bên A trước  ngày',
-        'chat_luong':u'Hàng rời đóng bành 33.33kgs, cân đủ, không cong queo,không sống điểm, không ẩm mốc , không lẫn tạp chất, kéo ra có độ đàn hồi không rách. Hàng đóng bao PE có nhiệt dộ nóng chảy ≤ 109\u2103, hàn kín miệng bao. Hàng không tem.'
     }
+    
+    def _check_den_ngay(self, cr, uid, ids, context=None):
+        for line in self.browse(cr, uid, ids, context=context):
+            if line.type=='hd_ngoai' and line.den_ngay and line.den_ngay<line.tu_ngay:
+                raise osv.except_osv(_('Cảnh báo!'), _('"Validity date" phải lớn hơn "Sign date"!'))
+                return False
+        return True
+
+    _constraints = [
+        (_check_den_ngay, 'Cảnh báo !', []),
+    ]
+    
+    def bt_theodoi_hopdong(self, cr, uid, ids, context=None):
+        for line in self.browse(cr, uid, ids):
+            if line.theodoi_hopdong_line:
+                sql = '''
+                    delete from theodoi_hopdong_line where hopdong_id = %s 
+                '''%(line.id)
+                cr.execute(sql)
+            if line.type == 'hd_ngoai':
+                sql = '''
+                    select hop_dong_mua_id from stock_move where hop_dong_ban_id = %s and hop_dong_mua_id is not null 
+                    group by hop_dong_mua_id
+                '''%(line.id)
+                cr.execute(sql)
+                mua_ids = cr.dictfetchall()
+                if mua_ids:
+                    for hd in mua_ids:
+                        hd_mua = self.pool.get('hop.dong').browse(cr,uid,hd['hop_dong_mua_id'])
+                        sql = '''
+                            select id from draft_bl where hopdong_id = %s and state not in ('huy_bo','moi_tao')
+                        '''%(line.id)
+                        cr.execute(sql)
+                        bl_ids = cr.dictfetchall()
+                        if bl_ids:
+                            for draft_bl in bl_ids:
+                                bl = self.pool.get('draft.bl').browse(cr,uid,draft_bl['id'])
+                                for bl_line in bl.draft_bl_line:
+                                    if bl_line.option == 'seal_no':
+                                        for good in bl_line.description_line:
+                                            self.pool.get('theodoi.hopdong.line').create(cr,uid,{
+                                                                                               'hopdong_id': line.id,
+                                                                                               'name': hd_mua.name + ' - ' + hd_mua.partner_id.name,
+                                                                                               'freight': bl.freight,
+                                                                                               'shipping_line_id': bl.shipping_line_id and bl.shipping_line_id.id or False,
+                                                                                               'forwarder_line_id': bl.forwarder_line_id and bl.forwarder_line_id.id or False,
+                                                                                               'log_in_charge': '',
+                                                                                               'doc_in_charge': '',
+                                                                                               'etd': bl.etd_date,
+                                                                                               'bl_no': bl_line.bl_no,
+                                                                                               'dhl_no': '',
+                                                                                               'container_no_seal': bl_line.container_no_seal,
+                                                                                               'seal_no': bl_line.container_no_seal,
+                                                                                               'product_id': good.hopdong_line_id and good.hopdong_line_id.product_id and good.hopdong_line_id.product_id.id,
+                                                                                               'gross_weight': good.gross_weight,
+                                                                                               })
+                                    if bl_line.option == 'product':
+                                        for good in bl_line.seal_descript_line:
+                                            self.pool.get('theodoi.hopdong.line').create(cr,uid,{
+                                                                                               'hopdong_id': line.id,
+                                                                                               'name': hd_mua.name + ' - ' + hd_mua.partner_id.name,
+                                                                                               'freight': bl.freight,
+                                                                                               'shipping_line_id': bl.shipping_line_id and bl.shipping_line_id.id or False,
+                                                                                               'forwarder_line_id': bl.forwarder_line_id and bl.forwarder_line_id.id or False,
+                                                                                               'log_in_charge': '',
+                                                                                               'doc_in_charge': '',
+                                                                                               'etd': bl.etd_date,
+                                                                                               'bl_no': bl_line.bl_no,
+                                                                                               'dhl_no': '',
+                                                                                               'container_no_seal': good.container_no_seal,
+                                                                                               'seal_no': good.seal_no,
+                                                                                               'product_id': bl_line.hopdong_line_id and bl_line.hopdong_line_id.product_id and bl_line.hopdong_line_id.product_id.id,
+                                                                                               'gross_weight': good.gross_weight,
+                                                                                               })  
+                else:
+                    sql = '''
+                        select id from draft_bl where hopdong_id = %s and state not in ('huy_bo','moi_tao')
+                    '''%(line.id)
+                    cr.execute(sql)
+                    bl_ids = cr.dictfetchall()
+                    if bl_ids:
+                        for draft_bl in bl_ids:
+                            bl = self.pool.get('draft.bl').browse(cr,uid,draft_bl['id'])
+                            for bl_line in bl.draft_bl_line:
+                                if bl_line.option == 'seal_no':
+                                    for good in bl_line.description_line:
+                                        self.pool.get('theodoi.hopdong.line').create(cr,uid,{
+                                                                                           'hopdong_id': line.id,
+                                                                                           'name': '',
+                                                                                           'freight': bl.freight,
+                                                                                           'shipping_line_id': bl.shipping_line_id and bl.shipping_line_id.id or False,
+                                                                                           'forwarder_line_id': bl.forwarder_line_id and bl.forwarder_line_id.id or False,
+                                                                                           'log_in_charge': '',
+                                                                                           'doc_in_charge': '',
+                                                                                           'etd': bl.etd_date,
+                                                                                           'bl_no': bl_line.bl_no,
+                                                                                           'dhl_no': '',
+                                                                                           'container_no_seal': bl_line.container_no_seal,
+                                                                                           'seal_no': bl_line.container_no_seal,
+                                                                                           'product_id': good.hopdong_line_id and good.hopdong_line_id.product_id and good.hopdong_line_id.product_id.id,
+                                                                                           'gross_weight': good.gross_weight,
+                                                                                           })
+                                if bl_line.option == 'product':
+                                    for good in bl_line.seal_descript_line:
+                                        self.pool.get('theodoi.hopdong.line').create(cr,uid,{
+                                                                                           'hopdong_id': line.id,
+                                                                                           'name': '',
+                                                                                           'freight': bl.freight,
+                                                                                           'shipping_line_id': bl.shipping_line_id and bl.shipping_line_id.id or False,
+                                                                                           'forwarder_line_id': bl.forwarder_line_id and bl.forwarder_line_id.id or False,
+                                                                                           'log_in_charge': '',
+                                                                                           'doc_in_charge': '',
+                                                                                           'etd': bl.etd_date,
+                                                                                           'bl_no': bl_line.bl_no,
+                                                                                           'dhl_no': '',
+                                                                                           'container_no_seal': good.container_no_seal,
+                                                                                           'seal_no': good.seal_no,
+                                                                                           'product_id': bl_line.hopdong_line_id and bl_line.hopdong_line_id.product_id and bl_line.hopdong_line_id.product_id.id,
+                                                                                           'gross_weight': good.gross_weight,
+                                                                                           })       
+                    
+        return True    
+    
+    def bt_list_chatluong(self, cr, uid, ids, context=None): 
+        self.write(cr,uid,ids,{
+                               'chat_luong': False,
+                               })
+        res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'green_erp_viruco_base', 'chat_luong_wizard_form_view')
+        return {
+                            'name': 'Chất lượng',
+                            'view_type': 'form',
+                            'view_mode': 'form',
+                            'view_id': res[1],
+                            'res_model': 'chat.luong.wizard',
+                            'target': 'new',
+                            'context': {'default_message':'Chất lượng', 'default_hopdong_id':ids[0]},
+                            'type': 'ir.actions.act_window',
+                        }
     
     def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
         if context is None:
@@ -346,6 +457,16 @@ class hop_dong(osv.osv):
             name = context.get('name')
             hd_ids = self.search(cr, uid, [('name','like',name)])
             args += [('id','in',hd_ids)]
+        if context.get('search_chungtu_hopdong_id'):
+            chungtu_hopdong_ids = []
+            sql = '''
+                select id from hop_dong
+                    where type = 'hd_ngoai' and state in ('thuc_hien','lam_chungtu','xong_chungtu') 
+                    and user_id = %s
+            '''%(uid)
+            cr.execute(sql)
+            chungtu_hopdong_ids = [row[0] for row in cr.fetchall()]
+            args += [('id','in',chungtu_hopdong_ids)]        
         return super(hop_dong, self).search(cr, uid, args, offset=offset, limit=limit, order=order, context=context, count=count)
     
     def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
@@ -433,7 +554,7 @@ class hop_dong(osv.osv):
         elif hopdong.type=='hd_mua_nhapkhau':
             return {
                 'type': 'ir.actions.report.xml',
-                'report_name': 'hopdong_mua_report',
+                'report_name': 'hopdong_mua_nhapkhau_report',
 #                 'datas': datas,
 #                 'nodestroy' : True
             }
@@ -444,13 +565,32 @@ class hop_dong(osv.osv):
 #                 'datas': datas,
 #                 'nodestroy' : True
             }
-            
+    def print_hopdong_hoahong(self, cr, uid, ids, context=None):
+        return {
+            'type': 'ir.actions.report.xml',
+            'report_name': 'hoahong_report',
+        }            
     def print_theodoi_hopdong(self, cr, uid, ids, context=None):
         return {
             'type': 'ir.actions.report.xml',
             'report_name': 'theodoi_hopdong_ngoai_report',
         }
-    
+#     def bt_dinhkem(self, cr, uid, ids, context=None):
+#         name_lines=[]
+#         res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
+#                                         'green_erp_viruco_base', 'huongdan_sudung_form')
+#         return {
+#                     'name': 'Đính kèm hợp đồng',
+#                     'view_type': 'form',
+#                     'view_mode': 'form',
+#                     'view_id': res[1],
+#                     'res_model': 'huongdan.sudung',
+#                     'domain': [],
+#                     'context': {},
+# 
+#                     'type': 'ir.actions.act_window',
+#                     'target': 'new',
+#                 }    
     def het_han(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids, {'state': 'het_han'})
     
@@ -564,6 +704,7 @@ class hop_dong(osv.osv):
                 'phuongthuc_thanhtoan':(dbh.note or '')+'\n'+ (property and property.value or ''),
                 'sale_person_id': dbh.sale_person_id and dbh.sale_person_id.id or False,
                 'date_dbh':dbh.ngay,
+                'so_tham_chieu':dbh.so_tham_chieu,
             }
         return {'value': vals}
     
@@ -587,30 +728,31 @@ class hop_dong(osv.osv):
                 order_line.append((0,0,val_line))
             vals = {
                 'name':dmh.name,
-                'partner_id': dmh.partner_id.id,
-                'pricelist_id': dmh.pricelist_id.id,
-                'banggia_id': dmh.banggia_id.id,
+                'partner_id': dmh.partner_id and dmh.partner_id.id or False,
+                'pricelist_id': dmh.pricelist_id and dmh.pricelist_id.id or False,
+                'banggia_id': dmh.banggia_id and dmh.banggia_id.id or False,
                 'tu_ngay': dmh.ngay,
                 'hopdong_line': order_line,
                 'currency_id':dmh.banggia_id and dmh.banggia_id.currency_id.id or False,
             }
+            print vals
         return {'value': vals}
 
-    def onchange_payment_term_id(self, cr, uid, ids, dk_thanhtoan_id=False, context=None):
-        vals = {}
-        if dk_thanhtoan_id:
-            thanhtoan_obj = self.pool.get('dk.thanhtoan')
-            thanhtoan = thanhtoan_obj.browse(cr, uid, dk_thanhtoan_id)
-            if thanhtoan.loai == 'lc':
-                vals = {
-                    'flag': True,
-                }
-            if thanhtoan.loai == 'dp':
-                vals = {
-                    'flag': False,
-                    'date_payment': '',
-                }
-        return {'value': vals}
+#     def onchange_payment_term_id(self, cr, uid, ids, dk_thanhtoan_id=False, context=None):
+#         vals = {}
+#         if dk_thanhtoan_id:
+#             thanhtoan_obj = self.pool.get('dk.thanhtoan')
+#             thanhtoan = thanhtoan_obj.browse(cr, uid, dk_thanhtoan_id)
+#             if thanhtoan.loai == 'lc':
+#                 vals = {
+#                     'flag': True,
+#                 }
+#             if thanhtoan.loai == 'dp':
+#                 vals = {
+#                     'flag': False,
+#                     'date_payment': '',
+#                 }
+#         return {'value': vals}
 
 #     def create(self, cr, uid, vals, context=None):
 #         user = self.pool.get('res.users').browse(cr,uid,uid)
@@ -683,11 +825,11 @@ class hopdong_hoahong_line(osv.osv):
         'hopdong_dh_id': fields.many2one('don.ban.hang', 'Đơn bán hàng', ondelete='cascade', select=True),
         'product_id': fields.many2one('product.product', 'Product', domain=[('sale_ok', '=', True)], change_default=True,),
         'product_uom': fields.many2one('product.uom', 'Đơn vị tính'),
-        'product_qty': fields.float('Số lượng',  digits=(16,0)),
-        'price_unit': fields.float('Đơn giá',  digits=(16,0)),
+        'product_qty': fields.float('Số lượng',  digits=(16,2)),
+        'price_unit': fields.float('Đơn giá',  digits=(16,2)),
         'tax_id': fields.many2many('account.tax', 'hopdong_hh_order_tax', 'hopdong_hh_id', 'tax_id', 'Taxes'),
-        'tax_hh': fields.float('Thuế hoa hồng (%)', digits=(16,0)),
-        'price_subtotal': fields.function(_amount_line, string='Subtotal',  digits=(16,0)),
+        'tax_hh': fields.float('Thuế hoa hồng (%)', digits=(16,2)),
+        'price_subtotal': fields.function(_amount_line, string='Subtotal',  digits=(16,2)),
     }
     
     def onchange_product_id(self, cr, uid, ids,product_id=False, context=None):
@@ -712,9 +854,13 @@ class theodoi_hopdong_line(osv.osv):
         'forwarder_line_id': fields.many2one('forwarder.line','Forwarder line'),
         'log_in_charge': fields.char('LOGS IN CHARGE',size=1024),
         'doc_in_charge': fields.char('DOCS IN CHARGE',size=1024),
-        'seal_no': fields.char('CONT/SEAL NO',size=1024),
         'bl_no': fields.char('BL No',size=1024),
         'dhl_no': fields.char('DHL No',size=1024),
+        'gross_weight': fields.float('Gross Weight'),
+        'etd': fields.date('ETD'),
+        'product_id': fields.many2one('product.product','Product'),
+        'container_no_seal': fields.char('Container No',size=1024),
+        'seal_no': fields.char('Seal No',size=1024),
     }
 theodoi_hopdong_line()
 
@@ -737,18 +883,25 @@ class hopdong_line(osv.osv):
         'product_id': fields.many2one('product.product', 'Product', domain=[('sale_ok', '=', True)], change_default=True,),
         'name':fields.char('Name',size=1024,required=True),
         'product_uom': fields.many2one('product.uom', 'Đơn vị tính'),
-        'product_qty': fields.float('Số lượng', digits=(16,0)),
-        'price_unit': fields.float('Đơn giá', digits=(16,0)),
+        'product_qty': fields.float('Số lượng', digits=(16,2)),
+        'price_unit': fields.float('Đơn giá', digits=(16,2)),
         'tax_id': fields.many2many('account.tax', 'hopdong_order_tax', 'hopdong_id', 'tax_id', 'Taxes'),
-        'price_subtotal': fields.function(_amount_line, string='Subtotal', digits=(16,0)),
+        'price_subtotal': fields.function(_amount_line, string='Subtotal', digits=(16,2)),
         'chatluong_id':fields.many2one('chatluong.sanpham','Chất lượng'),
         'quycach_donggoi_id':fields.many2one('quycach.donggoi','Quy cách đóng gói'),
         'quycach_baobi_id':fields.many2one('quycach.baobi','Quy cách bao bì'),        
-        'sotien_giam': fields.float('Số tiền giảm',digits=(16,0)),
+        'sotien_giam': fields.float('Số tiền giảm',digits=(16,2)),
         'hopdong_giam_id': fields.many2one('hop.dong', 'Hợp đồng'),
         'origin': fields.char('Origin', size = 1024),
+        'poly': fields.selection([
+            ('thicle', 'Thicle Poly'),
+            ('thin', 'Thin Poly'),
+            ], 'Poly'),
+        'no_packge':fields.float('No. of Packages',digits=(16,2)),
     }
-    
+    _defaults={
+        'poly':'thin',
+               }
     def onchange_product_id(self, cr, uid, ids,product_id=False,type = False, context=None):
         vals = {}
         if product_id:
@@ -769,7 +922,7 @@ class hopdong_line(osv.osv):
         if not ids:
             return res
         for line in self.browse(cr,uid,ids):
-            line_name = (line.product_id and line.product_id.default_code and '[' + line.product_id.default_code + '] ' or '') + (line.product_id and line.product_id.name or '')
+            line_name = (line.product_id and line.product_id.default_code and '[' + line.product_id.default_code + '] ' or '') + (line.product_id and line.product_id.name_template or '')
             res.append((line.id,line_name))
         return res  
 hopdong_line()
@@ -845,6 +998,7 @@ class don_ban_hang(osv.osv):
 
     _columns = {
         'name':fields.char('Số', size = 1024,required = True,readonly=True,states={'moi_tao': [('readonly', False)]}),
+        'so_tham_chieu':fields.char('Số tham chiếu', size = 1024,readonly=True,states={'moi_tao': [('readonly', False)]}),
         'type':fields.selection([('dbh_noi','Đơn bán hàng nội'),('dbh_ngoai','Đơn bán hàng ngoại')],'Loại đơn bán hàng'),
         'ngay':fields.date('Ngày',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
         'company_id': fields.many2one('res.company','Công ty',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
@@ -858,7 +1012,7 @@ class don_ban_hang(osv.osv):
         'partner_id': fields.many2one('res.partner','Khách hàng',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
         'don_ban_hang_line': fields.one2many('don.ban.hang.line','donbanhang_id','Line',readonly=True, states={'moi_tao': [('readonly', False)]}),
         'pricelist_id': fields.many2one('product.pricelist', 'Bảng giá', readonly=True, states={'moi_tao': [('readonly', False)]}, help="Pricelist for current sales order."),
-        'banggia_id': fields.many2one('bang.gia', 'Bảng giá', required=True, readonly=True, states={'moi_tao': [('readonly', False)]}, help="Pricelist for current sales order."),        
+        'banggia_id': fields.many2one('bang.gia', 'Bảng giá', readonly=True, states={'moi_tao': [('readonly', False)]}, help="Pricelist for current sales order."),        
         'currency_id': fields.related('banggia_id', 'currency_id', type="many2one", relation="res.currency", string="Đơn vị tiền tệ", readonly=True),
         'currency_company_id': fields.many2one('res.currency', 'Currency'),
         'user_id':fields.many2one('res.users','Người đề nghị',readonly=True,states={'moi_tao': [('readonly', False)]}),
@@ -869,38 +1023,38 @@ class don_ban_hang(osv.osv):
         'payment_term': fields.many2one('account.payment.term', 'Payment Term'),
         'incoterm_id': fields.many2one('hd.incoterm', 'Incoterm'),
         'donhang_hoahong_line': fields.one2many('hopdong.hoahong.line','hopdong_dh_id','Line',readonly=True, states={'moi_tao': [('readonly', False)]}),
-        'amount_untaxed': fields.function(_amount_all,  digits=(16,0), string='Cộng',
+        'amount_untaxed': fields.function(_amount_all,  digits=(16,2), string='Cộng',
             store={
                 'don.ban.hang': (lambda self, cr, uid, ids, c={}: ids, ['don_ban_hang_line'], 10),
                 'don.ban.hang.line': (_get_order, ['price_unit', 'tax_id', 'product_qty'], 10),
             },
             multi='sums', help="The amount without tax.", track_visibility='always'),
-        'amount_tax': fields.function(_amount_all, digits=(16,0), string='Thuế GTGT',
+        'amount_tax': fields.function(_amount_all, digits=(16,2), string='Thuế GTGT',
             store={
                 'don.ban.hang': (lambda self, cr, uid, ids, c={}: ids, ['don_ban_hang_line'], 10),
                 'don.ban.hang.line': (_get_order, ['price_unit', 'tax_id', 'product_qty'], 10),
             },
             multi='sums', help="The tax amount."),
-        'amount_total': fields.function(_amount_all, digits=(16,0), string='Tổng cộng',
+        'amount_total': fields.function(_amount_all, digits=(16,2), string='Tổng cộng',
             store={
                 'don.ban.hang': (lambda self, cr, uid, ids, c={}: ids, ['don_ban_hang_line'], 10),
                 'don.ban.hang.line': (_get_order, ['price_unit', 'tax_id', 'product_qty'], 10),
             },
             multi='sums', help="The total amount."),
                 
-        'amount_untaxed_hh': fields.function(_amount_all_hh, digits=(16,0), string='Cộng',
+        'amount_untaxed_hh': fields.function(_amount_all_hh, digits=(16,2), string='Cộng',
             store={
                 'don.ban.hang': (lambda self, cr, uid, ids, c={}: ids, ['donhang_hoahong_line'], 10),
                 'hopdong.hoahong.line': (_get_order_dh, ['price_unit', 'tax_id', 'product_qty'], 10),
             },
             multi='sum_hh', help="The amount without tax.", track_visibility='always'),
-        'amount_tax_hh': fields.function(_amount_all_hh, digits=(16,0), string='Thuế GTGT',
+        'amount_tax_hh': fields.function(_amount_all_hh, digits=(16,2), string='Thuế GTGT',
             store={
                 'don.ban.hang': (lambda self, cr, uid, ids, c={}: ids, ['donhang_hoahong_line'], 10),
                 'hopdong.hoahong.line': (_get_order_dh, ['price_unit', 'tax_id', 'product_qty'], 10),
             },
             multi='sum_hh', help="The tax amount."),
-        'amount_total_hh': fields.function(_amount_all_hh, digits=(16,0), string='Tổng cộng',
+        'amount_total_hh': fields.function(_amount_all_hh, digits=(16,2), string='Tổng cộng',
             store={
                 'don.ban.hang': (lambda self, cr, uid, ids, c={}: ids, ['donhang_hoahong_line'], 10),
                 'hopdong.hoahong.line': (_get_order_dh, ['price_unit', 'tax_id', 'product_qty'], 10),
@@ -909,7 +1063,7 @@ class don_ban_hang(osv.osv):
             
         'state': fields.selection([
             ('moi_tao', 'Mới tạo'),
-            ('da_duyet', 'Đã duyệt'),
+            ('da_duyet', 'Đã xác nhận'),
             ('huy_bo', 'Hủy bỏ'),
             ], 'Trạng thái',readonly=True, states={'moi_tao': [('readonly', False)]}),
         'note': fields.text('Terms and conditions'),
@@ -927,7 +1081,7 @@ class don_ban_hang(osv.osv):
     
     _defaults = {
         'name':'/',
-        'ngay': time.strftime('%Y-%m-%d'),
+        'ngay': lambda *a: time.strftime('%Y-%m-%d'),
         'state': 'moi_tao',
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'hop.dong', context=c),
         'currency_company_id': lambda self, cr, uid, c: self.pool.get('res.users').browse(cr, uid, uid).company_id.currency_id.id,
@@ -935,8 +1089,12 @@ class don_ban_hang(osv.osv):
     }
     
     def duyet(self, cr, uid, ids, context=None):
+        dbh = self.browse(cr, uid, ids[0])
+        if not dbh.don_ban_hang_line:
+            raise osv.except_osv(_('Cảnh báo!'), _('Vui lòng chọn sản phẩm cần bán!'))
         return self.write(cr, uid, ids, {'state': 'da_duyet'})
-    
+    def set_to_draft(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {'state': 'moi_tao'})    
     def onchange_pricelist_id(self, cr, uid, ids, pricelist_id, order_lines, context=None):
         context = context or {}
         if not pricelist_id:
@@ -1048,7 +1206,14 @@ class don_ban_hang(osv.osv):
                     
         new_id = super(don_ban_hang, self).create(cr, uid, vals, context=context)    
         return new_id
-    
+    def copy(self, cr, uid, id, default=None, context=None):
+        curent_date = time.strftime('%Y-%m-%d')
+        sequence = self.pool.get('ir.sequence').get(cr, uid, 'hopdong.ngoai')
+        default = {
+                'name':'VS'+curent_date[2:4]+'-'+sequence,
+        }
+        res_id = super(don_ban_hang, self).copy(cr, uid, id, default, context)
+        return res_id    
 don_ban_hang()
 
 class don_ban_hang_line(osv.osv):
@@ -1070,10 +1235,10 @@ class don_ban_hang_line(osv.osv):
         'product_id': fields.many2one('product.product', 'Product', domain=[('sale_ok', '=', True)], change_default=True,),
         'name':fields.char('Name',size=1024,required=True),
         'product_uom': fields.many2one('product.uom', 'Đơn vị tính'),
-        'product_qty': fields.float('Số lượng', digits=(16,0)),
-        'price_unit': fields.float('Đơn giá', digits=(16,0)),
+        'product_qty': fields.float('Số lượng', digits=(16,2)),
+        'price_unit': fields.float('Đơn giá', digits=(16,2)),
         'tax_id': fields.many2many('account.tax', 'don_ban_hang_line_tax_ref', 'don_ban_hang_line_id', 'tax_id', 'Thuế'),
-        'price_subtotal': fields.function(_amount_line, string='Thành tiền',digits=(16,0)),
+        'price_subtotal': fields.function(_amount_line, string='Thành tiền',digits=(16,2)),
         'chatluong_id':fields.many2one('chatluong.sanpham','Chất lượng'),
         'quycach_donggoi_id':fields.many2one('quycach.donggoi','Quy cách đóng gói'),
         'quycach_baobi_id':fields.many2one('quycach.baobi','Quy cách bao bì'),
@@ -1198,7 +1363,7 @@ class don_mua_hang(osv.osv):
         'company_id': fields.many2one('res.company','Công ty',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
         'partner_id': fields.many2one('res.partner','Nhà cung cấp',required = True,readonly=True, states={'moi_tao': [('readonly', False)]}),
         'don_mua_hang_line': fields.one2many('don.mua.hang.line','donmuahang_id','Line',readonly=True, states={'moi_tao': [('readonly', False)]}),
-        'banggia_id': fields.many2one('bang.gia', 'Bảng giá', required=True, readonly=True, states={'moi_tao': [('readonly', False)]}),        
+        'banggia_id': fields.many2one('bang.gia', 'Bảng giá', readonly=True, states={'moi_tao': [('readonly', False)]}),        
         'pricelist_id': fields.many2one('product.pricelist', 'Bảng giá', readonly=True, states={'moi_tao': [('readonly', False)]}, help="Pricelist for current sales order."),
         'currency_id': fields.related('pricelist_id', 'currency_id', type="many2one", relation="res.currency", string="Đơn vị tiền tệ", readonly=True),
         'currency_company_id': fields.many2one('res.currency', 'Currency'),
@@ -1207,19 +1372,19 @@ class don_mua_hang(osv.osv):
         'nguoi_gioithieu_id':fields.many2one('res.partner','Người giới thiệu',readonly=True,states={'moi_tao': [('readonly', False)]}),
         'dieukien_giaohang_id':fields.many2one('dieukien.giaohang','Điều kiện giao hàng'),
         'payment_term': fields.many2one('account.payment.term', 'Payment Term'),
-        'amount_untaxed': fields.function(_amount_all, digits=(16,0), string='Cộng',
+        'amount_untaxed': fields.function(_amount_all, digits=(16,2), string='Cộng',
             store={
                 'don.mua.hang': (lambda self, cr, uid, ids, c={}: ids, ['don_mua_hang_line'], 10),
                 'don.mua.hang.line': (_get_order, ['price_unit', 'tax_id', 'product_qty'], 10),
             },
             multi='sums', help="The amount without tax.", track_visibility='always'),
-        'amount_tax': fields.function(_amount_all, digits=(16,0), string='Thuế GTGT',
+        'amount_tax': fields.function(_amount_all, digits=(16,2), string='Thuế GTGT',
             store={
                 'don.mua.hang': (lambda self, cr, uid, ids, c={}: ids, ['don_mua_hang_line'], 10),
                 'don.mua.hang.line': (_get_order, ['price_unit', 'tax_id', 'product_qty'], 10),
             },
             multi='sums', help="The tax amount."),
-        'amount_total': fields.function(_amount_all, digits=(16,0), string='Tổng cộng',
+        'amount_total': fields.function(_amount_all, digits=(16,2), string='Tổng cộng',
             store={
                 'don.mua.hang': (lambda self, cr, uid, ids, c={}: ids, ['don_mua_hang_line'], 10),
                 'don.mua.hang.line': (_get_order, ['price_unit', 'tax_id', 'product_qty'], 10),
@@ -1235,7 +1400,7 @@ class don_mua_hang(osv.osv):
     
     _defaults = {
         'name':'/',
-        'ngay': time.strftime('%Y-%m-%d'),
+        'ngay': lambda *a: time.strftime('%Y-%m-%d'),
         'state': 'moi_tao',
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'hop.dong', context=c),
         'currency_company_id': lambda self, cr, uid, c: self.pool.get('res.users').browse(cr, uid, uid).company_id.currency_id.id,
@@ -1343,7 +1508,7 @@ class don_mua_hang(osv.osv):
                                         'pricelist_id':product_pricelist_id,
                                         'name': 'Bảng giá mua' 
                                         })
-                        vals['pricelist_id']=pricelist_id
+                        product_pricelist_ids=[pricelist_id]
                     vals['pricelist_id']=product_pricelist_ids[0]
             if (vals['type']=='dmh_nhapkhau'):
                 currency_ids = currency_obj.search(cr,uid,[('name','=','USD')])
@@ -1358,7 +1523,7 @@ class don_mua_hang(osv.osv):
                                         'pricelist_id':product_pricelist_id,
                                         'name': 'Bảng giá mua' 
                                         })
-                        vals['pricelist_id']=pricelist_id
+                        product_pricelist_ids=[pricelist_id]
                     vals['pricelist_id']=product_pricelist_ids[0]
         new_id = super(don_mua_hang, self).create(cr, uid, vals, context=context)    
         return new_id
@@ -1383,10 +1548,10 @@ class don_mua_hang_line(osv.osv):
         'product_id': fields.many2one('product.product', 'Product', domain=[('sale_ok', '=', True)], change_default=True,),
         'name':fields.char('Name',size=1024,required=True),
         'product_uom': fields.many2one('product.uom', 'Đơn vị tính'),
-        'product_qty': fields.float('Số lượng', digits=(16,0)),
-        'price_unit': fields.float('Đơn giá', digits=(16,0)),
+        'product_qty': fields.float('Số lượng', digits=(16,2)),
+        'price_unit': fields.float('Đơn giá', digits=(16,2)),
         'tax_id': fields.many2many('account.tax', 'don_mua_hang_line_tax_ref', 'don_mua_hang_line_id', 'tax_id', 'Thuế'),
-        'price_subtotal': fields.function(_amount_line, string='Thành tiền', digits=(16,0)),
+        'price_subtotal': fields.function(_amount_line, string='Thành tiền', digits=(16,2)),
         'chatluong_id':fields.many2one('chatluong.sanpham','Chất lượng'),
         'quycach_donggoi_id':fields.many2one('quycach.donggoi','Quy cách đóng gói'),
         'quycach_baobi_id':fields.many2one('quycach.baobi','Quy cách bao bì'),

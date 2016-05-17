@@ -75,6 +75,10 @@
         <menuitem action="action_picking_tree4_picking_out_to_invoice"
             id="menu_action_picking_tree4_picking_out_to_invoice"
             parent="base.menu_invoiced" sequence="20"/>
+
+		<record model="ir.ui.menu" id="base.menu_base_partner">
+	    	<field name="groups_id" eval="[(6,0, [ref('green_erp_viruco_base.group_viruco_kinhdoanh')])]"/>
+		</record>
     	
     </data>
 </openerp>

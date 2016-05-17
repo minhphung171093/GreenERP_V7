@@ -48,8 +48,8 @@ class report_account_in_out_tax(osv.osv_memory):
     _defaults = {
         'filter_type':'1',
         'times': 'periods',
-        'date_start': time.strftime('%Y-%m-%d'),
-        'date_end': time.strftime('%Y-%m-%d'),
+        'date_start': lambda *a: time.strftime('%Y-%m-%d'),
+        'date_end': lambda *a: time.strftime('%Y-%m-%d'),
         
         'period_id_start': lambda self, cr, uid, c: self.pool.get('account.period').find(cr, uid, dt=time.strftime('%Y-%m-%d'))[0],
         'period_id_end': lambda self, cr, uid, c: self.pool.get('account.period').find(cr, uid, dt=time.strftime('%Y-%m-%d'))[0],
@@ -719,8 +719,8 @@ class account_ledger_report(osv.osv_memory):
     _defaults = {
         'shop_ids': _get_shop_ids,
         'times': 'periods',
-        'date_start': time.strftime('%Y-%m-%d'),
-        'date_end': time.strftime('%Y-%m-%d'),        
+        'date_start': lambda *a: time.strftime('%Y-%m-%d'),
+        'date_end': lambda *a: time.strftime('%Y-%m-%d'),        
         'period_id_start': lambda self, cr, uid, c: self.pool.get('account.period').find(cr, uid, dt=time.strftime('%Y-%m-%d'))[0],
         'period_id_end': lambda self, cr, uid, c: self.pool.get('account.period').find(cr, uid, dt=time.strftime('%Y-%m-%d'))[0],        
         'fiscalyear_start': _get_fiscalyear,
@@ -1276,8 +1276,8 @@ class general_ledger_report(osv.osv_memory):
     _defaults = {
         'shop_ids': _get_shop_ids,
         'times': 'periods',
-        'date_start': time.strftime('%Y-%m-%d'),
-        'date_end': time.strftime('%Y-%m-%d'),        
+        'date_start': lambda *a: time.strftime('%Y-%m-%d'),
+        'date_end': lambda *a: time.strftime('%Y-%m-%d'),        
         'period_id_start': lambda self, cr, uid, c: self.pool.get('account.period').find(cr, uid, dt=time.strftime('%Y-%m-%d'))[0],
         'period_id_end': lambda self, cr, uid, c: self.pool.get('account.period').find(cr, uid, dt=time.strftime('%Y-%m-%d'))[0],        
         'fiscalyear_start': _get_fiscalyear,
@@ -1323,8 +1323,8 @@ class general_trial_balance(osv.osv_memory):
         
     _defaults = {
         'times': 'periods',
-        'date_start': time.strftime('%Y-%m-%d'),
-        'date_end': time.strftime('%Y-%m-%d'),        
+        'date_start': lambda *a: time.strftime('%Y-%m-%d'),
+        'date_end': lambda *a: time.strftime('%Y-%m-%d'),        
         'period_id_start': lambda self, cr, uid, c: self.pool.get('account.period').find(cr, uid, dt=time.strftime('%Y-%m-%d'))[0],
         'period_id_end': lambda self, cr, uid, c: self.pool.get('account.period').find(cr, uid, dt=time.strftime('%Y-%m-%d'))[0],        
         'fiscalyear_start': _get_fiscalyear,
@@ -1660,8 +1660,8 @@ class general_balance_sheet(osv.osv_memory):
         
     _defaults = {
         'times': 'periods',
-        'date_start': time.strftime('%Y-%m-%d'),
-        'date_end': time.strftime('%Y-%m-%d'),        
+        'date_start': lambda *a: time.strftime('%Y-%m-%d'),
+        'date_end': lambda *a: time.strftime('%Y-%m-%d'),        
         'period_id_start': lambda self, cr, uid, c: self.pool.get('account.period').find(cr, uid, dt=time.strftime('%Y-%m-%d'))[0],
         'period_id_end': lambda self, cr, uid, c: self.pool.get('account.period').find(cr, uid, dt=time.strftime('%Y-%m-%d'))[0],        
         'fiscalyear_start': _get_fiscalyear,
@@ -1888,8 +1888,8 @@ class general_account_profit_loss(osv.osv_memory):
         
     _defaults = {
         'times': 'periods',
-        'date_start': time.strftime('%Y-%m-%d'),
-        'date_end': time.strftime('%Y-%m-%d'),        
+        'date_start': lambda *a: time.strftime('%Y-%m-%d'),
+        'date_end': lambda *a: time.strftime('%Y-%m-%d'),        
         'period_id_start': lambda self, cr, uid, c: self.pool.get('account.period').find(cr, uid, dt=time.strftime('%Y-%m-%d'))[0],
         'period_id_end': lambda self, cr, uid, c: self.pool.get('account.period').find(cr, uid, dt=time.strftime('%Y-%m-%d'))[0],        
         'fiscalyear_start': _get_fiscalyear,
@@ -2241,8 +2241,8 @@ class luuchuyen_tiente(osv.osv_memory):
         
     _defaults = {
         'times': 'periods',
-        'date_start': time.strftime('%Y-%m-%d'),
-        'date_end': time.strftime('%Y-%m-%d'),        
+        'date_start': lambda *a: time.strftime('%Y-%m-%d'),
+        'date_end': lambda *a: time.strftime('%Y-%m-%d'),        
         'period_id_start': lambda self, cr, uid, c: self.pool.get('account.period').find(cr, uid, dt=time.strftime('%Y-%m-%d'))[0],
         'period_id_end': lambda self, cr, uid, c: self.pool.get('account.period').find(cr, uid, dt=time.strftime('%Y-%m-%d'))[0],        
         'fiscalyear_start': _get_fiscalyear,
@@ -2662,8 +2662,8 @@ class so_quy(osv.osv_memory):
     _defaults = {
         'shop_ids': _get_shop_ids,
         'times': 'periods',
-        'date_start': time.strftime('%Y-%m-%d'),
-        'date_end': time.strftime('%Y-%m-%d'),        
+        'date_start': lambda *a: time.strftime('%Y-%m-%d'),
+        'date_end': lambda *a: time.strftime('%Y-%m-%d'),        
         'period_id_start': lambda self, cr, uid, c: self.pool.get('account.period').find(cr, uid, dt=time.strftime('%Y-%m-%d'))[0],
         'period_id_end': lambda self, cr, uid, c: self.pool.get('account.period').find(cr, uid, dt=time.strftime('%Y-%m-%d'))[0],        
         'fiscalyear_start': _get_fiscalyear,
@@ -3499,8 +3499,8 @@ class pt_bc_taichinh(osv.osv_memory):
         
     _defaults = {
         'times': 'periods',
-        'date_start': time.strftime('%Y-%m-%d'),
-        'date_end': time.strftime('%Y-%m-%d'),        
+        'date_start': lambda *a: time.strftime('%Y-%m-%d'),
+        'date_end': lambda *a: time.strftime('%Y-%m-%d'),        
         'period_id_start': lambda self, cr, uid, c: self.pool.get('account.period').find(cr, uid, dt=time.strftime('%Y-%m-%d'))[0],
         'period_id_end': lambda self, cr, uid, c: self.pool.get('account.period').find(cr, uid, dt=time.strftime('%Y-%m-%d'))[0],        
         'fiscalyear_start': _get_fiscalyear,

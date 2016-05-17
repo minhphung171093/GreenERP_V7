@@ -30,3 +30,8 @@ access_viruco_base_28,dk.thanhtoan,green_erp_viruco_base.model_dk_thanhtoan,gree
 access_viruco_base_29,description.line,green_erp_viruco_base.model_description_line,green_erp_viruco_base.group_viruco_admin,True,True,True,True
 access_viruco_base_30,so.hopdong,green_erp_viruco_base.model_so_hopdong,green_erp_viruco_base.group_viruco_admin,True,True,True,True
 access_viruco_base_31,hd.incoterm,green_erp_viruco_base.model_hd_incoterm,green_erp_viruco_base.group_viruco_admin,True,True,True,True
+access_viruco_base_32,shipping_line,green_erp_viruco_base.model_shipping_line,base.group_user,True,True,True,True
+access_viruco_base_33,forwarder_line,green_erp_viruco_base.model_forwarder_line,base.group_user,True,True,True,True
+access_viruco_base_34,chat_luong,green_erp_viruco_base.model_chat_luong,base.group_user,True,True,True,True
+
+access_viruco_base_35,theodoi.hopdong,green_erp_viruco_base.model_theodoi_hopdong,green_erp_viruco_base.group_viruco_admin,True,True,True,True

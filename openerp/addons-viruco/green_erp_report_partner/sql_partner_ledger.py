@@ -27,6 +27,11 @@ class sql_partner_ledger(osv.osv):
         return True
     
     def partner_ledger_data(self,cr):
+        sql = '''
+            DROP TYPE IF EXISTS partner_ledger_data CASCADE;
+            commit;
+        '''
+        cr.execute(sql)
         cr.execute("select exists (select 1 from pg_type where typname = 'partner_ledger_data')")
         res = cr.fetchone()
         if res and res[0]:

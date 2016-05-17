@@ -106,11 +106,30 @@ noi_giaohang()
 class dieukien_giaohang(osv.osv):
     _name = 'dieukien.giaohang'
     _columns = {
-        'name':fields.char('Điều kiện',size=1024,required=True),
+        'name':fields.char('Term',size=1024,required=True),
+        'discharge':fields.char('Discharge',size=1024,required=True),
         'description': fields.text('Ghi chú'),
     }
     
+    def name_get(self, cr, uid, ids, context=None):
+        if not len(ids):
+            return []
+        reads = self.read(cr, uid, ids, ['name','discharge'], context=context)
+        res = []
+        for record in reads:
+            name = record['name'] + ' ' + record['discharge']
+            res.append((record['id'], name))
+        return res
+    
 dieukien_giaohang()
+
+class chat_luong(osv.osv):
+    _name = 'chat.luong'
+    _columns = {
+        'name':fields.text('Chất lượng',size=1024,required=True),
+    }
+    
+chat_luong()
 
 
 class hinhthuc_giaohang(osv.osv):
@@ -195,11 +214,15 @@ class dk_thanhtoan(osv.osv):
     _columns = {
         'name':fields.char('Name',size=1024,required=True),
         'description': fields.text('Description'),
+        'dat_coc': fields.float('Giá trị đặt cọc'),
         'loai': fields.selection([
             ('lc', 'LC'),
             ('dp', 'DP'),
             ], 'Loại',required=True),
     }
+    _defaults={
+        'dat_coc':0.0,
+               }
     
 dk_thanhtoan()
 
@@ -229,8 +252,8 @@ class bang_gia(osv.osv):
     }
     
     _defaults = {
-        'date_start': time.strftime('%Y-%m-%d'),
-        'date_end': time.strftime('%Y-%m-%d'),
+        'date_start': lambda *a: time.strftime('%Y-%m-%d'),
+        'date_end': lambda *a: time.strftime('%Y-%m-%d'),
         'state': 'moi_tao',
     }
     

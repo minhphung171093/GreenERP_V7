@@ -50,19 +50,7 @@ class stock_picking(osv.osv):
                     self.pool.get('stock.move').write(cr,uid,stock_move_id.id,{'location_dest_id':picking_location_dest_id})
         return True
     
-    def write(self, cr, uid, ids, vals, context=None):
-        for line in self.browse(cr,uid,ids):
-            if line.type == 'out':
-                if 'state' in vals and vals['state']:
-                    if vals['state'] == 'done':
-                        for move in line.move_lines:
-                            hopdong_ban = self.pool.get('hop.dong').browse(cr,uid,move.hop_dong_ban_id.id)
-                            chung_tu = self.pool.get('draft.bl').browse(cr,uid,move.hop_dong_ban_id.id)
-                            if hopdong_ban.state == 'thuc_hien' and chung_tu.state == 'da_duyet':
-                                self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'giaohang_chochungtu'})
-                            if hopdong_ban.state == 'thuc_hien_xongchungtu':
-                                self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'giaohang_xongchungtu'})
-        return super(stock_picking, self).write(cr, uid,ids, vals, context)
+
     
     def do_partial(self, cr, uid, ids, partial_datas, context=None):
         """ Makes partial picking and moves done.
@@ -240,9 +228,10 @@ class stock_picking(osv.osv):
         'nguoi_denghi_id':fields.many2one('res.users','Người đề nghị'),
         'donvi_vanchuyen':fields.many2one('res.partner','Đơn vị vận chuyển'),
         'lotrinh_id':fields.many2one('lo.trinh','Lộ trình'),
-        'dongia_vanchuyen':fields.float('Đơn giá vận chuyển',digits=(16,0)),
+        'dongia_vanchuyen':fields.float('Đơn giá vận chuyển',digits=(16,2)),
         'picking_location_dest_id': fields.many2one('stock.location', 'Destination Location',states={'done': [('readonly', True)]}, select=True,),
         'cang_donghang_id': fields.many2one('cang.donghang', 'Cảng đóng hàng',states={'done': [('readonly', True)]}, select=True,),
+        'chung_tu_ids':fields.many2many('draft.bl','kho_chungtu_ref','stock_id','chung_tu_id','Kho',states={'done': [('readonly', True)]}, select=True, ),
         'shop_id': fields.function(_get_location_info, type='many2one', relation='sale.shop', string='Shop',
             store={
                 'stock.picking': (lambda self, cr, uid, ids, c={}: ids, ['location_id','location_dest_id'], 10),
@@ -328,15 +317,59 @@ class stock_picking(osv.osv):
                     raise osv.except_osv(_('Warning!'), _('Please define Sequence for Stock Journal.'))
                 vals['name'] = self.pool.get('ir.sequence').get_id(cr, user, journal.sequence_id.id, code_or_id='id', context=context)
             if vals.get('type',False) == 'in':
-                vals['name'] = self.pool.get('ir.sequence').get(cr, uid, 'stock.picking.in') + \
+                vals['name'] = self.pool.get('ir.sequence').get(cr, user, 'stock.picking.in') + \
                  (vals['location_dest_id'] and self.pool.get('stock.location').browse(cr, user, vals['location_dest_id']).name or '') \
                 or '/'
             if vals.get('type',False) == 'out':
-                vals['name'] = self.pool.get('ir.sequence').get(cr, uid, 'stock.picking.out') or '/'
+                vals['name'] = self.pool.get('ir.sequence').get(cr, user, 'stock.picking.out') or '/'
                 
         new_id = super(osv.osv, self).create(cr, user, vals, context)
         return new_id
-    
+
+    def write(self, cr, uid, ids, vals, context=None):
+        new_write=super(stock_picking, self).write(cr, uid,ids, vals, context)   
+        for line in self.browse(cr,uid,ids):
+            sql = '''
+                update stock_move set date = '%s' where picking_id = %s
+            '''%(line.date, line.id)
+            cr.execute(sql)
+            
+            sql = '''
+                update stock_move set location_dest_id = %s where picking_id = %s
+            '''%(line.location_dest_id.id, line.id)
+            cr.execute(sql)
+            
+            sql = '''
+                update stock_move set location_id = %s where picking_id = %s
+            '''%(line.location_id.id, line.id)
+            cr.execute(sql)
+#             if line.type == 'out':
+#                 if 'state' in vals and vals['state']:
+#                     if vals['state'] == 'done':
+#                         if not line.chung_tu_ids:
+#                             raise osv.except_osv(_('Cảnh báo!'), _('Cần có chứng từ trước khi chuyển hàng !'))
+#                         else:
+#                             qty = 0
+#                             for move in line.move_lines:
+#                                 qty += move.product_qty
+#                                 hopdong_ban = self.pool.get('hop.dong').browse(cr,uid,move.hop_dong_ban_id.id)
+#                                 sql = '''
+#                                     select case when sum(product_qty)!=0 then sum(product_qty) else 0 end move_qty from stock_move
+#                                     where hop_dong_ban_id = %s and picking_id in (select id from stock_picking where state = 'done') 
+#                                 '''%(hopdong_ban.id)
+#                                 cr.execute(sql)
+#                                 move_qty = cr.dictfetchone()['move_qty']
+#                                 sql = '''
+#                                     select case when sum(product_qty)!=0 then sum(product_qty) else 0 end hd_qty from hopdong_line
+#                                     where hopdong_id = %s
+#                                 '''%(hopdong_ban.id)
+#                                 cr.execute(sql)
+#                                 hd_qty = cr.dictfetchone()['hd_qty']
+#                             if (move_qty+qty) == hd_qty:
+#                                 self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'giaohang_xongchungtu'})
+#                             else:
+#                                 self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'thuc_hien_xongchungtu'})
+        return new_write
     
     def action_invoice_create(self, cr, uid, ids, journal_id=False,group=False, type='out_invoice', context=None):
         """ Creates invoice based on the invoice state selected for picking.
@@ -682,6 +715,34 @@ class stock_picking(osv.osv):
             'type': 'ir.actions.report.xml',
             'report_name': 'denghi_xuathang_report',
             }
+
+    def bt_tach_phieu(self, cr, uid, ids, context=None):
+        name_lines=[]
+        res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
+                                        'green_erp_viruco_base', 'tach_phieu_form_view')
+        for guihang in self.browse(cr,uid,ids):
+            for line in guihang.move_lines:
+                name_lines.append((0,0,{
+                                       'name': line.product_id.id,
+                                       'move_lines_id':line.id,
+                                       }))
+
+        
+        return {
+                    'name': 'Tách phiếu',
+                    'view_type': 'form',
+                    'view_mode': 'form',
+                    'view_id': res[1],
+                    'res_model': 'tach.phieu',
+                    'domain': [],
+                    'context': {
+                                'default_name_lines': name_lines,
+                                'default_picking_id': ids[0],
+                        },
+
+                    'type': 'ir.actions.act_window',
+                    'target': 'new',
+                }
         
     def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
         if context is None:
@@ -775,7 +836,7 @@ class stock_picking_in(osv.osv):
         'nguoi_denghi_id':fields.many2one('res.users','Người đề nghị'),
         'donvi_vanchuyen':fields.many2one('res.partner','Đơn vị vận chuyển'),
         'lotrinh_id':fields.many2one('lo.trinh','Lộ trình'),
-        'dongia_vanchuyen':fields.float('Đơn giá vận chuyển',digits=(16,0)),
+        'dongia_vanchuyen':fields.float('Đơn giá vận chuyển',digits=(16,2)),
         'picking_location_dest_id': fields.many2one('stock.location', 'Destination Location',states={'done': [('readonly', True)]}, select=True,),
         'shop_id': fields.function(_get_location_info, type='many2one', relation='sale.shop', string='Shop',
             store={
@@ -916,6 +977,24 @@ class stock_picking_in(osv.osv):
                 
         new_id = super(osv.osv, self).create(cr, user, vals, context)
         return new_id
+    def write(self, cr, uid, ids, vals, context=None):
+        new_write=super(stock_picking_in, self).write(cr, uid,ids, vals, context)
+        for line in self.browse(cr,uid,ids):
+            sql = '''
+                update stock_move set date = '%s' where picking_id = %s
+            '''%(line.date, line.id)
+            cr.execute(sql)
+            
+            sql = '''
+                update stock_move set location_dest_id = %s where picking_id = %s
+            '''%(line.location_dest_id.id, line.id)
+            cr.execute(sql)
+            
+            sql = '''
+                update stock_move set location_id = %s where picking_id = %s
+            '''%(line.location_id.id, line.id)
+            cr.execute(sql)
+        return new_write
     
 stock_picking_in()
 class stock_picking_out(osv.osv):
@@ -961,7 +1040,7 @@ class stock_picking_out(osv.osv):
         'nguoi_denghi_id':fields.many2one('res.users','Người đề nghị'),
         'donvi_vanchuyen':fields.many2one('res.partner','Đơn vị vận chuyển'),
         'lotrinh_id':fields.many2one('lo.trinh','Lộ trình'),
-        'dongia_vanchuyen':fields.float('Đơn giá vận chuyển',digits=(16,0)),
+        'dongia_vanchuyen':fields.float('Đơn giá vận chuyển',digits=(16,2)),
         'picking_location_dest_id': fields.many2one('stock.location', 'Destination Location',states={'done': [('readonly', True)]}, select=True,),
         'cang_donghang_id': fields.many2one('cang.donghang', 'Cảng đóng hàng',states={'done': [('readonly', True)]}, select=True,),
         'shop_id': fields.function(_get_location_info, type='many2one', relation='sale.shop', string='Shop',
@@ -1081,13 +1160,54 @@ class stock_picking_out(osv.osv):
                     raise osv.except_osv(_('Warning!'), _('Please define Sequence for Stock Journal.'))
                 vals['name'] = self.pool.get('ir.sequence').get_id(cr, user, journal.sequence_id.id, code_or_id='id', context=context)
             if vals.get('type',False) == 'in':
-                vals['name'] = self.pool.get('ir.sequence').get(cr, uid, 'stock.picking.in') + \
+                vals['name'] = self.pool.get('ir.sequence').get(cr, user, 'stock.picking.in') + \
                  (vals['location_dest_id'] and self.pool.get('stock.location').browse(cr, user, vals['location_dest_id']).name or '') \
                 or '/'
             if vals.get('type',False) == 'out':
-                vals['name'] = self.pool.get('ir.sequence').get(cr, uid, 'stock.picking.out') or '/'
+                vals['name'] = self.pool.get('ir.sequence').get(cr, user, 'stock.picking.out') or '/'
         new_id = super(osv.osv, self).create(cr, user, vals, context)
         return new_id
+    
+    def write(self, cr, uid, ids, vals, context=None):
+        new_write=super(stock_picking_out, self).write(cr, uid,ids, vals, context)
+        for line in self.browse(cr,uid,ids):
+            sql = '''
+                update stock_move set date = '%s' where picking_id = %s
+            '''%(line.date, line.id)
+            cr.execute(sql)
+            
+            sql = '''
+                update stock_move set location_dest_id = %s where picking_id = %s
+            '''%(line.location_dest_id.id, line.id)
+            cr.execute(sql)
+            
+            sql = '''
+                update stock_move set location_id = %s where picking_id = %s
+            '''%(line.location_id.id, line.id)
+            cr.execute(sql)
+        return new_write
+
+#     def write(self, cr, uid, ids, vals, context=None):
+#         for line in self.browse(cr,uid,ids):
+#             if line.type == 'out':
+#                 if 'state' in vals and vals['state']:
+#                     if line.backorder_id:
+#                         phieu_cha = self.browse(cr,uid,line.backorder_id.id)
+#                         for move in line.move_lines:
+#                             hopdong_ban = self.pool.get('hop.dong').browse(cr,uid,move.hop_dong_ban_id.id)
+#                         if phieu_cha.state == 'done' and vals['state'] == 'done':
+#                             self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'giaohang_xongchungtu'})
+#                         elif phieu_cha.state == 'done' and vals['state'] != 'done':
+#                             if not vals['chung_tu_ids']:
+#                                 raise osv.except_osv(_('Cảnh báo!'), _('Cần có chứng từ trước khi chuyển hàng !'))
+#                             else:
+#                                 self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'thuc_hien_xongchungtu'})
+#                     else:
+#                         if vals['state'] == 'done':
+#                             for move in line.move_lines:
+#                                 hopdong_ban = self.pool.get('hop.dong').browse(cr,uid,move.hop_dong_ban_id.id)
+#                                 self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'giaohang_xongchungtu'})
+#         return super(stock_picking, self).write(cr, uid,ids, vals, context)   
     
     def print_denghi_xuatkho(self, cr, uid, ids, context=None):
         hopdong = self.browse(cr, uid, ids[0])
@@ -1123,12 +1243,14 @@ class stock_picking_out(osv.osv):
         if phanbo_ids:
             for line in phanbo_ids:
                 move_ids = self.pool.get('stock.move').search(cr,uid,[('sale_line_id','=',line['id'])])
+                sale_line = self.pool.get('sale.order.line').browse(cr,uid,line['id'])
                 sql = '''
                     select sum(product_qty) as qty_von from stock_move where sale_line_id = %s and sale_line_id is not null
                 '''%(line['id'])
                 cr.execute(sql)
                 qty_von = cr.dictfetchone()['qty_von']
                 self.pool.get('stock.move').write(cr,uid,[move_ids[0]],{
+                                                                        'product_id': sale_line.product_id.id,
                                                                         'product_qty': qty_von,
                                                                         'hop_dong_mua_id': False,
                                                                         'picking_in_id': False,
@@ -1139,6 +1261,47 @@ class stock_picking_out(osv.osv):
                 cr.execute(sql)
         return True
     
+    def bt_tach_phieu(self, cr, uid, ids, context=None):
+        name_lines=[]
+        res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
+                                        'green_erp_viruco_base', 'tach_phieu_form_view')
+        for guihang in self.browse(cr,uid,ids):
+            for line in guihang.move_lines:
+                name_lines.append((0,0,{
+                                       'name': line.product_id.id,
+                                       'move_lines_id':line.id,
+                                       }))
+
+        
+        return {
+                    'name': 'Tách phiếu',
+                    'view_type': 'form',
+                    'view_mode': 'form',
+                    'view_id': res[1],
+                    'res_model': 'tach.phieu',
+                    'domain': [],
+                    'context': {
+                                'default_name_lines': name_lines,
+                                'default_picking_id': ids[0],
+                        },
+
+                    'type': 'ir.actions.act_window',
+                    'target': 'new',
+                }
+
+#     def write(self, cr, uid, ids, vals, context=None):
+#         for line in self.browse(cr,uid,ids):
+#             if line.type == 'out':
+#                 if 'state' in vals and vals['state']:
+#                     if vals['state'] == 'done':
+#                         for move in line.move_lines:
+#                             hopdong_ban = self.pool.get('hop.dong').browse(cr,uid,move.hop_dong_ban_id.id)
+#                             chung_tu = self.pool.get('draft.bl').browse(cr,uid,move.hop_dong_ban_id.id)
+#                             if hopdong_ban.state == 'thuc_hien' and chung_tu.state == 'da_duyet':
+#                                 self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'giaohang_chochungtu'})
+#                             if hopdong_ban.state in ['thuc_hien_xongchungtu','thuc_hien'] and chung_tu.state == 'hoan_tat':
+#                                 self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'giaohang_xongchungtu'})
+#         return super(stock_picking_out, self).write(cr, uid,ids, vals, context)    
 stock_picking_out()
 
 class stock_move(osv.osv):
@@ -1173,6 +1336,7 @@ class stock_move(osv.osv):
                     res[line.id]['primary_qty'] = line.product_qty
         return res
     _columns = {
+        'product_thaythe_id':fields.many2one('product.product','Thay thế cho sản phẩm'),
         'chatluong_id':fields.many2one('chatluong.sanpham','Chất lượng'),
         'quycach_baobi_id':fields.many2one('quycach.baobi','Quy cách bao bì'),
         'quycach_donggoi_id':fields.many2one('quycach.donggoi','Quy cách đóng gói'),
@@ -1188,7 +1352,7 @@ class stock_move(osv.osv):
             store={
                 'stock.move': (lambda self, cr, uid, ids, c={}: ids, ['product_id','product_uom','product_qty'], 10),
             }, readonly=True, multi='pro_info'),
-        'product_qty': fields.float('Quantity', digits=(16,0),
+        'product_qty': fields.float('Quantity', digits=(16,2),
             required=True,states={'done': [('readonly', True)]},
             help="This is the quantity of products from an inventory "
                 "point of view. For moves in the state 'done', this is the "
@@ -1198,7 +1362,7 @@ class stock_move(osv.osv):
                 "backorder. Changing this quantity on assigned moves affects "
                 "the product reservation, and should be done with care."
         ),
-        'product_uos_qty': fields.float('Quantity (UOS)', digits=(16,0), states={'done': [('readonly', True)]}),
+        'product_uos_qty': fields.float('Quantity (UOS)', digits=(16,2), states={'done': [('readonly', True)]}),
     }
     
     def action_done(self, cr, uid, ids, context=None):

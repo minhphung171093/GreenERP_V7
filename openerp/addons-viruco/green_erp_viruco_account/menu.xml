@@ -91,8 +91,12 @@
             id="menu_action_phieu_xuat_cho_hoa_don_accounting"
             parent="menu_nhap_xuat_cho_hoa_don" name = "Phiếu xuất kho chờ hóa đơn" sequence="2"/>  
 
-	
+		<record model="ir.ui.menu" id="account.menu_finance">
+	    	<field name="groups_id" eval="[(6,0, [ref('green_erp_viruco_base.group_viruco_thumua')])]"/>
+		</record>	
             
-    	
+		<record model="ir.ui.menu" id="stock.menu_stock_root">
+	    	<field name="groups_id" eval="[(6,0, [ref('green_erp_viruco_base.group_viruco_thumua')])]"/>
+		</record>	    	
     </data>
 </openerp>

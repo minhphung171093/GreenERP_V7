@@ -8,14 +8,18 @@
 			<field name="model">draft.bl</field>
 			<field name="arch" type="xml">
 				<tree string="Chứng từ xuất khẩu">
-					<field name="name"/>
 					<field name="hopdong_id"/>
-					<field name="date"/>
-					<field name="notify_party_id"/>
-					<field name="bl_no"/>
-					<field name="port_of_loading"/>
+					<field name="user_id"/>
+					<field name="partner_id"/>
+					<field name="net_weight"/>
+					<field name="etd_date"/>
+					<field name="eta_date"/>
 					<field name="port_of_charge"/>
-	                <field name="diadiem_nhanhang" string = "Place of delivery"/>
+					<field name="forwarder_line_id" />
+            		<field name="shipping_line_id" />
+	                <field name="cuoc_tau"/>
+	                <field name="bl_no"/>
+	                <field name="dhl_no"/>
 	                <field name="state"/>
 				</tree>
 			</field>
@@ -30,6 +34,7 @@
                     <field name="hopdong_id"/>
                     <field name="notify_party_id"/>
                     <field name="bl_no"/>
+                    <field name="user_id"/>
                     <group expand="0" string="Group By...">
                         <filter string="Contract" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'hopdong_id'}"/>
                         <filter string="Status" icon="terp-stock_effects-object-colorize" domain="[]" context="{'group_by':'state'}"/>
@@ -54,30 +59,36 @@
 	            	<sheet>
 	            	<group >
 	                    <group>
-	                    	<field name="hopdong_id" domain="[('type','=','hd_ngoai'),('state','not in',('moi_tao','da_duyet','da_ky','het_han'))]" on_change = "onchange_hopdong_id(hopdong_id)" context="{'form_view_ref':'green_erp_viruco_base.hop_dong_ngoai_form_view'}"/>
+	                    	<field name="hopdong_id" options="{'create': false, 'create_edit': false}" on_change = "onchange_hopdong_id(hopdong_id)" context="{'form_view_ref':'green_erp_viruco_base.hop_dong_ngoai_form_view','search_chungtu_hopdong_id':1}"/>
 	                        <field name="date"/>
-	                        <field name="bl_no"/>
+	                        <field name="bl_no" invisible='1'/>
+	                        <field name="etd_date"/>
+	                        <field name="cuoc_tau"/>
 	                    </group>
 	                    <group>
 	                    	<field name="name" string="Booking No."/>
                     		<field name="shipping_line_id" />
-                    		<field name="forwarder_line_id" />	      
+                    		<field name="forwarder_line_id" />
+							<field name="eta_date"/>   
                     	</group>              	
 	                    <group>
                     		<field name="company_id" string = "Shipper"/>
                     		<field name="consignee_id" string = "1st Consignee" />
-                    		<field name="consignee_text" string = "2nd Consignee" />
+                    		<field name="consignee_text" string = "2nd Consignee" invisible='1' />
                     		<field name="notify_party_id" domain="[('customer','=',True)]" string = "1st Notify Party" />
-                    		<field name="consignee_text" string = "2nd Notify Party" />
+                    		<field name="consignee_text" string = "2nd Notify Party" invisible='1' />
+                    		<field name="user_id" on_change ="onchange_user_id(user_id,hopdong_id)" options="{'create': false, 'create_edit': false}"/>
+                    		<field name="buyer_thue" context="{'search_buyer_form_e':1}" options="{'create': false, 'create_edit': false}"  />
+	                    	<field name="dhl_no" options="{'create': false, 'create_edit': false}"/>
 	                    </group>
 	                    <group>
                     		<field name="mean_transport"/>
                     		<field name="port_of_loading"/>
                     		<field name="port_of_charge"/>
                     		<field name="diadiem_nhanhang" string = "Place of delivery"/>
-                    		<field name="country_id"/>
+                    		<field name="country_id" string='Destination'/>
                     		<field name="freight"/>
-                    		<field name="customs_declaration" string = "Customs Declaration Number" />
+                    		<field name="stock_ids" widget="many2many_tags" invisible='1'/>
 	                    </group>
 	                    </group>
 	                    <group>
@@ -87,29 +98,53 @@
 							<page string="Chứng từ xuất khẩu Line" >
 								<field name="draft_bl_line" context="{'default_hopdong_id':hopdong_id}">
 									<tree>
-	                                    <field name="ocean_vessel" />
-	                                    <field name="etd_date"/>
-	                                    <field name="eta_date"/>
-	                                    <field name="cuoc_tau"/>
+	                                    <field name="ocean_vessel" invisible='1'/>
+	                                    <field name="bl_no"/>
+	                                    <field name="customs_declaration"/>
+	                                    <field name="date_customs_declaration"/>
+	                                    <field name="hopdong_line_id"/>
 	                                   	<field name="hopdong_id" invisible="1"/>
 									</tree>
 									<form version = "7.0">
 										<group col='4' colspan='2'>
-					                    	<field name="ocean_vessel" />
-					                    	<field name="hopdong_line_id" domain="[('hopdong_id','=',parent.hopdong_id)]" attrs="{'invisible':[('option','in',['seal_no',False])]}"/>
-					                    	<field name="container_no_seal" on_change = "onchange_container_no(container_no_seal)"  attrs="{'invisible':[('option','in',['product',False])]}"/>
 					                    	<!--<field name="picking_id" context="{'search_picking_out':1, 'hopdong_id':parent.hopdong_id}"/>-->
-		                                    <field name="etd_date"/>
-		                                    <field name="eta_date"/>
-		                                    <field name="cuoc_tau"/>
-		                                    <field name="option"/>
+		                                    <field name="option" on_change = "onchange_option(option,line_number)"/>
+		                                    <field name="bl_no"/>
+		                                    <field name="customs_declaration"/>
+		                                    <field name="date_customs_declaration"/>
+		                                    <field name="hopdong_line_id" domain="[('hopdong_id','=',parent.hopdong_id)]" attrs="{'invisible':[('option','in',['seal_no',False])],'required':[('option','in',['product'])]}" />
+		                                    <field name="container_no_seal" on_change = "onchange_container_no(container_no_seal)"  attrs="{'invisible':[('option','in',['product',False])]}"/>
+		                                    <field name="seal_no" attrs="{'invisible':[('option','in',['product',False])]}"/>
+		                                    <field name="line_number" on_change = "onchange_option(option,line_number)" attrs="{'invisible':[('option','!=','product')],'required':[('option','=','product')]}"/>
 		                                    <field name="hopdong_id" invisible="1"/>
 					                    </group>
+					                    <group col='4' colspan='2'>
+											<field name="thanhtoan" />
+											<field name="ngay_thanhtoan" attrs="{'invisible':[('thanhtoan','=',False)]}"/>
+											
+										</group>
+										<group col='4' colspan='2'>
+											<field name="dagui_nganhang" />
+											<field name="ngaygui_nganhang" attrs="{'invisible':[('dagui_nganhang','=',False)]}"/>
+										</group>
+										<group col='4' colspan='2'>
+											<field name="dagui_hopdong" />
+											<field name="ngaygui_hopdong" attrs="{'invisible':[('dagui_hopdong','=',False)]}"/>
+										</group>
+										<group col='4' colspan='2'>
+											<field name="dagui_hoadon" />
+											<field name="ngaygui_hoadon" attrs="{'invisible':[('dagui_hoadon','=',False)]}"/>
+										</group>
+										<group col='4' colspan='2'>
+											<field name="dagui_chungtugoc" />
+											<field name="ngaygui_chungtugoc" attrs="{'invisible':[('dagui_chungtugoc','=',False)]}"/>
+										</group>
 					                    <notebook>
 											<page string="Description of Goods" attrs="{'invisible':[('option','in',['seal_no',False])]}">
 												<field name="seal_descript_line">
 													<tree editable = 'bottom'>
-					                                    <field name="container_no_seal" on_change = "onchange_container(container_no_seal)" />
+					                                    <field name="container_no_seal" string='Container No'  on_change = "onchange_container(container_no_seal)" />
+					                                    <field name="seal_no" on_change = "onchange_container(container_no_seal)" />
 					                                    <field name="packages_qty" string = 'Number of Packages'/>
 					                                    <field name="packages_id" string = 'Kind of Packages' />
 					                                    <field name="packages_weight" string = 'Package Weight (Kgs)' />
@@ -124,8 +159,9 @@
 													<tree editable = 'bottom'>
 					                                    <field name="hopdong_line_id" domain="[('hopdong_id','=',parent.hopdong_id)]"/>
 					                                    <field name="packages_qty"/>
-					                                    <field name="packages_id"/>
-					                                    <field name="packages_weight"/>
+					                                    <field name="packages_id" string = "Kind Of Packages"/>
+					                                    <field name="packages_weight" string = "Bale Form"/>
+					                                    <field name="no_packge"/>
 					                                    <field name="net_weight"/>
 					                                    <field name="gross_weight"/>
 													</tree>
@@ -150,7 +186,7 @@
             <field name="view_mode">tree,form</field>
             <field name="view_id" ref="draft_bl_tree_view"/>
             <field name="domain">[]</field>
-            <field name="context">{}</field>
+            <field name="context">{"search_default_user_id":uid}</field>
         </record>
     	
     </data>

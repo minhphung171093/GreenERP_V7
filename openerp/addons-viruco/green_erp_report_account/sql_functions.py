@@ -212,6 +212,11 @@ class sql_function(osv.osv):
     
     
     def finance_data(self, cr):
+        sql = '''
+            DROP TYPE IF EXISTS finance_data CASCADE;
+            commit;
+        '''
+        cr.execute(sql)
         cr.execute("select exists (select 1 from pg_type where typname = 'finance_data')")
         res = cr.fetchone()
         if res and res[0]:
@@ -265,6 +270,11 @@ class sql_function(osv.osv):
         return True
     
     def fn_cashbank_book_type(self, cr):
+        sql = '''
+            DROP TYPE IF EXISTS fin_cash_data CASCADE;
+            commit;
+        '''
+        cr.execute(sql)
         cr.execute("select exists (select 1 from pg_type where typname = 'fin_cash_data')")
         res = cr.fetchone()
         if res and res[0]:

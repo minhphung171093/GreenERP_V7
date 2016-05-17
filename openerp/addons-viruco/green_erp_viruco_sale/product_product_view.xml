@@ -46,6 +46,7 @@
             		<field name="chatluong_id"/>
             		<field name="quycach_donggoi_id"/>
             		<field name="quycach_baobi_id"/>
+            		<field name="sp_thaythe_ids" widget="many2many_tags"/>
             	</field>
             	<field name="list_price" position="after">
             		<field name="nha_sanxuat_id"/>

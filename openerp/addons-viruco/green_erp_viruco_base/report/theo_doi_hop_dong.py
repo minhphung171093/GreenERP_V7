@@ -56,10 +56,13 @@ class Parser(report_sxw.rml_parse):
         date_to = wizard_data['date_to']
         hop_dong = []
         sql = '''
-            select hd.tu_ngay as date, rp.name as buyer, qc_dg.name as packing, cl_sp.name as quality, sm.product_qty as qty,
+            select hd.tu_ngay as date, rp.name as buyer, qc_dg.name_eng as packing, cl_sp.name as quality, sm.product_qty as qty,
             hdl.price_unit as price, hd_hh_l.price_unit as comission, rc.name as country, d_bl.freight as freight, sl.name as shipping_line,
-            fl.name as forwarder_line, d_bl.container_no_seal as con_seal_no, d_bl.bl_no as bl_no, pt.name as descrip,
-            dbh.thoigian_giaohang as etd, brokerrp.name as broker, dg.name as term, ng.name as discharge, apt.name as payment, hdm.name as source
+            fl.name as forwarder_line, dbl_l.container_no_seal as con_no_seal_1, dbl_l.seal_no as seal_no_1,
+            dl.container_no_seal as con_no_seal_2, dl.seal_no as seal_no_2,
+            dbl_l.bl_no as bl_no, d_bl.dhl_no as dhl_no, pp.default_code as descrip,
+            dbh.thoigian_giaohang as etd, brokerrp.name as broker, dg.name as term, dg.discharge as discharge, dk_tt.name as payment, 
+            hdm.name as ten_hdm, hdm_cus.name as ncc, dbl_l.option as option
                 from hopdong_line hdl
                     left join hop_dong hd on hdl.hopdong_id=hd.id
                     left join res_partner rp on hd.partner_id=rp.id
@@ -67,6 +70,7 @@ class Parser(report_sxw.rml_parse):
                     left join res_partner rurp on ru.partner_id=rurp.id
                     left join hopdong_hoahong_line hd_hh_l on hd.id=hd_hh_l.hopdong_hh_id
                     left join draft_bl d_bl on hd.id=d_bl.hopdong_id
+                    left join draft_bl_line dbl_l on d_bl.id=dbl_l.draft_bl_id
                     left join res_country rc on d_bl.country_id=rc.id
                     left join shipping_line sl on d_bl.shipping_line_id=sl.id
                     left join forwarder_line fl on d_bl.forwarder_line_id=fl.id
@@ -78,10 +82,12 @@ class Parser(report_sxw.rml_parse):
                     left join res_partner brokerrp on dbh.nguoi_gioithieu_id=brokerrp.id
                     left join dieukien_giaohang dg on dbh.dieukien_giaohang_id=dg.id
                     left join noi_giaohang ng on dbh.noi_giaohang_id=ng.id
-                    left join account_payment_term apt on dbh.payment_term=apt.id
+                    left join dk_thanhtoan dk_tt on hd.dk_thanhtoan_id=dk_tt.id
                     left join stock_move sm on sm.hop_dong_ban_id=hd.id
                     left join hop_dong hdm on sm.hop_dong_mua_id=hdm.id
-                where hd.tu_ngay between '%s' and '%s' and hd.type in ('hd_ngoai') and hd.state = 'thuc_hien'
+                    left join res_partner hdm_cus on hdm.partner_id=hdm_cus.id
+                    left join description_line dl on dl.seal_line_id=dbl_l.id
+                where hd.tu_ngay between '%s' and '%s' and hd.type in ('hd_ngoai') and hd.state not in ('moi_tao','huy_bo')
                 order by hd.tu_ngay
         '''%(date_from,date_to)
         self.cr.execute(sql)
@@ -93,7 +99,7 @@ class Parser(report_sxw.rml_parse):
                             'descrip': line['descrip'],
                             'packing':line['packing'],
                             'quality':line['quality'],
-                            'source': line['source'],
+                            'source': line['ten_hdm'] and (line['ten_hdm']+' - '+line['ncc']) or '',
                             'qty':line['qty'],
                             'price':line['price'],
                             'comission':line['comission'],
@@ -104,8 +110,9 @@ class Parser(report_sxw.rml_parse):
                             'freight':line['freight'],
                             'shipping_line':line['shipping_line'],
                             'forwarder_line':line['forwarder_line'],
-                            'con_seal_no':line['con_seal_no'],
+                            'con_seal_no':line['option']=='seal_no' and (line['con_no_seal_1']+'/'+line['seal_no_1']) or line['option']=='product' and (line['con_no_seal_2']+'/'+line['seal_no_2']) or '',
                             'bl_no':line['bl_no'],
+                            'dhl_no':line['dhl_no'],
                             })
         return hop_dong
     

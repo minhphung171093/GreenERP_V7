@@ -16,6 +16,8 @@ import codecs
 class draft_bl(osv.osv):
     _name = "draft.bl"
     
+    def _get_user(self, cr, uid, ids, context=None):
+        return uid
     def onchange_hopdong_id(self, cr, uid, ids, hopdong_id=False, context=None):
         vals = {}
         draft_bl_line = []
@@ -37,10 +39,32 @@ class draft_bl(osv.osv):
             }
         return {'value': vals}
     
+    def _get_net_weight(self, cr, uid, ids, field_name, arg, context=None):
+        res = {}
+        for bl in self.browse(cr, uid, ids, context=context):
+            net_weight = 0
+            for bl_line in bl.draft_bl_line:
+                if bl_line.option=='product':
+                    for line in bl_line.seal_descript_line:
+                        net_weight += line.net_weight
+                if bl_line.option=='seal_no':
+                    for line in bl_line.description_line:
+                        net_weight += line.net_weight
+            res[bl.id] = net_weight
+        return res
+            
     _columns = {
         'name':fields.char('Booking No', size = 1024,required = True),
         'hopdong_id':fields.many2one('hop.dong','Contract',required = True),
+        'partner_id':fields.related('hopdong_id', 'partner_id', type='many2one', relation='res.partner', string='Buyer', readonly=True),
+        'net_weight': fields.function(_get_net_weight, type='float', string='Net Weight'),
         'date':fields.date('Date',required=True),
+        
+        'etd_date':fields.date('ETD'),
+        'eta_date':fields.date('ETA'),
+        
+        'cuoc_tau': fields.float('Freight Cost'),
+        
         'company_id': fields.many2one('res.company','Company',required = True),
         'notify_party_id': fields.many2one('res.partner','Notify Party',required=True),
         'notify_party_text':fields.char('2nd Notify Party'),
@@ -61,35 +85,73 @@ class draft_bl(osv.osv):
         'customs_declaration': fields.char('Customs Declaration', size=1024),
         'shipping_line_id': fields.many2one('shipping.line','Shipping line'),
         'forwarder_line_id': fields.many2one('forwarder.line','Forwarder line'),
+        'stock_picking_id': fields.many2one('stock.picking','Phiếu xuất'),
         'mean_transport': fields.char('Means of Transport', size=1024),
+        'stock_ids':fields.many2many('stock.picking','kho_chungtu_ref','chung_tu_id','stock_id','Kho' ),
         'state': fields.selection([
             ('moi_tao', 'Mới tạo'),
             ('da_duyet', 'Xác nhận'),
             ('hoan_tat', 'Hoàn tất'),
             ('huy_bo', 'Hủy bỏ'),
             ], 'Trạng thái',readonly=True, states={'moi_tao': [('readonly', False)]}),
+        'user_id': fields.many2one('res.users','Người thực hiện'),
+        'buyer_thue':fields.many2one('res.partner','Form E'),
+        'dhl_no': fields.char('DHL No', size=1024),
+#         'user_chungtu_id': fields.many2one('res.users','Người thực hiện'),
     }
     
     _defaults = {
         'state':'moi_tao',
-        'date': time.strftime('%Y-%m-%d'),
+#         'user_id': _get_user,
+        'date': lambda *a: time.strftime('%Y-%m-%d'),
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'draft.bl', context=c),
     }
+    
+    def onchange_user_id(self, cr, uid, ids,user_id=False,hopdong_id=False,context=None):
+        vals = {}
+        if user_id and hopdong_id:
+            sql = '''
+                update hop_dong set user_chungtu_id = %s where id = %s
+            '''%(user_id,hopdong_id)
+            cr.execute(sql)
+        return {'value':vals}
     
     def create(self, cr, uid, vals, context=None):
 #         new_id = super(draft_bl, self).create(cr, uid, vals, context)
         hopdong_obj = self.pool.get('hop.dong')
         if 'hopdong_id' in vals:
             hop_dong = hopdong_obj.browse(cr,uid,vals['hopdong_id'])
-            if hop_dong.state == 'thuc_hien':
-                hopdong_obj.write(cr,uid,[vals['hopdong_id']],{
-                                                               'state': 'thuc_hien_xongchungtu',
-                                                               })
-            if hop_dong.state == 'giaohang_chochungtu':
-                hopdong_obj.write(cr,uid,[vals['hopdong_id']],{
-                                                               'state': 'giaohang_xongchungtu',
-                                                               })
+            sql = '''
+                select id from stock_picking where state != 'done' and id in(select picking_id from stock_move where hop_dong_ban_id = %s)
+            '''%(vals['hopdong_id'])
+            cr.execute(sql)
+            picking_ids = [row[0] for row in cr.fetchall()]
+            vals.update({
+                         'stock_ids': [(6,0,picking_ids)]
+                         })
         return super(draft_bl, self).create(cr, uid, vals, context)    
+
+    def write(self, cr, uid, ids, vals, context=None):
+        new_write = super(draft_bl, self).write(cr, uid,ids, vals, context)  
+        for line in self.browse(cr,uid,ids):
+#             if 'stock_ids' in vals and vals['stock_ids']:
+            if 'state' in vals and vals['state']:
+                if vals['state'] == 'da_duyet':
+#                     if line.stock_ids:
+                    hopdong_ban = self.pool.get('hop.dong').browse(cr,uid,line.hopdong_id.id)
+                    self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'lam_chungtu'})
+                if vals['state'] == 'hoan_tat':
+                    hopdong_ban = self.pool.get('hop.dong').browse(cr,uid,line.hopdong_id.id)
+                    self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'xong_chungtu'})
+#             sql = '''
+#                 update hop_dong set user_chungtu_id = %s where id = %s
+#             '''%(uid,line.hopdong_id.id)
+#             cr.execute(sql)
+#         sql = '''
+#             update draft_bl set user_id = %s where id = %s
+#         '''%(uid,ids[0])
+#         cr.execute(sql)
+        return new_write
     
     def bt_wizard(self, cr, uid, ids, context=None):
         res = self.pool.get('ir.model.data').get_object_reference(cr, uid, 
@@ -110,13 +172,35 @@ class draft_bl(osv.osv):
                 }
 
     def xac_nhan(self, cr, uid, ids, context=None):
+        
         return self.write(cr, uid, ids, {'state': 'da_duyet'})
     
     def hoan_tat(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids, {'state': 'hoan_tat'})
     
     def huy_bo(self, cr, uid, ids, context=None):
-        return self.write(cr, uid, ids, {'state': 'huy_bo'})    
+        return self.write(cr, uid, ids, {'state': 'huy_bo'})   
+    
+#     def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
+#         if context is None:
+#             context = {}
+#         if context.get('search_chung_tu'):
+#             picking = self.pool.get('stock.picking').browse(cr,uid,context.get('picking_id'))
+#             hopdong_ids=[]
+#             for move in picking.move_lines:
+#                 sql = '''
+#                 select id from draft_bl
+#                 where state in ('hoan_tat') and hopdong_id = %s 
+#                 and id not in (select chung_tu_id from stock_picking where chung_tu_id is not null)
+#                 '''%(move.hop_dong_ban_id.id)
+#                 cr.execute(sql)
+#                 hopdong_ids = [row[0] for row in cr.fetchall()]
+#             args += [('id','in',hopdong_ids)]
+#         return super(draft_bl, self).search(cr, uid, args, offset=offset, limit=limit, order=order, context=context, count=count)
+#     
+#     def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
+#         ids = self.search(cr, user, args, context=context, limit=limit)
+#         return self.name_get(cr, user, ids, context=context)     
 draft_bl()
 
 class draft_bl_line(osv.osv):
@@ -124,7 +208,7 @@ class draft_bl_line(osv.osv):
     
     _columns = {
         'draft_bl_id': fields.many2one('draft.bl', 'Draft bl', ondelete='cascade', select=True),
-        'ocean_vessel':fields.char('Ocean Vessel/Vov No',required=True),
+        'ocean_vessel':fields.char('Ocean Vessel/Vov No',required=False),
 #         'picking_id': fields.many2one('stock.picking', 'Delivery Order'),
         'etd_date':fields.date('ETD'),
         'eta_date':fields.date('ETA'),
@@ -132,11 +216,44 @@ class draft_bl_line(osv.osv):
         'description_line': fields.one2many('description.line','draft_bl_line_id','Line'),
         'product_id': fields.many2one('product.product', 'Product', domain=[('sale_ok', '=', True)]),
         'hopdong_line_id': fields.many2one('hopdong.line', 'Product', ondelete='cascade', select=True),
-        'container_no_seal':fields.char('Container No/Seal No'),
+        'container_no_seal':fields.char('Container No'),
+        'seal_no':fields.char('Seal No'),
         'option':fields.selection([('product', 'Product'),('seal_no', 'Container No/Seal No')], 'Option'),
         'seal_descript_line': fields.one2many('description.line','seal_line_id','Line'),
         'hopdong_id':fields.many2one('hop.dong','Contract'),
+        'line_number': fields.integer('Line Number'),
+        'customs_declaration': fields.char('Customs Declaration', size=1024),
+        'date_customs_declaration': fields.date('Date Customs Declaration'),
+        'thanhtoan':fields.boolean('Thanh toán'),
+        'ngay_thanhtoan':fields.date('Ngày thanh toán'),
+        'dagui_nganhang':fields.boolean('Đã gửi ngân hàng'),
+        'ngaygui_nganhang':fields.date('Ngày gửi ngân hàng'),
+        'dagui_hopdong':fields.boolean('Đã gửi hợp đồng'),
+        'ngaygui_hopdong':fields.date('Ngày gửi hợp đồng'),
+        'dagui_hoadon':fields.boolean('Đã gửi hóa đơn'),
+        'ngaygui_hoadon':fields.date('Ngày gửi hóa đơn'),
+        'dagui_chungtugoc':fields.boolean('Đã gửi chứng từ gốc'),
+        'ngaygui_chungtugoc':fields.date('Ngày gửi chứng từ gốc'),
+        'bl_no':fields.char('B/L No'),
     }
+    
+    def onchange_option(self, cr, uid, ids, option=False, line_number=False):
+        vals = {}
+        mang = []
+        if option and line_number:
+            if option=='product':
+                qc_donggoi_ids = self.pool.get('quycach.donggoi').search(cr,uid,[('name','like','HÀNG RỜI')])
+                for i in range(0,line_number):
+                    mang.append({
+                                 'packages_qty':600,
+                                 'packages_id':qc_donggoi_ids and qc_donggoi_ids[0] or False,
+                                 'packages_weight':'33.33',
+                                 'net_weight':20,
+                                 'gross_weight':20,
+                                 })
+                vals = {'seal_descript_line':mang,
+                    }
+        return {'value': vals} 
     
     def name_get(self, cr, uid, ids, context=None):
         if not len(ids):
@@ -153,8 +270,9 @@ class draft_bl_line(osv.osv):
         vals = {}
         warning = {}
         if container_no_seal:
-            a = container_no_seal.split('/')
-            if len(a)==2 and len(a[0])!=11:
+#             a = container_no_seal.split('/')
+#             if len(a)==2 and len(a[0])!=11:
+            if len(container_no_seal)!=11:
                 vals.update({'container_no_seal': ''})
                 warning = {
                     'title': _('Cảnh báo!'),
@@ -173,6 +291,7 @@ class description_line(osv.osv):
         'draft_bl_line_id': fields.many2one('draft.bl.line', 'Draft bl line', ondelete='cascade', select=True), 
         'seal_line_id': fields.many2one('draft.bl.line', 'Seal Draft bl line', ondelete='cascade', select=True),
         'container_no_seal':fields.char('Container No/Seal No'),
+        'seal_no':fields.char('Seal No'),
         'packages_qty': fields.float('Packages Qty'),
         'packages_id':fields.many2one('quycach.donggoi','Packages'),
         'product_uom': fields.many2one('product.uom', ''),
@@ -181,6 +300,7 @@ class description_line(osv.osv):
         'net_weight':fields.float('Net Weight'),
         'gross_weight':fields.float('Gross Weight'),
         'hopdong_line_id': fields.many2one('hopdong.line', 'Product', ondelete='cascade', select=True),
+        'no_packge':fields.float('No. of Packages',digits=(16,2)),
     }
 
 #     def create(self, cr, uid, vals, context=None):
@@ -196,14 +316,15 @@ class description_line(osv.osv):
         vals = {}
         warning = {}
         if container_no_seal:
-            a = container_no_seal.split('/')
-            if len(a)==2 and len(a[0])!=11:
+#             a = container_no_seal.split('/')
+            if len(container_no_seal)!=11:
+                vals.update({'container_no_seal': ''})
                 warning = {
                     'title': _('Cảnh báo!'),
-                    'message' : _('Container No hiện đang chưa đúng (cần có đủ 7 ký tự, số) !')
+                    'message' : _('Container No không đúng (cần đủ 11 ký tự ) !')
                 }
                         
-        return {'warning': warning}
+        return {'warning': warning,'value':vals}
     
 description_line()
 

@@ -110,7 +110,7 @@ class purchase_order(osv.osv):
             raise osv.except_osv(_('Warning!'), _('Please define Stock Journal for Incomming Order.'))
         return {
             'name': self.pool.get('ir.sequence').get(cr, uid, 'stock.picking.in') + \
-                 (order.hop_dong_id.diadiem_nhanhang and order.hop_dong_id.diadiem_nhanhang.name or '') \
+                 (order.hop_dong_id.location_dest_id and order.hop_dong_id.location_dest_id.name or '') \
                 or '/',
             'origin': order.name + ((order.origin and (':' + order.origin)) or ''),
             'date': self.date_to_datetime(cr, uid, order.date_order, context),
@@ -124,7 +124,7 @@ class purchase_order(osv.osv):
             
             'stock_journal_id':journal_ids and journal_ids[0] or False,
             'location_id': order.partner_id.property_stock_supplier.id,
-            'location_dest_id': order.hop_dong_id.diadiem_nhanhang.id,
+            'location_dest_id': order.hop_dong_id.location_dest_id.id,
 #             'location_dest_id': order.location_id.id,
         }
     
@@ -143,7 +143,7 @@ class purchase_order(osv.osv):
             'date': self.date_to_datetime(cr, uid, order.date_order, context),
             'date_expected': self.date_to_datetime(cr, uid, order_line.date_planned, context),
             'location_id': order.partner_id.property_stock_supplier.id,
-            'location_dest_id': order.hop_dong_id.diadiem_nhanhang.id,
+            'location_dest_id': order.hop_dong_id.location_dest_id.id,
 #             'location_dest_id': order.location_id.id, 
             'picking_id': picking_id,
             'partner_id': order.dest_address_id.id or order.partner_id.id,
