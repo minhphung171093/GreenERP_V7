@@ -946,6 +946,9 @@
 			<field name="arch" type="xml">
 				<tree string="Bank Detail" editable='bottom'>
 					<field name="name"/>
+					<field name="account_no"/>
+					<field name="swift_code"/>
+					<field name="address"/>
 				</tree>
 			</field>
 		</record>
