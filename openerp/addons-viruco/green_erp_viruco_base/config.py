@@ -18,6 +18,13 @@ from openerp import modules
 base_path = os.path.dirname(modules.get_module_path('green_erp_viruco_base'))
 
 
+class res_partner_bank(osv.osv):
+    _inherit = "res.partner.bank"
+    _columns = {
+        'kichhoat': fields.boolean('Kích hoạt'),
+    }
+res_partner_bank()
+
 class res_country_state(osv.osv):
     _inherit = "res.country.state"
     _columns = {

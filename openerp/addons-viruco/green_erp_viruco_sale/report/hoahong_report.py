@@ -50,6 +50,7 @@ class Parser(report_sxw.rml_parse):
             'get_soluong': self.get_soluong,
             'get_month_name':self.get_month_name,
             'get_date_name':self.get_date_name,
+            'get_bank_nguoimoigioi': self.get_bank_nguoimoigioi,
             
         })
         
@@ -250,7 +251,17 @@ class Parser(report_sxw.rml_parse):
         else:
             return ''
         
-    
+    def get_bank_nguoimoigioi(self, o):
+        if o.donbanhang_id and o.donbanhang_id.nguoi_gioithieu_id:
+            sql = '''
+                select acc_number as account, bank_name as name, bank_bic as code from res_partner_bank
+                    where partner_id=%s and kichhoat = True
+            '''%(o.donbanhang_id.nguoi_gioithieu_id.id)
+            self.cr.execute(sql)
+            banks = self.cr.dictfetchone()
+            if banks:
+                return banks
+        return [{'name': '', 'account': '', 'code': ''}] 
     
         
         
