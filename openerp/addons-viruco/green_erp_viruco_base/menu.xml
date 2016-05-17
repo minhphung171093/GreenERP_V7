@@ -82,6 +82,7 @@
 				<menuitem id="menu_action_shipping_line" action="action_shipping_line" name="Shipping line" parent="menu_cac_danh_muc" sequence="181"/>
 				<menuitem id="menu_action_forwarder_line" action="action_forwarder_line" name="Forwarder line" parent="menu_cac_danh_muc" sequence="182"/>
 				<menuitem id="menu_action_chat_luong" action="action_chat_luong" name="Chất lượng" parent="menu_cac_danh_muc" sequence="183"/>
+				<menuitem id="menu_action_bank_detail" action="action_bank_detail" name="Bank Detail" parent="menu_cac_danh_muc" sequence="185"/>
 				<menuitem id="stock.menu_action_warehouse_form"
 					name="Các kho hàng"
 					parent="menu_cac_danh_muc" sequence="190"/>

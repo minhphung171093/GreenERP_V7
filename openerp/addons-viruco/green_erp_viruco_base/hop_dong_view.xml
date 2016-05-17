@@ -348,6 +348,7 @@
 								<field name="dk_giaohang_id" string = "Delivery Term"/>
 								<field name="incoterm_id"/>
 								<field name="dk_thanhtoan_id" string = "Payment Term" />
+								<field name="bank_detail_id"/>
 								<field name="flag" invisible='1'/>
 							</group>
 								<field name="phuongthuc_thanhtoan" nolabel='1'/>

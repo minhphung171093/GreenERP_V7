@@ -221,6 +221,7 @@ class hop_dong(osv.osv):
         'donmuahang_id': fields.many2one('don.mua.hang', 'Đơn mua hàng',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'thanhtoan':fields.boolean('Thanh toán'),
         'incoterm_id': fields.many2one('hd.incoterm', 'Incoterm'),
+        'bank_detail_id': fields.many2one('bank.detail', 'Bank Detail'),
         'ngay_thanhtoan':fields.date('Ngày thanh toán'),
         'dagui_nganhang':fields.boolean('Đã gửi ngân hàng'),
         'ngaygui_nganhang':fields.date('Ngày gửi ngân hàng'),

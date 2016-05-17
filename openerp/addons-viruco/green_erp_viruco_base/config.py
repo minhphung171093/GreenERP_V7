@@ -76,6 +76,16 @@ class quycach_donggoi(osv.osv):
     }
     
 quycach_donggoi()
+class bank_detail(osv.osv):
+    _name = 'bank.detail'
+    _columns = {
+        'name':fields.char('Bank name',size=1024,required=True),
+        'swift_code':fields.char('Swift Code',size=1024,required=True),
+        'account_no':fields.char('Account No',size=1024,required=True),
+        'address':fields.text('Address'),
+    }
+    
+bank_detail()
 class quycach_baobi(osv.osv):
     _name = 'quycach.baobi'
     _columns = {

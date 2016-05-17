@@ -938,5 +938,27 @@
             <field name="act_window_id" ref="action_bang_gia_ban"/>
         </record>
         
+        <!--Bank Detail-->
+		
+		<record id="bank_detail_tree_view" model="ir.ui.view">
+			<field name="name">bank.detail.tree</field>
+			<field name="model">bank.detail</field>
+			<field name="arch" type="xml">
+				<tree string="Bank Detail" editable='bottom'>
+					<field name="name"/>
+				</tree>
+			</field>
+		</record>
+          
+		<record id="action_bank_detail" model="ir.actions.act_window">
+            <field name="name">Bank Detail</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bank.detail</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="bank_detail_tree_view"/>
+            <field name="domain">[]</field>
+        </record>
+        
     </data>
 </openerp>
