@@ -260,7 +260,7 @@ class Parser(report_sxw.rml_parse):
             self.cr.execute(sql)
             banks = self.cr.dictfetchone()
             if banks:
-                return banks
+                return [banks]
         return [{'name': '', 'account': '', 'code': ''}] 
     
         
