@@ -76,7 +76,7 @@ class quyet_toan_ve_ngay(osv.osv):
                 'st_3_17_tong': tongcong['st_3_17'],
                 
                 'sl_4_16_tong': tongcong['sl_4_16'],
-                'st_4_16_tong': tongcong['sl_4_16'],
+                'st_4_16_tong': tongcong['st_4_16'],
                 
                 'sl_tong': tongcong['sl_tong'],
                 'st_tong': tongcong['st_tong'],
@@ -584,7 +584,7 @@ class quyet_toan_ve_ngay_line(osv.osv):
     _columns = {
         'quyettoan_id': fields.many2one('quyet.toan.ve.ngay','Quyết toán vé ngày',ondelete='cascade'),
         'ngay_mo_so': fields.date('Ngày mở số'),
-        'ngay_mo_thuong': fields.date('Ngày mở thưởng'),
+        'ngay_mo_thuong': fields.date('Ngày mở thưởng'),#luon co du lieu
         'dai_duthuong_id': fields.many2one('dai.duthuong', 'Đài dự thưởng'),
         'sl_2_d': fields.float('SL', digits=(16,0)),
         'st_2_d': fields.float('SL', digits=(16,0)),

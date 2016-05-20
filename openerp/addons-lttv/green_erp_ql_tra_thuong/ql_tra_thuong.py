@@ -492,3 +492,156 @@ class tra_thuong_thucte_line(osv.osv):
     }
     
 tra_thuong_thucte_line()
+
+class trathuong_thucte_new(osv.osv):
+    _name = "trathuong.thucte.new"
+    
+    def _get_tong(self, cr, uid, ids, field_name, arg, context=None):
+        res = {}
+        if context is None:
+            context = {}
+        for line in self.browse(cr, uid, ids, context=context):
+            tong = 0
+            for ct in line.tra_thuong_nmt_line:
+                tong += ct.tong_cong
+            res[line.id] = tong
+        return res
+    
+    _columns = {
+        'daily_id': fields.many2one('res.partner','Đại lý',domain="[('dai_ly','=',True)]",states={'done':[('readonly',True)]}),
+        'ngay_tra_thuong': fields.date('Ngày trả thưởng', required=True,states={'done':[('readonly',True)]}),
+        'tra_thuong_nmt_line': fields.one2many('trathuong.thucte.nmt.new','trathuong_id','Line',states={'done':[('readonly',True)]}),
+        'state': fields.selection([('new','Mới tạo'),('done','Đã trả')],'Trạng thái'),
+        'tong_cong': fields.function(_get_tong, string='Tổng cộng', type='float'),
+    }
+    
+    _defaults = {
+        'state': 'new',
+        'ngay_tra_thuong': lambda *a: time.strftime('%Y-%m-%d'),
+    }
+    
+trathuong_thucte_new()
+
+class trathuong_thucte_nmt_new(osv.osv):
+    _name = "trathuong.thucte.nmt.new"
+    
+    def _get_tong(self, cr, uid, ids, field_name, arg, context=None):
+        res = {}
+        if context is None:
+            context = {}
+        for line in self.browse(cr, uid, ids, context=context):
+            tong = 0
+            for ct in line.tra_thuong_line:
+                tong += ct.tong_cong
+            res[line.id] = tong
+        return res
+    
+    _columns = {
+        'trathuong_id': fields.many2one('trathuong.thucte.new','Trả thưởng',ondelete='cascade'),
+        'tra_thuong_line': fields.one2many('trathuong.thucte.new.line','trathuong_nmt_id','Line'),
+        'product_id': fields.many2one('product.product','Mệnh giá',domain="[('menh_gia','=',True)]",required=True),
+        'tong_cong': fields.function(_get_tong, string='Tổng cộng', type='float'),
+    }
+    
+trathuong_thucte_nmt_new()
+
+class trathuong_thucte_new_line(osv.osv):
+    _name = "trathuong.thucte.new.line"
+    
+    def _get_tong(self, cr, uid, ids, field_name, arg, context=None):
+        res = {}
+        if context is None:
+            context = {}
+        for line in self.browse(cr, uid, ids, context=context):
+            tong = 0
+            gt_menhgia = int(line.trathuong_nmt_id.product_id.list_price)/10000
+            tong += 700000*gt_menhgia*line.sl_2_d
+            tong += 700000*gt_menhgia*line.sl_2_c
+            tong += 350000*gt_menhgia*line.sl_2_dc*line.slan_2_dc
+            tong += 39000*gt_menhgia*line.sl_2_18*line.slan_2_18
+            
+            tong += 5000000*gt_menhgia*line.sl_3_d
+            tong += 5000000*gt_menhgia*line.sl_3_c
+            tong += 2500000*gt_menhgia*line.sl_3_dc*line.slan_3_dc
+            tong += 715000*gt_menhgia*line.sl_3_7*line.slan_3_7
+            tong += 295000*gt_menhgia*line.sl_3_17*line.slan_3_17
+            
+            tong += 2000000*gt_menhgia*line.sl_4_16*line.slan_4_16
+            res[line.id] = tong
+        return res
+    
+    _columns = {
+        'trathuong_nmt_id': fields.many2one('trathuong.thucte.nmt.new','Trả thưởng',ondelete='cascade'),
+        'ngay': fields.date('Ngày xổ số', required=True),
+        'product_id': fields.many2one('product.product','Mệnh giá',domain="[('menh_gia','=',True)]"),
+        
+        'sl_2_d': fields.integer('SL (Đ)'),
+        'so_dt_2_c': fields.char('Số DT (C)',size=2),
+        'sl_2_c': fields.integer('SL (C)'),
+        'sl_2_dc': fields.integer('SL (Đ/C)'),
+        'slan_2_dc': fields.integer('SLần (Đ/C)'),
+        'sl_2_18': fields.integer('SL (18L)'),
+        'slan_2_18': fields.integer('SLần (18L)'),
+        
+        'sl_3_d': fields.integer('SL (Đ)'),
+        'sl_3_c': fields.integer('SL (C)'),
+        'sl_3_dc': fields.integer('SL (Đ/C)'),
+        'slan_3_dc': fields.integer('SLần (Đ/C)'),
+        'sl_3_7': fields.integer('SL (7L)'),
+        'slan_3_7': fields.integer('SLần (7L)'),
+        'sl_3_17': fields.integer('SL (17L)'),
+        'slan_3_17': fields.integer('SLần (17L)'),
+        
+        'sl_4_16': fields.integer('SL (16L)'),
+        'slan_4_16': fields.integer('SLần (16L)'),
+        
+        'tong_cong': fields.function(_get_tong, string='Tổng cộng', type='float'),
+    }
+    
+    _defaults = {
+        'slan_2_dc': 1,
+        'slan_2_18': 1,
+        'slan_3_dc': 1,
+        'slan_3_7': 1,
+        'slan_3_17': 1,
+        'slan_4_16': 1,
+    }
+    def onchange_trungthuong(self, cr, uid, ids, product_id=False,slan_trung=False,loai=False,giai=False,ngay=False,sl_trung=False, context=None):
+        res = self.pool.get('tra.thuong.thucte.line').onchange_product(cr, uid, [], product_id,slan_trung,loai,giai,ngay,sl_trung, context)
+        vals = {}
+        if loai=='2_so':
+            if giai=='dau':
+                if res.get('value',{}) and res['value'].get('sl_trung',False):
+                    vals['sl_2_d'] = res['value']['sl_trung']
+            if giai=='cuoi':
+                if res.get('value',{}) and res['value'].get('sl_trung',False):
+                    vals['sl_2_c'] = res['value']['sl_trung']
+            if giai=='dau_cuoi':
+                if res.get('value',{}) and res['value'].get('sl_trung',False):
+                    vals['sl_2_dc'] = res['value']['sl_trung']
+            if giai=='18_lo':
+                if res.get('value',{}) and res['value'].get('sl_trung',False):
+                    vals['sl_2_18'] = res['value']['sl_trung']
+        if loai=='3_so':
+            if giai=='dau':
+                if res.get('value',{}) and res['value'].get('sl_trung',False):
+                    vals['sl_3_d'] = res['value']['sl_trung']
+            if giai=='cuoi':
+                if res.get('value',{}) and res['value'].get('sl_trung',False):
+                    vals['sl_3_c'] = res['value']['sl_trung']
+            if giai=='dau_cuoi':
+                if res.get('value',{}) and res['value'].get('sl_trung',False):
+                    vals['sl_3_dc'] = res['value']['sl_trung']
+            if giai=='7_lo':
+                if res.get('value',{}) and res['value'].get('sl_trung',False):
+                    vals['sl_3_7'] = res['value']['sl_trung']
+            if giai=='17_lo':
+                if res.get('value',{}) and res['value'].get('sl_trung',False):
+                    vals['sl_3_17'] = res['value']['sl_trung']
+        if loai=='4_so':
+            if giai=='16_lo':
+                if res.get('value',{}) and res['value'].get('sl_trung',False):
+                    vals['sl_4_16'] = res['value']['sl_trung']
+        return {'value': vals, 'warning': res.get('warning',{})}
+    
+trathuong_thucte_new_line()

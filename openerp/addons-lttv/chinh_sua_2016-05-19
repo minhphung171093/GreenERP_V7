@@ -1,0 +1,1 @@
+ALTER TABLE quyet_toan_ve_ngay DROP COLUMN st_4_16_tong;

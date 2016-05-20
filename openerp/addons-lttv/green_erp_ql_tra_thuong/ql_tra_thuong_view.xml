@@ -326,7 +326,6 @@
             <field name="context">{'search_default_moitao':1,'readonly_by_pass': True}</field>
         </record>
         
-        <menuitem action="action_tra_thuong_thucte" id="menu_action_tra_thuong_thucte" parent="menu_tra_thuong" sequence="30"/>
         
         <!-- Xem tra thuong co group by  -->
         <record id="tra_thuong_filter" model="ir.ui.view">
@@ -503,6 +502,140 @@
         </record>
         
         <menuitem action="action_tra_thuong_thucte_line" id="menu_action_tra_thuong_thucte_line" parent="menu_tra_thuong" sequence="32"/>
+        
+        <!-- Trả thưởng thực tế form mới -->
+        <record id="trathuong_thucte_new_filter" model="ir.ui.view">
+            <field name="name">tra.thuong.thucte.filter</field>
+            <field name="model">tra.thuong.thucte</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Trả thưởng thực tế">
+                    <field name="daily_id"/>
+                    <field name="ngay_tra_thuong"/>
+                    <field name="state"/>
+                    <filter icon="terp-go-year" string="Mới tạo" name="moitao" domain="[('state','=','new')]" />
+                    <group expand="0" string="Group By...">
+                        <filter name="group_daily_id" string="Theo đại lý" icon="terp-personal" domain="[]" context="{'group_by':'daily_id'}"/>
+                        <filter name="group_thang_nt" string="Theo tháng nhận thưởng" icon="terp-personal" domain="[]" context="{'group_by':'ngay_tra_thuong'}"/>
+                        <filter name="group_state" string="Theo trạng thái" icon="terp-personal" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <record id="trathuong_thucte_new_tree" model="ir.ui.view">
+            <field name="name">trathuong.thucte.new.tree</field>
+            <field name="model">trathuong.thucte.new</field>
+            <field name="arch" type="xml">
+                <tree string="Trả thưởng thực tế">
+                    <field name="daily_id"/>
+                    <field name="ngay_tra_thuong"/>
+                    <field name="tong_cong"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+    	
+		<record id="trathuong_thucte_new_form" model="ir.ui.view">
+            <field name="name">trathuong.thucte.new.form</field>
+            <field name="model">trathuong.thucte.new</field>
+            <field name="arch" type="xml">
+                <form string="Trả thưởng thực tế" version="7.0">
+                	<header>
+                        <button name="tao_phieu_chi" type="object" states="new" string="Xác nhận trả thưởng" class="oe_highlight"/>
+	                    <field name="state" widget="statusbar" statusbar_visible="new,done" statusbar_colors='{"new":"blue","done":"blue"}'/>
+	                </header>
+	                <sheet string="Trả thưởng">
+	                    <group>
+		                    <group>
+		                        <field name="daily_id" domain="[('parent_id','=',False),('dai_ly','=',True)]"/>
+		                    </group>
+		                    <group>
+		                        <field name="ngay_tra_thuong"/>
+		                    </group>
+	                    </group>
+	                    <group>
+	                        <field name="tra_thuong_nmt_line" nolabel='1'>
+	                        	<tree>
+			                        <field name="product_id"/>
+			                        <field name="tong_cong"/>
+			                        
+	                        	</tree>
+	                        	<form>
+	                        		<sheet>
+	                        			<group col='4' conspan='2'>
+			                        		<field name="product_id"/>
+			                        	</group>
+			                        	<group attrs="{'invisible': [('product_id','=',False)]}">
+			                        		<field name="tra_thuong_line" nolabel='1' context="{'default_product_id': product_id}">
+			                        			<tree>
+							                        <field name="ngay"/>
+							                        <field name="tong_cong"/>
+							                        <field name="product_id" invisible='1'/>
+					                        	</tree>
+					                        	<form>
+					                        		<sheet>
+					                        			<group col='4' colspan='2'>
+					                        				<field name="ngay"/>
+					                        				<field name="product_id" invisible='1'/>
+					                        			</group>
+					                        			<group string="2 Số" col='4' colspan='2'>
+									                        <field name="sl_2_d" on_change="onchange_trungthuong(product_id,1,'2_so','dau',ngay,sl_2_d)"/>
+									                        <newline/>
+									                        <field name="sl_2_c" on_change="onchange_trungthuong(product_id,1,'2_so','cuoi',ngay,sl_2_c)"/>
+									                        <newline/>
+									                        <field name="slan_2_dc" on_change="onchange_trungthuong(product_id,slan_2_dc,'2_so','dau_cuoi',ngay,sl_2_dc)"/>
+									                        <field name="sl_2_dc" on_change="onchange_trungthuong(product_id,slan_2_dc,'2_so','dau_cuoi',ngay,sl_2_dc)"/>
+									                        <field name="slan_2_18" on_change="onchange_trungthuong(product_id,slan_2_18,'2_so','18_lo',ngay,sl_2_18)"/>
+									                        <field name="sl_2_18" on_change="onchange_trungthuong(product_id,slan_2_18,'2_so','18_lo',ngay,sl_2_18)"/>
+					                        			</group>
+					                        			<group string="3 Số" col='4' colspan='2'>
+									                        <field name="sl_3_d" on_change="onchange_trungthuong(product_id,1,'3_so','dau',ngay,sl_3_d)"/>
+									                        <newline/>
+									                        <field name="sl_3_c" on_change="onchange_trungthuong(product_id,1,'3_so','cuoi',ngay,sl_3_c)"/>
+									                        <newline/>
+									                        <field name="slan_3_dc" on_change="onchange_trungthuong(product_id,slan_3_dc,'3_so','dau_cuoi',ngay,sl_3_dc)"/>
+									                        <field name="sl_3_dc" on_change="onchange_trungthuong(product_id,slan_3_dc,'3_so','dau_cuoi',ngay,sl_3_dc)"/>
+									                        <field name="slan_3_7" on_change="onchange_trungthuong(product_id,slan_3_7,'3_so','7_lo',ngay,sl_3_7)"/>
+									                        <field name="sl_3_7" on_change="onchange_trungthuong(product_id,slan_3_7,'3_so','7_lo',ngay,sl_3_7)"/>
+									                        <field name="slan_3_17" on_change="onchange_trungthuong(product_id,slan_3_17,'3_so','17_lo',ngay,sl_3_17)"/>
+									                        <field name="sl_3_17" on_change="onchange_trungthuong(product_id,slan_3_17,'3_so','17_lo',ngay,sl_3_17)"/>
+					                        			</group>
+					                        			<group string="4 Số" col='4' colspan='2'>
+									                        <field name="slan_4_16" on_change="onchange_trungthuong(product_id,slan_4_16,'4_so','16_lo',ngay,sl_4_16)"/>
+									                        <field name="sl_4_16" on_change="onchange_trungthuong(product_id,slan_4_16,'4_so','16_lo',ngay,sl_4_16)"/>
+					                        			</group>
+					                        		</sheet>
+					                        	</form>
+			                        		</field>
+			                        	</group>
+			                        </sheet>
+	                        	</form>
+	                        </field>
+	                        <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
+                                <div class="oe_subtotal_footer_separator oe_inline">
+                                    <label for="tong_cong" />
+                                </div>
+                                <field name="tong_cong" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary'/>
+                            </group>
+                            <div class="oe_clear"/>
+	                    </group>
+	                </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <record id="action_trathuong_thucte_new" model="ir.actions.act_window">
+            <field name="name">Trả thưởng thực tế</field>
+            <field name="res_model">trathuong.thucte.new</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="trathuong_thucte_new_tree"/>
+            <field name="context">{'search_default_moitao':1,'readonly_by_pass': True}</field>
+        </record>
+        
+        <menuitem action="action_trathuong_thucte_new" id="menu_action_trathuong_thucte_new" parent="menu_tra_thuong" sequence="30"/>
+        
     </data>
 </openerp>
 
