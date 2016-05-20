@@ -12,6 +12,7 @@ class average_cost_history(osv.osv):
     _name = "average.cost.history"
     _inherit = ['mail.thread', 'ir.needaction_mixin']
     _columns = {
+        'name': fields.char('Name'),
         'period_id': fields.many2one('account.period', 'Period', required=True, readonly=True, states={'draft':[('readonly',False)]}),
         #'journal_id': fields.many2one('account.journal', 'Account Journal', required=True, readonly=True, states={'draft':[('readonly',False)]}),
         'detail_history_ids': fields.one2many('average.cost.detail.history', 'cost_history_id', 'Detail History', readonly=True),
@@ -97,6 +98,14 @@ class average_cost_history(osv.osv):
         '''%(line.id)
         cr.execute(sql)
         return self.write(cr,uid,ids,{'state':'cancel'})
+    
+    def name_get(self, cr, uid, ids, context=None):
+        res = []
+        reads = self.browse(cr, uid, ids, context)
+        for line in reads:
+            name = line.period_id and line.period_id.name or ''
+            res.append((line.id, name))
+        return res
     
 average_cost_history()
 
@@ -264,7 +273,7 @@ class average_cost_detail_history(osv.osv):
                         WHERE 
                             product_id = %s and invoice_id in (select id from account_invoice where type = 'out_refund'
                             and date(timezone('UTC',date_invoice)) between '%s' and '%s'
-                            and state not in ('draft','cancel'))
+                            and state not in ('draft','cancel')) and ref_invoice_id is not null
                 '''%(history.product_id.id , start_date ,end_date)
                 cr.execute(sql)
                 nhap_ht_res = cr.fetchone()
@@ -389,6 +398,7 @@ class average_cost_detail_history(osv.osv):
         return True 
     
     _columns = {
+        'name': fields.char('Name'),
         'cost_history_id':fields.many2one('average.cost.history', 'Cost History', ondelete='cascade'),
         'product_id': fields.many2one('product.product', 'Product', readonly=True),
         'product_uom_id': fields.related('product_id','uom_id', type="many2one", relation="product.uom", string="UoM", store=True, readonly=True),
@@ -403,14 +413,62 @@ class average_cost_detail_history(osv.osv):
     _defaults = {
     }
     
+    def name_search(self, cr, uid, name, args=None, operator='ilike', context=None, limit=100):
+        if not args:
+            args = []
+        if not context:
+            context = {}
+        ids = self.search(cr, uid, args, limit=limit, context=context)
+        return self.name_get(cr, uid, ids, context)
+    
+    def name_get(self, cr, uid, ids, context=None):
+        res = []
+        reads = self.browse(cr, uid, ids, context)
+        for line in reads:
+            name = line.cost_history_id and line.cost_history_id.period_id.name or ''
+            res.append((line.id, name))
+        return res
+    
+    def bt_view_stock_move_giavon(self, cr, uid, ids, context=None):
+        dummy, view_id = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'general_stock_account', 'view_stock_move_giavon_tree')
+        dummy, search_view_id = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'general_stock_account', 'view_stock_move_giavon_search')
+        this = self.browse(cr, uid, ids[0], context=context)
+        return {
+            'name':_("Stock Move"),
+            'view_mode': 'tree',
+            'view_id': view_id,
+            'search_view_id': search_view_id,
+            'view_type': 'form',
+            'res_model': 'stock.move',
+            'type': 'ir.actions.act_window',
+            'target': 'current',
+            'res_ids': [m.id for m in this.move_ids],
+#             'domain': [('id', 'in', [m.id for m in this.move_ids])],
+            'context': {
+            }
+        }
+    
 average_cost_detail_history()
 
 class stock_move(osv.osv):
     _inherit = 'stock.move'
+    
+    def _get_sohoadon(self, cr, uid, ids, field_name, arg, context=None):
+        res = {}
+        for id in ids:
+            sql = '''
+                select number from account_invoice where id in (select id from account_invoice_line where source_id=%s) limit 1
+            '''%(id)
+            cr.execute(sql)
+            invoice = cr.dictfetchone()
+            res[id] = invoice and invoice['number'] or ''
+        return res
+    
     _columns = {
         'type': fields.related('picking_id','type', type="char", string="Type", store=True, readonly=True),
         'move_line_id': fields.many2one('account.move.line', 'Move line'),
         'costed':fields.boolean('Costed'),
+        'so_hoa_don': fields.function(_get_sohoadon, type='char', string='Số hóa đơn'),
     }
 stock_move()    
 

@@ -73,12 +73,80 @@
             <field name="search_view_id" ref="view_cost_history_filter"/>
         </record>
         
+        <!-- Move cua gia von -->
+        <record id="view_stock_move_giavon_search" model="ir.ui.view">
+            <field name="name">stock.move.search</field>
+            <field name="model">stock.move</field>
+            <field name="priority">1</field>
+            <field name="arch" type="xml">
+            	<search string="Stock Move">
+            		<field name="so_hoa_don"/>
+                    <field name="stock_journal_id"/>
+            		<field name="date"/>
+            		<field name="location_id"/>
+            		<field name="location_dest_id"/>
+                    <group expand="0" string="Group By...">
+                       <filter string="Nhật ký kho" name='nhatkykho' icon="terp-personal" domain="[]" context="{'group_by' : 'stock_journal_id'}" />
+                   </group>
+                </search>
+        	</field>
+        </record>
+        
+        <record id="view_stock_move_giavon_tree" model="ir.ui.view">
+            <field name="name">stock.move.tree</field>
+            <field name="model">stock.move</field>
+            <field name="arch" type="xml">
+            	<tree string="Stock Move" editable='top' edit='false' create='false' delete='false'>
+            		<field name="stock_journal_id"/>
+            		<field name="picking_id"/>
+            		<field name="so_hoa_don"/>
+            		<field name="date"/>
+            		<field name="type" invisible="1"/>
+            		<field name="product_id" invisible="1"/>
+            		<field name="product_qty"/>
+            		<field name="product_uom"/>
+            		<field name="price_unit"/>
+            		<field name="primary_qty"/>
+            		<field name="state" invisible="1"/>
+            		<field name="location_id"/>
+            		<field name="location_dest_id"/>
+            	</tree>
+        	</field>
+        </record>
+        <record id="action_stock_move_giavon" model="ir.actions.act_window">
+            <field name="name">Stock Move</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.move</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_stock_move_giavon_tree"/>
+            <field name="search_view_id" ref="view_stock_move_giavon_search"/>
+            <field name="context">{'search_default_nhatkykho': 1}</field>
+        </record>
+        
+        <record id="view_cost_detail_history_search" model="ir.ui.view">
+            <field name="name">average.cost.detail.history.search</field>
+            <field name="model">average.cost.detail.history</field>
+            <field name="priority">1</field>
+            <field name="arch" type="xml">
+            	<search string="Cost History">
+                    <field name="cost_history_id" string='Tháng'/>
+                    <field name="product_id"/>
+                    <group expand="0" string="Group By...">
+                       <filter string="Tháng" name='thang' icon="terp-personal" domain="[]" context="{'group_by' : 'cost_history_id'}" />
+                       <filter string="Sản phẩm" name='sanpham' icon="terp-personal" domain="[]" context="{'group_by' : 'product_id'}" />
+                   </group>
+                </search>
+        	</field>
+        </record>
+        
         <record id="view_cost_detail_history_tree" model="ir.ui.view">
             <field name="name">average.cost.detail.history.tree</field>
             <field name="model">average.cost.detail.history</field>
             <field name="priority">1</field>
             <field name="arch" type="xml">
             	<tree string="Details">
+            		<field name="cost_history_id" string='Tháng'/>
             		<field name="product_id"/>
             		<field name="product_uom_id"/>
             		<field name="previous_cost"/>
@@ -87,6 +155,7 @@
             		<field name="this_cost"/>
             		<field name="qty_onhand"/>
             		<field name="this_value"/>
+            		<button name="bt_view_stock_move_giavon" string="Xem chi tiết nhâp xuất" type="object" icon="STOCK_EXECUTE"/>
             	</tree>
         	</field>
         </record>
@@ -98,8 +167,9 @@
             <field name="arch" type="xml">
                 <form string="Cost Detail History" version="7.0">
                 <header>
-                	<button name="compute_cost" string="Compute Cost" type="object"/>
-                	<button name="post" string="Post" type="object"/>
+                	<!--<button name="compute_cost" string="Compute Cost" type="object"/>
+                	<button name="post" string="Post" type="object"/>-->
+                	<button name="bt_view_stock_move_giavon" string="Xem chi tiết nhâp xuất" type="object" icon="STOCK_EXECUTE"/>
                 </header>
                 <sheet string="Cost Detail History">
                 	<div class="oe_title">
@@ -126,6 +196,8 @@
 	                    <field name="move_ids" nolabel="1" >
 	                    	<tree>
 	                    		<field name="stock_journal_id"/>
+	                    		<field name="picking_id"/>
+	                    		<field name="so_hoa_don"/>
 	                    		<field name="date"/>
 	                    		<field name="type" invisible="1"/>
 	                    		<field name="product_id" invisible="1"/>
@@ -143,7 +215,14 @@
                 </form>
             </field>
         </record>
-        
+        <record id="action_cost_detail_history" model="ir.actions.act_window">
+            <field name="name">Chi tiết lịch sử giá vốn</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">average.cost.detail.history</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_cost_detail_history_search"/>
+        </record>
         
         <!--Production Cost History -->
         <record id="view_production_cost_history_filter" model="ir.ui.view">
