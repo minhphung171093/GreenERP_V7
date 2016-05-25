@@ -176,6 +176,14 @@ class draft_bl(osv.osv):
         return self.write(cr, uid, ids, {'state': 'da_duyet'})
     
     def hoan_tat(self, cr, uid, ids, context=None):
+        for line in self.browse(cr, uid, ids):
+            sql = '''
+                select id from ir_attachment where res_model='draft.bl' and res_id=%s limit 1
+            '''%(line.id)
+            cr.execute(sql)
+            ir_attachment_ids = [r[0] for r in cr.fetchall()]
+            if not ir_attachment_ids:
+                raise osv.except_osv(_('Cảnh báo!'), _('Vui lòng attach file lên trước khi thực hiện hoàn tất chừng từ này!'))
         return self.write(cr, uid, ids, {'state': 'hoan_tat'})
     
     def huy_bo(self, cr, uid, ids, context=None):

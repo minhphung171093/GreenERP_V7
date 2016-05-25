@@ -202,7 +202,7 @@ class Parser(report_sxw.rml_parse):
                'name': ''}
         for product in line.seal_descript_line:
             sum += product.packages_qty
-            line1 = str(round(sum,0)) + ' '+ (product.packages_id and product.packages_id.name_eng or '')
+            line1 = str(int(round(sum,0))) + ' '+ (product.packages_id and product.packages_id.name_eng or '')
             res.update({'sum' : round(sum,0),
                        'strline': line1,
                        'name': product.packages_id.name_eng,})
@@ -388,6 +388,13 @@ class Parser(report_sxw.rml_parse):
         res = []
         for line in o.draft_bl_line:
             if line.option and line.option == 'product':
+                res.append({ 'product': line.hopdong_line_id and line.hopdong_line_id.product_id and line.hopdong_line_id.product_id.eng_name + ' ' + line.hopdong_line_id.product_id.default_code or '',
+                            'package': '',
+                            'form': '',
+                            'net_weight': '',
+                            'gross_weight': '',
+                            'no_of_pack': '',
+                            }) 
                 res.append({ 'product': 'CONTAINER NO. / SEAL NO.',
                             'package': '',
                             'form': '',
@@ -407,13 +414,6 @@ class Parser(report_sxw.rml_parse):
                             })
                     self.pack = detail.packages_id.name or ''
                     self.pack_weight = self.get_packages_weight(detail.packages_weight)
-                res.append({ 'product': line.hopdong_line_id and line.hopdong_line_id.product_id and line.hopdong_line_id.product_id.eng_name + ' ' + line.hopdong_line_id.product_id.default_code or '',
-                            'package': '',
-                            'form': '',
-                            'net_weight': '',
-                            'gross_weight': '',
-                            'no_of_pack': '',
-                            })                
             if line.option and line.option == 'seal_no':
                 if len(line.description_line) > 1:
                     for detail in line.description_line:

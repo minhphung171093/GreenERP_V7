@@ -290,6 +290,8 @@ class hop_dong(osv.osv):
         'date_dbh':fields.date('Ngày ban hang',readonly=True,states={'moi_tao': [('readonly', False)], 'da_duyet': [('readonly', False)], 'da_ky': [('readonly', False)], 'het_han': [('readonly', False)]}),
         'user_chungtu_id': fields.many2one('res.users','Người làm chứng từ'),
         'chat_luong': fields.text('Chất lượng'),
+        'pass_attach': fields.boolean('Pass Attach'),
+        'effective_date': fields.date('Effective Date'),
     }
     
     _defaults = {
@@ -599,7 +601,19 @@ class hop_dong(osv.osv):
         return self.write(cr, uid, ids, {'state': 'da_duyet'})
     
     def ky_hd(self, cr, uid, ids, context=None):
+        for hd in self.browse(cr, uid, ids):
+            if hd.type=='hd_ngoai' and not hd.pass_attach:
+                sql = '''
+                    select id from ir_attachment where res_model='hop.dong' and res_id=%s limit 1
+                '''%(hd.id)
+                cr.execute(sql)
+                ir_attachment_ids = [r[0] for r in cr.fetchall()]
+                if not ir_attachment_ids:
+                    raise osv.except_osv(_('Cảnh báo!'), _('Vui lòng attach file lên trước khi thực hiện hoàn tất chừng từ này!'))
         return self.write(cr, uid, ids, {'state': 'da_ky'})
+    
+    def bt_pass_attach(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {'pass_attach': True})
     
     def huy_bo(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids, {'state': 'huy_bo'})
