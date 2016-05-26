@@ -52,6 +52,17 @@ class draft_bl(osv.osv):
                         net_weight += line.net_weight
             res[bl.id] = net_weight
         return res
+    
+    def _get_bl_no(self, cr, uid, ids, field_name, arg, context=None):
+        res = {}
+        for bl in self.browse(cr, uid, ids, context=context):
+            bl_no = ''
+            for bl_line in bl.draft_bl_line:
+                if bl_line.bl_no:
+                    bl_no = bl_line.bl_no
+                    break
+            res[bl.id] = bl_no
+        return res
             
     _columns = {
         'name':fields.char('Booking No', size = 1024,required = True),
@@ -79,7 +90,7 @@ class draft_bl(osv.osv):
         'note':fields.text('Note'),
         'meansurement':fields.char('Meansurement'),  
         'freight':fields.selection([('prepaid', 'Prepaid'),('collect', 'Collect')], 'Freight'),
-        'bl_no':fields.char('B/L No'),  
+        'bl_no':fields.function(_get_bl_no, type='char', string='B/L No'),  
         'draft_bl_line': fields.one2many('draft.bl.line','draft_bl_id','Line'),
         'country_id': fields.many2one('res.country','The Country Of Origin'),
         'customs_declaration': fields.char('Customs Declaration', size=1024),
