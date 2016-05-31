@@ -282,9 +282,9 @@
 	                <sheet string="Trả thưởng">
 	                    <group>
 		                    <group>
-		                        <field name="daily_id" domain="[('parent_id','=',False),('dai_ly','=',True)]"/>
+		                        <field name="daily_id" options="{'create': false, 'create_edit': false}" domain="[('parent_id','=',False),('dai_ly','=',True)]"/>
 		                        <field name="nguoi_nhan_thuong"/>
-		                        <field name="journal_id" invisible='1' domain="[('type','in',['cash','bank'])]"/>
+		                        <field name="journal_id" options="{'create': false, 'create_edit': false}" invisible='1' domain="[('type','in',['cash','bank'])]"/>
 		                    </group>
 		                    <group>
 		                        <field name="ngay"/>
@@ -294,7 +294,7 @@
 	                    <group>
 	                        <field name="tra_thuong_line" nolabel='1'>
 	                        	<tree editable='bottom'>
-	                        		<field name="product_id" on_change="onchange_product(product_id,name,loai,giai,parent.ngay,sl_trung,parent.daily_id)"/>
+	                        		<field name="product_id" options="{'create': false, 'create_edit': false}" on_change="onchange_product(product_id,name,loai,giai,parent.ngay,sl_trung,parent.daily_id)"/>
 	                        		<field name="name" invisible='1' on_change="onchange_product(product_id,slan_trung,loai,giai,parent.ngay,sl_trung,parent.daily_id)"/>
 			                        <field name="loai" on_change="onchange_product(product_id,slan_trung,loai,giai,parent.ngay,sl_trung,parent.daily_id)"/>
 			                        <field name="giai" on_change="onchange_product(product_id,slan_trung,loai,giai,parent.ngay,sl_trung,parent.daily_id)"/>
@@ -542,13 +542,13 @@
             <field name="arch" type="xml">
                 <form string="Trả thưởng thực tế" version="7.0">
                 	<header>
-                        <button name="tao_phieu_chi" type="object" states="new" string="Xác nhận trả thưởng" class="oe_highlight"/>
+                        <button name="bt_xacnhan_trathuong" type="object" states="new" string="Xác nhận trả thưởng" class="oe_highlight"/>
 	                    <field name="state" widget="statusbar" statusbar_visible="new,done" statusbar_colors='{"new":"blue","done":"blue"}'/>
 	                </header>
 	                <sheet string="Trả thưởng">
 	                    <group>
 		                    <group>
-		                        <field name="daily_id" domain="[('parent_id','=',False),('dai_ly','=',True)]"/>
+		                        <field name="daily_id" options="{'create': false, 'create_edit': false}" domain="[('parent_id','=',False),('dai_ly','=',True)]"/>
 		                    </group>
 		                    <group>
 		                        <field name="ngay_tra_thuong"/>
@@ -557,27 +557,27 @@
 	                    <group>
 	                        <field name="tra_thuong_nmt_line" nolabel='1'>
 	                        	<tree>
-			                        <field name="product_id"/>
+			                        <field name="product_id" options="{'create': false, 'create_edit': false}"/>
 			                        <field name="tong_cong"/>
 			                        
 	                        	</tree>
 	                        	<form>
 	                        		<sheet>
 	                        			<group col='4' conspan='2'>
-			                        		<field name="product_id"/>
+			                        		<field name="product_id" options="{'create': false, 'create_edit': false}"/>
 			                        	</group>
 			                        	<group attrs="{'invisible': [('product_id','=',False)]}">
 			                        		<field name="tra_thuong_line" nolabel='1' context="{'default_product_id': product_id}">
 			                        			<tree>
 							                        <field name="ngay"/>
 							                        <field name="tong_cong"/>
-							                        <field name="product_id" invisible='1'/>
+							                        <field name="product_id" options="{'create': false, 'create_edit': false}" invisible='1'/>
 					                        	</tree>
 					                        	<form>
 					                        		<sheet>
 					                        			<group col='4' colspan='2'>
 					                        				<field name="ngay"/>
-					                        				<field name="product_id" invisible='1'/>
+					                        				<field name="product_id" options="{'create': false, 'create_edit': false}" invisible='1'/>
 					                        			</group>
 					                        			<group string="2 Số" col='4' colspan='2'>
 									                        <field name="sl_2_d" on_change="onchange_trungthuong(product_id,1,'2_so','dau',ngay,sl_2_d)"/>

@@ -453,7 +453,13 @@ class tra_thuong_thucte_line(osv.osv):
             sl_phaitra = test['sl_trung']
 #             slan_trung = test['slan_trung']
             if sl_phaitra==0:
-                raise osv.except_osv(_('Cảnh báo!'),_('Không tìm thấy số trúng thưởng trong danh sách cần trả thưởng ngày "%s"!')%(ngay[8:10]+'-'+ngay[5:7]+'-'+ngay[:4]))
+                res = {'sl_trung':0}
+                warning = {  
+                    'title': _('Cảnh báo!'),  
+                    'message': _('Không tìm thấy số trúng thưởng trong danh sách cần trả thưởng ngày "%s"!')%(ngay[8:10]+'-'+ngay[5:7]+'-'+ngay[:4]),  
+                }
+                return {'value': res,'warning':warning}
+#                 raise osv.except_osv(_('Cảnh báo!'),_('Không tìm thấy số trúng thưởng trong danh sách cần trả thưởng ngày "%s"!')%(ngay[8:10]+'-'+ngay[5:7]+'-'+ngay[:4]))
             
             sql = '''
                 select case when sum(sl_trung)!=0 then sum(sl_trung) else 0 end sl_datra from tra_thuong_thucte_line where product_id = %s and loai='%s' and giai='%s' and
@@ -519,6 +525,103 @@ class trathuong_thucte_new(osv.osv):
         'state': 'new',
         'ngay_tra_thuong': lambda *a: time.strftime('%Y-%m-%d'),
     }
+    
+    def bt_xacnhan_trathuong(self, cr, uid, ids, context=None):
+        tttt_obj = self.pool.get('tra.thuong.thucte')
+        for tt in self.browse(cr, uid, ids):
+            for nmt in tt.tra_thuong_nmt_line:
+                for line in nmt.tra_thuong_line:
+                    tra_thuong_line = []
+                    if line.sl_2_d:
+                        tra_thuong_line.append((0,0,{
+                            'product_id': nmt.product_id.id,
+                            'loai': '2_so',
+                            'giai': 'dau',
+                            'sl_trung': line.sl_2_d,
+                            'slan_trung': 1,
+                        }))
+                    if line.sl_2_c:
+                        tra_thuong_line.append((0,0,{
+                            'product_id': nmt.product_id.id,
+                            'loai': '2_so',
+                            'giai': 'cuoi',
+                            'sl_trung': line.sl_2_c,
+                            'slan_trung': 1,
+                        }))
+                    if line.sl_2_dc:
+                        tra_thuong_line.append((0,0,{
+                            'product_id': nmt.product_id.id,
+                            'loai': '2_so',
+                            'giai': 'dau_cuoi',
+                            'sl_trung': line.sl_2_dc,
+                            'slan_trung': line.slan_2_dc,
+                        }))
+                    if line.sl_2_18:
+                        tra_thuong_line.append((0,0,{
+                            'product_id': nmt.product_id.id,
+                            'loai': '2_so',
+                            'giai': '18_lo',
+                            'sl_trung': line.sl_2_18,
+                            'slan_trung': line.slan_2_18,
+                        }))
+                    if line.sl_3_d:
+                        tra_thuong_line.append((0,0,{
+                            'product_id': nmt.product_id.id,
+                            'loai': '3_so',
+                            'giai': 'dau',
+                            'sl_trung': line.sl_3_d,
+                            'slan_trung': 1,
+                        }))
+                    if line.sl_3_c:
+                        tra_thuong_line.append((0,0,{
+                            'product_id': nmt.product_id.id,
+                            'loai': '3_so',
+                            'giai': 'cuoi',
+                            'sl_trung': line.sl_3_c,
+                            'slan_trung': 1,
+                        }))
+                    if line.sl_3_dc:
+                        tra_thuong_line.append((0,0,{
+                            'product_id': nmt.product_id.id,
+                            'loai': '3_so',
+                            'giai': 'dau_cuoi',
+                            'sl_trung': line.sl_3_dc,
+                            'slan_trung': line.slan_3_dc,
+                        }))
+                    if line.sl_3_7:
+                        tra_thuong_line.append((0,0,{
+                            'product_id': nmt.product_id.id,
+                            'loai': '3_so',
+                            'giai': '7_lo',
+                            'sl_trung': line.sl_3_7,
+                            'slan_trung': line.slan_3_7,
+                        }))
+                    if line.sl_3_17:
+                        tra_thuong_line.append((0,0,{
+                            'product_id': nmt.product_id.id,
+                            'loai': '3_so',
+                            'giai': '17_lo',
+                            'sl_trung': line.sl_3_17,
+                            'slan_trung': line.slan_3_17,
+                        }))
+                    if line.sl_4_16:
+                        tra_thuong_line.append((0,0,{
+                            'product_id': nmt.product_id.id,
+                            'loai': '4_so',
+                            'giai': '16_lo',
+                            'sl_trung': line.sl_4_16,
+                            'slan_trung': line.slan_4_16,
+                        }))
+                    tttt_id = tttt_obj.create(cr, uid, {
+                        'daily_id': tt.daily_id and tt.daily_id.id or False,
+                        'nguoi_nhan_thuong': ' ',
+                        'ngay': line.ngay,
+                        'ngay_tra_thuong': tt.ngay_tra_thuong,
+                        'state': 'new',
+                        'tra_thuong_line': tra_thuong_line,
+                    })
+                    tttt_obj.tao_phieu_chi(cr, uid, [tttt_id], context)
+        return self.write(cr, uid, ids, {'state': 'done'})
     
 trathuong_thucte_new()
 
