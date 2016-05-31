@@ -20,7 +20,7 @@ class bdf_channel(osv.osv):
     _name="bdf.channel"
     _columns={
         'name':fields.char('Name',size=128,required=True),
-        'budget_id':fields.many2one("master.budget.owner",'Budget',required=True),
+        'budget_id':fields.many2one("master.budget.owner",'Budget',required=False),
       }
 bdf_channel()
 
@@ -73,8 +73,8 @@ class bdf_cost_center(osv.osv):
     _name="bdf.cost.center"
     _columns={
         'name':fields.char('Name',size=128,required=True),
-        'cat_id':fields.many2one("product.category",'Cat',required=True),
-        'sub_cat_id':fields.many2one("product.category",'Sub_CAT',required=True),
+        'cat_id':fields.many2one("product.category",'Cat',required=False),
+        'sub_cat_id':fields.many2one("product.category",'Sub_CAT',required=False),
       }
     
 bdf_cost_center()
@@ -271,6 +271,17 @@ class  master_function_expense(osv.osv):
               }
     
 master_function_expense()
+
+class bdf_io(osv.osv):
+    _name="bdf.io"
+    
+    _columns={
+        'name':fields.char("IO",size=64,required=True),
+        'description':fields.char("Description",size=1024),
+        'io_name':fields.char("Name",size=1024),
+    }
+    
+bdf_io()
 
 class master_key_accounts(osv.osv):
     _name="master.key.accounts"
@@ -694,10 +705,19 @@ class product_product(osv.osv):
     _columns={
         'master_function_expense_id':fields.many2one('master.function.expense','Function expense',required=False),
         'master_budget_owner_id':fields.many2one('master.budget.owner','Budget owner',required=False),
-        'channel_id':fields.many2many('bdf.channel','product_channel_ref','product_id','channel_id','Channel',required=True),
+        'channel_id':fields.many2many('bdf.channel','product_channel_ref','product_id','channel_id','Channel',required=False),
         'account_id': fields.many2one('account.account','GL Code',required=True),
         }
 product_product()
+
+class product_category(osv.osv):
+    _inherit='product.category'
+    _columns={
+        'cate':fields.char("Cate",size=1024),
+        'brand':fields.char("Brand",size=1024),
+        'sub_cate':fields.char("Sub Cate",size=1024),
+    }
+product_category()
 
 class product_template(osv.osv):
     _inherit='product.template'
@@ -705,6 +725,15 @@ class product_template(osv.osv):
         'categ_id': fields.many2one('product.category','Category', required=False, change_default=True, domain="[('type','=','normal')]" ,help="Select category for the current product"),
         }
 product_template()
+
+class account_account(osv.osv):
+    _inherit='account.account'
+    _columns={
+        'user_type': fields.many2one('account.account.type', 'Account Type', required=False,
+            help="Account Type is used for information purpose, to generate "
+              "country-specific legal reports, and set the rules to close a fiscal year and generate opening entries."),
+        }
+account_account()
 
 class master_project(osv.osv):
     _name ='master.project'

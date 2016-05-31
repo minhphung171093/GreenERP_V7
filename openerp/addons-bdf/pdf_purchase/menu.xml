@@ -9,42 +9,66 @@
          	id="menu_purchase_config"
          	parent="menu_base_purchase" sequence="2"
          	groups="group_bdf_admin"/>
-         
+         	
+         	<menuitem action="action_view_bdf_channel_tree"
+         		name="Master Channel"
+         		id="menu_action_view_bdf_channel_tree" 
+         		parent="menu_purchase_config" sequence="10"/>
+         	
+         	<menuitem action="action_master_budget_owner" 
+         		name="Master Budget Owner"
+            	id="menu_action_master_budget_owner" 
+            	parent="menu_purchase_config" 
+            	sequence="15"/>
+            	
+        	<menuitem action="action_master_function_expense"
+           		name="Master Function"
+            	id="menu_action_master_function_expense" 
+            	parent="menu_purchase_config" 
+            	sequence="20"/>
+            	
+        	<menuitem action="action_bdf_io"
+           		name="Master IO"
+            	id="menu_action_bdf_io" 
+            	parent="menu_purchase_config" 
+            	sequence="25"/>
          	
          	<menuitem action="product.product_category_action_form"
-            	id="bdf_menu_product_category_action_form" string="Master Catecode"
+         		name="Master Catecode"
+            	id="bdf_menu_product_category_action_form" 
             	parent="menu_purchase_config"
-            	sequence="1"/>
+            	sequence="30"/>
             
-            <menuitem action="product.product_normal_action" 
+            <menuitem action="account.action_account_form"
+            	name='Master Account'
+            	id="bdf_menu_action_account_form"
+            	parent="menu_purchase_config" sequence="35"/>
+            
+            <menuitem action="product.product_normal_action"
+            	name="Master Items"
             	id="bdf_menu_stock_products_menu" 
             	parent="menu_purchase_config" 
-            	sequence="2"/>
-            	
-           <!-- <menuitem action="action_master_function_expense" 
-            	id="menu_action_master_function_expense" 
+            	sequence="40"/>
+        	
+        	<menuitem action="action_bdf_cost_center_tree"
+        		name="Master Cost Center"
+        		id="menu_action_bdf_cost_center_tree"
+        		parent="menu_purchase_config" sequence="45"/>
+        	
+            <!--<menuitem action="action_purchasing_group" 
+            	id="bdf_menu_action_purchasing_group" 
             	parent="menu_purchase_config" 
             	sequence="3"/>-->
             
-            <menuitem action="action_purchasing_group" 
-            	id="bdf_menu_action_purchasing_group" 
-            	parent="menu_purchase_config" 
-            	sequence="3"/>
-            
-            <menuitem action="action_master_budget_owner" 
-            	id="menu_action_master_budget_owner" 
-            	parent="menu_purchase_config" 
-            	sequence="4"/>
-            	
-            <menuitem action="action_master_key_accounts" 
+            <!--<menuitem action="action_master_key_accounts" 
             	id="menu_action_master_key_accounts" 
             	parent="menu_purchase_config" 
-            	sequence="5"/>
+            	sequence="5"/>-->
             
-            <menuitem action="action_master_regions" 
+            <!--<menuitem action="action_master_regions" 
             	id="menu_action_master_regions" 
             	parent="menu_purchase_config" 
-            	sequence="6"/>
+            	sequence="6"/>-->
             	
             <!--<menuitem action="action_master_project" 
             	id="menu_action_master_project" 
@@ -54,7 +78,7 @@
             <menuitem action="action_bdf_mail_queue" 
             	id="menu_action_bdf_mail_queue" 
             	parent="menu_purchase_config" 
-            	sequence="10" groups="base.group_erp_manager"/>
+            	sequence="1200" groups="base.group_erp_manager"/>
             
         	<menuitem action="action_master_process" 
             	id="menu_action_master_process" 
@@ -65,22 +89,16 @@
             	id="menu_action_bdf_res_users"
             	parent="menu_purchase_config" sequence="1100"/>
             
-          	<menuitem action="action_view_bdf_channel_tree" id="menu_action_view_bdf_channel_tree" parent="menu_purchase_config" sequence="8"/>
-          	<menuitem action="action_bdf_cost_center_tree" id="menu_action_bdf_cost_center_tree" parent="menu_purchase_config" sequence="9"/>
-          	<menuitem action="action_bdf_cost_center_tree" id="menu_action_bdf_cost_center_tree" parent="menu_purchase_config" sequence="10"/>
-            
            <!-- <menuitem id="bdf_menu_account_supplier" name="Suppliers"
             parent="menu_purchase_config"
             action="base.action_partner_supplier_form" sequence="100"/>
             -->
             
-             <menuitem icon="STOCK_INDENT" action="account.action_account_chart"
+             <!--<menuitem icon="STOCK_INDENT" action="account.action_account_chart"
 	            id="bdf_menu_action_account_tree2"
-	            parent="menu_purchase_config" sequence="200"/>
+	            parent="menu_purchase_config" sequence="200"/>-->
 	         
 	       
-	       <menuitem action="account.action_account_form" id="bdf_menu_action_account_form" parent="menu_purchase_config" sequence="300"/>
-          	
           	
          <menuitem name="BDF Purchase" id="menu_purchase" parent="menu_base_purchase" sequence="1"/>
          

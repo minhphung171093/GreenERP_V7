@@ -6,15 +6,15 @@
             <field name="name">view.bdf.channel.tree</field>
             <field name="model">bdf.channel</field>
             <field name="arch" type="xml">
-                <tree string="Channel" editable="top">
+                <tree string="Master Channel" editable="top">
                     <field name="name"/>
-                    <field name="budget_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+                    <field name="budget_id" invisible='1' options="{'no_open': True,'create': false, 'create_edit': false}"/>
                 </tree>
             </field>
         </record>
         
         <record id="action_view_bdf_channel_tree" model="ir.actions.act_window">
-            <field name="name">Channel</field>
+            <field name="name">Master Channel</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">bdf.channel</field>
             <field name="view_type">form</field>
@@ -28,7 +28,6 @@
             <field name="arch" type="xml">
                 <tree string="CostCenter" editable="top">
                     <field name="name"/>
-                    <field name="cat_id" domain="[('parent_id','=',False)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
                     <field name="sub_cat_id" domain="[('parent_id','=',cat_id)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
                 </tree>
             </field>
@@ -240,7 +239,7 @@
 			            </group>
 			            <group string="Procurement Detail">
 							<field name="procurement_detail_line" nolabel="1">
-								<tree editable="top">
+								<tree editable="bottom">
 									<field name="product_id"/>
 									<field name="qty"/>
 									<field name="price_unit" sum="Total"/>
@@ -405,7 +404,7 @@
 			            </group>
 			            <group string="Procurement Detail">
 							<field name="procurement_detail_line" nolabel="1">
-								<tree editable="top">
+								<tree editable="bottom">
 									<field name="product_id"/>
 									<field name="qty"/>
 									<field name="price_unit" sum="Total"/>
@@ -570,7 +569,7 @@
 			            </group>
 			            <group string="Procurement Detail">
 							<field name="procurement_detail_line" nolabel="1">
-								<tree editable="top">
+								<tree editable="bottom">
 									<field name="product_id"/>
 									<field name="qty"/>
 									<field name="price_unit" sum="Total"/>
@@ -984,7 +983,42 @@
         </record>
         
         <!-- Kiet: Sua ten cua product_category -->
-        
+        <record id="view_product_category_bdf_tree" model="ir.ui.view">
+            <field name="name">product.category.tree</field>
+            <field name="model">product.category</field>
+            <field name="type">tree</field>
+            <field eval="8" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Master Catecode" editable="top">
+                	<field name="name" string="Cate Code"/>
+                	<field name="brand" required='1'/>
+                	<field name="cate" required='1'/>
+                	<field name="sub_cate" required='1'/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_product_category_bdf_form" model="ir.ui.view">
+            <field name="name">Master Catecode</field>
+            <field name="model">product.category</field>
+            <field name="arch" type="xml">
+                <form string="Master Catecode" version="7.0">
+                	<sheet>
+                		<div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group name="parent" col="4">
+                                <field name="cate"/>
+                                <field name="brand"/>
+                            </group>
+                        </group>
+                	</sheet>
+                </form>
+            </field>
+        </record>
         <record id="product.product_category_action_form" model="ir.actions.act_window">
             <field name="name">Master Catecode</field>
             <field name="type">ir.actions.act_window</field>
@@ -993,9 +1027,52 @@
             <field name="search_view_id" ref="product.product_category_search_view"/>
             <field name="view_id" ref="product.product_category_list_view"/>
         </record>
+        <record id="product_category_action_form1" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_product_category_bdf_tree"/>
+            <field name="act_window_id" ref="product.product_category_action_form"/>
+        </record>
+        <record id="product_category_action_form2" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_product_category_bdf_form"/>
+            <field name="act_window_id" ref="product.product_category_action_form"/>
+        </record>
         
         
         <!-- Kiet: Sua ten cua product_product -->
+        <record model="ir.ui.view" id="product_product_tree_view_inherit_tree">
+            <field name="name">product.product.tree</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_product_tree_view" />
+            <field name="arch" type="xml">
+            	<xpath expr="//tree" position="attributes">
+	            	<attribute name="editable">top</attribute>
+	            </xpath>
+	            <xpath expr="//field[@name='default_code']" position="attributes">
+	            	<attribute name="invisible">1</attribute>
+	            </xpath>
+	            <xpath expr="//field[@name='uom_id']" position="attributes">
+	            	<attribute name="invisible">1</attribute>
+	            </xpath>
+	            <xpath expr="//field[@name='qty_available']" position="attributes">
+	            	<attribute name="invisible">1</attribute>
+	            </xpath>
+	            <xpath expr="//field[@name='virtual_available']" position="attributes">
+	            	<attribute name="invisible">1</attribute>
+	            </xpath>
+	            <xpath expr="//field[@name='lst_price']" position="attributes">
+	            	<attribute name="invisible">1</attribute>
+	            </xpath>
+	            <xpath expr="//field[@name='state']" position="attributes">
+	            	<attribute name="invisible">1</attribute>
+	            </xpath>
+	            <xpath expr="//field[@name='name']" position="after">
+	            	<field name="account_id"/>
+	            </xpath>
+            </field>
+        </record>
         <record id="product.product_normal_action" model="ir.actions.act_window">
             <field name="name">Master Items</field>
             <field name="type">ir.actions.act_window</field>
@@ -1022,16 +1099,39 @@
             <field name="type">tree</field>
             <field eval="8" name="priority"/>
             <field name="arch" type="xml">
-                <tree string="Master Function Expenses" editable="top">
+                <tree string="Master Function" editable="top">
                 	<field name="name"/>
                 </tree>
             </field>
         </record>
         
         <record id="action_master_function_expense" model="ir.actions.act_window">
-            <field name="name">Master Function Expenses</field>
+            <field name="name">Master Function</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">master.function.expense</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id"/>
+        </record>
+        
+        <record id="view_bdf_io_tree" model="ir.ui.view">
+            <field name="name">bdf.io.tree</field>
+            <field name="model">bdf.io</field>
+            <field name="type">tree</field>
+            <field eval="8" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Master IO" editable="top">
+                	<field name="name"/>
+                	<field name="description"/>
+                	<field name="io_name"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="action_bdf_io" model="ir.actions.act_window">
+            <field name="name">Master IO</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bdf.io</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="search_view_id"/>
@@ -1044,7 +1144,7 @@
             <field name="type">tree</field>
             <field eval="8" name="priority"/>
             <field name="arch" type="xml">
-                <tree string="Master Budget Holder" editable="top">
+                <tree string="Master Budget Owner" editable="top">
                 	<field name="name"/>
                 	<!--<field name="function_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>-->
                 </tree>
@@ -1052,7 +1152,7 @@
         </record>
         
         <record id="action_master_budget_owner" model="ir.actions.act_window">
-            <field name="name">Master Budget Holder</field>
+            <field name="name">Master Budget Owner</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">master.budget.owner</field>
             <field name="view_type">form</field>
@@ -1143,6 +1243,33 @@
 	            <xpath expr="//field[@name='type']" position="after">
 	            	<field name="channel_id" widget="many2many_tags" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 	            	<field name="account_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+	            </xpath>
+            </field>
+        </record>
+        
+        <!-- Kiet edit Account -->
+        <record model="ir.ui.view" id="view_view_account_list_inherit_tree">
+            <field name="name">account.account.tree</field>
+            <field name="model">account.account</field>
+            <field name="inherit_id" ref="account.view_account_list" />
+            <field name="arch" type="xml">
+            	<xpath expr="//tree" position="attributes">
+	            	<attribute name="editable">top</attribute>
+	            </xpath>
+	            <xpath expr="//field[@name='debit']" position="attributes">
+	            	<attribute name="invisible">1</attribute>
+	            </xpath>
+	            <xpath expr="//field[@name='credit']" position="attributes">
+	            	<attribute name="invisible">1</attribute>
+	            </xpath>
+	            <xpath expr="//field[@name='balance']" position="attributes">
+	            	<attribute name="invisible">1</attribute>
+	            </xpath>
+	            <xpath expr="//field[@name='type']" position="attributes">
+	            	<attribute name="invisible">1</attribute>
+	            </xpath>
+	            <xpath expr="//field[@name='company_currency_id']" position="attributes">
+	            	<attribute name="invisible">1</attribute>
 	            </xpath>
             </field>
         </record>
