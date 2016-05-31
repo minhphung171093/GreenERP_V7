@@ -1,3 +1,4 @@
+cai module green_erp_m2x_options vao he thong
 ALTER TABLE quyet_toan_ve_ngay DROP COLUMN st_4_16_tong;
 select id,daily_id from tra_thuong_thucte where daily_id in (select id from res_partner where dai_ly=False);
 Update tra_thuong_thucte set daily_id= where id= ;
