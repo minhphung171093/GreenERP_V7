@@ -706,7 +706,7 @@ class product_product(osv.osv):
         'master_function_expense_id':fields.many2one('master.function.expense','Function expense',required=False),
         'master_budget_owner_id':fields.many2one('master.budget.owner','Budget owner',required=False),
         'channel_id':fields.many2many('bdf.channel','product_channel_ref','product_id','channel_id','Channel',required=False),
-        'account_id': fields.many2one('account.account','GL Code',required=True),
+        'account_id': fields.many2one('account.account','GL Code',required=False),
         }
 product_product()
 
