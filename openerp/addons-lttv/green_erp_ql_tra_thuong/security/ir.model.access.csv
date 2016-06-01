@@ -14,3 +14,7 @@ access_account_voucher_tt,account_voucher,account_voucher.model_account_voucher,
 access_account_voucher_batch_tt,account_voucher_batch,model_account_voucher_batch,group_ql_tra_thuong,1,1,1,1
 access_account_account_tt,account_account,account.model_account_account,group_ql_tra_thuong,1,1,1,1
 access_mail_message_tt,mail_message,mail.model_mail_message,group_ql_tra_thuong,1,1,1,1
+
+access_trathuong_thucte_new,trathuong_thucte_new,model_trathuong_thucte_new,group_ql_tra_thuong,1,1,1,1
+access_trathuong_thucte_nmt_new,trathuong_thucte_nmt_new,model_trathuong_thucte_nmt_new,group_ql_tra_thuong,1,1,1,1
+access_trathuong_thucte_new_line,trathuong_thucte_new_line,model_trathuong_thucte_new_line,group_ql_tra_thuong,1,1,1,1
