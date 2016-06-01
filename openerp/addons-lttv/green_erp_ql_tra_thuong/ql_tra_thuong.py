@@ -297,7 +297,7 @@ class tra_thuong_thucte(osv.osv):
             },
             ),
         'state': fields.selection([('new','Mới tạo'),('done','Đã trả')],'Trạng thái'),
-        'thucte_new_id': fields.many2one('trathuong.thucte.new','Thực tế new'),
+        'thucte_new_id': fields.many2one('trathuong.thucte.new','Thực tế new',ondelete='cascade'),
     }
     
     _defaults = {
@@ -520,6 +520,7 @@ class trathuong_thucte_new(osv.osv):
         'tra_thuong_nmt_line': fields.one2many('trathuong.thucte.nmt.new','trathuong_id','Line',states={'done':[('readonly',True)]}),
         'state': fields.selection([('new','Mới tạo'),('done','Đã trả')],'Trạng thái'),
         'tong_cong': fields.function(_get_tong, string='Tổng cộng', type='float'),
+        'tra_thuong_line': fields.one2many('tra.thuong.thucte','thucte_new_id','Line'),
     }
     
     _defaults = {
