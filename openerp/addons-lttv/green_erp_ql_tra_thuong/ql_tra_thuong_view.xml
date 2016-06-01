@@ -585,26 +585,26 @@
 									                        <newline/>
 									                        <field name="sl_2_c" on_change="onchange_trungthuong(product_id,1,'2_so','cuoi',ngay,sl_2_c)"/>
 									                        <newline/>
-									                        <field name="slan_2_dc" on_change="onchange_trungthuong(product_id,slan_2_dc,'2_so','dau_cuoi',ngay,sl_2_dc)"/>
 									                        <field name="sl_2_dc" on_change="onchange_trungthuong(product_id,slan_2_dc,'2_so','dau_cuoi',ngay,sl_2_dc)"/>
-									                        <field name="slan_2_18" on_change="onchange_trungthuong(product_id,slan_2_18,'2_so','18_lo',ngay,sl_2_18)"/>
+									                        <field name="slan_2_dc" on_change="onchange_trungthuong(product_id,slan_2_dc,'2_so','dau_cuoi',ngay,sl_2_dc)"/>
 									                        <field name="sl_2_18" on_change="onchange_trungthuong(product_id,slan_2_18,'2_so','18_lo',ngay,sl_2_18)"/>
+									                        <field name="slan_2_18" on_change="onchange_trungthuong(product_id,slan_2_18,'2_so','18_lo',ngay,sl_2_18)"/>
 					                        			</group>
 					                        			<group string="3 Số" col='4' colspan='2'>
 									                        <field name="sl_3_d" on_change="onchange_trungthuong(product_id,1,'3_so','dau',ngay,sl_3_d)"/>
 									                        <newline/>
 									                        <field name="sl_3_c" on_change="onchange_trungthuong(product_id,1,'3_so','cuoi',ngay,sl_3_c)"/>
 									                        <newline/>
-									                        <field name="slan_3_dc" on_change="onchange_trungthuong(product_id,slan_3_dc,'3_so','dau_cuoi',ngay,sl_3_dc)"/>
 									                        <field name="sl_3_dc" on_change="onchange_trungthuong(product_id,slan_3_dc,'3_so','dau_cuoi',ngay,sl_3_dc)"/>
-									                        <field name="slan_3_7" on_change="onchange_trungthuong(product_id,slan_3_7,'3_so','7_lo',ngay,sl_3_7)"/>
+									                        <field name="slan_3_dc" on_change="onchange_trungthuong(product_id,slan_3_dc,'3_so','dau_cuoi',ngay,sl_3_dc)"/>
 									                        <field name="sl_3_7" on_change="onchange_trungthuong(product_id,slan_3_7,'3_so','7_lo',ngay,sl_3_7)"/>
-									                        <field name="slan_3_17" on_change="onchange_trungthuong(product_id,slan_3_17,'3_so','17_lo',ngay,sl_3_17)"/>
+									                        <field name="slan_3_7" on_change="onchange_trungthuong(product_id,slan_3_7,'3_so','7_lo',ngay,sl_3_7)"/>
 									                        <field name="sl_3_17" on_change="onchange_trungthuong(product_id,slan_3_17,'3_so','17_lo',ngay,sl_3_17)"/>
+									                        <field name="slan_3_17" on_change="onchange_trungthuong(product_id,slan_3_17,'3_so','17_lo',ngay,sl_3_17)"/>
 					                        			</group>
 					                        			<group string="4 Số" col='4' colspan='2'>
+					                        				<field name="sl_4_16" on_change="onchange_trungthuong(product_id,slan_4_16,'4_so','16_lo',ngay,sl_4_16)"/>
 									                        <field name="slan_4_16" on_change="onchange_trungthuong(product_id,slan_4_16,'4_so','16_lo',ngay,sl_4_16)"/>
-									                        <field name="sl_4_16" on_change="onchange_trungthuong(product_id,slan_4_16,'4_so','16_lo',ngay,sl_4_16)"/>
 					                        			</group>
 					                        		</sheet>
 					                        	</form>
