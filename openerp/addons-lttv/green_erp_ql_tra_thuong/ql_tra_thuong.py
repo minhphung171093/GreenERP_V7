@@ -297,6 +297,7 @@ class tra_thuong_thucte(osv.osv):
             },
             ),
         'state': fields.selection([('new','Mới tạo'),('done','Đã trả')],'Trạng thái'),
+        'thucte_new_id': fields.many2one('trathuong.thucte.new','Thực tế new'),
     }
     
     _defaults = {
@@ -619,9 +620,21 @@ class trathuong_thucte_new(osv.osv):
                         'ngay_tra_thuong': tt.ngay_tra_thuong,
                         'state': 'new',
                         'tra_thuong_line': tra_thuong_line,
+                        'thucte_new_id': tt.id,
                     })
                     tttt_obj.tao_phieu_chi(cr, uid, [tttt_id], context)
         return self.write(cr, uid, ids, {'state': 'done'})
+    
+    def bt_chinhsua_lai(self, cr, uid, ids, context=None):
+        if ids:
+            tt_ids = ids
+            tt_ids = str(tt_ids).replace('[','(')
+            tt_ids = str(tt_ids).replace(']',')')
+            sql = '''
+                delete from tra_thuong_thucte where thucte_new_id in %s;
+            '''%(tt_ids)
+            cr.execute(sql)
+        return self.write(cr, uid, ids, {'state': 'new'})
     
 trathuong_thucte_new()
 
