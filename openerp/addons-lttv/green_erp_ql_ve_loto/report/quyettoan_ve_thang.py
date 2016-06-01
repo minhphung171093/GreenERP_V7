@@ -83,7 +83,7 @@ class Parser(report_sxw.rml_parse):
         self.cr.execute(sql)
         return self.cr.dictfetchall()
         
-    def get_lines(self):
+    def get_lines_old(self):
         wizard_data = self.localcontext['data']['form']
         product = wizard_data['product_id']
         date_from = wizard_data['date_from']
@@ -127,6 +127,210 @@ class Parser(report_sxw.rml_parse):
         '''%(date_from,date_to,product[0])
         self.cr.execute(sql)
         return self.cr.dictfetchall()
+    
+    def get_lines(self):
+        wizard_data = self.localcontext['data']['form']
+        product = wizard_data['product_id']
+        date_from = wizard_data['date_from']
+        date_to = wizard_data['date_to']
+        res = []
+        seq = -1
+        sql = '''
+            select qtvl.ngay_mo_thuong as ngay_mo_so, kqxs.dai_duthuong_id as dai_duthuong
+                from quyet_toan_ve_ngay_line qtvl
+                left join ketqua_xoso kqxs on kqxs.name = qtvl.ngay_mo_thuong
+                where qtvl.quyettoan_id in (select id from quyet_toan_ve_ngay where date_to between '%s' and '%s' and product_id=%s)
+                group by qtvl.ngay,kqxs.dai_duthuong_id
+                order by qtvl.ngay
+        '''%(date_from,date_to,product[0])
+        self.cr.execute(sql)
+        for seq_tt,line in enumerate(self.cr.dictfetchall()):
+            seq += 1
+            seq_n = seq
+            res.append({
+                'ngay_mo_so': line['ngay_mo_so'],
+                'dai_duthuong_id': line['dai_duthuong'],
+            })
+            # 2 so
+            sql = '''
+                select case when sum(sl_2_d)!=0 then sum(sl_2_d) else 0 end sl_trung,
+                        case when sum(st_2_d)!=0 then sum(st_2_d) else 0 end so_tien
+                    from quyet_toan_ve_ngay_line
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where date_to between '%s' and '%s' and product_id=%s)
+            '''%(line['ngay_mo_so'], date_from,date_to,product[0])
+            self.cr.execute(sql)
+            loai_2_d = self.cr.dictfetchone()
+            res[seq_n]['sl_2_d'] = loai_2_d['sl_trung']
+            res[seq_n]['st_2_d'] = loai_2_d['so_tien']
+            
+            sql = '''
+                select case when sum(sl_2_c)!=0 then sum(sl_2_c) else 0 end sl_trung,
+                        case when sum(st_2_c)!=0 then sum(st_2_c) else 0 end so_tien
+                    from quyet_toan_ve_ngay_line
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where date_to between '%s' and '%s' and product_id=%s)
+            '''%(line['ngay_mo_so'], date_from,date_to,product[0])
+            self.cr.execute(sql)
+            loai_2_c = self.cr.dictfetchone()
+            res[seq_n]['sl_2_c'] = loai_2_c['sl_trung']
+            res[seq_n]['st_2_c'] = loai_2_c['so_tien']
+            
+            sql = '''
+                select slan_2_dc as slan_trung,
+                        case when sum(sl_2_dc)!=0 then sum(sl_2_dc) else 0 end sl_trung,
+                        case when sum(st_2_dc)!=0 then sum(st_2_dc) else 0 end end so_tien
+                    
+                    from quyet_toan_ve_ngay_line
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where date_to between '%s' and '%s' and product_id=%s)
+                    
+                    group by slan_2_dc 
+            '''%(line['ngay_mo_so'], date_from,date_to,product[0])
+            self.cr.execute(sql)
+            for s_2_dc,loai_2_dc in enumerate(self.cr.dictfetchall()):
+                if seq_n+s_2_dc > seq and (loai_2_dc['sl_trung']!=0 or loai_2_dc['slan_trung']!=0 or loai_2_dc['so_tien']!=0):
+                    seq += 1
+                    res.append({
+                        'ngay_mo_so': False,
+                        'dai_duthuong_id': False,
+                    })
+                res[seq_n+s_2_dc]['sl_2_dc'] = loai_2_dc['sl_trung']
+                res[seq_n+s_2_dc]['slan_2_dc'] = loai_2_dc['slan_trung']
+                res[seq_n+s_2_dc]['st_2_dc'] = loai_2_dc['so_tien']
+                
+            sql = '''
+                select slan_2_18 as slan_trung,
+                        case when sum(sl_2_18)!=0 then sum(sl_2_18) else 0 end sl_trung,
+                        case when sum(st_2_18)!=0 then sum(st_2_18) else 0 end end so_tien
+                    
+                    from quyet_toan_ve_ngay_line
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where date_to between '%s' and '%s' and product_id=%s)
+                    
+                    group by slan_2_18  
+            '''%(line['ngay_mo_so'], date_from,date_to,product[0])
+            self.cr.execute(sql)
+            for s_2_18,loai_2_18 in enumerate(self.cr.dictfetchall()):
+                if seq_n+s_2_18 > seq and (loai_2_18['sl_trung']!=0 or loai_2_18['slan_trung']!=0 or loai_2_18['so_tien']!=0):
+                    seq += 1
+                    res.append({
+                        'ngay_mo_so': False,
+                        'dai_duthuong_id': False,
+                    })
+                res[seq_n+s_2_18]['sl_2_18'] = loai_2_18['sl_trung']
+                res[seq_n+s_2_18]['slan_2_18'] = loai_2_18['slan_trung']
+                res[seq_n+s_2_18]['st_2_18'] = loai_2_18['so_tien']
+            
+            # 3 so
+            sql = '''
+                select case when sum(sl_3_d)!=0 then sum(sl_3_d) else 0 end sl_trung,
+                        case when sum(st_3_d)!=0 then sum(st_3_d) else 0 end so_tien
+                    from quyet_toan_ve_ngay_line
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where date_to between '%s' and '%s' and product_id=%s)
+            '''%(line['ngay_mo_so'], date_from,date_to,product[0])
+            self.cr.execute(sql)
+            loai_3_d = self.cr.dictfetchone()
+            res[seq_n]['sl_3_d'] = loai_3_d['sl_trung']
+            res[seq_n]['st_3_d'] = loai_3_d['so_tien']
+            
+            sql = '''
+                select case when sum(sl_3_c)!=0 then sum(sl_3_c) else 0 end sl_trung,
+                        case when sum(st_3_c)!=0 then sum(st_3_c) else 0 end so_tien
+                    from quyet_toan_ve_ngay_line
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where date_to between '%s' and '%s' and product_id=%s)
+            '''%(line['ngay_mo_so'], date_from,date_to,product[0])
+            self.cr.execute(sql)
+            loai_3_c = self.cr.dictfetchone()
+            res[seq_n]['sl_3_c'] = loai_3_c['sl_trung']
+            res[seq_n]['st_3_c'] = loai_3_c['so_tien']
+            
+            sql = '''
+                select slan_3_dc as slan_trung,
+                        case when sum(sl_3_dc)!=0 then sum(sl_3_dc) else 0 end sl_trung,
+                        case when sum(st_3_dc)!=0 then sum(st_3_dc) else 0 end end so_tien
+                    
+                    from quyet_toan_ve_ngay_line
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where date_to between '%s' and '%s' and product_id=%s)
+                    
+                    group by slan_3_dc 
+            '''%(line['ngay_mo_so'], date_from,date_to,product[0])
+            self.cr.execute(sql)
+            for s_3_dc,loai_3_dc in enumerate(self.cr.dictfetchall()):
+                if seq_n+s_3_dc > seq and (loai_3_dc['sl_trung']!=0 or loai_3_dc['slan_trung']!=0 or loai_3_dc['so_tien']!=0):
+                    seq += 1
+                    res.append({
+                        'ngay_mo_so': False,
+                        'dai_duthuong_id': False,
+                    })
+                res[seq_n+s_3_dc]['sl_3_dc'] = loai_3_dc['sl_trung']
+                res[seq_n+s_3_dc]['slan_3_dc'] = loai_3_dc['slan_trung']
+                res[seq_n+s_3_dc]['st_3_dc'] = loai_3_dc['so_tien']
+                
+            sql = '''
+                select slan_3_7 as slan_trung,
+                        case when sum(sl_3_7)!=0 then sum(sl_3_7) else 0 end sl_trung,
+                        case when sum(st_3_7)!=0 then sum(st_3_7) else 0 end end so_tien
+                    
+                    from quyet_toan_ve_ngay_line
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where date_to between '%s' and '%s' and product_id=%s)
+                    
+                    group by slan_3_7 
+            '''%(line['ngay_mo_so'], date_from,date_to,product[0])
+            self.cr.execute(sql)
+            for s_3_7,loai_3_7 in enumerate(self.cr.dictfetchall()):
+                if seq_n+s_3_7 > seq and (loai_3_7['sl_trung']!=0 or loai_3_7['slan_trung']!=0 or loai_3_7['so_tien']!=0):
+                    seq += 1
+                    res.append({
+                        'ngay_mo_so': False,
+                        'dai_duthuong_id': False,
+                    })
+                res[seq_n+s_3_7]['sl_3_7'] = loai_3_7['sl_trung']
+                res[seq_n+s_3_7]['slan_3_7'] = loai_3_7['slan_trung']
+                res[seq_n+s_3_7]['st_3_7'] = loai_3_7['so_tien']
+                
+            sql = '''
+                select slan_3_17 as slan_trung,
+                        case when sum(sl_3_17)!=0 then sum(sl_3_17) else 0 end sl_trung,
+                        case when sum(st_3_17)!=0 then sum(st_3_17) else 0 end end so_tien
+                    
+                    from quyet_toan_ve_ngay_line
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where date_to between '%s' and '%s' and product_id=%s)
+                    
+                    group by slan_3_17 
+            '''%(line['ngay_mo_so'], date_from,date_to,product[0])
+            self.cr.execute(sql)
+            for s_3_17,loai_3_17 in enumerate(self.cr.dictfetchall()):
+                if seq_n+s_3_17 > seq and (loai_3_17['sl_trung']!=0 or loai_3_17['slan_trung']!=0 or loai_3_17['so_tien']!=0):
+                    seq += 1
+                    res.append({
+                        'ngay_mo_so': False,
+                        'dai_duthuong_id': False,
+                    })
+                res[seq_n+s_3_17]['sl_3_17'] = loai_3_17['sl_trung']
+                res[seq_n+s_3_17]['slan_3_17'] = loai_3_17['slan_trung']
+                res[seq_n+s_3_17]['st_3_17'] = loai_3_17['so_tien']
+                
+            #4 so
+            sql = '''
+                select slan_4_16 as slan_trung,
+                        case when sum(sl_4_16)!=0 then sum(sl_4_16) else 0 end sl_trung,
+                        case when sum(st_4_16)!=0 then sum(st_4_16) else 0 end end so_tien
+                    
+                    from quyet_toan_ve_ngay_line
+                    where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where date_to between '%s' and '%s' and product_id=%s)
+                    
+                    group by slan_4_16 
+            '''%(line['ngay_mo_so'], date_from,date_to,product[0])
+            self.cr.execute(sql)
+            for s_4_16,loai_4_16 in enumerate(self.cr.dictfetchall()):
+                if seq_n+s_4_16 > seq and (loai_4_16['sl_trung']!=0 or loai_4_16['slan_trung']!=0 or loai_4_16['so_tien']!=0):
+                    seq += 1
+                    res.append({
+                        'ngay_mo_so': False,
+                        'dai_duthuong_id': False,
+                    })
+                res[seq_n+s_4_16]['sl_4_16'] = loai_4_16['sl_trung']
+                res[seq_n+s_4_16]['slan_4_16'] = loai_4_16['slan_trung']
+                res[seq_n+s_4_16]['st_4_16'] = loai_4_16['so_tien']
+                
+        return res
     
     def get_vietname_date(self, date):
         if not date:
