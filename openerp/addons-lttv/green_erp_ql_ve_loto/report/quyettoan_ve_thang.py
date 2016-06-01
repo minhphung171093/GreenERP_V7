@@ -36,8 +36,10 @@ class Parser(report_sxw.rml_parse):
         })
         
     def get_ddt_name(self, dai_duthuong_id):
-        dai_duthuong = self.pool.get('dai.duthuong').browse(self.cr, self.uid, dai_duthuong_id)
-        return dai_duthuong.name
+        if dai_duthuong_id:
+            dai_duthuong = self.pool.get('dai.duthuong').browse(self.cr, self.uid, dai_duthuong_id)
+            return dai_duthuong.name
+        return ''
         
     def get_line_tong(self):
         wizard_data = self.localcontext['data']['form']
@@ -140,8 +142,8 @@ class Parser(report_sxw.rml_parse):
                 from quyet_toan_ve_ngay_line qtvl
                 left join ketqua_xoso kqxs on kqxs.name = qtvl.ngay_mo_thuong
                 where qtvl.quyettoan_id in (select id from quyet_toan_ve_ngay where date_to between '%s' and '%s' and product_id=%s)
-                group by qtvl.ngay,kqxs.dai_duthuong_id
-                order by qtvl.ngay
+                group by qtvl.ngay_mo_thuong,kqxs.dai_duthuong_id
+                order by qtvl.ngay_mo_thuong
         '''%(date_from,date_to,product[0])
         self.cr.execute(sql)
         for seq_tt,line in enumerate(self.cr.dictfetchall()):
@@ -150,6 +152,34 @@ class Parser(report_sxw.rml_parse):
             res.append({
                 'ngay_mo_so': line['ngay_mo_so'],
                 'dai_duthuong_id': line['dai_duthuong'],
+                'sl_2_d': 0,
+                'st_2_d': 0,
+                'sl_2_c': 0,
+                'st_2_c': 0,
+                'sl_2_dc': 0,
+                'st_2_dc': 0,
+                'sl_2_18': 0,
+                'st_2_18': 0,
+                'sl_3_d': 0,
+                'st_3_d': 0,
+                'sl_3_c': 0,
+                'st_3_c': 0,
+                'sl_3_dc': 0,
+                'st_3_dc': 0,
+                'sl_3_7': 0,
+                'st_3_7': 0,
+                'sl_3_17': 0,
+                'st_3_17': 0,
+                'sl_4_16': 0,
+                'st_4_16': 0,
+                'sl_tong': 0,
+                'st_tong': 0,
+                'slan_2_dc': 0,
+                'slan_2_18': 0,
+                'slan_3_dc': 0,
+                'slan_3_7': 0,
+                'slan_3_17': 0,
+                'slan_4_16': 0,
             })
             # 2 so
             sql = '''
@@ -162,6 +192,8 @@ class Parser(report_sxw.rml_parse):
             loai_2_d = self.cr.dictfetchone()
             res[seq_n]['sl_2_d'] = loai_2_d['sl_trung']
             res[seq_n]['st_2_d'] = loai_2_d['so_tien']
+            res[seq_n]['sl_tong'] += loai_2_d['sl_trung']
+            res[seq_n]['st_tong'] += loai_2_d['so_tien']
             
             sql = '''
                 select case when sum(sl_2_c)!=0 then sum(sl_2_c) else 0 end sl_trung,
@@ -173,16 +205,20 @@ class Parser(report_sxw.rml_parse):
             loai_2_c = self.cr.dictfetchone()
             res[seq_n]['sl_2_c'] = loai_2_c['sl_trung']
             res[seq_n]['st_2_c'] = loai_2_c['so_tien']
+            res[seq_n]['sl_tong'] += loai_2_c['sl_trung']
+            res[seq_n]['st_tong'] += loai_2_c['so_tien']
             
             sql = '''
+            select slan_trung,sl_trung, so_tien from (
                 select slan_2_dc as slan_trung,
                         case when sum(sl_2_dc)!=0 then sum(sl_2_dc) else 0 end sl_trung,
-                        case when sum(st_2_dc)!=0 then sum(st_2_dc) else 0 end end so_tien
+                        case when sum(st_2_dc)!=0 then sum(st_2_dc) else 0 end so_tien
                     
                     from quyet_toan_ve_ngay_line
                     where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where date_to between '%s' and '%s' and product_id=%s)
                     
                     group by slan_2_dc 
+            )foo where sl_trung!=0 and so_tien!=0 and slan_trung!=0
             '''%(line['ngay_mo_so'], date_from,date_to,product[0])
             self.cr.execute(sql)
             for s_2_dc,loai_2_dc in enumerate(self.cr.dictfetchall()):
@@ -191,20 +227,52 @@ class Parser(report_sxw.rml_parse):
                     res.append({
                         'ngay_mo_so': False,
                         'dai_duthuong_id': False,
+                        'sl_2_d': 0,
+                        'st_2_d': 0,
+                        'sl_2_c': 0,
+                        'st_2_c': 0,
+                        'sl_2_dc': 0,
+                        'st_2_dc': 0,
+                        'sl_2_18': 0,
+                        'st_2_18': 0,
+                        'sl_3_d': 0,
+                        'st_3_d': 0,
+                        'sl_3_c': 0,
+                        'st_3_c': 0,
+                        'sl_3_dc': 0,
+                        'st_3_dc': 0,
+                        'sl_3_7': 0,
+                        'st_3_7': 0,
+                        'sl_3_17': 0,
+                        'st_3_17': 0,
+                        'sl_4_16': 0,
+                        'st_4_16': 0,
+                        'sl_tong': 0,
+                        'st_tong': 0,
+                        'slan_2_dc': 0,
+                        'slan_2_18': 0,
+                        'slan_3_dc': 0,
+                        'slan_3_7': 0,
+                        'slan_3_17': 0,
+                        'slan_4_16': 0,
                     })
                 res[seq_n+s_2_dc]['sl_2_dc'] = loai_2_dc['sl_trung']
                 res[seq_n+s_2_dc]['slan_2_dc'] = loai_2_dc['slan_trung']
                 res[seq_n+s_2_dc]['st_2_dc'] = loai_2_dc['so_tien']
+                res[seq_n+s_2_dc]['sl_tong'] += loai_2_dc['sl_trung']
+                res[seq_n+s_2_dc]['st_tong'] += loai_2_dc['so_tien']
                 
             sql = '''
+            select slan_trung,sl_trung, so_tien from (
                 select slan_2_18 as slan_trung,
                         case when sum(sl_2_18)!=0 then sum(sl_2_18) else 0 end sl_trung,
-                        case when sum(st_2_18)!=0 then sum(st_2_18) else 0 end end so_tien
+                        case when sum(st_2_18)!=0 then sum(st_2_18) else 0 end so_tien
                     
                     from quyet_toan_ve_ngay_line
                     where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where date_to between '%s' and '%s' and product_id=%s)
                     
                     group by slan_2_18  
+            )foo where sl_trung!=0 and so_tien!=0 and slan_trung!=0
             '''%(line['ngay_mo_so'], date_from,date_to,product[0])
             self.cr.execute(sql)
             for s_2_18,loai_2_18 in enumerate(self.cr.dictfetchall()):
@@ -213,10 +281,40 @@ class Parser(report_sxw.rml_parse):
                     res.append({
                         'ngay_mo_so': False,
                         'dai_duthuong_id': False,
+                        'sl_2_d': 0,
+                        'st_2_d': 0,
+                        'sl_2_c': 0,
+                        'st_2_c': 0,
+                        'sl_2_dc': 0,
+                        'st_2_dc': 0,
+                        'sl_2_18': 0,
+                        'st_2_18': 0,
+                        'sl_3_d': 0,
+                        'st_3_d': 0,
+                        'sl_3_c': 0,
+                        'st_3_c': 0,
+                        'sl_3_dc': 0,
+                        'st_3_dc': 0,
+                        'sl_3_7': 0,
+                        'st_3_7': 0,
+                        'sl_3_17': 0,
+                        'st_3_17': 0,
+                        'sl_4_16': 0,
+                        'st_4_16': 0,
+                        'sl_tong': 0,
+                        'st_tong': 0,
+                        'slan_2_dc': 0,
+                        'slan_2_18': 0,
+                        'slan_3_dc': 0,
+                        'slan_3_7': 0,
+                        'slan_3_17': 0,
+                        'slan_4_16': 0,
                     })
                 res[seq_n+s_2_18]['sl_2_18'] = loai_2_18['sl_trung']
                 res[seq_n+s_2_18]['slan_2_18'] = loai_2_18['slan_trung']
                 res[seq_n+s_2_18]['st_2_18'] = loai_2_18['so_tien']
+                res[seq_n+s_2_18]['sl_tong'] += loai_2_18['sl_trung']
+                res[seq_n+s_2_18]['st_tong'] += loai_2_18['so_tien']
             
             # 3 so
             sql = '''
@@ -229,6 +327,8 @@ class Parser(report_sxw.rml_parse):
             loai_3_d = self.cr.dictfetchone()
             res[seq_n]['sl_3_d'] = loai_3_d['sl_trung']
             res[seq_n]['st_3_d'] = loai_3_d['so_tien']
+            res[seq_n]['sl_tong'] += loai_3_d['sl_trung']
+            res[seq_n]['st_tong'] += loai_3_d['so_tien']
             
             sql = '''
                 select case when sum(sl_3_c)!=0 then sum(sl_3_c) else 0 end sl_trung,
@@ -240,16 +340,20 @@ class Parser(report_sxw.rml_parse):
             loai_3_c = self.cr.dictfetchone()
             res[seq_n]['sl_3_c'] = loai_3_c['sl_trung']
             res[seq_n]['st_3_c'] = loai_3_c['so_tien']
+            res[seq_n]['sl_tong'] += loai_3_c['sl_trung']
+            res[seq_n]['st_tong'] += loai_3_c['so_tien']
             
             sql = '''
+            select slan_trung,sl_trung, so_tien from (
                 select slan_3_dc as slan_trung,
                         case when sum(sl_3_dc)!=0 then sum(sl_3_dc) else 0 end sl_trung,
-                        case when sum(st_3_dc)!=0 then sum(st_3_dc) else 0 end end so_tien
+                        case when sum(st_3_dc)!=0 then sum(st_3_dc) else 0 end so_tien
                     
                     from quyet_toan_ve_ngay_line
                     where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where date_to between '%s' and '%s' and product_id=%s)
                     
                     group by slan_3_dc 
+            )foo where sl_trung!=0 and so_tien!=0 and slan_trung!=0
             '''%(line['ngay_mo_so'], date_from,date_to,product[0])
             self.cr.execute(sql)
             for s_3_dc,loai_3_dc in enumerate(self.cr.dictfetchall()):
@@ -258,20 +362,52 @@ class Parser(report_sxw.rml_parse):
                     res.append({
                         'ngay_mo_so': False,
                         'dai_duthuong_id': False,
+                        'sl_2_d': 0,
+                        'st_2_d': 0,
+                        'sl_2_c': 0,
+                        'st_2_c': 0,
+                        'sl_2_dc': 0,
+                        'st_2_dc': 0,
+                        'sl_2_18': 0,
+                        'st_2_18': 0,
+                        'sl_3_d': 0,
+                        'st_3_d': 0,
+                        'sl_3_c': 0,
+                        'st_3_c': 0,
+                        'sl_3_dc': 0,
+                        'st_3_dc': 0,
+                        'sl_3_7': 0,
+                        'st_3_7': 0,
+                        'sl_3_17': 0,
+                        'st_3_17': 0,
+                        'sl_4_16': 0,
+                        'st_4_16': 0,
+                        'sl_tong': 0,
+                        'st_tong': 0,
+                        'slan_2_dc': 0,
+                        'slan_2_18': 0,
+                        'slan_3_dc': 0,
+                        'slan_3_7': 0,
+                        'slan_3_17': 0,
+                        'slan_4_16': 0,
                     })
                 res[seq_n+s_3_dc]['sl_3_dc'] = loai_3_dc['sl_trung']
                 res[seq_n+s_3_dc]['slan_3_dc'] = loai_3_dc['slan_trung']
                 res[seq_n+s_3_dc]['st_3_dc'] = loai_3_dc['so_tien']
+                res[seq_n+s_3_dc]['sl_tong'] += loai_3_dc['sl_trung']
+                res[seq_n+s_3_dc]['st_tong'] += loai_3_dc['so_tien']
                 
             sql = '''
+            select slan_trung,sl_trung, so_tien from (
                 select slan_3_7 as slan_trung,
                         case when sum(sl_3_7)!=0 then sum(sl_3_7) else 0 end sl_trung,
-                        case when sum(st_3_7)!=0 then sum(st_3_7) else 0 end end so_tien
+                        case when sum(st_3_7)!=0 then sum(st_3_7) else 0 end so_tien
                     
                     from quyet_toan_ve_ngay_line
                     where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where date_to between '%s' and '%s' and product_id=%s)
                     
                     group by slan_3_7 
+            )foo where sl_trung!=0 and so_tien!=0 and slan_trung!=0
             '''%(line['ngay_mo_so'], date_from,date_to,product[0])
             self.cr.execute(sql)
             for s_3_7,loai_3_7 in enumerate(self.cr.dictfetchall()):
@@ -280,20 +416,52 @@ class Parser(report_sxw.rml_parse):
                     res.append({
                         'ngay_mo_so': False,
                         'dai_duthuong_id': False,
+                        'sl_2_d': 0,
+                        'st_2_d': 0,
+                        'sl_2_c': 0,
+                        'st_2_c': 0,
+                        'sl_2_dc': 0,
+                        'st_2_dc': 0,
+                        'sl_2_18': 0,
+                        'st_2_18': 0,
+                        'sl_3_d': 0,
+                        'st_3_d': 0,
+                        'sl_3_c': 0,
+                        'st_3_c': 0,
+                        'sl_3_dc': 0,
+                        'st_3_dc': 0,
+                        'sl_3_7': 0,
+                        'st_3_7': 0,
+                        'sl_3_17': 0,
+                        'st_3_17': 0,
+                        'sl_4_16': 0,
+                        'st_4_16': 0,
+                        'sl_tong': 0,
+                        'st_tong': 0,
+                        'slan_2_dc': 0,
+                        'slan_2_18': 0,
+                        'slan_3_dc': 0,
+                        'slan_3_7': 0,
+                        'slan_3_17': 0,
+                        'slan_4_16': 0,
                     })
                 res[seq_n+s_3_7]['sl_3_7'] = loai_3_7['sl_trung']
                 res[seq_n+s_3_7]['slan_3_7'] = loai_3_7['slan_trung']
                 res[seq_n+s_3_7]['st_3_7'] = loai_3_7['so_tien']
+                res[seq_n+s_3_7]['sl_tong'] += loai_3_7['sl_trung']
+                res[seq_n+s_3_7]['st_tong'] += loai_3_7['so_tien']
                 
             sql = '''
+            select slan_trung,sl_trung, so_tien from (
                 select slan_3_17 as slan_trung,
                         case when sum(sl_3_17)!=0 then sum(sl_3_17) else 0 end sl_trung,
-                        case when sum(st_3_17)!=0 then sum(st_3_17) else 0 end end so_tien
+                        case when sum(st_3_17)!=0 then sum(st_3_17) else 0 end so_tien
                     
                     from quyet_toan_ve_ngay_line
                     where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where date_to between '%s' and '%s' and product_id=%s)
                     
                     group by slan_3_17 
+            )foo where sl_trung!=0 and so_tien!=0 and slan_trung!=0
             '''%(line['ngay_mo_so'], date_from,date_to,product[0])
             self.cr.execute(sql)
             for s_3_17,loai_3_17 in enumerate(self.cr.dictfetchall()):
@@ -302,21 +470,53 @@ class Parser(report_sxw.rml_parse):
                     res.append({
                         'ngay_mo_so': False,
                         'dai_duthuong_id': False,
+                        'sl_2_d': 0,
+                        'st_2_d': 0,
+                        'sl_2_c': 0,
+                        'st_2_c': 0,
+                        'sl_2_dc': 0,
+                        'st_2_dc': 0,
+                        'sl_2_18': 0,
+                        'st_2_18': 0,
+                        'sl_3_d': 0,
+                        'st_3_d': 0,
+                        'sl_3_c': 0,
+                        'st_3_c': 0,
+                        'sl_3_dc': 0,
+                        'st_3_dc': 0,
+                        'sl_3_7': 0,
+                        'st_3_7': 0,
+                        'sl_3_17': 0,
+                        'st_3_17': 0,
+                        'sl_4_16': 0,
+                        'st_4_16': 0,
+                        'sl_tong': 0,
+                        'st_tong': 0,
+                        'slan_2_dc': 0,
+                        'slan_2_18': 0,
+                        'slan_3_dc': 0,
+                        'slan_3_7': 0,
+                        'slan_3_17': 0,
+                        'slan_4_16': 0,
                     })
                 res[seq_n+s_3_17]['sl_3_17'] = loai_3_17['sl_trung']
                 res[seq_n+s_3_17]['slan_3_17'] = loai_3_17['slan_trung']
                 res[seq_n+s_3_17]['st_3_17'] = loai_3_17['so_tien']
+                res[seq_n+s_3_17]['sl_tong'] += loai_3_17['sl_trung']
+                res[seq_n+s_3_17]['st_tong'] += loai_3_17['so_tien']
                 
             #4 so
             sql = '''
+            select slan_trung,sl_trung, so_tien from (
                 select slan_4_16 as slan_trung,
                         case when sum(sl_4_16)!=0 then sum(sl_4_16) else 0 end sl_trung,
-                        case when sum(st_4_16)!=0 then sum(st_4_16) else 0 end end so_tien
+                        case when sum(st_4_16)!=0 then sum(st_4_16) else 0 end so_tien
                     
                     from quyet_toan_ve_ngay_line
                     where ngay_mo_thuong='%s' and quyettoan_id in (select id from quyet_toan_ve_ngay where date_to between '%s' and '%s' and product_id=%s)
                     
                     group by slan_4_16 
+            )foo where sl_trung!=0 and so_tien!=0 and slan_trung!=0
             '''%(line['ngay_mo_so'], date_from,date_to,product[0])
             self.cr.execute(sql)
             for s_4_16,loai_4_16 in enumerate(self.cr.dictfetchall()):
@@ -325,10 +525,40 @@ class Parser(report_sxw.rml_parse):
                     res.append({
                         'ngay_mo_so': False,
                         'dai_duthuong_id': False,
+                        'sl_2_d': 0,
+                        'st_2_d': 0,
+                        'sl_2_c': 0,
+                        'st_2_c': 0,
+                        'sl_2_dc': 0,
+                        'st_2_dc': 0,
+                        'sl_2_18': 0,
+                        'st_2_18': 0,
+                        'sl_3_d': 0,
+                        'st_3_d': 0,
+                        'sl_3_c': 0,
+                        'st_3_c': 0,
+                        'sl_3_dc': 0,
+                        'st_3_dc': 0,
+                        'sl_3_7': 0,
+                        'st_3_7': 0,
+                        'sl_3_17': 0,
+                        'st_3_17': 0,
+                        'sl_4_16': 0,
+                        'st_4_16': 0,
+                        'sl_tong': 0,
+                        'st_tong': 0,
+                        'slan_2_dc': 0,
+                        'slan_2_18': 0,
+                        'slan_3_dc': 0,
+                        'slan_3_7': 0,
+                        'slan_3_17': 0,
+                        'slan_4_16': 0,
                     })
                 res[seq_n+s_4_16]['sl_4_16'] = loai_4_16['sl_trung']
                 res[seq_n+s_4_16]['slan_4_16'] = loai_4_16['slan_trung']
                 res[seq_n+s_4_16]['st_4_16'] = loai_4_16['so_tien']
+                res[seq_n+s_4_16]['sl_tong'] += loai_4_16['sl_trung']
+                res[seq_n+s_4_16]['st_tong'] += loai_4_16['so_tien']
                 
         return res
     
