@@ -108,10 +108,11 @@ class approve_pr(osv.osv_memory):
         for line in bdf_purchase.spending_detail_line:
             spending_detail_line += '''
                 <tr align="left" width="100%" style="font-size: 12px">
-                    <th width="20%" style="border: 2px solid black;font-size: 12px" align ="center">'''+(line.cat and line.cat.name or '')+'''</th>
-                    <th width="20%" style="border: 2px solid black;font-size: 12px" align ="center">'''+(line.sub_cat and line.sub_cat.name or '')+'''</th>
-                    <th width="40%" style="border: 2px solid black;font-size: 12px" align ="center">'''+(line.product_id and line.product_id.name or '')+'''</th>
-                    <th width="20%" style="border: 2px solid black;font-size: 12px" align ="center">'''+(format(int(line.amt), ',') or '')+'''</th>
+                    <th width="15%" style="border: 2px solid black;font-size: 12px" align ="center">'''+(line.cat and line.cat.name or '')+'''</th>
+                    <th width="15%" style="border: 2px solid black;font-size: 12px" align ="center">'''+(line.sub_cat and line.sub_cat.name or '')+'''</th>
+                    <th width="35%" style="border: 2px solid black;font-size: 12px" align ="center">'''+(line.product_id and line.product_id.name or '')+'''</th>
+                    <th width="15%" style="border: 2px solid black;font-size: 12px" align ="center">'''+(format(int(line.amt), ',') or '')+'''</th>
+                    <th width="20%" style="border: 2px solid black;font-size: 12px" align ="center">'''+(format(int(line.fx_currency), ',') or '')+'''</th>
                 </tr>
             '''
         body = '''
@@ -129,29 +130,33 @@ class approve_pr(osv.osv_memory):
                     <th colspan="3" style="border: 2px solid black;font-size: 12px" width="70%" align ="left">'''+(bdf_purchase.description or '')+'''</th>
                 </tr>
                 <tr align="left" width="100%" style="font-size: 12px">
-                    <th width="20%" align ="left"></th>
-                    <th width="20%" align ="left"></th>
-                    <th width="40%" align ="left"></th>
-                    <th width="20%" align ="left"></th>
+                    <th width="15%" align ="left"></th>
+                    <th width="15%" align ="left"></th>
+                    <th width="35%" align ="left"></th>
+                    <th width="15%" align ="left"></th>
+                    <th width="20%" style="font-size: 12px;background-color: rgb(0,32,96) ;color: rgb(255, 255, 255);" align ="center">FX</th>
                 </tr>
                 <tr align="left" width="100%" style="font-size: 12px">
-                    <th width="20%" align ="left"></th>
-                    <th width="20%" align ="left"></th>
-                    <th width="40%" align ="left"></th>
-                    <th width="20%" align ="left"></th>
+                    <th width="15%" align ="left"></th>
+                    <th width="15%" align ="left"></th>
+                    <th width="35%" align ="left"></th>
+                    <th width="15%" align ="left"></th>
+                    <th width="20%" style="border: 2px solid black;font-size: 12px" align ="center">'''+(str(bdf_purchase.fx) or '')+'''</th>
                 </tr>
                 <tr align="left" width="100%" style="font-size: 12px;background-color: rgb(0,32,96) ;color: rgb(255, 255, 255);">
-                    <th width="20%" align ="center">CAT</th>
-                    <th width="20%" align ="center">Sub_CAT</th>
-                    <th width="40%" align ="center">Item</th>
-                    <th width="20%" align ="center">Amt (VND)</th>
+                    <th width="15%" align ="center">CAT</th>
+                    <th width="15%" align ="center">Sub_CAT</th>
+                    <th width="35%" align ="center">Item</th>
+                    <th width="15%" align ="center">Amt (VND)</th>
+                    <th width="20%" align ="center">(Other)</th>
                 </tr>
                 '''+spending_detail_line+'''
                 <tr align="left" width="100%" style="font-size: 12px">
-                    <th width="20%" align ="center"></th>
-                    <th width="20%" align ="center"></th>
-                    <th width="40%" align ="center"></th>
-                    <th width="20%" style="border: 2px solid black;font-size: 12px;background-color: rgb(0,32,96) ;color: rgb(255, 255, 255);" align ="center">'''+(format(int(bdf_purchase.amt), ',') or '')+'''</th>
+                    <th width="15%" align ="center"></th>
+                    <th width="15%" align ="center"></th>
+                    <th width="35%" align ="center"></th>
+                    <th width="15%" style="border: 2px solid black;font-size: 12px;background-color: rgb(0,32,96) ;color: rgb(255, 255, 255);" align ="center">'''+(format(int(bdf_purchase.amt), ',') or '')+'''</th>
+                    <th width="20%" style="border: 2px solid black;font-size: 12px;background-color: rgb(0,32,96) ;color: rgb(255, 255, 255);" align ="center">'''+(format(int(bdf_purchase.fx_currency), ',') or '')+'''</th>
                 </tr>
              </table>
              <p>Requestor:'''+(bdf_purchase.create_uid and bdf_purchase.create_uid.name or '')+'''
@@ -212,10 +217,11 @@ class approve_pr(osv.osv_memory):
         for line in bdf_purchase.spending_detail_line:
             spending_detail_line += '''
                 <tr align="left" width="100%" style="font-size: 12px">
-                    <th width="20%" style="border: 2px solid black;font-size: 12px" align ="center">'''+(line.cat and line.cat.name or '')+'''</th>
-                    <th width="20%" style="border: 2px solid black;font-size: 12px" align ="center">'''+(line.sub_cat and line.sub_cat.name or '')+'''</th>
-                    <th width="40%" style="border: 2px solid black;font-size: 12px" align ="center">'''+(line.product_id and line.product_id.name or '')+'''</th>
-                    <th width="20%" style="border: 2px solid black;font-size: 12px" align ="center">'''+(format(int(line.amt), ',') or '')+'''</th>
+                    <th width="15%" style="border: 2px solid black;font-size: 12px" align ="center">'''+(line.cat and line.cat.name or '')+'''</th>
+                    <th width="15%" style="border: 2px solid black;font-size: 12px" align ="center">'''+(line.sub_cat and line.sub_cat.name or '')+'''</th>
+                    <th width="35%" style="border: 2px solid black;font-size: 12px" align ="center">'''+(line.product_id and line.product_id.name or '')+'''</th>
+                    <th width="15%" style="border: 2px solid black;font-size: 12px" align ="center">'''+(format(int(line.amt), ',') or '')+'''</th>
+                    <th width="20%" style="border: 2px solid black;font-size: 12px" align ="center">'''+(format(int(line.fx_currency), ',') or '')+'''</th>
                 </tr>
             '''
         body = '''
@@ -233,29 +239,33 @@ class approve_pr(osv.osv_memory):
                     <th colspan="3" style="border: 2px solid black;font-size: 12px" width="70%" align ="left">'''+(bdf_purchase.description or '')+'''</th>
                 </tr>
                 <tr align="left" width="100%" style="font-size: 12px">
-                    <th width="20%" align ="left"></th>
-                    <th width="20%" align ="left"></th>
-                    <th width="40%" align ="left"></th>
-                    <th width="20%" align ="left"></th>
+                    <th width="15%" align ="left"></th>
+                    <th width="15%" align ="left"></th>
+                    <th width="35%" align ="left"></th>
+                    <th width="15%" align ="left"></th>
+                    <th width="20%" style="border: 2px solid black;font-size: 12px;background-color: rgb(0,32,96) ;color: rgb(255, 255, 255);" align ="center">FX</th>
                 </tr>
                 <tr align="left" width="100%" style="font-size: 12px">
-                    <th width="20%" align ="left"></th>
-                    <th width="20%" align ="left"></th>
-                    <th width="40%" align ="left"></th>
-                    <th width="20%" align ="left"></th>
+                    <th width="15%" align ="left"></th>
+                    <th width="15%" align ="left"></th>
+                    <th width="35%" align ="left"></th>
+                    <th width="15%" align ="left"></th>
+                    <th width="20%" style="border: 2px solid black;font-size: 12px" align ="center">'''+(str(bdf_purchase.fx) or '')+'''</th>
                 </tr>
                 <tr align="left" width="100%" style="font-size: 12px;background-color: rgb(0,32,96) ;color: rgb(255, 255, 255);">
-                    <th width="20%" style="border: 2px solid black;font-size: 12px" align ="center">CAT</th>
-                    <th width="20%" style="border: 2px solid black;font-size: 12px" align ="center">Sub_CAT</th>
-                    <th width="40%" style="border: 2px solid black;font-size: 12px" align ="center">Item</th>
-                    <th width="20%" style="border: 2px solid black;font-size: 12px" align ="center">Amt (VND)</th>
+                    <th width="15%" style="border: 2px solid black;font-size: 12px" align ="center">CAT</th>
+                    <th width="15%" style="border: 2px solid black;font-size: 12px" align ="center">Sub_CAT</th>
+                    <th width="35%" style="border: 2px solid black;font-size: 12px" align ="center">Item</th>
+                    <th width="15%" style="border: 2px solid black;font-size: 12px" align ="center">Amt (VND)</th>
+                    <th width="20%" style="border: 2px solid black;font-size: 12px" align ="center">(Other)</th>
                 </tr>
                 '''+spending_detail_line+'''
                 <tr align="left" width="100%" style="font-size: 12px;">
-                    <th width="20%" align ="center"></th>
-                    <th width="20%" align ="center"></th>
-                    <th width="40%" align ="center"></th>
-                    <th width="20%" style="border: 2px solid black;font-size: 12px;background-color: rgb(0,32,96) ;color: rgb(255, 255, 255);" align ="center">'''+(format(int(bdf_purchase.amt), ',') or '')+'''</th>
+                    <th width="15%" align ="center"></th>
+                    <th width="15%" align ="center"></th>
+                    <th width="35%" align ="center"></th>
+                    <th width="15%" style="border: 2px solid black;font-size: 12px;background-color: rgb(0,32,96) ;color: rgb(255, 255, 255);" align ="center">'''+(format(int(bdf_purchase.amt), ',') or '')+'''</th>
+                    <th width="20%" style="border: 2px solid black;font-size: 12px;background-color: rgb(0,32,96) ;color: rgb(255, 255, 255);" align ="center">'''+(format(int(bdf_purchase.fx_currency), ',') or '')+'''</th>
                 </tr>
              </table>
              <p>Requestor:'''+(bdf_purchase.create_uid and bdf_purchase.create_uid.name or '')+'''
