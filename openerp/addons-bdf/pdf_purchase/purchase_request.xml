@@ -297,13 +297,13 @@
 															<sheet>
 																<group col='4' colspan='2'>
 																	<field name="category_id" required="True" domain="[('parent_id','!=',False)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-																	<field name="allocation" required="True"/>
+																	<field name="allocation" sum="Total" required="True"/>
 																</group>
 																<group string="allocation by MONTH">
 																	<field name="allocation_month_line" nolabel='1'>
-																		<tree editable='bottom'>
+																		<tree editable='bottom' create='false'>
 																			<field name="month" required='1'/>
-																			<field name="allocation" required='1'/>
+																			<field name="allocation" sum="Total" required='1'/>
 																		</tree>
 																	</field>
 																</group>
@@ -413,26 +413,28 @@
 		            		</field>
 		                </group>
 		                <group col='4' colspan='2'>
+		                    <field name="function" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 		                    <field name="budget_owner" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-		                    <field name="channel" domain="[('budget_id','=',budget_owner)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+		                    <field name="channel" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+			            	<newline/>
 			            	<field name="date_from"/> 
 		                    <field name="date_to"/>
 		                	<field name="supplier_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 		                	<field name="description"/>
-		                	<field name="purchasing_group_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+		                	<field name="purchasing_group_id" invisible='1' options="{'no_open': True,'create': false, 'create_edit': false}"/>
 			            </group>
-			            <group string="Procurement Detail">
+			            <group string="PROCUREMENT DETAIL">
 							<field name="procurement_detail_line" nolabel="1">
 								<tree editable="bottom">
 									<field name="product_id"/>
 									<field name="qty"/>
-									<field name="price_unit" sum="Total"/>
-									<field name="amt" sum="Amount" readonle="1"/>
+									<field name="price_unit"/>
+									<field name="amt" sum="Total"/>
 								</tree>
 							</field>
 			            </group>
-			            <group string="Spending Detail" col='4' colspan='4'>
-			            	<group>
+			            <group string="BUDGET DETAIL" col='4' colspan='4'>
+			            	<group invisible='1'>
 				            	<div class="oe_right">
 			                		<label for="fx"/>
 				                    <field name="fx" class="oe_inline"/>
@@ -440,40 +442,57 @@
 			                </group>
 			                <group colspan='4'>
 			                	<div col='4' colspan='4' class='oe_green_erp_scroll'>
-									<field name="spending_detail_line" nolabel="1" context="{'channel_id':channel}">
-										<tree string="Spending Detail">
-											<field name="cost_center_id" on_change="onchange_cost(cost_center_id)" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+									<field name="spending_detail_line" nolabel="1">
+										<tree string="BUDGET DETAIL">
+											<field name="cost_center_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 											<field name="cat" domain="[('parent_id','=',False)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 											<field name="sub_cat" domain="[('parent_id','=',cat)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-											<field name="project_id" invisible='1'/>
-											<field name="product_id" domain="[('master_function_expense_id','=',parent.function),('master_budget_owner_id','=',parent.budget_owner)]" on_change="onchange_product(product_id)" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+											<field name="project_id"/>
+											<field name="product_id" on_change="onchange_product(product_id)" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 											<field name="account_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 											<field name="qty"/>
 											<field name="price_unit"/>
 											<field name="amt" sum="Total"/>
-											<field name="fx_currency" sum="Total"/>
-											<field name="channel_name" invisible='1'/>
+											<field name="io_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 										</tree>
-										<form string="Spending Detail">
+										<form string="BUDGET DETAIL">
 											<sheet>
-												<field name="cat" invisible='1' domain="[('parent_id','=',False)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-												<field name="sub_cat" invisible='1' domain="[('parent_id','=',cat)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-												<field name="project_id" invisible='1'/>
-												<field name="account_id" invisible='1' options="{'no_open': True,'create': false, 'create_edit': false}"/>
-												<field name="amt" invisible='1'/>
-												<field name="fx_currency" invisible='1'/>
 												<group col='4' colspan='2'>
-													<field name="cost_center_id" on_change="onchange_cost(cost_center_id)" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-													<field name="product_id" domain="[('channel_id','in',[parent.channel])]" on_change="onchange_product(product_id)" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-													<field name="qty"/>
-													<field name="price_unit"/>
+													<field name="cost_center_id" required="1" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+													<newline/>
+													<field name="cat" required="1" domain="[('parent_id','=',False)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+													<field name="sub_cat" required="1" domain="[('parent_id','=',cat)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+													<field name="project_id"/>
+													<newline/>
+													<field name="product_id" required="1" on_change="onchange_product(product_id)" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+													<field name="account_id" required="1" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+													<field name="qty" required="1"/>
+													<field name="price_unit" required="1"/>
+													<field name="amt" sum="Total"/>
+													<field name="io_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 												</group>
-												<group string="Allocation">
+												<group string="allocation by CAT">
 													<field name="allocation_id" nolabel="1">
-														<tree string="Spending Detail" editable='bottom' create='false'>
-															<field name="key_account_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+														<tree string="allocation by CAT">
+															<field name="category_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 															<field name="allocation"/>
 														</tree>
+														<form string="allocation by CAT">
+															<sheet>
+																<group col='4' colspan='2'>
+																	<field name="category_id" required="True" domain="[('parent_id','!=',False)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+																	<field name="allocation" sum="Total" required="True"/>
+																</group>
+																<group string="allocation by MONTH">
+																	<field name="allocation_month_line" nolabel='1'>
+																		<tree editable='bottom' create='false'>
+																			<field name="month" required='1'/>
+																			<field name="allocation" sum="Total" required='1'/>
+																		</tree>
+																	</field>
+																</group>
+															</sheet>
+														</form>
 													</field>
 												</group>
 											</sheet>
@@ -578,26 +597,28 @@
 		            		</field>
 		                </group>
 		                <group col='4' colspan='2'>
+		                    <field name="function" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 		                    <field name="budget_owner" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-		                    <field name="channel" domain="[('budget_id','=',budget_owner)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+		                    <field name="channel" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+			            	<newline/>
 			            	<field name="date_from"/> 
 		                    <field name="date_to"/>
 		                	<field name="supplier_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 		                	<field name="description"/>
-		                	<field name="purchasing_group_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+		                	<field name="purchasing_group_id" invisible='1' options="{'no_open': True,'create': false, 'create_edit': false}"/>
 			            </group>
-			            <group string="Procurement Detail">
+			            <group string="PROCUREMENT DETAIL">
 							<field name="procurement_detail_line" nolabel="1">
 								<tree editable="bottom">
 									<field name="product_id"/>
 									<field name="qty"/>
-									<field name="price_unit" sum="Total"/>
-									<field name="amt" sum="Amount" readonle="1"/>
+									<field name="price_unit"/>
+									<field name="amt" sum="Total"/>
 								</tree>
 							</field>
 			            </group>
-			            <group string="Spending Detail" col='4' colspan='4'>
-			            	<group>
+			            <group string="BUDGET DETAIL" col='4' colspan='4'>
+			            	<group invisible='1'>
 				            	<div class="oe_right">
 			                		<label for="fx"/>
 				                    <field name="fx" class="oe_inline"/>
@@ -605,40 +626,57 @@
 			                </group>
 			                <group colspan='4'>
 			                	<div col='4' colspan='4' class='oe_green_erp_scroll'>
-									<field name="spending_detail_line" nolabel="1" context="{'channel_id':channel}">
-										<tree string="Spending Detail">
-											<field name="cost_center_id" on_change="onchange_cost(cost_center_id)" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+									<field name="spending_detail_line" nolabel="1">
+										<tree string="BUDGET DETAIL">
+											<field name="cost_center_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 											<field name="cat" domain="[('parent_id','=',False)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 											<field name="sub_cat" domain="[('parent_id','=',cat)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-											<field name="project_id" invisible='1'/>
-											<field name="product_id" domain="[('master_function_expense_id','=',parent.function),('master_budget_owner_id','=',parent.budget_owner)]" on_change="onchange_product(product_id)" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+											<field name="project_id"/>
+											<field name="product_id" on_change="onchange_product(product_id)" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 											<field name="account_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 											<field name="qty"/>
 											<field name="price_unit"/>
 											<field name="amt" sum="Total"/>
-											<field name="fx_currency" sum="Total"/>
-											<field name="channel_name" invisible='1'/>
+											<field name="io_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 										</tree>
-										<form string="Spending Detail">
+										<form string="BUDGET DETAIL">
 											<sheet>
-												<field name="cat" invisible='1' domain="[('parent_id','=',False)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-												<field name="sub_cat" invisible='1' domain="[('parent_id','=',cat)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-												<field name="project_id" invisible='1'/>
-												<field name="account_id" invisible='1' options="{'no_open': True,'create': false, 'create_edit': false}"/>
-												<field name="amt" invisible='1'/>
-												<field name="fx_currency" invisible='1'/>
 												<group col='4' colspan='2'>
-													<field name="cost_center_id" on_change="onchange_cost(cost_center_id)" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-													<field name="product_id" domain="[('channel_id','in',[parent.channel])]" on_change="onchange_product(product_id)" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-													<field name="qty"/>
-													<field name="price_unit"/>
+													<field name="cost_center_id" required="1" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+													<newline/>
+													<field name="cat" required="1" domain="[('parent_id','=',False)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+													<field name="sub_cat" required="1" domain="[('parent_id','=',cat)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+													<field name="project_id"/>
+													<newline/>
+													<field name="product_id" required="1" on_change="onchange_product(product_id)" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+													<field name="account_id" required="1" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+													<field name="qty" required="1"/>
+													<field name="price_unit" required="1"/>
+													<field name="amt" sum="Total"/>
+													<field name="io_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 												</group>
-												<group string="Allocation">
+												<group string="allocation by CAT">
 													<field name="allocation_id" nolabel="1">
-														<tree string="Spending Detail" editable='bottom' create='false'>
-															<field name="key_account_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+														<tree string="allocation by CAT">
+															<field name="category_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 															<field name="allocation"/>
 														</tree>
+														<form string="allocation by CAT">
+															<sheet>
+																<group col='4' colspan='2'>
+																	<field name="category_id" required="True" domain="[('parent_id','!=',False)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+																	<field name="allocation" sum="Total" required="True"/>
+																</group>
+																<group string="allocation by MONTH">
+																	<field name="allocation_month_line" nolabel='1'>
+																		<tree editable='bottom' create='false'>
+																			<field name="month" required='1'/>
+																			<field name="allocation" sum="Total" required='1'/>
+																		</tree>
+																	</field>
+																</group>
+															</sheet>
+														</form>
 													</field>
 												</group>
 											</sheet>
