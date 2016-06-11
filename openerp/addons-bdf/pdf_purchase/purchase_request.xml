@@ -1026,6 +1026,7 @@
             <field name="view_type">form</field>
             <field name="search_view_id" ref="product.product_category_search_view"/>
             <field name="view_id" ref="product.product_category_list_view"/>
+            <field name="domain">[('parent_id','!=',False)]</field>
         </record>
         <record id="product_category_action_form1" model="ir.actions.act_window.view">
             <field eval="1" name="sequence"/>
@@ -1074,7 +1075,8 @@
             <field name="res_model">product.category</field>
             <field name="view_type">form</field>
             <field name="search_view_id" ref="product.product_category_search_view"/>
-            <field name="view_id" ref="product.product_category_list_view"/>
+            <field name="view_id" ref="view_master_product_category_bdf_tree"/>
+            <field name="domain">[('parent_id','=',False)]</field>
         </record>
         <record id="action_master_product_category1" model="ir.actions.act_window.view">
             <field eval="1" name="sequence"/>
