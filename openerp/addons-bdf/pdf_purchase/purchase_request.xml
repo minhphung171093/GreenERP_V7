@@ -296,8 +296,8 @@
 														<form string="allocation by CAT">
 															<sheet>
 																<group col='4' colspan='2'>
-																	<field name="category_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-																	<field name="allocation"/>
+																	<field name="category_id" required="True" domain="[('parent_id','!=',False)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+																	<field name="allocation" required="True"/>
 																</group>
 																<group string="allocation by MONTH">
 																	<field name="allocation_month_line" nolabel='1'>

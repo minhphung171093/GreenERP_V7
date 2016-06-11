@@ -327,6 +327,19 @@ master_budget_owner()
 
 class bdf_allocation(osv.osv):
     _name="bdf.allocation"
+    
+    def default_get(self, cr, uid, fields, context=None):
+        if context is None:
+            context = {}
+        res = super(bdf_allocation, self).default_get(cr, uid, fields, context=context)
+        vals = []
+        for line in ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec']:
+            vals.append({
+                'month': line,
+            })
+        res.update({'allocation_month_line':vals})
+        return res
+    
     _columns={
         'allocation':fields.integer('% Allocation'),
         'key_account_id':fields.many2one('master.key.accounts','Regions',required=False),
@@ -338,6 +351,7 @@ bdf_allocation()
 
 class bdf_allocation_month(osv.osv):
     _name="bdf.allocation.month"
+    
     _columns={
         'allocation':fields.integer('% Allocation'),
         'month':fields.selection([
