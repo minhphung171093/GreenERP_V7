@@ -229,26 +229,28 @@
 		            		</field>
 		                </group>
 		                <group col='4' colspan='2'>
+		                    <field name="function" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 		                    <field name="budget_owner" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-		                    <field name="channel" domain="[('budget_id','=',budget_owner)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+		                    <field name="channel" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+			            	<newline/>
 			            	<field name="date_from"/> 
 		                    <field name="date_to"/>
 		                	<field name="supplier_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 		                	<field name="description"/>
-		                	<field name="purchasing_group_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+		                	<field name="purchasing_group_id" invisible='1' options="{'no_open': True,'create': false, 'create_edit': false}"/>
 			            </group>
-			            <group string="Procurement Detail">
+			            <group string="PROCUREMENT DETAIL">
 							<field name="procurement_detail_line" nolabel="1">
 								<tree editable="bottom">
 									<field name="product_id"/>
 									<field name="qty"/>
-									<field name="price_unit" sum="Total"/>
-									<field name="amt" sum="Amount" readonle="1"/>
+									<field name="price_unit"/>
+									<field name="amt" sum="Total"/>
 								</tree>
 							</field>
 			            </group>
-			            <group string="Spending Detail" col='4' colspan='4'>
-			            	<group>
+			            <group string="BUDGET DETAIL" col='4' colspan='4'>
+			            	<group invisible='1'>
 				            	<div class="oe_right">
 			                		<label for="fx"/>
 				                    <field name="fx" class="oe_inline"/>
@@ -258,32 +260,30 @@
 			                	<div col='4' colspan='4' class='oe_green_erp_scroll'>
 									<field name="spending_detail_line" nolabel="1" context="{'channel_id':channel}">
 										<tree string="Spending Detail">
-											<field name="cost_center_id" on_change="onchange_cost(cost_center_id)" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+											<field name="cost_center_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 											<field name="cat" domain="[('parent_id','=',False)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 											<field name="sub_cat" domain="[('parent_id','=',cat)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-											<field name="project_id" invisible='1'/>
-											<field name="product_id" domain="[('master_function_expense_id','=',parent.function),('master_budget_owner_id','=',parent.budget_owner)]" on_change="onchange_product(product_id)" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+											<field name="project_id"/>
+											<field name="product_id" on_change="onchange_product(product_id)" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 											<field name="account_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 											<field name="qty"/>
 											<field name="price_unit"/>
 											<field name="amt" sum="Total"/>
-											<field name="fx_currency" sum="Total"/>
-											<field name="channel_name" invisible='1'/>
+											<field name="io_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 										</tree>
 										<form string="Spending Detail">
 											<sheet>
-												<field name="cat" invisible='1' domain="[('parent_id','=',False)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-												<field name="sub_cat" invisible='1' domain="[('parent_id','=',cat)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-												<field name="project_id" invisible='1'/>
-												<field name="account_id" invisible='1' options="{'no_open': True,'create': false, 'create_edit': false}"/>
-												<field name="amt" invisible='1'/>
-												<field name="fx_currency" invisible='1'/>
-												<group col='4' colspan='2'>
-													<field name="cost_center_id" on_change="onchange_cost(cost_center_id)" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-													<field name="product_id" domain="[('channel_id','in',[parent.channel])]" on_change="onchange_product(product_id)" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-													<field name="qty"/>
-													<field name="price_unit"/>
-												</group>
+												<field name="cost_center_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+												<newline/>
+												<field name="cat" domain="[('parent_id','=',False)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+												<field name="sub_cat" domain="[('parent_id','=',cat)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+												<field name="project_id"/>
+												<field name="product_id" on_change="onchange_product(product_id)" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+												<field name="account_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+												<field name="qty"/>
+												<field name="price_unit"/>
+												<field name="amt" sum="Total"/>
+												<field name="io_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 												<group string="Allocation">
 													<field name="allocation_id" nolabel="1">
 														<tree string="Spending Detail" editable='bottom' create='false'>
@@ -989,10 +989,10 @@
             <field name="type">tree</field>
             <field eval="8" name="priority"/>
             <field name="arch" type="xml">
-                <tree string="Master Catecode" editable="top">
+                <tree string="Master Sub-Cate" editable="top">
                 	<field name="name" string="Cate Code"/>
                 	<field name="brand" required='1'/>
-                	<field name="cate" required='1'/>
+                	<field name="parent_id" required='1' domain="[('parent_id','=',False)]"/>
                 	<field name="sub_cate" required='1'/>
                 </tree>
             </field>
@@ -1001,7 +1001,7 @@
             <field name="name">Master Catecode</field>
             <field name="model">product.category</field>
             <field name="arch" type="xml">
-                <form string="Master Catecode" version="7.0">
+                <form string="Master Sub-Cate" version="7.0">
                 	<sheet>
                 		<div class="oe_title">
                             <label for="name" class="oe_edit_only"/>
@@ -1020,7 +1020,7 @@
             </field>
         </record>
         <record id="product.product_category_action_form" model="ir.actions.act_window">
-            <field name="name">Master Catecode</field>
+            <field name="name">Master Sub-Cate</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">product.category</field>
             <field name="view_type">form</field>
@@ -1040,6 +1040,54 @@
             <field name="act_window_id" ref="product.product_category_action_form"/>
         </record>
         
+         <!-- Kiet: Sua ten cua product_category -->
+        <record id="view_master_product_category_bdf_tree" model="ir.ui.view">
+            <field name="name">product.category.tree</field>
+            <field name="model">product.category</field>
+            <field name="type">tree</field>
+            <field eval="8" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Master Cat" editable="top">
+                	<field name="name" string="Cat"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_master_product_category_bdf_form" model="ir.ui.view">
+            <field name="name">Master Catecode</field>
+            <field name="model">product.category</field>
+            <field name="arch" type="xml">
+                <form string="Master Cat" version="7.0">
+                	<sheet>
+                		<div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                	</sheet>
+                </form>
+            </field>
+        </record>
+        <record id="action_master_product_category" model="ir.actions.act_window">
+            <field name="name">Master Cat</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.category</field>
+            <field name="view_type">form</field>
+            <field name="search_view_id" ref="product.product_category_search_view"/>
+            <field name="view_id" ref="product.product_category_list_view"/>
+        </record>
+        <record id="action_master_product_category1" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_master_product_category_bdf_tree"/>
+            <field name="act_window_id" ref="action_master_product_category"/>
+        </record>
+        <record id="action_master_product_category2" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_master_product_category_bdf_form"/>
+            <field name="act_window_id" ref="action_master_product_category"/>
+        </record>
         
         <!-- Kiet: Sua ten cua product_product -->
         <record model="ir.ui.view" id="product_product_tree_view_inherit_tree">

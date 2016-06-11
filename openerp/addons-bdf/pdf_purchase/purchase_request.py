@@ -91,10 +91,10 @@ class procurement_detail(osv.osv):
         return res
     
     _columns={
-        'product_id':fields.char('Detailed procured Item',size=1024,required=True),
+        'product_id':fields.char('Item',size=1024,required=True),
         'qty':fields.float('Qty',digits=(16, 0),required=True),
         'price_unit':fields.float('Unit Price',digits=(16, 0),required=True),
-        'amt':fields.function(_compute_amount, string='Amount',  multi='all'),
+        'amt':fields.function(_compute_amount, string='Amount',digits=(16, 0), type='float',  multi='all'),
         'purchase_id':fields.many2one('bdf.purchase','Purchase'),
     }
     
@@ -151,7 +151,7 @@ class spending_detail(osv.osv):
 #                     'cat':prod_obj.categ_id.id or False,
 #                     'sub_cat':prod_obj.categ_id and prod_obj.categ_id.parent_id.id or False ,
                 'account_id':prod_obj.account_id.id or False,
-                'price_unit':prod_obj.list_price,
+#                 'price_unit':prod_obj.list_price,
                 }
         return {'value': res}
     
@@ -170,7 +170,8 @@ class spending_detail(osv.osv):
         'purchase2_id':fields.many2one('bdf.purchase','Purchase',ondelete='cascade'),
         'purchase3_id':fields.many2one('bdf.purchase','Purchase',ondelete='cascade'),
         'allocation_id':fields.one2many('bdf.allocation','spending_detail_id','allocation'),
-        'project_id':fields.char('project',size=1024),
+        'project_id':fields.char('Project',size=1024),
+        'io_id':fields.many2one('bdf.io','IO'),
         'channel_name': fields.char('Channel Name', size=1024),
         'col_1': fields.float('Col',digits=(16,0)),
         'col_2': fields.float('Col',digits=(16,0)),
