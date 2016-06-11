@@ -436,7 +436,7 @@ class bdf_purchase(osv.osv):
     
     _columns={
         'name': fields.char('Number', size=1024),
-        'function':fields.many2one('master.function.expense','Function', required=False,
+        'function':fields.many2one('master.function.expense','Function', required=True,
                         states={'purchase_request': [('readonly', False)],'budget_control': [('readonly', False)],'reject': [('readonly', False)]},readonly=True),
               
         'budget_owner':fields.many2one('master.budget.owner','Budget Holder',required=True,
