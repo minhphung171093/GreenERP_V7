@@ -156,12 +156,12 @@ class spending_detail(osv.osv):
         return {'value': res}
     
     _columns={
-        'product_id':fields.many2one('product.product','Item',required=True),
-        'cost_center_id':fields.many2one('bdf.cost.center','Cost Center',required=True),
-        'cat':fields.many2one('product.category','Cat',readonly=True),
-        'sub_cat':fields.many2one('product.category','Sub-Cat',readonly=True),
+        'product_id':fields.many2one('product.product','KEY ITEM',required=True),
+        'cost_center_id':fields.many2one('bdf.cost.center','COST CENTER',required=True),
+        'cat':fields.many2one('product.category','CAT'),
+        'sub_cat':fields.many2one('product.category','Sub_CAT'),
         'gl_code':fields.char('GL code',size=128,readonly=True),
-        'account_id':fields.many2one('account.account','GL Code',readonly=True),
+        'account_id':fields.many2one('account.account','GL CODE'),
         'qty':fields.float('Qty',digits=(16, 0),required=True),
         'price_unit':fields.float('Unit Price',digits=(16, 0),required=True),
         'amt':fields.function(_compute_amount, string='Amt (VND)',  multi='all',digits=(16,0)),
@@ -170,7 +170,7 @@ class spending_detail(osv.osv):
         'purchase2_id':fields.many2one('bdf.purchase','Purchase',ondelete='cascade'),
         'purchase3_id':fields.many2one('bdf.purchase','Purchase',ondelete='cascade'),
         'allocation_id':fields.one2many('bdf.allocation','spending_detail_id','allocation'),
-        'project_id':fields.char('Project',size=1024),
+        'project_id':fields.char('PROJECT',size=1024),
         'io_id':fields.many2one('bdf.io','IO'),
         'channel_name': fields.char('Channel Name', size=1024),
         'col_1': fields.float('Col',digits=(16,0)),
