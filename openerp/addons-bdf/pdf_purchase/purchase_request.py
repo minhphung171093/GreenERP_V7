@@ -107,21 +107,21 @@ procurement_detail()
 class spending_detail(osv.osv):
     _name="spending.detail"
     
-    def default_get(self, cr, uid, fields, context=None):
-        if context is None:
-            context = {}
-        res = super(spending_detail, self).default_get(cr, uid, fields, context=context)
-        channel_id = context.get('channel_id',False)
-        if channel_id:
-            vals = []
-            region_obj = self.pool.get('master.regions')
-            region_ids = region_obj.search(cr, uid, [('channel_id','=',channel_id)])
-            for line in region_obj.browse(cr, uid, region_ids):
-                vals.append({
-                    'key_account_id': line.account_id.id,
-                })
-            res.update({'allocation_id':vals})
-        return res
+#     def default_get(self, cr, uid, fields, context=None):
+#         if context is None:
+#             context = {}
+#         res = super(spending_detail, self).default_get(cr, uid, fields, context=context)
+#         channel_id = context.get('channel_id',False)
+#         if channel_id:
+#             vals = []
+#             region_obj = self.pool.get('master.regions')
+#             region_ids = region_obj.search(cr, uid, [('channel_id','=',channel_id)])
+#             for line in region_obj.browse(cr, uid, region_ids):
+#                 vals.append({
+#                     'key_account_id': line.account_id.id,
+#                 })
+#             res.update({'allocation_id':vals})
+#         return res
     
     def _compute_amount(self, cr, uid, ids, name, args, context=None):
         res={}
@@ -231,37 +231,37 @@ class spending_detail(osv.osv):
 #                 fields['col_6']['string'] = 'SEAST'
 #         return res
 
-    def create(self, cr, uid, vals, context=None):
-        if 'cost_center_id' in vals:
-            prod_obj = self.pool.get('bdf.cost.center').browse(cr,uid,vals['cost_center_id'])
-            if prod_obj:
-                vals.update({
-                    'cat':prod_obj.cat_id.id,
-                    'sub_cat':prod_obj.sub_cat_id.id,
-             })
-        if 'product_id' in vals:
-            prod_obj = self.pool.get('product.product').browse(cr,uid,vals['product_id'])
-            if prod_obj:
-                vals.update({
-                    'account_id':prod_obj.account_id.id or False,
-             })
-        return super(spending_detail,self).create(cr, uid, vals, context)
-    
-    def write(self, cr, uid, ids, vals, context=None):
-        if 'cost_center_id' in vals:
-            prod_obj = self.pool.get('bdf.cost.center').browse(cr,uid,vals['cost_center_id'])
-            if prod_obj:
-                vals.update({
-                    'cat':prod_obj.cat_id.id,
-                    'sub_cat':prod_obj.sub_cat_id.id,
-             })
-        if 'product_id' in vals:
-            prod_obj = self.pool.get('product.product').browse(cr,uid,vals['product_id'])
-            if prod_obj:
-                vals.update({
-                    'account_id':prod_obj.account_id.id or False,
-             })
-        return super(spending_detail,self).write(cr, uid, ids, vals, context)
+#     def create(self, cr, uid, vals, context=None):
+#         if 'cost_center_id' in vals:
+#             prod_obj = self.pool.get('bdf.cost.center').browse(cr,uid,vals['cost_center_id'])
+#             if prod_obj:
+#                 vals.update({
+#                     'cat':prod_obj.cat_id.id,
+#                     'sub_cat':prod_obj.sub_cat_id.id,
+#              })
+#         if 'product_id' in vals:
+#             prod_obj = self.pool.get('product.product').browse(cr,uid,vals['product_id'])
+#             if prod_obj:
+#                 vals.update({
+#                     'account_id':prod_obj.account_id.id or False,
+#              })
+#         return super(spending_detail,self).create(cr, uid, vals, context)
+#     
+#     def write(self, cr, uid, ids, vals, context=None):
+#         if 'cost_center_id' in vals:
+#             prod_obj = self.pool.get('bdf.cost.center').browse(cr,uid,vals['cost_center_id'])
+#             if prod_obj:
+#                 vals.update({
+#                     'cat':prod_obj.cat_id.id,
+#                     'sub_cat':prod_obj.sub_cat_id.id,
+#              })
+#         if 'product_id' in vals:
+#             prod_obj = self.pool.get('product.product').browse(cr,uid,vals['product_id'])
+#             if prod_obj:
+#                 vals.update({
+#                     'account_id':prod_obj.account_id.id or False,
+#              })
+#         return super(spending_detail,self).write(cr, uid, ids, vals, context)
 spending_detail()
 
 class  master_function_expense(osv.osv):
@@ -316,7 +316,6 @@ class master_regions(osv.osv):
         return res
 master_regions()
 
-
 class  master_budget_owner(osv.osv):
     _name="master.budget.owner"
     _columns={
@@ -330,10 +329,34 @@ class bdf_allocation(osv.osv):
     _name="bdf.allocation"
     _columns={
         'allocation':fields.integer('% Allocation'),
-        'key_account_id':fields.many2one('master.key.accounts','Regions',required=True),
+        'key_account_id':fields.many2one('master.key.accounts','Regions',required=False),
         'spending_detail_id':fields.many2one('spending.detail','Spending detail',ondelete='cascade'),
+        'category_id': fields.many2one('product.category','CAT'),
+        'allocation_month_line':fields.one2many('bdf.allocation.month','allocation_id','Allocation'),
     }
 bdf_allocation()
+
+class bdf_allocation_month(osv.osv):
+    _name="bdf.allocation.month"
+    _columns={
+        'allocation':fields.integer('% Allocation'),
+        'month':fields.selection([
+                ('jan','Jan'),
+                ('feb','Feb'),
+                ('mar','Mar'),
+                ('apr','Apr'),
+                ('may','May'),
+                ('jun','Jun'),
+                ('jul','Jul'),
+                ('aug','Aug'),
+                ('sep','Sep'),
+                ('oct','Oct'),
+                ('nov','Nov'),
+                ('dec','Dec'),
+            ],'Month'),
+        'allocation_id':fields.many2one('bdf.allocation','Allocation',ondelete='cascade'),
+    }
+bdf_allocation_month()
 
 class bdf_purchase(osv.osv):
     _name="bdf.purchase"

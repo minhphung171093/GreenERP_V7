@@ -258,8 +258,8 @@
 			                </group>
 			                <group colspan='4'>
 			                	<div col='4' colspan='4' class='oe_green_erp_scroll'>
-									<field name="spending_detail_line" nolabel="1" context="{'channel_id':channel}">
-										<tree string="Spending Detail">
+									<field name="spending_detail_line" nolabel="1">
+										<tree string="BUDGET DETAIL">
 											<field name="cost_center_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 											<field name="cat" domain="[('parent_id','=',False)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 											<field name="sub_cat" domain="[('parent_id','=',cat)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
@@ -271,27 +271,44 @@
 											<field name="amt" sum="Total"/>
 											<field name="io_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 										</tree>
-										<form string="Spending Detail">
+										<form string="BUDGET DETAIL">
 											<sheet>
 												<group col='4' colspan='2'>
-													<field name="cost_center_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+													<field name="cost_center_id" required="1" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 													<newline/>
-													<field name="cat" domain="[('parent_id','=',False)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-													<field name="sub_cat" domain="[('parent_id','=',cat)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+													<field name="cat" required="1" domain="[('parent_id','=',False)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+													<field name="sub_cat" required="1" domain="[('parent_id','=',cat)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 													<field name="project_id"/>
-													<field name="product_id" on_change="onchange_product(product_id)" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-													<field name="account_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-													<field name="qty"/>
-													<field name="price_unit"/>
+													<newline/>
+													<field name="product_id" required="1" on_change="onchange_product(product_id)" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+													<field name="account_id" required="1" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+													<field name="qty" required="1"/>
+													<field name="price_unit" required="1"/>
 													<field name="amt" sum="Total"/>
 													<field name="io_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 												</group>
-												<group string="Allocation">
+												<group string="allocation by CAT">
 													<field name="allocation_id" nolabel="1">
-														<tree string="Spending Detail" editable='bottom' create='false'>
-															<field name="key_account_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+														<tree string="allocation by CAT">
+															<field name="category_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 															<field name="allocation"/>
 														</tree>
+														<form string="allocation by CAT">
+															<sheet>
+																<group col='4' colspan='2'>
+																	<field name="category_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+																	<field name="allocation"/>
+																</group>
+																<group string="allocation by MONTH">
+																	<field name="allocation_month_line" nolabel='1'>
+																		<tree editable='bottom'>
+																			<field name="month" required='1'/>
+																			<field name="allocation" required='1'/>
+																		</tree>
+																	</field>
+																</group>
+															</sheet>
+														</form>
 													</field>
 												</group>
 											</sheet>
