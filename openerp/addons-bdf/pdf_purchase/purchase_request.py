@@ -174,6 +174,7 @@ class spending_detail(osv.osv):
         'project_id':fields.char('PROJECT',size=1024),
         'io_id':fields.many2one('bdf.io','IO'),
         'channel_name': fields.char('Channel Name', size=1024),
+        'allocation_by_cat': fields.float('Allocation (%)', digits=(16,2)),
         'col_1': fields.float('Col',digits=(16,0)),
         'col_2': fields.float('Col',digits=(16,0)),
         'col_3': fields.float('Col',digits=(16,0)),
@@ -370,6 +371,7 @@ class bdf_allocation_month(osv.osv):
                 ('dec','Dec'),
             ],'Month'),
         'allocation_id':fields.many2one('bdf.allocation','Allocation',ondelete='cascade'),
+        'purchase_id':fields.many2one('bdf.purchase','Purchase',ondelete='cascade'),
     }
 bdf_allocation_month()
 
@@ -397,6 +399,14 @@ class bdf_purchase(osv.osv):
             })
         group_ids = self.pool.get('purchasing.group').search(cr, uid, [('is_default','=',True)])
         res.update({'process_line':vals,'purchasing_group_id':group_ids and group_ids[0] or False})
+        
+        allocation_month_line = []
+        for line in ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec']:
+            allocation_month_line.append({
+                'month': line,
+            })
+        res.update({'allocation_month_line':allocation_month_line})
+        
         return res
     
     def _compute_amount(self, cr, uid, ids, name, args, context=None):
@@ -479,6 +489,7 @@ class bdf_purchase(osv.osv):
         'notify_ids':fields.many2many('res.users', 'bdf_purchase_user_ref', 'bdf_purchase_id', 'user_id', 'Notify'),
         'history_ids':fields.many2many('res.users', 'bdf_purchase_user_history_ref', 'bdf_purchase_id', 'user_id', 'History'),
         'product_id': fields.related('spending_detail_line','product_id', relation='product.product',type='many2one',string="Item"),
+        'allocation_month_line':fields.one2many('bdf.allocation.month','purchase_id','Allocation'),
         
         'create_uid':fields.many2one('res.users', 'Create uid'),
         'category_manager_id':fields.many2one('res.users','Category Manager'),

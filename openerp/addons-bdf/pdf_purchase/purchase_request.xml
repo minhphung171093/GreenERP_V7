@@ -631,6 +631,7 @@
 											<field name="price_unit"/>
 											<field name="amt" sum="Total"/>
 											<field name="io_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+											<field name="allocation_by_cat" sum="Total"/>
 										</tree>
 										<form string="BUDGET DETAIL">
 											<sheet>
@@ -645,8 +646,9 @@
 													<field name="price_unit" required="1"/>
 													<field name="amt" sum="Total"/>
 													<field name="io_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+													<field name="allocation_by_cat" sum="Total"/>
 												</group>
-												<group string="allocation by CAT">
+												<!--<group string="allocation by CAT">
 													<field name="allocation_id" nolabel="1">
 														<tree string="allocation by CAT">
 															<field name="category_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
@@ -669,12 +671,20 @@
 															</sheet>
 														</form>
 													</field>
-												</group>
+												</group>-->
 											</sheet>
 										</form>
 									</field>
 								</div>
 							</group>
+							<group string="Allocation by MONTH">
+								<field name="allocation_month_line" nolabel='1'>
+									<tree editable='bottom' create='false'>
+										<field name="month" required='1'/>
+										<field name="allocation" sum="Total" required='1'/>
+									</tree>
+								</field>
+				            </group>
 							<group colspan='4' string="History Comment">
 								<field name="user_comment" nolabel='1' readonly='1'/>
 							</group>
