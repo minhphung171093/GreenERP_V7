@@ -762,10 +762,13 @@ class product_category(osv.osv):
             return []
         if isinstance(ids, (long, int)):
             ids = [ids]
-        reads = self.read(cr, uid, ids, ['name','sub_cate'], context=context)
+        reads = self.read(cr, uid, ids, ['parent_id','name','sub_cate'], context=context)
         res = []
         for record in reads:
-            name = '['+record['name']+']'+record['sub_cate']
+            if not record['parent_id']:
+                name = record['name']
+            else:
+                name = '['+record['name']+']'+record['sub_cate']
             res.append((record['id'], name))
         return res
     
