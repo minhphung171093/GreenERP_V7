@@ -56,7 +56,7 @@
             	parent="menu_purchase_config" 
             	sequence="40"/>
         	
-        	<1--<menuitem action="action_bdf_cost_center_tree"
+        	<!--<menuitem action="action_bdf_cost_center_tree"
         		name="Master Cost Center"
         		id="menu_action_bdf_cost_center_tree"
         		parent="menu_purchase_config" sequence="45"/>-->
