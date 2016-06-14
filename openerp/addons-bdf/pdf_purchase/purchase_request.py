@@ -21,7 +21,7 @@ class bdf_channel(osv.osv):
     _columns={
         'name':fields.char('Name',size=128,required=True),
         'budget_id':fields.many2one("master.budget.owner",'Budget',required=False),
-        'function_id':fields.many2one("master.function.expense",'Function',required=False),
+        'function_ids':fields.many2many("master.function.expense", 'channel_function_ref', 'channel_id', 'function_id', 'Function',required=False),
       }
 bdf_channel()
 
@@ -321,7 +321,7 @@ class  master_budget_owner(osv.osv):
     _name="master.budget.owner"
     _columns={
               'name':fields.char("Name",size=64,required=True),
-              'function_id':fields.many2one("master.function.expense",'Function',required=False),
+              'function_ids':fields.many2many("master.function.expense", 'budget_function_ref', 'budget_id', 'function_id', 'Function',required=False),
               }
     
 master_budget_owner()

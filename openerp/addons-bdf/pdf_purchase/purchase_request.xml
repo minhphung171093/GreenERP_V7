@@ -8,8 +8,7 @@
             <field name="arch" type="xml">
                 <tree string="Master Channel" editable="top">
                     <field name="name"/>
-                    <field name="function_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-                    <field name="budget_id" invisible='1' options="{'no_open': True,'create': false, 'create_edit': false}"/>
+                    <field name="function_ids" widget="many2many_tags" required='1' options="{'no_open': True,'create': false, 'create_edit': false}"/>
                 </tree>
             </field>
         </record>
@@ -231,8 +230,8 @@
 		                </group>
 		                <group col='4' colspan='2'>
 		                    <field name="function" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-		                    <field name="budget_owner" domain="[('function_id','=',function)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-		                    <field name="channel" domain="[('function_id','=',function)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+		                    <field name="budget_owner" domain="[('function_ids','child_of',[function])]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+		                    <field name="channel" domain="[('function_ids','child_of',[function])]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 			            	<newline/>
 			            	<field name="date_from"/> 
 		                    <field name="date_to"/>
@@ -412,8 +411,8 @@
 		                </group>
 		                <group col='4' colspan='2'>
 		                    <field name="function" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-		                    <field name="budget_owner" domain="[('function_id','=',function)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-		                    <field name="channel" domain="[('function_id','=',function)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+		                    <field name="budget_owner" domain="[('function_ids','child_of',[function])]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+		                    <field name="channel" domain="[('function_ids','child_of',[function])]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 			            	<newline/>
 			            	<field name="date_from"/> 
 		                    <field name="date_to"/>
@@ -593,8 +592,8 @@
 		                </group>
 		                <group col='4' colspan='2'>
 		                    <field name="function" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-		                    <field name="budget_owner" domain="[('function_id','=',function)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-		                    <field name="channel" domain="[('function_id','=',function)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+		                    <field name="budget_owner" domain="[('function_ids','child_of',[function])]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+		                    <field name="channel" domain="[('function_ids','child_of',[function])]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 			            	<newline/>
 			            	<field name="date_from"/> 
 		                    <field name="date_to"/>
@@ -1245,7 +1244,7 @@
             <field name="arch" type="xml">
                 <tree string="Master Budget Owner" editable="top">
                 	<field name="name"/>
-                	<field name="function_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+                	<field name="function_ids" widget="many2many_tags" required='1' options="{'no_open': True,'create': false, 'create_edit': false}"/>
                 </tree>
             </field>
         </record>
