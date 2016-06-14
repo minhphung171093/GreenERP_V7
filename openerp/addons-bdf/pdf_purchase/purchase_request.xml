@@ -230,8 +230,8 @@
 		                </group>
 		                <group col='4' colspan='2'>
 		                    <field name="function" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-		                    <field name="budget_owner" domain="[('function_ids','child_of',[function])]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-		                    <field name="channel" domain="[('function_ids','child_of',[function])]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+		                    <field name="budget_owner" domain="[('function_ids','in',[function])]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+		                    <field name="channel" domain="[('function_ids','in',[function])]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 			            	<newline/>
 			            	<field name="date_from"/> 
 		                    <field name="date_to"/>
@@ -411,8 +411,8 @@
 		                </group>
 		                <group col='4' colspan='2'>
 		                    <field name="function" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-		                    <field name="budget_owner" domain="[('function_ids','child_of',[function])]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-		                    <field name="channel" domain="[('function_ids','child_of',[function])]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+		                    <field name="budget_owner" domain="[('function_ids','in',[function])]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+		                    <field name="channel" domain="[('function_ids','in',[function])]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 			            	<newline/>
 			            	<field name="date_from"/> 
 		                    <field name="date_to"/>
@@ -592,8 +592,8 @@
 		                </group>
 		                <group col='4' colspan='2'>
 		                    <field name="function" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-		                    <field name="budget_owner" domain="[('function_ids','child_of',[function])]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-		                    <field name="channel" domain="[('function_ids','child_of',[function])]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+		                    <field name="budget_owner" domain="[('function_ids','in',[function])]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+		                    <field name="channel" domain="[('function_ids','in',[function])]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 			            	<newline/>
 			            	<field name="date_from"/> 
 		                    <field name="date_to"/>
