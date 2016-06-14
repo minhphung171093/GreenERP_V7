@@ -21,6 +21,7 @@ class bdf_channel(osv.osv):
     _columns={
         'name':fields.char('Name',size=128,required=True),
         'budget_id':fields.many2one("master.budget.owner",'Budget',required=False),
+        'function_id':fields.many2one("master.function.expense",'Function',required=False),
       }
 bdf_channel()
 
@@ -157,7 +158,7 @@ class spending_detail(osv.osv):
     
     _columns={
         'product_id':fields.many2one('product.product','KEY ITEM',required=True),
-        'cost_center_id':fields.many2one('bdf.cost.center','COST CENTER',required=True),
+        'cost_center_id':fields.many2one('bdf.cost.center','COST CENTER',required=False),
         'cat':fields.many2one('product.category','CAT'),
         'sub_cat':fields.many2one('product.category','Sub_CAT'),
         'gl_code':fields.char('GL code',size=128,readonly=True),
@@ -439,7 +440,7 @@ class bdf_purchase(osv.osv):
         'function':fields.many2one('master.function.expense','Function', required=True,
                         states={'purchase_request': [('readonly', False)],'budget_control': [('readonly', False)],'reject': [('readonly', False)]},readonly=True),
               
-        'budget_owner':fields.many2one('master.budget.owner','Budget Holder',required=True,
+        'budget_owner':fields.many2one('master.budget.owner','Budget Owner',required=True,
                         states={'purchase_request': [('readonly', False)],'budget_control': [('readonly', False)],'reject': [('readonly', False)]},readonly=True),
               
         'channel':fields.many2one('bdf.channel','Channel',required=True,states={'purchase_request': [('readonly', False)],
@@ -755,6 +756,29 @@ class product_category(osv.osv):
         'brand':fields.char("Brand",size=1024),
         'sub_cate':fields.char("Sub Cate",size=1024),
     }
+    
+    def name_get(self, cr, uid, ids, context=None):
+        if isinstance(ids, (list, tuple)) and not len(ids):
+            return []
+        if isinstance(ids, (long, int)):
+            ids = [ids]
+        reads = self.read(cr, uid, ids, ['name','sub_cate'], context=context)
+        res = []
+        for record in reads:
+            name = '['+record['name']+']'+record['sub_cate']
+            res.append((record['id'], name))
+        return res
+    
+    def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
+        if args is None:
+            args = []
+        ids = self.search(cr, user, args, context=context, limit=limit)
+        if name:
+            ids = self.search(cr, user, [('name',operator,name)], context=context, limit=limit)
+            if not ids:
+                ids = self.search(cr, user, [('sub_cate',operator,name)], context=context, limit=limit)
+        return self.name_get(cr, user, ids, context=context)
+    
 product_category()
 
 class product_template(osv.osv):

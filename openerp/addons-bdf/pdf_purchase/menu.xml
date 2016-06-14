@@ -56,10 +56,10 @@
             	parent="menu_purchase_config" 
             	sequence="40"/>
         	
-        	<menuitem action="action_bdf_cost_center_tree"
+        	<1--<menuitem action="action_bdf_cost_center_tree"
         		name="Master Cost Center"
         		id="menu_action_bdf_cost_center_tree"
-        		parent="menu_purchase_config" sequence="45"/>
+        		parent="menu_purchase_config" sequence="45"/>-->
         	
             <!--<menuitem action="action_purchasing_group" 
             	id="bdf_menu_action_purchasing_group" 

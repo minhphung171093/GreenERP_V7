@@ -8,6 +8,7 @@
             <field name="arch" type="xml">
                 <tree string="Master Channel" editable="top">
                     <field name="name"/>
+                    <field name="function_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
                     <field name="budget_id" invisible='1' options="{'no_open': True,'create': false, 'create_edit': false}"/>
                 </tree>
             </field>
@@ -230,8 +231,8 @@
 		                </group>
 		                <group col='4' colspan='2'>
 		                    <field name="function" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-		                    <field name="budget_owner" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-		                    <field name="channel" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+		                    <field name="budget_owner" domain="[('function_id','=',function)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+		                    <field name="channel" domain="[('function_id','=',function)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 			            	<newline/>
 			            	<field name="date_from"/> 
 		                    <field name="date_to"/>
@@ -260,7 +261,6 @@
 			                	<div col='4' colspan='4' class='oe_green_erp_scroll'>
 									<field name="spending_detail_line" nolabel="1">
 										<tree string="BUDGET DETAIL">
-											<field name="cost_center_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 											<field name="cat" domain="[('parent_id','=',False)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 											<field name="sub_cat" domain="[('parent_id','=',cat)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 											<field name="project_id"/>
@@ -274,8 +274,6 @@
 										<form string="BUDGET DETAIL">
 											<sheet>
 												<group col='4' colspan='2'>
-													<field name="cost_center_id" required="1" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-													<newline/>
 													<field name="cat" required="1" domain="[('parent_id','=',False)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 													<field name="sub_cat" required="1" domain="[('parent_id','=',cat)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 													<field name="project_id"/>
@@ -414,8 +412,8 @@
 		                </group>
 		                <group col='4' colspan='2'>
 		                    <field name="function" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-		                    <field name="budget_owner" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-		                    <field name="channel" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+		                    <field name="budget_owner" domain="[('function_id','=',function)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+		                    <field name="channel" domain="[('function_id','=',function)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 			            	<newline/>
 			            	<field name="date_from"/> 
 		                    <field name="date_to"/>
@@ -444,7 +442,6 @@
 			                	<div col='4' colspan='4' class='oe_green_erp_scroll'>
 									<field name="spending_detail_line" nolabel="1">
 										<tree string="BUDGET DETAIL">
-											<field name="cost_center_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 											<field name="cat" domain="[('parent_id','=',False)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 											<field name="sub_cat" domain="[('parent_id','=',cat)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 											<field name="project_id"/>
@@ -458,8 +455,6 @@
 										<form string="BUDGET DETAIL">
 											<sheet>
 												<group col='4' colspan='2'>
-													<field name="cost_center_id" required="1" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-													<newline/>
 													<field name="cat" required="1" domain="[('parent_id','=',False)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 													<field name="sub_cat" required="1" domain="[('parent_id','=',cat)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 													<field name="project_id"/>
@@ -598,8 +593,8 @@
 		                </group>
 		                <group col='4' colspan='2'>
 		                    <field name="function" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-		                    <field name="budget_owner" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-		                    <field name="channel" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+		                    <field name="budget_owner" domain="[('function_id','=',function)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+		                    <field name="channel" domain="[('function_id','=',function)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 			            	<newline/>
 			            	<field name="date_from"/> 
 		                    <field name="date_to"/>
@@ -628,7 +623,6 @@
 			                	<div col='4' colspan='4' class='oe_green_erp_scroll'>
 									<field name="spending_detail_line" nolabel="1">
 										<tree string="BUDGET DETAIL">
-											<field name="cost_center_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 											<field name="cat" domain="[('parent_id','=',False)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 											<field name="sub_cat" domain="[('parent_id','=',cat)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 											<field name="project_id"/>
@@ -642,8 +636,6 @@
 										<form string="BUDGET DETAIL">
 											<sheet>
 												<group col='4' colspan='2'>
-													<field name="cost_center_id" required="1" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-													<newline/>
 													<field name="cat" required="1" domain="[('parent_id','=',False)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 													<field name="sub_cat" required="1" domain="[('parent_id','=',cat)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 													<field name="project_id"/>
@@ -1253,7 +1245,7 @@
             <field name="arch" type="xml">
                 <tree string="Master Budget Owner" editable="top">
                 	<field name="name"/>
-                	<!--<field name="function_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>-->
+                	<field name="function_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
                 </tree>
             </field>
         </record>
