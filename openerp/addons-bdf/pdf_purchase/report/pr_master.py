@@ -358,7 +358,7 @@ class Parser(report_sxw.rml_parse):
             res.append({
                 'cat_code': line.sub_cat and line.sub_cat.name or '',
                 'cat': line.cat and line.cat.name or '',
-                'sub_cat': line.sub_cat and line.sub_cat.sub_cat or '',
+                'sub_cat': line.sub_cat and line.sub_cat.sub_cate or '',
                 'project_id': line.project_id,
                 'product': line.product_id and line.product_id.name or '',
                 'account': line.account_id and line.account_id.code + ' '+line.account_id.name or '',
