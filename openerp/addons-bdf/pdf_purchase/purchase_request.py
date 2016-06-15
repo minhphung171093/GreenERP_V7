@@ -852,9 +852,11 @@ class master_process(osv.osv):
     def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
         if context is None:
             context = {}
+        print 'PHUNG1', context
         if context.get('bdf_search_process_foruser', False):
             process_ids = self.search(cr, uid, [('user_id','=',uid)])
             args += [('id','in',process_ids)]
+            print 'PHUNG2', process_ids, args
         return super(master_process, self).search(cr, uid, args, offset=offset, limit=limit, order=order, context=context, count=count)    
 
     def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
