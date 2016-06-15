@@ -371,7 +371,7 @@ class Parser(report_sxw.rml_parse):
                 'allocation_by_month': allocation_by_month,
             })
         if len(o.spending_detail_line)<13:
-            for seq in range(len(o.spending_detail_line),13):
+            for seq in range(len(o.spending_detail_line),12):
                 allocation_by_month = 0
                 month = ''
                 if seq==0:
