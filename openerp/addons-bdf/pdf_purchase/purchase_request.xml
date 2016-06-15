@@ -1517,7 +1517,17 @@
             <field name="inherit_id" ref="base.view_users_form" />
             <field name="arch" type="xml">
             	<xpath expr="//field[@name='company_id']" position="after">
-	            	<field name="process_id" context="{'bdf_search_process': 1}"/>
+	            	<field name="process_id"/>
+	            </xpath>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_users_form_simple_modif_bdf_inherit">
+            <field name="name">res.users.bdf.inherit</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form_simple_modif" />
+            <field name="arch" type="xml">
+            	<xpath expr="//field[@name='company_id']" position="after">
+	            	<field name="process_id" context="{'bdf_search_process_foruser':1}"/>
 	            </xpath>
             </field>
         </record>

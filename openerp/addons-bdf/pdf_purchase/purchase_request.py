@@ -852,8 +852,8 @@ class master_process(osv.osv):
     def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
         if context is None:
             context = {}
-        if context.get('bdf_search_process', False) and context.get('active_id', False):
-            process_ids = self.search(cr, uid, [('user_id','=',context['active_id'])])
+        if context.get('bdf_search_process_foruser', False):
+            process_ids = self.search(cr, uid, [('user_id','=',uid)])
             args += [('id','in',process_ids)]
         return super(master_process, self).search(cr, uid, args, offset=offset, limit=limit, order=order, context=context, count=count)    
 
