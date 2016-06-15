@@ -144,7 +144,7 @@ class spending_detail(osv.osv):
         res={}
         for order in self.browse(cr, uid, ids, context=context):
             amt = 0
-            for line in order.procurement_detail_line:
+            for line in order.purchase_id.procurement_detail_line:
                 amt += line.amt
             allocation = float(line.amt)/float(amt)*100
             res[order.id] = allocation
