@@ -843,25 +843,35 @@ class master_process(osv.osv):
             res[process.id] = user_ids and user_ids[0] or False
         return res
     
+    def _get_order(self, cr, uid, ids, context=None):
+        result = {}
+        for line in self.pool.get('master.process.line').browse(cr, uid, ids, context=context):
+            result[line.process_id.id] = True
+        return result.keys()
+    
     _columns={
         'name':fields.char('Process name',size=256,required=True),
         'process_line': fields.one2many('master.process.line','process_id','Process Line'),
-        'user_id': fields.function(_get_user, type='many2one', relation='res.users', string='User'),
+        'user_id': fields.function(_get_user, type='many2one', relation='res.users', string='User',
+            store={
+                'master.process': (lambda self, cr, uid, ids, c={}: ids, ['process_line'], 10),
+                'master.process.line': (_get_order, ['user_id'], 10),
+            },),
         }
-    
-    def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
-        if context is None:
-            context = {}
-        print 'PHUNG1', context
-        if context.get('bdf_search_process_foruser', False):
-            process_ids = self.search(cr, uid, [('user_id','=',uid)])
-            args += [('id','in',process_ids)]
-            print 'PHUNG2', process_ids, args
-        return super(master_process, self).search(cr, uid, args, offset=offset, limit=limit, order=order, context=context, count=count)    
-
-    def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
-        ids = self.search(cr, user, args, context=context, limit=limit)
-        return self.name_get(cr, user, ids, context=context)
+     
+#     def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
+#         if context is None:
+#             context = {}
+#         print 'PHUNG1', context
+#         if context.get('bdf_search_process_foruser', False):
+#             process_ids = self.search(cr, uid, [('user_id','=',uid)])
+#             args += [('id','in',process_ids)]
+#             print 'PHUNG2', process_ids, args
+#         return super(master_process, self).search(cr, uid, args, offset=offset, limit=limit, order=order, context=context, count=count)    
+# 
+#     def name_search(self, cr, user, name, args=None, operator='ilike', context=None, limit=100):
+#         ids = self.search(cr, user, args, context=context, limit=limit)
+#         return self.name_get(cr, user, ids, context=context)
     
 master_process()
 
