@@ -65,7 +65,7 @@ class Parser(report_sxw.rml_parse):
                         'date': bdf.date,
                         'supplier_id': bdf.supplier_id,
                         'description': bdf.description,
-                        'month': upper(month.month),
+                        'month': month.month,
                         'amt': float(month.allocation)/100.0*detail.amt,
                         'cat_code': detail.sub_cat and detail.sub_cat.name or '',
                         'product': detail.product_id and detail.product_id.name or '',
@@ -75,7 +75,23 @@ class Parser(report_sxw.rml_parse):
                         'channel': bdf.channel and bdf.channel.name or '',
                         'cat': detail.cat and detail.cat.name or '',
                         'type_of_budget': detail.account_id and detail.account_id.type_of_budget_id and detail.account_id.type_of_budget_id.name or '',
-                        
+                    })
+                if not month_ids:    
+                    vals.append({
+                        'name': bdf.name,
+                        'date': bdf.date,
+                        'supplier_id': bdf.supplier_id,
+                        'description': bdf.description,
+                        'month': '',
+                        'amt': detail.amt,
+                        'cat_code': detail.sub_cat and detail.sub_cat.name or '',
+                        'product': detail.product_id and detail.product_id.name or '',
+                        'account': detail.account_id and detail.account_id.name or '',
+                        'function': bdf.function and bdf.function.name or '',
+                        'budget_owner': bdf.budget_owner and bdf.budget_owner.name or '',
+                        'channel': bdf.channel and bdf.channel.name or '',
+                        'cat': detail.cat and detail.cat.name or '',
+                        'type_of_budget': detail.account_id and detail.account_id.type_of_budget_id and detail.account_id.type_of_budget_id.name or '',
                     })
         return vals
     
