@@ -146,7 +146,7 @@ class spending_detail(osv.osv):
             amt = 0
             for line in order.purchase_id.procurement_detail_line:
                 amt += line.amt
-            allocation = float(line.amt)/float(amt)*100
+            allocation = float(order.amt)/float(amt)*100
             res[order.id] = allocation
         return res
     
