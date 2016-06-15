@@ -264,7 +264,7 @@ class Parser(report_sxw.rml_parse):
                 sql = '''
                     select allocation from bdf_allocation_month where month='jan' and purchase_id=%s 
                 '''%(o.id)
-                self.cr.execute()
+                self.cr.execute(sql)
                 allocation = self.cr.fetchone()
                 allocation_by_month = allocation and allocation[0] or 0
             if seq==1:
@@ -272,7 +272,7 @@ class Parser(report_sxw.rml_parse):
                 sql = '''
                     select allocation from bdf_allocation_month where month='feb' and purchase_id=%s 
                 '''%(o.id)
-                self.cr.execute()
+                self.cr.execute(sql)
                 allocation = self.cr.fetchone()
                 allocation_by_month = allocation and allocation[0] or 0
             if seq==2:
@@ -280,7 +280,7 @@ class Parser(report_sxw.rml_parse):
                 sql = '''
                     select allocation from bdf_allocation_month where month='mar' and purchase_id=%s 
                 '''%(o.id)
-                self.cr.execute()
+                self.cr.execute(sql)
                 allocation = self.cr.fetchone()
                 allocation_by_month = allocation and allocation[0] or 0
             if seq==3:
@@ -288,7 +288,7 @@ class Parser(report_sxw.rml_parse):
                 sql = '''
                     select allocation from bdf_allocation_month where month='apr' and purchase_id=%s 
                 '''%(o.id)
-                self.cr.execute()
+                self.cr.execute(sql)
                 allocation = self.cr.fetchone()
                 allocation_by_month = allocation and allocation[0] or 0
             if seq==4:
@@ -296,7 +296,7 @@ class Parser(report_sxw.rml_parse):
                 sql = '''
                     select allocation from bdf_allocation_month where month='may' and purchase_id=%s 
                 '''%(o.id)
-                self.cr.execute()
+                self.cr.execute(sql)
                 allocation = self.cr.fetchone()
                 allocation_by_month = allocation and allocation[0] or 0
             if seq==5:
@@ -304,7 +304,7 @@ class Parser(report_sxw.rml_parse):
                 sql = '''
                     select allocation from bdf_allocation_month where month='jun' and purchase_id=%s 
                 '''%(o.id)
-                self.cr.execute()
+                self.cr.execute(sql)
                 allocation = self.cr.fetchone()
                 allocation_by_month = allocation and allocation[0] or 0
             if seq==6:
@@ -312,7 +312,7 @@ class Parser(report_sxw.rml_parse):
                 sql = '''
                     select allocation from bdf_allocation_month where month='jul' and purchase_id=%s 
                 '''%(o.id)
-                self.cr.execute()
+                self.cr.execute(sql)
                 allocation = self.cr.fetchone()
                 allocation_by_month = allocation and allocation[0] or 0
             if seq==7:
@@ -320,7 +320,7 @@ class Parser(report_sxw.rml_parse):
                 sql = '''
                     select allocation from bdf_allocation_month where month='aug' and purchase_id=%s 
                 '''%(o.id)
-                self.cr.execute()
+                self.cr.execute(sql)
                 allocation = self.cr.fetchone()
                 allocation_by_month = allocation and allocation[0] or 0
             if seq==8:
@@ -328,7 +328,7 @@ class Parser(report_sxw.rml_parse):
                 sql = '''
                     select allocation from bdf_allocation_month where month='sep' and purchase_id=%s 
                 '''%(o.id)
-                self.cr.execute()
+                self.cr.execute(sql)
                 allocation = self.cr.fetchone()
                 allocation_by_month = allocation and allocation[0] or 0
             if seq==9:
@@ -336,7 +336,7 @@ class Parser(report_sxw.rml_parse):
                 sql = '''
                     select allocation from bdf_allocation_month where month='oct' and purchase_id=%s 
                 '''%(o.id)
-                self.cr.execute()
+                self.cr.execute(sql)
                 allocation = self.cr.fetchone()
                 allocation_by_month = allocation and allocation[0] or 0
             if seq==10:
@@ -344,7 +344,7 @@ class Parser(report_sxw.rml_parse):
                 sql = '''
                     select allocation from bdf_allocation_month where month='nov' and purchase_id=%s 
                 '''%(o.id)
-                self.cr.execute()
+                self.cr.execute(sql)
                 allocation = self.cr.fetchone()
                 allocation_by_month = allocation and allocation[0] or 0
             if seq==11:
@@ -352,7 +352,7 @@ class Parser(report_sxw.rml_parse):
                 sql = '''
                     select allocation from bdf_allocation_month where month='dec' and purchase_id=%s 
                 '''%(o.id)
-                self.cr.execute()
+                self.cr.execute(sql)
                 allocation = self.cr.fetchone()
                 allocation_by_month = allocation and allocation[0] or 0
             res.append({
@@ -379,7 +379,7 @@ class Parser(report_sxw.rml_parse):
                     sql = '''
                         select allocation from bdf_allocation_month where month='jan' and purchase_id=%s 
                     '''%(o.id)
-                    self.cr.execute()
+                    self.cr.execute(sql)
                     allocation = self.cr.fetchone()
                     allocation_by_month = allocation and allocation[0] or 0
                 if seq==1:
@@ -387,7 +387,7 @@ class Parser(report_sxw.rml_parse):
                     sql = '''
                         select allocation from bdf_allocation_month where month='feb' and purchase_id=%s 
                     '''%(o.id)
-                    self.cr.execute()
+                    self.cr.execute(sql)
                     allocation = self.cr.fetchone()
                     allocation_by_month = allocation and allocation[0] or 0
                 if seq==2:
@@ -395,7 +395,7 @@ class Parser(report_sxw.rml_parse):
                     sql = '''
                         select allocation from bdf_allocation_month where month='mar' and purchase_id=%s 
                     '''%(o.id)
-                    self.cr.execute()
+                    self.cr.execute(sql)
                     allocation = self.cr.fetchone()
                     allocation_by_month = allocation and allocation[0] or 0
                 if seq==3:
@@ -403,7 +403,7 @@ class Parser(report_sxw.rml_parse):
                     sql = '''
                         select allocation from bdf_allocation_month where month='apr' and purchase_id=%s 
                     '''%(o.id)
-                    self.cr.execute()
+                    self.cr.execute(sql)
                     allocation = self.cr.fetchone()
                     allocation_by_month = allocation and allocation[0] or 0
                 if seq==4:
@@ -411,7 +411,7 @@ class Parser(report_sxw.rml_parse):
                     sql = '''
                         select allocation from bdf_allocation_month where month='may' and purchase_id=%s 
                     '''%(o.id)
-                    self.cr.execute()
+                    self.cr.execute(sql)
                     allocation = self.cr.fetchone()
                     allocation_by_month = allocation and allocation[0] or 0
                 if seq==5:
@@ -419,7 +419,7 @@ class Parser(report_sxw.rml_parse):
                     sql = '''
                         select allocation from bdf_allocation_month where month='jun' and purchase_id=%s 
                     '''%(o.id)
-                    self.cr.execute()
+                    self.cr.execute(sql)
                     allocation = self.cr.fetchone()
                     allocation_by_month = allocation and allocation[0] or 0
                 if seq==6:
@@ -427,7 +427,7 @@ class Parser(report_sxw.rml_parse):
                     sql = '''
                         select allocation from bdf_allocation_month where month='jul' and purchase_id=%s 
                     '''%(o.id)
-                    self.cr.execute()
+                    self.cr.execute(sql)
                     allocation = self.cr.fetchone()
                     allocation_by_month = allocation and allocation[0] or 0
                 if seq==7:
@@ -435,7 +435,7 @@ class Parser(report_sxw.rml_parse):
                     sql = '''
                         select allocation from bdf_allocation_month where month='aug' and purchase_id=%s 
                     '''%(o.id)
-                    self.cr.execute()
+                    self.cr.execute(sql)
                     allocation = self.cr.fetchone()
                     allocation_by_month = allocation and allocation[0] or 0
                 if seq==8:
@@ -443,7 +443,7 @@ class Parser(report_sxw.rml_parse):
                     sql = '''
                         select allocation from bdf_allocation_month where month='sep' and purchase_id=%s 
                     '''%(o.id)
-                    self.cr.execute()
+                    self.cr.execute(sql)
                     allocation = self.cr.fetchone()
                     allocation_by_month = allocation and allocation[0] or 0
                 if seq==9:
@@ -451,7 +451,7 @@ class Parser(report_sxw.rml_parse):
                     sql = '''
                         select allocation from bdf_allocation_month where month='oct' and purchase_id=%s 
                     '''%(o.id)
-                    self.cr.execute()
+                    self.cr.execute(sql)
                     allocation = self.cr.fetchone()
                     allocation_by_month = allocation and allocation[0] or 0
                 if seq==10:
@@ -459,7 +459,7 @@ class Parser(report_sxw.rml_parse):
                     sql = '''
                         select allocation from bdf_allocation_month where month='nov' and purchase_id=%s 
                     '''%(o.id)
-                    self.cr.execute()
+                    self.cr.execute(sql)
                     allocation = self.cr.fetchone()
                     allocation_by_month = allocation and allocation[0] or 0
                 if seq==11:
@@ -467,7 +467,7 @@ class Parser(report_sxw.rml_parse):
                     sql = '''
                         select allocation from bdf_allocation_month where month='dec' and purchase_id=%s 
                     '''%(o.id)
-                    self.cr.execute()
+                    self.cr.execute(sql)
                     allocation = self.cr.fetchone()
                     allocation_by_month = allocation and allocation[0] or 0
                 res.append({
