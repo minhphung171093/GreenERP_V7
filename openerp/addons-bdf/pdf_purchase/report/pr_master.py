@@ -255,7 +255,237 @@ class Parser(report_sxw.rml_parse):
         return label
     
     def get_spending_detail_line(self,o):
-        return o.spending_detail_line
+        res = []
+        for seq,line in enumerate(o.spending_detail_line):
+            allocation_by_month = 0
+            month = ''
+            if seq==0:
+                month = 'Jan'
+                sql = '''
+                    select allocation from bdf_allocation_month where month='jan' and purchase_id=%s 
+                '''%(o.id)
+                self.cr.execute()
+                allocation = self.cr.fetchone()
+                allocation_by_month = allocation and allocation[0] or 0
+            if seq==1:
+                month = 'Feb'
+                sql = '''
+                    select allocation from bdf_allocation_month where month='feb' and purchase_id=%s 
+                '''%(o.id)
+                self.cr.execute()
+                allocation = self.cr.fetchone()
+                allocation_by_month = allocation and allocation[0] or 0
+            if seq==2:
+                month = 'Mar'
+                sql = '''
+                    select allocation from bdf_allocation_month where month='mar' and purchase_id=%s 
+                '''%(o.id)
+                self.cr.execute()
+                allocation = self.cr.fetchone()
+                allocation_by_month = allocation and allocation[0] or 0
+            if seq==3:
+                month = 'Apr'
+                sql = '''
+                    select allocation from bdf_allocation_month where month='apr' and purchase_id=%s 
+                '''%(o.id)
+                self.cr.execute()
+                allocation = self.cr.fetchone()
+                allocation_by_month = allocation and allocation[0] or 0
+            if seq==4:
+                month = 'May'
+                sql = '''
+                    select allocation from bdf_allocation_month where month='may' and purchase_id=%s 
+                '''%(o.id)
+                self.cr.execute()
+                allocation = self.cr.fetchone()
+                allocation_by_month = allocation and allocation[0] or 0
+            if seq==5:
+                month = 'Jun'
+                sql = '''
+                    select allocation from bdf_allocation_month where month='jun' and purchase_id=%s 
+                '''%(o.id)
+                self.cr.execute()
+                allocation = self.cr.fetchone()
+                allocation_by_month = allocation and allocation[0] or 0
+            if seq==6:
+                month = 'Jul'
+                sql = '''
+                    select allocation from bdf_allocation_month where month='jul' and purchase_id=%s 
+                '''%(o.id)
+                self.cr.execute()
+                allocation = self.cr.fetchone()
+                allocation_by_month = allocation and allocation[0] or 0
+            if seq==7:
+                month = 'Aug'
+                sql = '''
+                    select allocation from bdf_allocation_month where month='aug' and purchase_id=%s 
+                '''%(o.id)
+                self.cr.execute()
+                allocation = self.cr.fetchone()
+                allocation_by_month = allocation and allocation[0] or 0
+            if seq==8:
+                month = 'Sep'
+                sql = '''
+                    select allocation from bdf_allocation_month where month='sep' and purchase_id=%s 
+                '''%(o.id)
+                self.cr.execute()
+                allocation = self.cr.fetchone()
+                allocation_by_month = allocation and allocation[0] or 0
+            if seq==9:
+                month = 'Oct'
+                sql = '''
+                    select allocation from bdf_allocation_month where month='oct' and purchase_id=%s 
+                '''%(o.id)
+                self.cr.execute()
+                allocation = self.cr.fetchone()
+                allocation_by_month = allocation and allocation[0] or 0
+            if seq==10:
+                month = 'Nov'
+                sql = '''
+                    select allocation from bdf_allocation_month where month='nov' and purchase_id=%s 
+                '''%(o.id)
+                self.cr.execute()
+                allocation = self.cr.fetchone()
+                allocation_by_month = allocation and allocation[0] or 0
+            if seq==11:
+                month = 'Dec'
+                sql = '''
+                    select allocation from bdf_allocation_month where month='dec' and purchase_id=%s 
+                '''%(o.id)
+                self.cr.execute()
+                allocation = self.cr.fetchone()
+                allocation_by_month = allocation and allocation[0] or 0
+            res.append({
+                'cat_code': line.sub_cat and line.sub_cat.name or '',
+                'cat': line.cat and line.cat.name or '',
+                'sub_cat': line.sub_cat and line.sub_cat.sub_cat or '',
+                'project_id': line.project_id,
+                'product': line.product_id and line.product_id.name or '',
+                'account': line.account_id and line.account_id.code + ' '+line.account_id.name or '',
+                'qty': line.qty,
+                'price_unit': line.price_unit,
+                'amt': line.amt,
+                'io': line.io_id and line.io_id.name or '',
+                'allocation_by_cat': line.allocation_by_cat,
+                'month': month,
+                'allocation_by_month': allocation_by_month,
+            })
+        if len(o.spending_detail_line)<13:
+            for seq in range(len(o.spending_detail_line),13):
+                allocation_by_month = 0
+                month = ''
+                if seq==0:
+                    month = 'Jan'
+                    sql = '''
+                        select allocation from bdf_allocation_month where month='jan' and purchase_id=%s 
+                    '''%(o.id)
+                    self.cr.execute()
+                    allocation = self.cr.fetchone()
+                    allocation_by_month = allocation and allocation[0] or 0
+                if seq==1:
+                    month = 'Feb'
+                    sql = '''
+                        select allocation from bdf_allocation_month where month='feb' and purchase_id=%s 
+                    '''%(o.id)
+                    self.cr.execute()
+                    allocation = self.cr.fetchone()
+                    allocation_by_month = allocation and allocation[0] or 0
+                if seq==2:
+                    month = 'Mar'
+                    sql = '''
+                        select allocation from bdf_allocation_month where month='mar' and purchase_id=%s 
+                    '''%(o.id)
+                    self.cr.execute()
+                    allocation = self.cr.fetchone()
+                    allocation_by_month = allocation and allocation[0] or 0
+                if seq==3:
+                    month = 'Apr'
+                    sql = '''
+                        select allocation from bdf_allocation_month where month='apr' and purchase_id=%s 
+                    '''%(o.id)
+                    self.cr.execute()
+                    allocation = self.cr.fetchone()
+                    allocation_by_month = allocation and allocation[0] or 0
+                if seq==4:
+                    month = 'May'
+                    sql = '''
+                        select allocation from bdf_allocation_month where month='may' and purchase_id=%s 
+                    '''%(o.id)
+                    self.cr.execute()
+                    allocation = self.cr.fetchone()
+                    allocation_by_month = allocation and allocation[0] or 0
+                if seq==5:
+                    month = 'Jun'
+                    sql = '''
+                        select allocation from bdf_allocation_month where month='jun' and purchase_id=%s 
+                    '''%(o.id)
+                    self.cr.execute()
+                    allocation = self.cr.fetchone()
+                    allocation_by_month = allocation and allocation[0] or 0
+                if seq==6:
+                    month = 'Jul'
+                    sql = '''
+                        select allocation from bdf_allocation_month where month='jul' and purchase_id=%s 
+                    '''%(o.id)
+                    self.cr.execute()
+                    allocation = self.cr.fetchone()
+                    allocation_by_month = allocation and allocation[0] or 0
+                if seq==7:
+                    month = 'Aug'
+                    sql = '''
+                        select allocation from bdf_allocation_month where month='aug' and purchase_id=%s 
+                    '''%(o.id)
+                    self.cr.execute()
+                    allocation = self.cr.fetchone()
+                    allocation_by_month = allocation and allocation[0] or 0
+                if seq==8:
+                    month = 'Sep'
+                    sql = '''
+                        select allocation from bdf_allocation_month where month='sep' and purchase_id=%s 
+                    '''%(o.id)
+                    self.cr.execute()
+                    allocation = self.cr.fetchone()
+                    allocation_by_month = allocation and allocation[0] or 0
+                if seq==9:
+                    month = 'Oct'
+                    sql = '''
+                        select allocation from bdf_allocation_month where month='oct' and purchase_id=%s 
+                    '''%(o.id)
+                    self.cr.execute()
+                    allocation = self.cr.fetchone()
+                    allocation_by_month = allocation and allocation[0] or 0
+                if seq==10:
+                    month = 'Nov'
+                    sql = '''
+                        select allocation from bdf_allocation_month where month='nov' and purchase_id=%s 
+                    '''%(o.id)
+                    self.cr.execute()
+                    allocation = self.cr.fetchone()
+                    allocation_by_month = allocation and allocation[0] or 0
+                if seq==11:
+                    month = 'Dec'
+                    sql = '''
+                        select allocation from bdf_allocation_month where month='dec' and purchase_id=%s 
+                    '''%(o.id)
+                    self.cr.execute()
+                    allocation = self.cr.fetchone()
+                    allocation_by_month = allocation and allocation[0] or 0
+                res.append({
+                    'cat_code': '',
+                    'cat': '',
+                    'sub_cat': '',
+                    'project_id': '',
+                    'product': '',
+                    'account': '',
+                    'qty': '',
+                    'price_unit': '',
+                    'amt': '',
+                    'io': '',
+                    'allocation_by_cat': '',
+                    'month': month,
+                    'allocation_by_month': allocation_by_month,
+                })
+        return res
         
     def get_procurement_detail_line(self,line):
         res = []
