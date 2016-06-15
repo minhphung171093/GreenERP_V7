@@ -55,6 +55,12 @@
             	id="bdf_menu_stock_products_menu" 
             	parent="menu_purchase_config" 
             	sequence="40"/>
+            	
+        	<menuitem action="action_type_of_budget"
+            	name="Master Type of Budget"
+            	id="menu_action_type_of_budget" 
+            	parent="menu_purchase_config" 
+            	sequence="45"/>
         	
         	<!--<menuitem action="action_bdf_cost_center_tree"
         		name="Master Cost Center"

@@ -53,10 +53,31 @@ class Parser(report_sxw.rml_parse):
     def get_line(self):
         bdf_ids = self.context.get('active_ids')
         line_obj = self.pool.get('spending.detail')
-        line_ids = []
+        month_obj = self.pool.get('bdf.allocation.month')
+        vals = []
         for bdf in self.pool.get('bdf.purchase').browse(self.cr, self.uid, bdf_ids):
-            line_ids += line_obj.search(self.cr, self.uid, [('purchase_id','=',bdf.id)])
-        return line_obj.browse(self.cr, self.uid, line_ids)
+            detail_ids = line_obj.search(self.cr, self.uid, [('purchase_id','=',bdf.id)])
+            for detail in line_obj.browse(self.cr, self.uid, detail_ids):
+                month_ids = month_obj.search(self.cr, self.uid, [('purchase_id','=',bdf.id),('allocation','>',0)])
+                for month in month_obj.browse(self.cr, self.uid, month_ids):
+                    vals.append({
+                        'name': bdf.name,
+                        'date': bdf.date,
+                        'supplier_id': bdf.supplier_id,
+                        'description': bdf.description,
+                        'month': upper(month.month),
+                        'amt': float(month.allocation)/100.0*detail.amt,
+                        'cat_code': detail.sub_cat and detail.sub_cat.name or '',
+                        'product': detail.product_id and detail.product_id.name or '',
+                        'account': detail.account_id and detail.account_id.name or '',
+                        'function': bdf.function and bdf.function.name or '',
+                        'budget_owner': bdf.budget_owner and bdf.budget_owner.name or '',
+                        'channel': bdf.channel and bdf.channel.name or '',
+                        'cat': detail.cat and detail.cat.name or '',
+                        'type_of_budget': detail.account_id and detail.account_id.type_of_budget_id and detail.account_id.type_of_budget_id.name or '',
+                        
+                    })
+        return vals
     
     def get_bdf(self,line):
         if line.purchase_id:

@@ -296,6 +296,15 @@ class bdf_io(osv.osv):
     
 bdf_io()
 
+class type_of_budget(osv.osv):
+    _name="type.of.budget"
+    
+    _columns={
+        'name':fields.char("Name", size=1024, required=True),
+    }
+    
+type_of_budget()
+
 class master_key_accounts(osv.osv):
     _name="master.key.accounts"
     _columns={
@@ -818,6 +827,7 @@ class account_account(osv.osv):
         'user_type': fields.many2one('account.account.type', 'Account Type', required=False,
             help="Account Type is used for information purpose, to generate "
               "country-specific legal reports, and set the rules to close a fiscal year and generate opening entries."),
+        'type_of_budget_id': fields.many2one('type.of.budget', 'Type of Budget'),
         }
 account_account()
 

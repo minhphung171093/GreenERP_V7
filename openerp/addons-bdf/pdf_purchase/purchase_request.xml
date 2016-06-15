@@ -1265,6 +1265,27 @@
             <field name="search_view_id"/>
         </record>
         
+        <record id="view_type_of_budget_tree" model="ir.ui.view">
+            <field name="name">type.of.budget.tree</field>
+            <field name="model">type.of.budget</field>
+            <field name="type">tree</field>
+            <field eval="8" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Master Type of Budget" editable="top">
+                	<field name="name"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="action_type_of_budget" model="ir.actions.act_window">
+            <field name="name">Master Type of Budget</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">type.of.budget</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id"/>
+        </record>
+        
         <!-- Kiet: Master Budget Owner -->
     	<record id="view_master_budget_owner_tree" model="ir.ui.view">
             <field name="name">master_budget_owner</field>
@@ -1399,6 +1420,9 @@
 	            <xpath expr="//field[@name='company_currency_id']" position="attributes">
 	            	<attribute name="invisible">1</attribute>
 	            </xpath>
+	            <xpath expr="//field[@name='company_currency_id']" position="after">
+	            	<field name="type_of_budget_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+	            </xpath>
             </field>
         </record>
         
@@ -1517,7 +1541,7 @@
             <field name="inherit_id" ref="base.view_users_form" />
             <field name="arch" type="xml">
             	<xpath expr="//field[@name='company_id']" position="after">
-	            	<field name="process_id" domain="[('user_id','=',id)]"/>
+	            	<field name="process_id" domain="[('user_id','=',id)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 	            </xpath>
             </field>
         </record>
@@ -1527,7 +1551,7 @@
             <field name="inherit_id" ref="base.view_users_form_simple_modif" />
             <field name="arch" type="xml">
             	<xpath expr="//field[@name='company_id']" position="after">
-	            	<field name="process_id" domain="[('user_id','=',id)]"/>
+	            	<field name="process_id" domain="[('user_id','=',id)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 	            </xpath>
             </field>
         </record>
