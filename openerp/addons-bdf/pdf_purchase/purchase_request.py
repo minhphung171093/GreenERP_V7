@@ -140,6 +140,16 @@ class spending_detail(osv.osv):
                 res[order.id]['fx_currency'] = order.purchase3_id.fx and order.qty * order.price_unit / order.purchase3_id.fx or 0
         return res
     
+    def _compute_allocation_by_cat(self, cr, uid, ids, name, args, context=None):
+        res={}
+        for order in self.browse(cr, uid, ids, context=context):
+            amt = 0
+            for line in order.procurement_detail_line:
+                amt += line.amt
+            allocation = float(line.amt)/float(amt)*100
+            res[order.id] = allocation
+        return res
+    
     def onchange_product(self,cr,uid,ids,product_id,context=None):
         res={
 #                 'cat':False,
@@ -174,7 +184,7 @@ class spending_detail(osv.osv):
         'project_id':fields.char('PROJECT',size=1024),
         'io_id':fields.many2one('bdf.io','IO'),
         'channel_name': fields.char('Channel Name', size=1024),
-        'allocation_by_cat': fields.float('Allocation (%)', digits=(16,2)),
+        'allocation_by_cat':fields.function(_compute_allocation_by_cat, string='Allocation (%)', type='float',digits=(16,2)),
         'col_1': fields.float('Col',digits=(16,0)),
         'col_2': fields.float('Col',digits=(16,0)),
         'col_3': fields.float('Col',digits=(16,0)),
@@ -355,7 +365,7 @@ class bdf_allocation_month(osv.osv):
     _name="bdf.allocation.month"
     
     _columns={
-        'allocation':fields.integer('% Allocation'),
+        'allocation':fields.float('% Allocation', digits=(16,2)),
         'month':fields.selection([
                 ('jan','Jan'),
                 ('feb','Feb'),
@@ -821,9 +831,22 @@ master_project()
 
 class master_process(osv.osv):
     _name ='master.process'
+    
+    def _get_user(self, cr, uid, ids, name, args, context=None):
+        res={}
+        for process in self.browse(cr, uid, ids, context=context):
+            sql = '''
+                select user_id from master_process_line where process_id=%s order by name limit 1
+            '''%(process.id)
+            cr.execute(sql)
+            user_ids = [r[0] for r in cr.fetchall()]
+            res[process.id] = user_ids and user_ids[0] or False
+        return res
+    
     _columns={
         'name':fields.char('Process name',size=256,required=True),
         'process_line': fields.one2many('master.process.line','process_id','Process Line'),
+        'user_id': fields.function(_get_user, type='many2one', relation='res.users', string='User'),
         }
 master_process()
 

@@ -1517,7 +1517,7 @@
             <field name="inherit_id" ref="base.view_users_form" />
             <field name="arch" type="xml">
             	<xpath expr="//field[@name='company_id']" position="after">
-	            	<field name="process_id"/>
+	            	<field name="process_id" domain="[('user_id','=',uid)]"/>
 	            </xpath>
             </field>
         </record>
