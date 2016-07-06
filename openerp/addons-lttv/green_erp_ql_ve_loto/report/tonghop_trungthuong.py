@@ -277,8 +277,8 @@ class Parser(report_sxw.rml_parse):
         'sl_2_18': line['sl_2_18'],
         'sl_2_dc_trung': line['sl_2_dc_trung'],
         'sl_2_18_trung': line['sl_2_18_trung'],
-        'tong_ve': format(line['tong_ve'],',').split('.')[0],
-        'tong_thanhtien': format(line['tong_thanhtien'],',').split('.')[0],
+        'tong_ve': format(line['tong_ve'],',').split('.')[0].replace(',','.'),
+        'tong_thanhtien': format(line['tong_thanhtien'],',').split('.')[0].replace(',','.'),
         }
         return res
     
@@ -295,8 +295,8 @@ class Parser(report_sxw.rml_parse):
         'sl_3_dc_trung': line['sl_3_dc_trung'],
         'sl_3_7_trung': line['sl_3_7_trung'],
         'sl_3_17_trung': line['sl_3_17_trung'],
-        'tong_ve': format(line['tong_ve'],',').split('.')[0],
-        'tong_thanhtien': format(line['tong_thanhtien'],',').split('.')[0],
+        'tong_ve': format(line['tong_ve'],',').split('.')[0].replace(',','.'),
+        'tong_thanhtien': format(line['tong_thanhtien'],',').split('.')[0].replace(',','.'),
         }
         return res
     
@@ -307,8 +307,8 @@ class Parser(report_sxw.rml_parse):
         res = {
         'sl_4_16': line['sl_4_16'],
         'sl_4_16_trung': line['sl_4_16_trung'],
-        'tong_ve': format(line['tong_ve'],',').split('.')[0],
-        'tong_thanhtien': format(line['tong_thanhtien'],',').split('.')[0],
+        'tong_ve': format(line['tong_ve'],',').split('.')[0].replace(',','.'),
+        'tong_thanhtien': format(line['tong_thanhtien'],',').split('.')[0].replace(',','.'),
         }
         return res
     
@@ -342,8 +342,8 @@ class Parser(report_sxw.rml_parse):
                 'sl_2_18': sl_2_18,
                 'sl_2_dc_trung': sl_2_dc_trung,
                 'sl_2_18_trung': sl_2_18_trung,
-                'tongve': format(tongve, ',').split('.')[0],
-                'tongcong': format(tongcong, ',').split('.')[0],
+                'tongve': format(tongve, ',').split('.')[0].replace(',','.'),
+                'tongcong': format(tongcong, ',').split('.')[0].replace(',','.'),
                 }
         
     def get_tong_trathuong_3(self):
@@ -382,8 +382,8 @@ class Parser(report_sxw.rml_parse):
                 'sl_3_dc_trung': sl_3_dc_trung,
                 'sl_3_7_trung': sl_3_7_trung,
                 'sl_3_17_trung': sl_3_17_trung,
-                'tongve': format(tongve, ',').split('.')[0],
-                'tongcong': format(tongcong, ',').split('.')[0],
+                'tongve': format(tongve, ',').split('.')[0].replace(',','.'),
+                'tongcong': format(tongcong, ',').split('.')[0].replace(',','.'),
                 }
         
     def get_tong_trathuong_4(self):
@@ -404,8 +404,8 @@ class Parser(report_sxw.rml_parse):
         return {
                 'sl_4_16': sl_4_16,
                 'sl_4_16_trung': sl_4_16_trung,
-                'tongve': format(tongve, ',').split('.')[0],
-                'tongcong': format(tongcong, ',').split('.')[0],
+                'tongve': format(tongve, ',').split('.')[0].replace(',','.'),
+                'tongcong': format(tongcong, ',').split('.')[0].replace(',','.'),
                 }
     
      

@@ -120,24 +120,24 @@ class Parser(report_sxw.rml_parse):
                 self.total_each_thanhtien += thanhtien
                 rs.append(( {
                         'name_template': product_id.name_template or '',
-                        'sl_2': format(kq2['sl_2'],',').split('.')[0],
-                        'sl_3': format(kq2['sl_3'],',').split('.')[0],
-                        'sl_4': format(kq2['sl_4'],',').split('.')[0],
-                        'tong_ve': format(tongve,',').split('.')[0],
-                        'thanhtien': format(thanhtien,',').split('.')[0],
-                        'tong_sai_kythuat': format(kq1['tong_sai_kythuat'],',').split('.')[0],
+                        'sl_2': format(kq2['sl_2'],',').split('.')[0].replace(',','.'),
+                        'sl_3': format(kq2['sl_3'],',').split('.')[0].replace(',','.'),
+                        'sl_4': format(kq2['sl_4'],',').split('.')[0].replace(',','.'),
+                        'tong_ve': format(tongve,',').split('.')[0].replace(',','.'),
+                        'thanhtien': format(thanhtien,',').split('.')[0].replace(',','.'),
+                        'tong_sai_kythuat': format(kq1['tong_sai_kythuat'],',').split('.')[0].replace(',','.'),
                         }))
         return rs
 
     def get_tong(self):
         
         rs = [{
-                'sl_2': format(self.total_each_sl_2,',').split('.')[0],
-                'sl_3': format(self.total_each_sl_3,',').split('.')[0],
-                'sl_4': format(self.total_each_sl_4,',').split('.')[0],
-                'tong_ve': format(self.total_each_tong_ve,',').split('.')[0],
-                'thanhtien': format(self.total_each_thanhtien,',').split('.')[0],
-                'tong_sai_kythuat': format(self.total_each_sai_kythuat,',').split('.')[0],
+                'sl_2': format(self.total_each_sl_2,',').split('.')[0].replace(',','.'),
+                'sl_3': format(self.total_each_sl_3,',').split('.')[0].replace(',','.'),
+                'sl_4': format(self.total_each_sl_4,',').split('.')[0].replace(',','.'),
+                'tong_ve': format(self.total_each_tong_ve,',').split('.')[0].replace(',','.'),
+                'thanhtien': format(self.total_each_thanhtien,',').split('.')[0].replace(',','.'),
+                'tong_sai_kythuat': format(self.total_each_sai_kythuat,',').split('.')[0].replace(',','.'),
                }]
         return rs
     
@@ -185,23 +185,23 @@ class Parser(report_sxw.rml_parse):
                 self.total_all_thanhtien += thanhtien
                 rs.append(( {
                         'name_template': product_id.name_template,
-                        'sl_2': format(kq2['sl_2'],',').split('.')[0],
-                        'sl_3': format(kq2['sl_3'],',').split('.')[0],
-                        'sl_4': format(kq2['sl_4'],',').split('.')[0],
-                        'tong_ve': format(tongve,',').split('.')[0],
-                        'thanhtien': format(thanhtien,',').split('.')[0],
-                        'tong_sai_kythuat': format(kq1['tong_sai_kythuat'],',').split('.')[0],
+                        'sl_2': format(kq2['sl_2'],',').split('.')[0].replace(',','.'),
+                        'sl_3': format(kq2['sl_3'],',').split('.')[0].replace(',','.'),
+                        'sl_4': format(kq2['sl_4'],',').split('.')[0].replace(',','.'),
+                        'tong_ve': format(tongve,',').split('.')[0].replace(',','.'),
+                        'thanhtien': format(thanhtien,',').split('.')[0].replace(',','.'),
+                        'tong_sai_kythuat': format(kq1['tong_sai_kythuat'],',').split('.')[0].replace(',','.'),
                         }))
         return rs
         
     def get_line_tong_all(self):
         rs = [{
-                'sl_2': format(self.total_all_sl_2,',').split('.')[0],
-                'sl_3': format(self.total_all_sl_3,',').split('.')[0],
-                'sl_4': format(self.total_all_sl_4,',').split('.')[0],
-                'tong_ve': format(self.total_all_tong_ve,',').split('.')[0],
-                'thanhtien': format(self.total_all_thanhtien,',').split('.')[0],
-                'tong_sai_kythuat': format(self.total_all_sai_kythuat,',').split('.')[0],
+                'sl_2': format(self.total_all_sl_2,',').split('.')[0].replace(',','.'),
+                'sl_3': format(self.total_all_sl_3,',').split('.')[0].replace(',','.'),
+                'sl_4': format(self.total_all_sl_4,',').split('.')[0].replace(',','.'),
+                'tong_ve': format(self.total_all_tong_ve,',').split('.')[0].replace(',','.'),
+                'thanhtien': format(self.total_all_thanhtien,',').split('.')[0].replace(',','.'),
+                'tong_sai_kythuat': format(self.total_all_sai_kythuat,',').split('.')[0].replace(',','.'),
                }]
         return rs
         

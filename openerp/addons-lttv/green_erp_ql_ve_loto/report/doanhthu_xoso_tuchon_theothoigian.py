@@ -159,7 +159,7 @@ class Parser(report_sxw.rml_parse):
         if ve_loto_ids:
             self.cr.execute("select sum(tong_cong) as tong from ve_loto where id in %s",(tuple(ve_loto_ids),))
             tongso = self.cr.dictfetchone()['tong']
-            return format(tongso, ',').split('.')[0]
+            return format(tongso, ',').split('.')[0].replace(',','.')
         else:
             return ''
         
@@ -189,8 +189,8 @@ class Parser(report_sxw.rml_parse):
                     tongve += ve
                     tongcong += int(menhgia.list_price)*ve
         return {
-                'tongve': format(tongve, ',').split('.')[0],
-                'tongcong': format(tongcong, ',').split('.')[0],
+                'tongve': format(tongve, ',').split('.')[0].replace(',','.'),
+                'tongcong': format(tongcong, ',').split('.')[0].replace(',','.'),
                 }
     
     def get_trathuong(self, menhgia):
@@ -198,7 +198,7 @@ class Parser(report_sxw.rml_parse):
         date_from = wizard_data['date_from']
         date_to = wizard_data['date_to']
         tongso = self.get_chitiet(date_from,date_to,menhgia)['tong_ve']
-        return format(tongso, ',').split('.')[0]
+        return format(tongso, ',').split('.')[0].replace(',','.')
     def get_tong_trathuong(self):
         wizard_data = self.localcontext['data']['form']
         date_from = wizard_data['date_from']
@@ -212,8 +212,8 @@ class Parser(report_sxw.rml_parse):
             tongve += tongso['tong_ve']
             tongcong += tongso['tong_thanhtien']
         return {
-                'tongve': format(tongve, ',').split('.')[0],
-                'tongcong': format(tongcong, ',').split('.')[0],
+                'tongve': format(tongve, ',').split('.')[0].replace(',','.'),
+                'tongcong': format(tongcong, ',').split('.')[0].replace(',','.'),
                 }    
 #     def get_tong_trathuong(self):
 #         wizard_data = self.localcontext['data']['form']
@@ -231,8 +231,8 @@ class Parser(report_sxw.rml_parse):
 #             tongve += tongso['tong_ve']
 #             tongcong += tongso['tong_thanhtien']
 #         return {
-#                 'tongve': format(tongve, ','),
-#                 'tongcong': format(tongcong, ','),
+#                 'tongve': format(tongve, ',').split('.')[0].replace(',','.'),
+#                 'tongcong': format(tongcong, ',').split('.')[0].replace(',','.'),
 #                 }
     
     def get_sai_kythuat(self, menhgia_id):
@@ -247,7 +247,7 @@ class Parser(report_sxw.rml_parse):
         if ve_loto_ids:
             self.cr.execute("select case when sum(tong_sai_kythuat)!=0 then sum(tong_sai_kythuat) else 0 end tong from ve_loto where id in %s",(tuple(ve_loto_ids),))
             tongso = self.cr.dictfetchone()['tong']
-            return format(tongso, ',').split('.')[0]
+            return format(tongso, ',').split('.')[0].replace(',','.')
         else:
             return ''
         
@@ -277,6 +277,6 @@ class Parser(report_sxw.rml_parse):
                     tongve += ve
                     tongcong += int(menhgia.list_price)*ve
         return {
-                'tongve': format(tongve, ',').split('.')[0],
-                'tongcong': format(tongcong, ',').split('.')[0],
+                'tongve': format(tongve, ',').split('.')[0].replace(',','.'),
+                'tongcong': format(tongcong, ',').split('.')[0].replace(',','.'),
                 }

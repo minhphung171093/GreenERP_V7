@@ -103,9 +103,9 @@ class Parser(report_sxw.rml_parse):
                 res.append({
                             'ma_daily':rs['ma_daily'],
                             'name':rs['name'],
-                            'qty_10':format(rs['qty_10'], ',').split('.')[0],
-                            'qty_20':format(rs['qty_20'], ',').split('.')[0],
-                            'qty_50':format(rs['qty_50'], ',').split('.')[0],
+                            'qty_10':format(rs['qty_10'], ',').split('.')[0].replace(',','.'),
+                            'qty_20':format(rs['qty_20'], ',').split('.')[0].replace(',','.'),
+                            'qty_50':format(rs['qty_50'], ',').split('.')[0].replace(',','.'),
                             'rs10': rs10 and rs10[:-2] or '',
                             'rs20': rs20 and rs20[:-2] or '',
                             'rs50': rs50 and rs50[:-2] or '',
@@ -114,9 +114,9 @@ class Parser(report_sxw.rml_parse):
     
     def get_total(self):
         res = {
-                'total_10':format(self.total_10, ',').split('.')[0],
-                'total_20':format(self.total_20, ',').split('.')[0],
-                'total_50':format(self.total_50, ',').split('.')[0],
+                'total_10':format(self.total_10, ',').split('.')[0].replace(',','.'),
+                'total_20':format(self.total_20, ',').split('.')[0].replace(',','.'),
+                'total_50':format(self.total_50, ',').split('.')[0].replace(',','.'),
                }
         return res
     
