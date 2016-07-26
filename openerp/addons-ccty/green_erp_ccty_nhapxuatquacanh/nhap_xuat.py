@@ -172,6 +172,8 @@ class nhap_xuat_canh_giasuc(osv.osv):
                 cr.execute(sql)
                 vacxin_ids = [r[0] for r in cr.fetchall()]
                 for vacxin in self.pool.get('loai.vacxin').browse(cr,uid,vacxin_ids):
+                    if not line.ct_loai_id:
+                        raise osv.except_osv(_('Cảnh báo!'),_('Vui lòng nhập thông tin chi tiết loài'))
                     sql = '''
                         select case when sum(so_luong)!=0 then sum(so_luong) else 0 end sl_tp from chi_tiet_da_tiem_phong
                         where nhap_xuat_tiemphong_id = %s and ct_loai_id = %s and vacxin_id = %s
