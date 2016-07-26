@@ -407,19 +407,19 @@
 											<field name="chitiet_loai_nx" nolabel='1'>
 												<tree editable='bottom'>
 													<field name="name" invisible = '1'/>
-													<field name="ct_loai_id" domain="[('loai_id','=',parent.loai_id)]" options="{'create': false, 'create_edit': false}" on_change = "onchange_ct_loai_id(ct_loai_id)"/>
+													<field name="ct_loai_id" required='1' domain="[('loai_id','=',parent.loai_id)]" options="{'create': false, 'create_edit': false}" on_change = "onchange_ct_loai_id(ct_loai_id)"/>
 													<field name="tiem_phong"/>
-													<field name="so_luong" string = 'Số lượng nhập'  sum = 'Total'/>
+													<field name="so_luong" required='1' string = 'Số lượng nhập'  sum = 'Total'/>
 												</tree>
 											</field>
 										</page>
 										<page string = "Đã tiêm phòng">
 											<field name="chitiet_da_tiem_phong" nolabel='1'>
 												<tree editable='bottom'>
-													<field name="ct_loai_id" domain="[('loai_id','=',parent.loai_id)]" options="{'create': false, 'create_edit': false}"/>
+													<field name="ct_loai_id" required='1' domain="[('loai_id','=',parent.loai_id)]" options="{'create': false, 'create_edit': false}"/>
 													<field name="vacxin_id" context="{'search_vacxin_id':True, 'loai_id': parent.loai_id}" options="{'create': false, 'create_edit': false}"/>
 													<field name="ngay_tiem" />
-													<field name="so_luong" string='Số lượng'/>
+													<field name="so_luong" required='1' string='Số lượng'/>
 												</tree>
 											</field>
 										</page>
