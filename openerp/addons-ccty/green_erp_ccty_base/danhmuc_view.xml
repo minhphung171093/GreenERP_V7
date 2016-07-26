@@ -335,7 +335,7 @@
             <field name="view_mode">tree,form</field>
             <field eval="False" name="view_id" ref="chan_nuoi_tree"/>
             <field name="search_view_id" ref="chan_nuoi_search"/>
-            <field name="domain">[('active','=',True)]</field>
+            <field name="domain">[]</field>
         </record>
 
         					
