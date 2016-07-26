@@ -268,7 +268,10 @@ class chan_nuoi(osv.osv):
 
     def bt_active(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids, {'active':False})  
-
+    
+    def bt_check_active(self, cr, uid, ids, context=None):
+        return self.write(cr, uid, ids, {'active':True})
+    
     def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
         if context is None:
             context = {}

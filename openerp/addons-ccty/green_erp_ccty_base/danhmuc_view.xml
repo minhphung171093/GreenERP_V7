@@ -224,6 +224,8 @@
                     <field name="loai_ho_id" />
                     <field name="company_id" />
                     <separator/>
+                    <filter string="Cơ sở chăn nuôi đang quản lý" domain="[('active','=',True)]" context="{}"/>
+                    <filter string="Cơ sở chăn nuôi đã ngừng quản lý" domain="[('active','=',False)]" context="{}"/>
                     <group expand="0" string="Group By...">
                         <filter string="Quận (huyện)" domain="[]" context="{'group_by':'quan_huyen_id'}"/>
                         <filter string="Phường (xã)" domain="[]"  context="{'group_by':'phuong_xa_id'}"/>
@@ -275,6 +277,7 @@
                 	<header>
 	            		<button name="bt_duyet" attrs="{'invisible': [('hien_an', '!=', True)]}" string="Duyệt" type="object" class="oe_highlight" />
 	            		<button name="bt_active" attrs="{'invisible': [('active', '!=', True)]}" string="Ngừng quản lý CS chăn nuôi" type="object" class="oe_highlight" />
+	            		<button name="bt_check_active" attrs="{'invisible': [('active', '=', True)]}" string="Quản lý lại CS chăn nuôi" type="object" class="oe_highlight" />
 	            		
 	                    <field name="trang_thai_id" widget="statusbar"/>
 	            	</header> 
