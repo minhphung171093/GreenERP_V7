@@ -116,6 +116,7 @@ class Parser(report_sxw.rml_parse):
                             'con_seal_no':line['option']=='seal_no' and ((line['con_no_seal_1'] or '')+'/'+(line['seal_no_1'] or '')) or line['option']=='product' and ((line['con_no_seal_2'] or '')+'/'+(line['seal_no_2'] or '')) or '',
                             'bl_no':line['bl_no'],
                             'dhl_no':line['dhl_no'],
+                            'type':line['type'],
                             })
         return hop_dong
     
