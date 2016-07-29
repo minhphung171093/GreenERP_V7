@@ -316,6 +316,9 @@ class hop_dong(osv.osv):
         (_check_den_ngay, 'Cảnh báo !', []),
     ]
     
+    def button_dummy(self, cr, uid, ids, context=None):
+        return True
+    
     def bt_theodoi_hopdong(self, cr, uid, ids, context=None):
         for line in self.browse(cr, uid, ids):
             if line.theodoi_hopdong_line:
