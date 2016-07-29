@@ -24,6 +24,7 @@ class Parser(report_sxw.rml_parse):
     def __init__(self, cr, uid, name, context):
         super(Parser, self).__init__(cr, uid, name, context=context)
         pool = pooler.get_pool(self.cr.dbname)
+        self.tong_qty = 0
         self.localcontext.update({
             'convert_date': self.convert_date,
             'get_lines':self.get_lines,
@@ -32,6 +33,7 @@ class Parser(report_sxw.rml_parse):
             'get_bl_type_viruco': self.get_bl_type_viruco,
             'get_bl_type_uythac': self.get_bl_type_uythac,
             'get_bl_type_benthuba': self.get_bl_type_benthuba,
+            'get_tong_qty': self.get_tong_qty,
         })
         
     def convert_date(self, date):
@@ -95,6 +97,7 @@ class Parser(report_sxw.rml_parse):
         '''%(date_from,date_to)
         self.cr.execute(sql)
         for line in self.cr.dictfetchall():
+            self.tong_qty += (line['qty'] or 0)
             hop_dong.append({'date': line['date'],
                             'etd': line['etd'],
                             'broker': line['broker'],
@@ -134,4 +137,7 @@ class Parser(report_sxw.rml_parse):
         if type=='ben_thu_ba':
             return 'X'
         return ''
+    
+    def get_tong_qty(self):
+        return self.tong_qty
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
