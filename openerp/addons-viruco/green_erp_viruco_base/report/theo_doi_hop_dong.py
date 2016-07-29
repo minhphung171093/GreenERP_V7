@@ -29,6 +29,9 @@ class Parser(report_sxw.rml_parse):
             'get_lines':self.get_lines,
             'get_freight': self.get_freight,
             'get_month': self.get_month,
+            'get_bl_type_viruco': self.get_bl_type_viruco,
+            'get_bl_type_uythac': self.get_bl_type_uythac,
+            'get_bl_type_benthuba': self.get_bl_type_benthuba,
         })
         
     def convert_date(self, date):
@@ -62,7 +65,7 @@ class Parser(report_sxw.rml_parse):
             dl.container_no_seal as con_no_seal_2, dl.seal_no as seal_no_2,
             dbl_l.bl_no as bl_no, d_bl.dhl_no as dhl_no, pp.default_code as descrip,
             dbh.thoigian_giaohang as etd, brokerrp.name as broker, dg.name as term, dg.discharge as discharge, dk_tt.name as payment, 
-            hdm.name as ten_hdm, hdm_cus.name as ncc, dbl_l.option as option
+            hdm.name as ten_hdm, hdm_cus.name as ncc, dbl_l.option as option,d_bl.type as type
                 from hopdong_line hdl
                     left join hop_dong hd on hdl.hopdong_id=hd.id
                     left join res_partner rp on hd.partner_id=rp.id
@@ -116,5 +119,18 @@ class Parser(report_sxw.rml_parse):
                             })
         return hop_dong
     
-            
+    def get_bl_type_viruco(self, type):
+        if type=='viruco':
+            return 'X'
+        return ''
+    
+    def get_bl_type_uythac(self, type):
+        if type=='uy_thac':
+            return 'X'
+        return ''
+    
+    def get_bl_type_benthuba(self, type):
+        if type=='ben_thu_ba':
+            return 'X'
+        return ''
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

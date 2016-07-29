@@ -80,6 +80,7 @@
                     		<field name="user_id" on_change ="onchange_user_id(user_id,hopdong_id)" options="{'create': false, 'create_edit': false}"/>
                     		<field name="buyer_thue" context="{'search_buyer_form_e':1}" options="{'create': false, 'create_edit': false}"  />
 	                    	<field name="dhl_no" options="{'create': false, 'create_edit': false}"/>
+	                    	<field name="type"/>
 	                    </group>
 	                    <group>
                     		<field name="mean_transport"/>

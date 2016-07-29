@@ -108,6 +108,7 @@ class draft_bl(osv.osv):
         'user_id': fields.many2one('res.users','Người thực hiện'),
         'buyer_thue':fields.many2one('res.partner','Form E'),
         'dhl_no': fields.char('DHL No', size=1024),
+        'type': fields.selection([('viruco','Viruco'),('uy_thac','Ủy Thác'),('ben_thu_ba','Bên thứ 3')], 'Loại'),
 #         'user_chungtu_id': fields.many2one('res.users','Người thực hiện'),
     }
     
@@ -116,6 +117,7 @@ class draft_bl(osv.osv):
 #         'user_id': _get_user,
         'date': lambda *a: time.strftime('%Y-%m-%d'),
         'company_id': lambda self, cr, uid, c: self.pool.get('res.company')._company_default_get(cr, uid, 'draft.bl', context=c),
+        'type': 'viruco',
     }
     
     def onchange_user_id(self, cr, uid, ids,user_id=False,hopdong_id=False,context=None):
