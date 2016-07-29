@@ -29,6 +29,7 @@ class Parser(report_sxw.rml_parse):
             'get_lines':self.get_lines,
             'get_freight': self.get_freight,
             'get_month': self.get_month,
+            'convert': self.convert,
         })
         
     def convert_date(self, date):
@@ -49,6 +50,13 @@ class Parser(report_sxw.rml_parse):
             tam = 'Collect'
         return tam
     
+    def convert(self, amount):
+        amount_text = amount_to_text_en.amount_to_text(amount, 'en', '')
+        if amount_text and len(amount_text)>1:
+            amount = amount_text[1:]
+            head = amount_text[:1]
+            amount_text = head.upper()+amount
+        return amount_text
     
     def get_lines(self):
         wizard_data = self.localcontext['data']['form']

@@ -719,6 +719,7 @@ class hop_dong(osv.osv):
                 'phuongthuc_thanhtoan':(dbh.note or '')+'\n'+ (property and property.value or ''),
                 'sale_person_id': dbh.sale_person_id and dbh.sale_person_id.id or False,
                 'date_dbh':dbh.ngay,
+                'tu_ngay': dbh.ngay,
                 'so_tham_chieu':dbh.so_tham_chieu,
             }
         return {'value': vals}
