@@ -818,7 +818,12 @@ class hop_dong(osv.osv):
                                 '''%(name,line.id)
                                 cr.execute(sql)
         new_write = super(hop_dong, self).write(cr, uid, ids, vals, context=context)    
-        return new_write    
+        return new_write
+    
+    def copy(self, cr, uid, id, default=None, context=None, done_list=None, local=False):
+        res = super(hop_dong, self).copy(cr, uid, id, default, context, done_list, local)
+        return res
+    
 hop_dong()
 
 class hopdong_hoahong_line(osv.osv):

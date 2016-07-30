@@ -204,6 +204,15 @@ class draft_bl(osv.osv):
     def huy_bo(self, cr, uid, ids, context=None):
         return self.write(cr, uid, ids, {'state': 'huy_bo'})   
     
+    def copy(self, cr, uid, id, default=None, context=None, done_list=None, local=False):
+        if default is None:
+            default = {}
+        default.update({
+            'hopdong_id': False,
+            'draft_bl_line': False,
+        })
+        return super(draft_bl, self).copy(cr, uid, id, default, context, done_list, local)
+    
 #     def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
 #         if context is None:
 #             context = {}
