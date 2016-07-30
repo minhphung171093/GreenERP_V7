@@ -90,10 +90,12 @@
                     		<field name="country_id" string='Destination'/>
                     		<field name="freight"/>
                     		<field name="stock_ids" widget="many2many_tags" invisible='1'/>
+                    		<field name="importer"/>
 	                    </group>
 	                    </group>
 	                    <group>
 	                    	<field name="note"/>
+	                    	<field name="remark"/>
 						</group>
 						<notebook>
 							<page string="Chứng từ xuất khẩu Line" >
@@ -113,7 +115,8 @@
 		                                    <field name="bl_no"/>
 		                                    <field name="customs_declaration"/>
 		                                    <field name="date_customs_declaration"/>
-		                                    <field name="hopdong_line_id" domain="[('hopdong_id','=',parent.hopdong_id)]" attrs="{'invisible':[('option','in',['seal_no',False])],'required':[('option','in',['product'])]}" />
+		                                    <field name="hopdong_line_id" on_change="onchange_hopdong_line_id(hopdong_line_id)" domain="[('hopdong_id','=',parent.hopdong_id)]" attrs="{'invisible':[('option','in',['seal_no',False])],'required':[('option','in',['product'])]}" />
+		                                    <field name="name"/>
 		                                    <field name="container_no_seal" on_change = "onchange_container_no(container_no_seal)"  attrs="{'invisible':[('option','in',['product',False])]}"/>
 		                                    <field name="seal_no" attrs="{'invisible':[('option','in',['product',False])]}"/>
 		                                    <field name="line_number" on_change = "onchange_option(option,line_number)" attrs="{'invisible':[('option','!=','product')],'required':[('option','=','product')]}"/>
@@ -158,7 +161,8 @@
 											<page string="Description of Seal" attrs="{'invisible':[('option','in',['product',False])]}">
 												<field name="description_line">
 													<tree editable = 'bottom'>
-					                                    <field name="hopdong_line_id" domain="[('hopdong_id','=',parent.hopdong_id)]"/>
+					                                    <field name="hopdong_line_id" on_change="onchange_hopdong_line_id(hopdong_line_id)" domain="[('hopdong_id','=',parent.hopdong_id)]"/>
+					                                    <field name="name"/>
 					                                    <field name="packages_qty"/>
 					                                    <field name="packages_id" string = "Kind Of Packages"/>
 					                                    <field name="packages_weight" string = "Bale Form"/>

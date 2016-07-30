@@ -88,6 +88,8 @@ class draft_bl(osv.osv):
         
         'quantity_kind_of_packages': fields.char('Quantity and Kind of Packages'),
         'note':fields.text('Note'),
+        'remark':fields.text('Remark'),
+        'importer':fields.char('Importer', size=1024),
         'meansurement':fields.char('Meansurement'),  
         'freight':fields.selection([('prepaid', 'Prepaid'),('collect', 'Collect')], 'Freight'),
         'bl_no':fields.function(_get_bl_no, type='char', string='B/L No'),  
@@ -236,6 +238,7 @@ class draft_bl_line(osv.osv):
         'cuoc_tau': fields.float('Freight Cost'),
         'description_line': fields.one2many('description.line','draft_bl_line_id','Line'),
         'product_id': fields.many2one('product.product', 'Product', domain=[('sale_ok', '=', True)]),
+        'name': fields.char('Name'),
         'hopdong_line_id': fields.many2one('hopdong.line', 'Product', ondelete='cascade', select=True),
         'container_no_seal':fields.char('Container No'),
         'seal_no':fields.char('Seal No'),
@@ -302,6 +305,14 @@ class draft_bl_line(osv.osv):
                         
         return {'warning': warning,'value':vals}
     
+    def onchange_hopdong_line_id(self, cr, uid, ids, hopdong_line_id=False, context=None):
+        vals = {}
+        if hopdong_line_id:
+            hopdong_line = self.pool.get('hopdong.line').browse(cr, uid, hopdong_line_id)
+            if hopdong_line.product_id:
+                vals.update({'name': hopdong_line.product_id.name})
+        return {'value': vals}
+    
 draft_bl_line()
 
 
@@ -321,6 +332,7 @@ class description_line(osv.osv):
         'net_weight':fields.float('Net Weight'),
         'gross_weight':fields.float('Gross Weight'),
         'hopdong_line_id': fields.many2one('hopdong.line', 'Product', ondelete='cascade', select=True),
+        'name': fields.char('Name'),
         'no_packge':fields.float('No. of Packages',digits=(16,2)),
     }
 
@@ -346,6 +358,14 @@ class description_line(osv.osv):
                 }
                         
         return {'warning': warning,'value':vals}
+    
+    def onchange_hopdong_line_id(self, cr, uid, ids, hopdong_line_id=False, context=None):
+        vals = {}
+        if hopdong_line_id:
+            hopdong_line = self.pool.get('hopdong.line').browse(cr, uid, hopdong_line_id)
+            if hopdong_line.product_id:
+                vals.update({'name': hopdong_line.product_id.name})
+        return {'value': vals}
     
 description_line()
 
