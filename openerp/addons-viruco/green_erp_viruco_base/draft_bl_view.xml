@@ -59,7 +59,7 @@
 	            	<sheet>
 	            	<group >
 	                    <group>
-	                    	<field name="hopdong_id" options="{'create': false, 'create_edit': false}" on_change = "onchange_hopdong_id(hopdong_id)" context="{'form_view_ref':'green_erp_viruco_base.hop_dong_ngoai_form_view','search_chungtu_hopdong_id':1}"/>
+	                    	<field name="hopdong_id" required='1' options="{'create': false, 'create_edit': false}" on_change = "onchange_hopdong_id(hopdong_id)" context="{'form_view_ref':'green_erp_viruco_base.hop_dong_ngoai_form_view','search_chungtu_hopdong_id':1}"/>
 	                        <field name="date"/>
 	                        <field name="bl_no" invisible='1'/>
 	                        <field name="etd_date"/>
