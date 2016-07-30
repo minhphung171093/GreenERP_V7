@@ -825,7 +825,6 @@ class hop_dong(osv.osv):
             default = {}
         default.update({
             'donbanhang_id': False,
-            'name': False,
         })
         return super(hop_dong, self).copy(cr, uid, id, default, context=context)
     
