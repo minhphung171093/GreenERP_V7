@@ -73,6 +73,30 @@
 	        string="Chứng từ xuất khẩu"
 	        rml="green_erp_viruco_base/report/commercial_invoice.ods"/> 
 	        
+        <record id="commercial_invoice_morong_report" model="ir.actions.report.xml">
+	        <field name="name">commercial_invoice_morong_report</field>
+	        <field name="type">ir.actions.report.xml</field>
+	        <field name="model">draft.bl</field>
+	        <field name="report_name">Chứng từ xuất khẩu (mở rộng)</field>
+	        <field name="report_type">aeroo</field>
+	        <field name="in_format">oo-ods</field>
+	        <field name="out_format" model="report.mimetypes" search="[('code','=','oo-xls'),('compatible_types','=','oo-ods')]"/>
+	        <field name="parser_loc">green_erp_viruco_base/report/commercial_invoice_report.py</field>
+	        <field name="report_rml">green_erp_viruco_base/report/commercial_invoice_morong.ods</field>
+	        <field name="parser_state">loc</field>
+	        <field name="tml_source">file</field>
+	        <field name="attachment_use" eval="0"/>
+    	</record> 
+    	
+    	<report 
+			auto="False" 
+			menu="True"
+			id="commercial_invoice_morong_report" 
+			model="draft.bl" 
+			name="commercial_invoice_morong_report"
+	        string="Chứng từ xuất khẩu (mở rộng)"
+	        rml="green_erp_viruco_base/report/commercial_invoice_morong.ods"/> 
+	        
     	
 	    <record id="phyto_report" model="ir.actions.report.xml">
 	        <field name="name">phyto_report</field>
