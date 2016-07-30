@@ -134,7 +134,7 @@ class draft_bl(osv.osv):
     def create(self, cr, uid, vals, context=None):
 #         new_id = super(draft_bl, self).create(cr, uid, vals, context)
         hopdong_obj = self.pool.get('hop.dong')
-        if 'hopdong_id' in vals:
+        if vals.get('hopdong_id', False):
             hop_dong = hopdong_obj.browse(cr,uid,vals['hopdong_id'])
             sql = '''
                 select id from stock_picking where state != 'done' and id in(select picking_id from stock_move where hop_dong_ban_id = %s)
@@ -158,6 +158,13 @@ class draft_bl(osv.osv):
                 if vals['state'] == 'hoan_tat':
                     hopdong_ban = self.pool.get('hop.dong').browse(cr,uid,line.hopdong_id.id)
                     self.pool.get('hop.dong').write(cr,uid,[hopdong_ban.id],{'state': 'xong_chungtu'})
+            if vals.get('hopdong_id', False) and line.hopdong_id:
+                sql = '''
+                    select id from stock_picking where state != 'done' and id in(select picking_id from stock_move where hop_dong_ban_id = %s)
+                '''%(line.hopdong_id.id)
+                cr.execute(sql)
+                picking_ids = [row[0] for row in cr.fetchall()]
+                super(draft_bl, self).write(cr, uid, [line.id], {'stock_ids': [(6,0,picking_ids)]})
 #             sql = '''
 #                 update hop_dong set user_chungtu_id = %s where id = %s
 #             '''%(uid,line.hopdong_id.id)
