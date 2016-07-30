@@ -821,7 +821,7 @@ class hop_dong(osv.osv):
         return new_write
     
     def copy(self, cr, uid, id, default=None, context=None, done_list=None, local=False):
-        res = super(hop_dong, self).copy(cr, uid, id, default, context, done_list, local)
+        res = super(hop_dong, self).copy(cr, uid, id, default, context=context)
         return res
     
 hop_dong()

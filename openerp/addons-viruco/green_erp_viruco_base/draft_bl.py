@@ -211,7 +211,7 @@ class draft_bl(osv.osv):
             'hopdong_id': False,
             'draft_bl_line': False,
         })
-        return super(draft_bl, self).copy(cr, uid, id, default, context, done_list, local)
+        return super(draft_bl, self).copy(cr, uid, id, default, context=context)
     
 #     def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
 #         if context is None:
