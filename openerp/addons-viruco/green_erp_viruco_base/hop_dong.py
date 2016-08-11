@@ -957,6 +957,7 @@ hopdong_line()
 
 class don_ban_hang(osv.osv):
     _name = "don.ban.hang"
+    _order = "ngay desc"
     
     def button_dummy(self, cr, uid, ids, context=None):
         return True
