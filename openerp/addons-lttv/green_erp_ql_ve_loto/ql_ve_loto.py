@@ -591,7 +591,24 @@ class ketqua_xoso(osv.osv):
         for xoso in self.browse(cr, uid, ids):
             dongbo_trungthuong_ids = dongbo_trungthuong_obj.search(cr, uid, [('ket_qua_id','=',xoso.id),('state','=','done')])
             if dongbo_trungthuong_ids:
-                raise osv.except_osv(_('Cảnh báo!'),_('Không thể nhập lại kết quả vì đã đồng bộ dữ liệu cho trả thưởng!'))
+                dongbo_trungthuong_ids = str(dongbo_trungthuong_ids).replace('[', '(')
+                dongbo_trungthuong_ids = str(dongbo_trungthuong_ids).replace(']', ')')
+                sql = '''
+                    delete from tra_thuong_line where trathuong_id in (select id from tra_thuong where ngay='%s');
+                    delete from tra_thuong where ngay='%s';
+                    delete from dongbo_daily_trungthuong where id in %s;
+                '''%(xoso.name,xoso.name,dongbo_trungthuong_ids)
+                cr.execute(sql)
+#                 raise osv.except_osv(_('Cảnh báo!'),_('Không thể nhập lại kết quả vì đã đồng bộ dữ liệu cho trả thưởng!'))
+            trathuong_ids = self.pool.get('tra.thuong').search(cr, uid, [('ngay','=',xoso.name)])
+            if trathuong_ids:
+                sql = '''
+                    delete from tra_thuong_line where trathuong_id in (select id from tra_thuong where ngay='%s');
+                    delete from tra_thuong where ngay='%s';
+                    delete from dongbo_daily_trungthuong where ket_qua_id=%s;
+                '''%(xoso.name,xoso.name,xoso.id)
+                cr.execute(sql)
+
             ve_loto_ids = ve_loto_obj.search(cr, uid, [('ngay','=',xoso.name),('state','=','done'),('parent_id','=',False)])
             if ve_loto_ids:
                 ve_loto_ids = str(ve_loto_ids).replace('[', '(')
@@ -677,17 +694,17 @@ class ve_loto(osv.osv):
         return result.keys()
     
     _columns = {
-        'name': fields.char('Mã phiếu', size=128,required=False),
-        'create_uid': fields.many2one('res.users','Người nhập'),
+        'name': fields.char('Mã phiếu', size=128,required=False, readonly=True, states={'new': [('readonly', False)]}),
+        'create_uid': fields.many2one('res.users','Người nhập', readonly=True, states={'new': [('readonly', False)]}),
         'create_date': fields.datetime('Ngày chỉnh sửa',readonly=True),
-        'daily_id': fields.many2one('res.partner','Đại lý',domain="[('dai_ly','=',True)]",required=True),
-        'ngay': fields.date('Ngày xổ số',required=True),
-        'so_chungtu': fields.char('Số chứng từ', size=128,required=False),
-        'product_id': fields.many2one('product.product','Mệnh giá',domain="[('menh_gia','=',True)]",required=True),
-        'ky_ve_id': fields.many2one('ky.ve','Kỳ vé',required=True),
-        'sophieu': fields.integer('Số phiếu',required=True),
+        'daily_id': fields.many2one('res.partner','Đại lý',domain="[('dai_ly','=',True)]",required=True, readonly=True, states={'new': [('readonly', False)]}),
+        'ngay': fields.date('Ngày xổ số',required=True, readonly=True, states={'new': [('readonly', False)]}),
+        'so_chungtu': fields.char('Số chứng từ', size=128,required=False, readonly=True, states={'new': [('readonly', False)]}),
+        'product_id': fields.many2one('product.product','Mệnh giá',domain="[('menh_gia','=',True)]",required=True, readonly=True, states={'new': [('readonly', False)]}),
+        'ky_ve_id': fields.many2one('ky.ve','Kỳ vé',required=True, readonly=True, states={'new': [('readonly', False)]}),
+        'sophieu': fields.integer('Số phiếu',required=True, readonly=True, states={'new': [('readonly', False)]}),
 #         'tong_cong': fields.integer('Tổng cộng số lượng'),
-        'tong_sai_kythuat': fields.integer('Tổng cộng vé ghi sai, SKT'),
+        'tong_sai_kythuat': fields.integer('Tổng cộng vé ghi sai, SKT', readonly=True, states={'new': [('readonly', False)]}),
 #         'thanh_tien': fields.float('Thành tiền',digits=(16,0)),
         'tong_cong': fields.function(_get_total,type='float',digits=(16,0),
             store={
@@ -701,13 +718,13 @@ class ve_loto(osv.osv):
                 've.loto.line': (_get_loto, ['name', 've_loto_id', 'sl_2_d', 'sl_2_c', 'sl_2_dc', 'sl_2_18',
                                              'sl_3_d', 'sl_3_c','sl_3_dc', 'sl_3_7', 'sl_3_17', 'sl_4_16'], 10),
             },multi='tong',string='Thành tiền',digits=(16,0)),
-        've_loto_2_line': fields.one2many('ve.loto.line','ve_loto_id','Line2', readonly=False),
-        've_loto_3_line': fields.one2many('ve.loto.line','ve_loto_id','Line3', readonly=False),
-        've_loto_4_line': fields.one2many('ve.loto.line','ve_loto_id','Line4', readonly=False),
+        've_loto_2_line': fields.one2many('ve.loto.line','ve_loto_id','Line2', readonly=True, states={'new': [('readonly', False)]}),
+        've_loto_3_line': fields.one2many('ve.loto.line','ve_loto_id','Line3', readonly=True, states={'new': [('readonly', False)]}),
+        've_loto_4_line': fields.one2many('ve.loto.line','ve_loto_id','Line4', readonly=True, states={'new': [('readonly', False)]}),
         'state': fields.selection([('new','Mới tạo'),('done','Đã dò')],'Trạng thái'),
         'external_id': fields.integer('ExternalID'),
         'parent_id': fields.many2one('ve.loto','Parent',ondelete='cascade'),
-        'lichsu_line': fields.one2many('ve.loto','parent_id','Lịch sử', readonly=False),
+        'lichsu_line': fields.one2many('ve.loto','parent_id','Lịch sử', readonly=True, states={'new': [('readonly', False)]}),
     }
     _defaults = {
         'state': 'new',
