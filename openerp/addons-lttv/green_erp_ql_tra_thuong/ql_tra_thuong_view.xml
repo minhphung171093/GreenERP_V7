@@ -43,7 +43,7 @@
             <field name="arch" type="xml">
                 <form string="Trả thưởng" version="7.0" create='false' edit='false' delete='false'>
                 	<header>
-                		<button name="chinhsua" string="Chỉnh sửa" type="object" class="oe_highlight" groups="green_erp_ql_tra_thuong.group_ql_tra_thuong_man"/>
+                		<!-- <button name="chinhsua" string="Chỉnh sửa" type="object" class="oe_highlight" groups="green_erp_ql_tra_thuong.group_ql_tra_thuong_man"/> -->
 	                    <field name="state" invisible='1' widget="statusbar" statusbar_visible="new,done" statusbar_colors='{"new":"blue","done":"blue"}'/>
 	                </header>
 	                <sheet string="Trả thưởng">
