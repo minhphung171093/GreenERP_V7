@@ -24,6 +24,7 @@ class Parser(report_sxw.rml_parse):
         pool = pooler.get_pool(self.cr.dbname)
         self.localcontext.update({
             'get_date':self.get_date,
+            'convert_2f_amount': self.convert_2f_amount,
             'get_daiduthuong':self.get_daiduthuong,
             'get_giamsat1':self.get_giamsat1,
             'get_giamsat2':self.get_giamsat2,
@@ -46,11 +47,27 @@ class Parser(report_sxw.rml_parse):
             'get_chitiet': self.get_chitiet,
             'get_trathuong': self.get_trathuong,
             'get_tong_trathuong': self.get_tong_trathuong,
+            'get_tyle_trathuong': self.get_tyle_trathuong,
         })
     def get_date(self):
         wizard_data = self.localcontext['data']['form']
         date = datetime.strptime(wizard_data['date'], DATE_FORMAT)
         return date.strftime('%d/%m/%Y')
+    
+    def convert_2f_amount(self, amount):
+        if amount:
+            amount_atr = '%.2f'%(amount)
+            a1 = amount_atr.split('.')[0]
+            a2 = amount_atr.split('.')[1]
+            a = format(int(a1),',').split('.')[0].replace(',','.')
+            return a+','+a2
+        return ''
+    
+    def get_tyle_trathuong(self):
+        tongdoanhthu = self.get_tong()['tongdoanhthu']
+        tongtrathuong = self.get_tong_trathuong()['tongtrathuong']
+        tyle = tongdoanhthu and float(tongtrathuong)/float(tongdoanhthu)*100.0
+        return self.convert_2f_amount(tyle)
     
     def get_daiduthuong(self):
         wizard_data = self.localcontext['data']['form']
@@ -236,6 +253,7 @@ class Parser(report_sxw.rml_parse):
         return {
                 'tongve': format(tongve, ',').split('.')[0].replace(',','.'),
                 'tongcong': format(tongcong, ',').split('.')[0].replace(',','.'),
+                'tongdoanhthu': tongcong,
                 }
     
     def get_trathuong(self, menhgia):
@@ -258,6 +276,7 @@ class Parser(report_sxw.rml_parse):
         return {
                 'tongve': format(tongve, ',').split('.')[0].replace(',','.'),
                 'tongcong': format(tongcong, ',').split('.')[0].replace(',','.'),
+                'tongtrathuong': tongcong,
                 }
     
     def get_sai_kythuat(self, menhgia_id):
