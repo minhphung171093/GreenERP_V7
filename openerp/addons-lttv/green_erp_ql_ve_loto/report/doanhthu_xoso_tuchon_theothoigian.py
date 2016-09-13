@@ -208,6 +208,7 @@ class Parser(report_sxw.rml_parse):
         return {
                 'tongve': format(tongve, ',').split('.')[0].replace(',','.'),
                 'tongcong': format(tongcong, ',').split('.')[0].replace(',','.'),
+                'tongdoanhthu': tongcong,
                 }
     
     def get_trathuong(self, menhgia):
@@ -231,6 +232,7 @@ class Parser(report_sxw.rml_parse):
         return {
                 'tongve': format(tongve, ',').split('.')[0].replace(',','.'),
                 'tongcong': format(tongcong, ',').split('.')[0].replace(',','.'),
+                'tongtrathuong': tongcong,
                 }    
 #     def get_tong_trathuong(self):
 #         wizard_data = self.localcontext['data']['form']
