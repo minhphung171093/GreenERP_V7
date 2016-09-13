@@ -27,6 +27,7 @@ class Parser(report_sxw.rml_parse):
         self.localcontext.update({
             'get_date_from':self.get_date_from,
             'get_date_to':self.get_date_to,
+            'convert_2f_amount': self.convert_2f_amount,
             'get_doanhthu_tieuthu':self.get_doanhthu_tieuthu,
             'get_menh_gia':self.get_menh_gia,
             'get_tong': self.get_tong,
@@ -36,6 +37,7 @@ class Parser(report_sxw.rml_parse):
             'get_chitiet': self.get_chitiet,
             'get_trathuong': self.get_trathuong,
             'get_tong_trathuong': self.get_tong_trathuong,
+            'get_tyle_trathuong': self.get_tyle_trathuong,
         })
     def get_date_from(self):
         wizard_data = self.localcontext['data']['form']
@@ -46,6 +48,21 @@ class Parser(report_sxw.rml_parse):
         wizard_data = self.localcontext['data']['form']
         date = datetime.strptime(wizard_data['date_to'], DATE_FORMAT)
         return date.strftime('%d/%m/%Y')
+    
+    def convert_2f_amount(self, amount):
+        if amount:
+            amount_atr = '%.2f'%(amount)
+            a1 = amount_atr.split('.')[0]
+            a2 = amount_atr.split('.')[1]
+            a = format(int(a1),',').split('.')[0].replace(',','.')
+            return a+','+a2
+        return ''
+    
+    def get_tyle_trathuong(self):
+        tongdoanhthu = self.get_tong()['tongdoanhthu']
+        tongtrathuong = self.get_tong_trathuong()['tongtrathuong']
+        tyle = tongdoanhthu and float(tongtrathuong)/float(tongdoanhthu)*100.0
+        return self.convert_2f_amount(tyle)
     
     def get_menh_gia(self):
         menhgia_obj = self.pool.get('product.product')
