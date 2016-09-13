@@ -144,7 +144,7 @@ class Parser(report_sxw.rml_parse):
             self.cr.execute(sql)
             rs = self.cr.dictfetchone()
             if rs:
-                tien_cuoi_ky = (rs['luu_hanh_cuoi_ky'] or 0)*product.list_price
+                tien_cuoi_ky = (rs['luu_hanh_cuoi_ky'] or 0)*int(product.list_price)
                 res.append({
                             'name':rs['name'],
                             'dau_ky':rs['dau_ky'],
@@ -205,7 +205,7 @@ class Parser(report_sxw.rml_parse):
         self.cr.execute(sql)
         rs = self.cr.dictfetchone()
         if rs:
-            tien_cuoi_ky = (rs['luu_hanh_cuoi_ky'] or 0)*product.list_price
+            tien_cuoi_ky = (rs['luu_hanh_cuoi_ky'] or 0)*int(product.list_price)
             res.append({
                         'name':rs['name'],
                         'dau_ky':rs['dau_ky'],
