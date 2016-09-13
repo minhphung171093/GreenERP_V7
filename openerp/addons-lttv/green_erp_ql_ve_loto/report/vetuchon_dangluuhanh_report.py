@@ -114,6 +114,7 @@ class Parser(report_sxw.rml_parse):
         dl_ids = str(dl_ids).replace('[','(')
         dl_ids = str(dl_ids).replace(']',')')
         for line in menh_gia_ids:
+            product = self.pool.get('product.product').browse(self.cr, self.uid, line)
             sql='''
                 select name, ((select case when sum(product_qty)!=0 then sum(product_qty) else 0 end sl from stock_move where picking_id in (select id from stock_picking where type='out') and product_id = %(product_id)s
                         and date(timezone('UTC',date))<'%(date_from)s' and partner_id in %(dl_ids)s and state='done') - (select case when sum(tong_cong)!=0 then sum(tong_cong) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay<'%(date_from)s' and state='done' and daily_id in %(dl_ids)s)
@@ -143,6 +144,7 @@ class Parser(report_sxw.rml_parse):
             self.cr.execute(sql)
             rs = self.cr.dictfetchone()
             if rs:
+                tien_cuoi_ky = (rs['luu_hanh_cuoi_ky'] or 0)*product.list_price
                 res.append({
                             'name':rs['name'],
                             'dau_ky':rs['dau_ky'],
@@ -151,9 +153,10 @@ class Parser(report_sxw.rml_parse):
                             'sai_trg_ky':rs['sai_trg_ky'],
                             'e_trg_ky':rs['e_trg_ky'],
                             'luu_hanh_cuoi_ky':rs['luu_hanh_cuoi_ky'],
-                            'tien_cuoi_ky':rs['tien_cuoi_ky'],
+#                             'tien_cuoi_ky':rs['tien_cuoi_ky'],
+                            'tien_cuoi_ky':tien_cuoi_ky,
                             })
-                self.tong_ve_cuoiky += rs['tien_cuoi_ky'] and rs['tien_cuoi_ky'] or 0
+                self.tong_ve_cuoiky += tien_cuoi_ky#rs['tien_cuoi_ky'] and rs['tien_cuoi_ky'] or 0
             
         return res
     
@@ -173,7 +176,7 @@ class Parser(report_sxw.rml_parse):
         dl_ids = [row[0] for row in self.cr.fetchall()]
         dl_ids = str(dl_ids).replace('[','(')
         dl_ids = str(dl_ids).replace(']',')')
-        
+        product = self.pool.get('product.product').browse(self.cr, self.uid, menh_gia_id)
         sql='''
                 select name, ((select case when sum(product_qty)!=0 then sum(product_qty) else 0 end sl from stock_move where picking_id in (select id from stock_picking where type='out') and product_id = %(product_id)s
                         and date(timezone('UTC',date))<'%(date_from)s' and partner_id in %(dl_ids)s and state='done') - (select case when sum(tong_cong)!=0 then sum(tong_cong) else 0 end sl from ve_loto where product_id=%(product_id)s and ngay<'%(date_from)s' and state='done' and daily_id in %(dl_ids)s)
@@ -202,6 +205,7 @@ class Parser(report_sxw.rml_parse):
         self.cr.execute(sql)
         rs = self.cr.dictfetchone()
         if rs:
+            tien_cuoi_ky = (rs['luu_hanh_cuoi_ky'] or 0)*product.list_price
             res.append({
                         'name':rs['name'],
                         'dau_ky':rs['dau_ky'],
@@ -210,14 +214,14 @@ class Parser(report_sxw.rml_parse):
                         'sai_trg_ky':rs['sai_trg_ky'],
                         'e_trg_ky':rs['e_trg_ky'],
                         'luu_hanh_cuoi_ky':rs['luu_hanh_cuoi_ky'],
-                        'tien_cuoi_ky':rs['tien_cuoi_ky'],
+                        'tien_cuoi_ky':tien_cuoi_ky,
                         })
             self.total_dky += rs['dau_ky'] or 0.0
             self.total_nhan_ky += rs['nhan_trg_ky']or 0.0
             self.total_ban_ky += rs['ban_trg_ky'] or 0.0
             self.total_sai_ky += rs['sai_trg_ky'] or 0.0
             self.total_lh_cuoi += rs['luu_hanh_cuoi_ky'] or 0.0
-            self.total_tien_cuoi += rs['tien_cuoi_ky'] or 0.0
+            self.total_tien_cuoi += tien_cuoi_ky or 0.0
             self.total_ve_e += rs['e_trg_ky'] or 0.0
         return res
     
