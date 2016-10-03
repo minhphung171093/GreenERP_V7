@@ -724,41 +724,43 @@ class trathuong_thucte_new_line(osv.osv):
         'slan_4_16': 1,
     }
     def onchange_trungthuong(self, cr, uid, ids, product_id=False,slan_trung=False,loai=False,giai=False,ngay=False,sl_trung=False, context=None):
-        res = self.pool.get('tra.thuong.thucte.line').onchange_product(cr, uid, [], product_id,slan_trung,loai,giai,ngay,sl_trung, context)
-        vals = {}
-        if loai=='2_so':
-            if giai=='dau':
-                if res.get('value',{}) and res['value'].get('sl_trung',False):
-                    vals['sl_2_d'] = res['value']['sl_trung']
-            if giai=='cuoi':
-                if res.get('value',{}) and res['value'].get('sl_trung',False):
-                    vals['sl_2_c'] = res['value']['sl_trung']
-            if giai=='dau_cuoi':
-                if res.get('value',{}) and res['value'].get('sl_trung',False):
-                    vals['sl_2_dc'] = res['value']['sl_trung']
-            if giai=='18_lo':
-                if res.get('value',{}) and res['value'].get('sl_trung',False):
-                    vals['sl_2_18'] = res['value']['sl_trung']
-        if loai=='3_so':
-            if giai=='dau':
-                if res.get('value',{}) and res['value'].get('sl_trung',False):
-                    vals['sl_3_d'] = res['value']['sl_trung']
-            if giai=='cuoi':
-                if res.get('value',{}) and res['value'].get('sl_trung',False):
-                    vals['sl_3_c'] = res['value']['sl_trung']
-            if giai=='dau_cuoi':
-                if res.get('value',{}) and res['value'].get('sl_trung',False):
-                    vals['sl_3_dc'] = res['value']['sl_trung']
-            if giai=='7_lo':
-                if res.get('value',{}) and res['value'].get('sl_trung',False):
-                    vals['sl_3_7'] = res['value']['sl_trung']
-            if giai=='17_lo':
-                if res.get('value',{}) and res['value'].get('sl_trung',False):
-                    vals['sl_3_17'] = res['value']['sl_trung']
-        if loai=='4_so':
-            if giai=='16_lo':
-                if res.get('value',{}) and res['value'].get('sl_trung',False):
-                    vals['sl_4_16'] = res['value']['sl_trung']
-        return {'value': vals, 'warning': res.get('warning',{})}
+        if sl_trung:
+            res = self.pool.get('tra.thuong.thucte.line').onchange_product(cr, uid, [], product_id,slan_trung,loai,giai,ngay,sl_trung, context)
+            vals = {}
+            if loai=='2_so':
+                if giai=='dau':
+                    if res.get('value',{}) and res['value'].get('sl_trung',False):
+                        vals['sl_2_d'] = res['value']['sl_trung']
+                if giai=='cuoi':
+                    if res.get('value',{}) and res['value'].get('sl_trung',False):
+                        vals['sl_2_c'] = res['value']['sl_trung']
+                if giai=='dau_cuoi':
+                    if res.get('value',{}) and res['value'].get('sl_trung',False):
+                        vals['sl_2_dc'] = res['value']['sl_trung']
+                if giai=='18_lo':
+                    if res.get('value',{}) and res['value'].get('sl_trung',False):
+                        vals['sl_2_18'] = res['value']['sl_trung']
+            if loai=='3_so':
+                if giai=='dau':
+                    if res.get('value',{}) and res['value'].get('sl_trung',False):
+                        vals['sl_3_d'] = res['value']['sl_trung']
+                if giai=='cuoi':
+                    if res.get('value',{}) and res['value'].get('sl_trung',False):
+                        vals['sl_3_c'] = res['value']['sl_trung']
+                if giai=='dau_cuoi':
+                    if res.get('value',{}) and res['value'].get('sl_trung',False):
+                        vals['sl_3_dc'] = res['value']['sl_trung']
+                if giai=='7_lo':
+                    if res.get('value',{}) and res['value'].get('sl_trung',False):
+                        vals['sl_3_7'] = res['value']['sl_trung']
+                if giai=='17_lo':
+                    if res.get('value',{}) and res['value'].get('sl_trung',False):
+                        vals['sl_3_17'] = res['value']['sl_trung']
+            if loai=='4_so':
+                if giai=='16_lo':
+                    if res.get('value',{}) and res['value'].get('sl_trung',False):
+                        vals['sl_4_16'] = res['value']['sl_trung']
+            return {'value': vals, 'warning': res.get('warning',{})}
+        return {'value': {}}
     
 trathuong_thucte_new_line()
