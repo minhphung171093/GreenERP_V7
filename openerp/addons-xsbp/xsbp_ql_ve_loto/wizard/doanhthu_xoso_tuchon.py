@@ -30,7 +30,7 @@ class doanhthu_xoso_tuchon(osv.osv_memory):
         'date': time.strftime('%Y-%m-%d'),
         'cv_giamsat_1': 'TUN HĐ GIÁM SÁT',
         'cv_giamsat_2': 'TUN HĐ GIÁM SÁT',
-        'ctyxs_1': 'Trần Huy Hải',
+        'ctyxs_1': 'Nguyễn Đăng Khoa',
         'cv_ctyxs_1': 'Phó Giám Đốc Công ty',
         }
     

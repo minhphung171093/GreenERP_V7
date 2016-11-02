@@ -395,7 +395,7 @@ class ve_loto(osv.osv):
         'name': fields.char('Mã phiếu', size=128,required=False,states={'done':[('readonly',True)]}),
         'create_uid': fields.many2one('res.users','Người nhập',states={'done':[('readonly',True)]}),
         'create_date': fields.datetime('Ngày chỉnh sửa',readonly=True),
-        'daily_id': fields.many2one('res.partner','Đại lý',domain="[('dai_ly','=',True)]",required=True,states={'done':[('readonly',True)]}),
+        'daily_id': fields.many2one('res.partner','Đại lý',domain="[('dai_ly','=',True)]",required=True),
         'ngay': fields.date('Ngày xổ số',required=True,states={'done':[('readonly',True)]}),
         'so_chungtu': fields.char('Số chứng từ', size=128,required=False,states={'done':[('readonly',True)]}),
         'product_id': fields.many2one('product.product','Mệnh giá',domain="[('menh_gia','=',True)]",required=True,states={'done':[('readonly',True)]}),
