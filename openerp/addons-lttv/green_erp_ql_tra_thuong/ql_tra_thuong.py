@@ -502,6 +502,7 @@ tra_thuong_thucte_line()
 
 class trathuong_thucte_new(osv.osv):
     _name = "trathuong.thucte.new"
+    _order = "ngay_tra_thuong desc"
     
     def _get_tong(self, cr, uid, ids, field_name, arg, context=None):
         res = {}
