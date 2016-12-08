@@ -151,14 +151,14 @@ class work_summary(osv.osv_memory):
             task_type_id = task_type_obj.search(cr, uid, [('name','=','Checking')])
             task_obj.write(cr, uid, task_id, {'flag':True,'status_task': 'paused','checking_task': 'checking1','previous_assigned_to1':line.previous_assigned_to.id,'stage_id':task_type_id[0]})
         elif line.back_for_repair == True and line.checking_task=='checking1':
-            if project_task.previous_assigned_to1:
+            if project_task.user_id:
                 post_values = {
                 'subject': 'Error Task %s' %(project_task.name),
                 'body': '<p>%s</p>' % (line.send_message),
                 'partner_ids': [],
                 }
-                lead_email = project_task.previous_assigned_to1.email
-                msg_id = user_obj.message_post(cr, uid, [project_task.previous_assigned_to1.id], type='comment', subtype=False, context=context, **post_values)
+                lead_email = project_task.user_id.email
+                msg_id = user_obj.message_post(cr, uid, [project_task.user_id.id], type='comment', subtype=False, context=context, **post_values)
                 self.send_mail(cr, uid, ids, lead_email, msg_id, context)
             if line.error_ids:
                 for task in line.error_ids:
@@ -170,14 +170,14 @@ class work_summary(osv.osv_memory):
             task_type_id = task_type_obj.search(cr, uid, [('name','=','Drawing')])
             task_obj.write(cr, uid, task_id, {'flag':True,'status_task': 'paused','checking_task': 'none','previous_assigned_to1':[],'stage_id':task_type_id[0]})
         elif line.back_for_repair == True and line.checking_task=='checking2':
-            if project_task.previous_assigned_to2:
+            if project_task.previous_assigned_to1:
                 post_values = {
                 'subject': 'Error Task  %s' %(project_task.name),
                 'body': '<p>%s</p>' % (line.send_message),
                 'partner_ids': [],
                 }
-                lead_email = project_task.previous_assigned_to2.email
-                msg_id = user_obj.message_post(cr, uid, [project_task.previous_assigned_to2.id], type='comment', subtype=False, context=context, **post_values)
+                lead_email = project_task.previous_assigned_to1.email
+                msg_id = user_obj.message_post(cr, uid, [project_task.previous_assigned_to1.id], type='comment', subtype=False, context=context, **post_values)
                 self.send_mail(cr, uid, ids, lead_email, msg_id, context)
             if line.error_ids:
                 for task in line.error_ids:
