@@ -53,6 +53,7 @@ class message_send(osv.osv_memory):
         sale_order = sale_order_obj.browse(cr, uid, sale_order_id)
         project_name = sale_order.name[2:]
         task_description = sale_order.client_order_ref
+        user_id = False
         if sale_order.order_line:
             for line in sale_order.order_line:
                 if temp==0:
