@@ -5,9 +5,20 @@
 	     <menuitem name="BDF" id="menu_base_purchase" sequence="1"/>
          
          <menuitem
+         	name="BDF Report"
+         	id="menu_purchase_report"
+         	parent="menu_base_purchase" sequence="5"
+         	groups="group_bdf_admin"/>
+         	
+         	<menuitem action="action_pr_pending_report"
+         		name="PR Pending Report"
+         		id="menu_action_pr_pending_report" 
+         		parent="menu_purchase_report" sequence="10"/>
+         
+         <menuitem
          	name="BDF Config"
          	id="menu_purchase_config"
-         	parent="menu_base_purchase" sequence="2"
+         	parent="menu_base_purchase" sequence="10"
          	groups="group_bdf_admin"/>
          	
          	<menuitem action="action_view_bdf_channel_tree"

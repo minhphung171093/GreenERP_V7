@@ -52,6 +52,7 @@ class Parser(report_sxw.rml_parse):
     
     def get_line(self):
         bdf_ids = self.context.get('active_ids')
+        print self.context
         line_obj = self.pool.get('spending.detail')
         month_obj = self.pool.get('bdf.allocation.month')
         vals = []

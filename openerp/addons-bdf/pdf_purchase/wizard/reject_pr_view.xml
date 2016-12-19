@@ -8,7 +8,7 @@
 	        <field name="arch" type="xml">
 	            <form string="Approve" version="7.0">
 	            	<group>
-		                <field name="message"/>
+		                <field name="message" required='1'/>
 		                <field name="request_id" invisible='1'/>
 	                </group>
 	                <footer>

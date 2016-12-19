@@ -198,6 +198,9 @@
 		                	<field name="control_manager_id"/>
 		                	<field name="fi_function_head_id"/>
 		                	<field name="country_manager_id"/>
+		                	
+		                	<field name="total_procurement"/>
+		                	<field name="io_id"/>
 		                </group>
 		                <group invisible='1'>
 		                	<field name="request_by_id"/>
@@ -229,7 +232,7 @@
 		            		</field>
 		                </group>
 		                <group col='4' colspan='2'>
-		                    <field name="function" options="{'no_open': True,'create': false, 'create_edit': false}"/>
+		                    <field name="function" on_change="onchange_function(function)" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 		                    <field name="budget_owner" domain="[('function_ids','in',[function])]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 		                    <field name="channel" domain="[('function_ids','in',[function])]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 			            	<newline/>
@@ -240,7 +243,7 @@
 		                	<field name="purchasing_group_id" invisible='1' options="{'no_open': True,'create': false, 'create_edit': false}"/>
 			            </group>
 			            <group string="PROCUREMENT DETAIL">
-							<field name="procurement_detail_line" nolabel="1">
+							<field name="procurement_detail_line" nolabel="1" on_change="onchange_procurement_detail_line(procurement_detail_line)">
 								<tree editable="bottom">
 									<field name="product_id"/>
 									<field name="qty"/>
@@ -258,7 +261,7 @@
 			                </group>
 			                <group colspan='4'>
 			                	<div col='4' colspan='4' class='oe_green_erp_scroll'>
-									<field name="spending_detail_line" nolabel="1">
+									<field name="spending_detail_line" nolabel="1" context="{'default_io_id': io_id}">
 										<tree string="BUDGET DETAIL">
 											<field name="cat" domain="[('parent_id','=',False)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 											<field name="sub_cat" domain="[('parent_id','=',cat)]" options="{'no_open': True,'create': false, 'create_edit': false}"/>
@@ -269,7 +272,7 @@
 											<field name="price_unit"/>
 											<field name="amt" sum="Total"/>
 											<field name="io_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-											<field name="allocation_by_cat" sum="Total"/>
+											<field name="allocation" sum="Total"/>
 										</tree>
 										<form string="BUDGET DETAIL">
 											<sheet>
@@ -280,11 +283,12 @@
 													<newline/>
 													<field name="product_id" required="1" on_change="onchange_product(product_id)" options="{'no_open': True,'create': false, 'create_edit': false}"/>
 													<field name="account_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-													<field name="qty" required="1"/>
-													<field name="price_unit" required="1"/>
-													<field name="amt" sum="Total"/>
+													<field name="qty" required="1" on_change="onchange_qty_price_unit(parent.procurement_detail_line, qty, price_unit)"/>
+													<field name="price_unit" required="1" on_change="onchange_qty_price_unit(parent.procurement_detail_line, qty, price_unit)"/>
+													<field name="amt"/>
 													<field name="io_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
-													<field name="allocation_by_cat" sum="Total"/>
+													<field name="allocation" on_change="onchange_allocation(parent.procurement_detail_line, qty, allocation, allocation_le)"/>
+													<field name="allocation_le" invisible='1'/>
 												</group>
 												<!--<group string="allocation by CAT">
 													<field name="allocation_id" nolabel="1">
@@ -721,7 +725,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="context" eval="{'states': 'request'}"/>
-            <field name="domain">[('state','in',('purchase_request','functional_manager'))]</field>
+            <field name="domain">[('state','in',('purchase_request','functional_manager','reject'))]</field>
             <field name="search_view_id"/>
         </record>
         <record id="action_view_bdf_purchase_request1" model="ir.actions.act_window.view">
@@ -1229,6 +1233,7 @@
             <field name="arch" type="xml">
                 <tree string="Master Function" editable="top">
                 	<field name="name"/>
+                	<field name="io_id" options="{'no_open': True,'create': false, 'create_edit': false}"/>
                 </tree>
             </field>
         </record>
@@ -1569,7 +1574,7 @@
             </field>
         </record>
     	
-    	<record model="ir.values" id="pr_approve_multi">
+    	<!-- <record model="ir.values" id="pr_approve_multi">
             <field name="model_id" ref="model_bdf_purchase" />
             <field name="name">Approve</field>
             <field name="key2">client_action_multi</field>
@@ -1585,7 +1590,7 @@
             <field name="value" eval="'ir.actions.act_window,' + str(ref('action_pr_reject_multi'))" />
             <field name="key">action</field>
             <field name="model">bdf.purchase</field>
-        </record>
+        </record> -->
     	
     </data>
 </openerp>

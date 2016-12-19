@@ -72,7 +72,8 @@ class approve_pr(osv.osv_memory):
         approve_url = partner._get_signup_url_for_action_approve_pr_by_mail(action=action,view_type='form', res_id=bdf_purchase.id)[partner.id]
         reject_url = partner._get_signup_url_for_action_reject_pr_by_mail(action=action,view_type='form', res_id=bdf_purchase.id)[partner.id]
         text = _("""<p>Access this document <a href="%s">directly in OpenERP</a></p>""") % url
-        approve_text = _("""<p><a href="%s">APPROVE</a> \t <a href="%s">REJECT</a></p>""")%(approve_url,reject_url)
+#         approve_text = _("""<p><a href="%s">APPROVE</a> \t <a href="%s">REJECT</a></p>""")%(approve_url,reject_url)
+        approve_text = ''
 #         if bdf_purchase.state=='purchase_request':
 #             bdf_purchase_state = 'Purchase Request'
 #         elif bdf_purchase.state=='category_manager':

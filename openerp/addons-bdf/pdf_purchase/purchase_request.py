@@ -185,6 +185,8 @@ class spending_detail(osv.osv):
         'io_id':fields.many2one('bdf.io','IO'),
         'channel_name': fields.char('Channel Name', size=1024),
         'allocation_by_cat':fields.function(_compute_allocation_by_cat, string='Allocation (%)', type='float',digits=(16,2)),
+        'allocation':fields.float('Allocation (%)', digits=(16,2)),
+        'allocation_le':fields.float('Allocation (%)', digits=(16,2)),
         'col_1': fields.float('Col',digits=(16,0)),
         'col_2': fields.float('Col',digits=(16,0)),
         'col_3': fields.float('Col',digits=(16,0)),
@@ -209,6 +211,25 @@ class spending_detail(osv.osv):
                     'cat':prod_obj.cat_id.id,
                     'sub_cat':prod_obj.sub_cat_id.id,
              }
+        return {'value': res}
+    
+    def onchange_allocation(self, cr, uid, ids, procurement_detail_line, qty, allocation, allocation_le, context=None):
+        res = {}
+        if allocation != allocation_le:
+            value = self.pool.get('bdf.purchase').onchange_procurement_detail_line(cr, uid, [], procurement_detail_line, context)['value']
+            total_procurement = value.get('total_procurement', 0)
+            amt = total_procurement*allocation/100
+            price_unit = qty and amt/qty or amt
+            res = {'amt': round(amt), 'price_unit': round(price_unit),'allocation_le': allocation}
+        return {'value': res}
+    
+    def onchange_qty_price_unit(self, cr, uid, ids, procurement_detail_line, qty, price_unit, context=None):
+        value = self.pool.get('bdf.purchase').onchange_procurement_detail_line(cr, uid, [], procurement_detail_line, context)['value']
+        total_procurement = value.get('total_procurement', 0)
+        res = {}
+        amt = qty*price_unit
+        allocation = total_procurement and float(amt)/float(total_procurement)*100 or 0
+        res = {'amt': round(amt), 'allocation': round(allocation,2),'allocation_le': round(allocation,2)}
         return {'value': res}
     
 #     def fields_view_get(self, cr, uid, view_id=None, view_type='form', context=None, toolbar=False, submenu=False):
@@ -281,6 +302,7 @@ class  master_function_expense(osv.osv):
     
     _columns={
               'name':fields.char("Name",size=64,required=True),
+              'io_id':fields.many2one('bdf.io','IO'),
               }
     
 master_function_expense()
@@ -464,6 +486,15 @@ class bdf_purchase(osv.osv):
             res[order.id] = cat
         return res
     
+    def _compute_total_procurement(self, cr, uid, ids, name, args, context=None):
+        res={}
+        for order in self.browse(cr, uid, ids, context=context):
+            total = 0
+            for line in order.procurement_detail_line:
+                total += line.amt
+            res[order.id] = total
+        return res
+    
     _columns={
         'name': fields.char('Number', size=1024),
         'function':fields.many2one('master.function.expense','Function', required=True,
@@ -492,7 +523,7 @@ class bdf_purchase(osv.osv):
                                    ('pending','Pending'),
                                    ('full_approved','Full Approved'),
                                    ('reject','Rejected')], 'Status'),
-        'description':fields.char('Description',size=1024,states={'purchase_request': [('readonly', False)],'budget_control': [('readonly', False)],'reject': [('readonly', False)]},readonly=True),
+        'description':fields.char('Description', required=True,size=40,states={'purchase_request': [('readonly', False)],'budget_control': [('readonly', False)],'reject': [('readonly', False)]},readonly=True),
         'date_from':fields.date('From',states={'purchase_request': [('readonly', False)],'budget_control': [('readonly', False)],'reject': [('readonly', False)]},readonly=True),
         'date':fields.date('Date',readonly=True),
         'date_to':fields.date('To',states={'purchase_request': [('readonly', False)],'budget_control': [('readonly', False)],'reject': [('readonly', False)]},readonly=True),
@@ -542,6 +573,8 @@ class bdf_purchase(osv.osv):
         'amt':fields.function(_compute_amount, string='Amt (VND)',  multi='all',digits=(16,0)),
         'fx_currency':fields.function(_compute_amount, string='Amt FX Currency',  multi='all',digits=(16,0)),
         'cat':fields.function(_compute_cat, string='CAT',type='char'),
+        'total_procurement':fields.function(_compute_total_procurement, string='Total Procurement',type='float'),
+        'io_id':fields.many2one('bdf.io','IO'),
       }
     _defaults={
         'name': '/',
@@ -552,6 +585,29 @@ class bdf_purchase(osv.osv):
     def test(self,cr, uid, ids):
         print 'asds'
         return True
+    
+    def onchange_procurement_detail_line(self, cr, uid, ids, procurement_detail_line, context=None):
+        res = {}
+        total_procurement = 0
+        for line in procurement_detail_line:
+            if len(line)==3:
+                if line[0]==0:
+                    total_procurement += (line[2]['qty']*line[2]['price_unit'])
+                if line[0]==1:
+                    pro = self.pool.get('procurement.detail').browse(cr, uid, line[1])
+                    total_procurement += (line[2].get('qty', 0) or pro.qty*line[2].get('price_unit', 0) or pro.price_unit)
+                if line[0]==4:
+                    pro = self.pool.get('procurement.detail').browse(cr, uid, line[1])
+                    total_procurement += (pro.qty*pro.price_unit)
+        res = {'total_procurement': total_procurement}
+        return {'value': res}
+    
+    def onchange_function(self, cr, uid, ids, function, context=None):
+        res = {}
+        if function:
+            func = self.pool.get('master.function.expense').browse(cr, uid, function)
+            res = {'io_id': func.io_id and func.io_id.id or False}
+        return {'value': res}
     
     def approve_pr_by_mail(self, cr, uid, ids, context=None):
         if context is None:
@@ -748,13 +804,28 @@ class bdf_purchase(osv.osv):
         line_ids = line_obj.search(cr, uid, [('request_id','=',new_id),('is_done','=',False)],order='name')
         if line_ids:
             line_obj.write(cr, uid, [line_ids[0]],{'is_done':True})
+            
+        new = self.browse(cr, uid, new_id)
+        if new.total_procurement!=new.amt:
+            raise osv.except_osv(_('Warning!'), _('Amount of procurement detail must equal Amount of budget detail!'))
+            
         return new_id
     
     def write(self, cr, uid, ids, vals, context=None):
+        for line in self.browse(cr, uid, ids):
+            if 'state' in vals and line.state in ['purchase_request','reject']:
+                ir_attach_ids = self.pool.get('ir.attachment').search(cr, uid, [('res_model','=','bdf.purchase'),('res_id','=',line.id)])
+                if not ir_attach_ids:
+                    raise osv.except_osv(_('Warning!'), _('Please Attachment before submit!'))
         new_write = super(bdf_purchase,self).write(cr, uid, ids, vals, context)
         for line in self.browse(cr, uid, ids):
-            if 'state' in vals and vals['state'] not in ['cancel','reject'] and line.name=='/':
+#             if 'state' in vals and vals['state'] not in ['cancel','reject'] and line.name=='/':
+            if 'state' in vals and vals['state'] not in ['procurement'] and line.name=='/':
                 cr.execute('''update bdf_purchase set name=%s,date=%s where id = %s''',(self.pool.get('ir.sequence').get(cr, uid, 'bdf.purchase.request'),time.strftime('%Y-%m-%d'),line.id,))
+            
+            if line.total_procurement!=line.amt:
+                raise osv.except_osv(_('Warning!'), _('Amount of procurement detail must equal Amount of budget detail!'))
+            
         return new_write
     
     def unlink(self, cr, uid, ids, context=None):
