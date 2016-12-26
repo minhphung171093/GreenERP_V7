@@ -96,6 +96,7 @@ tra_thuong()
 
 class tra_thuong_line(osv.osv):
     _name = "tra.thuong.line"
+    _order = "ngay desc"
     
     def _get_gia_moilantrung(self, cr, uid, ids, field_name, arg, context=None):
         res = {}
