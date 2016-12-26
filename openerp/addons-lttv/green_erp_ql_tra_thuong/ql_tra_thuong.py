@@ -25,7 +25,7 @@ res_partner()
 
 class tra_thuong(osv.osv):
     _name = "tra.thuong"
-    
+    _order = "ngay desc"
     def _amount_tong(self, cr, uid, ids, field_name, arg, context=None):
         res = {}
         if context is None:
