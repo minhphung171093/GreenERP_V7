@@ -35,6 +35,10 @@ import time
 class stock_picking(osv.osv):
     _inherit = "stock.picking"
     
+    _columns = {
+        'ky_ve_id': fields.many2one('ky.ve','Kỳ vé', states={'done':[('readonly', True)], 'cancel':[('readonly',True)]}),
+    }
+    
     def write(self, cr, uid, ids, vals, context=None):
         if 'state' or 'date' in vals: 
             new_write = super(stock_picking, self).write(cr, uid,ids, vals, context)
@@ -76,6 +80,11 @@ stock_picking()
 
 class stock_picking_in(osv.osv):
     _inherit = "stock.picking.in"
+    
+    _columns = {
+        'ky_ve_id': fields.many2one('ky.ve','Kỳ vé', states={'done':[('readonly', True)], 'cancel':[('readonly',True)]}),
+    }
+    
     def write(self, cr, uid, ids, vals, context=None):
         if 'state' or 'date' in vals: 
             new_write = super(stock_picking_in, self).write(cr, uid,ids, vals, context)
@@ -117,6 +126,11 @@ stock_picking_in()
 
 class stock_picking_out(osv.osv):
     _inherit = "stock.picking.out"
+    
+    _columns = {
+        'ky_ve_id': fields.many2one('ky.ve','Kỳ vé', states={'done':[('readonly', True)], 'cancel':[('readonly',True)]}),
+    }
+    
     def write(self, cr, uid, ids, vals, context=None):
         if 'state' or 'date' in vals: 
             new_write = super(stock_picking_out, self).write(cr, uid,ids, vals, context)
@@ -171,6 +185,7 @@ class ve_e(osv.osv):
         'state': fields.selection([('new','Mới tạo'),('done','Đã nhận')],'Trạng thái'),
         'ngay': fields.date('Ngày nhận',states={'done':[('readonly',True)]}),
         've_e_line': fields.one2many('ve.e.line','ve_e_id','Line',states={'done':[('readonly',True)]}),
+        'ky_ve_id': fields.many2one('ky.ve','Kỳ vé',states={'done':[('readonly',True)]}),
     }
     
     _defaults = {

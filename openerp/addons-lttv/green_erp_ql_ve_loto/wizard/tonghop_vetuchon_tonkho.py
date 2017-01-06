@@ -23,6 +23,7 @@ class tonghop_vetuchon_tonkho(osv.osv_memory):
         'date': fields.date('Ngày'),
         'date_from': fields.date('Ngày Bắt đầu', required=True),
         'date_to': fields.date('Ngày kết thúc', required=True),
+        'ky_ve_id': fields.many2one('ky.ve','Kỳ vé'),
     }
     
     _defaults = {

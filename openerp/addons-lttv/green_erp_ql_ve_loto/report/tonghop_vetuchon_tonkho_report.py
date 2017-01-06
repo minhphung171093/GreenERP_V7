@@ -65,6 +65,7 @@ class Parser(report_sxw.rml_parse):
         menh_gia_ids = wizard_data['menh_gia_ids']
         date_from = wizard_data['date_from']
         date_to = wizard_data['date_to']
+        ky_ve_id = wizard_data['ky_ve_id']
         for line in menh_gia_ids:
             sql = '''
                     select pt.name as name,
@@ -81,20 +82,20 @@ class Parser(report_sxw.rml_parse):
                         case when sum(ky.cuoi_ky)>0 then sum(ky.cuoi_ky) else 0 end cuoi_ky,
                         case when sum(ky.cuoi_ky)>0 then sum(ky.cuoi_ky)*pt.list_price else 0 end tien_cuoi_ky
                     from
-                        (select product_id,(select case when sum(product_qty)>0 then sum(product_qty) else 0 end sl from stock_move where product_id = %s and state='done' and date(timezone('UTC',date)) < '%s' and picking_id in (select id from stock_picking where type='in')) dau_ky,
-                        (select case when sum(product_qty)>0 then sum(product_qty) else 0 end sl from stock_move where product_id = %s and date(timezone('UTC',date)) between '%s' and '%s' and state='done' and picking_id in (select id from stock_picking where type='in')) nhan_trong_ky,
-                        (select case when sum(product_qty)>0 then sum(product_qty) else 0 end sl from stock_move where product_id = %s and date(timezone('UTC',date)) between '%s' and '%s' and state='done' and picking_id in (select id from stock_picking where type='out')) xuat_trong_ky,
-                        (select case when sum(product_qty)>0 then sum(product_qty) else 0 end sl from stock_move where product_id = %s and state='done' and date(timezone('UTC',date)) <= '%s' and picking_id in (select id from stock_picking where type='in')) cuoi_ky
+                        (select product_id,(select case when sum(product_qty)>0 then sum(product_qty) else 0 end sl from stock_move where product_id = %s and state='done' and date(timezone('UTC',date)) < '%s' and picking_id in (select id from stock_picking where type='in' and ky_ve_id=%s)) dau_ky,
+                        (select case when sum(product_qty)>0 then sum(product_qty) else 0 end sl from stock_move where product_id = %s and date(timezone('UTC',date)) between '%s' and '%s' and state='done' and picking_id in (select id from stock_picking where type='in' and ky_ve_id=%s)) nhan_trong_ky,
+                        (select case when sum(product_qty)>0 then sum(product_qty) else 0 end sl from stock_move where product_id = %s and date(timezone('UTC',date)) between '%s' and '%s' and state='done' and picking_id in (select id from stock_picking where type='out' and ky_ve_id=%s)) xuat_trong_ky,
+                        (select case when sum(product_qty)>0 then sum(product_qty) else 0 end sl from stock_move where product_id = %s and state='done' and date(timezone('UTC',date)) <= '%s' and picking_id in (select id from stock_picking where type='in' and ky_ve_id=%s)) cuoi_ky
                             from stock_move where product_id = %s
                         union
-                        select product_id,(select case when sum(product_qty)>0 then sum(product_qty)*-1 else 0 end sl from stock_move where product_id = %s and state='done' and date(timezone('UTC',date)) < '%s' and picking_id in (select id from stock_picking where type='out')) dau_ky,
+                        select product_id,(select case when sum(product_qty)>0 then sum(product_qty)*-1 else 0 end sl from stock_move where product_id = %s and state='done' and date(timezone('UTC',date)) < '%s' and picking_id in (select id from stock_picking where type='out' and ky_ve_id=%s)) dau_ky,
                         0 as nhan_trong_ky,
                         0 as xuat_trong_ky,
-                        (select case when sum(product_qty)>0 then sum(product_qty)*-1 else 0 end sl from stock_move where product_id = %s and state='done' and date(timezone('UTC',date)) <= '%s' and picking_id in (select id from stock_picking where type='out')) cuoi_ky
+                        (select case when sum(product_qty)>0 then sum(product_qty)*-1 else 0 end sl from stock_move where product_id = %s and state='done' and date(timezone('UTC',date)) <= '%s' and picking_id in (select id from stock_picking where type='out' and ky_ve_id=%s)) cuoi_ky
                             from stock_move where product_id = %s) ky, product_product pp ,product_template pt
                     where pp.id = ky.product_id and pp.product_tmpl_id=pt.id and pp.id = %s
                     group by name,pt.list_price
-                    '''%(line,date_from,line,date_from,date_to,line,date_from,date_to,line,date_to,line,line,date_from,line,date_to,line,line)
+                    '''%(line,date_from,ky_ve_id[0],line,date_from,date_to,ky_ve_id[0],line,date_from,date_to,ky_ve_id[0],line,date_to,ky_ve_id[0],line,line,date_from,ky_ve_id[0],line,date_to,ky_ve_id[0],line,line)
             self.cr.execute(sql)
             rs = self.cr.dictfetchone()
             if rs:

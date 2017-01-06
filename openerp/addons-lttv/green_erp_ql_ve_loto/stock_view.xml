@@ -227,6 +227,7 @@
 	                            <field name="partner_id" on_change="onchange_partner_in(partner_id)" string="Supplier" domain="[('supplier','=',True)]" context="{'default_supplier':1,'default_customer':0}"/>
 	                            <field name="backorder_id" readonly="1" attrs="{'invisible': [('backorder_id','=',False)]}"/>
 	                            <field name="invoice_state" invisible='1' string="Invoice Control" groups="account.group_account_invoice"/>
+	                            <field name="ky_ve_id" required='1'/>
 	                        </group>
 	                        <group>
 	                            <field name="date"/>
@@ -507,6 +508,7 @@
 	                            <field name="partner_id" on_change="onchange_partner_in(partner_id)" string="Customer" domain="[('customer','=',True)]" />
 	                            <field name="backorder_id" readonly="1" attrs="{'invisible': [('backorder_id','=',False)]}"/>
 	                            <field name="invoice_state" invisible='1' string="Invoice Control" groups="account.group_account_invoice"/>
+	                            <field name="ky_ve_id" required='1'/>
 	                        </group>
 	                        <group>
 	                            <field name="date"/>
@@ -609,10 +611,9 @@
 	                </header>
 	                <sheet string="Vé ế">
 	                    <group>
-		                    <group>
-		                        <field name="name" required='1'/>
-		                        <field name="ngay" required='1'/>
-		                    </group>
+	                        <field name="name" required='1'/>
+	                        <field name="ngay" required='1'/>
+	                        <field name="ky_ve_id" required='1'/>
 	                    </group>
 	                    <notebook>
 	                    	<page string="Chi tiết trả vé ế">

@@ -33,6 +33,10 @@ from openerp import netsvc
 
 class sale_order(osv.osv):
     _inherit = 'sale.order'
+    
+    _columns = {
+        'ky_ve_id': fields.many2one('ky.ve','Kỳ vé',readonly=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)]}),
+    }
 
     def init(self, cr):
         ir_values = self.pool.get('ir.values')
@@ -125,6 +129,23 @@ class sale_order(osv.osv):
                         break
         order.write(val)
         return True
+    
+    def _prepare_order_picking(self, cr, uid, order, context=None):
+        pick_name = self.pool.get('ir.sequence').get(cr, uid, 'stock.picking.out')
+        return {
+            'name': pick_name,
+            'origin': order.name,
+            'date': self.date_to_datetime(cr, uid, order.date_order, context),
+            'type': 'out',
+            'state': 'auto',
+            'move_type': order.picking_policy,
+            'sale_id': order.id,
+            'partner_id': order.partner_shipping_id.id,
+            'note': order.note,
+            'invoice_state': (order.order_policy=='picking' and '2binvoiced') or 'none',
+            'company_id': order.company_id.id,
+            'ky_ve_id': order.ky_ve_id and order.ky_ve_id.id or False,
+        }
     
     def _prepare_order_line_move(self, cr, uid, order, line, picking_id, date_planned, context=None):
         location_id = order.shop_id.warehouse_id.lot_stock_id.id
