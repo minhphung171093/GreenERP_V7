@@ -54,6 +54,7 @@ class message_send(osv.osv_memory):
         project_name = sale_order.name[2:]
         task_description = sale_order.client_order_ref
         user_id = False
+        project_type_id = False
         if sale_order.order_line:
             for line in sale_order.order_line:
                 if temp==0:
@@ -67,6 +68,8 @@ class message_send(osv.osv_memory):
                 else: 
                     categ_id = project_category_id[0]
                 categ_ids.append(categ_id)
+        if not project_type_id:
+            raise osv.except_osv(_('Warning!'), _('Please config Project Type in Product master!'))
         project_id = project_obj.create(cr, uid, {'name':project_name,'privacy_visibility':'public','user_id':user_id,'project_type_id':project_type_id})
 #         project_id = max(project_obj.search(cr, uid, [('name','=',project_name)]))
         project_task_type_ids = self.pool.get('project.task.type').search(cr, uid, [('name','=','Estimation')])
