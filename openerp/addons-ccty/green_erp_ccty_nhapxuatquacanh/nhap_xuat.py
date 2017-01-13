@@ -604,10 +604,20 @@ nhap_xuat_canh_giasuc()
 
 class chan_nuoi(osv.osv):
     _inherit = "chan.nuoi"
+    
+    def _get_loai_id_rel(self, cr, uid, ids, name, arg, context=None):        
+        result = {}
+        for cn in self.browse(cr,uid,ids):
+            loai_id_rel = []
+            for lv in cn.nhap_dongvat_line:
+                if lv.loai_id and lv.loai_id.id not in loai_id_rel:
+                    loai_id_rel.append(lv.loai_id.id)
+            result[cn.id] = [(6,0,loai_id_rel)]
+        return result
+    
     _columns = {
          'nhap_dongvat_line': fields.one2many('nhap.xuat.canh.giasuc','chan_nuoi_id','Chi tiet'),
-         'loai_id_rel': fields.related('nhap_dongvat_line', 'loai_id', type="many2one", relation="loai.vat",
-                string="Loài"),
+         'loai_id_rel': fields.function(_get_loai_id_rel, type='many2many', relation="loai.vat", string='Loài'),
                 }
                 
 chan_nuoi()

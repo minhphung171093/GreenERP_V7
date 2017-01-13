@@ -371,7 +371,7 @@
             <field name="inherit_id" ref="green_erp_ccty_base.chan_nuoi_form"/>
             <field name="arch" type="xml">
             	<xpath expr="//field[@name='lng']" position="after">
-            		<field name="loai_id_rel"/>
+            		<field name="loai_id_rel" widget="many2many_tags"/>
             	</xpath>
             	<xpath expr="//page[@string='Thông tin khác']" position="after">
 					<page string = "Nhập động vật(hiện có)">
