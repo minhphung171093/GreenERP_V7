@@ -30,6 +30,13 @@
     "description": """
         This module provides the functionality to store multiple images for one record.
         All images store in server directory. so database size doesnot increase.
+        
+        in python
+        'multi_images': fields.text("Multi Images"),
+        
+        in xml
+        <field name="multi_images" widget="image_multi"/>
+        
     """,
     'update_xml': [
     ],
