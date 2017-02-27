@@ -131,8 +131,8 @@ class Parser(report_sxw.rml_parse):
         thanhtien = tongve*int(menhgia.list_price)
         return {
                 'sl_2': format(sl_2,',').split('.')[0].replace(',','.'),
-                'sl_3': format(sl_2,',').split('.')[0].replace(',','.'),
-                'sl_4': format(sl_2,',').split('.')[0].replace(',','.'),
+                'sl_3': format(sl_3,',').split('.')[0].replace(',','.'),
+                'sl_4': format(sl_4,',').split('.')[0].replace(',','.'),
                 'tong_ve': format(tongve,',').split('.')[0].replace(',','.'),
                 'thanhtien': format(thanhtien,',').split('.')[0].replace(',','.'),
                 'tong_sai_kythuat': format(tong_sai_kythuat,',').split('.')[0].replace(',','.'),
