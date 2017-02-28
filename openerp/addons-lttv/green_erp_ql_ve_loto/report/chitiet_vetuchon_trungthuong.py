@@ -107,8 +107,9 @@ class Parser(report_sxw.rml_parse):
         loto_line_obj = self.pool.get('ve.loto.line')
         daily_dk = ''
         if dl_ids:
-            dls = str(dl_ids).replace('[', '(')
-            dls = str(dl_ids).replace(']', ')')
+            dls = dl_ids
+            dls = str(dls).replace('[', '(')
+            dls = str(dls).replace(']', ')')
             daily_dk = '''
                 and daily_id in %s
             '''%(dls)
