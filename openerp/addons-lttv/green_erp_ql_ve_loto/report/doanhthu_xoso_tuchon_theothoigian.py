@@ -77,6 +77,9 @@ class Parser(report_sxw.rml_parse):
             select sl_2_d_trung,sl_2_d,sl_2_c_trung,sl_2_c,sl_2_dc_trung,sl_2_dc,sl_2_18_trung,sl_2_18,sl_3_d_trung,sl_3_d,sl_3_c_trung,sl_3_c,sl_3_dc_trung,sl_3_dc,
                     sl_3_7_trung,sl_3_7,sl_3_17_trung,sl_3_17,sl_4_16_trung,sl_4_16
              from ve_loto_line where ve_loto_id in (select id from ve_loto where (ngay between '%s' and '%s') and state = 'done' and product_id = %s)
+                 and (sl_2_d_trung!=0 or sl_2_c_trung!=0 or sl_2_dc_trung!=0 or sl_2_18_trung!=0
+                         or sl_3_d_trung!=0 or sl_3_c_trung!=0 or sl_3_dc_trung!=0 or sl_3_7_trung!=0 or sl_3_17_trung!=0
+                         or sl_4_16_trung!=0)
         '''%(date_from,date_to,menhgia.id)
         self.cr.execute(sql)
 #         ve_loto_obj = self.pool.get('ve.loto')
