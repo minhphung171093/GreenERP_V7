@@ -105,8 +105,27 @@ class Parser(report_sxw.rml_parse):
         date = wizard_data['date']
         ve_loto_obj = self.pool.get('ve.loto')
         loto_line_obj = self.pool.get('ve.loto.line')
-        ve_loto_ids = ve_loto_obj.search(self.cr, self.uid, [('ngay','=',date),('state','=','done'),('product_id','=',menhgia.id),('daily_id','in',dl_ids)])
-        loto_line_ids = loto_line_obj.search(self.cr, self.uid, [('ve_loto_id','in',ve_loto_ids)])
+        daily_dk = ''
+        if dl_ids:
+            dls = str(dl_ids).replace('[', '(')
+            dls = str(dl_ids).replace(']', ')')
+            daily_dk = '''
+                and daily_id in %s
+            '''%(dls)
+        sql = '''
+            select ltl.id as id
+                from ve_loto_line ltl
+                left join ve_loto lt on ltl.ve_loto_id=lt.id
+                
+                where lt.ngay='%s' and lt.state='done' and lt.product_id=%s %s
+                    and (ltl.sl_2_d_trung!=0 or ltl.sl_2_c_trung!=0 or ltl.sl_2_dc_trung!=0 or ltl.sl_2_18_trung!=0
+                         or ltl.sl_3_d_trung!=0 or ltl.sl_3_c_trung!=0 or ltl.sl_3_dc_trung!=0 or ltl.sl_3_7_trung!=0 or ltl.sl_3_17_trung!=0
+                         or ltl.sl_4_16_trung!=0)
+        '''%(date, menhgia.id,daily_dk)
+        self.cr.execute(sql)
+        loto_line_ids = [r[0] for r in self.cr.fetchall()]
+#         ve_loto_ids = ve_loto_obj.search(self.cr, self.uid, [('ngay','=',date),('state','=','done'),('product_id','=',menhgia.id),('daily_id','in',dl_ids)])
+#         loto_line_ids = loto_line_obj.search(self.cr, self.uid, [('ve_loto_id','in',ve_loto_ids)])
         gt_menhgia = int(menhgia.list_price)/10000
         for line in loto_line_obj.browse(self.cr, self.uid, loto_line_ids):
             # 2 so
