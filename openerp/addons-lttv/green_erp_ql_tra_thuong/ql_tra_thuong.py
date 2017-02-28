@@ -530,9 +530,23 @@ class trathuong_thucte_new(osv.osv):
         'ngay_tra_thuong': lambda *a: time.strftime('%Y-%m-%d'),
     }
     
+#     def write(self, cr, uid, ids, vals, context=None):
+#         new_write = super(trathuong_thucte_new, self).write(cr, uid, ids, vals, context)
+#         for line in self.browse(cr, uid, ids):
+#             if line.state!='done':
+#                 sql = '''
+#                     delete from tra_thuong_thucte where thucte_new_id=%s
+#                 '''%(line.id)
+#                 cr.execute(sql)
+#         return new_write
+    
     def bt_xacnhan_trathuong(self, cr, uid, ids, context=None):
         tttt_obj = self.pool.get('tra.thuong.thucte')
         for tt in self.browse(cr, uid, ids):
+            sql = '''
+                delete from tra_thuong_thucte where thucte_new_id = %s;
+            '''%(tt.id)
+            cr.execute(sql)
             for nmt in tt.tra_thuong_nmt_line:
                 for line in nmt.tra_thuong_line:
                     tra_thuong_line = []
