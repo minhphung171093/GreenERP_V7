@@ -55,7 +55,7 @@ class Parser(report_sxw.rml_parse):
         
     def get_date_from(self):
         wizard_data = self.localcontext['data']['form']
-        date = datetime.strptime(wizard_data['date_from'], DATE_FORMAT)
+        date = datetime.strptime(wizard_data['date'], DATE_FORMAT)
         return date.strftime('%d/%m/%Y')
     
     def get_date_to(self):
@@ -80,7 +80,7 @@ class Parser(report_sxw.rml_parse):
     
     def get_datas(self):
         wizard_data = self.localcontext['data']['form']
-        date_from = wizard_data['date_from']
+        date_from = wizard_data['date']
         date_to = wizard_data['date_to']
         sql = '''
             select lt.product_id as product_id, lt.daily_id as daily_id, pt.list_price as list_price, rp.parent_id as daily_cha_id,
