@@ -74,17 +74,17 @@ class Parser(report_sxw.rml_parse):
                 sum(COALESCE(ltl.sl_2_d,0)) as sl_2_d, sum(COALESCE(ltl.sl_2_c,0)) as sl_2_c, sum(COALESCE(ltl.sl_2_dc,0)) as sl_2_dc,
                 sum(COALESCE(ltl.sl_2_18,0)) as sl_2_18, sum(COALESCE(ltl.sl_3_d,0)) as sl_3_d, sum(COALESCE(ltl.sl_3_c,0)) as sl_3_c,
                 sum(COALESCE(ltl.sl_3_dc,0)) as sl_3_dc, sum(COALESCE(ltl.sl_3_7,0)) as sl_3_7, sum(COALESCE(ltl.sl_3_17,0)) as sl_3_17,
-                sum(COALESCE(ltl.sl_4_16,0)) as sl_4_16, sum(COALESCE(lt.tong_sai_kythuat,0)) as tong_sai_kythuat
+                sum(COALESCE(ltl.sl_4_16,0)) as sl_4_16, COALESCE(lt.tong_sai_kythuat,0) as tong_sai_kythuat
                 
-                from ve_loto_line ltl
-                left join ve_loto lt on ltl.ve_loto_id=lt.id
+                from ve_loto lt
+                left join ve_loto_line ltl on ltl.ve_loto_id=lt.id
                 left join product_product pp on lt.product_id=pp.id
                 left join product_template pt on pp.product_tmpl_id=pt.id
                 left join res_partner rp on lt.daily_id=rp.id
                 
                 where lt.state='done' and lt.ngay='%s'
                 
-                group by lt.product_id, lt.daily_id, pt.list_price, rp.parent_id
+                group by lt.product_id, lt.daily_id, pt.list_price, rp.parent_id,lt.id,lt.tong_sai_kythuat
         '''%(date)
         self.cr.execute(sql)
         for line in self.cr.dictfetchall():
