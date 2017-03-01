@@ -349,7 +349,14 @@ class Parser(report_sxw.rml_parse):
 #                 }
         
     def get_line_tong_all(self):
-        return self.data_tong_all_dict
+        return {
+                'sl_2': format(self.data_tong_all_dict['sl_2'],',').split('.')[0].replace(',','.'),
+                'sl_3': format(self.data_tong_all_dict['sl_3'],',').split('.')[0].replace(',','.'),
+                'sl_4': format(self.data_tong_all_dict['sl_4'],',').split('.')[0].replace(',','.'),
+                'tong_ve': format(self.data_tong_all_dict['tongve'],',').split('.')[0].replace(',','.'),
+                'thanhtien': format(self.data_tong_all_dict['thanhtien'],',').split('.')[0].replace(',','.'),
+                'tong_sai_kythuat': format(self.data_tong_all_dict['tong_sai_kythuat'],',').split('.')[0].replace(',','.'),
+                }
     
 #     def get_line_tong_all(self):
 #         wizard_data = self.localcontext['data']['form']
