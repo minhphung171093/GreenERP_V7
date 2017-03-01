@@ -226,20 +226,21 @@ class Parser(report_sxw.rml_parse):
         thanhtien = 0
         tong_sai_kythuat = 0
         if self.data_dict.get(dlcha.id, False):
-            res = self.data_dict[dlcha.id]
-            sluong_2 = res['sl_2']
-            sluong_3 = res['sl_3']
-            sluong_4 = res['sl_4']
-            tongve = res['tong_ve']
-            thanhtien = res['thanhtien']
-            tong_sai_kythuat = res['tong_sai_kythuat']
-            if self.data_tong_dict.get(dlcha.id, False):
-                self.data_tong_all_dict['sl_2'] += sluong_2
-                self.data_tong_all_dict['sl_3'] += sluong_3
-                self.data_tong_all_dict['sl_4'] += sluong_4
-                self.data_tong_all_dict['tong_ve'] += tongve
-                self.data_tong_all_dict['thanhtien'] += thanhtien
-                self.data_tong_all_dict['tong_sai_kythuat'] += tong_sai_kythuat
+            product_data = self.data_dict[dlcha.id]
+            for key, res in product_data.iteritems():
+                sluong_2 = res['sl_2']
+                sluong_3 = res['sl_3']
+                sluong_4 = res['sl_4']
+                tongve = res['tong_ve']
+                thanhtien = res['thanhtien']
+                tong_sai_kythuat = res['tong_sai_kythuat']
+                if self.data_tong_dict.get(dlcha.id, False):
+                    self.data_tong_all_dict['sl_2'] += sluong_2
+                    self.data_tong_all_dict['sl_3'] += sluong_3
+                    self.data_tong_all_dict['sl_4'] += sluong_4
+                    self.data_tong_all_dict['tong_ve'] += tongve
+                    self.data_tong_all_dict['thanhtien'] += thanhtien
+                    self.data_tong_all_dict['tong_sai_kythuat'] += tong_sai_kythuat
         self.data_tong = {
             'sl_2': format(sluong_2,',').split('.')[0].replace(',','.'),
             'sl_3': format(sluong_3,',').split('.')[0].replace(',','.'),
