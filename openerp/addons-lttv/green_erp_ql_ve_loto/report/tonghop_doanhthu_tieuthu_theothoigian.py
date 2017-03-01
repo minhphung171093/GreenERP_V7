@@ -39,7 +39,8 @@ class Parser(report_sxw.rml_parse):
             'tong_sai_kythuat': 0,
         }
         self.localcontext.update({
-            'get_date':self.get_date,
+            'get_date_from':self.get_date_from,
+            'get_date_to':self.get_date_to,
             'get_dai_ly':self.get_dai_ly,
             'get_menh_gia':self.get_menh_gia,
             'get_line':self.get_line,
