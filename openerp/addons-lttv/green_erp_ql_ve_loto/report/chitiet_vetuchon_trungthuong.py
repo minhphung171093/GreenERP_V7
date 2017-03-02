@@ -48,6 +48,7 @@ class Parser(report_sxw.rml_parse):
     def get_dai_ly_cha(self):
         wizard_data = self.localcontext['data']['form']
         dai_ly_ids = wizard_data['dai_ly_ids']
+        self.get_datas()
         return self.pool.get('res.partner').browse(self.cr, self.uid, dai_ly_ids)
     
     def get_menh_gia(self):
@@ -67,7 +68,10 @@ class Parser(report_sxw.rml_parse):
         
         sql = '''
             select ltl.id as id, pt.list_price as list_price,rp.parent_id as daily_cha_id, lt.product_id as menhgia_id,
-                lt.sophieu as so_phieu,
+                lt.sophieu as so_phieu, rp.name as daily_name,
+                ltl.so_dt_2_d as so_dt_2_d, ltl.so_dt_2_c as so_dt_2_c, ltl.so_dt_2_dc as so_dt_2_dc, ltl.so_dt_2_18 as so_dt_2_18,
+                ltl.so_dt_3_d as so_dt_3_d, ltl.so_dt_3_c as so_dt_3_c, ltl.so_dt_3_dc as so_dt_3_dc,ltl.so_dt_3_7 as so_dt_3_7,
+                ltl.so_dt_3_17 as so_dt_3_17, ltl.so_dt_4_16 as so_dt_4_16,
                 COALESCE(ltl.sl_2_d,0) as sl_2_d, COALESCE(ltl.sl_2_c,0) as sl_2_c, COALESCE(ltl.sl_2_dc,0) as sl_2_dc,
                 COALESCE(ltl.sl_2_18,0) as sl_2_18, COALESCE(ltl.sl_3_d,0) as sl_3_d, COALESCE(ltl.sl_3_c,0) as sl_3_c,
                 COALESCE(ltl.sl_3_dc,0) as sl_3_dc, COALESCE(ltl.sl_3_7,0) as sl_3_7, COALESCE(ltl.sl_3_17,0) as sl_3_17,
@@ -91,6 +95,48 @@ class Parser(report_sxw.rml_parse):
         '''%(date,menh_gia_ids,dai_ly_ids)
         self.cr.execute(sql)
         for line in self.cr.dictfetchall():
+            gt_menhgia = int(line['list_price'])/10000
+            # 2 so
+            tong_sl_2_d = 0
+            tong_tien_2_d = 0
+            tong_sl_2_c = 0
+            tong_tien_2_c = 0
+            tong_sl_2_dc = 0
+            tong_tien_2_dc = 0
+            tong_sl_2_18 = 0
+            tong_tien_2_18 = 0
+            
+            tong_sl_2 = 0
+            tong_tien_2 = 0
+            
+            # 3 so
+            tong_sl_3_d = 0
+            tong_tien_3_d = 0
+            tong_sl_3_c = 0
+            tong_tien_3_c = 0
+            tong_sl_3_dc = 0
+            tong_tien_3_dc = 0
+            tong_sl_3_7 = 0
+            tong_tien_3_7 = 0
+            tong_sl_3_17 = 0
+            tong_tien_3_17 = 0
+            
+            tong_sl_3 = 0
+            tong_tien_3 = 0
+            #4 so
+            tong_sl_4_16 = 0
+            tong_tien_4_16 = 0
+            
+            tong_sl_4 = 0
+            tong_tien_4 = 0
+            
+            # tong cong
+            tong_slan_trung = 0
+            tong_sluong_trung = 0
+            tong_thanhtien = 0
+            res = {
+                'line': [],
+            }
             # 2 so
             if line['sl_2_d_trung']:
                 slan_trung = line['sl_2_d_trung']
@@ -120,13 +166,13 @@ class Parser(report_sxw.rml_parse):
                     'so_dt_4_16': '',
                     'slan_trung': slan_trung,
                     'sluong_trung': sluong_trung,
-                    'so_phieu': line.ve_loto_id.sophieu,
-                    'dai_ly': line.ve_loto_id.daily_id.name,
+                    'so_phieu': line['so_phieu'],
+                    'dai_ly': line['daily_name'],
                     'thanhtien': format(thanhtien, ',').split('.')[0].replace(',','.'),
                     })
-            if line.sl_2_c_trung:
-                slan_trung = line.sl_2_c_trung
-                sluong_trung = line.sl_2_c
+            if line['sl_2_c_trung']:
+                slan_trung = line['sl_2_c_trung']
+                sluong_trung = line['sl_2_c']
                 thanhtien = slan_trung*sluong_trung*(700000*gt_menhgia)
                 
                 tong_sl_2_c += slan_trung*sluong_trung
@@ -141,7 +187,7 @@ class Parser(report_sxw.rml_parse):
                 
                 res['line'].append({
                     'so_dt_2_d': '',
-                    'so_dt_2_c': line.so_dt_2_c,
+                    'so_dt_2_c': line['so_dt_2_c'],
                     'so_dt_2_dc': '',
                     'so_dt_2_18': '',
                     'so_dt_3_d': '',
@@ -152,13 +198,13 @@ class Parser(report_sxw.rml_parse):
                     'so_dt_4_16': '',
                     'slan_trung': slan_trung,
                     'sluong_trung': sluong_trung,
-                    'so_phieu': line.ve_loto_id.sophieu,
-                    'dai_ly': line.ve_loto_id.daily_id.name,
+                    'so_phieu': line['so_phieu'],
+                    'dai_ly': line['daily_name'],
                     'thanhtien': format(thanhtien, ',').split('.')[0].replace(',','.'),
                     })
-            if line.sl_2_dc_trung:
-                slan_trung = line.sl_2_dc_trung
-                sluong_trung = line.sl_2_dc
+            if line['sl_2_dc_trung']:
+                slan_trung = line['sl_2_dc_trung']
+                sluong_trung = line['sl_2_dc']
                 thanhtien = slan_trung*sluong_trung*(350000*gt_menhgia)
                 
                 tong_sl_2_dc += slan_trung*sluong_trung
@@ -174,7 +220,7 @@ class Parser(report_sxw.rml_parse):
                 res['line'].append({
                     'so_dt_2_d': '',
                     'so_dt_2_c': '',
-                    'so_dt_2_dc': line.so_dt_2_dc,
+                    'so_dt_2_dc': line['so_dt_2_dc'],
                     'so_dt_2_18': '',
                     'so_dt_3_d': '',
                     'so_dt_3_c': '',
@@ -184,13 +230,13 @@ class Parser(report_sxw.rml_parse):
                     'so_dt_4_16': '',
                     'slan_trung': slan_trung,
                     'sluong_trung': sluong_trung,
-                    'so_phieu': line.ve_loto_id.sophieu,
-                    'dai_ly': line.ve_loto_id.daily_id.name,
+                    'so_phieu': line['so_phieu'],
+                    'dai_ly': line['daily_name'],
                     'thanhtien': format(thanhtien, ',').split('.')[0].replace(',','.'),
                     })
-            if line.sl_2_18_trung:
-                slan_trung = line.sl_2_18_trung
-                sluong_trung = line.sl_2_18
+            if line['sl_2_18_trung']:
+                slan_trung = line['sl_2_18_trung']
+                sluong_trung = line['sl_2_18']
                 thanhtien = slan_trung*sluong_trung*(39000*gt_menhgia)
                 
                 tong_sl_2_18 += slan_trung*sluong_trung
@@ -207,7 +253,7 @@ class Parser(report_sxw.rml_parse):
                     'so_dt_2_d': '',
                     'so_dt_2_c': '',
                     'so_dt_2_dc': '',
-                    'so_dt_2_18': line.so_dt_2_18,
+                    'so_dt_2_18': line['so_dt_2_18'],
                     'so_dt_3_d': '',
                     'so_dt_3_c': '',
                     'so_dt_3_dc': '',
@@ -216,14 +262,14 @@ class Parser(report_sxw.rml_parse):
                     'so_dt_4_16': '',
                     'slan_trung': slan_trung,
                     'sluong_trung': sluong_trung,
-                    'so_phieu': line.ve_loto_id.sophieu,
-                    'dai_ly': line.ve_loto_id.daily_id.name,
+                    'so_phieu': line['so_phieu'],
+                    'dai_ly': line['daily_name'],
                     'thanhtien': format(thanhtien, ',').split('.')[0].replace(',','.'),
                     })
             # 3 so
-            if line.sl_3_d_trung:
-                slan_trung = line.sl_3_d_trung
-                sluong_trung = line.sl_3_d
+            if line['sl_3_d_trung']:
+                slan_trung = line['sl_3_d_trung']
+                sluong_trung = line['sl_3_d']
                 thanhtien = slan_trung*sluong_trung*(5000000*gt_menhgia)
                 
                 tong_sl_3_d += slan_trung*sluong_trung
@@ -241,7 +287,7 @@ class Parser(report_sxw.rml_parse):
                     'so_dt_2_c': '',
                     'so_dt_2_dc': '',
                     'so_dt_2_18': '',
-                    'so_dt_3_d': line.so_dt_3_d,
+                    'so_dt_3_d': line['so_dt_3_d'],
                     'so_dt_3_c': '',
                     'so_dt_3_dc': '',
                     'so_dt_3_7': '',
@@ -249,13 +295,13 @@ class Parser(report_sxw.rml_parse):
                     'so_dt_4_16': '',
                     'slan_trung': slan_trung,
                     'sluong_trung': sluong_trung,
-                    'so_phieu': line.ve_loto_id.sophieu,
-                    'dai_ly': line.ve_loto_id.daily_id.name,
+                    'so_phieu': line['so_phieu'],
+                    'dai_ly': line['daily_name'],
                     'thanhtien': format(thanhtien, ',').split('.')[0].replace(',','.'),
                     })
-            if line.sl_3_c_trung:
-                slan_trung = line.sl_3_c_trung
-                sluong_trung = line.sl_3_c
+            if line['sl_3_c_trung']:
+                slan_trung = line['sl_3_c_trung']
+                sluong_trung = line['sl_3_c']
                 thanhtien = slan_trung*sluong_trung*(5000000*gt_menhgia)
                 
                 tong_sl_3_c += slan_trung*sluong_trung
@@ -274,20 +320,20 @@ class Parser(report_sxw.rml_parse):
                     'so_dt_2_dc': '',
                     'so_dt_2_18': '',
                     'so_dt_3_d': '',
-                    'so_dt_3_c': line.so_dt_3_c,
+                    'so_dt_3_c': line['so_dt_3_c'],
                     'so_dt_3_dc': '',
                     'so_dt_3_7': '',
                     'so_dt_3_17': '',
                     'so_dt_4_16': '',
                     'slan_trung': slan_trung,
                     'sluong_trung': sluong_trung,
-                    'so_phieu': line.ve_loto_id.sophieu,
-                    'dai_ly': line.ve_loto_id.daily_id.name,
+                    'so_phieu': line['so_phieu'],
+                    'dai_ly': line['daily_name'],
                     'thanhtien': format(thanhtien, ',').split('.')[0].replace(',','.'),
                     })
-            if line.sl_3_dc_trung:
-                slan_trung = line.sl_3_dc_trung
-                sluong_trung = line.sl_3_dc
+            if line['sl_3_dc_trung']:
+                slan_trung = line['sl_3_dc_trung']
+                sluong_trung = line['sl_3_dc']
                 thanhtien = slan_trung*sluong_trung*(2500000*gt_menhgia)
                 
                 tong_sl_3_dc += slan_trung*sluong_trung
@@ -307,19 +353,19 @@ class Parser(report_sxw.rml_parse):
                     'so_dt_2_18': '',
                     'so_dt_3_d': '',
                     'so_dt_3_c': '',
-                    'so_dt_3_dc': line.so_dt_3_dc,
+                    'so_dt_3_dc': line['so_dt_3_dc'],
                     'so_dt_3_7': '',
                     'so_dt_3_17': '',
                     'so_dt_4_16': '',
                     'slan_trung': slan_trung,
                     'sluong_trung': sluong_trung,
-                    'so_phieu': line.ve_loto_id.sophieu,
-                    'dai_ly': line.ve_loto_id.daily_id.name,
+                    'so_phieu': line['so_phieu'],
+                    'dai_ly': line['daily_name'],
                     'thanhtien': format(thanhtien, ',').split('.')[0].replace(',','.'),
                     })
-            if line.sl_3_7_trung:
-                slan_trung = line.sl_3_7_trung
-                sluong_trung = line.sl_3_7
+            if line['sl_3_7_trung']:
+                slan_trung = line['sl_3_7_trung']
+                sluong_trung = line['sl_3_7']
                 thanhtien = slan_trung*sluong_trung*(715000*gt_menhgia)
                 
                 tong_sl_3_7 += slan_trung*sluong_trung
@@ -340,18 +386,18 @@ class Parser(report_sxw.rml_parse):
                     'so_dt_3_d': '',
                     'so_dt_3_c': '',
                     'so_dt_3_dc': '',
-                    'so_dt_3_7': line.so_dt_3_7,
+                    'so_dt_3_7': line['so_dt_3_7'],
                     'so_dt_3_17': '',
                     'so_dt_4_16': '',
                     'slan_trung': slan_trung,
                     'sluong_trung': sluong_trung,
-                    'so_phieu': line.ve_loto_id.sophieu,
-                    'dai_ly': line.ve_loto_id.daily_id.name,
+                    'so_phieu': line['so_phieu'],
+                    'dai_ly': line['daily_name'],
                     'thanhtien': format(thanhtien, ',').split('.')[0].replace(',','.'),
                     })
-            if line.sl_3_17_trung:
-                slan_trung = line.sl_3_17_trung
-                sluong_trung = line.sl_3_17
+            if line['sl_3_17_trung']:
+                slan_trung = line['sl_3_17_trung']
+                sluong_trung = line['sl_3_17']
                 thanhtien = slan_trung*sluong_trung*(295000*gt_menhgia)
                 
                 tong_sl_3_17 += slan_trung*sluong_trung
@@ -373,19 +419,19 @@ class Parser(report_sxw.rml_parse):
                     'so_dt_3_c': '',
                     'so_dt_3_dc': '',
                     'so_dt_3_7': '',
-                    'so_dt_3_17': line.so_dt_3_17,
+                    'so_dt_3_17': line['so_dt_3_17'],
                     'so_dt_4_16': '',
                     'slan_trung': slan_trung,
                     'sluong_trung': sluong_trung,
-                    'so_phieu': line.ve_loto_id.sophieu,
-                    'dai_ly': line.ve_loto_id.daily_id.name,
+                    'so_phieu': line['so_phieu'],
+                    'dai_ly': line['daily_name'],
                     'thanhtien': format(thanhtien, ',').split('.')[0].replace(',','.'),
                     })
             
             # 4 so
-            if line.sl_4_16_trung:
-                slan_trung = line.sl_4_16_trung
-                sluong_trung = line.sl_4_16
+            if line['sl_4_16_trung']:
+                slan_trung = line['sl_4_16_trung']
+                sluong_trung = line['sl_4_16']
                 thanhtien = slan_trung*sluong_trung*(2000000*gt_menhgia)
                 
                 tong_sl_4_16 += slan_trung*sluong_trung
@@ -408,26 +454,135 @@ class Parser(report_sxw.rml_parse):
                     'so_dt_3_dc': '',
                     'so_dt_3_7': '',
                     'so_dt_3_17': '',
-                    'so_dt_4_16': line.so_dt_4_16,
+                    'so_dt_4_16': line['so_dt_4_16'],
                     'slan_trung': slan_trung,
                     'sluong_trung': sluong_trung,
-                    'so_phieu': line.ve_loto_id.sophieu,
-                    'dai_ly': line.ve_loto_id.daily_id.name,
+                    'so_phieu': line['so_phieu'],
+                    'dai_ly': line['daily_name'],
                     'thanhtien': format(thanhtien, ',').split('.')[0].replace(',','.'),
                     })
             
+            res['tong'] = {
+                'tong_sl_2_d': tong_sl_2_d,
+                'tong_tien_2_d': tong_tien_2_d,
+                'tong_sl_2_c': tong_sl_2_c,
+                'tong_tien_2_c': tong_tien_2_c,
+                'tong_sl_2_dc': tong_sl_2_dc,
+                'tong_tien_2_dc': tong_tien_2_dc,
+                'tong_sl_2_18': tong_sl_2_18,
+                'tong_tien_2_18': tong_tien_2_18,
+                'tong_sl_2': tong_sl_2,
+                'tong_tien_2': tong_tien_2,
+                'tong_sl_3_d': tong_sl_3_d,
+                'tong_tien_3_d': tong_tien_3_d,
+                'tong_sl_3_c': tong_sl_3_c,
+                'tong_tien_3_c': tong_tien_3_c,
+                'tong_sl_3_dc': tong_sl_3_dc,
+                'tong_tien_3_dc': tong_tien_3_dc,
+                'tong_sl_3_7': tong_sl_3_7,
+                'tong_tien_3_7': tong_tien_3_7,
+                'tong_sl_3_17': tong_sl_3_17,
+                'tong_tien_3_17': tong_tien_3_17,
+                'tong_sl_3': tong_sl_3,
+                'tong_tien_3': tong_tien_3,
+                'tong_sl_4_16': tong_sl_4_16,
+                'tong_tien_4_16': tong_tien_4_16,
+                'tong_sl_4': tong_sl_4,
+                'tong_tien_4': tong_tien_4,
+                'tong_slan_trung': tong_slan_trung,
+                'tong_sluong_trung': tong_sluong_trung,
+                'tong_thanhtien': tong_thanhtien,
+            }
+            
             if self.data_dict.get(line['daily_cha_id'], False):
-                s
+                if self.data_dict[line['daily_cha_id']].get(line['menhgia_id'], False):
+                    self.data_dict[line['daily_cha_id']][line['menhgia_id']]['line'] += res['line']
+                    
+                    self.data_dict[line['daily_cha_id']][line['menhgia_id']]['tong']['tong_sl_2_d'] += tong_sl_2_d
+                    self.data_dict[line['daily_cha_id']][line['menhgia_id']]['tong']['tong_tien_2_d'] += tong_tien_2_d
+                    self.data_dict[line['daily_cha_id']][line['menhgia_id']]['tong']['tong_sl_2_c'] += tong_sl_2_c
+                    self.data_dict[line['daily_cha_id']][line['menhgia_id']]['tong']['tong_tien_2_c'] += tong_tien_2_c
+                    self.data_dict[line['daily_cha_id']][line['menhgia_id']]['tong']['tong_sl_2_dc'] += tong_sl_2_dc
+                    self.data_dict[line['daily_cha_id']][line['menhgia_id']]['tong']['tong_tien_2_dc'] += tong_tien_2_dc
+                    self.data_dict[line['daily_cha_id']][line['menhgia_id']]['tong']['tong_sl_2_18'] += tong_sl_2_18
+                    self.data_dict[line['daily_cha_id']][line['menhgia_id']]['tong']['tong_tien_2_18'] += tong_tien_2_18
+                    self.data_dict[line['daily_cha_id']][line['menhgia_id']]['tong']['tong_sl_2'] += tong_sl_2
+                    self.data_dict[line['daily_cha_id']][line['menhgia_id']]['tong']['tong_tien_2'] += tong_tien_2
+                    
+                    self.data_dict[line['daily_cha_id']][line['menhgia_id']]['tong']['tong_sl_3_d'] += tong_sl_3_d
+                    self.data_dict[line['daily_cha_id']][line['menhgia_id']]['tong']['tong_tien_3_d'] += tong_tien_3_d
+                    self.data_dict[line['daily_cha_id']][line['menhgia_id']]['tong']['tong_sl_3_c'] += tong_sl_3_c
+                    self.data_dict[line['daily_cha_id']][line['menhgia_id']]['tong']['tong_tien_3_c'] += tong_tien_3_c
+                    self.data_dict[line['daily_cha_id']][line['menhgia_id']]['tong']['tong_sl_3_dc'] += tong_sl_3_dc
+                    self.data_dict[line['daily_cha_id']][line['menhgia_id']]['tong']['tong_tien_3_dc'] += tong_tien_3_dc
+                    self.data_dict[line['daily_cha_id']][line['menhgia_id']]['tong']['tong_sl_3_7'] += tong_sl_3_7
+                    self.data_dict[line['daily_cha_id']][line['menhgia_id']]['tong']['tong_tien_3_7'] += tong_tien_3_7
+                    self.data_dict[line['daily_cha_id']][line['menhgia_id']]['tong']['tong_sl_3_17'] += tong_sl_3_17
+                    self.data_dict[line['daily_cha_id']][line['menhgia_id']]['tong']['tong_tien_3_17'] += tong_tien_3_17
+                    self.data_dict[line['daily_cha_id']][line['menhgia_id']]['tong']['tong_sl_3'] += tong_sl_3
+                    self.data_dict[line['daily_cha_id']][line['menhgia_id']]['tong']['tong_tien_3'] += tong_tien_3
+                    
+                    self.data_dict[line['daily_cha_id']][line['menhgia_id']]['tong']['tong_sl_4_16'] += tong_sl_4_16
+                    self.data_dict[line['daily_cha_id']][line['menhgia_id']]['tong']['tong_tien_4_16'] += tong_tien_4_16
+                    self.data_dict[line['daily_cha_id']][line['menhgia_id']]['tong']['tong_sl_4'] += tong_sl_4
+                    self.data_dict[line['daily_cha_id']][line['menhgia_id']]['tong']['tong_tien_4'] += tong_tien_4
+                    
+                    self.data_dict[line['daily_cha_id']][line['menhgia_id']]['tong']['tong_slan_trung'] += tong_slan_trung
+                    self.data_dict[line['daily_cha_id']][line['menhgia_id']]['tong']['tong_sluong_trung'] += tong_sluong_trung
+                    self.data_dict[line['daily_cha_id']][line['menhgia_id']]['tong']['tong_thanhtien'] += tong_thanhtien
+                    
+                else:
+                    self.data_dict[line['daily_cha_id']][line['menhgia_id']] = res
             else:
                 self.data_dict[line['daily_cha_id']]={
-                        line['menhgia_id']: {
-                            'line': [],
-                            'tong': {}
-                        }
+                        line['menhgia_id']: res
                     }
         return True
     
     def get_chitiet(self,dlcha,menhgia):
+        if self.data_dict.get(dlcha.id, False):
+            if self.data_dict[dlcha.id].get(menhgia.id, False):
+                chitiets = self.data_dict[dlcha.id][menhgia.id]
+                lines = sorted(chitiets['line'], key=lambda x: (x['so_phieu']))
+                return {
+                    'line': lines,
+                    'tong': chitiets['tong'],
+                }
+        return {
+            'line': [],
+            'tong': {
+                'tong_sl_2_d': 0,
+                'tong_tien_2_d': 0,
+                'tong_sl_2_c': 0,
+                'tong_tien_2_c': 0,
+                'tong_sl_2_dc': 0,
+                'tong_tien_2_dc': 0,
+                'tong_sl_2_18': 0,
+                'tong_tien_2_18': 0,
+                'tong_sl_2': 0,
+                'tong_tien_2': 0,
+                'tong_sl_3_d': 0,
+                'tong_tien_3_d': 0,
+                'tong_sl_3_c': 0,
+                'tong_tien_3_c': 0,
+                'tong_sl_3_dc': 0,
+                'tong_tien_3_dc': 0,
+                'tong_sl_3_7': 0,
+                'tong_tien_3_7': 0,
+                'tong_sl_3_17': 0,
+                'tong_tien_3_17': 0,
+                'tong_sl_3': 0,
+                'tong_tien_3': 0,
+                'tong_sl_4_16': 0,
+                'tong_tien_4_16': 0,
+                'tong_sl_4': 0,
+                'tong_tien_4': 0,
+                'tong_slan_trung': 0,
+                'tong_sluong_trung': 0,
+                'tong_thanhtien': 0},
+        }
+    
+    def get_chitiet_bak(self,dlcha,menhgia):
         res = {
             'line': [],
             'tong': {},

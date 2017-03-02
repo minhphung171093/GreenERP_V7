@@ -107,41 +107,62 @@ class Parser(report_sxw.rml_parse):
         sl_2_dc_trung = 0
         sl_2_18_trung = 0
 
-        ve_loto_obj = self.pool.get('ve.loto')
-        loto_line_obj = self.pool.get('ve.loto.line')
-        ve_loto_ids = ve_loto_obj.search(self.cr, self.uid, [('ngay','=',date),('state','=','done'),('product_id','=',menhgia.id)])
-        loto_line_ids = loto_line_obj.search(self.cr, self.uid, [('ve_loto_id','in',ve_loto_ids)])
+        sql = '''
+            select ltl.id as id, COALESCE(ltl.sl_2_d,0) as sl_2_d, COALESCE(ltl.sl_2_c,0) as sl_2_c, COALESCE(ltl.sl_2_dc,0) as sl_2_dc,
+                COALESCE(ltl.sl_2_18,0) as sl_2_18, COALESCE(ltl.sl_3_d,0) as sl_3_d, COALESCE(ltl.sl_3_c,0) as sl_3_c,
+                COALESCE(ltl.sl_3_dc,0) as sl_3_dc, COALESCE(ltl.sl_3_7,0) as sl_3_7, COALESCE(ltl.sl_3_17,0) as sl_3_17,
+                COALESCE(ltl.sl_4_16,0) as sl_4_16, COALESCE(ltl.sl_2_d_trung,0) as sl_2_d_trung,
+                COALESCE(ltl.sl_2_c_trung,0) as sl_2_c_trung, COALESCE(ltl.sl_2_dc_trung,0) as sl_2_dc_trung,
+                COALESCE(ltl.sl_2_18_trung,0) as sl_2_18_trung, COALESCE(ltl.sl_3_d_trung,0) as sl_3_d_trung,
+                COALESCE(ltl.sl_3_c_trung,0) as sl_3_c_trung, COALESCE(ltl.sl_3_dc_trung,0) as sl_3_dc_trung,
+                COALESCE(ltl.sl_3_7_trung,0) as sl_3_7_trung, COALESCE(ltl.sl_3_17_trung,0) as sl_3_17_trung,
+                COALESCE(ltl.sl_4_16_trung,0) as sl_4_16_trung
+                
+                from ve_loto_line ltl
+                left join ve_loto lt on ltl.ve_loto_id=lt.id
+                
+                where lt.ngay='%s' and lt.state='done' and lt.product_id=%s
+                    and (ltl.sl_2_d_trung!=0 or ltl.sl_2_c_trung!=0 or ltl.sl_2_dc_trung!=0 or ltl.sl_2_18_trung!=0
+                         or ltl.sl_3_d_trung!=0 or ltl.sl_3_c_trung!=0 or ltl.sl_3_dc_trung!=0 or ltl.sl_3_7_trung!=0 or ltl.sl_3_17_trung!=0
+                         or ltl.sl_4_16_trung!=0)
+        '''%(date, menhgia.id)
+        self.cr.execute(sql)
+
+#         ve_loto_obj = self.pool.get('ve.loto')
+#         loto_line_obj = self.pool.get('ve.loto.line')
+#         ve_loto_ids = ve_loto_obj.search(self.cr, self.uid, [('ngay','=',date),('state','=','done'),('product_id','=',menhgia.id)])
+#         loto_line_ids = loto_line_obj.search(self.cr, self.uid, [('ve_loto_id','in',ve_loto_ids)])
         gt_menhgia = int(menhgia.list_price)/10000
-        for line in loto_line_obj.browse(self.cr, self.uid, loto_line_ids):
+        for line in self.cr.dictfetchall():
             # 2 so
-            if line.sl_2_d_trung:
-                slan_trung = line.sl_2_d_trung
-                sluong_trung = line.sl_2_d
+            if line['sl_2_d_trung']:
+                slan_trung = line['sl_2_d_trung']
+                sluong_trung = line['sl_2_d']
                 thanhtien = slan_trung*sluong_trung*(700000*gt_menhgia)
                 
                 sl_2_d += sluong_trung
                 tong_ve += sluong_trung
                 tong_thanhtien += thanhtien
-            if line.sl_2_c_trung:
-                slan_trung = line.sl_2_c_trung
-                sluong_trung = line.sl_2_c
+            if line['sl_2_c_trung']:
+                slan_trung = line['sl_2_c_trung']
+                sluong_trung = line['sl_2_c']
                 thanhtien = slan_trung*sluong_trung*(700000*gt_menhgia)
                 
                 sl_2_c += sluong_trung
                 tong_ve += sluong_trung
                 tong_thanhtien += thanhtien
-            if line.sl_2_dc_trung:
-                slan_trung = line.sl_2_dc_trung
-                sluong_trung = line.sl_2_dc
+            if line['sl_2_dc_trung']:
+                slan_trung = line['sl_2_dc_trung']
+                sluong_trung = line['sl_2_dc']
                 thanhtien = slan_trung*sluong_trung*(350000*gt_menhgia)
                 
                 sl_2_dc += sluong_trung
                 sl_2_dc_trung += slan_trung
                 tong_ve += sluong_trung
                 tong_thanhtien += thanhtien
-            if line.sl_2_18_trung:
-                slan_trung = line.sl_2_18_trung
-                sluong_trung = line.sl_2_18
+            if line['sl_2_18_trung']:
+                slan_trung = line['sl_2_18_trung']
+                sluong_trung = line['sl_2_18']
                 thanhtien = slan_trung*sluong_trung*(39000*gt_menhgia)
                 
                 sl_2_18 += sluong_trung
@@ -171,51 +192,72 @@ class Parser(report_sxw.rml_parse):
         sl_3_dc_trung = 0
         sl_3_7_trung = 0
         sl_3_17_trung = 0
-
-        ve_loto_obj = self.pool.get('ve.loto')
-        loto_line_obj = self.pool.get('ve.loto.line')
-        ve_loto_ids = ve_loto_obj.search(self.cr, self.uid, [('ngay','=',date),('state','=','done'),('product_id','=',menhgia.id)])
-        loto_line_ids = loto_line_obj.search(self.cr, self.uid, [('ve_loto_id','in',ve_loto_ids)])
+        
+        sql = '''
+            select ltl.id as id, COALESCE(ltl.sl_2_d,0) as sl_2_d, COALESCE(ltl.sl_2_c,0) as sl_2_c, COALESCE(ltl.sl_2_dc,0) as sl_2_dc,
+                COALESCE(ltl.sl_2_18,0) as sl_2_18, COALESCE(ltl.sl_3_d,0) as sl_3_d, COALESCE(ltl.sl_3_c,0) as sl_3_c,
+                COALESCE(ltl.sl_3_dc,0) as sl_3_dc, COALESCE(ltl.sl_3_7,0) as sl_3_7, COALESCE(ltl.sl_3_17,0) as sl_3_17,
+                COALESCE(ltl.sl_4_16,0) as sl_4_16, COALESCE(ltl.sl_2_d_trung,0) as sl_2_d_trung,
+                COALESCE(ltl.sl_2_c_trung,0) as sl_2_c_trung, COALESCE(ltl.sl_2_dc_trung,0) as sl_2_dc_trung,
+                COALESCE(ltl.sl_2_18_trung,0) as sl_2_18_trung, COALESCE(ltl.sl_3_d_trung,0) as sl_3_d_trung,
+                COALESCE(ltl.sl_3_c_trung,0) as sl_3_c_trung, COALESCE(ltl.sl_3_dc_trung,0) as sl_3_dc_trung,
+                COALESCE(ltl.sl_3_7_trung,0) as sl_3_7_trung, COALESCE(ltl.sl_3_17_trung,0) as sl_3_17_trung,
+                COALESCE(ltl.sl_4_16_trung,0) as sl_4_16_trung
+                
+                from ve_loto_line ltl
+                left join ve_loto lt on ltl.ve_loto_id=lt.id
+                
+                where lt.ngay='%s' and lt.state='done' and lt.product_id=%s
+                    and (ltl.sl_2_d_trung!=0 or ltl.sl_2_c_trung!=0 or ltl.sl_2_dc_trung!=0 or ltl.sl_2_18_trung!=0
+                         or ltl.sl_3_d_trung!=0 or ltl.sl_3_c_trung!=0 or ltl.sl_3_dc_trung!=0 or ltl.sl_3_7_trung!=0 or ltl.sl_3_17_trung!=0
+                         or ltl.sl_4_16_trung!=0)
+        '''%(date, menhgia.id)
+        self.cr.execute(sql)
+        
+#         ve_loto_obj = self.pool.get('ve.loto')
+#         loto_line_obj = self.pool.get('ve.loto.line')
+#         ve_loto_ids = ve_loto_obj.search(self.cr, self.uid, [('ngay','=',date),('state','=','done'),('product_id','=',menhgia.id)])
+#         loto_line_ids = loto_line_obj.search(self.cr, self.uid, [('ve_loto_id','in',ve_loto_ids)])
         gt_menhgia = int(menhgia.list_price)/10000
-        for line in loto_line_obj.browse(self.cr, self.uid, loto_line_ids):
+        for line in self.cr.dictfetchall():
             # 3 so
-            if line.sl_3_d_trung:
-                slan_trung = line.sl_3_d_trung
-                sluong_trung = line.sl_3_d
+            if line['sl_3_d_trung']:
+                slan_trung = line['sl_3_d_trung']
+                sluong_trung = line['sl_3_d']
                 thanhtien = slan_trung*sluong_trung*(5000000*gt_menhgia)
                 
                 sl_3_d += sluong_trung
                 tong_ve += sluong_trung
                 tong_thanhtien += thanhtien
-            if line.sl_3_c_trung:
-                slan_trung = line.sl_3_c_trung
-                sluong_trung = line.sl_3_c
+            if line['sl_3_c_trung']:
+                slan_trung = line['sl_3_c_trung']
+                sluong_trung = line['sl_3_c']
                 thanhtien = slan_trung*sluong_trung*(5000000*gt_menhgia)
                 
                 sl_3_c += sluong_trung
                 tong_ve += sluong_trung
                 tong_thanhtien += thanhtien
-            if line.sl_3_dc_trung:
-                slan_trung = line.sl_3_dc_trung
-                sluong_trung = line.sl_3_dc
+            if line['sl_3_dc_trung']:
+                slan_trung = line['sl_3_dc_trung']
+                sluong_trung = line['sl_3_dc']
                 thanhtien = slan_trung*sluong_trung*(2500000*gt_menhgia)
                 
                 sl_3_dc += sluong_trung
                 sl_3_dc_trung += slan_trung
                 tong_ve += sluong_trung
                 tong_thanhtien += thanhtien
-            if line.sl_3_7_trung:
-                slan_trung = line.sl_3_7_trung
-                sluong_trung = line.sl_3_7
+            if line['sl_3_7_trung']:
+                slan_trung = line['sl_3_7_trung']
+                sluong_trung = line['sl_3_7']
                 thanhtien = slan_trung*sluong_trung*(715000*gt_menhgia)
                 
                 sl_3_7 += sluong_trung
                 sl_3_7_trung += slan_trung
                 tong_ve += sluong_trung
                 tong_thanhtien += thanhtien
-            if line.sl_3_17_trung:
-                slan_trung = line.sl_3_17_trung
-                sluong_trung = line.sl_3_17
+            if line['sl_3_17_trung']:
+                slan_trung = line['sl_3_17_trung']
+                sluong_trung = line['sl_3_17']
                 thanhtien = slan_trung*sluong_trung*(295000*gt_menhgia)
                 
                 sl_3_17 += sluong_trung
@@ -242,16 +284,37 @@ class Parser(report_sxw.rml_parse):
         sl_4_16 = 0
         sl_4_16_trung = 0
 
-        ve_loto_obj = self.pool.get('ve.loto')
-        loto_line_obj = self.pool.get('ve.loto.line')
-        ve_loto_ids = ve_loto_obj.search(self.cr, self.uid, [('ngay','=',date),('state','=','done'),('product_id','=',menhgia.id)])
-        loto_line_ids = loto_line_obj.search(self.cr, self.uid, [('ve_loto_id','in',ve_loto_ids)])
+        sql = '''
+            select ltl.id as id, COALESCE(ltl.sl_2_d,0) as sl_2_d, COALESCE(ltl.sl_2_c,0) as sl_2_c, COALESCE(ltl.sl_2_dc,0) as sl_2_dc,
+                COALESCE(ltl.sl_2_18,0) as sl_2_18, COALESCE(ltl.sl_3_d,0) as sl_3_d, COALESCE(ltl.sl_3_c,0) as sl_3_c,
+                COALESCE(ltl.sl_3_dc,0) as sl_3_dc, COALESCE(ltl.sl_3_7,0) as sl_3_7, COALESCE(ltl.sl_3_17,0) as sl_3_17,
+                COALESCE(ltl.sl_4_16,0) as sl_4_16, COALESCE(ltl.sl_2_d_trung,0) as sl_2_d_trung,
+                COALESCE(ltl.sl_2_c_trung,0) as sl_2_c_trung, COALESCE(ltl.sl_2_dc_trung,0) as sl_2_dc_trung,
+                COALESCE(ltl.sl_2_18_trung,0) as sl_2_18_trung, COALESCE(ltl.sl_3_d_trung,0) as sl_3_d_trung,
+                COALESCE(ltl.sl_3_c_trung,0) as sl_3_c_trung, COALESCE(ltl.sl_3_dc_trung,0) as sl_3_dc_trung,
+                COALESCE(ltl.sl_3_7_trung,0) as sl_3_7_trung, COALESCE(ltl.sl_3_17_trung,0) as sl_3_17_trung,
+                COALESCE(ltl.sl_4_16_trung,0) as sl_4_16_trung
+                
+                from ve_loto_line ltl
+                left join ve_loto lt on ltl.ve_loto_id=lt.id
+                
+                where lt.ngay='%s' and lt.state='done' and lt.product_id=%s
+                    and (ltl.sl_2_d_trung!=0 or ltl.sl_2_c_trung!=0 or ltl.sl_2_dc_trung!=0 or ltl.sl_2_18_trung!=0
+                         or ltl.sl_3_d_trung!=0 or ltl.sl_3_c_trung!=0 or ltl.sl_3_dc_trung!=0 or ltl.sl_3_7_trung!=0 or ltl.sl_3_17_trung!=0
+                         or ltl.sl_4_16_trung!=0)
+        '''%(date, menhgia.id)
+        self.cr.execute(sql)
+
+#         ve_loto_obj = self.pool.get('ve.loto')
+#         loto_line_obj = self.pool.get('ve.loto.line')
+#         ve_loto_ids = ve_loto_obj.search(self.cr, self.uid, [('ngay','=',date),('state','=','done'),('product_id','=',menhgia.id)])
+#         loto_line_ids = loto_line_obj.search(self.cr, self.uid, [('ve_loto_id','in',ve_loto_ids)])
         gt_menhgia = int(menhgia.list_price)/10000
-        for line in loto_line_obj.browse(self.cr, self.uid, loto_line_ids):
+        for line in self.cr.dictfetchall():
             # 4 so
-            if line.sl_4_16_trung:
-                slan_trung = line.sl_4_16_trung
-                sluong_trung = line.sl_4_16
+            if line['sl_4_16_trung']:
+                slan_trung = line['sl_4_16_trung']
+                sluong_trung = line['sl_4_16']
                 thanhtien = slan_trung*sluong_trung*(2000000*gt_menhgia)
                 
                 sl_4_16 += sluong_trung

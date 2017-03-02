@@ -56,9 +56,8 @@ class Parser(report_sxw.rml_parse):
         return date.strftime('%d/%m/%Y')
      
     def get_dai_ly(self):
-        res_partner_ids = self.data_dict.keys()
         res_partner_obj = self.pool.get('res.partner')
-        res_partner_ids = res_partner_obj.search(self.cr ,self.uid, [('id','in',res_partner_ids)],order='ma_daily')
+        res_partner_ids = res_partner_obj.search(self.cr ,self.uid, [('dai_ly','=',True),('parent_id','=',False)],order='ma_daily')
         return res_partner_obj.browse(self.cr, self.uid, res_partner_ids)
      
     def get_menh_gia(self):
