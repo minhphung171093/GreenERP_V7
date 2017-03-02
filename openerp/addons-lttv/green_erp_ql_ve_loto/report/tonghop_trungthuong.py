@@ -106,7 +106,7 @@ class Parser(report_sxw.rml_parse):
         sl_2_18 = 0
         sl_2_dc_trung = 0
         sl_2_18_trung = 0
-
+        gt_menhgia = int(menhgia.list_price)/10000
         sql = '''
             select ltl.id as id, COALESCE(ltl.sl_2_d,0) as sl_2_d, COALESCE(ltl.sl_2_c,0) as sl_2_c, COALESCE(ltl.sl_2_dc,0) as sl_2_dc,
                 COALESCE(ltl.sl_2_18,0) as sl_2_18, COALESCE(ltl.sl_2_d_trung,0) as sl_2_d_trung,
@@ -126,7 +126,6 @@ class Parser(report_sxw.rml_parse):
 #         loto_line_obj = self.pool.get('ve.loto.line')
 #         ve_loto_ids = ve_loto_obj.search(self.cr, self.uid, [('ngay','=',date),('state','=','done'),('product_id','=',menhgia.id)])
 #         loto_line_ids = loto_line_obj.search(self.cr, self.uid, [('ve_loto_id','in',ve_loto_ids)])
-        gt_menhgia = int(menhgia.list_price)/10000
         for line in self.cr.dictfetchall():
             # 2 so
             if line['sl_2_d_trung']:
@@ -186,7 +185,7 @@ class Parser(report_sxw.rml_parse):
         sl_3_dc_trung = 0
         sl_3_7_trung = 0
         sl_3_17_trung = 0
-        
+        gt_menhgia = int(menhgia.list_price)/10000
         sql = '''
             select ltl.id as id, COALESCE(ltl.sl_3_d,0) as sl_3_d, COALESCE(ltl.sl_3_c,0) as sl_3_c,
                 COALESCE(ltl.sl_3_dc,0) as sl_3_dc, COALESCE(ltl.sl_3_7,0) as sl_3_7, COALESCE(ltl.sl_3_17,0) as sl_3_17,
@@ -207,7 +206,6 @@ class Parser(report_sxw.rml_parse):
 #         loto_line_obj = self.pool.get('ve.loto.line')
 #         ve_loto_ids = ve_loto_obj.search(self.cr, self.uid, [('ngay','=',date),('state','=','done'),('product_id','=',menhgia.id)])
 #         loto_line_ids = loto_line_obj.search(self.cr, self.uid, [('ve_loto_id','in',ve_loto_ids)])
-        gt_menhgia = int(menhgia.list_price)/10000
         for line in self.cr.dictfetchall():
             # 3 so
             if line['sl_3_d_trung']:
@@ -272,7 +270,7 @@ class Parser(report_sxw.rml_parse):
         tong_thanhtien = 0
         sl_4_16 = 0
         sl_4_16_trung = 0
-
+        gt_menhgia = int(menhgia.list_price)/10000
         sql = '''
             select ltl.id as id, COALESCE(ltl.sl_4_16,0) as sl_4_16,COALESCE(ltl.sl_4_16_trung,0) as sl_4_16_trung
                 
@@ -288,7 +286,6 @@ class Parser(report_sxw.rml_parse):
 #         loto_line_obj = self.pool.get('ve.loto.line')
 #         ve_loto_ids = ve_loto_obj.search(self.cr, self.uid, [('ngay','=',date),('state','=','done'),('product_id','=',menhgia.id)])
 #         loto_line_ids = loto_line_obj.search(self.cr, self.uid, [('ve_loto_id','in',ve_loto_ids)])
-        gt_menhgia = int(menhgia.list_price)/10000
         for line in self.cr.dictfetchall():
             # 4 so
             if line['sl_4_16_trung']:

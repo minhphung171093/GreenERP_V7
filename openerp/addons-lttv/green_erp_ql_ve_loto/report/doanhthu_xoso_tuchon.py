@@ -138,6 +138,7 @@ class Parser(report_sxw.rml_parse):
         
         ve_loto_obj = self.pool.get('ve.loto')
         loto_line_obj = self.pool.get('ve.loto.line')
+        gt_menhgia = int(menhgia.list_price)/10000
         sql = '''
             select ltl.id as id, COALESCE(ltl.sl_2_d,0) as sl_2_d, COALESCE(ltl.sl_2_c,0) as sl_2_c, COALESCE(ltl.sl_2_dc,0) as sl_2_dc,
                 COALESCE(ltl.sl_2_18,0) as sl_2_18, COALESCE(ltl.sl_3_d,0) as sl_3_d, COALESCE(ltl.sl_3_c,0) as sl_3_c,
@@ -161,7 +162,6 @@ class Parser(report_sxw.rml_parse):
 #         loto_line_ids = [r[0] for r in self.cr.fetchall()]
 #         ve_loto_ids = ve_loto_obj.search(self.cr, self.uid, [('ngay','=',date),('state','=','done'),('product_id','=',menhgia.id)])
 #         loto_line_ids = loto_line_obj.search(self.cr, self.uid, [('ve_loto_id','in',ve_loto_ids)])
-        gt_menhgia = int(menhgia.list_price)/10000
         for line in self.cr.dictfetchall():
             # 2 so
             if line['sl_2_d_trung']:
