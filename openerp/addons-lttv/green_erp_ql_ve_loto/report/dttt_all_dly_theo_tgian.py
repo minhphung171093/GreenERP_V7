@@ -165,12 +165,12 @@ class Parser(report_sxw.rml_parse):
         if self.data_dict.get(dlcha.id, False):
             if self.data_dict[dlcha.id].get(menhgia.id, False):
                 res = self.data_dict[dlcha.id][menhgia.id]
-                sluong_2 = res['sl_2']
-                sluong_3 = res['sl_3']
-                sluong_4 = res['sl_4']
-                tongve = res['tong_ve']
-                thanhtien = res['thanhtien']
-                tong_sai_kythuat = res['tong_sai_kythuat']
+                sluong_2 += res['sl_2']
+                sluong_3 += res['sl_3']
+                sluong_4 += res['sl_4']
+                tongve += res['tong_ve']
+                thanhtien += res['thanhtien']
+                tong_sai_kythuat += res['tong_sai_kythuat']
                 if self.data_tong_dict.get(dlcha.id, False):
                     self.data_tong_dict[dlcha.id]['sl_2'] += sluong_2
                     self.data_tong_dict[dlcha.id]['sl_3'] += sluong_3

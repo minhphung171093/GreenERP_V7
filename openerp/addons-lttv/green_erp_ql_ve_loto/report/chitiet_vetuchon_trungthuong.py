@@ -22,6 +22,7 @@ class Parser(report_sxw.rml_parse):
     def __init__(self, cr, uid, name, context):
         super(Parser, self).__init__(cr, uid, name, context=context)
         pool = pooler.get_pool(self.cr.dbname)
+        self.data_dict = {}
         self.localcontext.update({
             'get_date':self.get_date,
             'get_dai_ly_cha':self.get_dai_ly_cha,
@@ -53,6 +54,378 @@ class Parser(report_sxw.rml_parse):
         wizard_data = self.localcontext['data']['form']
         menh_gia_ids = wizard_data['menh_gia_ids']
         return self.pool.get('product.product').browse(self.cr, self.uid, menh_gia_ids)
+    
+    def get_datas(self):
+        wizard_data = self.localcontext['data']['form']
+        date = wizard_data['date']
+        dai_ly_ids = wizard_data['dai_ly_ids']
+        menh_gia_ids = wizard_data['menh_gia_ids']
+        menh_gia_ids = str(menh_gia_ids).replace('[', '(')
+        menh_gia_ids = str(menh_gia_ids).replace(']', ')')
+        dai_ly_ids = str(dai_ly_ids).replace('[', '(')
+        dai_ly_ids = str(dai_ly_ids).replace(']', ')')
+        
+        sql = '''
+            select ltl.id as id, pt.list_price as list_price,rp.parent_id as daily_cha_id, lt.product_id as menhgia_id,
+                lt.sophieu as so_phieu,
+                COALESCE(ltl.sl_2_d,0) as sl_2_d, COALESCE(ltl.sl_2_c,0) as sl_2_c, COALESCE(ltl.sl_2_dc,0) as sl_2_dc,
+                COALESCE(ltl.sl_2_18,0) as sl_2_18, COALESCE(ltl.sl_3_d,0) as sl_3_d, COALESCE(ltl.sl_3_c,0) as sl_3_c,
+                COALESCE(ltl.sl_3_dc,0) as sl_3_dc, COALESCE(ltl.sl_3_7,0) as sl_3_7, COALESCE(ltl.sl_3_17,0) as sl_3_17,
+                COALESCE(ltl.sl_4_16,0) as sl_4_16, COALESCE(ltl.sl_2_d_trung,0) as sl_2_d_trung,
+                COALESCE(ltl.sl_2_c_trung,0) as sl_2_c_trung, COALESCE(ltl.sl_2_dc_trung,0) as sl_2_dc_trung,
+                COALESCE(ltl.sl_2_18_trung,0) as sl_2_18_trung, COALESCE(ltl.sl_3_d_trung,0) as sl_3_d_trung,
+                COALESCE(ltl.sl_3_c_trung,0) as sl_3_c_trung, COALESCE(ltl.sl_3_dc_trung,0) as sl_3_dc_trung,
+                COALESCE(ltl.sl_3_7_trung,0) as sl_3_7_trung, COALESCE(ltl.sl_3_17_trung,0) as sl_3_17_trung,
+                COALESCE(ltl.sl_4_16_trung,0) as sl_4_16_trung
+                
+                from ve_loto_line ltl
+                left join ve_loto lt on ltl.ve_loto_id=lt.id
+                left join product_product pp on lt.product_id=pp.id
+                left join product_template pt on pp.product_tmpl_id=pt.id
+                left join res_partner rp on lt.daily_id=rp.id
+                
+                where lt.ngay='%s' and lt.state='done' and lt.product_id in %s and rp.parent_id in %s
+                    and (ltl.sl_2_d_trung!=0 or ltl.sl_2_c_trung!=0 or ltl.sl_2_dc_trung!=0 or ltl.sl_2_18_trung!=0
+                         or ltl.sl_3_d_trung!=0 or ltl.sl_3_c_trung!=0 or ltl.sl_3_dc_trung!=0 or ltl.sl_3_7_trung!=0 or ltl.sl_3_17_trung!=0
+                         or ltl.sl_4_16_trung!=0)
+        '''%(date,menh_gia_ids,dai_ly_ids)
+        self.cr.execute(sql)
+        for line in self.cr.dictfetchall():
+            # 2 so
+            if line['sl_2_d_trung']:
+                slan_trung = line['sl_2_d_trung']
+                sluong_trung = line['sl_2_d']
+                thanhtien = slan_trung*sluong_trung*(700000*gt_menhgia)
+                
+                tong_sl_2_d += slan_trung*sluong_trung
+                tong_tien_2_d += thanhtien
+                
+                tong_sl_2 += slan_trung*sluong_trung
+                tong_tien_2 += thanhtien
+                
+                tong_slan_trung += slan_trung
+                tong_sluong_trung += sluong_trung
+                tong_thanhtien += thanhtien
+                
+                res['line'].append({
+                    'so_dt_2_d': line['so_dt_2_d'],
+                    'so_dt_2_c': '',
+                    'so_dt_2_dc': '',
+                    'so_dt_2_18': '',
+                    'so_dt_3_d': '',
+                    'so_dt_3_c': '',
+                    'so_dt_3_dc': '',
+                    'so_dt_3_7': '',
+                    'so_dt_3_17': '',
+                    'so_dt_4_16': '',
+                    'slan_trung': slan_trung,
+                    'sluong_trung': sluong_trung,
+                    'so_phieu': line.ve_loto_id.sophieu,
+                    'dai_ly': line.ve_loto_id.daily_id.name,
+                    'thanhtien': format(thanhtien, ',').split('.')[0].replace(',','.'),
+                    })
+            if line.sl_2_c_trung:
+                slan_trung = line.sl_2_c_trung
+                sluong_trung = line.sl_2_c
+                thanhtien = slan_trung*sluong_trung*(700000*gt_menhgia)
+                
+                tong_sl_2_c += slan_trung*sluong_trung
+                tong_tien_2_c += thanhtien
+                
+                tong_sl_2 += slan_trung*sluong_trung
+                tong_tien_2 += thanhtien
+                
+                tong_slan_trung += slan_trung
+                tong_sluong_trung += sluong_trung
+                tong_thanhtien += thanhtien
+                
+                res['line'].append({
+                    'so_dt_2_d': '',
+                    'so_dt_2_c': line.so_dt_2_c,
+                    'so_dt_2_dc': '',
+                    'so_dt_2_18': '',
+                    'so_dt_3_d': '',
+                    'so_dt_3_c': '',
+                    'so_dt_3_dc': '',
+                    'so_dt_3_7': '',
+                    'so_dt_3_17': '',
+                    'so_dt_4_16': '',
+                    'slan_trung': slan_trung,
+                    'sluong_trung': sluong_trung,
+                    'so_phieu': line.ve_loto_id.sophieu,
+                    'dai_ly': line.ve_loto_id.daily_id.name,
+                    'thanhtien': format(thanhtien, ',').split('.')[0].replace(',','.'),
+                    })
+            if line.sl_2_dc_trung:
+                slan_trung = line.sl_2_dc_trung
+                sluong_trung = line.sl_2_dc
+                thanhtien = slan_trung*sluong_trung*(350000*gt_menhgia)
+                
+                tong_sl_2_dc += slan_trung*sluong_trung
+                tong_tien_2_dc += thanhtien
+                
+                tong_sl_2 += slan_trung*sluong_trung
+                tong_tien_2 += thanhtien
+                
+                tong_slan_trung += slan_trung
+                tong_sluong_trung += sluong_trung
+                tong_thanhtien += thanhtien
+                
+                res['line'].append({
+                    'so_dt_2_d': '',
+                    'so_dt_2_c': '',
+                    'so_dt_2_dc': line.so_dt_2_dc,
+                    'so_dt_2_18': '',
+                    'so_dt_3_d': '',
+                    'so_dt_3_c': '',
+                    'so_dt_3_dc': '',
+                    'so_dt_3_7': '',
+                    'so_dt_3_17': '',
+                    'so_dt_4_16': '',
+                    'slan_trung': slan_trung,
+                    'sluong_trung': sluong_trung,
+                    'so_phieu': line.ve_loto_id.sophieu,
+                    'dai_ly': line.ve_loto_id.daily_id.name,
+                    'thanhtien': format(thanhtien, ',').split('.')[0].replace(',','.'),
+                    })
+            if line.sl_2_18_trung:
+                slan_trung = line.sl_2_18_trung
+                sluong_trung = line.sl_2_18
+                thanhtien = slan_trung*sluong_trung*(39000*gt_menhgia)
+                
+                tong_sl_2_18 += slan_trung*sluong_trung
+                tong_tien_2_18 += thanhtien
+                
+                tong_sl_2 += slan_trung*sluong_trung
+                tong_tien_2 += thanhtien
+                
+                tong_slan_trung += slan_trung
+                tong_sluong_trung += sluong_trung
+                tong_thanhtien += thanhtien
+                
+                res['line'].append({
+                    'so_dt_2_d': '',
+                    'so_dt_2_c': '',
+                    'so_dt_2_dc': '',
+                    'so_dt_2_18': line.so_dt_2_18,
+                    'so_dt_3_d': '',
+                    'so_dt_3_c': '',
+                    'so_dt_3_dc': '',
+                    'so_dt_3_7': '',
+                    'so_dt_3_17': '',
+                    'so_dt_4_16': '',
+                    'slan_trung': slan_trung,
+                    'sluong_trung': sluong_trung,
+                    'so_phieu': line.ve_loto_id.sophieu,
+                    'dai_ly': line.ve_loto_id.daily_id.name,
+                    'thanhtien': format(thanhtien, ',').split('.')[0].replace(',','.'),
+                    })
+            # 3 so
+            if line.sl_3_d_trung:
+                slan_trung = line.sl_3_d_trung
+                sluong_trung = line.sl_3_d
+                thanhtien = slan_trung*sluong_trung*(5000000*gt_menhgia)
+                
+                tong_sl_3_d += slan_trung*sluong_trung
+                tong_tien_3_d += thanhtien
+                
+                tong_sl_3 += slan_trung*sluong_trung
+                tong_tien_3 += thanhtien
+                
+                tong_slan_trung += slan_trung
+                tong_sluong_trung += sluong_trung
+                tong_thanhtien += thanhtien
+                
+                res['line'].append({
+                    'so_dt_2_d': '',
+                    'so_dt_2_c': '',
+                    'so_dt_2_dc': '',
+                    'so_dt_2_18': '',
+                    'so_dt_3_d': line.so_dt_3_d,
+                    'so_dt_3_c': '',
+                    'so_dt_3_dc': '',
+                    'so_dt_3_7': '',
+                    'so_dt_3_17': '',
+                    'so_dt_4_16': '',
+                    'slan_trung': slan_trung,
+                    'sluong_trung': sluong_trung,
+                    'so_phieu': line.ve_loto_id.sophieu,
+                    'dai_ly': line.ve_loto_id.daily_id.name,
+                    'thanhtien': format(thanhtien, ',').split('.')[0].replace(',','.'),
+                    })
+            if line.sl_3_c_trung:
+                slan_trung = line.sl_3_c_trung
+                sluong_trung = line.sl_3_c
+                thanhtien = slan_trung*sluong_trung*(5000000*gt_menhgia)
+                
+                tong_sl_3_c += slan_trung*sluong_trung
+                tong_tien_3_c += thanhtien
+                
+                tong_sl_3 += slan_trung*sluong_trung
+                tong_tien_3 += thanhtien
+                
+                tong_slan_trung += slan_trung
+                tong_sluong_trung += sluong_trung
+                tong_thanhtien += thanhtien
+                
+                res['line'].append({
+                    'so_dt_2_d': '',
+                    'so_dt_2_c': '',
+                    'so_dt_2_dc': '',
+                    'so_dt_2_18': '',
+                    'so_dt_3_d': '',
+                    'so_dt_3_c': line.so_dt_3_c,
+                    'so_dt_3_dc': '',
+                    'so_dt_3_7': '',
+                    'so_dt_3_17': '',
+                    'so_dt_4_16': '',
+                    'slan_trung': slan_trung,
+                    'sluong_trung': sluong_trung,
+                    'so_phieu': line.ve_loto_id.sophieu,
+                    'dai_ly': line.ve_loto_id.daily_id.name,
+                    'thanhtien': format(thanhtien, ',').split('.')[0].replace(',','.'),
+                    })
+            if line.sl_3_dc_trung:
+                slan_trung = line.sl_3_dc_trung
+                sluong_trung = line.sl_3_dc
+                thanhtien = slan_trung*sluong_trung*(2500000*gt_menhgia)
+                
+                tong_sl_3_dc += slan_trung*sluong_trung
+                tong_tien_3_dc += thanhtien
+                
+                tong_sl_3 += slan_trung*sluong_trung
+                tong_tien_3 += thanhtien
+                
+                tong_slan_trung += slan_trung
+                tong_sluong_trung += sluong_trung
+                tong_thanhtien += thanhtien
+                
+                res['line'].append({
+                    'so_dt_2_d': '',
+                    'so_dt_2_c': '',
+                    'so_dt_2_dc': '',
+                    'so_dt_2_18': '',
+                    'so_dt_3_d': '',
+                    'so_dt_3_c': '',
+                    'so_dt_3_dc': line.so_dt_3_dc,
+                    'so_dt_3_7': '',
+                    'so_dt_3_17': '',
+                    'so_dt_4_16': '',
+                    'slan_trung': slan_trung,
+                    'sluong_trung': sluong_trung,
+                    'so_phieu': line.ve_loto_id.sophieu,
+                    'dai_ly': line.ve_loto_id.daily_id.name,
+                    'thanhtien': format(thanhtien, ',').split('.')[0].replace(',','.'),
+                    })
+            if line.sl_3_7_trung:
+                slan_trung = line.sl_3_7_trung
+                sluong_trung = line.sl_3_7
+                thanhtien = slan_trung*sluong_trung*(715000*gt_menhgia)
+                
+                tong_sl_3_7 += slan_trung*sluong_trung
+                tong_tien_3_7 += thanhtien
+                
+                tong_sl_3 += slan_trung*sluong_trung
+                tong_tien_3 += thanhtien
+                
+                tong_slan_trung += slan_trung
+                tong_sluong_trung += sluong_trung
+                tong_thanhtien += thanhtien
+                
+                res['line'].append({
+                    'so_dt_2_d': '',
+                    'so_dt_2_c': '',
+                    'so_dt_2_dc': '',
+                    'so_dt_2_18': '',
+                    'so_dt_3_d': '',
+                    'so_dt_3_c': '',
+                    'so_dt_3_dc': '',
+                    'so_dt_3_7': line.so_dt_3_7,
+                    'so_dt_3_17': '',
+                    'so_dt_4_16': '',
+                    'slan_trung': slan_trung,
+                    'sluong_trung': sluong_trung,
+                    'so_phieu': line.ve_loto_id.sophieu,
+                    'dai_ly': line.ve_loto_id.daily_id.name,
+                    'thanhtien': format(thanhtien, ',').split('.')[0].replace(',','.'),
+                    })
+            if line.sl_3_17_trung:
+                slan_trung = line.sl_3_17_trung
+                sluong_trung = line.sl_3_17
+                thanhtien = slan_trung*sluong_trung*(295000*gt_menhgia)
+                
+                tong_sl_3_17 += slan_trung*sluong_trung
+                tong_tien_3_17 += thanhtien
+                
+                tong_sl_3 += slan_trung*sluong_trung
+                tong_tien_3 += thanhtien
+                
+                tong_slan_trung += slan_trung
+                tong_sluong_trung += sluong_trung
+                tong_thanhtien += thanhtien
+                
+                res['line'].append({
+                    'so_dt_2_d': '',
+                    'so_dt_2_c': '',
+                    'so_dt_2_dc': '',
+                    'so_dt_2_18': '',
+                    'so_dt_3_d': '',
+                    'so_dt_3_c': '',
+                    'so_dt_3_dc': '',
+                    'so_dt_3_7': '',
+                    'so_dt_3_17': line.so_dt_3_17,
+                    'so_dt_4_16': '',
+                    'slan_trung': slan_trung,
+                    'sluong_trung': sluong_trung,
+                    'so_phieu': line.ve_loto_id.sophieu,
+                    'dai_ly': line.ve_loto_id.daily_id.name,
+                    'thanhtien': format(thanhtien, ',').split('.')[0].replace(',','.'),
+                    })
+            
+            # 4 so
+            if line.sl_4_16_trung:
+                slan_trung = line.sl_4_16_trung
+                sluong_trung = line.sl_4_16
+                thanhtien = slan_trung*sluong_trung*(2000000*gt_menhgia)
+                
+                tong_sl_4_16 += slan_trung*sluong_trung
+                tong_tien_4_16 += thanhtien
+                
+                tong_sl_4 += slan_trung*sluong_trung
+                tong_tien_4 += thanhtien
+                
+                tong_slan_trung += slan_trung
+                tong_sluong_trung += sluong_trung
+                tong_thanhtien += thanhtien
+                
+                res['line'].append({
+                    'so_dt_2_d': '',
+                    'so_dt_2_c': '',
+                    'so_dt_2_dc': '',
+                    'so_dt_2_18': '',
+                    'so_dt_3_d': '',
+                    'so_dt_3_c': '',
+                    'so_dt_3_dc': '',
+                    'so_dt_3_7': '',
+                    'so_dt_3_17': '',
+                    'so_dt_4_16': line.so_dt_4_16,
+                    'slan_trung': slan_trung,
+                    'sluong_trung': sluong_trung,
+                    'so_phieu': line.ve_loto_id.sophieu,
+                    'dai_ly': line.ve_loto_id.daily_id.name,
+                    'thanhtien': format(thanhtien, ',').split('.')[0].replace(',','.'),
+                    })
+            
+            if self.data_dict.get(line['daily_cha_id'], False):
+                s
+            else:
+                self.data_dict[line['daily_cha_id']]={
+                        line['menhgia_id']: {
+                            'line': [],
+                            'tong': {}
+                        }
+                    }
+        return True
     
     def get_chitiet(self,dlcha,menhgia):
         res = {
