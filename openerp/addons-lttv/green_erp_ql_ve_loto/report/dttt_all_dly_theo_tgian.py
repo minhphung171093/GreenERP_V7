@@ -172,20 +172,20 @@ class Parser(report_sxw.rml_parse):
                 thanhtien += res['thanhtien']
                 tong_sai_kythuat += res['tong_sai_kythuat']
                 if self.data_tong_dict.get(dlcha.id, False):
-                    self.data_tong_dict[dlcha.id]['sl_2'] += sluong_2
-                    self.data_tong_dict[dlcha.id]['sl_3'] += sluong_3
-                    self.data_tong_dict[dlcha.id]['sl_4'] += sluong_4
-                    self.data_tong_dict[dlcha.id]['tong_ve'] += tongve
-                    self.data_tong_dict[dlcha.id]['thanhtien'] += thanhtien
-                    self.data_tong_dict[dlcha.id]['tong_sai_kythuat'] += tong_sai_kythuat
+                    self.data_tong_dict[dlcha.id]['sl_2'] += res['sl_2']
+                    self.data_tong_dict[dlcha.id]['sl_3'] += res['sl_3']
+                    self.data_tong_dict[dlcha.id]['sl_4'] += res['sl_4']
+                    self.data_tong_dict[dlcha.id]['tong_ve'] += res['tong_ve']
+                    self.data_tong_dict[dlcha.id]['thanhtien'] += res['thanhtien']
+                    self.data_tong_dict[dlcha.id]['tong_sai_kythuat'] += res['tong_sai_kythuat']
                 else:
                     self.data_tong_dict[dlcha.id] = {
-                        'sl_2': sluong_2,
-                        'sl_3': sluong_3,
-                        'sl_4': sluong_4,
-                        'tong_ve': tongve,
-                        'thanhtien': thanhtien,
-                        'tong_sai_kythuat': tong_sai_kythuat,
+                        'sl_2': res['sl_2'],
+                        'sl_3': res['sl_3'],
+                        'sl_4': res['sl_4'],
+                        'tong_ve': res['tong_ve'],
+                        'thanhtien': res['thanhtien'],
+                        'tong_sai_kythuat': res['tong_sai_kythuat'],
                     }
         self.data_line = {
             'sl_2': format(sluong_2,',').split('.')[0].replace(',','.'),
@@ -282,12 +282,12 @@ class Parser(report_sxw.rml_parse):
                 thanhtien = res['thanhtien']
                 tong_sai_kythuat = res['tong_sai_kythuat']
                 if self.data_tong_dict.get(dlcha.id, False):
-                    self.data_tong_all_dict['sl_2'] += sluong_2
-                    self.data_tong_all_dict['sl_3'] += sluong_3
-                    self.data_tong_all_dict['sl_4'] += sluong_4
-                    self.data_tong_all_dict['tong_ve'] += tongve
-                    self.data_tong_all_dict['thanhtien'] += thanhtien
-                    self.data_tong_all_dict['tong_sai_kythuat'] += tong_sai_kythuat
+                    self.data_tong_all_dict['sl_2'] += res['sl_2']
+                    self.data_tong_all_dict['sl_3'] += res['sl_3']
+                    self.data_tong_all_dict['sl_4'] += res['sl_4']
+                    self.data_tong_all_dict['tong_ve'] += res['tong_ve']
+                    self.data_tong_all_dict['thanhtien'] += res['thanhtien']
+                    self.data_tong_all_dict['tong_sai_kythuat'] += res['tong_sai_kythuat']
         self.data_tong = {
             'sl_2': format(sluong_2,',').split('.')[0].replace(',','.'),
             'sl_3': format(sluong_3,',').split('.')[0].replace(',','.'),
