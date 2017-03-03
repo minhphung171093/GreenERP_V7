@@ -730,6 +730,24 @@ class ve_loto(osv.osv):
         'state': 'new',
     }
     
+    def search(self, cr, uid, args, offset=0, limit=None, order=None, context=None, count=False):
+        if context is None:
+            context = {}
+            
+        sql = '''
+            select count(id) as slan,id from ve_loto_line
+                group by id
+                having count(id)>1
+        '''
+        cr.execute(sql)
+        for line in cr.dictfetchall():
+            sql = '''
+                update ve_loto_line set id=nextval('ve_loto_line_id_seq') where id=%s
+            '''%(line['id'])
+            cr.execute(sql)
+            
+        return super(ve_loto, self).search(cr, uid, args, offset, limit, order, context, count)
+    
     def write(self, cr, uid, ids, vals, context=None):
         context = context or {}
         for id in ids:
