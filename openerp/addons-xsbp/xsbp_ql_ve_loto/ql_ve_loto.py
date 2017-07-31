@@ -176,6 +176,7 @@ dai_duthuong()
 
 class ketqua_xoso(osv.osv):
     _name = "ketqua.xoso"
+    _order = "name desc"
     
     def default_get(self, cr, uid, fields, context=None):
         res = super(ketqua_xoso, self).default_get(cr, uid, fields, context=context)
@@ -577,6 +578,32 @@ class ketqua_xoso_line(osv.osv):
         'dm_7_so': fields.boolean('Danh mục 7 số'),
         'ketqua_xoso_id': fields.many2one('ketqua.xoso','Kết quả xổ số',ondelete='cascade'),
     }
+    
+    def create(self, cr, uid, vals, context=None):
+        if 'so' in vals:
+            so = vals['so']
+            so = so.strip()
+            vals['so'] = so
+            try:
+                so_int = int(so)
+                if so_int<0:
+                    raise osv.except_osv(_('Cảnh báo!'), _('"Số" chỉ được nhập số dương tại dòng "%s"!'%(vals.get('ma', ''))))
+            except Exception, e:
+                raise osv.except_osv(_('Cảnh báo!'), _('"Số" chỉ được nhập vào dữ liệu là số, không được phép nhập vào ký tự là chữ tại dòng "%s"!'%(vals.get('ma', ''))))
+        return super(ketqua_xoso_line, self).create(cr, uid, vals, context)
+    
+    def write(self, cr, uid, ids, vals, context=None):
+        if 'so' in vals:
+            so = vals['so']
+            so = so.strip()
+            vals['so'] = so
+            try:
+                so_int = int(so)
+                if so_int<0:
+                    raise osv.except_osv(_('Cảnh báo!'), _('"Số" chỉ được nhập số dương!'))
+            except Exception, e:
+                raise osv.except_osv(_('Cảnh báo!'), _('"Số" chỉ được nhập vào dữ liệu là số, không được phép nhập vào ký tự là chữ!'))
+        return super(ketqua_xoso_line, self).write(cr, uid, ids, vals, context)
     
 ketqua_xoso_line()
 
