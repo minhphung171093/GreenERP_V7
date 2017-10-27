@@ -648,10 +648,17 @@ class trathuong_thucte_new(osv.osv):
             tt_ids = str(tt_ids).replace('[','(')
             tt_ids = str(tt_ids).replace(']',')')
             sql = '''
+                delete from tra_thuong_thucte_line where trathuong_id in (select id from tra_thuong_thucte where thucte_new_id in %s);
                 delete from tra_thuong_thucte where thucte_new_id in %s;
-            '''%(tt_ids)
+            '''%(tt_ids,tt_ids)
             cr.execute(sql)
         return self.write(cr, uid, ids, {'state': 'new'})
+    
+    def unlink(self, cr, uid, ids, context=None):
+        for line in self.browse(cr ,uid, ids):
+            if line.state in ['done']:
+                raise osv.except_osv(_('Cảnh báo!'), _('Bạn không được phép xóa phiếu khi đã hoàn thành. Vui lòng chỉnh sửa lại để trạng thái thành mới tạo trước khi xóa!'))
+        return super(trathuong_thucte_new, self).unlink(cr, uid, ids, context)
     
 trathuong_thucte_new()
 
