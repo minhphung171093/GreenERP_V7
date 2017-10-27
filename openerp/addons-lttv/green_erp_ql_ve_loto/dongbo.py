@@ -489,7 +489,12 @@ class dongbo_daily_trungthuong(osv.osv):
                 tra_thuong_obj = self.pool.get('tra.thuong')
                 ve_loto_obj = self.pool.get('ve.loto')
                 daily_obj = self.pool.get('res.partner')
-                daily_ids = daily_obj.search(cr, 1, [('dai_ly','=',True)])
+#                 daily_ids = daily_obj.search(cr, 1, [('dai_ly','=',True)])
+                sql = '''
+                    select daily_id from ve_loto where ngay='%s' and state='done'
+                '''%(line.ket_qua_id.name)
+                cr.execute(sql)
+                daily_ids = [r[0] for r in cr.fetchall()]
                 for daily in daily_obj.browse(cr, 1, daily_ids):
                     ve_loto_ids = ve_loto_obj.search(cr, 1, [('ngay','=',line.ket_qua_id.name),('daily_id','=',daily.id),('state','=','done')])
                     linevals = []
