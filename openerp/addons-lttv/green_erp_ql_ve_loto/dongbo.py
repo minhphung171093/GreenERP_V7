@@ -491,7 +491,7 @@ class dongbo_daily_trungthuong(osv.osv):
                 daily_obj = self.pool.get('res.partner')
 #                 daily_ids = daily_obj.search(cr, 1, [('dai_ly','=',True)])
                 sql = '''
-                    select daily_id from ve_loto where ngay='%s' and state='done'
+                    select daily_id from ve_loto where ngay='%s' and state='done' group by daily_id
                 '''%(line.ket_qua_id.name)
                 cr.execute(sql)
                 daily_ids = [r[0] for r in cr.fetchall()]
