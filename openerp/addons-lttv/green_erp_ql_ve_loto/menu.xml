@@ -94,6 +94,10 @@
 			<menuitem id="menu_stock_action_tonghop_vetuchon_tonkho_report"
 				action="action_tonghop_vetuchon_tonkho_report"
 				parent="menu_kho_baocao" sequence="20"/>
+				
+		
+		<menuitem action="action_muc_tran" id="menu_action_muc_tran" parent="menu_cau_hinh" sequence="60" groups="group_ql_ve_loto_man"/>
+		<menuitem action="action_vuot_tran" id="menu_action_vuot_tran" parent="menu_ve_loto" sequence="70" groups="group_ql_ve_loto_man"/>
 		
     </data>
 </openerp>

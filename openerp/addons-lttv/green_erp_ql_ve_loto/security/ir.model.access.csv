@@ -23,3 +23,6 @@ access_ve_e,ve_e,model_ve_e,stock.group_stock_manager,1,1,1,1
 access_ve_e_line,ve_e_line,model_ve_e_line,stock.group_stock_manager,1,1,1,1
 access_quyet_toan_ve_ngay,quyet_toan_ve_ngay,model_quyet_toan_ve_ngay,base.group_user,1,1,1,1
 access_quyet_toan_ve_ngay_line,quyet_toan_ve_ngay_line,model_quyet_toan_ve_ngay_line,base.group_user,1,1,1,1
+access_muc_tran,muc_tran,model_muc_tran,group_ql_ve_loto,1,1,1,1
+access_vuot_tran,vuot_tran,model_vuot_tran,group_ql_ve_loto,1,1,1,1
+access_vuot_tran_line,vuot_tran_line,model_vuot_tran_line,group_ql_ve_loto,1,1,1,1

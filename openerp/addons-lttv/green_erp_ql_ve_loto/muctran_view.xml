@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+		<record id="muc_tran_tree_view" model="ir.ui.view">
+        <field name="name">muc.tran.tree</field>
+        <field name="model">muc.tran</field>
+        <field name="arch" type="xml">
+        	<tree string="Mức trần">
+        		<field name="mt_2_d"/>
+        		<field name="mt_2_c"/>
+        		<field name="mt_2_dc"/>
+        		<field name="mt_2_18"/>
+        		<field name="mt_3_d"/>
+        		<field name="mt_3_c"/>
+        		<field name="mt_3_dc"/>
+        		<field name="mt_3_7"/>
+        		<field name="mt_3_17"/>
+        		<field name="mt_4_16"/>
+        	</tree>
+        </field>
+        </record>
+        
+        <record id="muc_tran_form_view" model="ir.ui.view">
+        <field name="name">muc.tran</field>
+        <field name="model">muc.tran</field>
+        <field  name="arch" type="xml">
+        	<form string="Mức trần">
+	        	<group col='3' colspan='1'>
+	            	<group colspan='1' string="2 số">
+	            		<group col='2' colspan='1'>
+	            			<field name="mt_2_d" colspan='2'/>
+			        		<field name="mt_2_c" colspan='2'/>
+			        		<field name="mt_2_dc" colspan='2'/>
+			        		<field name="mt_2_18" colspan='2'/>
+	            		</group>
+	            	</group>
+	            	<group colspan='1' string="3 số">
+	            		<group col='2' colspan='1'>
+	            			<field name="mt_3_d" colspan='2'/>
+			        		<field name="mt_3_c" colspan='2'/>
+			        		<field name="mt_3_dc" colspan='2'/>
+			        		<field name="mt_3_7" colspan='2'/>
+			        		<field name="mt_3_17" colspan='2'/>
+	                	</group>
+	                </group>
+	                <group colspan='1' string="4 số">
+		                <group col='2' colspan='1'>
+	                		<field name="mt_4_16"/>
+	                	</group>
+	                </group>
+	            </group>
+        	</form>
+        </field>
+      </record>
+      
+      	<record id="action_muc_tran" model="ir.actions.act_window">
+      		<field name="name">Cấu hình mức trần</field>
+      		<field name="res_model">muc.tran</field>
+      		<field name="view_type">form</field>
+      		<field name="view_mode">tree,form</field>
+      		<field name="view_id" ref="muc_tran_tree_view"/>
+      	</record>
+        
+        <record id="vuot_tran_tree" model="ir.ui.view">
+            <field name="name">vuot.tran.tree</field>
+            <field name="model">vuot.tran</field>
+            <field name="arch" type="xml">
+                <tree string="Vượt trần">
+					<field name="ngay_xs"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="vuot_tran_form_view" model="ir.ui.view">
+            <field name="name">vuot.tran.form</field>
+            <field name="model">vuot.tran</field>
+            <field name="arch" type="xml">
+        		<form string="Vượt trần" version="7.0">
+        			<header>
+	        				<button name="update" string="Cập nhật" type="object" class="oe_stat_button"/>
+        			</header>
+        			<group col="2" colspan="1">
+        				<field name="ngay_xs" required="1" colspan="1"/>
+        			</group>
+        			<group col="1" colspan="1">
+						<notebook>
+			           		<page string="Danh sách vượt trần" colspan="1">
+			            		<field name="vuot_tran_line" options="{'no_create': True}">
+				            		<tree string="Vượt trần" edit="false" create="false" delete="false" editable="bottom" colors="red:kt_vt == True">
+										<field name="dai_ly_id"/>
+					        			<field name="loai"/>
+					        			<field name="lo_du_thuong"/>
+					        			<field name="so_du_thuong"/>
+					        			<field name="thanh_tien" sum="Tổng tiền"/>
+					        			<field name="kt_vt" invisible="1"/>
+					        			<field name="data_muctran" invisible="1"/>
+									</tree>
+									<form>
+										<field name="dai_ly_id"/>
+					        			<field name="loai"/>
+					        			<field name="lo_du_thuong"/>
+					        			<field name="so_du_thuong"/>
+					        			<field name="thanh_tien" sum="Tổng tiền"/>
+					        			<field name="kt_vt" invisible="1"/>
+					        			<field name="data_muctran" invisible="1"/>
+									</form>
+								</field>
+			            	</page>
+			            </notebook>
+					</group>
+        		</form>
+        	</field>
+     	</record>
+      
+      	<record id="action_vuot_tran" model="ir.actions.act_window">
+      		<field name="name">Kiểm tra vượt trần</field>
+      		<field name="res_model">vuot.tran</field>
+      		<field name="view_type">form</field>
+      		<field name="view_mode">tree,form</field>
+      		<field name="view_id" ref="vuot_tran_tree"/>
+      		<field name="context">{'kt_vt':True}</field>
+      	</record>
+        
+    </data>
+</openerp>

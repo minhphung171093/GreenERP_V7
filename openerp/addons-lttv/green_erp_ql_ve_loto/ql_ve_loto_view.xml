@@ -4,6 +4,7 @@
     	
     	<menuitem name="QL Vé Loto" id="ql_ve_loto" sequence="10" groups="group_ql_ve_loto"/>
         <menuitem name="Đại lý" id="menu_dai_ly" parent="ql_ve_loto" sequence="5" groups="group_ql_ve_loto"/>
+        <menuitem name="Cấu hình" id="menu_cau_hinh" parent="ql_ve_loto" sequence="100" groups="group_ql_ve_loto_man"/>
         
         <record id="loto_view_partner_form" model="ir.ui.view">
             <field name="name">res.partner.inherit</field>

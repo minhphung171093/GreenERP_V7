@@ -94,6 +94,7 @@
         'import_ve_loto_view.xml',
         'dongbo_view.xml',
         'ql_tra_thuong_view.xml',
+        'muctran_view.xml',
         'menu.xml',
     ],
     'installable': True,

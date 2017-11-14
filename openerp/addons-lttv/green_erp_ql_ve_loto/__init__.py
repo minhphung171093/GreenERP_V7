@@ -28,4 +28,5 @@ import sale
 import purchase
 import stock
 import ql_tra_thuong
+import muctran
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
